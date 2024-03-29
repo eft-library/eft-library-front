@@ -1,17 +1,22 @@
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-        <p className="abc">{process.env.REACT_APP_SERVICE_NAME}</p>
-      </header>
+      <SimpleGrid
+        bg="gray.50"
+        columns={{ sm: 1, md: 2 }}
+        spacing="8"
+        p="10"
+        textAlign="center"
+        rounded="lg"
+        color="gray.400"
+      >
+        <Box boxShadow="dark-lg" p="6" rounded="md" bg="white">
+          dark-lg
+        </Box>
+      </SimpleGrid>
     </div>
   )
 }
