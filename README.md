@@ -1,8 +1,7 @@
-[[_TOC_]]
-
 # 구조
 
 ## 사용할 것
+
 1. node 20.12.0
 2. react
 3. @react-three/drei - 3D present
@@ -68,4 +67,3 @@ src
 |
 +-- utils             # shared utility functions
 ```
-
