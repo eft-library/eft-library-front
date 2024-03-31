@@ -2,6 +2,8 @@
 
 ## 사용할 것
 
+https://codepen.io/AdamJames93/pen/rNMKxer
+
 1. node 20.12.0
 2. react
 3. @react-three/drei - 3D present
