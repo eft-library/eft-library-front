@@ -6747,10 +6747,10 @@
     </library_nodes>
     <library_images>
         <image id="ID784">
-            <init_from>d/room_door.jpg</init_from>
+            <init_from>./room_door.jpg</init_from>
         </image>
         <image id="ID998">
-            <init_from>d/texture.png</init_from>
+            <init_from>./texture.png</init_from>
         </image>
     </library_images>
     <scene>

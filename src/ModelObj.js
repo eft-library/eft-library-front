@@ -22,7 +22,7 @@ function ModelObj() {
       <ambientLight intensity={1} />
       <pointLight position={[0, 0, 0]} intensity={1} />
       <group>
-        <primitive object={dae} />
+        <primitive object={dae} position={[-20, -1, 20]} />
       </group>
       <OrbitControls />
     </>
