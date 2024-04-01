@@ -1,19 +1,18 @@
-import { Canvas } from '@react-three/fiber';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unknown-property */
 import './App.css';
+import React from 'react';
+import { Canvas } from '@react-three/fiber';
 import ModelObj from './ModelObj';
-// import MyElement3D from './MyElement3D';
-// import Seconde3D from './Seconde3D';
 
 function App() {
   return (
-    <>
+    <div style={{ width: '100%', height: '100%' }}>
       <Canvas>
-        <axesHelper scale={10} />
-        {/* <MyElement3D /> */}
-        {/* <Seconde3D /> */}
         <ModelObj />
+        <axesHelper scale={10} />
       </Canvas>
-    </>
+    </div>
   );
 }
 

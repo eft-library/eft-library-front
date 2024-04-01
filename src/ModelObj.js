@@ -1,20 +1,32 @@
 /* eslint-disable react/no-unknown-property */
+
+import React, { useState } from 'react';
+import { useLoader } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
-import { useLoader } from '@react-three/fiber';
 
-const ModelObj = () => {
-  const model = useLoader(ColladaLoader, './models/Duck.dae');
-  console.log(model);
+function ModelObj() {
+  const [dae, setDae] = useState();
+  const colladaData = useLoader(ColladaLoader, './models/d.dae');
+
+  // 모델 로드 후 실행
+  useState(() => {
+    if (colladaData) {
+      const { scene } = colladaData;
+      setDae(scene);
+    }
+  }, [colladaData]);
 
   return (
     <>
-      <directionalLight position={[10, 10, 5]} intensity={2} />
-      <directionalLight position={[-10, -10, -5]} intensity={1} />
+      <ambientLight intensity={1} />
+      <pointLight position={[0, 0, 0]} intensity={1} />
+      <group>
+        <primitive object={dae} />
+      </group>
       <OrbitControls />
-      <primitive object={model} />
     </>
   );
-};
+}
 
 export default ModelObj;
