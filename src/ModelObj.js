@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unknown-property */
-
 import React, { useState } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
+import { FModel } from './FModel';
 
 function ModelObj() {
   const [dae, setDae] = useState();
@@ -25,6 +23,11 @@ function ModelObj() {
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group>
         <primitive object={dae} position={[-20, -1, 20]} />
+        <mesh position={[0, 1, 0]} scale={5}>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color="red" />
+        </mesh>
+        {/* <FModel /> */}
       </group>
       <OrbitControls />
     </>
