@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLoader, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
+import { LineBasicMaterial } from 'three';
 
 function ModelObj() {
   const ITEM_KEY = 'key';
   const ITEM_HEAL = 'heal';
-  const colladaData = useLoader(ColladaLoader, './models/f.dae');
+  const colladaData = useLoader(ColladaLoader, './models/d.dae');
   const [viewItem, setViewItem] = useState([ITEM_KEY, ITEM_HEAL]);
 
   const onClickItemButton = (itemName) => {
@@ -16,6 +17,20 @@ function ModelObj() {
       setViewItem([...viewItem, itemName]);
     }
   };
+
+  useEffect(() => {
+    if (colladaData) {
+      const { scene } = colladaData;
+      // 모델의 모든 자식 노드를 반복하여 선을 검정색으로 설정
+      scene.traverse((child) => {
+        if (child.isLine) {
+          // 선의 재질을 검정색으로 설정
+          const lineMaterial = new LineBasicMaterial({ color: 0x000000 });
+          child.material = lineMaterial;
+        }
+      });
+    }
+  }, [colladaData]);
 
   // 재렌더링 시 매번 같은 머티리얼을 사용하여 material-depthTest 속성을 적용
   return (
@@ -38,7 +53,7 @@ function ModelObj() {
               console.log(e.point);
             }}
           >
-            <primitive object={colladaData.scene} position={[-20, -1, 20]} />
+            <primitive object={colladaData.scene} position={[0, 0, 0]} />
             {viewItem.includes(ITEM_KEY) && (
               <>
                 <mesh

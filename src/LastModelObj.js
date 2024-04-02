@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLoader, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
+import { LineBasicMaterial } from 'three';
 
-function ModelObj() {
-  const [dae, setDae] = useState();
-  const colladaData = useLoader(ColladaLoader, './models/f.dae');
+function LastModelObj() {
+  const colladaData = useLoader(ColladaLoader, './models/d.dae');
 
-  // 모델 로드 후 실행
-  useState(() => {
+  useEffect(() => {
     if (colladaData) {
       const { scene } = colladaData;
-      setDae(scene);
+      // 모델의 모든 자식 노드를 반복하여 선을 검정색으로 설정
+      scene.traverse((child) => {
+        if (child.isLine) {
+          // 선의 재질을 검정색으로 설정
+          const lineMaterial = new LineBasicMaterial({ color: 0x000000 });
+          child.material = lineMaterial;
+        }
+      });
     }
   }, [colladaData]);
 
@@ -20,21 +26,14 @@ function ModelObj() {
       <axesHelper scale={10} />
       <ambientLight intensity={2.5} />
       <pointLight position={[0, 0, 0]} intensity={2} />
-      <group renderOrder={1}>
-        <primitive object={dae} position={[-20, -1, 20]} />
-      </group>
-      <mesh
-        position={[0, 1, 0]}
-        scale={1}
-        renderOrder={0}
-        material-depthTest={false}
-      >
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="red" />
-      </mesh>
+      {colladaData && (
+        <group renderOrder={1}>
+          <primitive object={colladaData.scene} position={[0, 0, 0]} />
+        </group>
+      )}
       <OrbitControls />
     </Canvas>
   );
 }
 
-export default ModelObj;
+export default LastModelObj;
