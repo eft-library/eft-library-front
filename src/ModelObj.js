@@ -19,8 +19,43 @@ function ModelObj() {
       <ambientLight intensity={2.5} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       {colladaData && (
-        <group renderOrder={1}>
+        <group
+          renderOrder={1}
+          onClick={(e) => {
+            console.log(e.point);
+          }}
+        >
           <primitive object={colladaData.scene} position={[-20, -1, 20]} />
+          <mesh
+            position={[
+              1.6616028104096472, -0.26888365438216044, -4.771423199611192,
+            ]}
+            scale={1}
+            renderOrder={0}
+            material={material}
+          >
+            <boxGeometry args={[1, 1, 1]} />
+          </mesh>
+          <mesh
+            position={[
+              17.171613125156625, -0.2688836543821609, 10.340594377946204,
+            ]}
+            scale={1}
+            renderOrder={0}
+            material={material}
+          >
+            <boxGeometry args={[1, 1, 1]} />
+          </mesh>
+          <mesh
+            position={[
+              6.063382195161616, -0.26888365438215966, 11.320286508856583,
+            ]}
+            scale={1}
+            renderOrder={0}
+            material={material}
+          >
+            <boxGeometry args={[1, 1, 1]} />
+          </mesh>
         </group>
       )}
       <mesh
