@@ -7,6 +7,7 @@ import ALL_COLOR from 'src/utils/designConstants';
 import { useLoadColladaMap } from 'src/hooks/useLoadMap';
 import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useItemFilter } from 'src/hooks/useItemFilter';
+import { useHexFromDecimal } from 'src/hooks/useHexFromDecimal';
 
 function FirstFloor() {
   const colladaData = useLoadColladaMap(
@@ -53,7 +54,10 @@ function FirstFloor() {
       </div>
       <Canvas
         camera={CUSTOM_DORMITORY_FIRST_FLOOR_INFO.CAMERA_POSITION}
-        style={{ width: '80%' }}
+        style={{
+          width: '80%',
+          backgroundColor: useHexFromDecimal(ALL_COLOR.BLACK),
+        }}
       >
         <axesHelper scale={10} />
         <ambientLight intensity={2.5} />

@@ -7,14 +7,14 @@ import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/itemConstants';
 export const useItemFilter = () => {
   const [viewItemList, setViewItemList] = useState(ALL_VALUE_LIST);
 
-  // root value 리스트
-  const itemRootValues = ITEM_LIST.map((item) => item.value);
-
   /**
    * 아이템 클릭 이벤트
    */
   const onClickItem = (clickValue) => {
-    if (itemRootValues.includes(clickValue)) {
+    // root value 리스트
+    const rootValueList = ITEM_LIST.map((item) => item.value);
+
+    if (rootValueList.includes(clickValue)) {
       handleRootItemClick(clickValue);
     } else {
       handleChildItemClick(clickValue);
@@ -27,20 +27,20 @@ export const useItemFilter = () => {
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
    */
   const handleRootItemClick = (clickValue) => {
-    const rootItem = ITEM_LIST.find((item) => item.value === clickValue);
-    const childItem = rootItem.child.map((childItem) => childItem.value);
+    const rootList = ITEM_LIST.find((item) => item.value === clickValue);
+    const childList = rootList.child.map((childItem) => childItem.value);
 
-    const shouldRemoveAllChildItems = childItem.every((childValue) =>
+    const shouldRemoveAllChild = childList.every((childValue) =>
       viewItemList.includes(childValue),
     );
 
-    if (shouldRemoveAllChildItems) {
-      const filteredItems = viewItemList.filter(
-        (item) => !childItem.includes(item),
+    if (shouldRemoveAllChild) {
+      const filteredList = viewItemList.filter(
+        (item) => !childList.includes(item),
       );
-      setViewItemList(filteredItems.filter((item) => item !== clickValue));
+      setViewItemList(filteredList.filter((item) => item !== clickValue));
     } else {
-      const result = [...viewItemList, ...childItem];
+      const result = [...viewItemList, ...childList];
       result.push(clickValue);
       setViewItemList([...new Set(result)]);
     }
@@ -50,6 +50,7 @@ export const useItemFilter = () => {
    * 하위 값 클릭 시
    * viewItemList 해당 값 있는지 확인
    * 있으면 item 제거, 없으면 item 추가
+   * root의 모든 아이템 제거 시 root 제거
    */
   const handleChildItemClick = (clickValue) => {
     const updatedItemList = viewItemList.includes(clickValue)
