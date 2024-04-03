@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { ItemList } from 'src/utils/itemConstants';
-import {
-  CANVAS_CAMERA_POSITION,
-  CUSTOM_DORMITORY_FIRST_FLOOR,
-} from 'src/utils/mapConstants';
-import { BLACK } from 'src/utils/designConstants';
+import { ITEM_LIST } from 'src/utils/itemConstants';
+import CUSTOM_DORMITORY_FIRST_FLOOR_INFO from 'src/utils/map/Custom/Dormitory/firstFloorConstants';
+import ALL_COLOR from 'src/utils/designConstants';
 import { useLoadColladaMap } from 'src/hooks/useLoadMap';
 import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useItemFilter } from 'src/hooks/useItemFilter';
 
 function FirstFloor() {
-  const colladaData = useLoadColladaMap(CUSTOM_DORMITORY_FIRST_FLOOR, BLACK);
+  const colladaData = useLoadColladaMap(
+    CUSTOM_DORMITORY_FIRST_FLOOR_INFO.PATH,
+    ALL_COLOR.BLACK,
+  );
   const { viewItemList, onClickItem } = useItemFilter();
   const orbitControls = useRef();
 
@@ -34,26 +34,27 @@ function FirstFloor() {
               Reset Camera
             </button>
           </div>
-          {ItemList.map((item, index) => (
-            <>
-              <button onClick={() => onClickItem(item.value)} key={index}>
-                {item.kr}
-              </button>
+          {ITEM_LIST.map((item, index) => (
+            <div key={index}>
+              <button onClick={() => onClickItem(item.value)}>{item.kr}</button>
               <div>
                 {item.child.map((childItem, childIndex) => (
                   <button
                     onClick={() => onClickItem(childItem.value)}
-                    key={childIndex}
+                    key={childIndex} // 각각의 자식 요소에 key 할당
                   >
                     {childItem.kr}
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>
-      <Canvas camera={CANVAS_CAMERA_POSITION} style={{ width: '80%' }}>
+      <Canvas
+        camera={CUSTOM_DORMITORY_FIRST_FLOOR_INFO.CAMERA_POSITION}
+        style={{ width: '80%' }}
+      >
         <axesHelper scale={10} />
         <ambientLight intensity={2.5} />
         <pointLight position={[0, 0, 0]} intensity={2} />
@@ -65,30 +66,20 @@ function FirstFloor() {
           }}
         >
           <primitive object={colladaData.scene} position={[0, 0, 0]} />
-          {/* {viewItemList.includes(FilterItem.KEY_SPAWN) && (
-            <>
-              <mesh
-                position={[17.171613125156625, 0, 10.340594377946204]}
-                scale={2}
-                renderOrder={0}
-              >
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color={'black'} depthTest={false} />
-              </mesh>
-            </>
+          {CUSTOM_DORMITORY_FIRST_FLOOR_INFO.ITEM_PATH.map(
+            (item, index) =>
+              viewItemList.includes(item.childValue) && (
+                <mesh
+                  key={index}
+                  position={item.position}
+                  scale={2}
+                  renderOrder={0}
+                >
+                  <boxGeometry args={item.boxArgs} />
+                  <meshStandardMaterial color={item.color} depthTest={false} />
+                </mesh>
+              ),
           )}
-          {viewItemList.includes(FilterItem.MED_CASE) && (
-            <>
-              <mesh
-                position={[6.063382195161616, 0, 11.320286508856583]}
-                scale={2}
-                renderOrder={0}
-              >
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color={'green'} depthTest={false} />
-              </mesh>
-            </>
-          )} */}
         </group>
         <OrbitControls ref={orbitControls} />
       </Canvas>

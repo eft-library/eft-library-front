@@ -1,57 +1,62 @@
-/**
- * 3D 지도에서 화면에 표시할 아이템을 필터링 해주는 함수
- */
 import { useState } from 'react';
-import { ItemList } from 'src/utils/itemConstants';
+import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/itemConstants';
 
+/**
+ * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
+ */
 export const useItemFilter = () => {
-  // root, child value 리스트
-  const itemValues = ItemList.reduce((acc, item) => {
-    acc.push(item.value);
-    item.child.forEach((child) => acc.push(child.value));
-    return acc;
-  }, []);
+  const [viewItemList, setViewItemList] = useState(ALL_VALUE_LIST);
 
   // root value 리스트
-  const itemRootValues = ItemList.map((item) => item.value);
+  const itemRootValues = ITEM_LIST.map((item) => item.value);
 
-  // child value 리스트
-  const itemChildValues = ItemList.map((item) =>
-    item.child.map((childItem) => childItem.value),
-  ).flat();
-
-  console.log(itemValues);
-  console.log(itemRootValues);
-  console.log(itemChildValues);
-
-  const [viewItemList, setViewItemList] = useState(itemValues);
-
-  // 클릭시 생기거나 사라짐
-  const onClickItem = (itemValue) => {
-    // 클릭한 것이 상위 값일 경우 - 전부 없거나, 1개라도 없을 경우 전체 추가 || 상위에 전부 있을 경우 전부 제거
-    // 클릭한 것이 이미 있을 경우 - 제거
-    // 클릭한 것이 없을 경우 - 추가
-    // if (viewItemList.includes(itemValue)) {
-    //   setViewItemList(viewItemList.filter((item) => item !== itemValue));
-    // } else {
-    //   setViewItemList([...viewItemList, itemValue]);
-    // }
-
-    if (itemChildValues.includes(itemValue)) {
-      setViewItemList(viewItemList.filter((item) => item !== itemValue));
-    } else if (!itemChildValues.includes(itemValue)) {
-      setViewItemList([...viewItemList, itemValue]);
+  /**
+   * 아이템 클릭 이벤트
+   */
+  const onClickItem = (clickValue) => {
+    if (itemRootValues.includes(clickValue)) {
+      handleRootItemClick(clickValue);
+    } else {
+      handleChildItemClick(clickValue);
     }
+  };
+
+  /**
+   * 상위 값 클릭 시
+   * viewItemList child가 전부 있는지 확인
+   * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
+   */
+  const handleRootItemClick = (clickValue) => {
+    const rootItem = ITEM_LIST.find((item) => item.value === clickValue);
+    const childItem = rootItem.child.map((childItem) => childItem.value);
+
+    const shouldRemoveAllChildItems = childItem.every((childValue) =>
+      viewItemList.includes(childValue),
+    );
+
+    if (shouldRemoveAllChildItems) {
+      const filteredItems = viewItemList.filter(
+        (item) => !childItem.includes(item),
+      );
+      setViewItemList(filteredItems.filter((item) => item !== clickValue));
+    } else {
+      const result = [...viewItemList, ...childItem];
+      result.push(clickValue);
+      setViewItemList([...new Set(result)]);
+    }
+  };
+
+  /**
+   * 하위 값 클릭 시
+   * viewItemList 해당 값 있는지 확인
+   * 있으면 item 제거, 없으면 item 추가
+   */
+  const handleChildItemClick = (clickValue) => {
+    const updatedItemList = viewItemList.includes(clickValue)
+      ? viewItemList.filter((item) => item !== clickValue)
+      : [...viewItemList, clickValue];
+    setViewItemList(updatedItemList);
   };
 
   return { viewItemList, onClickItem };
 };
-
-// 클릭한 것이 상위 값인지 확인
-// 1. viewItemList에 해당 값의 child value가 전부 있는지 확인
-// 1-2. 전부 있으면 모두 제거 - root value, child value
-// 1-3. 전부 있지 않으면 모두 추가 - root value, child value
-// 클릭한 것이 하위 값인지 확인
-// 1. viewItemList에 해당 값 있는지 확인
-// 1-2. 있으면 제거 - child value
-// 1-3. 없으면 추가
