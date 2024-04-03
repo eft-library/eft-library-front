@@ -1,3 +1,7 @@
+/**
+ * Collada 파일을 읽은 후 라인을 특정 색상으로 변경한 뒤 반환하는 함수
+ */
+
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import { useLoader } from '@react-three/fiber';

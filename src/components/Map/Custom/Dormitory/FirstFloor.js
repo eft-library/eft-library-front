@@ -1,47 +1,59 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { FilterItem } from 'src/utils/itemConstants';
-import { CUSTOM_DORMITORY_FIRST_FLOOR } from 'src/utils/mapConstants';
-import { useLoadColladaMap } from 'src/hooks/useLoadMap';
+import { ItemList } from 'src/utils/itemConstants';
+import {
+  CANVAS_CAMERA_POSITION,
+  CUSTOM_DORMITORY_FIRST_FLOOR,
+} from 'src/utils/mapConstants';
 import { BLACK } from 'src/utils/designConstants';
+import { useLoadColladaMap } from 'src/hooks/useLoadMap';
+import { useOrbitReset } from 'src/hooks/useOrbitReset';
+import { useItemFilter } from 'src/hooks/useItemFilter';
 
 function FirstFloor() {
-  const CANVAS_CAMERA_POSITION = { position: [0, 10, 10] };
   const colladaData = useLoadColladaMap(CUSTOM_DORMITORY_FIRST_FLOOR, BLACK);
-  const [viewItem, setViewItem] = useState([
-    FilterItem.KEY_SPAWN,
-    FilterItem.MED_CASE,
-  ]);
+  const { viewItemList, onClickItem } = useItemFilter();
   const orbitControls = useRef();
-
-  const onClickItemButton = (itemName) => {
-    if (viewItem.includes(itemName)) {
-      setViewItem(viewItem.filter((item) => item !== itemName));
-    } else {
-      setViewItem([...viewItem, itemName]);
-    }
-  };
-
-  const onClickResetCamera = () => {
-    orbitControls.current.reset();
-  };
 
   if (!colladaData) return null;
 
-  // 재렌더링 시 매번 같은 머티리얼을 사용하여 material-depthTest 속성을 적용
   return (
-    <>
-      <div>
-        <button onClick={() => onClickItemButton(FilterItem.KEY_SPAWN)}>
-          Key Filter
-        </button>
-        <button onClick={() => onClickItemButton(FilterItem.MED_CASE)}>
-          Heal Filter
-        </button>
-        <button onClick={() => onClickResetCamera()}>Reset Camera</button>
+    <div style={{ width: '100%', height: '100%', display: 'flex' }}>
+      <div
+        style={{
+          width: '20%',
+          display: 'block',
+          alignItems: 'center',
+          alignContent: 'center',
+        }}
+      >
+        <div>
+          <div>
+            <button onClick={() => useOrbitReset(orbitControls)}>
+              Reset Camera
+            </button>
+          </div>
+          {ItemList.map((item, index) => (
+            <>
+              <button onClick={() => onClickItem(item.value)} key={index}>
+                {item.kr}
+              </button>
+              <div>
+                {item.child.map((childItem, childIndex) => (
+                  <button
+                    onClick={() => onClickItem(childItem.value)}
+                    key={childIndex}
+                  >
+                    {childItem.kr}
+                  </button>
+                ))}
+              </div>
+            </>
+          ))}
+        </div>
       </div>
-      <Canvas camera={CANVAS_CAMERA_POSITION}>
+      <Canvas camera={CANVAS_CAMERA_POSITION} style={{ width: '80%' }}>
         <axesHelper scale={10} />
         <ambientLight intensity={2.5} />
         <pointLight position={[0, 0, 0]} intensity={2} />
@@ -53,7 +65,7 @@ function FirstFloor() {
           }}
         >
           <primitive object={colladaData.scene} position={[0, 0, 0]} />
-          {viewItem.includes(FilterItem.KEY_SPAWN) && (
+          {/* {viewItemList.includes(FilterItem.KEY_SPAWN) && (
             <>
               <mesh
                 position={[17.171613125156625, 0, 10.340594377946204]}
@@ -65,7 +77,7 @@ function FirstFloor() {
               </mesh>
             </>
           )}
-          {viewItem.includes(FilterItem.MED_CASE) && (
+          {viewItemList.includes(FilterItem.MED_CASE) && (
             <>
               <mesh
                 position={[6.063382195161616, 0, 11.320286508856583]}
@@ -76,11 +88,11 @@ function FirstFloor() {
                 <meshStandardMaterial color={'green'} depthTest={false} />
               </mesh>
             </>
-          )}
+          )} */}
         </group>
         <OrbitControls ref={orbitControls} />
       </Canvas>
-    </>
+    </div>
   );
 }
 
