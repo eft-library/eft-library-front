@@ -3,8 +3,8 @@ import { useLoader, Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import { LineBasicMaterial } from 'three';
-import { FilterItem } from './utils/constants';
-import { CUSTOM_DORMITORY_FIRST_FLOOR } from './utils/mapConstants';
+import { FilterItem } from 'src/utils/itemConstants';
+import { CUSTOM_DORMITORY_FIRST_FLOOR } from 'src/utils/mapConstants';
 
 function ModelObj() {
   const CANVAS_CAMERA_POSITION = { position: [0, 10, 10] };
