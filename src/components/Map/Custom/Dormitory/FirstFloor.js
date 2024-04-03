@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLoader, Canvas } from '@react-three/fiber';
+import React, { useState, useRef } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
-import { LineBasicMaterial } from 'three';
 import { FilterItem } from 'src/utils/itemConstants';
 import { CUSTOM_DORMITORY_FIRST_FLOOR } from 'src/utils/mapConstants';
+import { useLoadColladaMap } from 'src/hooks/useLoadMap';
+import { BLACK } from 'src/utils/designConstants';
 
-function ModelObj() {
+function FirstFloor() {
   const CANVAS_CAMERA_POSITION = { position: [0, 10, 10] };
-  const colladaData = useLoader(ColladaLoader, CUSTOM_DORMITORY_FIRST_FLOOR);
+  const colladaData = useLoadColladaMap(CUSTOM_DORMITORY_FIRST_FLOOR, BLACK);
   const [viewItem, setViewItem] = useState([
     FilterItem.KEY_SPAWN,
     FilterItem.MED_CASE,
@@ -26,20 +26,6 @@ function ModelObj() {
   const onClickResetCamera = () => {
     orbitControls.current.reset();
   };
-
-  useEffect(() => {
-    if (colladaData) {
-      const { scene } = colladaData;
-      // 모델의 모든 자식 노드를 반복하여 선을 검정색으로 설정
-      scene.traverse((child) => {
-        if (child.isLine) {
-          // 선의 재질을 검정색으로 설정
-          const lineMaterial = new LineBasicMaterial({ color: 0x000000 });
-          child.material = lineMaterial;
-        }
-      });
-    }
-  }, [colladaData]);
 
   if (!colladaData) return null;
 
@@ -98,4 +84,4 @@ function ModelObj() {
   );
 }
 
-export default ModelObj;
+export default FirstFloor;
