@@ -11,7 +11,6 @@ export const useItemFilter = () => {
    * 아이템 클릭 이벤트
    */
   const onClickItem = (clickValue) => {
-    // root value 리스트
     const rootValueList = ITEM_LIST.map((item) => item.value);
 
     if (rootValueList.includes(clickValue)) {
@@ -60,19 +59,15 @@ export const useItemFilter = () => {
       ? viewItemList.filter((item) => item !== clickValue)
       : [...viewItemList, clickValue];
 
-    // 모든 child가 존재하는지 확인
     const isHaveAllChild = checkAllChild(updatedItemList, childList);
 
-    // 모든 child가 있을 때 또는 몇 개의 child만 있을 때: true
-    // 모든 child가 없을 때: false
-    const isHaveAnyMissingChild = childList.some((childValue) =>
-      updatedItemList.includes(childValue),
-    );
+    const isHaveAnyMissingChild = checkSomeChild(updatedItemList, childList);
 
     // 전부 있거나, 몇 개만 있을 경우 root 추가
     if (isHaveAllChild || isHaveAnyMissingChild) {
       updatedItemList.push(rootList.value);
     }
+
     // 전부 없을 경우 root 제거
     if (!isHaveAnyMissingChild) {
       updatedItemList = updatedItemList.filter(
@@ -96,7 +91,7 @@ const findObjectWithValue = (obj, value) => {
     return obj;
   }
 
-  // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색을 수행
+  // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색
   if (obj.child) {
     for (const childObj of obj.child) {
       const result = findObjectWithValue(childObj, value);
@@ -117,4 +112,13 @@ const findObjectWithValue = (obj, value) => {
  */
 const checkAllChild = (itemList, childList) => {
   return childList.every((childValue) => itemList.includes(childValue));
+};
+
+/**
+ * child가 어느 정도 있는지 요소 판별
+ * 모든 child가 있을 때 또는 몇 개의 child만 있을 때: true
+ * 모든 child가 없을 때: false
+ */
+const checkSomeChild = (itemList, childList) => {
+  return childList.some((childValue) => itemList.includes(childValue));
 };
