@@ -8,6 +8,7 @@ import { useLoadColladaMap } from 'src/hooks/useLoadMap';
 import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useItemFilter } from 'src/hooks/useItemFilter';
 import { useHexFromDecimal } from 'src/hooks/useHexFromDecimal';
+import TweetPage from 'src/components/Tweet/TweetPage';
 
 function FirstFloor() {
   const colladaData = useLoadColladaMap(
@@ -65,6 +66,7 @@ function FirstFloor() {
             </div>
           ))}
         </div>
+        <TweetPage />
       </div>
       <Canvas
         camera={CUSTOM_DORMITORY_FIRST_FLOOR_INFO.CAMERA_POSITION}
