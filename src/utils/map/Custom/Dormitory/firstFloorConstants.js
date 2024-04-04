@@ -13,7 +13,7 @@ const CUSTOM_DORMITORY_FIRST_FLOOR_INFO = {
     {
       position: [17.171613125156625, 0, 10.340594377946204],
       boxArgs: [1, 1, 1],
-      color: ALL_COLOR.BLACK,
+      color: ALL_COLOR.PINK,
       motherValue: ALL_ITEM.EXTRACTIONS,
       childValue: ALL_ITEM.PMC_EXTRACTION_VALUE,
     },

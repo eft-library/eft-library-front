@@ -37,12 +37,26 @@ function FirstFloor() {
           </div>
           {ITEM_LIST.map((item, index) => (
             <div key={index}>
-              <button onClick={() => onClickItem(item.value)}>{item.kr}</button>
+              <button
+                onClick={() => onClickItem(item.value)}
+                style={
+                  viewItemList.includes(item.value)
+                    ? { color: 'hotpink' }
+                    : { color: 'green' }
+                }
+              >
+                {item.kr}
+              </button>
               <div>
                 {item.child.map((childItem, childIndex) => (
                   <button
                     onClick={() => onClickItem(childItem.value)}
                     key={childIndex} // 각각의 자식 요소에 key 할당
+                    style={
+                      viewItemList.includes(childItem.value)
+                        ? { color: 'hotpink' }
+                        : { color: 'green' }
+                    }
                   >
                     {childItem.kr}
                   </button>
@@ -56,7 +70,7 @@ function FirstFloor() {
         camera={CUSTOM_DORMITORY_FIRST_FLOOR_INFO.CAMERA_POSITION}
         style={{
           width: '80%',
-          backgroundColor: useHexFromDecimal(ALL_COLOR.BLACK),
+          backgroundColor: useHexFromDecimal(ALL_COLOR.BLACK_90),
         }}
       >
         <axesHelper scale={10} />

@@ -30,9 +30,7 @@ export const useItemFilter = () => {
     const rootList = ITEM_LIST.find((item) => item.value === clickValue);
     const childList = rootList.child.map((childItem) => childItem.value);
 
-    const shouldRemoveAllChild = childList.every((childValue) =>
-      viewItemList.includes(childValue),
-    );
+    const shouldRemoveAllChild = checkAllChild(viewItemList, childList);
 
     if (shouldRemoveAllChild) {
       const filteredList = viewItemList.filter(
@@ -50,14 +48,73 @@ export const useItemFilter = () => {
    * 하위 값 클릭 시
    * viewItemList 해당 값 있는지 확인
    * 있으면 item 제거, 없으면 item 추가
-   * root의 모든 아이템 제거 시 root 제거
+   * root의 모든 아이템 제거 시 root 제거, 모두 추가될 경우 root 추가
    */
   const handleChildItemClick = (clickValue) => {
-    const updatedItemList = viewItemList.includes(clickValue)
+    const rootList = ITEM_LIST.find((item) =>
+      findObjectWithValue(item, clickValue),
+    );
+    const childList = rootList.child.map((childItem) => childItem.value);
+
+    let updatedItemList = viewItemList.includes(clickValue)
       ? viewItemList.filter((item) => item !== clickValue)
       : [...viewItemList, clickValue];
-    setViewItemList(updatedItemList);
+
+    // 모든 child가 존재하는지 확인
+    const isHaveAllChild = checkAllChild(updatedItemList, childList);
+
+    // 모든 child가 있을 때 또는 몇 개의 child만 있을 때: true
+    // 모든 child가 없을 때: false
+    const isHaveAnyMissingChild = childList.some((childValue) =>
+      updatedItemList.includes(childValue),
+    );
+
+    // 전부 있거나, 몇 개만 있을 경우 root 추가
+    if (isHaveAllChild || isHaveAnyMissingChild) {
+      updatedItemList.push(rootList.value);
+    }
+    // 전부 없을 경우 root 제거
+    if (!isHaveAnyMissingChild) {
+      updatedItemList = updatedItemList.filter(
+        (item) => item !== rootList.value,
+      );
+    }
+
+    const result = [...new Set(updatedItemList)];
+    setViewItemList(result);
   };
 
   return { viewItemList, onClickItem };
+};
+
+/**
+ * child의 value로 root 찾기
+ */
+const findObjectWithValue = (obj, value) => {
+  // 현재 객체의 value가 주어진 값과 일치하면 현재 객체를 반환
+  if (obj.value === value) {
+    return obj;
+  }
+
+  // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색을 수행
+  if (obj.child) {
+    for (const childObj of obj.child) {
+      const result = findObjectWithValue(childObj, value);
+      // 만약 하위 객체에서 값을 찾았다면 해당 객체 반환
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  // 현재 객체와 하위 객체에서 값이 발견되지 않으면 null 반환
+  return null;
+};
+
+/**
+ * 모든 child가 있는지 확인
+ * 있으면 true, 없으면 false
+ */
+const checkAllChild = (itemList, childList) => {
+  return childList.every((childValue) => itemList.includes(childValue));
 };
