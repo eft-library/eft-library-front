@@ -6,7 +6,9 @@ const CUSTOM_DORMITORY_FIRST_FLOOR_INFO = {
   CAMERA_POSITION: { position: [0, 10, 10] },
 
   // 커스텀 1층 기숙사 지도 경로
-  PATH: 'models/custom/dormitory/first_floor/custom_dormitory_first_floor.dae',
+  PATH:
+    process.env.REACT_APP_IMAGE_URL +
+    '/tkw_map/custom/dormitory/first_floor/custom_dormitory_first_floor.dae',
 
   // 커스텀 1층 기숙사 아이템 경로
   ITEM_PATH: [
