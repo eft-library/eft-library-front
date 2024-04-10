@@ -14,10 +14,11 @@ export const useLoadCollada = (mapPath, lineColor) => {
       try {
         const response = await api.get(mapPath);
         const responseData = response.data.data;
+        console.log(responseData);
         const loadedColladaData = await new Promise((resolve, reject) => {
           const loader = new ColladaLoader();
           loader.load(
-            process.env.REACT_APP_IMAGE_URL + responseData.three_map_path,
+            process.env.REACT_APP_NAS_URL + responseData.three_map_path,
             (collada) => resolve(collada),
             undefined,
             (error) => reject(error),
