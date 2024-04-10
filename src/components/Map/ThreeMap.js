@@ -1,24 +1,20 @@
 import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { ITEM_LIST } from 'src/utils/itemConstants';
-import CUSTOM_DORMITORY_FIRST_FLOOR_INFO from 'src/utils/map/Custom/Dormitory/firstFloorConstants';
+import { ALL_ITEM, ITEM_LIST } from 'src/utils/itemConstants';
 import ALL_COLOR from 'src/utils/designConstants';
-import { useLoadColladaMap } from 'src/hooks/useLoadMap';
+import { useLoadCollada } from 'src/hooks/useLoadMap';
 import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useItemFilter } from 'src/hooks/useItemFilter';
 import { useHexFromDecimal } from 'src/hooks/useHexFromDecimal';
-import TweetPage from 'src/components/Tweet/TweetPage';
 
-function FirstFloor() {
-  const colladaData = useLoadColladaMap(
-    CUSTOM_DORMITORY_FIRST_FLOOR_INFO.PATH,
-    ALL_COLOR.BLACK,
-  );
+const ThreeMap = (props) => {
+  const mapInfo = props.mapInfo;
+  const mapData = useLoadCollada(mapInfo.PATH, ALL_COLOR.BLACK);
   const { viewItemList, onClickItem } = useItemFilter();
   const orbitControls = useRef();
 
-  if (!colladaData) return null;
+  if (!mapData) return null;
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex' }}>
@@ -66,10 +62,9 @@ function FirstFloor() {
             </div>
           ))}
         </div>
-        <TweetPage />
       </div>
       <Canvas
-        camera={CUSTOM_DORMITORY_FIRST_FLOOR_INFO.CAMERA_POSITION}
+        camera={mapInfo.CAMERA_POSITION}
         style={{
           width: '80%',
           backgroundColor: useHexFromDecimal(ALL_COLOR.BLACK_90),
@@ -85,10 +80,10 @@ function FirstFloor() {
             console.log(e.point);
           }}
         >
-          <primitive object={colladaData.scene} position={[0, 0, 0]} />
-          {CUSTOM_DORMITORY_FIRST_FLOOR_INFO.ITEM_PATH.map(
+          <primitive object={mapData.colladaData.scene} position={[0, 0, 0]} />
+          {mapData.three_map_item_path.map(
             (item, index) =>
-              viewItemList.includes(item.childValue) && (
+              viewItemList.includes(ALL_ITEM[item.childValue]) && (
                 <mesh
                   key={index}
                   position={item.position}
@@ -96,7 +91,10 @@ function FirstFloor() {
                   renderOrder={0}
                 >
                   <boxGeometry args={item.boxArgs} />
-                  <meshStandardMaterial color={item.color} depthTest={false} />
+                  <meshStandardMaterial
+                    color={ALL_COLOR[item.color]}
+                    depthTest={false}
+                  />
                 </mesh>
               ),
           )}
@@ -105,6 +103,6 @@ function FirstFloor() {
       </Canvas>
     </div>
   );
-}
+};
 
-export default FirstFloor;
+export default ThreeMap;

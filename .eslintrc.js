@@ -25,5 +25,6 @@ module.exports = {
     'react/no-unknown-property': ['off'],
     'react/prop-types': ['warn'],
     'no-unused-vars': ['warn'],
+    'no-undef': 'warn',
   },
 };
