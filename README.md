@@ -21,6 +21,7 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 15. app error는 error boundary 사용하기
 16. jest - 테스트
 17. npm install react-router-dom
+18. npm install react-loading-skeleton
 
 ## 디렉토리 구조
 

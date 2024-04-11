@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 /**
  * Collada 파일을 읽은 후 라인을 특정 색상으로 변경한 뒤 반환하는 함수
  */
-export const useLoadCollada = (mapPath, lineColor) => {
+export const useLoadMap = (mapPath, lineColor) => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -14,7 +14,6 @@ export const useLoadCollada = (mapPath, lineColor) => {
       try {
         const response = await api.get(mapPath);
         const responseData = response.data.data;
-        console.log(responseData);
         const loadedColladaData = await new Promise((resolve, reject) => {
           const loader = new ColladaLoader();
           loader.load(

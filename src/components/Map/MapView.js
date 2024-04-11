@@ -1,73 +1,32 @@
 import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { ALL_ITEM, ITEM_LIST } from 'src/utils/itemConstants';
+import { ALL_ITEM } from 'src/utils/itemConstants';
 import ALL_COLOR from 'src/utils/designConstants';
-import { useLoadCollada } from 'src/hooks/useLoadMap';
-import { useOrbitReset } from 'src/hooks/useOrbitReset';
-import { useItemFilter } from 'src/hooks/useItemFilter';
-import { useHexFromDecimal } from 'src/hooks/useHexFromDecimal';
+import MapViewSkeleton from 'src/components/Map/MapViewSkeleton';
+import ItemSelector from 'src/components/Map/ItemSelector';
+import hooks from 'src/hooks/hooks';
 
 const MapView = (props) => {
   const mapInfo = props.mapInfo;
-  const mapData = useLoadCollada(mapInfo.PATH, ALL_COLOR.BLACK);
-  const { viewItemList, onClickItem } = useItemFilter();
+  const mapData = hooks.useLoadMap(mapInfo.PATH, ALL_COLOR.BLACK);
+  const { viewItemList, onClickItem } = hooks.useItemFilter();
   const orbitControls = useRef();
 
-  if (!mapData) return null;
+  if (!mapData) return <MapViewSkeleton />;
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex' }}>
-      <div
-        style={{
-          width: '20%',
-          display: 'block',
-          alignItems: 'center',
-          alignContent: 'center',
-        }}
-      >
-        <div>
-          <div>
-            <button onClick={() => useOrbitReset(orbitControls)}>
-              Reset Camera
-            </button>
-          </div>
-          {ITEM_LIST.map((item, index) => (
-            <div key={index}>
-              <button
-                onClick={() => onClickItem(item.value)}
-                style={
-                  viewItemList.includes(item.value)
-                    ? { color: 'hotpink' }
-                    : { color: 'green' }
-                }
-              >
-                {item.kr}
-              </button>
-              <div>
-                {item.child.map((childItem, childIndex) => (
-                  <button
-                    onClick={() => onClickItem(childItem.value)}
-                    key={childIndex} // 각각의 자식 요소에 key 할당
-                    style={
-                      viewItemList.includes(childItem.value)
-                        ? { color: 'hotpink' }
-                        : { color: 'green' }
-                    }
-                  >
-                    {childItem.kr}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ItemSelector
+        orbitControls={orbitControls}
+        viewItemList={viewItemList}
+        onClickItem={onClickItem}
+      />
       <Canvas
         camera={mapInfo.CAMERA_POSITION}
         style={{
           width: '80%',
-          backgroundColor: useHexFromDecimal(ALL_COLOR.BLACK_90),
+          backgroundColor: hooks.useHexFromDecimal(ALL_COLOR.BLACK_90),
         }}
       >
         <axesHelper scale={10} />
