@@ -1,17 +1,17 @@
 export const MAP_INFO = {
   CUSTOM_GA_FIRST_FLOOR_DORMITORY: {
     CAMERA_POSITION: { position: [0, 10, 10] },
-    PATH: '/api/maps/three_map/custom_ga_first_floor_dormitory',
+    PATH: '/api/map/three_map/custom_ga_first_floor_dormitory',
     NAME: 'CUSTOM_GA_FIRST_FLOOR_DORMITORY',
   },
   CUSTOM_GA_SECOND_FLOOR_DORMITORY: {
     CAMERA_POSITION: { position: [0, 10, 10] },
-    PATH: '/api/maps/three_map/custom_ga_second_floor_dormitory',
+    PATH: '/api/map/three_map/custom_ga_second_floor_dormitory',
     NAME: 'CUSTOM_GA_SECOND_FLOOR_DORMITORY',
   },
   CUSTOM_GA_THIRD_FLOOR_DORMITORY: {
     CAMERA_POSITION: { position: [0, 10, 10] },
-    PATH: '/api/maps/three_map/custom_ga_third_floor_dormitory',
+    PATH: '/api/map/three_map/custom_ga_third_floor_dormitory',
     NAME: 'CUSTOM_GA_THIRD_FLOOR_DORMITORY',
   },
 };
