@@ -20,6 +20,7 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 14. api error는 state로 관리 기본 형태를 state로 가져오고 message만 변경하여 표출
 15. app error는 error boundary 사용하기
 16. jest - 테스트
+17. npm install react-router-dom
 
 ## 디렉토리 구조
 

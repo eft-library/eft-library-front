@@ -8,7 +8,7 @@ import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useItemFilter } from 'src/hooks/useItemFilter';
 import { useHexFromDecimal } from 'src/hooks/useHexFromDecimal';
 
-const ThreeMap = (props) => {
+const MapView = (props) => {
   const mapInfo = props.mapInfo;
   const mapData = useLoadCollada(mapInfo.PATH, ALL_COLOR.BLACK);
   const { viewItemList, onClickItem } = useItemFilter();
@@ -105,4 +105,4 @@ const ThreeMap = (props) => {
   );
 };
 
-export default ThreeMap;
+export default MapView;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import ThreeMap from 'src/components/Map/ThreeMap';
+import MapView from 'src/components/Map/MapView';
 import { MAP_INFO, MAP_LIST } from 'src/utils/mapConstants';
 
-const ThreeMapSelector = () => {
+const Map = () => {
   const [map, setMap] = useState(MAP_INFO.CUSTOM_GA_FIRST_FLOOR_DORMITORY);
 
   const onClickMap = (name) => {
@@ -19,9 +19,9 @@ const ThreeMapSelector = () => {
           </button>
         ))}
       </div>
-      <ThreeMap key={map.NAME} mapInfo={map} />
+      <MapView key={map.NAME} mapInfo={map} />
     </div>
   );
 };
 
-export default ThreeMapSelector;
+export default Map;
