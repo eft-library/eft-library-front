@@ -16,40 +16,64 @@ const Map = () => {
       <MapSelector onClickMap={onClickMap} />
       <ul>
         <li>
-          <Link to={'/boss'}>boss</Link>
+          <button>
+            <Link to={'/boss'}>boss</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/quest'}>quest</Link>
+          <button>
+            <Link to={'/quest'}>quest</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/ballistics'}>ballistics</Link>
+          <button>
+            <Link to={'/ballistics'}>ballistics</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/hideout'}>hideout</Link>
+          <button>
+            <Link to={'/hideout'}>hideout</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/ammo'}>ammo</Link>
+          <button>
+            <Link to={'/item/ammo'}>ammo</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/vest'}>vest</Link>
+          <button>
+            <Link to={'/item/vest'}>vest</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/rigs'}>rigs</Link>
+          <button>
+            <Link to={'/item/rigs'}>rigs</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/container'}>container</Link>
+          <button>
+            <Link to={'/item/container'}>container</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/headset'}>headset</Link>
+          <button>
+            <Link to={'/item/headset'}>headset</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/head-wear'}>head-wear</Link>
+          <button>
+            <Link to={'/item/head-wear'}>head-wear</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/medical'}>medical</Link>
+          <button>
+            <Link to={'/item/medical'}>medical</Link>
+          </button>
         </li>
         <li>
-          <Link to={'/item/weapon'}>weapon</Link>
+          <button>
+            <Link to={'/item/weapon'}>weapon</Link>
+          </button>
         </li>
       </ul>
       <MapView key={map.NAME} mapInfo={map} />
