@@ -22,6 +22,7 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 16. jest - 테스트
 17. npm install react-router-dom
 18. npm install react-loading-skeleton
+19. npm install http-server -g
 
 ## 디렉토리 구조
 
