@@ -5,7 +5,8 @@ import { ALL_ITEM } from 'src/utils/itemConstants';
 import ALL_COLOR from 'src/utils/designConstants';
 import MapViewSkeleton from 'src/components/Map/MapViewSkeleton';
 import hooks from 'src/hooks/hooks';
-import { Flex, Box } from '@chakra-ui/react';
+import { Box, Text, Stack, Image } from '@chakra-ui/react';
+import back from 'src/assets/background.png';
 
 const MapView = (props) => {
   const mapInfo = props.mapInfo;
@@ -15,25 +16,27 @@ const MapView = (props) => {
   if (!mapData) return <MapViewSkeleton />;
 
   return (
-    <Flex justifyContent="center" alignItems="center" width={'100%'}>
-      <Box
-        className="CenterBox"
-        bgColor="rgba(192, 192, 192, 0.3)"
-        borderRadius="8px"
-        color="black"
-        padding="20px"
-        margin="5px"
-        width="70%"
-        height="100%"
-      >
-        <div className="2D Image">
-          <p>2D MAP</p>
-          <br />
-          <div>asdasdasd</div>
-          <br />
-          <p>3D MAP</p>
-          <br />
-        </div>
+    <Box
+      className="CenterBox"
+      bg={'rgba(255, 255, 255, 0.5)'}
+      borderRadius="lg"
+      padding="20px"
+      margin="5px"
+      width="70%"
+      height="100%"
+    >
+      <Stack spacing={4}>
+        <Text as={'b'} color={'white'}>
+          2D MAP
+        </Text>
+        <br />
+        <Box boxSize="sm">
+          <Image src={back} boxSize="100%" />
+        </Box>
+        <br />
+        <Text as={'b'} color={'white'}>
+          3D MAP
+        </Text>
         <Canvas
           camera={mapInfo.CAMERA_POSITION}
           style={{
@@ -75,8 +78,8 @@ const MapView = (props) => {
           </group>
           <OrbitControls ref={orbitControls} />
         </Canvas>
-      </Box>
-    </Flex>
+      </Stack>
+    </Box>
   );
 };
 

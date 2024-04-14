@@ -31,16 +31,17 @@ const ItemSelector = (props) => {
         {ITEM_LIST.map((item, index) => (
           <div key={index}>
             <Text
+              mt={index === 0 ? 0 : '20px'}
               onClick={() => props.onClickItem(item.value)}
               style={
                 props.viewItemList.includes(item.value)
                   ? {
-                      color: 'blue',
+                      color: 'black',
                       fontSize: 'xl',
                       fontWeight: 'bold',
                       cursor: 'pointer',
                     }
-                  : { color: 'green', fontWeight: 'bold', cursor: 'pointer' }
+                  : { color: 'white', fontWeight: 'bold', cursor: 'pointer' }
               }
             >
               {item.kr}
@@ -51,8 +52,8 @@ const ItemSelector = (props) => {
                 key={childIndex} // 각각의 자식 요소에 key 할당
                 style={
                   props.viewItemList.includes(childItem.value)
-                    ? { color: 'blue', cursor: 'pointer' }
-                    : { color: 'green', cursor: 'pointer' }
+                    ? { color: 'black', cursor: 'pointer' }
+                    : { color: 'white', cursor: 'pointer' }
                 }
               >
                 {childItem.kr}
@@ -60,9 +61,6 @@ const ItemSelector = (props) => {
             ))}
           </div>
         ))}
-        {/* <button onClick={() => hooks.useOrbitReset(props.orbitControls)}>
-            Reset Camera
-          </button> */}
       </Box>
       <IconButton
         aria-label={sideBoxOpen ? '사이드 박스 닫기' : '사이드 박스 열기'}

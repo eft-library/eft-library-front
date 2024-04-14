@@ -1,6 +1,4 @@
 import {
-  Flex,
-  Box,
   Heading,
   VStack,
   Button,
@@ -86,10 +84,10 @@ const Header = () => {
           <Button
             key={index}
             onMouseEnter={() => changeMenu(menuName)}
-            variant={selectedMenu === menuName ? 'solid' : 'outline'}
+            // variant={selectedMenu === menuName ? 'solid' : 'outline'}
             fontWeight="bold"
             borderWidth="2px"
-            colorScheme="whiteAlpha"
+            colorScheme="blue"
             m="2"
           >
             {menuName}

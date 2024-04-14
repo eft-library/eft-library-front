@@ -3,18 +3,16 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const MapViewSkeleton = () => {
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex' }}>
-      <div
-        style={{
-          width: '20%',
-          display: 'block',
-          alignItems: 'center',
-          alignContent: 'center',
-        }}
-      >
-        <Skeleton count={10} />
+    <div className="CenterBox" style={{ width: '70%' }}>
+      <div className="2D Image">
+        <Skeleton height={20} width={100} style={{ color: 'white' }} />
+        <br />
+        <Skeleton height={20} width={100} style={{ color: 'tomato' }} />
+        <br />
+        <Skeleton height={20} width={100} style={{ color: 'white' }} />
+        <br />
       </div>
-      <div style={{ width: '80%' }}>
+      <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', height: '100vh' }}>
         <Skeleton height={'100%'} />
       </div>
     </div>

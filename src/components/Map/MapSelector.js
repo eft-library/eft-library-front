@@ -8,7 +8,9 @@ const MapSelector = (props) => {
       className="CenterBox"
       flexWrap="wrap"
       justifyContent="center"
-      width="100%"
+      width="70%"
+      borderRadius={'lg'}
+      bg={'rgba(255, 255, 255, 0.5)'}
     >
       {/* 맵 선택 목록 */}
       {MAP_LIST.map((map, index) => (
