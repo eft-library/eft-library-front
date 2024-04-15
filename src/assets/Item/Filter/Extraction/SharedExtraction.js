@@ -1,6 +1,5 @@
-// 탈출구 아이콘
-
-const Extraction = (props) => {
+import { ITEM_COLOR } from 'src/utils/colorConstants';
+const SharedExtraction = (props) => {
   return (
     <svg
       version="1.1"
@@ -15,7 +14,7 @@ const Extraction = (props) => {
       style={{ enableBackground: 'new 0 0 22 32' }}
       xmlSpace="preserve"
     >
-      <style type="text/css">{`.st0{fill:${props.border ? props.border : '#010101'};}.st1{fill:${props.color ? props.color : '#98D1A8'};}`}</style>
+      <style type="text/css">{`.st0{fill:${props.border ? props.border : '#010101'};}.st1{fill:${props.color ? props.color : ITEM_COLOR.SHARED_EXTRACTION};}`}</style>
       <g>
         <path className="st0" d="M21,1v30H1V1H21 M22,0H0v32h22V0L22,0z" />
       </g>
@@ -78,4 +77,4 @@ const Extraction = (props) => {
   );
 };
 
-export default Extraction;
+export default SharedExtraction;

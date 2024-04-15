@@ -1,6 +1,6 @@
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
-import api from 'src/utils/api';
+import API from 'src/config/api';
 import { useEffect, useState } from 'react';
 
 /**
@@ -12,7 +12,7 @@ export const useLoadMap = (mapPath, lineColor) => {
   useEffect(() => {
     const loadMapData = async () => {
       try {
-        const response = await api.get(mapPath);
+        const response = await API.get(mapPath);
         const responseData = response.data.data;
         const loadedColladaData = await new Promise((resolve, reject) => {
           const loader = new ColladaLoader();

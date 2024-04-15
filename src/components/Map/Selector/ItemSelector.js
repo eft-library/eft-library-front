@@ -2,7 +2,8 @@ import { ITEM_LIST } from 'src/utils/itemConstants';
 import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import SVG from 'src/assets/svg';
+import SVG_CONSTANTS from 'src/utils/svg/svgConstants';
+import DynamicSVG from 'src/utils/svg/DynamicSVG';
 
 const ItemSelector = ({ viewItemList, onClickItem }) => {
   const [sideBoxOpen, setSideBoxOpen] = useState(true);
@@ -48,7 +49,7 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
             </Text>
             {item.child.map((childItem, childIndex) => (
               <Flex key={childIndex} mt={4}>
-                {<SVG.EXTRACTION height={20} width={20} color={'#ff6347'} />}
+                {<DynamicSVG svgValue={childItem.value} />}
                 <Text
                   onClick={() => onClickItem(childItem.value)}
                   style={

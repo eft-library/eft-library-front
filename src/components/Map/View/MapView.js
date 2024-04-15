@@ -1,9 +1,9 @@
 import { Box, Text, Stack } from '@chakra-ui/react';
-import ThreeView from 'src/components/Map/ThreeView';
-import JpgView from 'src/components/Map/JpgView';
-import SubMapSelector from 'src/components/Map/SubMapSelector';
+import ThreeView from 'src/components/Map/View/ThreeView';
+import JpgView from 'src/components/Map/View/JpgView';
+import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
 
-const MapView = ({ map, viewItemList, onClickItem }) => {
+const MapView = ({ map, viewItemList, onClickMap }) => {
   return (
     <Box
       className="CenterBox"
@@ -14,7 +14,7 @@ const MapView = ({ map, viewItemList, onClickItem }) => {
       width="70%"
       height="100%"
     >
-      <SubMapSelector onClickItem={onClickItem} />
+      <SubMapSelector onClickMap={onClickMap} />
       <Stack spacing={4}>
         <Text as={'b'} color={'white'}>
           2D MAP

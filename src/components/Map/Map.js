@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import hooks from 'src/hooks/hooks';
-import MapView from 'src/components/Map/MapView';
-import ItemSelector from 'src/components/Map/ItemSelector';
-import MapSelector from 'src/components/Map/MapSelector';
+import MapView from 'src/components/Map/View/MapView';
+import ItemSelector from 'src/components/Map/Selector/ItemSelector';
+import MapSelector from 'src/components/Map/Selector/MapSelector';
 import { MAP_INFO } from 'src/utils/mapConstants';
 import { useParams } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
 
 const Map = () => {
   const params = useParams();
-  console.log(params);
-  const [map, setMap] = useState(MAP_INFO[params.mapId]);
+  const [map, setMap] = useState(
+    params && params.mapId
+      ? MAP_INFO[params.mapId]
+      : 'CUSTOM_GA_FIRST_FLOOR_DORMITORY',
+  );
   const { viewItemList, onClickItem } = hooks.useItemFilter();
 
   const onClickMap = (name) => {
@@ -47,9 +50,10 @@ const Map = () => {
         >
           <MapSelector onClickMap={onClickMap} />
           <MapView
+            key={map.NAME}
             viewItemList={viewItemList}
             map={map}
-            onClickItem={onClickItem}
+            onClickMap={onClickMap}
           />
           <ItemSelector viewItemList={viewItemList} onClickItem={onClickItem} />
         </Flex>
