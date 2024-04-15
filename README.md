@@ -24,51 +24,67 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 18. npm install react-loading-skeleton
 19. npm install http-server -g
 
-## 디렉토리 구조
+## 할 일
 
-```
-src
-|
-+-- assets            # assets folder can contain all the static files such as images, fonts, etc.
-|
-+-- components        # shared components used across the entire application
-|
-+-- config            # all the global configuration, env variables etc. get exported from here and used in the app
-|
-+-- features          # feature based modules
-    +-- awseomefeature  # example
-        |
-        +-- api         # exported API request declarations and api hooks related to a specific feature
-        |
-        +-- assets      # assets folder can contain all the static files for a specific feature
-        |
-        +-- components  # components scoped to a specific feature
-        |
-        +-- hooks       # hooks scoped to a specific feature
-        |
-        +-- routes      # route components for a specific feature pages
-        |
-        +-- stores      # state stores for a specific feature
-        |
-        +-- types       # typescript types for TS specific feature domain
-        |
-        +-- utils       # utility functions for a specific feature
-        |
-        +-- index.ts    # entry point for the feature, it should serve as the public API of the given feature and exports everything that should be used outside the feature
-|
-+-- hooks             # shared hooks used across the entire application
-|
-+-- lib               # re-exporting different libraries preconfigured for the application
-|
-+-- providers         # all of the application providers
-|
-+-- routes            # routes configuration
-|
-+-- stores            # global state stores
-|
-+-- test              # test utilities and mock server
-|
-+-- types             # base types used across the application
-|
-+-- utils             # shared utility functions
-```
+> 우선 순위 순서
+
+페이지 경로 수정하기 - 대분류 컴포넌트 만들고, 하위 컴포넌트만 여러개
+https://white120.tistory.com/94
+Map, Quest, Item, Info
+
+topnavi 색 변경 및 투명하게 만들기
+
+기존 기숙사 가,나 에 지도 이름으로 전부 변경하기
+
+기숙사 가,나 위치 옮기기 - 전체적으로 3d가 있을 경우 조회 하게 변경
+
+svg 아이콘 적용하기
+item filter에 value 추가 해야 함 => svg_value
+DynamicSvg 생성 => componentName에 value 넣고 해당 하는 값 return
+
+메뉴 수정하기 - 시안대로
+
+---
+
+지도
+
+- 세관 Custom
+- 등대 LightHouse
+- 산림 Woods
+- 해안선 Shoreline
+- 팩토리 Factory
+- 리저브 Reserve
+- 연구소 The Lab
+- 인터체인지 Interchange
+- 그라운드 제로 Ground Zero
+- 타르포크 시내 Street of Tarkov
+
+퀘스트
+
+- 프라퍼 Prapor
+- 테라피스트 Therapist
+- 펜스 Fence
+- 스키어 Skier
+- 피스키퍼 Peacekeeper
+- 메카닉 Mechanic
+- 레그맨 Ragman
+- 예거 Jaeger
+- 등대지기 Lightkeeper
+
+아이템
+
+- 무기 Weapon
+- 총알 Ammo
+- 방탄모 Head Wear
+- 의료품 Medical
+- 컨테이너 Container
+- 전술 조끼 Rig
+- 방탄 조끼 Vest
+- 키 Key
+- 헤드셋 Headset
+- 가방 Bag
+
+정보
+
+- 하이드 아웃 Hideout
+- 보스 Boss

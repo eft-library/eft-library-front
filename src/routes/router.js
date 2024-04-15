@@ -15,6 +15,7 @@ import Rig from 'src/components/Item/Rig/Rig';
 import Vest from 'src/components/Item/Vest/Vest';
 import Weapon from 'src/components/Item/Weapon/Item';
 import Quest from 'src/components/Quest/Quest';
+import Key from 'src/components/Item/Key/Key';
 
 const PageRouter = {
   HEADER: Header,
@@ -30,7 +31,8 @@ const PageRouter = {
   HEADSET: Headset,
   HEADWEAR: HeadWear,
   MEDICAL: Medical,
-  Rig: Rig,
+  RIG: Rig,
+  KEY: Key,
   VEST: Vest,
   WEAPON: Weapon,
   QUEST: Quest,

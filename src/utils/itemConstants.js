@@ -71,9 +71,7 @@ export const SPAWNS = {
   en: 'Spawns',
   kr: '스폰위치',
   value: ALL_ITEM.SPAWNS,
-  child: [
-    { value: ALL_ITEM.PMC_SPAWN_VALUE, en: 'Pmc-Spawn', kr: 'PMC 스폰 지역' },
-  ],
+  child: [{ value: ALL_ITEM.PMC_SPAWN_VALUE, en: 'Pmc-Spawn', kr: 'PMC 스폰' }],
 };
 
 // Spawns-AI
@@ -85,22 +83,22 @@ export const SPAWNS_AI = {
     {
       value: ALL_ITEM.SCAV_SPAWN_VALUE,
       en: 'SCAV-Spawn',
-      kr: 'SCAV 스폰 지역',
+      kr: 'SCAV 스폰',
     },
     {
       value: ALL_ITEM.SNIPER_SCAV_SPAWN_VALUE,
       en: 'Sniper-Scav-Spawn',
-      kr: '저격 SCAV 스폰 지역',
+      kr: '저격 SCAV 스폰',
     },
     {
       value: ALL_ITEM.BOSS_SPAWN_VALUE,
       en: 'Boss-Spawn',
-      kr: 'Boss 스폰 지역',
+      kr: 'Boss 스폰',
     },
     {
       value: ALL_ITEM.CULTIST_SPAWN_VALUE,
       en: 'Cultist-Spawn',
-      kr: 'Cultist 스폰 지역',
+      kr: 'Cultist 스폰',
     },
   ],
 };

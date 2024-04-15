@@ -1,10 +1,10 @@
-import hooks from 'src/hooks/hooks';
 import { ITEM_LIST } from 'src/utils/itemConstants';
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import SVG from 'src/assets/svg';
 
-const ItemSelector = (props) => {
+const ItemSelector = ({ viewItemList, onClickItem }) => {
   const [sideBoxOpen, setSideBoxOpen] = useState(true);
 
   const toggleSideBox = () => {
@@ -16,7 +16,7 @@ const ItemSelector = (props) => {
       <Box
         className="SideBox"
         position="fixed"
-        left={sideBoxOpen ? '0' : '-180px'}
+        left={sideBoxOpen ? '0' : '-200px'}
         top="50%"
         transform="translateY(-50%)"
         bgColor="rgba(255, 255, 255, 0.7)"
@@ -24,7 +24,7 @@ const ItemSelector = (props) => {
         boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
         p="20px"
         zIndex="1000"
-        width="180px" // 너비 설정
+        width="200px" // 너비 설정
         height="75vh" // 높이 설정
         overflowY="auto" // 스크롤이 필요한 경우 스크롤 표시
       >
@@ -32,9 +32,9 @@ const ItemSelector = (props) => {
           <div key={index}>
             <Text
               mt={index === 0 ? 0 : '20px'}
-              onClick={() => props.onClickItem(item.value)}
+              onClick={() => onClickItem(item.value)}
               style={
-                props.viewItemList.includes(item.value)
+                viewItemList.includes(item.value)
                   ? {
                       color: 'black',
                       fontSize: 'xl',
@@ -47,17 +47,27 @@ const ItemSelector = (props) => {
               {item.kr}
             </Text>
             {item.child.map((childItem, childIndex) => (
-              <Text
-                onClick={() => props.onClickItem(childItem.value)}
-                key={childIndex} // 각각의 자식 요소에 key 할당
-                style={
-                  props.viewItemList.includes(childItem.value)
-                    ? { color: 'black', cursor: 'pointer' }
-                    : { color: 'white', cursor: 'pointer' }
-                }
-              >
-                {childItem.kr}
-              </Text>
+              <Flex key={childIndex} mt={4}>
+                {<SVG.EXTRACTION height={20} width={20} color={'#ff6347'} />}
+                <Text
+                  onClick={() => onClickItem(childItem.value)}
+                  style={
+                    viewItemList.includes(childItem.value)
+                      ? {
+                          color: 'black',
+                          cursor: 'pointer',
+                          paddingLeft: '10px',
+                        }
+                      : {
+                          color: 'white',
+                          cursor: 'pointer',
+                          paddingLeft: '10px',
+                        }
+                  }
+                >
+                  {childItem.kr}
+                </Text>
+              </Flex>
             ))}
           </div>
         ))}
