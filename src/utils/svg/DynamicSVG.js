@@ -10,7 +10,7 @@ const DynamicSVG = ({ svgValue }) => {
   switch (svgValue) {
     case ALL_ITEM.PMC_EXTRACTION_VALUE:
       return (
-        <SVG_CONSTANTS.PMC_EXTRACTION
+        <SVG_CONSTANTS.EXTRACTION
           height={itemheight}
           width={itemWidth}
           color={ITEM_COLOR.PMC_EXTRACTION}
@@ -18,7 +18,7 @@ const DynamicSVG = ({ svgValue }) => {
       );
     case ALL_ITEM.SCAV_EXTRACTION_VALUE:
       return (
-        <SVG_CONSTANTS.SCAV_EXTRACTION
+        <SVG_CONSTANTS.EXTRACTION
           height={itemheight}
           width={itemWidth}
           color={ITEM_COLOR.SCAV_EXTRACTION}
@@ -26,7 +26,7 @@ const DynamicSVG = ({ svgValue }) => {
       );
     case ALL_ITEM.SHARED_EXTRACTION_VALUE:
       return (
-        <SVG_CONSTANTS.SHARED_EXTRACTION
+        <SVG_CONSTANTS.EXTRACTION
           height={itemheight}
           width={itemWidth}
           color={ITEM_COLOR.SHARED_EXTRACTION}
