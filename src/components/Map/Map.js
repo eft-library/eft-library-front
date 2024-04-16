@@ -11,7 +11,7 @@ const Map = () => {
   const params = useParams();
   const [map, setMap] = useState({});
   const [subMap, setSubMap] = useState({});
-  const { viewItemList, onClickItem } = hooks.useItemFilter();
+  const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter();
 
   const onClickMap = (value, type) => {
     const changeMap = hooks.useFindMap(value, type);
@@ -61,7 +61,11 @@ const Map = () => {
           subMap={subMap}
           onClickMap={onClickMap}
         />
-        <ItemSelector viewItemList={viewItemList} onClickItem={onClickItem} />
+        <ItemSelector
+          viewItemList={viewItemList}
+          onClickItem={onClickItem}
+          onClickAllItem={onClickAllItem}
+        />
       </Flex>
     </Box>
   );

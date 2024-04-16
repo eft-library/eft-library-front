@@ -21,6 +21,13 @@ export const useItemFilter = () => {
   };
 
   /**
+   * 아이템 전체 선택 또는 해제
+   */
+  const onClickAllItem = (isAll) => {
+    setViewItemList(isAll ? ALL_VALUE_LIST : []);
+  };
+
+  /**
    * 상위 값 클릭 시
    * viewItemList child가 전부 있는지 확인
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
@@ -79,7 +86,7 @@ export const useItemFilter = () => {
     setViewItemList(result);
   };
 
-  return { viewItemList, onClickItem };
+  return { viewItemList, onClickItem, onClickAllItem };
 };
 
 /**

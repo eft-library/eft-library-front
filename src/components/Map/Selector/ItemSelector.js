@@ -1,16 +1,23 @@
-import { ITEM_LIST } from 'src/utils/itemConstants';
-import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
+import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/itemConstants';
+import { Box, IconButton, Text, Flex, Checkbox } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import DynamicSVG from 'src/utils/svg/DynamicSVG';
 import PropTypes from 'prop-types';
 
-const ItemSelector = ({ viewItemList, onClickItem }) => {
+const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
   const [sideBoxOpen, setSideBoxOpen] = useState(true);
 
   const toggleSideBox = () => {
     setSideBoxOpen(!sideBoxOpen);
+  };
+
+  const checkAll = () => {
+    return (
+      viewItemList.length === ALL_VALUE_LIST.length &&
+      viewItemList.sort().toString() === ALL_VALUE_LIST.sort().toString()
+    );
   };
 
   return (
@@ -24,14 +31,22 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
         bgColor={MAP_COLOR.MAP_DARK_GRAY}
         p="20px"
         zIndex="1000"
-        width="200px" // 너비 설정
-        height="75vh" // 높이 설정
-        overflowY="auto" // 스크롤이 필요한 경우 스크롤 표시
+        width="200px"
+        height="75vh"
+        overflowY="auto"
       >
+        <Checkbox
+          colorScheme="green"
+          size="lg"
+          isChecked={checkAll()}
+          onChange={(e) => onClickAllItem(e.target.checked)}
+        >
+          전체
+        </Checkbox>
         {ITEM_LIST.map((item, index) => (
           <div key={index}>
             <Text
-              mt={index === 0 ? 0 : '20px'}
+              mt={'20px'}
               onClick={() => onClickItem(item.value)}
               textDecoration={
                 viewItemList.includes(item.value) ? '' : 'line-through'
@@ -87,6 +102,7 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
 ItemSelector.propTypes = {
   viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClickItem: PropTypes.func.isRequired,
+  onClickAllItem: PropTypes.func.isRequired,
 };
 
 export default ItemSelector;
