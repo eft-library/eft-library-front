@@ -1,6 +1,7 @@
 import React from 'react';
 import { MAP_LIST } from 'src/utils/mapConstants';
 import { Flex, Button } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 
 const MapSelector = ({ onClickMap }) => {
   return (
@@ -28,6 +29,10 @@ const MapSelector = ({ onClickMap }) => {
       ))}
     </Flex>
   );
+};
+
+MapSelector.propTypes = {
+  onClickMap: PropTypes.func.isRequired,
 };
 
 export default MapSelector;

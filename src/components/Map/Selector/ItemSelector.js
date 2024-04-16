@@ -3,6 +3,7 @@ import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import DynamicSVG from 'src/utils/svg/DynamicSVG';
+import PropTypes from 'prop-types';
 
 const ItemSelector = ({ viewItemList, onClickItem }) => {
   const [sideBoxOpen, setSideBoxOpen] = useState(true);
@@ -84,6 +85,11 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
       />
     </>
   );
+};
+
+ItemSelector.propTypes = {
+  viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onClickItem: PropTypes.func.isRequired,
 };
 
 export default ItemSelector;

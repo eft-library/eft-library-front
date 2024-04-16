@@ -5,9 +5,10 @@ import { ALL_ITEM } from 'src/utils/itemConstants';
 import { ALL_COLOR } from 'src/utils/colorConstants';
 import MapViewSkeleton from 'src/components/Map/Skeleton/MapViewSkeleton';
 import hooks from 'src/hooks/hooks';
+import PropTypes from 'prop-types';
 
-const ThreeView = ({ mapInfo, viewItemList }) => {
-  const mapData = hooks.useLoadMap(mapInfo.path, ALL_COLOR.BLACK);
+const ThreeView = ({ map, viewItemList }) => {
+  const mapData = hooks.useLoadMap(map.path, ALL_COLOR.BLACK);
   const orbitControls = useRef();
 
   if (!mapData) return <MapViewSkeleton />;
@@ -52,6 +53,30 @@ const ThreeView = ({ mapInfo, viewItemList }) => {
       <OrbitControls ref={orbitControls} />
     </Canvas>
   );
+};
+
+ThreeView.propTypes = {
+  map: PropTypes.objectOf(
+    PropTypes.shape({
+      krName: PropTypes.string.isRequired,
+      enName: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      jpg: PropTypes.string.isRequired,
+      depth: PropTypes.number.isRequired,
+      subMap: PropTypes.arrayOf(
+        PropTypes.shape({
+          krName: PropTypes.string.isRequired,
+          enName: PropTypes.string.isRequired,
+          value: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired,
+          jpg: PropTypes.string.isRequired,
+          depth: PropTypes.number.isRequired,
+        }),
+      ),
+    }),
+  ).isRequired,
+  viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ThreeView;

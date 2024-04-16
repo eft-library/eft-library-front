@@ -2,6 +2,7 @@ import { Box, Text, Stack } from '@chakra-ui/react';
 import ThreeView from 'src/components/Map/View/ThreeView';
 import JpgView from 'src/components/Map/View/JpgView';
 import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
+import PropTypes from 'prop-types';
 
 const MapView = ({ map, viewItemList, onClickMap, subMap }) => {
   return (
@@ -21,15 +22,50 @@ const MapView = ({ map, viewItemList, onClickMap, subMap }) => {
         <Text as={'b'} color={'white'}>
           2D MAP
         </Text>
-        <JpgView mapInfo={map} />
+        <JpgView mapJpg={map.jpg} />
         <br />
         <Text as={'b'} color={'white'}>
           3D MAP
         </Text>
-        <ThreeView mapInfo={map} viewItemList={viewItemList} />
+        <ThreeView map={map} viewItemList={viewItemList} />
       </Stack>
     </Box>
   );
+};
+
+MapView.propTypes = {
+  map: PropTypes.objectOf(
+    PropTypes.shape({
+      krName: PropTypes.string.isRequired,
+      enName: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      jpg: PropTypes.string.isRequired,
+      depth: PropTypes.number.isRequired,
+      subMap: PropTypes.arrayOf(
+        PropTypes.shape({
+          krName: PropTypes.string.isRequired,
+          enName: PropTypes.string.isRequired,
+          value: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired,
+          jpg: PropTypes.string.isRequired,
+          depth: PropTypes.number.isRequired,
+        }),
+      ),
+    }),
+  ).isRequired,
+  viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onClickMap: PropTypes.func.isRequired,
+  subMap: PropTypes.arrayOf(
+    PropTypes.shape({
+      krName: PropTypes.string.isRequired,
+      enName: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      jpg: PropTypes.string.isRequired,
+      depth: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default MapView;

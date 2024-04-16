@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flex, Button } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 
 const SubMapSelector = ({ onClickMap, subMap }) => {
   return (
@@ -28,6 +29,20 @@ const SubMapSelector = ({ onClickMap, subMap }) => {
       ))}
     </Flex>
   );
+};
+
+SubMapSelector.propTypes = {
+  onClickMap: PropTypes.func.isRequired,
+  subMap: PropTypes.arrayOf(
+    PropTypes.shape({
+      krName: PropTypes.string.isRequired,
+      enName: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      jpg: PropTypes.string.isRequired,
+      depth: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default SubMapSelector;
