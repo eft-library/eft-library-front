@@ -20,7 +20,7 @@ const Header = () => {
       zIndex={10}
       bg={'transparent'}
       backdropFilter={'blur(8px)'}
-      backdropContras={'60%'}
+      backdropContrast={'60%'}
     >
       <GridItem colSpan={1} h="14" />
       <GridItem colSpan={1} h="14" textAlign={'center'}>
@@ -39,14 +39,15 @@ const Header = () => {
           <Button
             key={index}
             onMouseEnter={() => changeMenu(main.value)}
-            variant={'solid'}
+            variant="solid"
             fontWeight="bold"
-            borderColor="white"
-            bg="black"
+            bg="transparent"
             _hover={{ bg: 'gray' }}
             color="white"
-            borderWidth="2px"
-            m="2"
+            p="4"
+            boxShadow="none"
+            backdropFilter="blur(8px)"
+            backdropContrast="60%"
           >
             {main.krName}
             {selectedMenu === main.value && (

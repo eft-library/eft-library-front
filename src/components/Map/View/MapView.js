@@ -8,7 +8,6 @@ const MapView = ({ map, viewItemList, onClickMap, subMap }) => {
   return (
     <Box
       className="CenterBox"
-      bg={'rgba(255, 255, 255, 0.5)'}
       borderRadius="lg"
       padding="20px"
       margin="5px"
@@ -16,7 +15,7 @@ const MapView = ({ map, viewItemList, onClickMap, subMap }) => {
       height="100%"
     >
       {subMap && subMap.length > 1 && (
-        <SubMapSelector onClickMap={onClickMap} subMap={subMap} />
+        <SubMapSelector onClickMap={onClickMap} subMap={subMap} map={map} />
       )}
       <Stack spacing={4}>
         <Text as={'b'} color={'white'}>

@@ -1,33 +1,24 @@
 import React from 'react';
-import { Flex, Button } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 
-const SubMapSelector = ({ onClickMap, subMap }) => {
+const SubMapSelector = ({ onClickMap, subMap, map }) => {
   return (
-    <Flex
-      className="CenterBox"
-      flexWrap="wrap"
-      justifyContent="center"
-      width="100%"
-      borderRadius={'lg'}
-      bg={'rgba(255, 255, 255, 0.5)'}
-      mb={'20'}
-    >
-      {/* 맵 선택 목록 */}
+    <HStack justifyContent="center">
       {subMap.map((sub, index) => (
-        <Button
+        <Text
           key={index}
           onClick={() => onClickMap(sub.value, true)}
-          colorScheme="teal"
-          variant="solid"
-          fontWeight="bold" // 텍스트를 굵게 설정합니다.
-          borderWidth="2px" // 텍스트 및 테두리 색상을 지정합니다.
-          m="2"
+          color={map.value === sub.value ? '#fffffc' : '#92dce5'}
+          fontWeight="bold"
+          _hover={{ bg: 'gray' }}
+          p="2"
+          cursor="pointer"
         >
-          {sub.krName}
-        </Button>
+          * {sub.krName}
+        </Text>
       ))}
-    </Flex>
+    </HStack>
   );
 };
 
@@ -42,6 +33,27 @@ SubMapSelector.propTypes = {
       jpg: PropTypes.string.isRequired,
       depth: PropTypes.number.isRequired,
       link: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  map: PropTypes.objectOf(
+    PropTypes.shape({
+      krName: PropTypes.string.isRequired,
+      enName: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      jpg: PropTypes.string.isRequired,
+      depth: PropTypes.number.isRequired,
+      link: PropTypes.string.isRequired,
+      subMap: PropTypes.arrayOf(
+        PropTypes.shape({
+          krName: PropTypes.string.isRequired,
+          enName: PropTypes.string.isRequired,
+          value: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired,
+          jpg: PropTypes.string.isRequired,
+          depth: PropTypes.number.isRequired,
+        }),
+      ),
     }),
   ).isRequired,
 };
