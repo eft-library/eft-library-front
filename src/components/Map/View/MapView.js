@@ -3,7 +3,7 @@ import ThreeView from 'src/components/Map/View/ThreeView';
 import JpgView from 'src/components/Map/View/JpgView';
 import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
 
-const MapView = ({ map, viewItemList, onClickMap }) => {
+const MapView = ({ map, viewItemList, onClickMap, subMap }) => {
   return (
     <Box
       className="CenterBox"
@@ -14,7 +14,9 @@ const MapView = ({ map, viewItemList, onClickMap }) => {
       width="70%"
       height="100%"
     >
-      <SubMapSelector onClickMap={onClickMap} subMap={map.subMap} />
+      {subMap && subMap.length > 1 && (
+        <SubMapSelector onClickMap={onClickMap} subMap={subMap} />
+      )}
       <Stack spacing={4}>
         <Text as={'b'} color={'white'}>
           2D MAP

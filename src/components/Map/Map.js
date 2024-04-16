@@ -3,22 +3,22 @@ import hooks from 'src/hooks/hooks';
 import MapView from 'src/components/Map/View/MapView';
 import ItemSelector from 'src/components/Map/Selector/ItemSelector';
 import MapSelector from 'src/components/Map/Selector/MapSelector';
-import { findMap } from 'src/utils/mapConstants';
 import { useParams } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
 
 const Map = () => {
   const params = useParams();
-  const [map, setMap] = useState(
-    params && params.mapId
-      ? findMap(params.mapId)
-      : findMap('CUSTOM_GA_FIRST_FLOOR_DORMITORY'),
-  );
+  const [map, setMap] = useState(hooks.useFindMap(params.mapId));
+  const [subMap, setSubMap] = useState(hooks.useFindMap(params.mapId).subMap);
   const { viewItemList, onClickItem } = hooks.useItemFilter();
 
-  const onClickMap = (name, type) => {
-    setMap(findMap(name, type));
-    console.log(map);
+  const onClickMap = (value, type) => {
+    const changeMap = hooks.useFindMap(value, type);
+    setMap(changeMap);
+
+    if (changeMap.depth === 1) {
+      setSubMap(changeMap.subMap);
+    }
   };
 
   return (
@@ -54,6 +54,7 @@ const Map = () => {
             key={map.value}
             viewItemList={viewItemList}
             map={map}
+            subMap={subMap}
             onClickMap={onClickMap}
           />
           <ItemSelector viewItemList={viewItemList} onClickItem={onClickItem} />

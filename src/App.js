@@ -1,6 +1,5 @@
 import React from 'react';
 import PageRouter from 'src/routes/router';
-import Header from './components/Header/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider, CSSReset, extendTheme } from '@chakra-ui/react';
 
@@ -29,7 +28,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <CSSReset />
       <BrowserRouter>
-        <Header />
+        <PageRouter.HEADER />
         <Routes>
           <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />

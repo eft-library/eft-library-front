@@ -7,6 +7,7 @@ export const MAP_LIST = [
     value: 'CUSTOM',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [
       {
         krName: '커스텀 가동 1층 기숙사',
@@ -14,6 +15,7 @@ export const MAP_LIST = [
         value: 'CUSTOM_GA_FIRST_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_first_floor_dormitory',
         jpg: jpg,
+        depth: 2,
       },
       {
         krName: '커스텀 가동 2층 기숙사',
@@ -21,6 +23,7 @@ export const MAP_LIST = [
         value: 'CUSTOM_GA_SECOND_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_second_floor_dormitory',
         jpg: jpg,
+        depth: 2,
       },
       {
         krName: '커스텀 가동 3층 기숙사',
@@ -28,6 +31,7 @@ export const MAP_LIST = [
         value: 'CUSTOM_GA_THIRD_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_third_floor_dormitory',
         jpg: jpg,
+        depth: 2,
       },
       {
         krName: '커스텀 나동 1층 기숙사',
@@ -35,6 +39,7 @@ export const MAP_LIST = [
         value: 'CUSTOM_NA_FIRST_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_na_first_floor_dormitory',
         jpg: jpg,
+        depth: 2,
       },
       {
         krName: '커스텀 나동 2층 기숙사',
@@ -42,6 +47,7 @@ export const MAP_LIST = [
         value: 'CUSTOM_NA_SECOND_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_na_second_floor_dormitory',
         jpg: jpg,
+        depth: 2,
       },
     ],
   },
@@ -51,6 +57,7 @@ export const MAP_LIST = [
     value: 'LIGHT_HOUSE',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -59,6 +66,7 @@ export const MAP_LIST = [
     value: 'WOODS',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -67,6 +75,7 @@ export const MAP_LIST = [
     value: 'SHORELINE',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -75,6 +84,7 @@ export const MAP_LIST = [
     value: 'FACTORY',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -83,6 +93,7 @@ export const MAP_LIST = [
     value: 'RESERVE',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -91,6 +102,7 @@ export const MAP_LIST = [
     value: 'THE_LAB',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -99,6 +111,7 @@ export const MAP_LIST = [
     value: 'INTERCHANGE',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -107,6 +120,7 @@ export const MAP_LIST = [
     value: 'GROUND_ZERO',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
   {
@@ -115,16 +129,7 @@ export const MAP_LIST = [
     value: 'STREET_OF_TARKOV',
     path: '/api/map/three_map/custom',
     jpg: jpg,
+    depth: 1,
     subMap: [],
   },
 ];
-
-export const findMap = (mapValue, isSubMap = false) => {
-  return MAP_LIST.find((obj) => {
-    if (isSubMap) {
-      return obj.subMap.some((sub) => sub.value === mapValue);
-    } else {
-      return mapValue === obj.value;
-    }
-  });
-};
