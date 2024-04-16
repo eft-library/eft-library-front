@@ -8,6 +8,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/CUSTOM',
     subMap: [
       {
         krName: '커스텀 가동 1층 기숙사',
@@ -16,6 +17,7 @@ export const MAP_LIST = [
         path: '/api/map/three_map/custom_ga_first_floor_dormitory',
         jpg: jpg,
         depth: 2,
+        link: '/map/CUSTOM',
       },
       {
         krName: '커스텀 가동 2층 기숙사',
@@ -24,6 +26,7 @@ export const MAP_LIST = [
         path: '/api/map/three_map/custom_ga_second_floor_dormitory',
         jpg: jpg,
         depth: 2,
+        link: '/map/CUSTOM',
       },
       {
         krName: '커스텀 가동 3층 기숙사',
@@ -32,6 +35,7 @@ export const MAP_LIST = [
         path: '/api/map/three_map/custom_ga_third_floor_dormitory',
         jpg: jpg,
         depth: 2,
+        link: '/map/CUSTOM',
       },
       {
         krName: '커스텀 나동 1층 기숙사',
@@ -40,6 +44,7 @@ export const MAP_LIST = [
         path: '/api/map/three_map/custom_na_first_floor_dormitory',
         jpg: jpg,
         depth: 2,
+        link: '/map/CUSTOM',
       },
       {
         krName: '커스텀 나동 2층 기숙사',
@@ -48,6 +53,7 @@ export const MAP_LIST = [
         path: '/api/map/three_map/custom_na_second_floor_dormitory',
         jpg: jpg,
         depth: 2,
+        link: '/map/CUSTOM',
       },
     ],
   },
@@ -58,6 +64,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/LIGHT_HOUSE',
     subMap: [],
   },
   {
@@ -67,6 +74,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/WOODS',
     subMap: [],
   },
   {
@@ -76,6 +84,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/SHORELINE',
     subMap: [],
   },
   {
@@ -85,6 +94,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/FACTORY',
     subMap: [],
   },
   {
@@ -94,6 +104,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/RESERVE',
     subMap: [],
   },
   {
@@ -103,6 +114,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/THE_LAB',
     subMap: [],
   },
   {
@@ -112,6 +124,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/INTERCHANGE',
     subMap: [],
   },
   {
@@ -121,6 +134,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/GROUND_ZERO',
     subMap: [],
   },
   {
@@ -130,6 +144,7 @@ export const MAP_LIST = [
     path: '/api/map/three_map/custom',
     jpg: jpg,
     depth: 1,
+    link: '/map/STREET_OF_TARKOV',
     subMap: [],
   },
 ];

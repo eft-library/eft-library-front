@@ -41,6 +41,7 @@ SubMapSelector.propTypes = {
       path: PropTypes.string.isRequired,
       jpg: PropTypes.string.isRequired,
       depth: PropTypes.number.isRequired,
+      link: PropTypes.string.isRequired,
     }),
   ).isRequired,
 };

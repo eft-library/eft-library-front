@@ -1,31 +1,11 @@
 import React from 'react';
 import PageRouter from 'src/routes/router';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ChakraProvider, CSSReset, extendTheme } from '@chakra-ui/react';
-
-const theme = extendTheme({
-  components: {
-    Box: {
-      baseStyle: {
-        borderRadius: 'lg', // 네모 박스의 모서리를 둥글게 만듭니다.
-        bg: 'rgba(255, 255, 255, 0.5)', // 투명도를 조절하여 텍스트와 배경 이미지를 함께 보이도록 합니다.
-      },
-    },
-    styles: {
-      global: {
-        '#root': {
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-        },
-      },
-    },
-  },
-});
+import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider>
       <CSSReset />
       <BrowserRouter>
         <PageRouter.HEADER />

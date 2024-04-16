@@ -1,9 +1,9 @@
 import React from 'react';
 import { MAP_LIST } from 'src/utils/mapConstants';
 import { Flex, Button } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const MapSelector = ({ onClickMap }) => {
+const MapSelector = () => {
   return (
     <Flex
       className="CenterBox"
@@ -17,22 +17,19 @@ const MapSelector = ({ onClickMap }) => {
       {MAP_LIST.map((map, index) => (
         <Button
           key={index}
-          onClick={() => onClickMap(map.value, false)}
           variant={'solid'}
           colorScheme="purple"
           fontWeight="bold" // 텍스트를 굵게 설정합니다.
           borderWidth="2px" // 텍스트 및 테두리 색상을 지정합니다.
           m="2"
         >
-          {map.krName}
+          <Link to={map.link} fontSize="lg">
+            {map.krName}
+          </Link>
         </Button>
       ))}
     </Flex>
   );
-};
-
-MapSelector.propTypes = {
-  onClickMap: PropTypes.func.isRequired,
 };
 
 export default MapSelector;

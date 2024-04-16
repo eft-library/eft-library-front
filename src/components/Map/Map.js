@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import hooks from 'src/hooks/hooks';
 import MapView from 'src/components/Map/View/MapView';
 import ItemSelector from 'src/components/Map/Selector/ItemSelector';
@@ -8,24 +8,30 @@ import { Flex, Box } from '@chakra-ui/react';
 
 const Map = () => {
   const params = useParams();
-  const [map, setMap] = useState(hooks.useFindMap(params.mapId));
-  const [subMap, setSubMap] = useState(hooks.useFindMap(params.mapId).subMap);
+  const [map, setMap] = useState({});
+  const [subMap, setSubMap] = useState({});
   const { viewItemList, onClickItem } = hooks.useItemFilter();
 
   const onClickMap = (value, type) => {
     const changeMap = hooks.useFindMap(value, type);
-    setMap(changeMap);
+    setMap(hooks.useFindMap(value, type));
 
     if (changeMap.depth === 1) {
       setSubMap(changeMap.subMap);
     }
   };
 
+  useEffect(() => {
+    const mapData = hooks.useFindMap(params.mapId);
+    setMap(mapData);
+    setSubMap(mapData.subMap);
+  }, [params]);
+
   return (
     <Box
       className="App"
       bgSize="cover"
-      bg="#000000"
+      bg="#111111"
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -49,7 +55,7 @@ const Map = () => {
           width="100%"
           height="100%"
         >
-          <MapSelector onClickMap={onClickMap} />
+          <MapSelector />
           <MapView
             key={map.value}
             viewItemList={viewItemList}

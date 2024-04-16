@@ -1,4 +1,4 @@
-import { Heading, VStack, Button, Grid, GridItem } from '@chakra-ui/react';
+import { Heading, VStack, Button, Grid, GridItem, Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MENU_LIST } from 'src/utils/menuConstants';
 import { Link } from 'react-router-dom';
@@ -18,7 +18,9 @@ const Header = () => {
       position={'fixed'}
       width={'100%'}
       zIndex={10}
-      bg={'tomato'}
+      bg={'transparent'}
+      backdropFilter={'blur(8px)'}
+      backdropContras={'60%'}
     >
       <GridItem colSpan={1} h="14" />
       <GridItem colSpan={1} h="14" textAlign={'center'}>
@@ -39,26 +41,30 @@ const Header = () => {
             onMouseEnter={() => changeMenu(main.value)}
             variant={'solid'}
             fontWeight="bold"
+            borderColor="white"
+            bg="black"
+            _hover={{ bg: 'gray' }}
+            color="white"
             borderWidth="2px"
-            colorScheme="blue"
             m="2"
           >
             {main.krName}
             {selectedMenu === main.value && (
               <VStack
-                spacing={2}
                 align="stretch"
-                p={2}
+                p={4}
                 position="absolute"
                 top="50px"
                 onMouseEnter={() => setSelectedMenu(main.value)}
                 onMouseLeave={() => setSelectedMenu(null)}
-                bg="rgba(128, 128, 128, 0.5)"
+                bg="#111111"
               >
                 {main.subMenu.map((sub, sub_index) => (
-                  <Link to={sub.link} key={sub_index} fontSize="lg">
-                    {sub.krName}
-                  </Link>
+                  <Box p={2} key={sub_index} _hover={{ bg: 'gray' }}>
+                    <Link to={sub.link} fontSize="lg">
+                      {sub.krName}
+                    </Link>
+                  </Box>
                 ))}
               </VStack>
             )}
