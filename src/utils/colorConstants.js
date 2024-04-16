@@ -8,6 +8,7 @@ export const ALL_COLOR = {
 };
 
 export const ITEM_COLOR = {
+  DISABLE: '#f4f4f4',
   EXTRACTION: '#000000',
   PMC_EXTRACTION: '#07bdff',
   SCAV_EXTRACTION: '#feba4f',

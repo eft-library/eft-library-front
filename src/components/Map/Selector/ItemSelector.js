@@ -20,9 +20,7 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
         left={sideBoxOpen ? '0' : '-200px'}
         top="50%"
         transform="translateY(-50%)"
-        bgColor="rgba(255, 255, 255, 0.7)"
-        borderRadius="lg"
-        boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+        bgColor="#B8B8B8"
         p="20px"
         zIndex="1000"
         width="200px" // 너비 설정
@@ -37,30 +35,34 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
               style={
                 viewItemList.includes(item.value)
                   ? {
-                      color: 'black',
+                      color: '#191D27',
                       fontSize: 'xl',
                       fontWeight: 'bold',
                       cursor: 'pointer',
                     }
-                  : { color: 'white', fontWeight: 'bold', cursor: 'pointer' }
+                  : { color: '#f4f4f4', fontWeight: 'bold', cursor: 'pointer' }
               }
             >
               {item.kr}
             </Text>
             {item.child.map((childItem, childIndex) => (
               <Flex key={childIndex} mt={4}>
-                {<DynamicSVG svgValue={childItem.value} />}
+                {viewItemList.includes(childItem.value) ? (
+                  <DynamicSVG svgValue={childItem.value} isEnable={true} />
+                ) : (
+                  <DynamicSVG svgValue={childItem.value} isEnable={false} />
+                )}
                 <Text
                   onClick={() => onClickItem(childItem.value)}
                   style={
                     viewItemList.includes(childItem.value)
                       ? {
-                          color: 'black',
+                          color: '#191D27',
                           cursor: 'pointer',
                           paddingLeft: '10px',
                         }
                       : {
-                          color: 'white',
+                          color: '#f4f4f4',
                           cursor: 'pointer',
                           paddingLeft: '10px',
                         }

@@ -57,7 +57,7 @@ const Header = () => {
                 top="50px"
                 onMouseEnter={() => setSelectedMenu(main.value)}
                 onMouseLeave={() => setSelectedMenu(null)}
-                bg="#111111"
+                bg="#101010"
               >
                 {main.subMenu.map((sub, sub_index) => (
                   <Box p={2} key={sub_index} _hover={{ bg: 'gray' }}>
