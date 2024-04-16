@@ -3,7 +3,7 @@ import hooks from 'src/hooks/hooks';
 import MapView from 'src/components/Map/View/MapView';
 import ItemSelector from 'src/components/Map/Selector/ItemSelector';
 import MapSelector from 'src/components/Map/Selector/MapSelector';
-import { MAP_INFO } from 'src/utils/mapConstants';
+import { findMap } from 'src/utils/mapConstants';
 import { useParams } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
 
@@ -11,13 +11,14 @@ const Map = () => {
   const params = useParams();
   const [map, setMap] = useState(
     params && params.mapId
-      ? MAP_INFO[params.mapId]
-      : 'CUSTOM_GA_FIRST_FLOOR_DORMITORY',
+      ? findMap(params.mapId)
+      : findMap('CUSTOM_GA_FIRST_FLOOR_DORMITORY'),
   );
   const { viewItemList, onClickItem } = hooks.useItemFilter();
 
-  const onClickMap = (name) => {
-    setMap(MAP_INFO[name]);
+  const onClickMap = (name, type) => {
+    setMap(findMap(name, type));
+    console.log(map);
   };
 
   return (
@@ -50,7 +51,7 @@ const Map = () => {
         >
           <MapSelector onClickMap={onClickMap} />
           <MapView
-            key={map.NAME}
+            key={map.value}
             viewItemList={viewItemList}
             map={map}
             onClickMap={onClickMap}

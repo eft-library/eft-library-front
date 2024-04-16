@@ -31,7 +31,7 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PageRouter.MAP />} />
+          <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />
           <Route path="/quest" element={<PageRouter.QUEST />} />
           <Route path="/item/weapon" element={<PageRouter.WEAPON />} />

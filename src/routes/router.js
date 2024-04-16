@@ -16,6 +16,7 @@ import Vest from 'src/components/Item/Vest/Vest';
 import Weapon from 'src/components/Item/Weapon/Item';
 import Quest from 'src/components/Quest/Quest';
 import Key from 'src/components/Item/Key/Key';
+import Main from 'src/components/Main/Main';
 
 const PageRouter = {
   HEADER: Header,
@@ -36,6 +37,7 @@ const PageRouter = {
   VEST: Vest,
   WEAPON: Weapon,
   QUEST: Quest,
+  MAIN: Main,
 };
 
 export default PageRouter;

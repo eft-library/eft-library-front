@@ -14,7 +14,7 @@ const MapView = ({ map, viewItemList, onClickMap }) => {
       width="70%"
       height="100%"
     >
-      <SubMapSelector onClickMap={onClickMap} />
+      <SubMapSelector onClickMap={onClickMap} subMap={map.subMap} />
       <Stack spacing={4}>
         <Text as={'b'} color={'white'}>
           2D MAP

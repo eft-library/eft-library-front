@@ -2,7 +2,6 @@ import { ITEM_LIST } from 'src/utils/itemConstants';
 import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import SVG_CONSTANTS from 'src/utils/svg/svgConstants';
 import DynamicSVG from 'src/utils/svg/DynamicSVG';
 
 const ItemSelector = ({ viewItemList, onClickItem }) => {

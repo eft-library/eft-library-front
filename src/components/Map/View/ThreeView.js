@@ -7,7 +7,7 @@ import MapViewSkeleton from 'src/components/Map/Skeleton/MapViewSkeleton';
 import hooks from 'src/hooks/hooks';
 
 const ThreeView = ({ mapInfo, viewItemList }) => {
-  const mapData = hooks.useLoadMap(mapInfo.PATH, ALL_COLOR.BLACK);
+  const mapData = hooks.useLoadMap(mapInfo.path, ALL_COLOR.BLACK);
   const orbitControls = useRef();
 
   if (!mapData) return <MapViewSkeleton />;
