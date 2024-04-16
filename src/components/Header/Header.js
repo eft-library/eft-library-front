@@ -1,13 +1,7 @@
-import {
-  Heading,
-  VStack,
-  Button,
-  Text,
-  Grid,
-  GridItem,
-} from '@chakra-ui/react';
+import { Heading, VStack, Button, Grid, GridItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MENU_LIST } from 'src/utils/menuConstants';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴를 추적하는 상태
@@ -43,7 +37,7 @@ const Header = () => {
           <Button
             key={index}
             onMouseEnter={() => changeMenu(main.value)}
-            // variant={selectedMenu === menuName ? 'solid' : 'outline'}
+            variant={'solid'}
             fontWeight="bold"
             borderWidth="2px"
             colorScheme="blue"
@@ -62,9 +56,9 @@ const Header = () => {
                 bg="rgba(128, 128, 128, 0.5)"
               >
                 {main.subMenu.map((sub, sub_index) => (
-                  <Text key={sub_index} fontSize="lg">
+                  <Link to={sub.link} key={sub_index} fontSize="lg">
                     {sub.krName}
-                  </Text>
+                  </Link>
                 ))}
               </VStack>
             )}

@@ -28,8 +28,8 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <CSSReset />
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />
