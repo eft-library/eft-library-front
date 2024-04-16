@@ -1,6 +1,6 @@
 const Main = () => {
   return (
-    <div>
+    <div style={{ backgroundColor: 'black' }}>
       <div>asd</div>
     </div>
   );

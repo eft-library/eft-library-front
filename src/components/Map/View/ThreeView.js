@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ALL_ITEM } from 'src/utils/itemConstants';
-import { ALL_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR, ALL_COLOR } from 'src/utils/colorConstants';
 import MapViewSkeleton from 'src/components/Map/Skeleton/MapViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
 const ThreeView = ({ map, viewItemList }) => {
-  const mapData = hooks.useLoadMap(map.path, ALL_COLOR.BLACK);
+  const mapData = hooks.useLoadMap(map.path, MAP_COLOR.MAP_BLACK);
   const orbitControls = useRef();
 
   if (!mapData) return <MapViewSkeleton />;

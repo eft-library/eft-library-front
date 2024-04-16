@@ -22,7 +22,8 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 16. jest - 테스트
 17. npm install react-router-dom
 18. npm install react-loading-skeleton
-19. npm install http-server -g
-20. npm i downshift
-21. npm install prop-types
-22. AbortController
+19. npm i downshift
+20. npm install prop-types
+21. AbortController
+
+아이템 전부 켜기, 끄기 추가

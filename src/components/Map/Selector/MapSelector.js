@@ -3,6 +3,7 @@ import { MAP_LIST } from 'src/utils/mapConstants';
 import { Flex, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const MapSelector = () => {
   const param = useParams();
@@ -11,7 +12,7 @@ const MapSelector = () => {
       className="CenterBox"
       flexWrap="wrap"
       justifyContent="center"
-      width="70%"
+      width="100%"
       borderRadius={'lg'}
     >
       {MAP_LIST.map((map, index) => (
@@ -19,7 +20,7 @@ const MapSelector = () => {
           key={index}
           variant={'solid'}
           colorScheme={map.value === param.mapId ? 'whiteAlpha' : 'blackAlpha'}
-          _hover={{ bg: 'gray' }}
+          _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
           fontWeight="bold"
           borderWidth="2px"
           m="2"

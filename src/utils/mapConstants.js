@@ -11,7 +11,16 @@ export const MAP_LIST = [
     link: '/map/CUSTOM',
     subMap: [
       {
-        krName: '커스텀 가동 1층 기숙사',
+        krName: '세관',
+        enName: 'Custom',
+        value: 'CUSTOM',
+        path: '/api/map/three_map/custom',
+        jpg: jpg,
+        depth: 2,
+        link: '/map/CUSTOM',
+      },
+      {
+        krName: '가동 1층 기숙사',
         enName: 'Custom ga first floor dormitory',
         value: 'CUSTOM_GA_FIRST_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_first_floor_dormitory',
@@ -20,7 +29,7 @@ export const MAP_LIST = [
         link: '/map/CUSTOM',
       },
       {
-        krName: '커스텀 가동 2층 기숙사',
+        krName: '가동 2층 기숙사',
         enName: 'Custom ga second floor dormitory',
         value: 'CUSTOM_GA_SECOND_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_second_floor_dormitory',
@@ -29,7 +38,7 @@ export const MAP_LIST = [
         link: '/map/CUSTOM',
       },
       {
-        krName: '커스텀 가동 3층 기숙사',
+        krName: '가동 3층 기숙사',
         enName: 'Custom ga third floor dormitory',
         value: 'CUSTOM_GA_THIRD_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_ga_third_floor_dormitory',
@@ -38,7 +47,7 @@ export const MAP_LIST = [
         link: '/map/CUSTOM',
       },
       {
-        krName: '커스텀 나동 1층 기숙사',
+        krName: '나동 1층 기숙사',
         enName: 'Custom na first floor dormitory',
         value: 'CUSTOM_NA_FIRST_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_na_first_floor_dormitory',
@@ -47,7 +56,7 @@ export const MAP_LIST = [
         link: '/map/CUSTOM',
       },
       {
-        krName: '커스텀 나동 2층 기숙사',
+        krName: '나동 2층 기숙사',
         enName: 'Custom na second floor dormitory',
         value: 'CUSTOM_NA_SECOND_FLOOR_DORMITORY',
         path: '/api/map/three_map/custom_na_second_floor_dormitory',

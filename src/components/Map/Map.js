@@ -5,6 +5,7 @@ import ItemSelector from 'src/components/Map/Selector/ItemSelector';
 import MapSelector from 'src/components/Map/Selector/MapSelector';
 import { useParams } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const Map = () => {
   const params = useParams();
@@ -31,7 +32,7 @@ const Map = () => {
     <Box
       className="App"
       bgSize="cover"
-      bg="#111111"
+      bg={MAP_COLOR.MAP_BACKGROUND}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -45,26 +46,22 @@ const Map = () => {
         className="Container"
         flex="1"
         flexDirection="column"
-        width="100%"
+        width="70%"
         height="100%"
+        justifyContent="center"
+        border="1px"
+        borderColor={MAP_COLOR.MAP_LIGHT_GRAY}
+        borderRadius={'lg'}
       >
-        <Flex
-          className="CenterBox"
-          flexWrap="wrap"
-          justifyContent="center"
-          width="100%"
-          height="100%"
-        >
-          <MapSelector />
-          <MapView
-            key={map.value}
-            viewItemList={viewItemList}
-            map={map}
-            subMap={subMap}
-            onClickMap={onClickMap}
-          />
-          <ItemSelector viewItemList={viewItemList} onClickItem={onClickItem} />
-        </Flex>
+        <MapSelector />
+        <MapView
+          key={map.value}
+          viewItemList={viewItemList}
+          map={map}
+          subMap={subMap}
+          onClickMap={onClickMap}
+        />
+        <ItemSelector viewItemList={viewItemList} onClickItem={onClickItem} />
       </Flex>
     </Box>
   );

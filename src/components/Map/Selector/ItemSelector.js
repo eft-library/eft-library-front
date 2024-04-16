@@ -2,6 +2,7 @@ import { ITEM_LIST } from 'src/utils/itemConstants';
 import { Box, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 import DynamicSVG from 'src/utils/svg/DynamicSVG';
 import PropTypes from 'prop-types';
 
@@ -20,7 +21,7 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
         left={sideBoxOpen ? '0' : '-200px'}
         top="50%"
         transform="translateY(-50%)"
-        bgColor="#B8B8B8"
+        bgColor={MAP_COLOR.MAP_DARK_GRAY}
         p="20px"
         zIndex="1000"
         width="200px" // 너비 설정
@@ -32,16 +33,15 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
             <Text
               mt={index === 0 ? 0 : '20px'}
               onClick={() => onClickItem(item.value)}
-              style={
-                viewItemList.includes(item.value)
-                  ? {
-                      color: '#191D27',
-                      fontSize: 'xl',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                    }
-                  : { color: '#f4f4f4', fontWeight: 'bold', cursor: 'pointer' }
+              textDecoration={
+                viewItemList.includes(item.value) ? '' : 'line-through'
               }
+              style={{
+                color: MAP_COLOR.MAP_BLACK,
+                fontSize: 'xl',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
             >
               {item.kr}
             </Text>
@@ -54,19 +54,14 @@ const ItemSelector = ({ viewItemList, onClickItem }) => {
                 )}
                 <Text
                   onClick={() => onClickItem(childItem.value)}
-                  style={
-                    viewItemList.includes(childItem.value)
-                      ? {
-                          color: '#191D27',
-                          cursor: 'pointer',
-                          paddingLeft: '10px',
-                        }
-                      : {
-                          color: '#f4f4f4',
-                          cursor: 'pointer',
-                          paddingLeft: '10px',
-                        }
+                  textDecoration={
+                    viewItemList.includes(childItem.value) ? '' : 'line-through'
                   }
+                  style={{
+                    color: MAP_COLOR.MAP_BLACK,
+                    cursor: 'pointer',
+                    paddingLeft: '10px',
+                  }}
                 >
                   {childItem.kr}
                 </Text>

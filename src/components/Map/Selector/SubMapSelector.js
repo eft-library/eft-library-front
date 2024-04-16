@@ -1,6 +1,7 @@
 import React from 'react';
 import { HStack, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const SubMapSelector = ({ onClickMap, subMap, map }) => {
   return (
@@ -9,9 +10,9 @@ const SubMapSelector = ({ onClickMap, subMap, map }) => {
         <Text
           key={index}
           onClick={() => onClickMap(sub.value, true)}
-          color={map.value === sub.value ? '#fffffc' : '#92dce5'}
+          color={map.value === sub.value ? MAP_COLOR.MAP_YELLOW : '#FFFFFF'}
           fontWeight="bold"
-          _hover={{ bg: 'gray' }}
+          _hover={{ color: MAP_COLOR.MAP_DARK_YELLOW }}
           p="2"
           cursor="pointer"
         >
