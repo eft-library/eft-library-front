@@ -47,7 +47,7 @@ const Map = () => {
         className="Container"
         flex="1"
         flexDirection="column"
-        width="70%"
+        width="60%"
         height="100%"
         justifyContent="center"
         border="1px"

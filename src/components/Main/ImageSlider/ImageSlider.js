@@ -12,12 +12,13 @@ const ImageSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
   };
   return (
     <div
       style={{
         width: '100%',
+        height: '100%',
         display: 'flex',
         justifyContent: 'center',
         marginBottom: '40px',
@@ -27,12 +28,18 @@ const ImageSlider = () => {
       <div
         style={{
           width: '85%',
-          height: '20%',
+          height: '30%',
         }}
       >
         <Slider {...settings}>
           {MAP_LIST.map((map, index) => (
-            <Box boxSize="sm" key={index} border={'1px'} borderColor={'white'}>
+            <Box
+              boxSize="sm"
+              key={index}
+              border={'1px'}
+              borderColor={'white'}
+              height={'100%'}
+            >
               <Image src={map.jpg} boxSize="100%" />
             </Box>
           ))}

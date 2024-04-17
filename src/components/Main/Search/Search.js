@@ -63,14 +63,15 @@ const Search = () => {
                 {...getMenuProps()}
                 style={{
                   position: 'absolute',
-                  top: '100%',
+                  top: 'calc(100% + 5px)',
                   left: 0,
                   backgroundColor: 'white',
                   border: 'none',
                   borderRadius: '4px',
                   boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
                   padding: '5px 0',
-                  zIndex: 1000,
+                  zIndex: 10,
+                  width: inputIsFocused ? '100%' : '',
                 }}
               >
                 {isOpen &&
