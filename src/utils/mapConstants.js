@@ -1,4 +1,4 @@
-import jpg from 'src/assets/background.png';
+import jpg from 'src/assets/test.png';
 
 export const MAP_LIST = [
   {
