@@ -1,14 +1,10 @@
 import Downshift from 'downshift';
-
-const items = [
-  { value: 'apple' },
-  { value: 'pear' },
-  { value: 'orange' },
-  { value: 'grape' },
-  { value: 'banana' },
-];
+import { items } from 'src/utils/searchConstants';
+import { useState } from 'react';
 
 const Search = () => {
+  const [inputIsFocused, setInputIsFocused] = useState(false);
+
   return (
     <div
       style={{
@@ -26,6 +22,7 @@ const Search = () => {
           )
         }
         itemToString={(item) => (item ? item.value : '')}
+        isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
       >
         {({
           getInputProps,
@@ -58,6 +55,8 @@ const Search = () => {
                     borderRadius: '10px',
                     paddingLeft: '20px',
                   },
+                  onFocus: () => setInputIsFocused(true), // 입력란이 포커스를 받으면 상태 변경
+                  onBlur: () => setInputIsFocused(false), // 입력란이 포커스를 잃으면 상태 변경
                 })}
               />
               <ul

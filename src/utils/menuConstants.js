@@ -70,6 +70,7 @@ export const MENU_LIST = [
     value: 'QUEST',
     krName: '퀘스트',
     enName: 'Quest',
+    link: '/quest',
     subMenu: [
       {
         krName: '프라퍼',
@@ -206,6 +207,10 @@ export const MENU_LIST = [
 ];
 
 export const MAIN_LIST = [
-  ...MENU_LIST.filter((menu) => menu.value !== 'ITEM'),
+  ...MENU_LIST.filter(
+    (menu) =>
+      menu.value !== 'ITEM' && menu.value !== 'INFO' && menu.value !== 'MAP',
+  ),
   ...(MENU_LIST.find((menu) => menu.value === 'ITEM')?.subMenu || []),
+  ...(MENU_LIST.find((menu) => menu.value === 'INFO')?.subMenu || []),
 ];

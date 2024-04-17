@@ -1,6 +1,6 @@
-import TweetPost from 'src/components/Main/News/TweetPost';
 import { Box, Flex } from '@chakra-ui/react';
 import { MAIN_COLOR } from 'src/utils/colorConstants';
+import YoutubeNews from 'src/components/Main/News/YoutubeNews';
 
 const News = () => {
   return (
@@ -8,12 +8,12 @@ const News = () => {
       border="1px solid"
       borderColor={MAIN_COLOR.MAIN_WHITE}
       borderRadius={'lg'}
-      width={'80%'}
-      margin="0 auto" // 가운데 정렬을 위한 스타일 추가
+      width={'85%'}
+      margin="0 auto"
     >
       <Flex justifyContent="center" alignItems="center">
-        <TweetPost />
-        <TweetPost />
+        <YoutubeNews />
+        <YoutubeNews />
       </Flex>
     </Box>
   );

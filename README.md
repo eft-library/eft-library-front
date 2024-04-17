@@ -28,8 +28,11 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 22. npm install react-quill
 23. npm i react-slick
 24. npm install slick-carousel
+25. npm install react-youtube
 
 ## 할 일
+
+item Router 하나로 합쳐서 수정하기 :itemId로 판별
 
 Dev
 

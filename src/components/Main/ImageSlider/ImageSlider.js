@@ -26,7 +26,7 @@ const ImageSlider = () => {
     >
       <div
         style={{
-          width: '80%',
+          width: '85%',
           height: '20%',
         }}
       >
