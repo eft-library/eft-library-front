@@ -1,6 +1,6 @@
 export const ALL_COLOR = {
   BLACK: 0x000000, // 검은색
-  BLACK_90: 0x191919, // 검은색 90%
+  BLACK_90: '#1e1e24', // 검은색 90%
   SKY_BLUE: 0x83c8ef, // 하늘색
   BLUE: 0x00489a, // 파란색
   PINK: 0xff80ed, // 분홍색
@@ -23,6 +23,11 @@ export const MAP_COLOR = {
   MAP_DARK_GRAY: '#B8B8B8',
   MAP_YELLOW: '#ffd700',
   MAP_DARK_YELLOW: '#d2b82e',
+};
+
+export const MAIN_COLOR = {
+  MAIN_WHITE: '#ffffff',
+  MAIN_DARK_GRAY: '#B8B8B8',
 };
 
 export const ITEM_COLOR = {

@@ -1,6 +1,5 @@
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import { MAP_COLOR } from 'src/utils/colorConstants';
+import { Skeleton } from '@chakra-ui/react';
 
 const MapViewSkeleton = () => {
   return (

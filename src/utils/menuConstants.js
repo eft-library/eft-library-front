@@ -204,3 +204,8 @@ export const MENU_LIST = [
     ],
   },
 ];
+
+export const MAIN_LIST = [
+  ...MENU_LIST.filter((menu) => menu.value !== 'ITEM'),
+  ...(MENU_LIST.find((menu) => menu.value === 'ITEM')?.subMenu || []),
+];

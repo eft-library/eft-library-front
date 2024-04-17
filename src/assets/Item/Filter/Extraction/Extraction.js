@@ -1,4 +1,5 @@
-// 탈출구 아이콘
+import PropTypes from 'prop-types';
+
 const Extraction = ({ border, color, width, height }) => {
   return (
     <svg
@@ -91,6 +92,13 @@ const Extraction = ({ border, color, width, height }) => {
       </g>
     </svg>
   );
+};
+
+Extraction.propTypes = {
+  border: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 export default Extraction;
