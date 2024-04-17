@@ -30,7 +30,7 @@ const Map = () => {
 
   return (
     <Box
-      className="App"
+      className="Map"
       bgSize="cover"
       bg={MAP_COLOR.MAP_BACKGROUND}
       bgPosition="center"

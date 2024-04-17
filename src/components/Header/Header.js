@@ -2,6 +2,7 @@ import { Heading, VStack, Button, Grid, GridItem, Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MENU_LIST } from 'src/utils/menuConstants';
 import { Link } from 'react-router-dom';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const Header = () => {
   const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴를 추적하는 상태
@@ -31,7 +32,7 @@ const Header = () => {
           justifyContent={'center'}
           color={'white'}
         >
-          TKL
+          <Link to={'/'}>TKL</Link>
         </Heading>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={'center'}>
@@ -42,7 +43,7 @@ const Header = () => {
             variant="solid"
             fontWeight="bold"
             bg="transparent"
-            _hover={{ bg: 'gray' }}
+            _hover={{ bg: MAP_COLOR.MAP_DARK_GRAY }}
             color="white"
             p="4"
             boxShadow="none"
@@ -58,7 +59,7 @@ const Header = () => {
                 top="50px"
                 onMouseEnter={() => setSelectedMenu(main.value)}
                 onMouseLeave={() => setSelectedMenu(null)}
-                bg="#101010"
+                bg={MAP_COLOR.MAP_BLACK}
               >
                 {main.subMenu.map((sub, sub_index) => (
                   <Box p={2} key={sub_index} _hover={{ bg: 'gray' }}>

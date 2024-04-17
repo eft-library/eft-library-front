@@ -25,5 +25,14 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 19. npm i downshift
 20. npm install prop-types
 21. AbortController
+22. npm install react-svg-pan-zoom
 
-아이템 전부 켜기, 끄기 추가
+## 할 일
+
+만들어야 하는 것 정리하기
+
+메인 페이지 제작
+
+useContext
+
+2d 위에 svg 올리기, 3d 위에 svg 올리기
