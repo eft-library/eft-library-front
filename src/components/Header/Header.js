@@ -20,7 +20,6 @@ const Header = () => {
       try {
         const response = await API.get(API_PATH.GET_NAVI_MENU);
         const responseData = response.data.data;
-        console.log(responseData);
         setNaviMenu(responseData);
       } catch (e) {
         console.log(e);

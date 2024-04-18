@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Extraction = ({ border, color, width, height }) => {
+const Extraction = ({ border, color, width, height, opacity }) => {
   return (
     <svg
       version="1.1"
@@ -11,83 +11,93 @@ const Extraction = ({ border, color, width, height }) => {
       y="0px"
       width={width ? width : '20px'}
       height={height ? height : '20px'}
+      opacity={opacity ? opacity : '1'}
       viewBox="0 0 22 32"
       style={{ enableBackground: 'new 0 0 22 32' }}
       xmlSpace="preserve"
     >
       <g>
-        <path
-          className="st0"
-          fill={border ? border : '#010101'}
-          d="M21,1v30H1V1H21 M22,0H0v32h22V0L22,0z"
+        <rect
+          x="0"
+          class="st0"
+          fill={border ? border : 'white'}
+          width="24"
+          height="34"
         />
       </g>
       <g>
         <path
-          className="st0"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          class="st1"
+          d="M22,2v30H2V2H22 M23,1H1v32h22V1L23,1z"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
+        />
+      </g>
+      <g>
+        <path
+          class="st1"
+          fill={border ? border : '#010101'}
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <polygon
-          className="st1"
-          fill={color ? color : '#010101'}
-          points="22,0 6,3.76 6,28.24 22,32 	"
+          class="st2"
+          fill={color ? color : '#44B8EA'}
+          points="23,1 7,4.76 7,29.24 23,33 	"
         />
       </g>
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M21,1.26v29.47L7,27.44V4.56L21,1.26 M22,0L6,3.76v24.47L22,32V0L22,0z"
+          d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <path
-        className="st0"
+        class="st1"
         fill={border ? border : '#010101'}
-        d="M21,1v29.74L7,27.44V4.56l14-3.29 M22,0L6,3.76v24.47L22,32V0L22,0z"
+        d="M22,2v29.74L8,28.44V5.56l14-3.29 M23,1L7,4.76v24.47L23,33V1L23,1z"
       />
       <g>
         <path
-          className="st0"
+          class="st1"
           fill={border ? border : '#010101'}
-          d="M9,15c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1c0.55,0,1-0.45,1-1C10,15.45,9.55,15,9,15L9,15z"
+          d="M10,16c-0.55,0-1,0.45-1,1s0.45,1,1,1s1-0.45,1-1S10.55,16,10,16L10,16z"
         />
       </g>
     </svg>
@@ -99,6 +109,7 @@ Extraction.propTypes = {
   color: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  opacity: PropTypes.string.isRequired,
 };
 
 export default Extraction;
