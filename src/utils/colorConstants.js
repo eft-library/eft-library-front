@@ -5,14 +5,6 @@ export const ALL_COLOR = {
   BLUE: 0x00489a, // 파란색
   PINK: 0xff80ed, // 분홍색
   LIGHT_PURPLE: 0x9dafe4, // 연보라
-
-  MAP_BACKGROUND: '#111111',
-  MAP_GRAY: '#d3d3d3',
-  MAP_WHITE: '#ffffff',
-  MAP_ITEM_BLACK: '#191D27',
-  MAP_ITEM_BACKGROUND: '#B8B8B8',
-  MAP_YELLOW: '#ffd700',
-  MAP_DARK_YELLOW: '#d2b82e',
 };
 
 export const MAP_COLOR = {
@@ -28,6 +20,7 @@ export const MAP_COLOR = {
 export const MAIN_COLOR = {
   MAIN_WHITE: '#ffffff',
   MAIN_DARK_GRAY: '#B8B8B8',
+  MAIN_BLACK: '#191D27',
 };
 
 export const ITEM_COLOR = {

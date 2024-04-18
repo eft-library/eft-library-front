@@ -1,1 +1,7 @@
-export const TWEET_POST_ID = '1776248549820264462';
+export const YOUTUBE_OPTION = {
+  height: '280',
+  width: '480',
+  playerVars: {
+    autoplay: 0,
+  },
+};
