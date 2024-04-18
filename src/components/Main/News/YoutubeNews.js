@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { YOUTUBE_OPTION } from 'src/utils/libraryConstants';
 import YouTube from 'react-youtube';
 import API from 'src/config/api';
+import API_PATH from 'src/api/api_path';
 import YoutubeSkeleton from 'src/components/Main/News/YoutubeSkeleton';
 
 const YoutubeNews = () => {
@@ -10,7 +11,7 @@ const YoutubeNews = () => {
   useEffect(() => {
     const getYoutube = async () => {
       try {
-        const response = await API.get('/api/news/youtube');
+        const response = await API.get(API_PATH.GET_YOUTUBE);
         const responseData = response.data.data;
         setYoutubeInfo(responseData);
       } catch (e) {

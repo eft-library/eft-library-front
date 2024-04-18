@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ALL_ITEM } from 'src/utils/itemConstants';
 import { MAP_COLOR, ALL_COLOR } from 'src/utils/colorConstants';
-import MapViewSkeleton from 'src/components/Map/Skeleton/MapViewSkeleton';
+import MapViewSkeleton from 'src/components/Map/View/MapViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
