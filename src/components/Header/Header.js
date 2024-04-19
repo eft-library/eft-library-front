@@ -33,7 +33,7 @@ const Header = () => {
           size={'2xl'}
           alignItems={'center'}
           justifyContent={'center'}
-          color={'white'}
+          color={MAP_COLOR.MAP_WHITE}
         >
           <Link to={'/'}>TKL</Link>
         </Heading>
@@ -47,7 +47,7 @@ const Header = () => {
             fontWeight="bold"
             bg="transparent"
             _hover={{ bg: MAP_COLOR.MAP_DARK_GRAY }}
-            color="white"
+            color={MAP_COLOR.MAP_WHITE}
             p="4"
             boxShadow="none"
             backdropFilter="blur(8px)"
@@ -65,7 +65,11 @@ const Header = () => {
                 bg={MAP_COLOR.MAP_BLACK}
               >
                 {main.sub_menus.map((sub, sub_index) => (
-                  <Box p={2} key={sub_index} _hover={{ bg: 'gray' }}>
+                  <Box
+                    p={2}
+                    key={sub_index}
+                    _hover={{ bg: MAP_COLOR.MAP_GRAY }}
+                  >
                     <Link to={sub.sub_menu_link} fontSize="lg">
                       {sub.sub_menu_kr_name}
                     </Link>

@@ -39,13 +39,13 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
       overflowY="hidden"
       height={'75%'}
       borderRadius="md"
-      border={isOpen ? '1px solid white' : 'none'}
+      border={isOpen ? `1px solid ${MAP_COLOR.MAP_WHITE}` : 'none'}
     >
       <AccordionItem
-        borderTop={isOpen ? 'none' : '1px solid white'}
-        borderLeft={isOpen ? 'none' : '1px solid white'}
-        borderRight={isOpen ? 'none' : '1px solid white'}
-        borderBottom={'1px solid white'}
+        borderTop={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
+        borderLeft={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
+        borderRight={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
+        borderBottom={`1px solid ${MAP_COLOR.MAP_WHITE}`}
         borderRadius="md"
       >
         <Heading
@@ -59,11 +59,11 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
               flex="1"
               textAlign="left"
               fontWeight={700}
-              color={'white'}
+              color={MAP_COLOR.MAP_WHITE}
             >
               Filter
             </Box>
-            <AccordionIcon color={'white'} />
+            <AccordionIcon color={MAP_COLOR.MAP_WHITE} />
           </AccordionButton>
         </Heading>
         <AccordionPanel
@@ -72,15 +72,15 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
               width: '6px',
             },
             '&::-webkit-scrollbar-track': {
-              background: '#5C5C5C',
+              background: MAP_COLOR.MAP_SCROLL_TRACK,
               borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb': {
-              background: '#EEEEEE',
+              background: MAP_COLOR.MAP_SCROLL_THUMB,
               borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb:hover': {
-              background: '#B4B4B4',
+              background: MAP_COLOR.MAP_SCROLL_HOVER,
             },
           }}
           position={'fixed'}
@@ -93,7 +93,7 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
           overflowY={'auto'}
         >
           <Box
-            color={'white'}
+            color={MAP_COLOR.MAP_WHITE}
             display={'flex'}
             alignItems={'center'}
             cursor={'pointer'}
@@ -120,7 +120,7 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
                 mt={'20px'}
                 onClick={() => onClickItem(item.value)}
                 opacity={viewItemList.includes(item.value) ? '' : '0.5'}
-                color={'white'}
+                color={MAP_COLOR.MAP_WHITE}
                 fontWeight={'600'}
                 fontSize={'xl'}
                 cursor={'pointer'}
@@ -139,7 +139,7 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
                     opacity={
                       viewItemList.includes(childItem.value) ? '' : '0.5'
                     }
-                    color={'white'}
+                    color={MAP_COLOR.MAP_WHITE}
                     cursor={'pointer'}
                     pl={'10px'}
                   >

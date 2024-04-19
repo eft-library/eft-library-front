@@ -10,11 +10,15 @@ export const ALL_COLOR = {
 export const MAP_COLOR = {
   MAP_BACKGROUND: '#111111',
   MAP_LIGHT_GRAY: '#d3d3d3',
+  MAP_GRAY: '#808080',
   MAP_WHITE: '#ffffff',
   MAP_BLACK: '#191D27',
   MAP_DARK_GRAY: '#B8B8B8',
   MAP_YELLOW: '#ffd700',
   MAP_DARK_YELLOW: '#d2b82e',
+  MAP_SCROLL_TRACK: '#5C5C5C',
+  MAP_SCROLL_THUMB: '#EEEEEE',
+  MAP_SCROLL_HOVER: '#B4B4B4',
 };
 
 export const MAIN_COLOR = {
@@ -30,4 +34,10 @@ export const ITEM_COLOR = {
   SCAV_EXTRACTION: '#feba4f',
   SHARED_EXTRACTION: '#c381fd',
   OTHER_COLOR: '#a19756',
+};
+
+export const SVG_COLOR = {
+  SVG_BLACK: '#010101',
+  SVG_WHITE: '#ffffff',
+  SVG_EXTRACTION_BLUE: '#44B8EA',
 };

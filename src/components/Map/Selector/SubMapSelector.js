@@ -10,7 +10,9 @@ const SubMapSelector = ({ onClickMap, subMap, map }) => {
         <Text
           key={index}
           onClick={() => onClickMap(sub.value, true)}
-          color={map.value === sub.value ? MAP_COLOR.MAP_YELLOW : '#FFFFFF'}
+          color={
+            map.value === sub.value ? MAP_COLOR.MAP_YELLOW : MAP_COLOR.MAP_WHITE
+          }
           fontWeight="bold"
           _hover={{ color: MAP_COLOR.MAP_DARK_YELLOW }}
           p="2"
