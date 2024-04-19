@@ -1,9 +1,12 @@
 import { Grid, GridItem, Box, Text } from '@chakra-ui/react';
 import { MAIN_COLOR } from 'src/utils/colorConstants';
-import { MAIN_LIST } from 'src/utils/menuConstants';
 import { Link } from 'react-router-dom';
+import hooks from 'src/hooks/hooks';
+import InfoSkeleton from 'src/components/Main/Info/InfoSkeleton';
 
 const Info = () => {
+  const { loading, infoMenu } = hooks.useGetNavi();
+
   const handleHover = (e) => {
     e.target.style.transform = 'scale(1.1)'; // 이미지 확대
     e.target.style.opacity = '0.8'; // 이미지 불투명도 변경
@@ -13,6 +16,9 @@ const Info = () => {
     e.target.style.transform = 'scale(1)'; // 이미지 축소
     e.target.style.opacity = '1'; // 이미지 불투명도 원래대로
   };
+
+  if (loading) return <InfoSkeleton />;
+
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Grid
@@ -20,8 +26,11 @@ const Info = () => {
         templateRows="repeat(4, 1fr)"
         gap={12}
       >
-        {MAIN_LIST.map((map, index) => (
-          <Link to={map.link} key={index}>
+        {infoMenu.map((map, index) => (
+          <Link
+            to={index === 0 ? map.main_menu_link : map.sub_menu_link}
+            key={index}
+          >
             <GridItem
               w="120px"
               h="120px"
@@ -32,14 +41,18 @@ const Info = () => {
               justifyContent="center"
               alignItems="center"
               cursor={'pointer'}
-              backgroundImage={`url(${map.image})`}
+              backgroundImage={
+                index === 0
+                  ? `url(${process.env.REACT_APP_NAS_URL + map.main_menu_image})`
+                  : `url(${process.env.REACT_APP_NAS_URL + map.sub_menu_image})`
+              }
               backgroundSize={'cover'}
               backgroundPosition={'center'}
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
             <Text color={MAIN_COLOR.MAIN_WHITE} textAlign={'center'} mt={'2'}>
-              {map.krName}
+              {index === 0 ? map.main_menu_kr_name : map.sub_menu_kr_name}
             </Text>
           </Link>
         ))}

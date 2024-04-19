@@ -1,34 +1,19 @@
 import { Heading, VStack, Button, Grid, GridItem, Box } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import HeaderSkeleton from 'src/components/Header/HeaderSkeleton';
-import API from 'src/config/api';
-import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const Header = () => {
-  const [naviMenu, setNaviMenu] = useState(null);
-  const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴를 추적하는 상태
+  const [selectedMenu, setSelectedMenu] = useState(null);
+  const { navi, loading } = hooks.useGetNavi();
 
-  // 메뉴를 변경하는 함수
   const changeMenu = (menuName) => {
     setSelectedMenu(menuName);
   };
 
-  useEffect(() => {
-    const get_navi_menu = async () => {
-      try {
-        const response = await API.get(API_PATH.GET_NAVI_MENU);
-        const responseData = response.data.data;
-        setNaviMenu(responseData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    get_navi_menu();
-  }, []);
-
-  if (!naviMenu) return <HeaderSkeleton />;
+  if (loading) return <HeaderSkeleton />;
 
   return (
     <Grid
@@ -54,7 +39,7 @@ const Header = () => {
         </Heading>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={'center'}>
-        {naviMenu.map((main, index) => (
+        {navi.map((main, index) => (
           <Button
             key={index}
             onMouseEnter={() => changeMenu(main.main_menu_value)}
