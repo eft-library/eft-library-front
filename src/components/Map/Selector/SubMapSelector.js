@@ -3,7 +3,7 @@ import { HStack, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 
-const SubMapSelector = ({ onClickMap, subMap, map }) => {
+const SubMapSelector = ({ onClickMap, subMap, mapId }) => {
   return (
     <HStack justifyContent="center">
       {subMap.map((sub, index) => (
@@ -11,9 +11,7 @@ const SubMapSelector = ({ onClickMap, subMap, map }) => {
           key={index}
           onClick={() => onClickMap(sub.map_id, true)}
           color={
-            map.map_id === sub.map_id
-              ? MAP_COLOR.MAP_YELLOW
-              : MAP_COLOR.MAP_WHITE
+            mapId === sub.map_id ? MAP_COLOR.MAP_YELLOW : MAP_COLOR.MAP_WHITE
           }
           fontWeight="bold"
           _hover={{ color: MAP_COLOR.MAP_DARK_YELLOW }}
@@ -31,36 +29,34 @@ SubMapSelector.propTypes = {
   onClickMap: PropTypes.func.isRequired,
   subMap: PropTypes.arrayOf(
     PropTypes.shape({
-      krName: PropTypes.string.isRequired,
-      enName: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
-      jpg: PropTypes.string.isRequired,
-      depth: PropTypes.number.isRequired,
-      link: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  map: PropTypes.objectOf(
-    PropTypes.shape({
-      krName: PropTypes.string.isRequired,
-      enName: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
-      jpg: PropTypes.string.isRequired,
-      depth: PropTypes.number.isRequired,
-      link: PropTypes.string.isRequired,
-      subMap: PropTypes.arrayOf(
+      map_name_kr: PropTypes.string.isRequired,
+      map_name_en: PropTypes.string.isRequired,
+      map_id: PropTypes.string.isRequired,
+      map_three_path: PropTypes.string.isRequired,
+      map_update_time: PropTypes.string.isRequired,
+      map_jpg_path: PropTypes.string.isRequired,
+      map_depth: PropTypes.number.isRequired,
+      map_link: PropTypes.string.isRequired,
+      map_three_item_path: PropTypes.arrayOf(
         PropTypes.shape({
-          krName: PropTypes.string.isRequired,
-          enName: PropTypes.string.isRequired,
-          value: PropTypes.string.isRequired,
-          path: PropTypes.string.isRequired,
-          jpg: PropTypes.string.isRequired,
-          depth: PropTypes.number.isRequired,
+          color: PropTypes.string.isRequired,
+          boxArgs: PropTypes.arrayOf(PropTypes.number.isRequired),
+          position: PropTypes.arrayOf(PropTypes.number.isRequired),
+          childValue: PropTypes.string.isRequired,
+          motherValue: PropTypes.string.isRequired,
         }),
       ),
+      map_main_image: PropTypes.string.isRequired,
+      map_jpg_item_path: PropTypes.arrayOf(
+        PropTypes.shape({
+          item: PropTypes.number,
+        }),
+      ),
+      map_parent_value: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
+
+  mapId: PropTypes.string.isRequired,
 };
 
 export default SubMapSelector;

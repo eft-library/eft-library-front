@@ -8,9 +8,8 @@ import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
 const ThreeView = ({ map, viewItemList }) => {
-  const mapData = hooks.useLoadMap(map.map_three_path, MAP_COLOR.MAP_BLACK);
+  const mapData = hooks.useLoadMap(map.map_id, MAP_COLOR.MAP_BLACK);
   const orbitControls = useRef();
-
   if (!mapData) return <MapViewSkeleton />;
 
   return (
@@ -26,13 +25,12 @@ const ThreeView = ({ map, viewItemList }) => {
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group
         renderOrder={1}
-        // 클릭시 좌표 출력 => 여기에 상자 만들어서 아이템 위치 표시
         onClick={(e) => {
           console.log(e.point);
         }}
       >
         <primitive object={mapData.colladaData.scene} position={[0, 0, 0]} />
-        {mapData.three_map_item_path.map(
+        {mapData.map_three_item_path.map(
           (item, index) =>
             viewItemList.includes(ALL_ITEM[item.childValue]) && (
               <mesh
@@ -56,28 +54,61 @@ const ThreeView = ({ map, viewItemList }) => {
 };
 
 ThreeView.propTypes = {
-  map: PropTypes.objectOf(
-    PropTypes.shape({
-      krName: PropTypes.string.isRequired,
-      enName: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
-      jpg: PropTypes.string.isRequired,
-      depth: PropTypes.number.isRequired,
-      link: PropTypes.string.isRequired,
-      subMap: PropTypes.arrayOf(
-        PropTypes.shape({
-          krName: PropTypes.string.isRequired,
-          enName: PropTypes.string.isRequired,
-          value: PropTypes.string.isRequired,
-          path: PropTypes.string.isRequired,
-          jpg: PropTypes.string.isRequired,
-          depth: PropTypes.number.isRequired,
-          link: PropTypes.string.isRequired,
-        }),
-      ),
-    }),
-  ).isRequired,
+  // map: PropTypes.objectOf(
+  //   PropTypes.shape({
+  //     map_name_kr: PropTypes.string.isRequired,
+  //     map_name_en: PropTypes.string.isRequired,
+  //     map_id: PropTypes.string.isRequired,
+  //     map_three_path: PropTypes.string.isRequired,
+  //     map_update_time: PropTypes.string.isRequired,
+  //     map_jpg_path: PropTypes.string.isRequired,
+  //     map_depth: PropTypes.number.isRequired,
+  //     map_link: PropTypes.string.isRequired,
+  //     map_three_item_path: PropTypes.arrayOf(
+  //       PropTypes.shape({
+  //         color: PropTypes.string.isRequired,
+  //         boxArgs: PropTypes.arrayOf(PropTypes.number.isRequired),
+  //         position: PropTypes.arrayOf(PropTypes.number.isRequired),
+  //         childValue: PropTypes.string.isRequired,
+  //         motherValue: PropTypes.string.isRequired,
+  //       }),
+  //     ),
+  //     map_main_image: PropTypes.string.isRequired,
+  //     map_jpg_item_path: PropTypes.arrayOf(
+  //       PropTypes.shape({
+  //         item: PropTypes.number,
+  //       }),
+  //     ),
+  //     map_sub: PropTypes.arrayOf(
+  //       PropTypes.shape({
+  //         map_name_kr: PropTypes.string.isRequired,
+  //         map_name_en: PropTypes.string.isRequired,
+  //         map_id: PropTypes.string.isRequired,
+  //         map_three_path: PropTypes.string.isRequired,
+  //         map_update_time: PropTypes.string.isRequired,
+  //         map_jpg_path: PropTypes.string.isRequired,
+  //         map_depth: PropTypes.number.isRequired,
+  //         map_link: PropTypes.string.isRequired,
+  //         map_three_item_path: PropTypes.arrayOf(
+  //           PropTypes.shape({
+  //             color: PropTypes.string.isRequired,
+  //             boxArgs: PropTypes.arrayOf(PropTypes.number.isRequired),
+  //             position: PropTypes.arrayOf(PropTypes.number.isRequired),
+  //             childValue: PropTypes.string.isRequired,
+  //             motherValue: PropTypes.string.isRequired,
+  //           }),
+  //         ),
+  //         map_main_image: PropTypes.string.isRequired,
+  //         map_jpg_item_path: PropTypes.arrayOf(
+  //           PropTypes.shape({
+  //             item: PropTypes.number,
+  //           }),
+  //         ),
+  //         map_parent_value: PropTypes.string.isRequired,
+  //       }),
+  //     ),
+  //   }),
+  // ).isRequired,
   viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

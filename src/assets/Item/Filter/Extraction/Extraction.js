@@ -18,85 +18,68 @@ const Extraction = ({ color, width, height, opacity }) => {
       xmlSpace="preserve"
     >
       <g>
-        <rect
-          x="0"
-          class="st0"
-          fill={SVG_COLOR.SVG_WHITE}
-          width="24"
-          height="34"
-        />
+        <rect x="0" fill={SVG_COLOR.SVG_WHITE} width="24" height="34" />
       </g>
       <g>
         <path
           fill={SVG_COLOR.SVG_BLACK}
-          class="st1"
           d="M22,2v30H2V2H22 M23,1H1v32h22V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <g>
         <polygon
-          class="st2"
           fill={color ? color : SVG_COLOR.SVG_EXTRACTION_BLUE}
           points="23,1 7,4.76 7,29.24 23,33 	"
         />
       </g>
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M22,2.26v29.47L8,28.44V5.56L22,2.26 M23,1L7,4.76v24.47L23,33V1L23,1z"
         />
       </g>
       <path
-        class="st1"
         fill={SVG_COLOR.SVG_BLACK}
         d="M22,2v29.74L8,28.44V5.56l14-3.29 M23,1L7,4.76v24.47L23,33V1L23,1z"
       />
       <g>
         <path
-          class="st1"
           fill={SVG_COLOR.SVG_BLACK}
           d="M10,16c-0.55,0-1,0.45-1,1s0.45,1,1,1s1-0.45,1-1S10.55,16,10,16L10,16z"
         />
@@ -106,7 +89,6 @@ const Extraction = ({ color, width, height, opacity }) => {
 };
 
 Extraction.propTypes = {
-  border: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,

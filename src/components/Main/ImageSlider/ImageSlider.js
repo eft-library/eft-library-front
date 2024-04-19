@@ -40,7 +40,10 @@ const ImageSlider = () => {
               borderColor={'white'}
               height={'100%'}
             >
-              <Image src={map.map_main_image} boxSize="100%" />
+              <Image
+                src={process.env.REACT_APP_NAS_URL + map.map_main_image}
+                boxSize="100%"
+              />
             </Box>
           ))}
         </Slider>
