@@ -6,9 +6,9 @@ import { MAP_LIST } from 'src/utils/mapConstants';
 export const useFindMap = (mapValue, isSubMap = false) => {
   if (isSubMap) {
     return MAP_LIST.map((map) =>
-      map.subMap.find((sub) => sub.value === mapValue),
+      map.map_sub.find((sub) => sub.map_id === mapValue),
     ).find((subMapItem) => subMapItem !== undefined);
   } else {
-    return MAP_LIST.find((obj) => mapValue === obj.value);
+    return MAP_LIST.find((obj) => mapValue === obj.map_id);
   }
 };

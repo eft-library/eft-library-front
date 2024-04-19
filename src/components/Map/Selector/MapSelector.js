@@ -19,14 +19,14 @@ const MapSelector = () => {
         <Button
           key={index}
           variant={'solid'}
-          colorScheme={map.value === param.mapId ? 'whiteAlpha' : 'blackAlpha'}
+          colorScheme={map.map_id === param.mapId ? 'whiteAlpha' : 'blackAlpha'}
           _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
           fontWeight="bold"
           borderWidth="2px"
           m="2"
         >
-          <Link to={map.link} fontSize="lg">
-            {map.krName}
+          <Link to={map.map_link} fontSize="lg">
+            {map.map_name_kr}
           </Link>
         </Button>
       ))}

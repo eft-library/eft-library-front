@@ -8,7 +8,7 @@ import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
 const ThreeView = ({ map, viewItemList }) => {
-  const mapData = hooks.useLoadMap(map.path, MAP_COLOR.MAP_BLACK);
+  const mapData = hooks.useLoadMap(map.map_three_path, MAP_COLOR.MAP_BLACK);
   const orbitControls = useRef();
 
   if (!mapData) return <MapViewSkeleton />;
