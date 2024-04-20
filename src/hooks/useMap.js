@@ -3,8 +3,8 @@ import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';
-import { MAP_LIST } from 'src/utils/mapConstants';
 
+// useState 제거, loading 빼기
 export const useGetAllMap = () => {
   const [map, setMap] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,6 +30,7 @@ export const useGetAllMap = () => {
   return { map, loading };
 };
 
+// useState 빼버리기, loading 제거
 export const useGetMap = (map_id) => {
   const [map, setMap] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,6 +56,8 @@ export const useGetMap = (map_id) => {
   return { map, loading };
 };
 
+// 여기서 useState 버리고 바로 리턴 하는 것으로 변경
+// 통신도 없애버리고, colladaData 로드하는 것만 남기기
 export const useLoadMap = (map_id, lineColor) => {
   const [map, setMap] = useState(null);
 
