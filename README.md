@@ -32,7 +32,11 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 
 ## 할 일
 
-item Router 하나로 합쳐서 수정하기 :itemId로 판별
+quest 준비하기
+map order 넣기
+abortController
+wasd 카메라 이동 구현
+2d 적용하기 - 아이템 위치띄우기 까지
 
 Dev
 

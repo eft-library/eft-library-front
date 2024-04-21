@@ -3,13 +3,13 @@ import { HStack, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 
-const SubMapSelector = ({ onClickMap, subMap, mapId }) => {
+const SubMapSelector = ({ onClickSubMap, subMap, mapId }) => {
   return (
     <HStack justifyContent="center">
       {subMap.map((sub, index) => (
         <Text
           key={index}
-          onClick={() => onClickMap(sub.map_id, true)}
+          onClick={() => onClickSubMap(sub)}
           color={
             mapId === sub.map_id ? MAP_COLOR.MAP_YELLOW : MAP_COLOR.MAP_WHITE
           }
@@ -26,7 +26,7 @@ const SubMapSelector = ({ onClickMap, subMap, mapId }) => {
 };
 
 SubMapSelector.propTypes = {
-  onClickMap: PropTypes.func.isRequired,
+  onClickSubMap: PropTypes.func.isRequired,
   subMap: PropTypes.arrayOf(
     PropTypes.shape({
       map_name_kr: PropTypes.string.isRequired,

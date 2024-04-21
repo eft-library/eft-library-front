@@ -2,7 +2,6 @@ import React from 'react';
 import hooks from 'src/hooks/hooks';
 import MapView from 'src/components/Map/View/MapView';
 import ItemSelector from 'src/components/Map/Selector/ItemSelector';
-import MapSelector from 'src/components/Map/Selector/MapSelector';
 import { Flex, Box } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 
@@ -35,7 +34,6 @@ const Map = () => {
         borderColor={MAP_COLOR.MAP_LIGHT_GRAY}
         borderRadius={'lg'}
       >
-        <MapSelector />
         <MapView viewItemList={viewItemList} />
         <ItemSelector
           viewItemList={viewItemList}
