@@ -1,13 +1,33 @@
-import { MAP_COLOR } from 'src/utils/colorConstants';
 import { Skeleton } from '@chakra-ui/react';
+import { Box, Text, Stack } from '@chakra-ui/react';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const MapViewSkeleton = () => {
   return (
-    <div className="CenterBox" style={{ width: '100%' }}>
-      <div style={{ backgroundColor: MAP_COLOR.MAP_BLACK, height: '100vh' }}>
-        <Skeleton height={'100%'} />
-      </div>
-    </div>
+    <>
+      <Skeleton height="100px" width="100%" />
+      <Box
+        className="CenterBox"
+        borderRadius="lg"
+        padding="20px"
+        margin="5px"
+        width="100%"
+        height="100%"
+      >
+        <Skeleton height="100px" width="100%" />
+        <Stack spacing={4}>
+          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+            2D MAP
+          </Text>
+          <Skeleton height="320px" width="100%" />
+          <br />
+          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+            3D MAP
+          </Text>
+          <Skeleton height="800px" width="100%" />
+        </Stack>
+      </Box>
+    </>
   );
 };
 

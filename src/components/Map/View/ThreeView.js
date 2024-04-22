@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { useRef, useEffect, useState } from 'react';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { ALL_ITEM } from 'src/utils/itemConstants';
 import { MAP_COLOR, ALL_COLOR } from 'src/utils/colorConstants';
@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 
 const ThreeView = ({ map, viewItemList }) => {
   const collada = hooks.useLoadMap(map.map_three_path, MAP_COLOR.MAP_BLACK);
-  const orbitControls = useRef();
   if (!collada) return <MapViewSkeleton />;
 
   return (
@@ -48,7 +47,7 @@ const ThreeView = ({ map, viewItemList }) => {
             ),
         )}
       </group>
-      <OrbitControls ref={orbitControls} />
+      <OrbitControls />
     </Canvas>
   );
 };

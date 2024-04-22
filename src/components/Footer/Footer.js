@@ -1,7 +1,7 @@
 import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
-import SVG_CONSTANTS from 'src/utils/svg/svgConstants';
-import { FOOTER_VALUE } from 'src/utils/footerConstants';
+import { FOOTER_DATA } from 'src/utils/footerConstants';
+import DynamicSVG from 'src/utils/svg/DynamicSVG';
 
 const Footer = () => {
   return (
@@ -25,60 +25,34 @@ const Footer = () => {
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
-            <Text color={MAP_COLOR.MAP_WHITE} m={2} fontWeight={'bold'}>
-              {FOOTER_VALUE.f_line}
-            </Text>
-            <Text color={MAP_COLOR.MAP_WHITE} m={2} fontWeight={'bold'}>
-              {FOOTER_VALUE.s_line}
-            </Text>
-            <Text color={MAP_COLOR.MAP_WHITE} m={2} fontWeight={'bold'}>
-              {FOOTER_VALUE.t_line}
-            </Text>
-            <Text color={MAP_COLOR.MAP_WHITE} m={2} fontWeight={'bold'}>
-              {FOOTER_VALUE.end_line}
-            </Text>
+            {FOOTER_DATA.text.map((item, index) => (
+              <Text
+                color={MAP_COLOR.MAP_WHITE}
+                m={2}
+                fontWeight={'bold'}
+                key={index}
+              >
+                {item.value}
+              </Text>
+            ))}
             <Flex direction="row" m={1}>
-              <Box
-                cursor={'pointer'}
-                onClick={() => window.open(FOOTER_VALUE.hj.link, '_blank')}
-              >
-                <SVG_CONSTANTS.CHZZK width={40} height={40} />
-                <Text
-                  color={MAP_COLOR.MAP_WHITE}
-                  fontWeight={'bold'}
-                  textAlign={'center'}
+              {FOOTER_DATA.icon.map((item, index) => (
+                <Box
+                  ml={index === 0 ? '' : 4}
+                  key={index}
+                  cursor={'pointer'}
+                  onClick={() => window.open(item.link, '_blank')}
                 >
-                  {FOOTER_VALUE.hj.name}
-                </Text>
-              </Box>
-              <Box
-                ml={3}
-                cursor={'pointer'}
-                onClick={() => window.open(FOOTER_VALUE.sy.link, '_blank')}
-              >
-                <SVG_CONSTANTS.GITHUB width={40} height={40} />
-                <Text
-                  color={MAP_COLOR.MAP_WHITE}
-                  fontWeight={'bold'}
-                  textAlign={'center'}
-                >
-                  {FOOTER_VALUE.sy.name}
-                </Text>
-              </Box>
-              <Box
-                ml={3}
-                cursor={'pointer'}
-                onClick={() => window.open(FOOTER_VALUE.jy.link, '_blank')}
-              >
-                <SVG_CONSTANTS.YOUTUBE width={40} height={40} />
-                <Text
-                  color={MAP_COLOR.MAP_WHITE}
-                  fontWeight={'bold'}
-                  textAlign={'center'}
-                >
-                  {FOOTER_VALUE.jy.name}
-                </Text>
-              </Box>
+                  <DynamicSVG svgValue={item.name} isEnable={true} />
+                  <Text
+                    color={MAP_COLOR.MAP_WHITE}
+                    fontWeight={'bold'}
+                    textAlign={'center'}
+                  >
+                    {item.name}
+                  </Text>
+                </Box>
+              ))}
             </Flex>
           </Flex>
         </GridItem>

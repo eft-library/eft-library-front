@@ -8,6 +8,7 @@ import JpgView from 'src/components/Map/View/JpgView';
 import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
 import PropTypes from 'prop-types';
 import hooks from 'src/hooks/hooks';
+import MapViewSkeleton from './MapViewSkeleton';
 
 const MapView = ({ viewItemList }) => {
   const params = useParams();
@@ -32,6 +33,7 @@ const MapView = ({ viewItemList }) => {
     }
   };
 
+  // if (!mapData) return <MapViewSkeleton />;
   if (!mapData) return null;
 
   return (

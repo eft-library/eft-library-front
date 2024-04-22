@@ -36,7 +36,7 @@ quest 준비하기
 abortController
 wasd 카메라 이동 구현
 2d 적용하기 - 아이템 위치띄우기 까지
-map 페이지에 null skeleton 적용하기
+지도 클릭 시 bound - https://twitter.com/0xca0a/status/1453807293074661385
 
 Dev
 
