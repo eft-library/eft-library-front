@@ -33,7 +33,6 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 ## 할 일
 
 quest 준비하기
-map order 넣기 - O
 abortController
 wasd 카메라 이동 구현
 2d 적용하기 - 아이템 위치띄우기 까지

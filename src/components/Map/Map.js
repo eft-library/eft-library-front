@@ -19,7 +19,7 @@ const Map = () => {
       alignItems="center"
       justifyContent="center"
       paddingTop="80px"
-      paddingBottom="80px"
+      paddingBottom="10px"
       width="100%"
       height="100%"
     >

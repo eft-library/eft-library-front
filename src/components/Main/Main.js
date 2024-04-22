@@ -17,7 +17,7 @@ const Main = () => {
       alignItems="center"
       justifyContent="center"
       paddingTop="80px"
-      paddingBottom="80px"
+      paddingBottom="20px"
       width="100%"
       height="auto"
     >

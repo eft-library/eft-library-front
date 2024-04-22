@@ -28,6 +28,7 @@ function App() {
           <Route path="/ballistics" element={<PageRouter.BALLISTICS />} />
           <Route path="*" element={<PageRouter.NOT_FOUND />} />
         </Routes>
+        <PageRouter.FOOTER />
       </BrowserRouter>
     </ChakraProvider>
   );
