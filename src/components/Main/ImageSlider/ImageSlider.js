@@ -1,19 +1,16 @@
-import { MAP_LIST } from 'src/utils/mapConstants';
 import Slider from 'react-slick';
 import { Box, Image } from '@chakra-ui/react';
+import { IMAGE_SLIDER_OPTION } from 'src/utils/libraryConstants';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import hooks from 'src/hooks/hooks';
+import ImageSliderSkeleton from 'src/components/Main/ImageSlider/ImageSliderSkeleton';
 
 const ImageSlider = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
+  const { map, loading } = hooks.useGetAllMap();
+
+  if (!map && loading) return <ImageSliderSkeleton />;
+
   return (
     <div
       style={{
@@ -31,8 +28,8 @@ const ImageSlider = () => {
           height: '30%',
         }}
       >
-        <Slider {...settings}>
-          {MAP_LIST.map((map, index) => (
+        <Slider {...IMAGE_SLIDER_OPTION}>
+          {map.map((map, index) => (
             <Box
               boxSize="sm"
               key={index}

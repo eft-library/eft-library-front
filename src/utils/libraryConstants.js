@@ -5,3 +5,13 @@ export const YOUTUBE_OPTION = {
     autoplay: 0,
   },
 };
+
+export const IMAGE_SLIDER_OPTION = {
+  dots: true,
+  infinite: true,
+  speed: 1000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 3000,
+};
