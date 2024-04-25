@@ -8,13 +8,11 @@ export const ALL_ITEM = {
   // Spawns
   SPAWNS: 'SPAWNS',
   PMC_SPAWN_VALUE: 'PMC_SPAWN',
-
-  // Spawns-AI
-  SPAWNS_AI: 'SPAWNS_AI',
   SCAV_SPAWN_VALUE: 'SCAV_SPAWN',
   SNIPER_SCAV_SPAWN_VALUE: 'SNIPER_SCAV_SPAWN',
   BOSS_SPAWN_VALUE: 'BOSS_SPAWN',
   CULTIST_SPAWN_VALUE: 'CULTIST_SPAWN',
+  ROUGE_SPAWN_VALUE: 'ROUGE_SPAWN',
 
   // Miscellaneous
   MISCELLANEOUS: 'MISCELLANEOUS',
@@ -23,23 +21,27 @@ export const ALL_ITEM = {
   STATIONARY_WEAPON_VALUE: 'STATIONARY_WEAPON',
   QUEST_RELATED_VALUE: 'QUEST_RELATED',
 
-  // Loot
-  LOOT: 'LOOT',
-  KEY_SPAWN_VALUE: 'KEY_SPAWN',
-
   // Loot-Containers
   LOOT_CONTAINERS: 'LOOT_CONTAINERS',
   AMMO_BOX_VALUE: 'AMMO_BOX',
   MED_BAG_VALUE: 'MED_BAG',
-  BARREL_GROUND_CACHE_VALUE: 'BARREL_GROUND_CACHE',
   MED_CASE_VALUE: 'MED_CASE',
-  SAFE_VALUE: 'SAFE',
   CASH_REGISTER_VALUE: 'CASH_REGISTER',
   SPORTS_BAG_VALUE: 'SPORTS_BAG',
   COMPUTER_VALUE: 'COMPUTER',
   SUPPLY_CRATE_VALUE: 'SUPPLY_CRATE',
-  DEAD_SCAV_VALUE: 'DEAD_SCAV',
   TOOL_BOX_VALUE: 'TOOL_BOX',
+  KEY_VALUE: 'KEY',
+  WEAPON_BOX_VALUE: 'WEAPON',
+  WOOD_BOX_VALUE: 'WOOD_BOX',
+  JACKET_VALUE: 'JACKET',
+  GRENADE_BOX_VALUE: 'GRENADE_BOX',
+  DRAWERS_VALUE: 'DRAWERS',
+  DEAD_BODY_VALUE: 'DEAD_BODY',
+  SUITCASE_VALUE: 'SUITCASE',
+  KEY_CARD_VALUE: 'KEY_CARD',
+  HIDDEN_STASH_VALUE: 'HIDDEN_STASH',
+  SAFE_VALUE: 'SAFE',
 };
 
 // Extractions
@@ -56,12 +58,12 @@ export const EXTRACTIONS = {
     {
       value: ALL_ITEM.SCAV_EXTRACTION_VALUE,
       en: 'SCAV-Extraction',
-      kr: 'SCAV 탈출구',
+      kr: '스캐브 탈출구',
     },
     {
       value: ALL_ITEM.SHARED_EXTRACTION_VALUE,
       en: 'Shared-Extraction',
-      kr: '공유 탈출구',
+      kr: '공용 탈출구',
     },
   ],
 };
@@ -69,48 +71,34 @@ export const EXTRACTIONS = {
 // Spawns
 export const SPAWNS = {
   en: 'Spawns',
-  kr: '스폰위치',
+  kr: '스폰',
   value: ALL_ITEM.SPAWNS,
-  child: [{ value: ALL_ITEM.PMC_SPAWN_VALUE, en: 'Pmc-Spawn', kr: 'PMC 스폰' }],
-};
-
-// Spawns-AI
-export const SPAWNS_AI = {
-  en: 'Spawns-AI',
-  kr: 'AI스폰',
-  value: ALL_ITEM.SPAWNS_AI,
   child: [
-    {
-      value: ALL_ITEM.SCAV_SPAWN_VALUE,
-      en: 'SCAV-Spawn',
-      kr: 'SCAV 스폰',
-    },
+    { value: ALL_ITEM.PMC_SPAWN_VALUE, en: 'Pmc Spawn', kr: 'PMC 스폰' },
+    { value: ALL_ITEM.SCAV_SPAWN_VALUE, en: 'Scav Spawn', kr: '스캐브 스폰' },
     {
       value: ALL_ITEM.SNIPER_SCAV_SPAWN_VALUE,
-      en: 'Sniper-Scav-Spawn',
-      kr: '저격 SCAV 스폰',
+      en: 'Sniper Scav Spawn',
+      kr: '저격 스캐브 스폰',
     },
-    {
-      value: ALL_ITEM.BOSS_SPAWN_VALUE,
-      en: 'Boss-Spawn',
-      kr: 'Boss 스폰',
-    },
+    { value: ALL_ITEM.BOSS_SPAWN_VALUE, en: 'Boss Spawn', kr: '보스 스폰' },
     {
       value: ALL_ITEM.CULTIST_SPAWN_VALUE,
-      en: 'Cultist-Spawn',
-      kr: 'Cultist 스폰',
+      en: 'Cultist Spawn',
+      kr: '컬티스트 스폰',
     },
+    { value: ALL_ITEM.ROUGE_SPAWN_VALUE, en: 'Rogue Spawn', kr: '로그 스폰' },
   ],
 };
 
 // Miscellaneous
 export const MISCELLANEOUS = {
   en: 'Miscellaneous',
-  kr: '여러가지',
+  kr: '기타',
   value: ALL_ITEM.MISCELLANEOUS,
   child: [
     { value: ALL_ITEM.LEVER_VALUE, en: 'Lever', kr: '레버' },
-    { value: ALL_ITEM.LOCKED_VALUE, en: 'Locked', kr: '잠긴 문' },
+    { value: ALL_ITEM.LOCKED_VALUE, en: 'Locked', kr: '잠김' },
     {
       value: ALL_ITEM.STATIONARY_WEAPON_VALUE,
       en: 'Stationary-Weapon',
@@ -124,57 +112,48 @@ export const MISCELLANEOUS = {
   ],
 };
 
-// Loot
-export const LOOT = {
-  en: 'Loot',
-  kr: '루트',
-  value: ALL_ITEM.LOOT,
-  child: [
-    { value: ALL_ITEM.KEY_SPAWN_VALUE, en: 'Key-Spawn', kr: '열쇠 생성 지역' },
-  ],
-};
-
 // Loot-Containers
 export const LOOT_CONTAINERS = {
   en: 'Loot-Containers',
   kr: '전리품 컨테이너',
   value: ALL_ITEM.LOOT_CONTAINERS,
   child: [
-    { value: ALL_ITEM.AMMO_BOX_VALUE, en: 'ammoBox', kr: '총기 상자' },
-    { value: ALL_ITEM.MED_BAG_VALUE, en: 'medBag', kr: '치료 가방' },
+    { value: ALL_ITEM.KEY_VALUE, en: 'Key', kr: '열쇠' },
+    { value: ALL_ITEM.AMMO_BOX_VALUE, en: 'ammoBox', kr: '탄약 상자' },
+    { value: ALL_ITEM.MED_BAG_VALUE, en: 'medBag', kr: '의료 가방' },
     {
-      value: ALL_ITEM.BARREL_GROUND_CACHE_VALUE,
-      en: 'barrelGroundCache',
-      kr: '땅에 묻힌 통',
+      value: ALL_ITEM.HIDDEN_STASH_VALUE,
+      en: 'Hidden Stash',
+      kr: '히든 스태쉬',
     },
-    { value: ALL_ITEM.MED_CASE_VALUE, en: 'medCase', kr: '치료 케이스' },
-    { value: ALL_ITEM.SAFE_VALUE, en: 'safe', kr: '안전 구역' },
+    { value: ALL_ITEM.MED_CASE_VALUE, en: 'medCase', kr: '의료 상자' },
+    { value: ALL_ITEM.SAFE_VALUE, en: 'Safe', kr: '금고' },
+    { value: ALL_ITEM.SPORTS_BAG_VALUE, en: 'sportsBag', kr: '스포츠 가방' },
     {
       value: ALL_ITEM.CASH_REGISTER_VALUE,
       en: 'cashRegister',
-      kr: '금전 등록기',
+      kr: '금전등록기',
     },
-    { value: ALL_ITEM.SPORTS_BAG_VALUE, en: 'sportsBag', kr: '스포츠 가방' },
-    { value: ALL_ITEM.COMPUTER_VALUE, en: 'computer', kr: '컴퓨터' },
     {
       value: ALL_ITEM.SUPPLY_CRATE_VALUE,
       en: 'supplyCrate',
-      kr: '보급품 상자',
+      kr: '보급 상자',
     },
-    { value: ALL_ITEM.DEAD_SCAV_VALUE, en: 'deadScav', kr: 'SCAV 시체' },
     { value: ALL_ITEM.TOOL_BOX_VALUE, en: 'toolBox', kr: '공구 상자' },
+    { value: ALL_ITEM.WEAPON_BOX_VALUE, en: 'weaponBox', kr: '무기 상자' },
+    { value: ALL_ITEM.WOOD_BOX_VALUE, en: 'woodBox', kr: '나무 상자' },
+    { value: ALL_ITEM.JACKET_VALUE, en: 'jacket', kr: '재킷' },
+    { value: ALL_ITEM.GRENADE_BOX_VALUE, en: 'GrenadeBox', kr: '수류탄 상자' },
+    { value: ALL_ITEM.DRAWERS_VALUE, en: 'Drawers', kr: '서랍' },
+    { value: ALL_ITEM.DEAD_BODY_VALUE, en: 'Dead Body', kr: '시체' },
+    { value: ALL_ITEM.COMPUTER_VALUE, en: 'computer', kr: '컴퓨터' },
+    { value: ALL_ITEM.SUITCASE_VALUE, en: 'SuitCase', kr: '여행 가방' },
+    { value: ALL_ITEM.KEY_CARD_VALUE, en: 'KeyCard', kr: '키 카드' },
   ],
 };
 
 // Wrapped Item
-export const ITEM_LIST = [
-  EXTRACTIONS,
-  SPAWNS,
-  SPAWNS_AI,
-  MISCELLANEOUS,
-  LOOT,
-  LOOT_CONTAINERS,
-];
+export const ITEM_LIST = [EXTRACTIONS, SPAWNS, MISCELLANEOUS, LOOT_CONTAINERS];
 
 // child value 리스트
 export const CHILD_VALUE_LIST = ITEM_LIST.map((item) =>
