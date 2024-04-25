@@ -32,11 +32,12 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 
 ## 할 일
 
-quest 준비하기
+quest 구현
 abortController
 wasd 카메라 이동 구현
 2d 적용하기 - 아이템 위치띄우기 까지
 지도 클릭 시 bound - https://twitter.com/0xca0a/status/1453807293074661385
+아이템 필터에 요소 추가하기
 
 Dev
 
