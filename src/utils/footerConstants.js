@@ -6,7 +6,7 @@ export const FOOTER_DATA = {
     { value: '개인정보처리방침 (Privacy Policy)' },
   ],
   icon: [
-    { name: 'HJ', link: 'https://naver.com' },
+    { name: 'HJ', link: 'https://chzzk.naver.com' },
     { name: 'SY', link: 'https://github.com' },
     { name: 'JY', link: 'https://youtube.com' },
   ],

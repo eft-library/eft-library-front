@@ -21,8 +21,8 @@ export const ALL_ITEM = {
   STATIONARY_WEAPON_VALUE: 'STATIONARY_WEAPON',
   QUEST_RELATED_VALUE: 'QUEST_RELATED',
 
-  // Loot-Containers
-  LOOT_CONTAINERS: 'LOOT_CONTAINERS',
+  // Loot
+  LOOT: 'LOOT',
   AMMO_BOX_VALUE: 'AMMO_BOX',
   MED_BAG_VALUE: 'MED_BAG',
   MED_CASE_VALUE: 'MED_CASE',
@@ -112,11 +112,11 @@ export const MISCELLANEOUS = {
   ],
 };
 
-// Loot-Containers
-export const LOOT_CONTAINERS = {
-  en: 'Loot-Containers',
-  kr: '전리품 컨테이너',
-  value: ALL_ITEM.LOOT_CONTAINERS,
+// Loot
+export const LOOT = {
+  en: 'Loot',
+  kr: '전리품',
+  value: ALL_ITEM.LOOT,
   child: [
     { value: ALL_ITEM.KEY_VALUE, en: 'Key', kr: '열쇠' },
     { value: ALL_ITEM.AMMO_BOX_VALUE, en: 'ammoBox', kr: '탄약 상자' },
@@ -153,7 +153,7 @@ export const LOOT_CONTAINERS = {
 };
 
 // Wrapped Item
-export const ITEM_LIST = [EXTRACTIONS, SPAWNS, MISCELLANEOUS, LOOT_CONTAINERS];
+export const ITEM_LIST = [EXTRACTIONS, SPAWNS, MISCELLANEOUS, LOOT];
 
 // child value 리스트
 export const CHILD_VALUE_LIST = ITEM_LIST.map((item) =>

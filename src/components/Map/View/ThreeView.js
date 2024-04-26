@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 const ThreeView = ({ map, viewItemList }) => {
   const collada = hooks.useLoadMap(map.map_three_path, MAP_COLOR.MAP_BLACK);
-  if (!collada) return <MapViewSkeleton />;
+  if (!collada) return null;
 
   return (
     <Canvas
