@@ -1,4 +1,3 @@
-import { QUEST_INFO } from 'src/utils/questConstants';
 import {
   TableContainer,
   Table,
@@ -10,8 +9,13 @@ import {
   Box,
   Text,
 } from '@chakra-ui/react';
+import hooks from 'src/hooks/hooks';
 
 const Preview = () => {
+  const { allQuest, loading } = hooks.useGetAllQuest();
+
+  if (!allQuest || loading) return null;
+
   return (
     <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
       <TableContainer border="1px solid" borderColor="white" width={'95%'}>
@@ -57,7 +61,7 @@ const Preview = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {QUEST_INFO.map((quest, index) => (
+            {allQuest.map((quest, index) => (
               <Tr key={index}>
                 <Td
                   fontSize="md"
@@ -92,10 +96,13 @@ const Preview = () => {
                   fontWeight={'700'}
                 >
                   {quest.quest_rewards_kr.map((rewards, rIndex) => (
-                    <Text key={rIndex} mb={1}>
-                      *&nbsp;&nbsp;
-                      {rewards}
-                    </Text>
+                    <Text
+                      key={rIndex}
+                      mb={1}
+                      dangerouslySetInnerHTML={{
+                        __html: `*&nbsp;&nbsp;${rewards}`,
+                      }}
+                    />
                   ))}
                 </Td>
                 <Td

@@ -26,3 +26,28 @@ export const useGetNpc = () => {
 
   return { npc, loading };
 };
+
+export const useGetAllQuest = () => {
+  const [allQuest, setAllQuest] = useState(null);
+  const [loading, setLoading] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await API.get(API_PATH.GET_ALL_QUEST);
+        const responseData = response.data.data;
+        setAllQuest(responseData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching npc data:', error);
+        setLoading(false);
+      }
+    };
+
+    if (allQuest === null) {
+      fetchData();
+    }
+  }, [allQuest]);
+
+  return { allQuest, loading };
+};
