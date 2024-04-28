@@ -18,7 +18,6 @@ const Header = () => {
   return (
     <Grid
       templateColumns="repeat(3, 1fr)"
-      gap={6}
       position={'fixed'}
       width={'100%'}
       zIndex={10}
