@@ -17,6 +17,7 @@ const ThreeView = ({ map, viewItemList }) => {
     useEffect(() => {
       const controls = new OrbitControls(camera, gl.domElement);
       controls.enableKeys = false; // 키보드 조작 비활성화
+      controls.zoomSpeed = 0.5;
 
       const handleKeyDown = (event) => {
         keys.current[event.code] = true;
