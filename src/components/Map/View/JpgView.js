@@ -1,16 +1,13 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import {
-  UncontrolledReactSVGPanZoom,
-  TOOL_PAN,
-  TOOL_ZOOM_IN,
-  TOOL_ZOOM_OUT,
-} from 'react-svg-pan-zoom';
+import { UncontrolledReactSVGPanZoom, TOOL_PAN } from 'react-svg-pan-zoom';
 import { useWindowSize } from '@react-hook/window-size';
 import { MAP_COLOR } from 'src/utils/colorConstants';
+import { DynamicJpgSVG } from 'src/utils/svg/DynamicSVG';
+import { ALL_ITEM } from 'src/utils/itemConstants';
 
-const JpgView = ({ map }) => {
+const JpgView = ({ map, viewItemList }) => {
   const [width, height] = useWindowSize({
     initialWidth: 0,
     initialHeight: 0,
@@ -38,93 +35,31 @@ const JpgView = ({ map }) => {
         ref={Viewer}
         width={width * 0.57}
         height={height * 0.5}
-        defaultTool="pan"
+        defaultTool={TOOL_PAN}
         SVGBackground={MAP_COLOR.MAP_THREE_BACKGROUND}
       >
         <svg width={617} height={316} fill={MAP_COLOR.MAP_THREE_BACKGROUND}>
           <image xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path} />
-          <svg x={10} y={10} width={100} height={100}>
-            {/* 아이콘 내용 */}
-            <circle cx={50} cy={50} r={20} fill="red" />
-          </svg>
-          <svg x={440} y={440} width={100} height={100}>
-            {/* 아이콘 내용 */}
-            <circle cx={50} cy={50} r={20} fill="white" />
-          </svg>
-          <svg x={330} y={330} width={100} height={100}>
-            {/* 아이콘 내용 */}
-            <circle cx={50} cy={50} r={20} fill="skyblue" />
-          </svg>
-          <svg x={220} y={220} width={100} height={100}>
-            {/* 아이콘 내용 */}
-            <circle cx={50} cy={50} r={20} fill="teal" />
-          </svg>
-          <svg x={160} y={160} width={100} height={100}>
-            {/* 아이콘 내용 */}
-            <circle cx={50} cy={50} r={20} fill="hotpink" />
-          </svg>
+          {map.map_jpg_item_path.map(
+            (item, index) =>
+              viewItemList.includes(ALL_ITEM[item.childValue]) && (
+                <DynamicJpgSVG
+                  key={index}
+                  svgValue={item.childValue}
+                  x={item.x}
+                  y={item.y}
+                />
+              ),
+          )}
         </svg>
       </UncontrolledReactSVGPanZoom>
     </Box>
   );
 };
 
-// JpgView.propTypes = {
-//   map: PropTypes.objectOf(
-//     PropTypes.shape({
-//       map_name_kr: PropTypes.string.isRequired,
-//       map_name_en: PropTypes.string.isRequired,
-//       map_id: PropTypes.string.isRequired,
-//       map_three_path: PropTypes.string.isRequired,
-//       map_update_time: PropTypes.string.isRequired,
-//       map_jpg_path: PropTypes.string.isRequired,
-//       map_depth: PropTypes.number.isRequired,
-//       map_link: PropTypes.string.isRequired,
-//       map_three_item_path: PropTypes.arrayOf(
-//         PropTypes.shape({
-//           color: PropTypes.string.isRequired,
-//           boxArgs: PropTypes.arrayOf(PropTypes.number.isRequired),
-//           position: PropTypes.arrayOf(PropTypes.number.isRequired),
-//           childValue: PropTypes.string.isRequired,
-//           motherValue: PropTypes.string.isRequired,
-//         }),
-//       ),
-//       map_main_image: PropTypes.string.isRequired,
-//       map_jpg_item_path: PropTypes.arrayOf(
-//         PropTypes.shape({
-//           item: PropTypes.number,
-//         }),
-//       ),
-//       map_sub: PropTypes.arrayOf(
-//         PropTypes.shape({
-//           map_name_kr: PropTypes.string.isRequired,
-//           map_name_en: PropTypes.string.isRequired,
-//           map_id: PropTypes.string.isRequired,
-//           map_three_path: PropTypes.string.isRequired,
-//           map_update_time: PropTypes.string.isRequired,
-//           map_jpg_path: PropTypes.string.isRequired,
-//           map_depth: PropTypes.number.isRequired,
-//           map_link: PropTypes.string.isRequired,
-//           map_three_item_path: PropTypes.arrayOf(
-//             PropTypes.shape({
-//               color: PropTypes.string.isRequired,
-//               boxArgs: PropTypes.arrayOf(PropTypes.number.isRequired),
-//               position: PropTypes.arrayOf(PropTypes.number.isRequired),
-//               childValue: PropTypes.string.isRequired,
-//               motherValue: PropTypes.string.isRequired,
-//             }),
-//           ),
-//           map_main_image: PropTypes.string.isRequired,
-//           map_jpg_item_path: PropTypes.arrayOf(
-//             PropTypes.shape({
-//               item: PropTypes.number,
-//             }),
-//           ),
-//           map_parent_value: PropTypes.string.isRequired,
-//         }),
-//       ),
-//     }),
-//   ).isRequired,
-// };
+JpgView.propTypes = {
+  map: PropTypes.object.isRequired,
+  viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default JpgView;

@@ -19,7 +19,7 @@ const MapViewSkeleton = () => {
           <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
             2D MAP
           </Text>
-          <Skeleton height="320px" width="100%" />
+          <Skeleton height="400px" width="100%" />
           <br />
           <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
             3D MAP

@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { ALL_ITEM } from 'src/utils/itemConstants';
 import { MAP_COLOR, ALL_COLOR } from 'src/utils/colorConstants';
-import MapViewSkeleton from 'src/components/Map/View/MapViewSkeleton';
+import ThreeViewSkeleton from 'src/components/Map/View/ThreeViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
@@ -40,7 +40,6 @@ const ThreeView = ({ map, viewItemList }) => {
       const updateCameraPosition = () => {
         const { x, y, z } = camera.position;
         const moveDistance = movementSpeed;
-        console.log(keys.current['KeyW']);
         if (keys.current['KeyW']) {
           camera.position.set(x, y, z - moveDistance);
         }
@@ -77,7 +76,7 @@ const ThreeView = ({ map, viewItemList }) => {
 
     return null;
   };
-  if (!collada) return null;
+  if (!collada) return <ThreeViewSkeleton />;
 
   return (
     <Canvas

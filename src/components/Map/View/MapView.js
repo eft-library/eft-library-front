@@ -33,8 +33,8 @@ const MapView = ({ viewItemList }) => {
     }
   };
 
-  // if (!mapData) return <MapViewSkeleton />;
-  if (!mapData) return null;
+  if (!mapData) return <MapViewSkeleton />;
+  // if (!mapData) return null;
 
   return (
     <>
@@ -58,7 +58,7 @@ const MapView = ({ viewItemList }) => {
           <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
             2D MAP
           </Text>
-          <JpgView map={mapData} />
+          <JpgView map={mapData} viewItemList={viewItemList} />
           <br />
           <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
             3D MAP

@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import DynamicSVG from 'src/utils/svg/DynamicSVG';
+import { DynamicSVG } from 'src/utils/svg/DynamicSVG';
 import PropTypes from 'prop-types';
 
 const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
