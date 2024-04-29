@@ -14,6 +14,10 @@ function App() {
           <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />
           <Route path="/quest" element={<PageRouter.QUEST />} />
+          <Route
+            path="/quest/detail/:questId"
+            element={<PageRouter.QUSET_DETAIL />}
+          />
           <Route path="/item/WEAPON" element={<PageRouter.WEAPON />} />
           <Route path="/item/AMMO" element={<PageRouter.AMMO />} />
           <Route path="/item/HEAD_WEAR" element={<PageRouter.HEADWEAR />} />
