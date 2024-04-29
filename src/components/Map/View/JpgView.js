@@ -34,9 +34,27 @@ const JpgView = ({ map }) => {
         defaultTool="pan"
       >
         <svg width={617} height={316}>
-          <image
-            xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path}
-          ></image>
+          <image xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path} />
+          <svg x={10} y={10} width={100} height={100}>
+            {/* 아이콘 내용 */}
+            <circle cx={50} cy={50} r={20} fill="red" />
+          </svg>
+          <svg x={440} y={440} width={100} height={100}>
+            {/* 아이콘 내용 */}
+            <circle cx={50} cy={50} r={20} fill="white" />
+          </svg>
+          <svg x={330} y={330} width={100} height={100}>
+            {/* 아이콘 내용 */}
+            <circle cx={50} cy={50} r={20} fill="skyblue" />
+          </svg>
+          <svg x={220} y={220} width={100} height={100}>
+            {/* 아이콘 내용 */}
+            <circle cx={50} cy={50} r={20} fill="teal" />
+          </svg>
+          <svg x={160} y={160} width={100} height={100}>
+            {/* 아이콘 내용 */}
+            <circle cx={50} cy={50} r={20} fill="hotpink" />
+          </svg>
         </svg>
       </UncontrolledReactSVGPanZoom>
     </Box>
