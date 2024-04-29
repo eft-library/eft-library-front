@@ -35,16 +35,9 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 
 abortController
 quest 상세 구현
-wasd 카메라 이동 구현
-2d 적용하기 - 아이템 위치띄우기 까지
-지도 클릭 시 bound - https://twitter.com/0xca0a/status/1453807293074661385
+wasd 카메라 이동 - 버그 잡아야지
 아이템 필터 - 리스트에 없는 건 필터에서 없애기
-2d 확대, 축소, 드래그 및 좌표 있을때 아이콘 올리는 기능 개발
-3d 좌표 찍어서 DB 넣는 법 희재 알려주기
-지도 y좌표 높이기
-확대 축소 속도 증가
 퀘스트 상세 페이지 만들기 - 가이드는 블로그 형태(wyswig)
-wasd 가능하게 노력하기
 희재 퀘스트 DB 넣는 방법 알려주기
 
 Dev
