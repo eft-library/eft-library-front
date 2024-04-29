@@ -17,7 +17,7 @@ import { DynamicSVG } from 'src/utils/svg/DynamicSVG';
 import PropTypes from 'prop-types';
 
 const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const checkAll = () => {
     return (
@@ -40,6 +40,7 @@ const ItemSelector = ({ viewItemList, onClickItem, onClickAllItem }) => {
       height={'75%'}
       borderRadius="md"
       border={isOpen ? `1px solid ${MAP_COLOR.MAP_WHITE}` : 'none'}
+      defaultIndex={[0]}
     >
       <AccordionItem
         borderTop={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
