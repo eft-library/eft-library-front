@@ -29,6 +29,7 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 23. npm i react-slick
 24. npm install slick-carousel
 25. npm install react-youtube
+26. npm i @react-hook/window-size
 
 ## 할 일
 
@@ -43,7 +44,7 @@ wasd 카메라 이동 구현
 지도 y좌표 높이기
 확대 축소 속도 증가
 퀘스트 상세 페이지 만들기 - 가이드는 블로그 형태(wyswig)
-wasd 가능하게 노력하기;
+wasd 가능하게 노력하기
 희재 퀘스트 DB 넣는 방법 알려주기
 
 Dev
