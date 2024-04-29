@@ -10,6 +10,7 @@ function App() {
       <BrowserRouter>
         <PageRouter.HEADER />
         <Routes>
+          <Route path="/api/*" render={() => null} />
           <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />
           <Route path="/quest" element={<PageRouter.QUEST />} />
@@ -23,8 +24,8 @@ function App() {
           <Route path="/item/KEY" element={<PageRouter.KEY />} />
           <Route path="/item/BAG" element={<PageRouter.BAG />} />
           <Route path="/item/HEADSET" element={<PageRouter.HEADSET />} />
-          <Route path="/HIDEOUT" element={<PageRouter.HIDEOUT />} />
-          <Route path="/BOSS" element={<PageRouter.BOSS />} />
+          <Route path="/hideout" element={<PageRouter.HIDEOUT />} />
+          <Route path="/boss" element={<PageRouter.BOSS />} />
           <Route path="/ballistics" element={<PageRouter.BALLISTICS />} />
           <Route path="*" element={<PageRouter.NOT_FOUND />} />
         </Routes>

@@ -13,7 +13,7 @@ const Header = () => {
     setSelectedMenu(menuName);
   };
 
-  if (loading) return <HeaderSkeleton />;
+  if (!navi || loading) return <HeaderSkeleton />;
 
   return (
     <Grid

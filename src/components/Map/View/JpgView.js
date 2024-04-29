@@ -1,8 +1,14 @@
 import { Box } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom';
+import {
+  UncontrolledReactSVGPanZoom,
+  TOOL_PAN,
+  TOOL_ZOOM_IN,
+  TOOL_ZOOM_OUT,
+} from 'react-svg-pan-zoom';
 import { useWindowSize } from '@react-hook/window-size';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const JpgView = ({ map }) => {
   const [width, height] = useWindowSize({
@@ -27,13 +33,15 @@ const JpgView = ({ map }) => {
       justifyContent={'center'}
     >
       <UncontrolledReactSVGPanZoom
+        background={MAP_COLOR.MAP_THREE_BACKGROUND}
         onClick={(e) => console.log(e.x, e.y)}
         ref={Viewer}
         width={width * 0.57}
         height={height * 0.5}
         defaultTool="pan"
+        SVGBackground={MAP_COLOR.MAP_THREE_BACKGROUND}
       >
-        <svg width={617} height={316}>
+        <svg width={617} height={316} fill={MAP_COLOR.MAP_THREE_BACKGROUND}>
           <image xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path} />
           <svg x={10} y={10} width={100} height={100}>
             {/* 아이콘 내용 */}

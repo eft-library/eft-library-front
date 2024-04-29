@@ -83,7 +83,7 @@ const ThreeView = ({ map, viewItemList }) => {
     <Canvas
       camera={{ position: [0, 30, 30] }}
       style={{
-        backgroundColor: hooks.useHexFromDecimal(ALL_COLOR.BLACK_90),
+        backgroundColor: MAP_COLOR.MAP_THREE_BACKGROUND,
         height: '100vh',
       }}
     >

@@ -8,6 +8,7 @@ export const ALL_COLOR = {
 };
 
 export const MAP_COLOR = {
+  MAP_THREE_BACKGROUND: '#1e1e24',
   MAP_BACKGROUND: '#111111',
   MAP_LIGHT_GRAY: '#d3d3d3',
   MAP_GRAY: '#808080',
