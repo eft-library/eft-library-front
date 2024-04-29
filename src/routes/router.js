@@ -15,7 +15,7 @@ import Rig from 'src/components/Item/Rig/Rig';
 import Vest from 'src/components/Item/Vest/Vest';
 import Weapon from 'src/components/Item/Weapon/Item';
 import Quest from 'src/components/Quest/Quest';
-import QuestDetail from 'src/components/Quest/QuestDetail/QuestDetail';
+import QuestDetail from 'src/components/QuestDetail/QuestDetail';
 import Key from 'src/components/Item/Key/Key';
 import Main from 'src/components/Main/Main';
 

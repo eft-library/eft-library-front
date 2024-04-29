@@ -1,10 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import { useParams } from 'react-router-dom';
+import QuestInfo from 'src/components/QuestDetail/QuestInfo/QuestInfo';
+import QuestContents from 'src/components/QuestDetail/QuestContents/QuestContents';
 
 const QuestDetail = () => {
   const params = useParams();
-
+  console.log(params.questId);
   return (
     <Box
       className="Main"
@@ -38,7 +40,10 @@ const QuestDetail = () => {
           flexDirection="column"
           mb={'40px'}
           mt={'40px'}
-        ></Flex>
+        >
+          <QuestInfo />
+          <QuestContents />
+        </Flex>
       </Flex>
     </Box>
   );

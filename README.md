@@ -34,11 +34,9 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 ## 할 일
 
 abortController
-quest 상세 구현
 wasd 카메라 이동 - 버그 잡아야지
 아이템 필터 - 리스트에 없는 건 필터에서 없애기
 퀘스트 상세 페이지 만들기 - 가이드는 블로그 형태(wyswig)
-희재 퀘스트 DB 넣는 방법 알려주기
 
 Dev
 
