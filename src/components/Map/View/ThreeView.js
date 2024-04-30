@@ -8,8 +8,9 @@ import PropTypes from 'prop-types';
 import ExtendedOrbitControls from './ExtendOrbitControls';
 
 const ThreeView = ({ map, viewItemList }) => {
-  const collada = hooks.useLoadMap(map.map_three_path, MAP_COLOR.MAP_BLACK);
-  if (!collada) return <ThreeViewSkeleton />;
+  const collada = hooks.useLoadMap(map.map_three_path, true);
+  const door = hooks.useLoadMap('/tkw_map/filter/door.dae', false);
+  if (!collada || !door) return <ThreeViewSkeleton />;
 
   return (
     <Canvas
@@ -24,21 +25,17 @@ const ThreeView = ({ map, viewItemList }) => {
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group
-        renderOrder={1}
         onClick={(e) => {
           console.log(e.point);
         }}
       >
+        <primitive object={door.colladaData.scene} position={[0, 10, 0]} />
         <primitive object={collada.colladaData.scene} position={[0, 0, 0]} />
+
         {map.map_three_item_path.map(
           (item, index) =>
             viewItemList.includes(ALL_ITEM[item.childValue]) && (
-              <mesh
-                key={index}
-                position={item.position}
-                scale={2}
-                renderOrder={0}
-              >
+              <mesh key={index} position={item.position} scale={2}>
                 <boxGeometry args={item.boxArgs} />
                 <meshStandardMaterial
                   color={ALL_COLOR[item.color]}
