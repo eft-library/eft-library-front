@@ -2,7 +2,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 
 const QuestInfo = () => {
   return (
-    <Box display="column" justifyContent="center" alignItems={'center'}>
+    <Box justifyContent="center" alignItems={'center'}>
       <Box
         w="180px"
         h="180px"

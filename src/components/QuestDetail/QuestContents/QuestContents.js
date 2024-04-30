@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 
 const QuestContents = () => {
   return (
-    <Box>
+    <Box w={'95%'}>
       <QuestObjectives />
       <QuestRewards />
       <QuestGuide />

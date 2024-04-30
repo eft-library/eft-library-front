@@ -68,6 +68,7 @@ const Preview = ({ selectedNpc }) => {
                 selectedNpc === quest.quest_npc_value ? (
                   <Tr key={index}>
                     <Td
+                      maxW="100px"
                       fontSize="md"
                       fontWeight={'700'}
                       borderRight="1px solid white"
@@ -78,10 +79,12 @@ const Preview = ({ selectedNpc }) => {
                       <br />({quest.quest_name_en})
                     </Td>
                     <Td
+                      maxW="200px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
                       fontWeight={'700'}
+                      whiteSpace="normal"
                     >
                       {quest.quest_objectives_kr.map((obj, oIndex) => (
                         <Text
@@ -94,10 +97,12 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
+                      maxW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
                       fontWeight={'700'}
+                      whiteSpace="normal"
                     >
                       {quest.quest_rewards_kr.map((rewards, rIndex) => (
                         <Text
@@ -110,6 +115,7 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
+                      maxW="100px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
