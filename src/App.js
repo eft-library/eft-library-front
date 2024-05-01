@@ -28,9 +28,8 @@ function App() {
           <Route path="/item/KEY" element={<PageRouter.KEY />} />
           <Route path="/item/BAG" element={<PageRouter.BAG />} />
           <Route path="/item/HEADSET" element={<PageRouter.HEADSET />} />
-          <Route path="/hideout" element={<PageRouter.HIDEOUT />} />
-          <Route path="/boss" element={<PageRouter.BOSS />} />
-          <Route path="/ballistics" element={<PageRouter.BALLISTICS />} />
+          <Route path="/HIDEOUT" element={<PageRouter.HIDEOUT />} />
+          <Route path="/BOSS" element={<PageRouter.BOSS />} />
           <Route path="*" element={<PageRouter.NOT_FOUND />} />
         </Routes>
         <PageRouter.FOOTER />
