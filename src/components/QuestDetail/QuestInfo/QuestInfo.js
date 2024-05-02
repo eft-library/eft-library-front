@@ -1,14 +1,21 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { MAIN_COLOR } from 'src/utils/colorConstants';
+import PropTypes from 'prop-types';
 
-const QuestInfo = () => {
+const QuestInfo = ({ quest }) => {
+  console.log(quest);
   return (
     <Box justifyContent="center" alignItems={'center'}>
       <Box
-        w="180px"
-        h="180px"
+        w="160px"
+        h="160px"
         backgroundColor={'white'}
         color={'white'}
-        //   backgroundImage={`url(${process.env.REACT_APP_NAS_URL + npcItem.npc_img_path})`}
+        backgroundImage={`url(${process.env.REACT_APP_NAS_URL + quest.npc_img_path})`}
+        backgroundRepeat={'no-repeat'}
+        backgroundSize={'cover'}
+        outline={'4px solid'}
+        outlineColor={MAIN_COLOR.MAIN_WHITE}
         borderRadius={'lg'}
       />
       <Text
@@ -18,7 +25,7 @@ const QuestInfo = () => {
         fontWeight={'700'}
         fontSize="lg"
       >
-        슈팅캔
+        {quest.quest_name_kr}
       </Text>
       <Text
         color={'white'}
@@ -26,7 +33,7 @@ const QuestInfo = () => {
         fontWeight={'700'}
         fontSize="lg"
       >
-        (Shooting Cans)
+        {quest.quest_name_en}
       </Text>
       <Text
         color={'white'}
@@ -35,7 +42,7 @@ const QuestInfo = () => {
         fontSize="md"
         fontWeight={'600'}
       >
-        ✅ Kappa
+        {quest.quest_required_kappa ? '✅' : '❌'}&nbsp;&nbsp;&nbsp;Kappa
       </Text>
       <Flex
         display={'flex'}
@@ -91,6 +98,26 @@ const QuestInfo = () => {
       </Flex>
     </Box>
   );
+};
+
+QuestInfo.propTypes = {
+  // quest: PropTypes.objectOf(
+  //   PropTypes.shape({
+  //     quest_guide: PropTypes.string,
+  //     quest_id: PropTypes.number,
+  //     quest_name_en: PropTypes.string,
+  //     quest_name_kr: PropTypes.string,
+  //     quest_npc_value: PropTypes.string,
+  //     quest_objectives_en: PropTypes.arrayOf(PropTypes.string),
+  //     quest_objectives_kr: PropTypes.arrayOf(PropTypes.string),
+  //     quest_order: PropTypes.number,
+  //     quest_required_kappa: PropTypes.bool,
+  //     quest_rewards_en: PropTypes.arrayOf(PropTypes.string),
+  //     quest_rewards_kr: PropTypes.arrayOf(PropTypes.string),
+  //     quest_update_time: PropTypes.string,
+  //   }),
+  // ),
+  quest: PropTypes.object,
 };
 
 export default QuestInfo;

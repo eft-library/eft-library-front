@@ -5,6 +5,7 @@ const API_PATH = {
   GET_MAP: '/api/map/info',
   GET_NPC: '/api/quest/npc',
   GET_ALL_QUEST: '/api/quest/all',
+  GET_QUEST: '/api/quest/detail/',
 };
 
 export default API_PATH;

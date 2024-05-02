@@ -51,3 +51,28 @@ export const useGetAllQuest = () => {
 
   return { allQuest, loading };
 };
+
+export const useGetQuest = (questId) => {
+  const [quest, setQuest] = useState(null);
+  const [loading, setLoading] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await API.get(API_PATH.GET_QUEST + questId);
+        const responseData = response.data.data;
+        setQuest(responseData);
+        setLoading(false);
+      } catch (error) {
+        console.log('Error fetching quest data:', error);
+        setLoading(false);
+      }
+    };
+
+    if (quest === null) {
+      fetchData();
+    }
+  }, [quest]);
+
+  return { quest, loading };
+};

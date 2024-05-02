@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
+import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const Preview = ({ selectedNpc }) => {
   const { allQuest, loading } = hooks.useGetAllQuest();
@@ -74,9 +75,15 @@ const Preview = ({ selectedNpc }) => {
                       borderRight="1px solid white"
                       color={'#FFA34E'}
                       textAlign={'center'}
+                      cursor={'pointer'}
+                      _hover={{ color: MAP_COLOR.MAP_WHITE }}
+                      onClick={() =>
+                        window.open(`/quest/detail/${quest.quest_id}`, '_blank')
+                      }
                     >
                       {quest.quest_name_kr}
-                      <br />({quest.quest_name_en})
+                      <br />
+                      {quest.quest_name_en}
                     </Td>
                     <Td
                       maxW="280px"

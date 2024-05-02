@@ -3,10 +3,14 @@ import { MAP_COLOR } from 'src/utils/colorConstants';
 import { useParams } from 'react-router-dom';
 import QuestInfo from 'src/components/QuestDetail/QuestInfo/QuestInfo';
 import QuestContents from 'src/components/QuestDetail/QuestContents/QuestContents';
+import hooks from 'src/hooks/hooks';
 
 const QuestDetail = () => {
   const params = useParams();
-  console.log(params.questId);
+  const { quest, loading } = hooks.useGetQuest(params.questId);
+
+  if (!quest || loading) return null;
+
   return (
     <Box
       className="Main"
@@ -41,8 +45,8 @@ const QuestDetail = () => {
           mb={'40px'}
           mt={'40px'}
         >
-          <QuestInfo />
-          <QuestContents />
+          <QuestInfo quest={quest} />
+          <QuestContents quest={quest} />
         </Flex>
       </Flex>
     </Box>
