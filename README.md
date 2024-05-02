@@ -31,15 +31,15 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 25. npm install react-youtube
 26. npm i @react-hook/window-size
 
+## 끝난 일
+
 ## 할 일
 
 abortController
-wasd 카메라 이동 - 버그 잡아야지
+wasd 카메라 이동 - 버그 잡기
 아이템 필터 - 리스트에 없는 건 필터에서 없애기
-퀘스트 상세 페이지 만들기 - 가이드는 블로그 형태(wyswig)
 아이템 이동시 스크롤 위치 조정하기
-quest detail api 연동하기
-저장한 react quill data 화면에서 볼 수 있게 하기
+tarkov api 연동하기
 
 Dev
 
