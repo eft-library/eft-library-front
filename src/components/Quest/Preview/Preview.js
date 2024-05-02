@@ -68,7 +68,7 @@ const Preview = ({ selectedNpc }) => {
                 selectedNpc === quest.quest_npc_value ? (
                   <Tr key={index}>
                     <Td
-                      maxW="100px"
+                      maxW="160px"
                       fontSize="md"
                       fontWeight={'700'}
                       borderRight="1px solid white"
@@ -79,7 +79,7 @@ const Preview = ({ selectedNpc }) => {
                       <br />({quest.quest_name_en})
                     </Td>
                     <Td
-                      maxW="200px"
+                      maxW="280px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
@@ -97,7 +97,7 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      maxW="300px"
+                      maxW="280px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
@@ -115,10 +115,9 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      maxW="100px"
+                      width={'30px'}
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={'white'}
                       textAlign={'center'}
                       fontWeight={'700'}
                     >
