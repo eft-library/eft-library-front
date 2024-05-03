@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import NPC from 'src/components/Quest/NPC/NPC';
 import Preview from 'src/components/Quest/Preview/Preview';
 import 'src/components/Quest/Quest.css';
+import { useQuestStore } from 'src/config/store';
 
 const Quest = () => {
-  const [selectedNpc, setSelectedNpc] = useState(null);
+  const { npcId, setNpcId } = useQuestStore();
 
   const onClickNpc = (npcValue) => {
-    setSelectedNpc(npcValue);
+    setNpcId(npcValue);
   };
 
   return (
@@ -50,8 +50,8 @@ const Quest = () => {
             퀘스트
           </Heading>
         </Flex>
-        <NPC selectedNpc={selectedNpc} onClickNpc={onClickNpc} />
-        <Preview selectedNpc={selectedNpc} />
+        <NPC selectedNpc={npcId} onClickNpc={onClickNpc} />
+        <Preview selectedNpc={npcId} />
       </Flex>
     </Box>
   );

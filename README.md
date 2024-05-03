@@ -12,7 +12,7 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 6. csr
 7. chakra ui - design
 8. axios - react => fastapi
-9. usestate, usecontext - 상태관리
+9. npm i zustand - 상태관리
 10. react-query - 캐시와 데이터 최신화 => 필요하면 도입
 11. react-query-auth - 회원 가입이 생기면 도입
 12. react-hook-from - 사용자 입력 받는 form이 생기면 도입하자
@@ -30,8 +30,6 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 24. npm install slick-carousel
 25. npm install react-youtube
 26. npm i @react-hook/window-size
-
-## 끝난 일
 
 ## 할 일
 

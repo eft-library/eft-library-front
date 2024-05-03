@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { Link } from 'react-router-dom';
 
 const Preview = ({ selectedNpc }) => {
   const { allQuest, loading } = hooks.useGetAllQuest();
@@ -69,21 +69,21 @@ const Preview = ({ selectedNpc }) => {
                 selectedNpc === quest.quest_npc_value ? (
                   <Tr key={index}>
                     <Td
-                      maxW="160px"
                       fontSize="md"
                       fontWeight={'700'}
                       borderRight="1px solid white"
                       color={'#FFA34E'}
                       textAlign={'center'}
                       cursor={'pointer'}
-                      _hover={{ color: MAP_COLOR.MAP_WHITE }}
-                      onClick={() =>
-                        window.open(`/quest/detail/${quest.quest_id}`, '_blank')
-                      }
+                      _hover={{ color: '#EFBE85' }}
                     >
-                      {quest.quest_name_kr}
+                      <Link to={`/quest/detail/${quest.quest_id}`}>
+                        {quest.quest_name_kr}
+                      </Link>
                       <br />
-                      {quest.quest_name_en}
+                      <Link to={`/quest/detail/${quest.quest_id}`}>
+                        {quest.quest_name_en}
+                      </Link>
                     </Td>
                     <Td
                       maxW="280px"
@@ -98,7 +98,7 @@ const Preview = ({ selectedNpc }) => {
                           key={oIndex}
                           mb={1}
                           dangerouslySetInnerHTML={{
-                            __html: `<span class="highlight_quest">*</span>&nbsp;&nbsp;${obj}`,
+                            __html: `*&nbsp;&nbsp;${obj}`,
                           }}
                         />
                       ))}
