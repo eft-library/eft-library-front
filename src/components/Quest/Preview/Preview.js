@@ -76,6 +76,8 @@ const Preview = ({ selectedNpc }) => {
                       textAlign={'center'}
                       cursor={'pointer'}
                       _hover={{ color: '#EFBE85' }}
+                      paddingX={2}
+                      paddingY={2}
                     >
                       <Link to={`/quest/detail/${quest.quest_id}`}>
                         {quest.quest_name_kr}
@@ -92,6 +94,8 @@ const Preview = ({ selectedNpc }) => {
                       color={'white'}
                       fontWeight={'700'}
                       whiteSpace="normal"
+                      paddingX={4}
+                      paddingY={4}
                     >
                       {quest.quest_objectives_kr.map((obj, oIndex) => (
                         <Text
@@ -104,12 +108,14 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      maxW="280px"
+                      maxW="260px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
                       fontWeight={'700'}
                       whiteSpace="normal"
+                      paddingX={4}
+                      paddingY={4}
                     >
                       {quest.quest_rewards_kr.map((rewards, rIndex) => (
                         <Text
@@ -122,11 +128,13 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      width={'30px'}
-                      fontSize="md"
+                      width={'20px'}
+                      fontSize="lg"
                       borderRight="1px solid white"
                       textAlign={'center'}
                       fontWeight={'700'}
+                      paddingX={2}
+                      paddingY={2}
                     >
                       <Text
                         color={
