@@ -14,13 +14,12 @@ const ThreeView = ({ map, viewItemList }) => {
 
   return (
     <Canvas
-      camera={{ position: [0, 30, 30] }}
+      camera={{ position: [0, 60, 0] }}
       style={{
         backgroundColor: MAP_COLOR.MAP_THREE_BACKGROUND,
         height: '100vh',
       }}
     >
-      <axesHelper scale={10} />
       <ExtendedOrbitControls />
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
