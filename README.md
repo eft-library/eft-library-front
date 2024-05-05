@@ -24,12 +24,11 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 18. npm i downshift
 19. npm install prop-types
 20. AbortController
-21. npm install react-svg-pan-zoom
-22. npm install react-quill
+21. npm i react-zoom-pan-pinch
+22. npm i @react-hook/window-size
 23. npm i react-slick
 24. npm install slick-carousel
 25. npm install react-youtube
-26. npm i @react-hook/window-size
 
 ## 할 일
 

@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/itemConstants';
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
  */
-export const useItemFilter = () => {
+export const useItemFilter = (mapItem) => {
   const [viewItemList, setViewItemList] = useState(ALL_VALUE_LIST);
+  useEffect(() => {
+    if (mapItem) {
+      const valuesSet = new Set();
+      mapItem.forEach((item) => {
+        valuesSet.add(item.childValue);
+        valuesSet.add(item.motherValue);
+      });
+
+      // Set 객체를 배열로 변환합니다.
+      const valuesList = [...valuesSet];
+      setViewItemList(valuesList);
+    }
+  }, [mapItem]);
 
   /**
    * 아이템 클릭 이벤트
@@ -24,7 +37,15 @@ export const useItemFilter = () => {
    * 아이템 전체 선택 또는 해제
    */
   const onClickAllItem = (isAll) => {
-    setViewItemList(isAll ? [] : ALL_VALUE_LIST);
+    const valuesSet = new Set();
+    mapItem.forEach((item) => {
+      valuesSet.add(item.childValue);
+      valuesSet.add(item.motherValue);
+    });
+
+    // Set 객체를 배열로 변환합니다.
+    const valuesList = [...valuesSet];
+    setViewItemList(isAll ? [] : valuesList);
   };
 
   /**

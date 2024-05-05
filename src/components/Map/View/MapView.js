@@ -6,15 +6,18 @@ import MapSelector from 'src/components/Map/Selector/MapSelector';
 import ThreeView from 'src/components/Map/View/ThreeView';
 import JpgView from 'src/components/Map/View/JpgView';
 import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
-import PropTypes from 'prop-types';
+import ItemSelector from 'src/components/Map/Selector/ItemSelector';
 import hooks from 'src/hooks/hooks';
 import MapViewSkeleton from './MapViewSkeleton';
 
-const MapView = ({ viewItemList }) => {
+const MapView = () => {
   const params = useParams();
   const { map, loading } = hooks.useGetAllMap();
   const [mapData, setMapData] = useState(null);
   const [subMap, setSubMap] = useState(null);
+  const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
+    mapData ? mapData.map_jpg_item_path : null,
+  );
 
   useEffect(() => {
     if (map) {
@@ -38,6 +41,14 @@ const MapView = ({ viewItemList }) => {
 
   return (
     <>
+      {viewItemList && (
+        <ItemSelector
+          originItemList={mapData.map_jpg_item_path}
+          viewItemList={viewItemList}
+          onClickItem={onClickItem}
+          onClickAllItem={onClickAllItem}
+        />
+      )}
       <MapSelector map={map} />
       <Box
         className="CenterBox"
@@ -72,10 +83,6 @@ const MapView = ({ viewItemList }) => {
       </Box>
     </>
   );
-};
-
-MapView.propTypes = {
-  viewItemList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default MapView;

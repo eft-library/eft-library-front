@@ -1,13 +1,9 @@
 import React from 'react';
-import hooks from 'src/hooks/hooks';
 import MapView from 'src/components/Map/View/MapView';
-import ItemSelector from 'src/components/Map/Selector/ItemSelector';
 import { Flex, Box } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 
 const Map = () => {
-  const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter();
-
   return (
     <Box
       className="Map"
@@ -34,12 +30,7 @@ const Map = () => {
         borderColor={MAP_COLOR.MAP_LIGHT_GRAY}
         borderRadius={'lg'}
       >
-        <MapView viewItemList={viewItemList} />
-        <ItemSelector
-          viewItemList={viewItemList}
-          onClickItem={onClickItem}
-          onClickAllItem={onClickAllItem}
-        />
+        <MapView />
       </Flex>
     </Box>
   );
