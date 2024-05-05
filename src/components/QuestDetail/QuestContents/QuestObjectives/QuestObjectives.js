@@ -17,7 +17,7 @@ const QuestObjectives = ({ quest }) => {
             fontWeight={700}
             fontSize="lg"
             dangerouslySetInnerHTML={{
-              __html: `<span class="highlight_quest">*</span>&nbsp;&nbsp;${objectives}`,
+              __html: `*&nbsp;&nbsp;${objectives}`,
             }}
           />
         ))}

@@ -1,22 +1,34 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { UncontrolledReactSVGPanZoom, TOOL_PAN } from 'react-svg-pan-zoom';
 import { useWindowSize } from '@react-hook/window-size';
 import { MAP_COLOR } from 'src/utils/colorConstants';
 import { DynamicJpgSVG } from 'src/utils/svg/DynamicSVG';
 import { ALL_ITEM } from 'src/utils/itemConstants';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const JpgView = ({ map, viewItemList }) => {
   const [width, height] = useWindowSize({
     initialWidth: 0,
     initialHeight: 0,
   });
-  const Viewer = useRef(null);
 
-  useEffect(() => {
-    Viewer.current.fitToViewer();
-  }, []);
+  const handleClick = (e) => {
+    // SVG 요소 가져오기
+    const svg = e.currentTarget;
+
+    // SVG 요소의 위치와 크기 얻기
+    const svgRect = svg.getBoundingClientRect();
+
+    // 클릭한 위치의 x와 y 좌표 (브라우저 창 기준)
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    // SVG 요소 내에서의 상대적인 x와 y 좌표 계산
+    const svgX = clientX - svgRect.left;
+    const svgY = clientY - svgRect.top;
+
+    console.log(`SVG 기준의 클릭한 위치의 x 좌표: ${svgX}, y 좌표: ${svgY}`);
+  };
 
   if (!map) return null;
 
@@ -29,30 +41,39 @@ const JpgView = ({ map, viewItemList }) => {
       alignItems={'center'}
       justifyContent={'center'}
     >
-      <UncontrolledReactSVGPanZoom
-        background={MAP_COLOR.MAP_THREE_BACKGROUND}
-        onClick={(e) => console.log(e.x, e.y)}
-        ref={Viewer}
-        width={width * 0.57}
-        height={height * 0.5}
-        defaultTool={TOOL_PAN}
-        SVGBackground={MAP_COLOR.MAP_THREE_BACKGROUND}
+      <TransformWrapper
+        initialScale={1}
+        initialPositionX={200}
+        initialPositionY={100}
+        minScale={0.5}
+        wheel={{ disabled: true }}
       >
-        <svg width={617} height={316} fill={MAP_COLOR.MAP_THREE_BACKGROUND}>
-          <image xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path} />
-          {map.map_jpg_item_path.map(
-            (item, index) =>
-              viewItemList.includes(ALL_ITEM[item.childValue]) && (
-                <DynamicJpgSVG
-                  key={index}
-                  svgValue={item.childValue}
-                  x={item.x}
-                  y={item.y}
-                />
-              ),
-          )}
-        </svg>
-      </UncontrolledReactSVGPanZoom>
+        <TransformComponent>
+          <svg
+            width={width}
+            height={height / 1.3}
+            fill={MAP_COLOR.MAP_THREE_BACKGROUND}
+            onClick={handleClick}
+          >
+            <image
+              xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path}
+              width="100%"
+              height="100%"
+            />
+            {map.map_jpg_item_path.map(
+              (item, index) =>
+                viewItemList.includes(ALL_ITEM[item.childValue]) && (
+                  <DynamicJpgSVG
+                    key={index}
+                    svgValue={item.childValue}
+                    x={item.x}
+                    y={item.y}
+                  />
+                ),
+            )}
+          </svg>
+        </TransformComponent>
+      </TransformWrapper>
     </Box>
   );
 };
