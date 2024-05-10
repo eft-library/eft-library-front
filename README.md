@@ -29,12 +29,14 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 23. npm i react-slick
 24. npm install slick-carousel
 25. npm install react-youtube
+26. npm i react-photoswipe-gallery
 
 ## 할 일
 
 abortController
 wasd 버그 잡기
-아이템 필터 - 리스트에 없는 건 필터에서 없애기
+
+2d 팝업으로 커지는 거 만들어 두었음, main image slider 확인
 
 ## 내일
 

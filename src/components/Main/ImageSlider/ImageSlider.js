@@ -5,6 +5,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import hooks from 'src/hooks/hooks';
 import ImageSliderSkeleton from 'src/components/Main/ImageSlider/ImageSliderSkeleton';
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 
 const ImageSlider = () => {
   const { map, loading } = hooks.useGetAllMap();
@@ -45,6 +47,24 @@ const ImageSlider = () => {
           ))}
         </Slider>
       </div>
+      <Gallery>
+        <Box boxSize="sm" border={'1px'} borderColor={'white'} height={'100%'}>
+          <Item
+            original={process.env.REACT_APP_NAS_URL + map[0].map_main_image}
+            thumbnail={process.env.REACT_APP_NAS_URL + map[0].map_main_image}
+            width="1024"
+            height="768"
+          >
+            {({ ref, open }) => (
+              <img
+                ref={ref}
+                onClick={open}
+                src={process.env.REACT_APP_NAS_URL + map[0].map_main_image}
+              />
+            )}
+          </Item>
+        </Box>
+      </Gallery>
     </div>
   );
 };
