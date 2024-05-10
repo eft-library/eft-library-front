@@ -13,7 +13,7 @@ import HeadWear from 'src/components/Item/HeadWear/HeadWear';
 import Medical from 'src/components/Item/Medical/Medical';
 import Rig from 'src/components/Item/Rig/Rig';
 import Vest from 'src/components/Item/Vest/Vest';
-import Weapon from 'src/components/Item/Weapon/Item';
+import Weapon from 'src/components/Weapon/Weapon';
 import Quest from 'src/components/Quest/Quest';
 import QuestDetail from 'src/components/QuestDetail/QuestDetail';
 import Key from 'src/components/Item/Key/Key';
