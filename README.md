@@ -33,21 +33,13 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 
 ## 할 일
 
+tarkov api 연동하기
+상단 nav 바 link 연동
+보스 목록 페이지 DB 설계 및 페이지 구현
+지도 디자인 DB 설계 및 페이지 구현 => 현재 지도 페이지 변경 해야 함
+무기 페이지 DB 설계 및 페이지 구현
 abortController
 wasd 버그 잡기
-
-2d 팝업으로 커지는 거 만들어 두었음, main image slider 확인
-
-## 내일
-
-airflow 구축 및 적용
-tarkov api 연동하기 - 수직 및 수평 반동, 인체공학 데이터 가져오는 방법 찾기
-
-## 기획 대기
-
-보스 목록 페이지 DB 설계 및 페이지 구현
-지도 디자인 DB 설계 및 페이지 구현
-지도 상세 페이지 만들면 현재 지도 페이지로 변경 => 지금 페이지는 3d 페이지로 변경 - 메인 페이지랑, 상세 페이지에서 클릭으로만 이동 가능
 
 Dev
 
