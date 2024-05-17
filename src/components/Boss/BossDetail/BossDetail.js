@@ -1,36 +1,25 @@
 import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
 
-const WeaponDetail = () => {
-  const t = [
-    '사진',
-    '이름',
-    '탄창',
-    '발사모드',
-    '발사속도',
-    '인체공학',
-    '수평반동',
-    '수직반동',
-  ];
+const BossDetail = () => {
+  const t = ['사진', '이름', '소속', '위치', '스폰 확률', '피통', '추종자'];
   const w = [
     {
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrOGx2G_D3vX8SG9gqO7QQS1_cVocVgnd5r7TVZwj4FA&s',
-      name: '9A-91',
-      magazine: '9x39mm',
-      fireMode: '단발연사',
-      fireSpeed: 900,
-      ergonomics: 69,
-      hRecoil: 234,
-      vRecoil: 90,
+      img: 'https://i.namu.wiki/i/UifEv197Swv_tuhQI7M2LI9sdGzVdlSt65n-OJf9yKccpFinxPb0T-c_eHFQSCEi2iICW2dQSodfASyil90X-g.webp',
+      name: '르살라',
+      magazine: 'Scavs',
+      fireMode: '세관',
+      fireSpeed: 35,
+      ergonomics: 752,
+      hRecoil: '중무장 경비병 4명',
     },
     {
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrOGx2G_D3vX8SG9gqO7QQS1_cVocVgnd5r7TVZwj4FA&s',
-      name: '9A-91',
-      magazine: '9x39mm',
-      fireMode: '단발연사',
-      fireSpeed: 900,
-      ergonomics: 69,
-      hRecoil: 234,
-      vRecoil: 90,
+      img: 'https://i.namu.wiki/i/UifEv197Swv_tuhQI7M2LI9sdGzVdlSt65n-OJf9yKccpFinxPb0T-c_eHFQSCEi2iICW2dQSodfASyil90X-g.webp',
+      name: '르살라',
+      magazine: 'Scavs',
+      fireMode: '세관',
+      fireSpeed: 35,
+      ergonomics: 752,
+      hRecoil: '중무장 경비병 4명',
     },
   ];
 
@@ -56,7 +45,7 @@ const WeaponDetail = () => {
       flexDirection={'column'}
     >
       <SimpleGrid
-        columns={[2, null, 8]}
+        columns={[2, null, 7]}
         spacing={2}
         width={'90%'}
         outline={'1px solid'}
@@ -73,7 +62,7 @@ const WeaponDetail = () => {
       </SimpleGrid>
       {w.map((item, index) => (
         <SimpleGrid
-          columns={[2, null, 8]}
+          columns={[2, null, 7]}
           spacing={2}
           width={'90%'}
           outline={'1px solid'}
@@ -91,4 +80,4 @@ const WeaponDetail = () => {
   );
 };
 
-export default WeaponDetail;
+export default BossDetail;
