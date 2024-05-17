@@ -40,6 +40,7 @@ tarkov api 연동하기
 무기 페이지 DB 설계 및 페이지 구현
 abortController
 wasd 버그 잡기
+집에서 테스트
 
 Dev
 
