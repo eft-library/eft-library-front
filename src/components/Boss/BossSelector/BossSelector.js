@@ -4,6 +4,8 @@ import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
 const BossSelector = () => {
+  // boss 정보만 가져오는 통신 사용
+  // props로 받은 boss 값으로 적용
   const weap = [
     '르살라',
     '타길라',

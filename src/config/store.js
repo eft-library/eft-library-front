@@ -14,6 +14,19 @@ export const useQuestStore = create(
   ),
 );
 
+export const useBossStore = create(
+  persist(
+    (set) => ({
+      bossId: 'RESHALA',
+      setNpcId: (boss) => set(() => ({ bossId: boss })),
+    }),
+    {
+      name: 'boss-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);
+
 export const useScrollStore = create(
   persist(
     (set) => ({

@@ -1,5 +1,4 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { Flex } from '@chakra-ui/react';
 import NPC from 'src/components/Quest/NPC/NPC';
 import Preview from 'src/components/Quest/Preview/Preview';
 import 'src/components/Quest/Quest.css';
