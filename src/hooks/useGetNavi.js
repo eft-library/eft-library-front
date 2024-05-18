@@ -25,20 +25,30 @@ export const useGetNavi = () => {
     }
   }, [navi]); // navi가 변경될 때만 useEffect 재실행
 
-  const infoMenu = navi
-    ? [
-        ...navi.filter(
-          (menu) =>
-            menu.main_menu_value !== 'ITEM' &&
-            menu.main_menu_value !== 'INFO' &&
-            menu.main_menu_value !== 'MAP',
-        ),
-        ...(navi.find((menu) => menu.main_menu_value === 'ITEM')?.sub_menus ||
-          []),
-        ...(navi.find((menu) => menu.main_menu_value === 'INFO')?.sub_menus ||
-          []),
-      ]
-    : [];
+  return { navi, loading };
+};
 
-  return { navi, loading, infoMenu };
+export const useGetInfo = () => {
+  const [mainInfo, setMainInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await API.get(API_PATH.GET_MAIN_INFO);
+        const responseData = response.data.data;
+        setMainInfo(responseData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching main info data:', error);
+        setLoading(false);
+      }
+    };
+
+    if (mainInfo === null) {
+      fetchData();
+    }
+  }, [mainInfo]);
+
+  return { mainInfo, loading };
 };

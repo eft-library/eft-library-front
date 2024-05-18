@@ -5,7 +5,7 @@ import hooks from 'src/hooks/hooks';
 import InfoSkeleton from 'src/components/Main/Info/InfoSkeleton';
 
 const Info = () => {
-  const { loading, infoMenu } = hooks.useGetNavi();
+  const { loading, mainInfo } = hooks.useGetInfo();
 
   const handleHover = (e) => {
     e.target.style.transform = 'scale(1.1)'; // 이미지 확대
@@ -17,7 +17,7 @@ const Info = () => {
     e.target.style.opacity = '1'; // 이미지 불투명도 원래대로
   };
 
-  if (loading) return <InfoSkeleton />;
+  if (!mainInfo || loading) return <InfoSkeleton />;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -26,11 +26,8 @@ const Info = () => {
         templateRows="repeat(4, 1fr)"
         gap={12}
       >
-        {infoMenu.map((map, index) => (
-          <Link
-            to={index === 0 ? map.main_menu_link : map.sub_menu_link}
-            key={index}
-          >
+        {mainInfo.map((map, index) => (
+          <Link to={map.info_link} key={index}>
             <GridItem
               w="120px"
               h="120px"
@@ -41,18 +38,14 @@ const Info = () => {
               justifyContent="center"
               alignItems="center"
               cursor={'pointer'}
-              backgroundImage={
-                index === 0
-                  ? `url(${process.env.REACT_APP_NAS_URL + map.main_menu_image})`
-                  : `url(${process.env.REACT_APP_NAS_URL + map.sub_menu_image})`
-              }
+              backgroundImage={`url(${process.env.REACT_APP_NAS_URL + map.info_image})`}
               backgroundSize={'cover'}
               backgroundPosition={'center'}
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
             <Text color={MAIN_COLOR.MAIN_WHITE} textAlign={'center'} mt={'2'}>
-              {index === 0 ? map.main_menu_kr_name : map.sub_menu_kr_name}
+              {map.info_kr_name}
             </Text>
           </Link>
         ))}
