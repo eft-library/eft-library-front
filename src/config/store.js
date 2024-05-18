@@ -40,17 +40,3 @@ export const useBossStore = create(
     },
   ),
 );
-
-export const useScrollStore = create(
-  persist(
-    (set) => ({
-      scrollY: 0, // 초기 스크롤 위치
-      scrollX: 0,
-      setScrollY: (value) => set({ scrollY: value }), // 스크롤 위치 업데이트 함수
-      setScrollX: (value) => set({ scrollX: value }), // 스크롤 위치 업데이트 함수
-    }),
-    {
-      name: 'scroll-position', // 지속성 이름
-    },
-  ),
-);
