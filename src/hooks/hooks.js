@@ -4,6 +4,7 @@ import { useOrbitReset } from 'src/hooks/useOrbitReset';
 import { useGetNavi } from 'src/hooks/useGetNavi';
 import { useGetAllMap, useLoadMap, useGetMap } from 'src/hooks/useMap';
 import { useGetNpc, useGetAllQuest, useGetQuest } from 'src/hooks/useQuest';
+import { useGetAllWeapon } from 'src/hooks/useWeapon';
 import { useScroll } from 'src/hooks/useScroll';
 
 const hooks = {
@@ -18,6 +19,7 @@ const hooks = {
   useGetAllQuest: useGetAllQuest,
   useGetQuest: useGetQuest,
   useScroll: useScroll,
+  useGetAllWeapon: useGetAllWeapon,
 };
 
 export default hooks;

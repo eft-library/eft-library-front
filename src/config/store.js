@@ -14,6 +14,20 @@ export const useQuestStore = create(
   ),
 );
 
+export const useWeaponStore = create(
+  persist(
+    (set) => ({
+      weaponCategory: 'ALL',
+      setWeaponCategory: (category) =>
+        set(() => ({ weaponCategory: category })),
+    }),
+    {
+      name: 'weapon-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);
+
 export const useBossStore = create(
   persist(
     (set) => ({

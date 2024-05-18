@@ -6,6 +6,7 @@ const API_PATH = {
   GET_NPC: '/api/quest/npc',
   GET_ALL_QUEST: '/api/quest/all',
   GET_QUEST: '/api/quest/detail/',
+  GET_ALL_WEAPON: '/api/weapon/all',
 };
 
 export default API_PATH;

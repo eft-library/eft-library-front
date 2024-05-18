@@ -1,25 +1,9 @@
 import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
 import { MAIN_COLOR, MAP_COLOR } from 'src/utils/colorConstants';
-import hooks from 'src/hooks/hooks';
+import { WEAPON_TYPE } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 
-const WeaponSelector = () => {
-  const weap = [
-    '전체',
-    '카빈 소총',
-    '돌격 소총',
-    '경기관총',
-    '기관단총',
-    '볼트액션 소총',
-    '지정사수 소총',
-    '산탄총',
-    '유탄발사기',
-    '권총',
-    '거치식 화기',
-    '근접 무기',
-    '투척 무기',
-    '특수 무기',
-  ];
+const WeaponSelector = ({ category, onClickCategory }) => {
   return (
     <Box
       display="flex"
@@ -29,8 +13,12 @@ const WeaponSelector = () => {
       mt={10}
     >
       <SimpleGrid columns={[2, null, 7]} spacing={4}>
-        {weap.map((item, index) => (
-          <Flex flexDirection={'column'} key={index}>
+        {WEAPON_TYPE.map((item, index) => (
+          <Flex
+            flexDirection={'column'}
+            key={index}
+            onClick={() => onClickCategory(item.value)}
+          >
             <Box
               cursor={'pointer'}
               w="110px"
@@ -40,9 +28,10 @@ const WeaponSelector = () => {
               outlineColor={MAIN_COLOR.MAIN_WHITE}
               borderRadius={'lg'}
               _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
+              bg={category === item.value ? MAP_COLOR.MAP_LIGHT_GRAY : ''}
             >
               <Text color={'white'} textAlign={'center'} mt={'2'}>
-                {item}
+                {item.desc_kr}
               </Text>
             </Box>
           </Flex>
@@ -50,6 +39,11 @@ const WeaponSelector = () => {
       </SimpleGrid>
     </Box>
   );
+};
+
+WeaponSelector.propTypes = {
+  category: PropTypes.string,
+  onClickCategory: PropTypes.func,
 };
 
 export default WeaponSelector;
