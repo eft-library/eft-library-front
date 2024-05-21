@@ -20,7 +20,7 @@ const Preview = ({ selectedNpc }) => {
 
   return (
     <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
-      <TableContainer border="1px solid" borderColor="white" width={'95%'}>
+      <TableContainer border="1px solid" borderColor="white">
         <Table variant="simple" size={'lg'}>
           <Thead>
             <Tr>
@@ -88,7 +88,8 @@ const Preview = ({ selectedNpc }) => {
                       </Link>
                     </Td>
                     <Td
-                      maxW="280px"
+                      maxW="400px"
+                      minW="320px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
@@ -108,7 +109,8 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      maxW="260px"
+                      maxW="380px"
+                      minW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
                       color={'white'}
