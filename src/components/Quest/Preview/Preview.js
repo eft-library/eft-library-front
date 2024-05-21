@@ -19,7 +19,12 @@ const Preview = ({ selectedNpc }) => {
   if (!allQuest || loading) return null;
 
   return (
-    <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
+    <Box
+      display={'flex'}
+      alignItems={'center'}
+      justifyContent={'center'}
+      width={'95%'}
+    >
       <TableContainer border="1px solid" borderColor="white">
         <Table variant="simple" size={'lg'}>
           <Thead>
