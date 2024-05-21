@@ -28,7 +28,7 @@ const RenderStationary = ({ stationaryList, category }) => {
             mb={4}
             key={index}
           >
-            <Image src={item.weapon_img} />
+            <Image src={process.env.REACT_APP_NAS_URL + item.weapon_img} />
             <TextValue value={item.weapon_short_name} />
             <TextValue value={item.weapon_carliber} />
             <Box
