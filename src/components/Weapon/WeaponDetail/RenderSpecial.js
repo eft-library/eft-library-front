@@ -4,18 +4,15 @@ import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 
 const RenderSpecial = ({ specialList, category }) => {
-  // 카테고리 필터링 조건 변수
-  const isValidCategory = category === 'Special weapons' || category === 'ALL';
-
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
     const isGeneralCategory = item.weapon_category === 'Special weapons';
     const isMatchingCategory =
-      item.weapon_category === category || category === 'ALL';
+      item.weapon_category === 'Special weapons' || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
 
-  return isValidCategory ? (
+  return (
     <>
       <SimpleGrid
         columns={[2, null, 8]}
@@ -71,7 +68,7 @@ const RenderSpecial = ({ specialList, category }) => {
         ) : null,
       )}
     </>
-  ) : null;
+  );
 };
 
 RenderSpecial.propTypes = {

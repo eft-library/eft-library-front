@@ -6,6 +6,7 @@ import RenderSpecial from './RenderSpecial';
 import RenderThrowable from './RenderThrowable';
 import RenderStationary from './RenderStationary';
 import { Box } from '@chakra-ui/react';
+import { GUN_CATEGORY_LIST } from 'src/utils/weaponConstants';
 
 const WeaponDetail = ({ category }) => {
   const { weapon, loading } = hooks.useGetAllWeapon();
@@ -20,11 +21,19 @@ const WeaponDetail = ({ category }) => {
       width={'100%'}
       flexDirection={'column'}
     >
-      <RenderWeapon gunList={weapon.gun} category={category} />
-      <RenderSpecial specialList={weapon.gun} category={category} />
+      {(category === 'ALL' || GUN_CATEGORY_LIST.includes(category)) && (
+        <RenderWeapon gunList={weapon.gun} category={category} />
+      )}
+      {(category === 'ALL' || category === 'Special weapons') && (
+        <RenderSpecial specialList={weapon.gun} category={category} />
+      )}
       <RenderStationary stationaryList={weapon.gun} category={category} />
-      <RenderKnife knifeList={weapon.knife} category={category} />
-      <RenderThrowable throwableList={weapon.throwable} category={category} />
+      {(category === 'ALL' || category === 'Knife') && (
+        <RenderKnife knifeList={weapon.knife} />
+      )}
+      {(category === 'ALL' || category === 'Throwable weapon') && (
+        <RenderThrowable throwableList={weapon.throwable} />
+      )}
     </Box>
   );
 };

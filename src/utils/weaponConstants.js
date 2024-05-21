@@ -33,7 +33,6 @@ export const GUN_CATEGORY_LIST = [
   'Shotgun',
   'Grenade launcher',
   'Handgun',
-  'Special weapons',
 ];
 
 export const WEAOPN_COLUMN = [

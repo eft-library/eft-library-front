@@ -1,22 +1,20 @@
 import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
-import { WEAOPN_COLUMN, GUN_CATEGORY_LIST } from 'src/utils/weaponConstants';
+import { WEAOPN_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 
 const RenderWeapon = ({ gunList, category }) => {
-  // 카테고리 필터링 조건 변수
-  const isValidCategory =
-    category === 'ALL' || GUN_CATEGORY_LIST.includes(category);
-
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
-    const isGeneralCategory = item.weapon_category !== 'Stationary weapons';
+    const isGeneralCategory =
+      item.weapon_category !== 'Special weapons' &&
+      item.weapon_category !== 'Stationary weapons';
     const isMatchingCategory =
       item.weapon_category === category || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
 
-  return isValidCategory ? (
+  return (
     <>
       <SimpleGrid
         columns={[2, null, 8]}
@@ -72,7 +70,7 @@ const RenderWeapon = ({ gunList, category }) => {
         ) : null,
       )}
     </>
-  ) : null;
+  );
 };
 
 RenderWeapon.propTypes = {

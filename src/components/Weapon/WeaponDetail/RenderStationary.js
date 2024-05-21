@@ -12,7 +12,7 @@ const RenderStationary = ({ stationaryList, category }) => {
   const shouldRenderWeapon = (item) => {
     const isGeneralCategory = item.weapon_category === 'Stationary weapons';
     const isMatchingCategory =
-      item.weapon_category === category || category === 'ALL';
+      item.weapon_category === 'Stationary weapons' || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
   return isValidCategory ? (
