@@ -2,6 +2,7 @@ import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
 import { WEAOPN_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
+import GridContents from './GridContents';
 
 const RenderWeapon = ({ gunList, category }) => {
   // 무기 렌더링 조건 함수
@@ -19,16 +20,23 @@ const RenderWeapon = ({ gunList, category }) => {
       <SimpleGrid
         columns={[2, null, 9]}
         spacing={2}
-        width={'90%'}
-        outline={'1px solid'}
+        width={'95%'}
+        outline={'2px solid'}
         outlineColor={'white'}
         borderRadius={'lg'}
+        boxShadow="0 0 14px rgb(202, 238, 18, 0.7)"
         p={2}
         mb={6}
       >
         {WEAOPN_COLUMN.map((item, index) => (
           <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
-            <Text color={'white'} key={index} textAlign={'center'}>
+            <Text
+              color={'white'}
+              key={index}
+              textAlign={'center'}
+              fontWeight={700}
+              textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
+            >
               {item}
             </Text>
           </GridItem>
@@ -36,19 +44,15 @@ const RenderWeapon = ({ gunList, category }) => {
       </SimpleGrid>
       {gunList.map((item, index) =>
         shouldRenderWeapon(item) ? (
-          <SimpleGrid
-            columns={[2, null, 9]}
-            spacing={2}
-            width={'90%'}
-            outline={'1px solid'}
-            outlineColor={'white'}
-            borderRadius={'lg'}
-            p={2}
-            mb={4}
-            key={index}
-          >
+          <GridContents columnDesign={[2, null, 9]} key={index}>
             <GridItem colSpan={2}>
-              <Image src={item.weapon_img} />
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'center'}
+              >
+                <Image src={item.weapon_img} maxH={'200px'} />
+              </Box>
             </GridItem>
             <TextValue value={item.weapon_short_name} />
             <TextValue value={item.weapon_carliber} />
@@ -70,7 +74,7 @@ const RenderWeapon = ({ gunList, category }) => {
             <TextValue value={item.weapon_ergonomics} />
             <TextValue value={item.weapon_recoil_horizontal} />
             <TextValue value={item.weapon_recoil_vertical} />
-          </SimpleGrid>
+          </GridContents>
         ) : null,
       )}
     </>

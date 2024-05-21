@@ -6,15 +6,22 @@ const GridTitle = ({ columnDesign, column }) => {
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
-      width={'90%'}
-      outline={'1px solid'}
+      width={'95%'}
+      outline={'2px solid'}
       outlineColor={'white'}
       borderRadius={'lg'}
+      boxShadow="0 0 14px rgb(202, 238, 18, 0.7)"
       p={2}
       mb={6}
     >
       {column.map((item, index) => (
-        <Text color={'white'} key={index} textAlign={'center'}>
+        <Text
+          color={'white'}
+          key={index}
+          textAlign={'center'}
+          fontWeight={700}
+          textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
+        >
           {item}
         </Text>
       ))}

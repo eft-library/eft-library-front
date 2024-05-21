@@ -1,26 +1,19 @@
-import { SimpleGrid, Text, Image, Box } from '@chakra-ui/react';
+import { Text, Image, Box } from '@chakra-ui/react';
 import { KNIFE_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';
+import GridContents from './GridContents';
 
 const RenderKnife = ({ knifeList }) => {
   return (
     <>
       <GridTitle columnDesign={[2, null, 5]} column={KNIFE_COLUMN} />
       {knifeList.map((item, index) => (
-        <SimpleGrid
-          columns={[2, null, 5]}
-          spacing={2}
-          width={'90%'}
-          outline={'1px solid'}
-          outlineColor={'white'}
-          borderRadius={'lg'}
-          p={2}
-          mb={4}
-          key={index}
-        >
-          <Image src={item.knife_image} />
+        <GridContents columnDesign={[2, null, 5]} key={index}>
+          <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
+            <Image src={item.knife_image} maxH={'200px'} />
+          </Box>
           <TextValue value={item.knife_name} />
           <TextValue value={item.knife_slash_damage} />
           <TextValue value={item.knife_stab_damage} />
@@ -36,7 +29,7 @@ const RenderKnife = ({ knifeList }) => {
               {item.knife_hit_radius} m
             </Text>
           </Box>
-        </SimpleGrid>
+        </GridContents>
       ))}
     </>
   );

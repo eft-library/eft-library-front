@@ -1,8 +1,9 @@
-import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
+import { Box, Text, Image } from '@chakra-ui/react';
 import { STATIONARY_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';
+import GridContents from './GridContents';
 
 const RenderStationary = ({ stationaryList, category }) => {
   // 무기 렌더링 조건 함수
@@ -17,18 +18,17 @@ const RenderStationary = ({ stationaryList, category }) => {
       <GridTitle columnDesign={[2, null, 5]} column={STATIONARY_COLUMN} />
       {stationaryList.map((item, index) =>
         shouldRenderWeapon(item) ? (
-          <SimpleGrid
-            columns={[2, null, 5]}
-            spacing={2}
-            width={'90%'}
-            outline={'1px solid'}
-            outlineColor={'white'}
-            borderRadius={'lg'}
-            p={2}
-            mb={4}
-            key={index}
-          >
-            <Image src={process.env.REACT_APP_NAS_URL + item.weapon_img} />
+          <GridContents columnDesign={[2, null, 5]} key={index}>
+            <Box
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              <Image
+                src={process.env.REACT_APP_NAS_URL + item.weapon_img}
+                maxH={'200px'}
+              />
+            </Box>
             <TextValue value={item.weapon_short_name} />
             <TextValue value={item.weapon_carliber} />
             <Box
@@ -46,7 +46,7 @@ const RenderStationary = ({ stationaryList, category }) => {
               ))}
             </Box>
             <TextValue value={item.weapon_fire_rate} />
-          </SimpleGrid>
+          </GridContents>
         ) : null,
       )}
     </>

@@ -30,7 +30,12 @@ const WeaponSelector = ({ category, onClickCategory }) => {
               _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
               bg={category === item.value ? MAP_COLOR.MAP_LIGHT_GRAY : ''}
             >
-              <Text color={'white'} textAlign={'center'} mt={'2'}>
+              <Text
+                color={'white'}
+                textAlign={'center'}
+                mt={'2'}
+                fontWeight={700}
+              >
                 {item.desc_kr}
               </Text>
             </Box>

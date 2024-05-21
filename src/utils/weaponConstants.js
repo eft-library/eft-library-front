@@ -69,3 +69,5 @@ export const STATIONARY_COLUMN = [
   '발사모드',
   '발사 속도',
 ];
+
+export const SPECIAL_COLUMN = ['사진', '이름'];

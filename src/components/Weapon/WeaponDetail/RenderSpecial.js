@@ -1,8 +1,9 @@
-import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
-import { WEAOPN_COLUMN } from 'src/utils/weaponConstants';
+import { Image, Box } from '@chakra-ui/react';
+import { SPECIAL_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';
+import GridContents from './GridContents';
 
 const RenderSpecial = ({ specialList, category }) => {
   // 무기 렌더링 조건 함수
@@ -15,42 +16,19 @@ const RenderSpecial = ({ specialList, category }) => {
 
   return (
     <>
-      <GridTitle columnDesign={[2, null, 8]} column={WEAOPN_COLUMN} />
+      <GridTitle columnDesign={[2, null, 2]} column={SPECIAL_COLUMN} />
       {specialList.map((item, index) =>
         shouldRenderWeapon(item) ? (
-          <SimpleGrid
-            columns={[2, null, 8]}
-            spacing={2}
-            width={'90%'}
-            outline={'1px solid'}
-            outlineColor={'white'}
-            borderRadius={'lg'}
-            p={2}
-            mb={4}
-            key={index}
-          >
-            <Image src={item.weapon_img} />
-            <TextValue value={item.weapon_short_name} />
-            <TextValue value={item.weapon_carliber} />
+          <GridContents columnDesign={[2, null, 2]} key={index}>
             <Box
-              w={'100%'}
-              h={'100%'}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection={'column'}
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
             >
-              {item.weapon_modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color="white" textAlign="center">
-                  {mode}
-                </Text>
-              ))}
+              <Image src={item.weapon_img} maxH={'200px'} />
             </Box>
-            <TextValue value={item.weapon_fire_rate} />
-            <TextValue value={item.weapon_ergonomics} />
-            <TextValue value={item.weapon_recoil_horizontal} />
-            <TextValue value={item.weapon_recoil_vertical} />
-          </SimpleGrid>
+            <TextValue value={item.weapon_short_name} />
+          </GridContents>
         ) : null,
       )}
     </>

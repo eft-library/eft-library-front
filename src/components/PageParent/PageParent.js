@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/colorConstants';
+import PropTypes from 'prop-types';
 
 const PageParent = ({ children }) => {
   return (
@@ -41,6 +42,10 @@ const PageParent = ({ children }) => {
       </Flex>
     </Box>
   );
+};
+
+PageParent.propTypes = {
+  children: PropTypes.node,
 };
 
 export default PageParent;
