@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
+import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
 import { WEAOPN_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
@@ -17,7 +17,7 @@ const RenderWeapon = ({ gunList, category }) => {
   return (
     <>
       <SimpleGrid
-        columns={[2, null, 8]}
+        columns={[2, null, 9]}
         spacing={2}
         width={'90%'}
         outline={'1px solid'}
@@ -27,15 +27,17 @@ const RenderWeapon = ({ gunList, category }) => {
         mb={6}
       >
         {WEAOPN_COLUMN.map((item, index) => (
-          <Text color={'white'} key={index} textAlign={'center'}>
-            {item}
-          </Text>
+          <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
+            <Text color={'white'} key={index} textAlign={'center'}>
+              {item}
+            </Text>
+          </GridItem>
         ))}
       </SimpleGrid>
       {gunList.map((item, index) =>
         shouldRenderWeapon(item) ? (
           <SimpleGrid
-            columns={[2, null, 8]}
+            columns={[2, null, 9]}
             spacing={2}
             width={'90%'}
             outline={'1px solid'}
@@ -45,9 +47,11 @@ const RenderWeapon = ({ gunList, category }) => {
             mb={4}
             key={index}
           >
-            <Image src={item.weapon_img} bg={'white'} />
+            <GridItem colSpan={2}>
+              <Image src={item.weapon_img} />
+            </GridItem>
             <TextValue value={item.weapon_short_name} />
-            <TextValue value={item.weapon_default_ammo} />
+            <TextValue value={item.weapon_carliber} />
             <Box
               w={'100%'}
               h={'100%'}

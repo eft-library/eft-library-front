@@ -2,26 +2,12 @@ import { SimpleGrid, Text, Image, Box } from '@chakra-ui/react';
 import { THROWABLE_COLUMN } from 'src/utils/weaponConstants';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
+import GridTitle from './GridTitle';
 
 const RenderThrowable = ({ throwableList }) => {
   return (
     <>
-      <SimpleGrid
-        columns={[2, null, 5]}
-        spacing={2}
-        width={'90%'}
-        outline={'1px solid'}
-        outlineColor={'white'}
-        borderRadius={'lg'}
-        p={2}
-        mb={6}
-      >
-        {THROWABLE_COLUMN.map((item, index) => (
-          <Text color={'white'} key={index} textAlign={'center'}>
-            {item}
-          </Text>
-        ))}
-      </SimpleGrid>
+      <GridTitle columnDesign={[2, null, 5]} column={THROWABLE_COLUMN} />
       {throwableList.map((item, index) => (
         <SimpleGrid
           columns={[2, null, 5]}
@@ -34,8 +20,8 @@ const RenderThrowable = ({ throwableList }) => {
           mb={4}
           key={index}
         >
-          <Image src={item.throwable_image} bg={'white'} />
-          <TextValue value={item.throwable_name} />
+          <Image src={item.throwable_image} />
+          <TextValue value={item.throwable_short_name} />
           <Box
             w={'100%'}
             h={'100%'}

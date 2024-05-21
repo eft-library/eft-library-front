@@ -27,7 +27,9 @@ const WeaponDetail = ({ category }) => {
       {(category === 'ALL' || category === 'Special weapons') && (
         <RenderSpecial specialList={weapon.gun} category={category} />
       )}
-      <RenderStationary stationaryList={weapon.gun} category={category} />
+      {(category === 'ALL' || category === 'Stationary weapons') && (
+        <RenderStationary stationaryList={weapon.gun} category={category} />
+      )}
       {(category === 'ALL' || category === 'Knife') && (
         <RenderKnife knifeList={weapon.knife} />
       )}
