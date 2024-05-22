@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import NPC from 'src/components/Quest/NPC/NPC';
 import Preview from 'src/components/Quest/Preview/Preview';
 import 'src/components/Quest/Quest.css';
-import { useQuestStore } from 'src/config/store';
+import { useQuestStore } from 'src/stores/store';
 import SubHeader from 'src/components/SubHeader/SubHeader';
 import PageParent from 'src/components/PageParent/PageParent';
 

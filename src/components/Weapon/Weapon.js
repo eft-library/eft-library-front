@@ -2,7 +2,7 @@ import SubHeader from 'src/components/SubHeader/SubHeader';
 import PageParent from 'src/components/PageParent/PageParent';
 import WeaponSelector from 'src/components/Weapon/WeaponSelector/WeaponSelector';
 import WeaponDetail from 'src/components/Weapon/WeaponDetail/WeaponDetail';
-import { useWeaponStore } from 'src/config/store';
+import { useWeaponStore } from 'src/stores/store';
 const Weapon = () => {
   const { weaponCategory, setWeaponCategory } = useWeaponStore();
 
