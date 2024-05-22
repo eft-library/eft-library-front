@@ -4,6 +4,7 @@ import { useGetNavi, useGetInfo } from 'src/hooks/useGetNavi';
 import { useGetAllMap, useLoadMap, useGetMap } from 'src/hooks/useMap';
 import { useGetNpc, useGetAllQuest, useGetQuest } from 'src/hooks/useQuest';
 import { useGetAllWeapon } from 'src/hooks/useWeapon';
+import { useGetAllBoss } from './useBoss';
 
 const hooks = {
   useItemFilter: useItemFilter,
@@ -17,6 +18,7 @@ const hooks = {
   useGetAllQuest: useGetAllQuest,
   useGetQuest: useGetQuest,
   useGetAllWeapon: useGetAllWeapon,
+  useGetAllBoss: useGetAllBoss,
 };
 
 export default hooks;

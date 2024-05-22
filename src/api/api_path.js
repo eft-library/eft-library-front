@@ -8,6 +8,7 @@ const API_PATH = {
   GET_ALL_QUEST: '/api/quest/all',
   GET_QUEST: '/api/quest/detail/',
   GET_ALL_WEAPON: '/api/weapon/all',
+  GET_ALL_BOSS: 'api/boss/all',
 };
 
 export default API_PATH;

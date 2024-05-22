@@ -1,24 +1,8 @@
 import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
 import { MAIN_COLOR, MAP_COLOR } from 'src/utils/colorConstants';
-import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 
-const BossSelector = () => {
-  // boss 정보만 가져오는 통신 사용
-  // props로 받은 boss 값으로 적용
-  const weap = [
-    '르살라',
-    '타길라',
-    '카반',
-    '콜론테이',
-    '킬라',
-    '글루하',
-    '슈트르만',
-    '세니타',
-    '지랴키',
-    '군주',
-    '컬티스트',
-  ];
+const BossSelector = ({ bossList, bossId, onClickBoss }) => {
   return (
     <Box
       display="flex"
@@ -28,8 +12,12 @@ const BossSelector = () => {
       mt={10}
     >
       <SimpleGrid columns={[2, null, 7]} spacing={4}>
-        {weap.map((item, index) => (
-          <Flex flexDirection={'column'} key={index}>
+        {bossList.map((boss, index) => (
+          <Flex
+            flexDirection={'column'}
+            key={index}
+            onClick={() => onClickBoss(boss.boss_id)}
+          >
             <Box
               cursor={'pointer'}
               w="110px"
@@ -39,9 +27,10 @@ const BossSelector = () => {
               outlineColor={MAIN_COLOR.MAIN_WHITE}
               borderRadius={'lg'}
               _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
+              bg={bossId === boss.boss_id ? MAP_COLOR.MAP_LIGHT_GRAY : ''}
             >
               <Text color={'white'} textAlign={'center'} mt={'2'}>
-                {item}
+                {boss.boss_name_kr}
               </Text>
             </Box>
           </Flex>
@@ -49,6 +38,12 @@ const BossSelector = () => {
       </SimpleGrid>
     </Box>
   );
+};
+
+BossSelector.propTypes = {
+  bossList: PropTypes.array,
+  bossId: PropTypes.string,
+  onClickBoss: PropTypes.func,
 };
 
 export default BossSelector;
