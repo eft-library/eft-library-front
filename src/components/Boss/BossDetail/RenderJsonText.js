@@ -14,18 +14,20 @@ const RenderJsonText = ({ jsonArrayText, jatType }) => (
           key={jatIndex}
           color="white"
           textAlign="center"
-          mt={jatIndex !== 0 ? 4 : 0}
+          mt={jatIndex !== 0 ? 1 : 0}
           fontWeight={600}
         >
           {text[jatType]}
         </Text>
-        <Divider
-          mt={1}
-          w={'40%'}
-          borderColor={'white'}
-          borderWidth={'1px'}
-          borderStyle={'dashed'}
-        />
+        {jsonArrayText.length !== jatIndex + 1 && (
+          <Divider
+            mt={1}
+            w={'40%'}
+            borderColor={'white'}
+            borderWidth={'1px'}
+            borderStyle={'dashed'}
+          />
+        )}
       </>
     ))}
   </GridItem>
