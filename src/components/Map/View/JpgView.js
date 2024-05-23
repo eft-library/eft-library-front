@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { useWindowSize } from '@react-hook/window-size';
-import { MAP_COLOR } from 'src/utils/colorConstants';
-import { DynamicJpgSVG } from 'src/utils/svg/DynamicSVG';
-import { ALL_ITEM } from 'src/utils/itemConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import DynamicJpgSVG from 'src/components/ViewSVG/DynamicJpgSVG';
+import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const JpgView = ({ map, viewItemList }) => {

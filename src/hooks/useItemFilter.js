@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/itemConstants';
+import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/consts/itemConsts';
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수

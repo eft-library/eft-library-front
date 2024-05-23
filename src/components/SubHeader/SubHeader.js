@@ -1,5 +1,5 @@
 import { Heading } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const SubHeader = ({ title }) => {

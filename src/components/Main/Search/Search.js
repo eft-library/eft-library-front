@@ -1,5 +1,5 @@
 import Downshift from 'downshift';
-import { items } from 'src/utils/searchConstants';
+import { items } from 'src/utils/consts/searchConsts';
 import { useState } from 'react';
 
 const Search = () => {

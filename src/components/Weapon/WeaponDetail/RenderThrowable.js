@@ -1,5 +1,5 @@
 import { Text, Image, Box } from '@chakra-ui/react';
-import { THROWABLE_COLUMN } from 'src/utils/weaponConstants';
+import { THROWABLE_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';

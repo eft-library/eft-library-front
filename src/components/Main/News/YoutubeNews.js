@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { YOUTUBE_OPTION } from 'src/utils/libraryConstants';
+import { YOUTUBE_OPTION } from 'src/utils/consts/libraryConsts';
 import YouTube from 'react-youtube';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';

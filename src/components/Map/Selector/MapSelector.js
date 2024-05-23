@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const MapSelector = ({ map }) => {

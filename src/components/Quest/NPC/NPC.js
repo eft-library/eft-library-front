@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
-import { MAIN_COLOR, MAP_COLOR } from 'src/utils/colorConstants';
+import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 

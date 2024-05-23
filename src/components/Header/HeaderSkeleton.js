@@ -1,6 +1,6 @@
 import { Grid, GridItem, Button, Skeleton, Heading } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 
 const HeaderSkeleton = () => {
   const naviMenuSkeleton = Array.from({ length: 3 }, (_, index) => index);

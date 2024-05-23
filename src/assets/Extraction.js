@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { SVG_COLOR } from 'src/utils/colorConstants';
+import { SVG_COLOR } from 'src/utils/consts/colorConsts';
 
 export const Extraction = ({ color, width, height, opacity, x, y }) => {
   return (

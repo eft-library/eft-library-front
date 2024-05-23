@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';
 

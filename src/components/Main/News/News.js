@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/colorConstants';
+import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import YoutubeNews from 'src/components/Main/News/YoutubeNews';
 
 const News = () => {

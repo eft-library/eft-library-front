@@ -18,18 +18,18 @@ function App() {
             path="/quest/detail/:questId"
             element={<PageRouter.QUSET_DETAIL />}
           />
-          <Route path="/item/WEAPON" element={<PageRouter.WEAPON />} />
-          <Route path="/item/AMMO" element={<PageRouter.AMMO />} />
-          <Route path="/item/HEAD_WEAR" element={<PageRouter.HEADWEAR />} />
-          <Route path="/item/MEDICAL" element={<PageRouter.MEDICAL />} />
-          <Route path="/item/CONTAINER" element={<PageRouter.CONTAINER />} />
-          <Route path="/item/RIG" element={<PageRouter.RIG />} />
-          <Route path="/item/ARMOR_VEST" element={<PageRouter.VEST />} />
-          <Route path="/item/KEY" element={<PageRouter.KEY />} />
-          <Route path="/item/BAG" element={<PageRouter.BAG />} />
-          <Route path="/item/HEADSET" element={<PageRouter.HEADSET />} />
-          <Route path="/HIDEOUT" element={<PageRouter.HIDEOUT />} />
-          <Route path="/BOSS" element={<PageRouter.BOSS />} />
+          <Route path="/weapon" element={<PageRouter.WEAPON />} />
+          <Route path="/ammo" element={<PageRouter.AMMO />} />
+          <Route path="/head-wear" element={<PageRouter.HEADWEAR />} />
+          <Route path="/medical" element={<PageRouter.MEDICAL />} />
+          <Route path="/container" element={<PageRouter.CONTAINER />} />
+          <Route path="/rig" element={<PageRouter.RIG />} />
+          <Route path="/armor-vest" element={<PageRouter.VEST />} />
+          <Route path="/key" element={<PageRouter.KEY />} />
+          <Route path="/bag" element={<PageRouter.BAG />} />
+          <Route path="/headset" element={<PageRouter.HEADSET />} />
+          <Route path="/hideout" element={<PageRouter.HIDEOUT />} />
+          <Route path="/boss" element={<PageRouter.BOSS />} />
           <Route path="*" element={<PageRouter.NOT_FOUND />} />
         </Routes>
         <PageRouter.FOOTER />

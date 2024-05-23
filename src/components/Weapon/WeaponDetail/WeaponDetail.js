@@ -6,7 +6,7 @@ import RenderSpecial from './RenderSpecial';
 import RenderThrowable from './RenderThrowable';
 import RenderStationary from './RenderStationary';
 import { Box } from '@chakra-ui/react';
-import { GUN_CATEGORY_LIST } from 'src/utils/weaponConstants';
+import { GUN_CATEGORY_LIST } from 'src/utils/consts/weaponConsts';
 
 const WeaponDetail = ({ category }) => {
   const { weapon, loading } = hooks.useGetAllWeapon();

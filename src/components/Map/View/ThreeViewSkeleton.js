@@ -1,4 +1,4 @@
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { Skeleton } from '@chakra-ui/react';
 
 const ThreeViewSkeleton = () => {

@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { BossColumn } from 'src/utils/bossConstants';
+import { BossColumn } from 'src/utils/consts/bossConsts';
 import RenderText from './RenderText';
 import RenderArrayText from './RenderArrayText';
 import RenderJsonText from './RenderJsonText';

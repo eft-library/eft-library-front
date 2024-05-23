@@ -1,6 +1,6 @@
 import { Skeleton } from '@chakra-ui/react';
 import { Box, Text, Stack } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 
 const MapViewSkeleton = () => {
   return (

@@ -1,4 +1,4 @@
-import { ITEM_LIST } from 'src/utils/itemConstants';
+import { ITEM_LIST } from 'src/utils/consts/itemConsts';
 import {
   Accordion,
   AccordionItem,
@@ -11,9 +11,9 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { DynamicSVG } from 'src/utils/svg/DynamicSVG';
+import DynamicSVG from 'src/components/ViewSVG/DynamicSVG';
 import PropTypes from 'prop-types';
 
 const ItemSelector = ({

@@ -1,7 +1,7 @@
 import { Heading, VStack, Button, Grid, GridItem, Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import HeaderSkeleton from 'src/components/Header/HeaderSkeleton';
 import hooks from 'src/hooks/hooks';
 

@@ -1,5 +1,5 @@
 import { Grid, GridItem, Box, Text, Skeleton, Center } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/colorConstants';
+import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 
 const InfoSkeleton = () => {
   const skelCount = 13;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HStack, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 
 const SubMapSelector = ({ onClickSubMap, subMap, mapId }) => {
   return (

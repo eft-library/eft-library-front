@@ -1,5 +1,5 @@
 import { Box, Text, Image } from '@chakra-ui/react';
-import { STATIONARY_COLUMN } from 'src/utils/weaponConstants';
+import { STATIONARY_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';

@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { useParams } from 'react-router-dom';
 import QuestInfo from 'src/components/QuestDetail/QuestInfo/QuestInfo';
 import QuestContents from 'src/components/QuestDetail/QuestContents/QuestContents';

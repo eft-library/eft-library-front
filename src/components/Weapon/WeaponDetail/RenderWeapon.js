@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
-import { WEAOPN_COLUMN } from 'src/utils/weaponConstants';
+import { WEAOPN_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridContents from './GridContents';

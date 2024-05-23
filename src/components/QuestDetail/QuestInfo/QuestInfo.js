@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/colorConstants';
+import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const QuestInfo = ({ quest }) => {

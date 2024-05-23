@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import ImageSlider from 'src/components/Main/ImageSlider/ImageSlider';
 import Search from 'src/components/Main/Search/Search';
 import News from 'src/components/Main/News/News';

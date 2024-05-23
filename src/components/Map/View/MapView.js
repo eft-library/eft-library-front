@@ -1,6 +1,6 @@
 import { Box, Text, Stack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/colorConstants';
+import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { useState, useEffect } from 'react';
 import MapSelector from 'src/components/Map/Selector/MapSelector';
 import ThreeView from 'src/components/Map/View/ThreeView';

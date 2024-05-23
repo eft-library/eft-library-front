@@ -1,6 +1,6 @@
 import Slider from 'react-slick';
 import { Box, Image } from '@chakra-ui/react';
-import { IMAGE_SLIDER_OPTION } from 'src/utils/libraryConstants';
+import { IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import hooks from 'src/hooks/hooks';

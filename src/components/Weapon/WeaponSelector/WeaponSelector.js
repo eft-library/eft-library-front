@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
-import { MAIN_COLOR, MAP_COLOR } from 'src/utils/colorConstants';
-import { WEAPON_TYPE } from 'src/utils/weaponConstants';
+import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { WEAPON_TYPE } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 
 const WeaponSelector = ({ category, onClickCategory }) => {
