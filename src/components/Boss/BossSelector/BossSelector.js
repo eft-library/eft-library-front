@@ -29,7 +29,12 @@ const BossSelector = ({ bossList, bossId, onClickBoss }) => {
               _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
               bg={bossId === boss.boss_id ? MAP_COLOR.MAP_LIGHT_GRAY : ''}
             >
-              <Text color={'white'} textAlign={'center'} mt={'2'}>
+              <Text
+                color={'white'}
+                textAlign={'center'}
+                mt={'2'}
+                fontWeight={700}
+              >
                 {boss.boss_name_kr}
               </Text>
             </Box>

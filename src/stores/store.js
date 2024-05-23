@@ -32,7 +32,7 @@ export const useBossStore = create(
   persist(
     (set) => ({
       bossId: 'RESHALA',
-      setNpcId: (boss) => set(() => ({ bossId: boss })),
+      setBossId: (boss) => set(() => ({ bossId: boss })),
     }),
     {
       name: 'boss-storage',

@@ -1,41 +1,11 @@
 import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import { BossColumn } from 'src/utils/bossConstants';
+import RenderText from './RenderText';
+import RenderArrayText from './RenderArrayText';
+import RenderJsonText from './RenderJsonText';
 
-const BossDetail = () => {
-  const t = ['사진', '이름', '소속', '위치', '스폰 확률', '피통', '추종자'];
-  const w = [
-    {
-      img: 'https://i.namu.wiki/i/UifEv197Swv_tuhQI7M2LI9sdGzVdlSt65n-OJf9yKccpFinxPb0T-c_eHFQSCEi2iICW2dQSodfASyil90X-g.webp',
-      name: '르살라',
-      magazine: 'Scavs',
-      fireMode: '세관',
-      fireSpeed: 35,
-      ergonomics: 752,
-      hRecoil: '중무장 경비병 4명',
-    },
-    {
-      img: 'https://i.namu.wiki/i/UifEv197Swv_tuhQI7M2LI9sdGzVdlSt65n-OJf9yKccpFinxPb0T-c_eHFQSCEi2iICW2dQSodfASyil90X-g.webp',
-      name: '르살라',
-      magazine: 'Scavs',
-      fireMode: '세관',
-      fireSpeed: 35,
-      ergonomics: 752,
-      hRecoil: '중무장 경비병 4명',
-    },
-  ];
-
-  const renderText = (text) => (
-    <Text
-      color="white"
-      textAlign="center"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      key={text}
-    >
-      {text}
-    </Text>
-  );
-
+const BossDetail = ({ bossList, bossId }) => {
   return (
     <Box
       display="flex"
@@ -54,30 +24,54 @@ const BossDetail = () => {
         p={2}
         mb={6}
       >
-        {t.map((item, index) => (
-          <Text color={'white'} key={index} textAlign={'center'}>
+        {BossColumn.map((item, index) => (
+          <Text
+            color={'white'}
+            key={index}
+            textAlign={'center'}
+            fontWeight={700}
+          >
             {item}
           </Text>
         ))}
       </SimpleGrid>
-      {w.map((item, index) => (
-        <SimpleGrid
-          columns={[2, null, 7]}
-          spacing={2}
-          width={'90%'}
-          outline={'1px solid'}
-          outlineColor={'white'}
-          borderRadius={'lg'}
-          p={2}
-          mb={4}
-          key={index}
-        >
-          <Image src={item.img} alt="Dan Abramov" />
-          {Object.values(item).slice(1).map(renderText)}
-        </SimpleGrid>
-      ))}
+      {bossList.map(
+        (boss, index) =>
+          boss.boss_id === bossId && (
+            <SimpleGrid
+              columns={[2, null, 7]}
+              spacing={2}
+              width={'90%'}
+              outline={'1px solid'}
+              outlineColor={'white'}
+              borderRadius={'lg'}
+              p={2}
+              mb={4}
+              key={index}
+            >
+              <Image src={boss.boss_img_path} />
+              <RenderText text={boss.boss_name_kr} />
+              <RenderText text={boss.boss_faction} />
+              <RenderJsonText
+                jsonArrayText={boss.boss_location_spawn_chance_kr}
+                jatType={'location'}
+              />
+              <RenderJsonText
+                jsonArrayText={boss.boss_location_spawn_chance_kr}
+                jatType={'chance'}
+              />
+              <RenderText text={boss.boss_health_total} />
+              <RenderArrayText arrayText={boss.boss_followers_kr} />
+            </SimpleGrid>
+          ),
+      )}
     </Box>
   );
+};
+
+BossDetail.propTypes = {
+  bossList: PropTypes.array,
+  bossId: PropTypes.string,
 };
 
 export default BossDetail;
