@@ -1,6 +1,7 @@
-import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
+import { Box, SimpleGrid, Flex } from '@chakra-ui/react';
 import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
+import CustomText from 'src/components/CustomText/CustomText';
 
 const BossSelector = ({ bossList, bossId, onClickBoss }) => {
   return (
@@ -29,14 +30,7 @@ const BossSelector = ({ bossList, bossId, onClickBoss }) => {
               _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
               bg={bossId === boss.boss_id ? MAP_COLOR.MAP_LIGHT_GRAY : ''}
             >
-              <Text
-                color={'white'}
-                textAlign={'center'}
-                mt={'2'}
-                fontWeight={700}
-              >
-                {boss.boss_name_kr}
-              </Text>
+              <CustomText mt={2}>{boss.boss_name_kr}</CustomText>
             </Box>
           </Flex>
         ))}

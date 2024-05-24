@@ -1,17 +1,11 @@
-import { Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import CustomText from 'src/components/CustomText/CustomText';
 
 const RenderText = ({ text }) => (
-  <Text
-    color="white"
-    textAlign="center"
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    fontWeight={600}
-  >
-    {text}
-  </Text>
+  <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
+    <CustomText fw={600}>{text}</CustomText>
+  </Box>
 );
 
 RenderText.propTypes = {

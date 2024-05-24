@@ -2,6 +2,7 @@ import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { FOOTER_DATA } from 'src/utils/consts/footerConsts';
 import DynamicSVG from '../ViewSVG/DynamicSVG';
+import CustomText from '../CustomText/CustomText';
 
 const Footer = () => {
   return (

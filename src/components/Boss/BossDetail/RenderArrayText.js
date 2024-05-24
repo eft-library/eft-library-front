@@ -1,5 +1,6 @@
-import { Text, GridItem } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import CustomText from 'src/components/CustomText/CustomText';
 
 const RenderArrayText = ({ arrayText }) => (
   <GridItem
@@ -9,15 +10,9 @@ const RenderArrayText = ({ arrayText }) => (
     flexDirection={'column'}
   >
     {arrayText.map((text, atIndex) => (
-      <Text
-        key={atIndex}
-        color="white"
-        textAlign="center"
-        mt={atIndex !== 0 ? 2 : 0}
-        fontWeight={600}
-      >
+      <CustomText key={atIndex} mt={atIndex !== 0 ? 2 : 0} fw={600}>
         {text}
-      </Text>
+      </CustomText>
     ))}
   </GridItem>
 );

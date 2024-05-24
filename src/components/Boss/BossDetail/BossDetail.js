@@ -4,6 +4,7 @@ import { BossColumn } from 'src/utils/consts/bossConsts';
 import RenderText from './RenderText';
 import RenderArrayText from './RenderArrayText';
 import RenderJsonText from './RenderJsonText';
+import CustomText from 'src/components/CustomText/CustomText';
 
 const BossDetail = ({ bossList, bossId }) => {
   return (
@@ -25,14 +26,7 @@ const BossDetail = ({ bossList, bossId }) => {
         mb={6}
       >
         {BossColumn.map((item, index) => (
-          <Text
-            color={'white'}
-            key={index}
-            textAlign={'center'}
-            fontWeight={700}
-          >
-            {item}
-          </Text>
+          <CustomText key={index}>{item}</CustomText>
         ))}
       </SimpleGrid>
       {bossList.map(
