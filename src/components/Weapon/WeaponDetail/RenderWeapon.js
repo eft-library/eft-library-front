@@ -15,6 +15,23 @@ const RenderWeapon = ({ gunList, category }) => {
     return isGeneralCategory && isMatchingCategory;
   };
 
+  // 무기 문자열 자르기
+  const sliceDefaultAmmo = (defaultAmmo) => {
+    const pattern = 'mm';
+    const handGunPattern = 'ACP';
+
+    const index = defaultAmmo.indexOf(pattern);
+    const handGunIndex = defaultAmmo.indexOf(handGunPattern);
+
+    if (index !== -1) {
+      return defaultAmmo.substring(0, index + pattern.length);
+    } else if (handGunIndex !== -1) {
+      return defaultAmmo.substring(0, handGunIndex + handGunPattern.length);
+    } else {
+      return defaultAmmo;
+    }
+  };
+
   return (
     <>
       <SimpleGrid
@@ -55,7 +72,7 @@ const RenderWeapon = ({ gunList, category }) => {
               </Box>
             </GridItem>
             <TextValue value={item.weapon_short_name} />
-            <TextValue value={item.weapon_carliber} />
+            <TextValue value={sliceDefaultAmmo(item.weapon_default_ammo)} />
             <Box
               w={'100%'}
               h={'100%'}

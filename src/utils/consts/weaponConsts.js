@@ -38,7 +38,7 @@ export const GUN_CATEGORY_LIST = [
 export const WEAOPN_COLUMN = [
   '사진',
   '이름',
-  '탄창',
+  '기본 탄약',
   '발사모드',
   '발사속도',
   '인체공학',
