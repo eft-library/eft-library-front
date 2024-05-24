@@ -6,6 +6,8 @@ import GridTitle from './GridTitle';
 import GridContents from './GridContents';
 
 const RenderThrowable = ({ throwableList }) => {
+  const detailThrowable = ['RGN', 'RGO'];
+
   return (
     <>
       <GridTitle columnDesign={[2, null, 5]} column={THROWABLE_COLUMN} />
@@ -23,9 +25,20 @@ const RenderThrowable = ({ throwableList }) => {
             alignItems="center"
             flexDirection={'column'}
           >
-            <Text color="white" textAlign="center">
-              {item.throwable_fuse} 초
-            </Text>
+            {detailThrowable.includes(item.throwable_short_name) ? (
+              <>
+                <Text color="white" textAlign="center" mb={2}>
+                  충격시 {item.throwable_min_fuse} 초
+                </Text>
+                <Text color="white" textAlign="center">
+                  (충격 신관이 발동되지 않은 경우 {item.throwable_fuse} 초
+                </Text>
+              </>
+            ) : (
+              <Text color="white" textAlign="center">
+                {item.throwable_fuse} 초
+              </Text>
+            )}
           </Box>
           <Box
             w={'100%'}
@@ -36,7 +49,7 @@ const RenderThrowable = ({ throwableList }) => {
             flexDirection={'column'}
           >
             <Text color="white" textAlign="center">
-              {item.throwable_min_explosion_distance} ~
+              {item.throwable_min_explosion_distance} ~&nbsp;
               {item.throwable_max_explosion_distance} m
             </Text>
           </Box>
