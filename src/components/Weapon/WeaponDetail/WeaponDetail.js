@@ -11,7 +11,7 @@ import API_PATH from 'src/api/api_path';
 const WeaponDetail = ({ category }) => {
   const { weapon, loading } = hooks.useGetAllWeapon();
   const { column: columnData, loading: columnLoading } = hooks.useGetColumn(
-    API_PATH.GET_WEAPON_COLUMN,
+    API_PATH.GET_COLUMN + '/WEAPON',
   );
 
   const checkGunInclude = () => {
