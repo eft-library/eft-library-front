@@ -9,7 +9,7 @@ const RenderText = ({ text }) => (
 );
 
 RenderText.propTypes = {
-  text: PropTypes.string,
+  text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default RenderText;
