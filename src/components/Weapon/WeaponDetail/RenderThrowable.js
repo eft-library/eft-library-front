@@ -1,16 +1,28 @@
 import { Text, Image, Box } from '@chakra-ui/react';
-import { THROWABLE_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';
 import GridContents from './GridContents';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const RenderThrowable = ({ throwableList }) => {
+  const { column, loading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/WEAPON',
+  );
+
+  const columnList = (columnObj) => {
+    return columnObj.find((item) => item.column_id === 'THROWABLE_COLUMN')
+      .column_value_kr;
+  };
+
   const detailThrowable = ['RGN', 'RGO'];
+
+  if (!column || loading) return null;
 
   return (
     <>
-      <GridTitle columnDesign={[2, null, 5]} column={THROWABLE_COLUMN} />
+      <GridTitle columnDesign={[2, null, 5]} column={columnList(column)} />
       {throwableList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
@@ -31,7 +43,7 @@ const RenderThrowable = ({ throwableList }) => {
                   충격시 {item.throwable_min_fuse} 초
                 </Text>
                 <Text color="white" textAlign="center">
-                  (충격 신관이 발동되지 않은 경우 {item.throwable_fuse} 초
+                  (충격 신관이 발동되지 않은 경우 {item.throwable_fuse} 초)
                 </Text>
               </>
             ) : (

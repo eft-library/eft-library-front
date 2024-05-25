@@ -1,10 +1,20 @@
 import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
-import { FOOTER_DATA } from 'src/utils/consts/footerConsts';
 import DynamicSVG from '../ViewSVG/DynamicSVG';
-import CustomText from '../CustomText/CustomText';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const Footer = () => {
+  const { column, loading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/FOOTER',
+  );
+
+  const columnList = (columnObj) => {
+    return columnObj.find((item) => item.column_id === 'FOOTER_COLUMN')
+      .column_json_value;
+  };
+
+  if (!column || loading) return null;
   return (
     <Box
       className="Main"
@@ -26,7 +36,7 @@ const Footer = () => {
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
-            {FOOTER_DATA.text.map((item, index) => (
+            {columnList(column).text.map((item, index) => (
               <Text
                 color={MAP_COLOR.MAP_WHITE}
                 m={2}
@@ -37,7 +47,7 @@ const Footer = () => {
               </Text>
             ))}
             <Flex direction="row" m={1}>
-              {FOOTER_DATA.icon.map((item, index) => (
+              {columnList(column).icon.map((item, index) => (
                 <Box
                   ml={index === 0 ? '' : 4}
                   key={index}

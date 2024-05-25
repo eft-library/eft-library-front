@@ -18,6 +18,7 @@ import Quest from 'src/components/Quest/Quest';
 import QuestDetail from 'src/components/QuestDetail/QuestDetail';
 import Key from 'src/components/Item/Key/Key';
 import Main from 'src/components/Main/Main';
+import MapOfTarkov from 'src/app/routes/MapOfTarkov/MapOfTarkov';
 
 const PageRouter = {
   HEADER: Header,
@@ -40,6 +41,7 @@ const PageRouter = {
   QUEST: Quest,
   QUSET_DETAIL: QuestDetail,
   MAIN: Main,
+  MAP_OF_TARKOV: MapOfTarkov,
 };
 
 export default PageRouter;

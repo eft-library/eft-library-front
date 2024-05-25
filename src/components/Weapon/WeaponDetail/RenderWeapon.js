@@ -1,10 +1,20 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
-import { WEAOPN_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridContents from './GridContents';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const RenderWeapon = ({ gunList, category }) => {
+  const { column, loading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/WEAPON',
+  );
+
+  const columnList = (columnObj) => {
+    return columnObj.find((item) => item.column_id === 'WEAOPN_COLUMN')
+      .column_value_kr;
+  };
+
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
     const isGeneralCategory =
@@ -32,6 +42,8 @@ const RenderWeapon = ({ gunList, category }) => {
     }
   };
 
+  if (!column || loading) return null;
+
   return (
     <>
       <SimpleGrid
@@ -45,7 +57,7 @@ const RenderWeapon = ({ gunList, category }) => {
         p={2}
         mb={6}
       >
-        {WEAOPN_COLUMN.map((item, index) => (
+        {columnList(column).map((item, index) => (
           <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
             <Text
               color={'white'}
