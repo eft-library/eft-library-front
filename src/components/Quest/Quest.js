@@ -20,7 +20,6 @@ const Quest = () => {
         justifyContent={'center'}
         flexDirection="column"
         mb={'40px'}
-        mt={'40px'}
       >
         <SubHeader title="퀘스트" />
       </Flex>

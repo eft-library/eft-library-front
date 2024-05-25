@@ -93,7 +93,7 @@ const Preview = ({ selectedNpc }) => {
                       </Link>
                     </Td>
                     <Td
-                      maxW="400px"
+                      maxW="520px"
                       minW="320px"
                       fontSize="md"
                       borderRight="1px solid white"
@@ -114,7 +114,7 @@ const Preview = ({ selectedNpc }) => {
                       ))}
                     </Td>
                     <Td
-                      maxW="380px"
+                      maxW="500px"
                       minW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
