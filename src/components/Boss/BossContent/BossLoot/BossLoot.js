@@ -18,7 +18,7 @@ const BossLoot = ({ bossLoot }) => {
 };
 
 BossLoot.propTypes = {
-  bossLoot: PropTypes.string,
+  bossLoot: PropTypes.array,
 };
 
 export default BossLoot;

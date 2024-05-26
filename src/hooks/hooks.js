@@ -6,6 +6,7 @@ import { useGetNpc, useGetAllQuest, useGetQuest } from 'src/hooks/useQuest';
 import { useGetAllWeapon } from 'src/hooks/useWeapon';
 import { useGetAllBoss } from './useBoss';
 import { useGetMapOfTarkov } from './useGetMapOfTarkov';
+import { useGetColumn } from './useColumn';
 
 const hooks = {
   useItemFilter: useItemFilter,
@@ -21,6 +22,7 @@ const hooks = {
   useGetAllWeapon: useGetAllWeapon,
   useGetAllBoss: useGetAllBoss,
   useGetMapOfTarkov: useGetMapOfTarkov,
+  useGetColumn: useGetColumn,
 };
 
 export default hooks;

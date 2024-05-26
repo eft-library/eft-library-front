@@ -6,12 +6,23 @@ import RenderSpecial from './RenderSpecial';
 import RenderThrowable from './RenderThrowable';
 import RenderStationary from './RenderStationary';
 import { Box } from '@chakra-ui/react';
-import { GUN_CATEGORY_LIST } from 'src/utils/consts/weaponConsts';
+import API_PATH from 'src/api/api_path';
 
 const WeaponDetail = ({ category }) => {
   const { weapon, loading } = hooks.useGetAllWeapon();
+  const { column: columnData, loading: columnLoading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/WEAPON',
+  );
 
-  if (!weapon || loading) return null;
+  const checkGunInclude = () => {
+    const gunCategoryList = columnData.find(
+      (item) => item.column_id === 'GUN_CATEGORY_INFO',
+    ).column_value_kr;
+
+    return gunCategoryList.includes(category);
+  };
+
+  if (!weapon || !columnData || loading || columnLoading) return null;
 
   return (
     <Box
@@ -21,7 +32,7 @@ const WeaponDetail = ({ category }) => {
       width={'100%'}
       flexDirection={'column'}
     >
-      {(category === 'ALL' || GUN_CATEGORY_LIST.includes(category)) && (
+      {(category === 'ALL' || checkGunInclude()) && (
         <RenderWeapon gunList={weapon.gun} category={category} />
       )}
       {(category === 'ALL' || category === 'Special weapons') && (

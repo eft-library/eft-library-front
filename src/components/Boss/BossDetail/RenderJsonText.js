@@ -1,4 +1,5 @@
 import { GridItem, Divider } from '@chakra-ui/react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import CustomText from 'src/components/CustomText/CustomText';
 
@@ -10,8 +11,8 @@ const RenderJsonText = ({ jsonArrayText, jatType }) => (
     flexDirection={'column'}
   >
     {jsonArrayText.map((text, jatIndex) => (
-      <>
-        <CustomText key={jatIndex} mt={jatIndex !== 0 ? 1 : 0} fontWeight={600}>
+      <React.Fragment key={jatIndex}>
+        <CustomText mt={jatIndex !== 0 ? 1 : 0} fontWeight={600}>
           {text[jatType]}
         </CustomText>
         {jsonArrayText.length !== jatIndex + 1 && (
@@ -23,7 +24,7 @@ const RenderJsonText = ({ jsonArrayText, jatType }) => (
             borderStyle={'dashed'}
           />
         )}
-      </>
+      </React.Fragment>
     ))}
   </GridItem>
 );

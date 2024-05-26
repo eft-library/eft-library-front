@@ -1,14 +1,26 @@
 import { Text, Image, Box } from '@chakra-ui/react';
-import { KNIFE_COLUMN } from 'src/utils/consts/weaponConsts';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from './GridTitle';
 import GridContents from './GridContents';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const RenderKnife = ({ knifeList }) => {
+  const { column, loading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/WEAPON',
+  );
+
+  const columnList = (columnObj) => {
+    return columnObj.find((item) => item.column_id === 'KNIFE_COLUMN')
+      .column_value_kr;
+  };
+
+  if (!column || loading) return null;
+
   return (
     <>
-      <GridTitle columnDesign={[2, null, 5]} column={KNIFE_COLUMN} />
+      <GridTitle columnDesign={[2, null, 5]} column={columnList(column)} />
       {knifeList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>

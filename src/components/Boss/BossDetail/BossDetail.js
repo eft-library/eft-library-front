@@ -1,12 +1,22 @@
-import { Box, SimpleGrid, Text, Image } from '@chakra-ui/react';
+import { Box, SimpleGrid, Image } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { BossColumn } from 'src/utils/consts/bossConsts';
 import RenderText from './RenderText';
 import RenderArrayText from './RenderArrayText';
 import RenderJsonText from './RenderJsonText';
 import CustomText from 'src/components/CustomText/CustomText';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 const BossDetail = ({ bossList, bossId }) => {
+  const { column, loading } = hooks.useGetColumn(API_PATH.GET_COLUMN + '/BOSS');
+
+  const columnList = (columnObj) => {
+    return columnObj.find((item) => item.column_id === 'BOSS_COLUMN')
+      .column_value_kr;
+  };
+
+  if (!column || loading) return null;
+
   return (
     <Box
       display="flex"
@@ -25,7 +35,7 @@ const BossDetail = ({ bossList, bossId }) => {
         p={2}
         mb={6}
       >
-        {BossColumn.map((item, index) => (
+        {columnList(column).map((item, index) => (
           <CustomText key={index}>{item}</CustomText>
         ))}
       </SimpleGrid>

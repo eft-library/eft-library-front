@@ -13,6 +13,10 @@ function App() {
           <Route path="/api/*" render={() => null} />
           <Route path="/" element={<PageRouter.MAIN />} />
           <Route path="/map/:mapId" element={<PageRouter.MAP />} />
+          <Route
+            path="/map-of-tarkov/:mapId"
+            element={<PageRouter.MAP_OF_TARKOV />}
+          />
           <Route path="/quest" element={<PageRouter.QUEST />} />
           <Route
             path="/quest/detail/:questId"
