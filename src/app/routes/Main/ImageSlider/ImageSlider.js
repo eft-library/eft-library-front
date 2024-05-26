@@ -4,7 +4,7 @@ import { IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import hooks from 'src/hooks/hooks';
-import ImageSliderSkeleton from 'src/components/Main/ImageSlider/ImageSliderSkeleton';
+import ImageSliderSkeleton from '../ImageSlider/ImageSliderSkeleton';
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 

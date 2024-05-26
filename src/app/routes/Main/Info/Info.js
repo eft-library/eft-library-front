@@ -2,7 +2,7 @@ import { Grid, GridItem, Box, Text } from '@chakra-ui/react';
 import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import { Link } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
-import InfoSkeleton from 'src/components/Main/Info/InfoSkeleton';
+import InfoSkeleton from '../Info/InfoSkeleton';
 
 const Info = () => {
   const { loading, mainInfo } = hooks.useGetInfo();

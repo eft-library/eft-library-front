@@ -2,7 +2,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { MAP_COLOR, ALL_COLOR } from 'src/utils/consts/colorConsts';
-import ThreeViewSkeleton from 'src/components/Map/View/ThreeViewSkeleton';
+import ThreeViewSkeleton from '../View/ThreeViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import ExtendedOrbitControls from './ExtendOrbitControls';

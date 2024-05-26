@@ -1,7 +1,7 @@
 import SubHeader from 'src/components/SubHeader/SubHeader';
 import PageParent from 'src/components/PageParent/PageParent';
-import WeaponDetail from 'src/components/Weapon/WeaponDetail/WeaponDetail';
-import ContentsSelector from '../ContentsSelector/ContentsSelecor';
+import WeaponDetail from '../Weapon/WeaponDetail/WeaponDetail';
+import ContentsSelector from 'src/components/ContentsSelector/ContentsSelecor';
 import { useWeaponStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
 import API_PATH from 'src/api/api_path';

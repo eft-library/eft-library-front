@@ -1,8 +1,8 @@
 import SubHeader from 'src/components/SubHeader/SubHeader';
 import PageParent from 'src/components/PageParent/PageParent';
-import BossDetail from 'src/components/Boss/BossDetail/BossDetail';
-import BossContent from 'src/components/Boss/BossContent/BossContent';
-import ContentsSelector from '../ContentsSelector/ContentsSelecor';
+import BossDetail from '../Boss/BossDetail/BossDetail';
+import BossContent from '../Boss/BossContent/BossContent';
+import ContentsSelector from '../../../components/ContentsSelector/ContentsSelecor';
 import { useBossStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
 

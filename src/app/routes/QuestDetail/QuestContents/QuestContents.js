@@ -1,6 +1,6 @@
-import QuestObjectives from 'src/components/QuestDetail/QuestContents/QuestObjectives/QuestObjectives';
-import QuestRewards from 'src/components/QuestDetail/QuestContents/QuestRewards/QuestRewards';
-import QuestGuide from 'src/components/QuestDetail/QuestContents/QuestGuide/QuestGuide';
+import QuestObjectives from '../QuestContents/QuestObjectives/QuestObjectives';
+import QuestRewards from '../QuestContents/QuestRewards/QuestRewards';
+import QuestGuide from '../QuestContents/QuestGuide/QuestGuide';
 import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 

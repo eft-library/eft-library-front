@@ -3,7 +3,7 @@ import { YOUTUBE_OPTION } from 'src/utils/consts/libraryConsts';
 import YouTube from 'react-youtube';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';
-import YoutubeSkeleton from 'src/components/Main/News/YoutubeSkeleton';
+import YoutubeSkeleton from '../News/YoutubeSkeleton';
 
 const YoutubeNews = () => {
   const [youtubeInfo, setYoutubeInfo] = useState(null);

@@ -1,9 +1,9 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
-import ImageSlider from 'src/components/Main/ImageSlider/ImageSlider';
-import Search from 'src/components/Main/Search/Search';
-import News from 'src/components/Main/News/News';
-import Info from 'src/components/Main/Info/Info';
+import ImageSlider from '../Main/ImageSlider/ImageSlider';
+import Search from '../Main/Search/Search';
+import News from '../Main/News/News';
+import Info from '../Main/Info/Info';
 
 const Main = () => {
   return (

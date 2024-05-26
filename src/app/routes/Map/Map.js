@@ -2,14 +2,14 @@ import { Box, Text, Stack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { useState, useEffect } from 'react';
-import MapSelector from 'src/components/Map/Selector/MapSelector';
-import ThreeView from 'src/components/Map/View/ThreeView';
-import JpgView from 'src/components/Map/View/JpgView';
-import SubMapSelector from 'src/components/Map/Selector/SubMapSelector';
-import ItemSelector from 'src/components/Map/Selector/ItemSelector';
+import MapSelector from '../Map/Selector/MapSelector';
+import ThreeView from '../Map/View/ThreeView';
+import JpgView from '../Map/View/JpgView';
+import SubMapSelector from '../Map/Selector/SubMapSelector';
+import ItemSelector from '../Map/Selector/ItemSelector';
 import hooks from 'src/hooks/hooks';
 import MapViewSkeleton from './View/MapViewSkeleton';
-import PageParent from '../PageParent/PageParent';
+import PageParent from 'src/components/PageParent/PageParent';
 
 const Map = () => {
   const params = useParams();
