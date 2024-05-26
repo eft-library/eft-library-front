@@ -41,7 +41,7 @@ const BossDetail = ({ bossList, bossId }) => {
       </SimpleGrid>
       {bossList.map(
         (boss, index) =>
-          boss.boss_id === bossId && (
+          (boss.boss_id === bossId || bossId === true) && (
             <SimpleGrid
               columns={[2, null, 7]}
               spacing={2}
@@ -75,7 +75,7 @@ const BossDetail = ({ bossList, bossId }) => {
 
 BossDetail.propTypes = {
   bossList: PropTypes.array,
-  bossId: PropTypes.string,
+  bossId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default BossDetail;

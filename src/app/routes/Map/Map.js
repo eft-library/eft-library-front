@@ -2,7 +2,6 @@ import { Box, Text, Stack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import { useState, useEffect } from 'react';
-import MapSelector from '../Map/Selector/MapSelector';
 import ThreeView from '../Map/View/ThreeView';
 import JpgView from '../Map/View/JpgView';
 import SubMapSelector from '../Map/Selector/SubMapSelector';
@@ -10,6 +9,8 @@ import ItemSelector from '../Map/Selector/ItemSelector';
 import hooks from 'src/hooks/hooks';
 import MapViewSkeleton from './View/MapViewSkeleton';
 import PageParent from 'src/components/PageParent/PageParent';
+import LinkSelector from 'src/components/LinkSelector/LinkSelector';
+import API_PATH from 'src/api/api_path';
 
 const Map = () => {
   const params = useParams();
@@ -19,6 +20,17 @@ const Map = () => {
   const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
     mapData ? mapData.map_jpg_item_path : null,
   );
+  const { column, loading: columnLoading } = hooks.useGetColumn(
+    API_PATH.GET_COLUMN + '/MAP',
+  );
+
+  const columnList = (columnObj) => {
+    const col = columnObj.find(
+      (item) => item.column_id === 'MAP_COLUMN',
+    ).column_json_value;
+    col.sort((a, b) => a.map_order - b.map_order);
+    return col;
+  };
 
   useEffect(() => {
     if (map) {
@@ -37,7 +49,9 @@ const Map = () => {
     }
   };
 
-  if (!mapData) return <MapViewSkeleton />;
+  if (!mapData || !column || loading || columnLoading)
+    return <MapViewSkeleton />;
+
   return (
     <PageParent>
       {viewItemList && (
@@ -48,7 +62,11 @@ const Map = () => {
           onClickAllItem={onClickAllItem}
         />
       )}
-      <MapSelector map={map} />
+      <LinkSelector
+        itemList={columnList(column)}
+        itemDesc="map_name_kr"
+        itemLink="map_link"
+      />
       <Box
         className="CenterBox"
         borderRadius="lg"
