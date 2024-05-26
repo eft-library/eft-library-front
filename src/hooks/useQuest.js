@@ -59,7 +59,7 @@ export const useGetQuest = (questId) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await API.get(API_PATH.GET_QUEST + questId);
+        const response = await API.get(`${API_PATH.GET_QUEST}/${questId}`);
         const responseData = response.data.data;
         setQuest(responseData);
         setLoading(false);
