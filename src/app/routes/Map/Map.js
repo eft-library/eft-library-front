@@ -66,6 +66,7 @@ const Map = () => {
         itemList={columnList(column)}
         itemDesc="map_name_kr"
         itemLink="map_link"
+        mt={3}
       />
       <Box
         className="CenterBox"

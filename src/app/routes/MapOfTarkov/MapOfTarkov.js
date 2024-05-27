@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
 import API_PATH from 'src/api/api_path';
 import LinkSelector from 'src/components/LinkSelector/LinkSelector';
-import BossDetail from '../Boss/BossDetail/BossDetail';
+import MapOfTarkovDetail from './MapOfTarkovDetail/MapOfTarkovDetail';
 
 const MapOfTarkov = () => {
   const params = useParams();
@@ -30,12 +30,9 @@ const MapOfTarkov = () => {
         itemList={columnList(column)}
         itemDesc="map_name_kr"
         itemLink="map_link"
+        mt={6}
       />
-      <BossDetail
-        key={params.mapId}
-        bossList={mapOfTarkov.boss_list}
-        bossId={true}
-      />
+      <MapOfTarkovDetail mapOfTarkov={mapOfTarkov} />
     </PageParent>
   );
 };

@@ -4,8 +4,13 @@ import ImageSlider from '../Main/ImageSlider/ImageSlider';
 import Search from '../Main/Search/Search';
 import News from '../Main/News/News';
 import Info from '../Main/Info/Info';
+import hooks from 'src/hooks/hooks';
 
 const Main = () => {
+  const { map, loading } = hooks.useGetAllMap();
+
+  if (!map || loading) return null;
+
   return (
     <Box
       className="Main"
@@ -35,7 +40,7 @@ const Main = () => {
       >
         <Search />
         <News />
-        <ImageSlider />
+        <ImageSlider mapList={map} imagePath="map_main_image" />
         <Info />
       </Flex>
     </Box>
