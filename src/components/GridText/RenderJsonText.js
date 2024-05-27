@@ -2,7 +2,7 @@ import { GridItem, Divider, Text } from '@chakra-ui/react';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RenderJsonText = ({ jsonArrayText, jatType }) => (
+const RenderJsonText = ({ jsonArrayText, jatType, isDivider }) => (
   <GridItem
     display="flex"
     justifyContent="center"
@@ -20,7 +20,7 @@ const RenderJsonText = ({ jsonArrayText, jatType }) => (
         >
           {text[jatType]}
         </Text>
-        {jsonArrayText.length !== jatIndex + 1 && (
+        {isDivider && jsonArrayText.length !== jatIndex + 1 && (
           <Divider
             mt={1}
             w={'40%'}
@@ -37,6 +37,7 @@ const RenderJsonText = ({ jsonArrayText, jatType }) => (
 RenderJsonText.propTypes = {
   jsonArrayText: PropTypes.array,
   jatType: PropTypes.string,
+  isDivider: PropTypes.bool,
 };
 
 export default RenderJsonText;

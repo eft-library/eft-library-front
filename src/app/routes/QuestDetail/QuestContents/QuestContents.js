@@ -1,36 +1,60 @@
-import QuestObjectives from '../QuestContents/QuestObjectives/QuestObjectives';
-import QuestRewards from '../QuestContents/QuestRewards/QuestRewards';
-import QuestGuide from '../QuestContents/QuestGuide/QuestGuide';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import DividerContents from 'src/components/DividerContents/DividerContents';
 
 const QuestContents = ({ quest }) => {
   return (
     <Box w={'95%'}>
-      <QuestObjectives quest={quest} />
-      <QuestRewards quest={quest} />
-      <QuestGuide quest={quest} />
+      <DividerContents headText="목표">
+        <Box>
+          {quest.quest_objectives_kr.map((objectives, index) => (
+            <Text
+              key={index}
+              color={'white'}
+              mt={1}
+              fontWeight={700}
+              fontSize="lg"
+              dangerouslySetInnerHTML={{
+                __html: `*&nbsp;&nbsp;${objectives}`,
+              }}
+            />
+          ))}
+        </Box>
+      </DividerContents>
+      <DividerContents headText="보상">
+        <Box>
+          {quest.quest_rewards_kr.map((rewards, index) => (
+            <Text
+              key={index}
+              color={'white'}
+              mt={1}
+              fontWeight={700}
+              fontSize="lg"
+              dangerouslySetInnerHTML={{
+                __html: `*&nbsp;&nbsp;${rewards}`,
+              }}
+            />
+          ))}
+        </Box>
+      </DividerContents>
+      <DividerContents headText="가이드">
+        <Box>
+          <Text
+            color={'white'}
+            mt={1}
+            fontWeight={700}
+            fontSize="lg"
+            dangerouslySetInnerHTML={{
+              __html: `${quest.quest_guide}`,
+            }}
+          />
+        </Box>
+      </DividerContents>
     </Box>
   );
 };
 
 QuestContents.propTypes = {
-  // quest: PropTypes.objectOf(
-  //   PropTypes.shape({
-  //     quest_guide: PropTypes.string,
-  //     quest_id: PropTypes.number,
-  //     quest_name_en: PropTypes.string,
-  //     quest_name_kr: PropTypes.string,
-  //     quest_npc_value: PropTypes.string,
-  //     quest_objectives_en: PropTypes.arrayOf(PropTypes.string),
-  //     quest_objectives_kr: PropTypes.arrayOf(PropTypes.string),
-  //     quest_order: PropTypes.number,
-  //     quest_required_kappa: PropTypes.bool,
-  //     quest_rewards_en: PropTypes.arrayOf(PropTypes.string),
-  //     quest_rewards_kr: PropTypes.arrayOf(PropTypes.string),
-  //     quest_update_time: PropTypes.string,
-  //   }),
-  // ),
   quest: PropTypes.object,
 };
 export default QuestContents;

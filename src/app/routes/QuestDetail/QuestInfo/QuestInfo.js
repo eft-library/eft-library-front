@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
@@ -44,7 +44,7 @@ const QuestInfo = ({ quest }) => {
       >
         {quest.quest_required_kappa ? '✅' : '❌'}&nbsp;&nbsp;&nbsp;Kappa
       </Text>
-      <Flex
+      {/* <Flex
         display={'flex'}
         alignItems={'center'}
         justifyContent={'space-between'}
@@ -95,28 +95,12 @@ const QuestInfo = ({ quest }) => {
             (Debut)
           </Text>
         </Box>
-      </Flex>
+      </Flex> */}
     </Box>
   );
 };
 
 QuestInfo.propTypes = {
-  // quest: PropTypes.objectOf(
-  //   PropTypes.shape({
-  //     quest_guide: PropTypes.string,
-  //     quest_id: PropTypes.number,
-  //     quest_name_en: PropTypes.string,
-  //     quest_name_kr: PropTypes.string,
-  //     quest_npc_value: PropTypes.string,
-  //     quest_objectives_en: PropTypes.arrayOf(PropTypes.string),
-  //     quest_objectives_kr: PropTypes.arrayOf(PropTypes.string),
-  //     quest_order: PropTypes.number,
-  //     quest_required_kappa: PropTypes.bool,
-  //     quest_rewards_en: PropTypes.arrayOf(PropTypes.string),
-  //     quest_rewards_kr: PropTypes.arrayOf(PropTypes.string),
-  //     quest_update_time: PropTypes.string,
-  //   }),
-  // ),
   quest: PropTypes.object,
 };
 

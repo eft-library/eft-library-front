@@ -58,10 +58,12 @@ const BossDetail = ({ bossList, bossId }) => {
               <RenderJsonText
                 jsonArrayText={boss.boss_location_spawn_chance_kr}
                 jatType={'location'}
+                isDivider
               />
               <RenderJsonText
                 jsonArrayText={boss.boss_location_spawn_chance_kr}
                 jatType={'chance'}
+                isDivider
               />
               <RenderText text={boss.boss_health_total} />
               <RenderArrayText arrayText={boss.boss_followers_kr} />

@@ -1,5 +1,5 @@
 import { Box, Heading, Divider } from '@chakra-ui/react';
-import ImageSlider from 'src/app/routes/Main/ImageSlider/ImageSlider';
+import ImageSlider from 'src/components/ImageSlider/ImageSlider';
 import PropTypes from 'prop-types';
 
 const MapOfTarkovMap = ({ mapList }) => {
