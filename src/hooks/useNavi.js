@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';
 
-export const useGetNavi = () => {
+export const useNavi = () => {
   const [navi, setNavi] = useState(null);
   const [loading, setLoading] = useState(true);
 

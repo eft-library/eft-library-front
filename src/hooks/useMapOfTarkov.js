@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import API from 'src/config/api';
 import API_PATH from 'src/api/api_path';
 
-export const useGetMapOfTarkov = (map_id) => {
+export const useMapOfTarkov = (map_id) => {
   const [mapOfTarkov, setMapOfTarkov] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,10 +21,8 @@ export const useGetMapOfTarkov = (map_id) => {
       }
     };
 
-    if (mapOfTarkov === null) {
-      fetchData();
-    }
-  }, [mapOfTarkov]);
+    fetchData();
+  }, [map_id]);
 
   return { mapOfTarkov, loading };
 };

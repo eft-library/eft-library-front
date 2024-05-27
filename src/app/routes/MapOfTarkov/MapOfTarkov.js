@@ -8,7 +8,7 @@ import BossDetail from '../Boss/BossDetail/BossDetail';
 
 const MapOfTarkov = () => {
   const params = useParams();
-  const { mapOfTarkov, loading } = hooks.useGetMapOfTarkov(params.mapId);
+  const { mapOfTarkov, loading } = hooks.useMapOfTarkov(params.mapId);
   const { column, loading: columnLoading } = hooks.useGetColumn(
     API_PATH.GET_COLUMN + '/MAP_OF_TARKOV',
   );

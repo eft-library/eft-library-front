@@ -1,18 +1,18 @@
 import { useItemFilter } from 'src/hooks/useItemFilter';
 import { useOrbitReset } from 'src/hooks/useOrbitReset';
-import { useGetNavi, useGetInfo } from 'src/hooks/useGetNavi';
+import { useNavi, useGetInfo } from 'src/hooks/useNavi';
 import { useGetAllMap, useLoadMap, useGetMap } from 'src/hooks/useMap';
 import { useGetNpc, useGetAllQuest, useGetQuest } from 'src/hooks/useQuest';
 import { useGetAllWeapon } from 'src/hooks/useWeapon';
 import { useGetAllBoss } from './useBoss';
-import { useGetMapOfTarkov } from './useGetMapOfTarkov';
+import { useMapOfTarkov } from './useMapOfTarkov';
 import { useGetColumn } from './useColumn';
 
 const hooks = {
   useItemFilter: useItemFilter,
   useLoadMap: useLoadMap,
   useOrbitReset: useOrbitReset,
-  useGetNavi: useGetNavi,
+  useNavi: useNavi,
   useGetInfo: useGetInfo,
   useGetAllMap: useGetAllMap,
   useGetMap: useGetMap,
@@ -21,7 +21,7 @@ const hooks = {
   useGetQuest: useGetQuest,
   useGetAllWeapon: useGetAllWeapon,
   useGetAllBoss: useGetAllBoss,
-  useGetMapOfTarkov: useGetMapOfTarkov,
+  useMapOfTarkov: useMapOfTarkov,
   useGetColumn: useGetColumn,
 };
 

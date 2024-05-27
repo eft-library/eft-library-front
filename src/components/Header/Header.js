@@ -7,7 +7,7 @@ import hooks from 'src/hooks/hooks';
 
 const Header = () => {
   const [selectedMenu, setSelectedMenu] = useState(null);
-  const { navi, loading } = hooks.useGetNavi();
+  const { navi, loading } = hooks.useNavi();
 
   const changeMenu = (menuName) => {
     setSelectedMenu(menuName);
