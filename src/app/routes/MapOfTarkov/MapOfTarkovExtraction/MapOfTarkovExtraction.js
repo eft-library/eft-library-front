@@ -1,9 +1,8 @@
 import { Box, Heading, Divider } from '@chakra-ui/react';
 import { SimpleGrid, Image } from '@chakra-ui/react';
-import CustomText from 'src/components/CustomText/CustomText';
-import RenderArrayText from '../../Boss/BossDetail/RenderArrayText';
-import RenderJsonText from '../../Boss/BossDetail/RenderJsonText';
-import RenderText from '../../Boss/BossDetail/RenderText';
+import RenderArrayText from 'src/components/GridText/RenderArrayText';
+import RenderJsonText from 'src/components/GridText/RenderJsonText';
+import RenderText from 'src/components/GridText/RenderText';
 import PropTypes from 'prop-types';
 
 const MapOfTarkovExtraction = ({ extractionInfo }) => {
@@ -31,7 +30,7 @@ const MapOfTarkovExtraction = ({ extractionInfo }) => {
           mb={6}
         >
           {columnList(column).map((item, index) => (
-            <CustomText key={index}>{item}</CustomText>
+            <RenderText text={item} key={index} />
           ))}
         </SimpleGrid>
         {extractionInfo.map(

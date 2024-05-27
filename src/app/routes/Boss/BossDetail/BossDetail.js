@@ -1,9 +1,8 @@
 import { Box, SimpleGrid, Image } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import RenderText from './RenderText';
-import RenderArrayText from './RenderArrayText';
-import RenderJsonText from './RenderJsonText';
-import CustomText from 'src/components/CustomText/CustomText';
+import RenderText from 'src/components/GridText/RenderText';
+import RenderArrayText from 'src/components/GridText/RenderArrayText';
+import RenderJsonText from 'src/components/GridText/RenderJsonText';
 import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
@@ -36,7 +35,7 @@ const BossDetail = ({ bossList, bossId }) => {
         mb={6}
       >
         {columnList(column).map((item, index) => (
-          <CustomText key={index}>{item}</CustomText>
+          <RenderText text={item} key={index} />
         ))}
       </SimpleGrid>
       {bossList.map(

@@ -1,7 +1,6 @@
-import { Box, SimpleGrid, Flex } from '@chakra-ui/react';
+import { Box, SimpleGrid, Flex, Text } from '@chakra-ui/react';
 import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
-import CustomText from 'src/components/CustomText/CustomText';
 
 const ContentsSelector = ({
   onClickEvent,
@@ -38,7 +37,9 @@ const ContentsSelector = ({
                 currentId === item[selectorId] ? MAP_COLOR.MAP_LIGHT_GRAY : ''
               }
             >
-              <CustomText mt={2}>{item[itemDesc]}</CustomText>
+              <Text color={'white'} mt={2} fontWeight={700} textAlign="center">
+                {item[itemDesc]}
+              </Text>
             </Box>
           </Flex>
         ))}
