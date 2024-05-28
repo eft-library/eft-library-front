@@ -33,7 +33,7 @@ const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
                     original={process.env.REACT_APP_NAS_URL + map[imagePath]}
                     thumbnail={process.env.REACT_APP_NAS_URL + map[imagePath]}
                     width="1440"
-                    height="768"
+                    height="810.06"
                   >
                     {({ ref, open }) => (
                       <Image
