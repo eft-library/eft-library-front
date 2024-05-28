@@ -1,7 +1,7 @@
 import { SimpleGrid, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 
-const GridTitle = ({ columnDesign, column }) => {
+const GridTitle = ({ columnDesign, column, isShadow, shadowColor }) => {
   return (
     <SimpleGrid
       columns={columnDesign}
@@ -10,7 +10,7 @@ const GridTitle = ({ columnDesign, column }) => {
       outline={'2px solid'}
       outlineColor={'white'}
       borderRadius={'lg'}
-      boxShadow="0 0 14px rgb(202, 238, 18, 0.7)"
+      boxShadow={isShadow ? shadowColor : ''}
       p={2}
       mb={6}
     >
@@ -20,7 +20,7 @@ const GridTitle = ({ columnDesign, column }) => {
           key={index}
           textAlign={'center'}
           fontWeight={700}
-          textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
+          textShadow={isShadow ? shadowColor : ''}
         >
           {item}
         </Text>
@@ -32,6 +32,8 @@ const GridTitle = ({ columnDesign, column }) => {
 GridTitle.propTypes = {
   columnDesign: PropTypes.array,
   column: PropTypes.array,
+  isShadow: PropTypes.bool,
+  shadowColor: PropTypes.string,
 };
 
 export default GridTitle;

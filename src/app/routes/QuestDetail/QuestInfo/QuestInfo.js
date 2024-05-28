@@ -3,7 +3,6 @@ import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const QuestInfo = ({ quest }) => {
-  console.log(quest);
   return (
     <Box justifyContent="center" alignItems={'center'}>
       <Box

@@ -4,7 +4,7 @@ import { IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'photoswipe/dist/photoswipe.css';
-import { Gallery, Item } from 'react-photoswipe-gallery';
+import { Gallery } from 'react-photoswipe-gallery';
 import PropTypes from 'prop-types';
 
 const ImageSlider = ({ mapList, imagePath }) => {

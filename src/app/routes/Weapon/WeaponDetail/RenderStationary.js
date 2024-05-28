@@ -1,8 +1,8 @@
 import { Box, Text, Image } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
-import GridTitle from './GridTitle';
-import GridContents from './GridContents';
+import GridTitle from 'src/components/GridTitle/GridTitle';
+import GridContents from 'src/components/GridContents/GridContents';
 import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
@@ -28,7 +28,12 @@ const RenderStationary = ({ stationaryList, category }) => {
 
   return (
     <>
-      <GridTitle columnDesign={[2, null, 5]} column={columnList(column)} />
+      <GridTitle
+        columnDesign={[2, null, 5]}
+        column={columnList(column)}
+        isShadow
+        shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
+      />
       {stationaryList.map((item, index) =>
         shouldRenderWeapon(item) ? (
           <GridContents columnDesign={[2, null, 5]} key={index}>

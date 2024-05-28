@@ -1,7 +1,7 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
-import GridContents from './GridContents';
+import GridContents from 'src/components/GridContents/GridContents';
 import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
