@@ -5,6 +5,7 @@ import BossContent from '../Boss/BossContent/BossContent';
 import ContentsSelector from 'src/components/ContentsSelector/ContentsSelecor';
 import { useBossStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { Box } from '@chakra-ui/react';
 
 const Boss = () => {
   const { boss, loading } = hooks.useGetAllBoss();
@@ -27,7 +28,9 @@ const Boss = () => {
         selectorId={'boss_id'}
         itemDesc="boss_name_kr"
       />
-      <BossDetail bossList={boss} bossId={bossId} />
+      <Box w={'95%'}>
+        <BossDetail bossList={boss} bossId={bossId} />
+      </Box>
       <BossContent bossList={boss} bossId={bossId} />
     </PageParent>
   );

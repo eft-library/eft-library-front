@@ -1,13 +1,12 @@
 import Slider from 'react-slick';
 import { Box, Image } from '@chakra-ui/react';
-import { IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'photoswipe/dist/photoswipe.css';
-import { Gallery } from 'react-photoswipe-gallery';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 import PropTypes from 'prop-types';
 
-const ImageSlider = ({ mapList, imagePath }) => {
+const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
   return (
     <div
       style={{
@@ -25,13 +24,34 @@ const ImageSlider = ({ mapList, imagePath }) => {
           height: '30%',
         }}
       >
-        <Slider {...IMAGE_SLIDER_OPTION}>
+        <Slider {...sliderOption}>
           {mapList.map((map, index) => (
             <Box boxSize="sm" key={index} height={'100%'}>
-              <Image
-                src={process.env.REACT_APP_NAS_URL + map[imagePath]}
-                boxSize="100%"
-              />
+              {useZoom ? (
+                <Gallery>
+                  <Item
+                    original={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                    thumbnail={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                    width="1024"
+                    height="768"
+                  >
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                        boxSize="100%"
+                        cursor="pointer"
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              ) : (
+                <Image
+                  src={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                  boxSize="100%"
+                />
+              )}
             </Box>
           ))}
         </Slider>
@@ -63,6 +83,7 @@ const ImageSlider = ({ mapList, imagePath }) => {
 ImageSlider.propTypes = {
   mapList: PropTypes.array,
   imagePath: PropTypes.string,
+  sliderOption: PropTypes.object,
 };
 
 export default ImageSlider;

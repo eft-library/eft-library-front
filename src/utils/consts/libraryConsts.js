@@ -6,7 +6,18 @@ export const YOUTUBE_OPTION = {
   },
 };
 
-export const IMAGE_SLIDER_OPTION = {
+export const MOT_IMAGE_SLIDER_OPTION = {
+  dots: true,
+  infinite: true,
+  speed: 1000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 3000,
+  draggable: false,
+};
+
+export const MAIN_IMAGE_SLIDER_OPTION = {
   dots: true,
   infinite: true,
   speed: 1000,
@@ -14,4 +25,5 @@ export const IMAGE_SLIDER_OPTION = {
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 3000,
+  draggable: false,
 };

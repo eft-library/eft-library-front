@@ -4,6 +4,7 @@ import MapOfTarkovExtraction from './MapOfTarkovExtraction/MapOfTarkovExtraction
 import DividerContents from 'src/components/DividerContents/DividerContents';
 import ImageSlider from 'src/components/ImageSlider/ImageSlider';
 import BossDetail from '../../Boss/BossDetail/BossDetail';
+import { MOT_IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 
 const MapOfTarkovDetail = ({ mapOfTarkov }) => {
   return (
@@ -13,6 +14,8 @@ const MapOfTarkovDetail = ({ mapOfTarkov }) => {
           <ImageSlider
             mapList={mapOfTarkov.map_info.map_sub}
             imagePath="map_jpg_path"
+            sliderOption={MOT_IMAGE_SLIDER_OPTION}
+            useZoom
           />
         </Box>
       </DividerContents>

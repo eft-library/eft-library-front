@@ -31,7 +31,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
         <SimpleGrid
           columns={[2, null, 7]}
           spacing={2}
-          width={'90%'}
+          width={'100%'}
           outline={'1px solid'}
           outlineColor={'white'}
           borderRadius={'lg'}
@@ -46,7 +46,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
           <SimpleGrid
             columns={[2, null, 7]}
             spacing={2}
-            width={'90%'}
+            width={'100%'}
             outline={'1px solid'}
             outlineColor={'white'}
             borderRadius={'lg'}

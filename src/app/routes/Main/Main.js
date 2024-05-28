@@ -5,6 +5,7 @@ import Search from '../Main/Search/Search';
 import News from '../Main/News/News';
 import Info from '../Main/Info/Info';
 import hooks from 'src/hooks/hooks';
+import { MAIN_IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 
 const Main = () => {
   const { map, loading } = hooks.useGetAllMap();
@@ -40,7 +41,12 @@ const Main = () => {
       >
         <Search />
         <News />
-        <ImageSlider mapList={map} imagePath="map_main_image" />
+        <ImageSlider
+          mapList={map}
+          imagePath="map_main_image"
+          sliderOption={MAIN_IMAGE_SLIDER_OPTION}
+          useZoom={false}
+        />
         <Info />
       </Flex>
     </Box>
