@@ -1,9 +1,14 @@
 import Downshift from 'downshift';
-import { items } from 'src/utils/consts/searchConsts';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import hooks from 'src/hooks/hooks';
 
 const Search = () => {
+  const { searchList, loading } = hooks.useGetSearch();
   const [inputIsFocused, setInputIsFocused] = useState(false);
+  const navigate = useNavigate();
+
+  if (!searchList || loading) return null;
 
   return (
     <div
@@ -16,11 +21,7 @@ const Search = () => {
       }}
     >
       <Downshift
-        onChange={(selection) =>
-          alert(
-            selection ? `You selected ${selection.value}` : 'Selection Cleared',
-          )
-        }
+        onChange={(selection) => navigate(selection.search_link)}
         itemToString={(item) => (item ? item.value : '')}
         isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
       >
@@ -75,7 +76,7 @@ const Search = () => {
                 }}
               >
                 {isOpen &&
-                  items
+                  searchList
                     .filter(
                       (item) => !inputValue || item.value.includes(inputValue),
                     )
@@ -83,7 +84,7 @@ const Search = () => {
                       <li
                         key={index}
                         {...getItemProps({
-                          key: item.value,
+                          key: item.search_id,
                           index,
                           item,
                           style: {
@@ -98,7 +99,7 @@ const Search = () => {
                           },
                         })}
                       >
-                        {item.value}
+                        {item.search_value}
                       </li>
                     ))}
               </ul>

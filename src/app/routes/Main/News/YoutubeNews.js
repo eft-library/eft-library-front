@@ -1,34 +1,18 @@
-import { useEffect, useState } from 'react';
 import { YOUTUBE_OPTION } from 'src/utils/consts/libraryConsts';
 import YouTube from 'react-youtube';
-import API from 'src/config/api';
-import API_PATH from 'src/api/api_path';
 import YoutubeSkeleton from '../News/YoutubeSkeleton';
+import hooks from 'src/hooks/hooks';
 
 const YoutubeNews = () => {
-  const [youtubeInfo, setYoutubeInfo] = useState(null);
+  const { youtube, loading } = hooks.useGetYoutube();
 
-  useEffect(() => {
-    const getYoutube = async () => {
-      try {
-        const response = await API.get(API_PATH.GET_YOUTUBE);
-        const responseData = response.data.data;
-        setYoutubeInfo(responseData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getYoutube();
-  }, []);
-
-  if (!youtubeInfo) {
+  if (!youtube || loading) {
     return <YoutubeSkeleton />;
   }
 
   return (
     <YouTube
-      videoId={youtubeInfo.youtube_id}
+      videoId={youtube.youtube_id}
       opts={YOUTUBE_OPTION}
       onEnd={(e) => {
         e.target.stopVideo(0);
