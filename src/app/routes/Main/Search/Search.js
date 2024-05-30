@@ -22,7 +22,7 @@ const Search = () => {
     >
       <Downshift
         onChange={(selection) => navigate(selection.search_link)}
-        itemToString={(item) => (item ? item.value : '')}
+        itemToString={(item) => (item ? item.search_value : '')}
         isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
       >
         {({
@@ -78,7 +78,8 @@ const Search = () => {
                 {isOpen &&
                   searchList
                     .filter(
-                      (item) => !inputValue || item.value.includes(inputValue),
+                      (item) =>
+                        !inputValue || item.search_value.includes(inputValue),
                     )
                     .map((item, index) => (
                       <li
