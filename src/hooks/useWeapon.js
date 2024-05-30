@@ -22,7 +22,7 @@ export const useGetAllWeapon = () => {
     if (weapon === null) {
       fetchData();
     }
-  }, [weapon]);
+  }, []);
 
   return { weapon, loading };
 };

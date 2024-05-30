@@ -22,7 +22,7 @@ export const useGetYoutube = () => {
     if (youtube === null) {
       fetchData();
     }
-  }, [youtube]);
+  }, []);
 
   return { youtube, loading };
 };
@@ -47,7 +47,7 @@ export const useGetSearch = () => {
     if (searchList === null) {
       fetchData();
     }
-  }, [searchList]);
+  }, []);
 
   return { searchList, loading };
 };

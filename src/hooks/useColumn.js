@@ -21,7 +21,7 @@ export const useGetColumn = (colummApi) => {
     if (column === null) {
       fetchData();
     }
-  }, [column]);
+  }, []);
 
   return { column, loading };
 };

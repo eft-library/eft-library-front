@@ -18,12 +18,11 @@ export const useNavi = () => {
         setLoading(false);
       }
     };
-
     // navi가 null일 때만 데이터를 가져오도록 설정
     if (navi === null) {
       fetchData();
     }
-  }, [navi]); // navi가 변경될 때만 useEffect 재실행
+  }, []);
 
   return { navi, loading };
 };
@@ -48,7 +47,7 @@ export const useGetInfo = () => {
     if (mainInfo === null) {
       fetchData();
     }
-  }, [mainInfo]);
+  }, []);
 
   return { mainInfo, loading };
 };

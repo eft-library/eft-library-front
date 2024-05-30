@@ -22,7 +22,7 @@ export const useGetAllBoss = () => {
     if (boss === null) {
       fetchData();
     }
-  }, [boss]);
+  }, []);
 
   return { boss, loading };
 };

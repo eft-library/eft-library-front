@@ -22,7 +22,7 @@ export const useGetNpc = () => {
     if (npc === null) {
       fetchData();
     }
-  }, [npc]);
+  }, []);
 
   return { npc, loading };
 };
@@ -47,7 +47,7 @@ export const useGetAllQuest = () => {
     if (allQuest === null) {
       fetchData();
     }
-  }, [allQuest]);
+  }, []);
 
   return { allQuest, loading };
 };
@@ -72,7 +72,7 @@ export const useGetQuest = (questId) => {
     if (quest === null) {
       fetchData();
     }
-  }, [quest]);
+  }, [questId]);
 
   return { quest, loading };
 };

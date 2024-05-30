@@ -25,7 +25,7 @@ export const useGetAllMap = () => {
     if (map === null) {
       fetchData();
     }
-  }, [map]);
+  }, []);
 
   return { map, loading };
 };
@@ -50,7 +50,7 @@ export const useGetMap = (map_id) => {
     if (map === null) {
       fetchData();
     }
-  }, [map]);
+  }, [map_id]);
 
   return { detailMap: map, loading };
 };
@@ -73,6 +73,7 @@ export const useLoadMap = (map_three_path, isMap) => {
 
         // 모델의 모든 자식 노드를 반복하여 선을 입력값으로 설정
         loadedColladaData.scene.traverse((child) => {
+          console.log(child);
           if (child.isLine) {
             // 선의 재질을 설정
             const lineMaterial = new LineBasicMaterial({
@@ -104,7 +105,6 @@ export const useLoadMap = (map_three_path, isMap) => {
             child.renderOrder = 0;
           }
         });
-
         // 상태를 업데이트
         setMap({ colladaData: loadedColladaData });
       } catch (e) {
