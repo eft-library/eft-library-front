@@ -12,10 +12,10 @@ import PageParent from 'src/components/PageParent/PageParent';
 import LinkSelector from 'src/components/LinkSelector/LinkSelector';
 import API_PATH from 'src/api/api_path';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const Map = () => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
   const params = useParams();
   const { apiData: map, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_MAP,

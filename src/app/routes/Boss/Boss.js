@@ -3,7 +3,7 @@ import PageParent from 'src/components/PageParent/PageParent';
 import BossDetail from '../Boss/BossDetail/BossDetail';
 import BossContent from '../Boss/BossContent/BossContent';
 import ContentsSelector from 'src/components/ContentsSelector/ContentsSelecor';
-import { useBossStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
 import { Box } from '@chakra-ui/react';
 import API_PATH from 'src/api/api_path';
@@ -13,7 +13,7 @@ const Boss = () => {
     API_PATH.GET_ALL_BOSS,
   );
 
-  const { bossId, setBossId } = useBossStore();
+  const { bossId, setBossId } = useStore();
 
   const onClickBoss = (bossValue) => {
     setBossId(bossValue);

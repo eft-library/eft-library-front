@@ -1,55 +1,34 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
-export const useQuestStore = create(
-  persist(
-    (set) => ({
-      npcId: 'PRAPOR',
-      setNpcId: (npc) => set(() => ({ npcId: npc })),
-    }),
-    {
-      name: 'quest-storage',
-      storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
-);
+export const useStore = create(
+  devtools(
+    persist(
+      (set) => ({
+        // Boss 상태
+        bossId: 'RESHALA',
+        setBossId: (boss) => set((state) => ({ ...state, bossId: boss })),
 
-export const useWeaponStore = create(
-  persist(
-    (set) => ({
-      weaponCategory: 'ALL',
-      setWeaponCategory: (category) =>
-        set(() => ({ weaponCategory: category })),
-    }),
-    {
-      name: 'weapon-storage',
-      storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
-);
+        // Column 상태
+        allColumn: {},
+        setColumn: (columnInfo) =>
+          set((state) => ({ ...state, allColumn: columnInfo })),
 
-export const useBossStore = create(
-  persist(
-    (set) => ({
-      bossId: 'RESHALA',
-      setBossId: (boss) => set(() => ({ bossId: boss })),
-    }),
-    {
-      name: 'boss-storage',
-      storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
-);
+        // 무기 상태
+        weaponCategory: 'ALL',
+        setWeaponCategory: (category) =>
+          set((state) => ({ ...state, weaponCategory: category })),
 
-export const useColumnStore = create(
-  persist(
-    (set) => ({
-      allColumn: {},
-      setColumn: (columnInfo) => set(() => ({ allColumn: columnInfo })),
-    }),
-    {
-      name: 'column-storage',
-      storage: createJSONStorage(() => sessionStorage),
-    },
+        // quest 상태
+        npcId: 'PRAPOR',
+        setNpcId: (npc) => set((state) => ({ ...state, npcId: npc })),
+      }),
+      {
+        name: 'app-storage',
+        storage: createJSONStorage(() => sessionStorage),
+      },
+    ),
+    { name: 'store' }, // Devtools에서 스토어의 이름 설정
   ),
 );

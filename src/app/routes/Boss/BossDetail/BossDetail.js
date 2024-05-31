@@ -4,10 +4,10 @@ import RenderText from 'src/components/GridText/RenderText';
 import RenderArrayText from 'src/components/GridText/RenderArrayText';
 import RenderJsonText from 'src/components/GridText/RenderJsonText';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const BossDetail = ({ bossList, bossId }) => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
 
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === COLUMN_KEY.boss)

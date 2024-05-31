@@ -4,10 +4,10 @@ import TextValue from './TextValue';
 import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const RenderSpecial = ({ specialList, category }) => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === COLUMN_KEY.special)
       .column_value_kr;

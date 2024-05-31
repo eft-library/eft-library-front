@@ -2,10 +2,10 @@ import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicSVG from '../ViewSVG/DynamicSVG';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const Footer = () => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
 
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === COLUMN_KEY.footer)

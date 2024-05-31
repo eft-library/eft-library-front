@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import PageRouter from 'src/routes/router';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
 function App() {
-  const { setColumn } = useColumnStore();
-  const { apiData: columnData, loading } = hooks.useGetApiWithNone(
+  const { setColumn, allColumn } = useStore();
+  const { apiData: columnData } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_COLUMN,
   );
 
@@ -24,8 +24,6 @@ function App() {
       setColumn(columnData);
     }
   }, [columnData]);
-
-  if (!columnData || loading) return null;
 
   return (
     <ChakraProvider>
@@ -59,7 +57,9 @@ function App() {
           <Route path="/boss" element={<PageRouter.BOSS />} />
           <Route path="*" element={<PageRouter.NOT_FOUND />} />
         </Routes>
-        <PageRouter.FOOTER />
+        {allColumn && Object.keys(allColumn).length > 0 && (
+          <PageRouter.FOOTER />
+        )}
       </BrowserRouter>
     </ChakraProvider>
   );

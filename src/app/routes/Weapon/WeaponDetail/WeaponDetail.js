@@ -8,10 +8,10 @@ import RenderStationary from './RenderStationary';
 import { Box } from '@chakra-ui/react';
 import API_PATH from 'src/api/api_path';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const WeaponDetail = ({ category }) => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
 
   const { apiData: weapon, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_WEAPON,

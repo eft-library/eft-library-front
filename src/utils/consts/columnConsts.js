@@ -1,11 +1,3 @@
-export const COLUMN_INFO = {
-  weapon: '/WEAPON',
-  footer: '/FOOTER',
-  extraction: '/EXTRACTION',
-  map: '/MAP',
-  boss: '/BOSS',
-};
-
 export const COLUMN_KEY = {
   boss: 'BOSS_COLUMN',
   map: 'MAP_COLUMN',

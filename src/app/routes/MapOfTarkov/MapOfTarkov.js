@@ -6,10 +6,10 @@ import API_PATH from 'src/api/api_path';
 import LinkSelector from 'src/components/LinkSelector/LinkSelector';
 import MapOfTarkovDetail from './MapOfTarkovDetail/MapOfTarkovDetail';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const MapOfTarkov = () => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
   const params = useParams();
   const { apiData: mapOfTarkov, loading } = hooks.useGetApiWithParam(
     API_PATH.GET_MAP_OF_TARKOV,

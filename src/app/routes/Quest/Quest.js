@@ -2,12 +2,12 @@ import { Flex } from '@chakra-ui/react';
 import NPC from '../Quest/NPC/NPC';
 import Preview from '../Quest/Preview/Preview';
 import '../Quest/Quest.css';
-import { useQuestStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 import SubHeader from 'src/components/SubHeader/SubHeader';
 import PageParent from 'src/components/PageParent/PageParent';
 
 const Quest = () => {
-  const { npcId, setNpcId } = useQuestStore();
+  const { npcId, setNpcId } = useStore();
 
   const onClickNpc = (npcValue) => {
     setNpcId(npcValue);

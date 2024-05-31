@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const RenderWeapon = ({ gunList, category }) => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
 
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === COLUMN_KEY.weapon)

@@ -5,10 +5,10 @@ import RenderText from 'src/components/GridText/RenderText';
 import PropTypes from 'prop-types';
 import DividerContents from 'src/components/DividerContents/DividerContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
-import { useColumnStore } from 'src/stores/store';
+import { useStore } from 'src/stores/store';
 
 const MapOfTarkovExtraction = ({ extractionList }) => {
-  const { allColumn } = useColumnStore();
+  const { allColumn } = useStore();
 
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === COLUMN_KEY.extraction)
