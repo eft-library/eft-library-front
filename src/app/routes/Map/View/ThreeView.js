@@ -5,7 +5,7 @@ import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import ThreeViewSkeleton from '../View/ThreeViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
-import ExtendedOrbitControls from './ExtendOrbitControls';
+import { MapControls } from '@react-three/drei';
 
 const ThreeView = ({ map, viewItemList }) => {
   const collada = hooks.useLoadMap(map.map_three_path, true);
@@ -20,7 +20,7 @@ const ThreeView = ({ map, viewItemList }) => {
         height: '100vh',
       }}
     >
-      <ExtendedOrbitControls />
+      <MapControls />
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group

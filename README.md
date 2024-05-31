@@ -33,13 +33,9 @@ https://codepen.io/AdamJames93/pen/rNMKxer
 
 ## 할 일
 
-tarkov api 연동하기
-상단 nav 바 link 연동
-보스 목록 페이지 DB 설계 및 페이지 구현
-지도 디자인 DB 설계 및 페이지 구현 => 현재 지도 페이지 변경 해야 함
-무기 페이지 DB 설계 및 페이지 구현
 abortController
 wasd 버그 잡기
+3d 컨트롤러가 어렵다;;;
 
 Dev
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
+import hooks from './hooks';
 
 export const useLoadMap = (map_three_path, isMap) => {
   const [map, setMap] = useState(null);
@@ -12,7 +13,7 @@ export const useLoadMap = (map_three_path, isMap) => {
         const loadedColladaData = await new Promise((resolve, reject) => {
           const loader = new ColladaLoader();
           loader.load(
-            process.env.REACT_APP_NAS_URL + map_three_path,
+            hooks.useImageLink(map_three_path),
             (collada) => resolve(collada),
             undefined,
             (error) => reject(error),
