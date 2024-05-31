@@ -4,15 +4,11 @@ import RenderText from 'src/components/GridText/RenderText';
 import RenderArrayText from 'src/components/GridText/RenderArrayText';
 import RenderJsonText from 'src/components/GridText/RenderJsonText';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import hooks from 'src/hooks/hooks';
 import { useStore } from 'src/stores/store';
 
 const BossDetail = ({ bossList, bossId }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.boss)
-      .column_value_kr;
-  };
 
   return (
     <Box
@@ -32,9 +28,11 @@ const BossDetail = ({ bossList, bossId }) => {
         p={2}
         mb={6}
       >
-        {columnList(allColumn).map((item, index) => (
-          <RenderText text={item} key={index} />
-        ))}
+        {hooks
+          .useColumnListByKr(allColumn, COLUMN_KEY.boss)
+          .map((item, index) => (
+            <RenderText text={item} key={index} />
+          ))}
       </SimpleGrid>
       {bossList.map(
         (boss, index) =>

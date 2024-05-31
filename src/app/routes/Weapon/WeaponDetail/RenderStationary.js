@@ -5,14 +5,10 @@ import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const RenderStationary = ({ stationaryList, category }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.stationary)
-      .column_value_kr;
-  };
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
@@ -26,7 +22,7 @@ const RenderStationary = ({ stationaryList, category }) => {
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={columnList(allColumn)}
+        column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.stationary)}
         isShadow
         shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
       />

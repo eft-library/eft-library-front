@@ -5,14 +5,10 @@ import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const RenderThrowable = ({ throwableList }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.throwable)
-      .column_value_kr;
-  };
 
   const detailThrowable = ['RGN', 'RGO'];
 
@@ -20,7 +16,7 @@ const RenderThrowable = ({ throwableList }) => {
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={columnList(allColumn)}
+        column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.throwable)}
         isShadow
         shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
       />

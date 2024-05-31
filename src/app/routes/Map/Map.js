@@ -17,22 +17,14 @@ import { useStore } from 'src/stores/store';
 const Map = () => {
   const { allColumn } = useStore();
   const params = useParams();
-  const { apiData: map, loading } = hooks.useGetApiWithNone(
-    API_PATH.GET_ALL_MAP,
-  );
   const [mapData, setMapData] = useState(null);
   const [subMap, setSubMap] = useState(null);
   const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
     mapData ? mapData.map_jpg_item_path : null,
   );
-
-  const columnList = (columnObj) => {
-    const col = columnObj.find(
-      (item) => item.column_id === COLUMN_KEY.map,
-    ).column_json_value;
-    col.sort((a, b) => a.map_order - b.map_order);
-    return col;
-  };
+  const { apiData: map, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_MAP,
+  );
 
   useEffect(() => {
     if (map) {
@@ -64,7 +56,7 @@ const Map = () => {
         />
       )}
       <LinkSelector
-        itemList={columnList(allColumn)}
+        itemList={hooks.useColumnListByJson(allColumn, COLUMN_KEY.map, true)}
         itemDesc="map_name_kr"
         itemLink="map_link"
         mt={3}

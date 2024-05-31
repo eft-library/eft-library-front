@@ -4,14 +4,10 @@ import TextValue from './TextValue';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const RenderWeapon = ({ gunList, category }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.weapon)
-      .column_value_kr;
-  };
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
@@ -53,19 +49,21 @@ const RenderWeapon = ({ gunList, category }) => {
         p={2}
         mb={6}
       >
-        {columnList(allColumn).map((item, index) => (
-          <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
-            <Text
-              color={'white'}
-              key={index}
-              textAlign={'center'}
-              fontWeight={700}
-              textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
-            >
-              {item}
-            </Text>
-          </GridItem>
-        ))}
+        {hooks
+          .useColumnListByKr(allColumn, COLUMN_KEY.weapon)
+          .map((item, index) => (
+            <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
+              <Text
+                color={'white'}
+                key={index}
+                textAlign={'center'}
+                fontWeight={700}
+                textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
+              >
+                {item}
+              </Text>
+            </GridItem>
+          ))}
       </SimpleGrid>
       {gunList.map((item, index) =>
         shouldRenderWeapon(item) ? (

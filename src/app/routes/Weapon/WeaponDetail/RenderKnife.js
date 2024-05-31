@@ -5,20 +5,16 @@ import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const RenderKnife = ({ knifeList }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.knife)
-      .column_value_kr;
-  };
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={columnList(allColumn)}
+        column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.knife)}
         isShadow
         shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
       />

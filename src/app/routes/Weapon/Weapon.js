@@ -4,6 +4,7 @@ import WeaponDetail from '../Weapon/WeaponDetail/WeaponDetail';
 import ContentsSelector from 'src/components/ContentsSelector/ContentsSelecor';
 import { useStore } from 'src/stores/store';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import hooks from 'src/hooks/hooks';
 
 const Weapon = () => {
   const { allColumn, weaponCategory, setWeaponCategory } = useStore();
@@ -12,17 +13,16 @@ const Weapon = () => {
     setWeaponCategory(weaponCategory);
   };
 
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.weaponType)
-      .column_json_value;
-  };
-
   return (
     <PageParent>
       <SubHeader title="무기" />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={columnList(allColumn)}
+        itemList={hooks.useColumnListByJson(
+          allColumn,
+          COLUMN_KEY.weaponType,
+          false,
+        )}
         currentId={weaponCategory}
         selectorId={'value'}
         itemDesc={'desc_kr'}

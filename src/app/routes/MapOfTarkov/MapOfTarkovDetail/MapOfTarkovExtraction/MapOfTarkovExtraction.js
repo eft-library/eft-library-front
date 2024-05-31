@@ -6,14 +6,10 @@ import PropTypes from 'prop-types';
 import DividerContents from 'src/components/DividerContents/DividerContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const MapOfTarkovExtraction = ({ extractionList }) => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.extraction)
-      .column_value_kr;
-  };
 
   return (
     <DividerContents headText="탈출구">
@@ -34,9 +30,11 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
           p={2}
           mb={6}
         >
-          {columnList(allColumn).map((item, index) => (
-            <RenderText text={item} key={index} />
-          ))}
+          {hooks
+            .useColumnListByKr(allColumn, COLUMN_KEY.extraction)
+            .map((item, index) => (
+              <RenderText text={item} key={index} />
+            ))}
         </SimpleGrid>
         {extractionList.map((extraction, index) => (
           <SimpleGrid

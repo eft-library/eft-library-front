@@ -3,14 +3,10 @@ import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicSVG from '../ViewSVG/DynamicSVG';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import hooks from 'src/hooks/hooks';
 
 const Footer = () => {
   const { allColumn } = useStore();
-
-  const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === COLUMN_KEY.footer)
-      .column_json_value;
-  };
 
   return (
     <Box
@@ -33,34 +29,38 @@ const Footer = () => {
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
-            {columnList(allColumn).text.map((item, index) => (
-              <Text
-                color={MAP_COLOR.MAP_WHITE}
-                m={2}
-                fontWeight={'bold'}
-                key={index}
-              >
-                {item.value}
-              </Text>
-            ))}
-            <Flex direction="row" m={1}>
-              {columnList(allColumn).icon.map((item, index) => (
-                <Box
-                  ml={index === 0 ? '' : 4}
+            {hooks
+              .useColumnListByJson(allColumn, COLUMN_KEY.footer)
+              .text.map((item, index) => (
+                <Text
+                  color={MAP_COLOR.MAP_WHITE}
+                  m={2}
+                  fontWeight={'bold'}
                   key={index}
-                  cursor={'pointer'}
-                  onClick={() => window.open(item.link, '_blank')}
                 >
-                  <DynamicSVG svgValue={item.name} isEnable={true} />
-                  <Text
-                    color={MAP_COLOR.MAP_WHITE}
-                    fontWeight={'bold'}
-                    textAlign={'center'}
-                  >
-                    {item.name}
-                  </Text>
-                </Box>
+                  {item.value}
+                </Text>
               ))}
+            <Flex direction="row" m={1}>
+              {hooks
+                .useColumnListByJson(allColumn, COLUMN_KEY.footer)
+                .icon.map((item, index) => (
+                  <Box
+                    ml={index === 0 ? '' : 4}
+                    key={index}
+                    cursor={'pointer'}
+                    onClick={() => window.open(item.link, '_blank')}
+                  >
+                    <DynamicSVG svgValue={item.name} isEnable={true} />
+                    <Text
+                      color={MAP_COLOR.MAP_WHITE}
+                      fontWeight={'bold'}
+                      textAlign={'center'}
+                    >
+                      {item.name}
+                    </Text>
+                  </Box>
+                ))}
             </Flex>
           </Flex>
         </GridItem>
