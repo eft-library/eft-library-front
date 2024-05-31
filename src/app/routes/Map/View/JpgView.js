@@ -5,6 +5,7 @@ import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicJpgSVG from 'src/components/ViewSVG/DynamicJpgSVG';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import hooks from 'src/hooks/hooks';
 
 const JpgView = ({ map, viewItemList }) => {
   const [width, height] = useWindowSize({
@@ -56,7 +57,7 @@ const JpgView = ({ map, viewItemList }) => {
             onClick={handleClick}
           >
             <image
-              xlinkHref={process.env.REACT_APP_NAS_URL + map.map_jpg_path}
+              xlinkHref={hooks.useImageLink(map.map_jpg_path)}
               width="100%"
               height="100%"
             />

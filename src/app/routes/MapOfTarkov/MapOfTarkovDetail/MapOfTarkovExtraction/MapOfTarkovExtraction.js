@@ -54,11 +54,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Image
-                src={
-                  process.env.REACT_APP_NAS_URL + extraction.extraction_image
-                }
-              />
+              <Image src={hooks.useImageLink(extraction.extraction_image)} />
             </GridItem>
 
             <RenderText text={extraction.extraction_name} />
@@ -75,7 +71,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
             >
               {extraction.extraction_requirements.map((item, index) => (
                 <Box key={index}>
-                  <Image src={process.env.REACT_APP_NAS_URL + item.image} />
+                  <Image src={hooks.useImageLink(item.image)} />
                   <Text
                     color={ALL_COLOR.WHITE}
                     mt={2}

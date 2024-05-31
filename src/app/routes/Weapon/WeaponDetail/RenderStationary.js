@@ -35,10 +35,7 @@ const RenderStationary = ({ stationaryList, category }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              <Image
-                src={process.env.REACT_APP_NAS_URL + item.weapon_img}
-                maxH={'200px'}
-              />
+              <Image src={hooks.useImageLink(item.weapon_img)} maxH={'200px'} />
             </Box>
             <TextValue value={item.weapon_short_name} />
             <TextValue value={item.weapon_carliber} />

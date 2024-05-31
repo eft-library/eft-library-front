@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
+import hooks from 'src/hooks/hooks';
 
 const QuestInfo = ({ quest }) => {
   return (
@@ -10,7 +11,7 @@ const QuestInfo = ({ quest }) => {
         h="160px"
         backgroundColor={ALL_COLOR.WHITE}
         color={ALL_COLOR.WHITE}
-        backgroundImage={`url(${process.env.REACT_APP_NAS_URL + quest.npc_img_path})`}
+        backgroundImage={`url(${hooks.useImageLink(quest.npc_img_path)})`}
         backgroundRepeat={'no-repeat'}
         backgroundSize={'cover'}
         outline={'4px solid'}

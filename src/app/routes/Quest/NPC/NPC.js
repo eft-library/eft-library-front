@@ -30,7 +30,7 @@ const NPC = ({ selectedNpc, onClickNpc }) => {
               h="120px"
               onClick={() => onClickNpc(npcItem.npc_id)}
               color={ALL_COLOR.WHITE}
-              backgroundImage={`url(${process.env.REACT_APP_NAS_URL + npcItem.npc_img_path})`}
+              backgroundImage={`url(${hooks.useImageLink(npcItem.npc_img_path)})`}
               outline={
                 selectedNpc === npcItem.npc_id ? '4px solid' : '1px solid'
               }

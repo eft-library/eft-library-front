@@ -41,7 +41,7 @@ const Info = () => {
               justifyContent="center"
               alignItems="center"
               cursor={'pointer'}
-              backgroundImage={`url(${process.env.REACT_APP_NAS_URL + map.info_image})`}
+              backgroundImage={`url(${hooks.useImageLink(map.info_image)})`}
               backgroundSize={'cover'}
               backgroundPosition={'center'}
               onMouseEnter={handleHover} // 호버시 효과 적용

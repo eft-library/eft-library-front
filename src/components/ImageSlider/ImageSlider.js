@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import PropTypes from 'prop-types';
+import hooks from 'src/hooks/hooks';
 
 const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
   return (
@@ -30,8 +31,8 @@ const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
               {useZoom ? (
                 <Gallery>
                   <Item
-                    original={process.env.REACT_APP_NAS_URL + map[imagePath]}
-                    thumbnail={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                    original={hooks.useImageLink(map[imagePath])}
+                    thumbnail={hooks.useImageLink(map[imagePath])}
                     width="1440"
                     height="810.06"
                   >
@@ -39,7 +40,7 @@ const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
                       <Image
                         ref={ref}
                         onClick={open}
-                        src={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                        src={hooks.useImageLink(map[imagePath])}
                         boxSize="100%"
                         cursor="pointer"
                       />
@@ -48,7 +49,7 @@ const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
                 </Gallery>
               ) : (
                 <Image
-                  src={process.env.REACT_APP_NAS_URL + map[imagePath]}
+                  src={hooks.useImageLink(map[imagePath])}
                   boxSize="100%"
                 />
               )}
