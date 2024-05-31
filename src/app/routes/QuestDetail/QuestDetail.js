@@ -4,10 +4,14 @@ import { useParams } from 'react-router-dom';
 import QuestInfo from '../QuestDetail/QuestInfo/QuestInfo';
 import QuestContents from '../QuestDetail/QuestContents/QuestContents';
 import hooks from 'src/hooks/hooks';
+import API_PATH from 'src/api/api_path';
 
 const QuestDetail = () => {
   const params = useParams();
-  const { quest, loading } = hooks.useGetQuest(params.questId);
+  const { apiData: quest, loading } = hooks.useGetApiWithParam(
+    API_PATH.GET_QUEST,
+    params.questId,
+  );
 
   if (!quest || loading) return null;
 

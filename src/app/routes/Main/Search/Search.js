@@ -2,9 +2,12 @@ import Downshift from 'downshift';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
+import API_PATH from 'src/api/api_path';
 
 const Search = () => {
-  const { searchList, loading } = hooks.useGetSearch();
+  const { apiData: searchList, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_SEARCH,
+  );
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const navigate = useNavigate();
 

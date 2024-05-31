@@ -6,9 +6,12 @@ import ContentsSelector from 'src/components/ContentsSelector/ContentsSelecor';
 import { useBossStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
 import { Box } from '@chakra-ui/react';
+import API_PATH from 'src/api/api_path';
 
 const Boss = () => {
-  const { boss, loading } = hooks.useGetAllBoss();
+  const { apiData: boss, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_BOSS,
+  );
 
   const { bossId, setBossId } = useBossStore();
 

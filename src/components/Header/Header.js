@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
 import HeaderSkeleton from 'src/components/Header/HeaderSkeleton';
 import hooks from 'src/hooks/hooks';
+import API_PATH from 'src/api/api_path';
 
 const Header = () => {
   const [selectedMenu, setSelectedMenu] = useState(null);
-  const { navi, loading } = hooks.useNavi();
+  const { apiData: navi, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_NAVI_MENU,
+  );
 
   const changeMenu = (menuName) => {
     setSelectedMenu(menuName);

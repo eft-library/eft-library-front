@@ -6,9 +6,12 @@ import News from '../Main/News/News';
 import Info from '../Main/Info/Info';
 import hooks from 'src/hooks/hooks';
 import { MAIN_IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
+import API_PATH from 'src/api/api_path';
 
 const Main = () => {
-  const { map, loading } = hooks.useGetAllMap();
+  const { apiData: map, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_MAP,
+  );
 
   if (!map || loading) return null;
 

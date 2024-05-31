@@ -7,7 +7,9 @@ import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
 const BossDetail = ({ bossList, bossId }) => {
-  const { column, loading } = hooks.useGetColumn(API_PATH.GET_COLUMN + '/BOSS');
+  const { apiData: column, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_COLUMN + '/BOSS',
+  );
 
   const columnList = (columnObj) => {
     return columnObj.find((item) => item.column_id === 'BOSS_COLUMN')

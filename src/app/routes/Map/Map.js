@@ -14,13 +14,15 @@ import API_PATH from 'src/api/api_path';
 
 const Map = () => {
   const params = useParams();
-  const { map, loading } = hooks.useGetAllMap();
+  const { apiData: map, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_MAP,
+  );
   const [mapData, setMapData] = useState(null);
   const [subMap, setSubMap] = useState(null);
   const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
     mapData ? mapData.map_jpg_item_path : null,
   );
-  const { column, loading: columnLoading } = hooks.useGetColumn(
+  const { apiData: column, loading: columnLoading } = hooks.useGetApiWithNone(
     API_PATH.GET_COLUMN + '/MAP',
   );
 

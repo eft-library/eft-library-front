@@ -2,58 +2,6 @@ import { useEffect, useState } from 'react';
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import { MAP_COLOR } from 'src/utils/consts/colorConsts';
-import API from 'src/config/api';
-import API_PATH from 'src/api/api_path';
-
-export const useGetAllMap = () => {
-  const [map, setMap] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await API.get(API_PATH.GET_ALL_MAP);
-        const responseData = response.data.data;
-        setMap(responseData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching map data:', error);
-        setLoading(false);
-      }
-    };
-
-    if (map === null) {
-      fetchData();
-    }
-  }, []);
-
-  return { map, loading };
-};
-
-export const useGetMap = (map_id) => {
-  const [map, setMap] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await API.get(API_PATH.GET_MAP + '/' + map_id);
-        const responseData = response.data.data;
-        setMap(responseData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching map data:', error);
-        setLoading(false);
-      }
-    };
-
-    if (map === null) {
-      fetchData();
-    }
-  }, [map_id]);
-
-  return { detailMap: map, loading };
-};
 
 export const useLoadMap = (map_three_path, isMap) => {
   const [map, setMap] = useState(null);

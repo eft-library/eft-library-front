@@ -3,9 +3,12 @@ import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
 import { Link } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
 import InfoSkeleton from '../Info/InfoSkeleton';
+import API_PATH from 'src/api/api_path';
 
 const Info = () => {
-  const { loading, mainInfo } = hooks.useGetInfo();
+  const { apiData: mainInfo, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_MAIN_INFO,
+  );
 
   const handleHover = (e) => {
     e.target.style.transform = 'scale(1.1)'; // 이미지 확대

@@ -9,10 +9,11 @@ import { Box } from '@chakra-ui/react';
 import API_PATH from 'src/api/api_path';
 
 const WeaponDetail = ({ category }) => {
-  const { weapon, loading } = hooks.useGetAllWeapon();
-  const { column: columnData, loading: columnLoading } = hooks.useGetColumn(
-    API_PATH.GET_COLUMN + '/WEAPON',
+  const { apiData: weapon, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_WEAPON,
   );
+  const { apiData: columnData, loading: columnLoading } =
+    hooks.useGetApiWithNone(API_PATH.GET_COLUMN + '/WEAPON');
 
   const checkGunInclude = () => {
     const gunCategoryList = columnData.find(

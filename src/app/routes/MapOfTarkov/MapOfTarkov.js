@@ -8,8 +8,11 @@ import MapOfTarkovDetail from './MapOfTarkovDetail/MapOfTarkovDetail';
 
 const MapOfTarkov = () => {
   const params = useParams();
-  const { mapOfTarkov, loading } = hooks.useMapOfTarkov(params.mapId);
-  const { column, loading: columnLoading } = hooks.useGetColumn(
+  const { apiData: mapOfTarkov, loading } = hooks.useGetApiWithParam(
+    API_PATH.GET_MAP_OF_TARKOV,
+    params.mapId,
+  );
+  const { apiData: column, loading: columnLoading } = hooks.useGetApiWithNone(
     API_PATH.GET_COLUMN + '/MAP_OF_TARKOV',
   );
 

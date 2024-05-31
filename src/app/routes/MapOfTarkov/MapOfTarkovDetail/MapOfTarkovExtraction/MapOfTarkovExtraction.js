@@ -8,7 +8,7 @@ import API_PATH from 'src/api/api_path';
 import DividerContents from 'src/components/DividerContents/DividerContents';
 
 const MapOfTarkovExtraction = ({ extractionList }) => {
-  const { column, loading } = hooks.useGetColumn(
+  const { apiData: column, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_COLUMN + '/EXTRACTION',
   );
 

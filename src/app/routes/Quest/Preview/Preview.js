@@ -12,9 +12,12 @@ import {
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import API_PATH from 'src/api/api_path';
 
 const Preview = ({ selectedNpc }) => {
-  const { allQuest, loading } = hooks.useGetAllQuest();
+  const { apiData: allQuest, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_QUEST,
+  );
 
   if (!allQuest || loading) return null;
 

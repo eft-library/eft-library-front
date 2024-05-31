@@ -2,9 +2,12 @@ import { YOUTUBE_OPTION } from 'src/utils/consts/libraryConsts';
 import YouTube from 'react-youtube';
 import YoutubeSkeleton from '../News/YoutubeSkeleton';
 import hooks from 'src/hooks/hooks';
+import API_PATH from 'src/api/api_path';
 
 const YoutubeNews = () => {
-  const { youtube, loading } = hooks.useGetYoutube();
+  const { apiData: youtube, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_YOUTUBE,
+  );
 
   if (!youtube || loading) {
     return <YoutubeSkeleton />;

@@ -5,7 +5,7 @@ import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
 const Footer = () => {
-  const { column, loading } = hooks.useGetColumn(
+  const { apiData: column, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_COLUMN + '/FOOTER',
   );
 

@@ -2,9 +2,10 @@ import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
 import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
+import API_PATH from 'src/api/api_path';
 
 const NPC = ({ selectedNpc, onClickNpc }) => {
-  const { npc, loading } = hooks.useGetNpc();
+  const { apiData: npc, loading } = hooks.useGetApiWithNone(API_PATH.GET_NPC);
 
   const handleHover = (e) => {
     e.target.style.transform = 'scale(1.1)'; // 이미지 확대
