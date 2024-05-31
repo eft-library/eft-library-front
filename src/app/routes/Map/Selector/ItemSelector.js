@@ -11,7 +11,7 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import DynamicSVG from 'src/components/ViewSVG/DynamicSVG';
 import PropTypes from 'prop-types';
@@ -61,14 +61,14 @@ const ItemSelector = ({
       overflowY="hidden"
       height={'75%'}
       borderRadius="md"
-      border={isOpen ? `1px solid ${MAP_COLOR.MAP_WHITE}` : 'none'}
+      border={isOpen ? `1px solid ${ALL_COLOR.WHITE}` : 'none'}
       defaultIndex={[0]}
     >
       <AccordionItem
-        borderTop={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
-        borderLeft={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
-        borderRight={isOpen ? 'none' : `1px solid ${MAP_COLOR.MAP_WHITE}`}
-        borderBottom={`1px solid ${MAP_COLOR.MAP_WHITE}`}
+        borderTop={isOpen ? 'none' : `1px solid ${ALL_COLOR.WHITE}`}
+        borderLeft={isOpen ? 'none' : `1px solid ${ALL_COLOR.WHITE}`}
+        borderRight={isOpen ? 'none' : `1px solid ${ALL_COLOR.WHITE}`}
+        borderBottom={`1px solid ${ALL_COLOR.WHITE}`}
         borderRadius="md"
       >
         <Heading
@@ -82,11 +82,11 @@ const ItemSelector = ({
               flex="1"
               textAlign="left"
               fontWeight={700}
-              color={MAP_COLOR.MAP_WHITE}
+              color={ALL_COLOR.WHITE}
             >
               Filter
             </Box>
-            <AccordionIcon color={MAP_COLOR.MAP_WHITE} />
+            <AccordionIcon color={ALL_COLOR.WHITE} />
           </AccordionButton>
         </Heading>
         <AccordionPanel
@@ -95,15 +95,15 @@ const ItemSelector = ({
               width: '6px',
             },
             '&::-webkit-scrollbar-track': {
-              background: MAP_COLOR.MAP_SCROLL_TRACK,
+              background: ALL_COLOR.SCROLL_TRACK,
               borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb': {
-              background: MAP_COLOR.MAP_SCROLL_THUMB,
+              background: ALL_COLOR.SCROLL_THUMB,
               borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb:hover': {
-              background: MAP_COLOR.MAP_SCROLL_HOVER,
+              background: ALL_COLOR.SCROLL_HOVER,
             },
           }}
           position={'fixed'}
@@ -116,7 +116,7 @@ const ItemSelector = ({
           overflowY={'auto'}
         >
           <Box
-            color={MAP_COLOR.MAP_WHITE}
+            color={ALL_COLOR.WHITE}
             display={'flex'}
             alignItems={'center'}
             cursor={'pointer'}
@@ -145,7 +145,7 @@ const ItemSelector = ({
                     mt={'20px'}
                     onClick={() => onClickItem(item.value)}
                     opacity={viewItemList.includes(item.value) ? '' : '0.5'}
-                    color={MAP_COLOR.MAP_WHITE}
+                    color={ALL_COLOR.WHITE}
                     fontWeight={'600'}
                     fontSize={'xl'}
                     cursor={'pointer'}
@@ -170,7 +170,7 @@ const ItemSelector = ({
                         opacity={
                           viewItemList.includes(childItem.value) ? '' : '0.5'
                         }
-                        color={MAP_COLOR.MAP_WHITE}
+                        color={ALL_COLOR.WHITE}
                         cursor={'pointer'}
                         pl={'10px'}
                       >

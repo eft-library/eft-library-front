@@ -6,6 +6,7 @@ import RenderJsonText from 'src/components/GridText/RenderJsonText';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import hooks from 'src/hooks/hooks';
 import { useStore } from 'src/stores/store';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const BossDetail = ({ bossList, bossId }) => {
   const { allColumn } = useStore();
@@ -23,7 +24,7 @@ const BossDetail = ({ bossList, bossId }) => {
         spacing={2}
         width={'100%'}
         outline={'1px solid'}
-        outlineColor={'white'}
+        outlineColor={ALL_COLOR.WHITE}
         borderRadius={'lg'}
         p={2}
         mb={6}
@@ -42,7 +43,7 @@ const BossDetail = ({ bossList, bossId }) => {
               spacing={2}
               width={'100%'}
               outline={'1px solid'}
-              outlineColor={'white'}
+              outlineColor={ALL_COLOR.WHITE}
               borderRadius={'lg'}
               p={2}
               mb={4}

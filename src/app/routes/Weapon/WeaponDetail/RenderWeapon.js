@@ -5,6 +5,7 @@ import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const RenderWeapon = ({ gunList, category }) => {
   const { allColumn } = useStore();
@@ -43,7 +44,7 @@ const RenderWeapon = ({ gunList, category }) => {
         spacing={2}
         width={'95%'}
         outline={'2px solid'}
-        outlineColor={'white'}
+        outlineColor={ALL_COLOR.WHITE}
         borderRadius={'lg'}
         boxShadow="0 0 14px rgb(202, 238, 18, 0.7)"
         p={2}
@@ -54,11 +55,11 @@ const RenderWeapon = ({ gunList, category }) => {
           .map((item, index) => (
             <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
               <Text
-                color={'white'}
+                color={ALL_COLOR.WHITE}
                 key={index}
                 textAlign={'center'}
                 fontWeight={700}
-                textShadow="0px 1px 1px rgb(202, 238, 18, 0.7)"
+                textShadow={ALL_COLOR.YELLOW_SHADOW}
               >
                 {item}
               </Text>
@@ -88,7 +89,7 @@ const RenderWeapon = ({ gunList, category }) => {
               flexDirection={'column'}
             >
               {item.weapon_modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color="white" textAlign="center">
+                <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
                   {mode}
                 </Text>
               ))}

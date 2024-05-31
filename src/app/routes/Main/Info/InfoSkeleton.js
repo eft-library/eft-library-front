@@ -1,5 +1,5 @@
 import { Grid, GridItem, Box, Text, Skeleton, Center } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const InfoSkeleton = () => {
   const skelCount = 13;
@@ -18,7 +18,7 @@ const InfoSkeleton = () => {
                 w="120px"
                 h="120px"
                 border="1px solid"
-                borderColor={MAIN_COLOR.MAIN_WHITE}
+                borderColor={ALL_COLOR.WHITE}
                 borderRadius="lg"
                 display="flex"
                 justifyContent="center"
@@ -30,7 +30,7 @@ const InfoSkeleton = () => {
             </Skeleton>
             <Center>
               <Skeleton height="20px" width="80px" mt={2}>
-                <Text color={MAIN_COLOR.MAIN_WHITE} mt={2} />
+                <Text color={ALL_COLOR.WHITE} mt={2} />
               </Skeleton>
             </Center>
           </div>

@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Flex, Text } from '@chakra-ui/react';
-import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const ContentsSelector = ({
@@ -28,16 +28,19 @@ const ContentsSelector = ({
               cursor={'pointer'}
               w="110px"
               h="40px"
-              color={'white'}
+              color={ALL_COLOR.WHITE}
               outline={'1px solid'}
-              outlineColor={MAIN_COLOR.MAIN_WHITE}
+              outlineColor={ALL_COLOR.WHITE}
               borderRadius={'lg'}
-              _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
-              bg={
-                currentId === item[selectorId] ? MAP_COLOR.MAP_LIGHT_GRAY : ''
-              }
+              _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+              bg={currentId === item[selectorId] ? ALL_COLOR.LIGHT_GRAY : ''}
             >
-              <Text color={'white'} mt={2} fontWeight={700} textAlign="center">
+              <Text
+                color={ALL_COLOR.WHITE}
+                mt={2}
+                fontWeight={700}
+                textAlign="center"
+              >
                 {item[itemDesc]}
               </Text>
             </Box>

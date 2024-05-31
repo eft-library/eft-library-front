@@ -6,6 +6,7 @@ import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const RenderThrowable = ({ throwableList }) => {
   const { allColumn } = useStore();
@@ -18,7 +19,7 @@ const RenderThrowable = ({ throwableList }) => {
         columnDesign={[2, null, 5]}
         column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.throwable)}
         isShadow
-        shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {throwableList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
@@ -36,15 +37,15 @@ const RenderThrowable = ({ throwableList }) => {
           >
             {detailThrowable.includes(item.throwable_short_name) ? (
               <>
-                <Text color="white" textAlign="center" mb={2}>
+                <Text color={ALL_COLOR.WHITE} textAlign="center" mb={2}>
                   충격시 {item.throwable_min_fuse} 초
                 </Text>
-                <Text color="white" textAlign="center">
+                <Text color={ALL_COLOR.WHITE} textAlign="center">
                   (충격 신관이 발동되지 않은 경우 {item.throwable_fuse} 초)
                 </Text>
               </>
             ) : (
-              <Text color="white" textAlign="center">
+              <Text color={ALL_COLOR.WHITE} textAlign="center">
                 {item.throwable_fuse} 초
               </Text>
             )}
@@ -57,7 +58,7 @@ const RenderThrowable = ({ throwableList }) => {
             alignItems="center"
             flexDirection={'column'}
           >
-            <Text color="white" textAlign="center">
+            <Text color={ALL_COLOR.WHITE} textAlign="center">
               {item.throwable_min_explosion_distance} ~&nbsp;
               {item.throwable_max_explosion_distance} m
             </Text>
@@ -70,7 +71,7 @@ const RenderThrowable = ({ throwableList }) => {
             alignItems="center"
             flexDirection={'column'}
           >
-            <Text color="white" textAlign="center">
+            <Text color={ALL_COLOR.WHITE} textAlign="center">
               {item.throwable_fragments} m
             </Text>
           </Box>

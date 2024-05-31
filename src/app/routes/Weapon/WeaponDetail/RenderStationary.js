@@ -6,6 +6,7 @@ import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const RenderStationary = ({ stationaryList, category }) => {
   const { allColumn } = useStore();
@@ -24,7 +25,7 @@ const RenderStationary = ({ stationaryList, category }) => {
         columnDesign={[2, null, 5]}
         column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.stationary)}
         isShadow
-        shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {stationaryList.map((item, index) =>
         shouldRenderWeapon(item) ? (
@@ -50,7 +51,7 @@ const RenderStationary = ({ stationaryList, category }) => {
               flexDirection={'column'}
             >
               {item.weapon_modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color="white" textAlign="center">
+                <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
                   {mode}
                 </Text>
               ))}

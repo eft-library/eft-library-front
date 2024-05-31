@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import DividerContents from 'src/components/DividerContents/DividerContents';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const QuestContents = ({ quest }) => {
   return (
@@ -10,7 +11,7 @@ const QuestContents = ({ quest }) => {
           {quest.quest_objectives_kr.map((objectives, index) => (
             <Text
               key={index}
-              color={'white'}
+              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -26,7 +27,7 @@ const QuestContents = ({ quest }) => {
           {quest.quest_rewards_kr.map((rewards, index) => (
             <Text
               key={index}
-              color={'white'}
+              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -40,7 +41,7 @@ const QuestContents = ({ quest }) => {
       <DividerContents headText="가이드">
         <Box>
           <Text
-            color={'white'}
+            color={ALL_COLOR.WHITE}
             mt={1}
             fontWeight={700}
             fontSize="lg"

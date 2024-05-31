@@ -1,5 +1,5 @@
 import SVG_CONSTANTS from 'src/utils/consts/svgConsts';
-import { ITEM_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import PropTypes from 'prop-types';
 
@@ -18,7 +18,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
           y={y}
           height={itemHeight}
           width={itemWidth}
-          color={ITEM_COLOR.PMC_EXTRACTION}
+          color={ALL_COLOR.PMC_EXTRACTION}
           opacity={isEnable ? '1' : '0.5'}
         />
       );
@@ -29,7 +29,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
           y={y}
           height={itemHeight}
           width={itemWidth}
-          color={ITEM_COLOR.SCAV_EXTRACTION}
+          color={ALL_COLOR.SCAV_EXTRACTION}
           opacity={isEnable ? '1' : '0.5'}
         />
       );
@@ -40,7 +40,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
           y={y}
           height={itemHeight}
           width={itemWidth}
-          color={ITEM_COLOR.SHARED_EXTRACTION}
+          color={ALL_COLOR.SHARED_EXTRACTION}
           opacity={isEnable ? '1' : '0.5'}
         />
       );

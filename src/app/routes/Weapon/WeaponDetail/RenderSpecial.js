@@ -24,7 +24,7 @@ const RenderSpecial = ({ specialList, category }) => {
         columnDesign={[2, null, 2]}
         column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.special)}
         isShadow
-        shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {specialList.map((item, index) =>
         shouldRenderWeapon(item) ? (

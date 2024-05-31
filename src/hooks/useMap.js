@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LineBasicMaterial } from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 export const useLoadMap = (map_three_path, isMap) => {
   const [map, setMap] = useState(null);
@@ -25,7 +25,7 @@ export const useLoadMap = (map_three_path, isMap) => {
           if (child.isLine) {
             // 선의 재질을 설정
             const lineMaterial = new LineBasicMaterial({
-              color: MAP_COLOR.MAP_BLACK,
+              color: ALL_COLOR.MAP_BLACK,
             });
             child.material = lineMaterial;
 

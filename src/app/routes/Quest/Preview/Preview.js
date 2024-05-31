@@ -13,6 +13,7 @@ import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import API_PATH from 'src/api/api_path';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const Preview = ({ selectedNpc }) => {
   const { apiData: allQuest, loading } = hooks.useGetApiWithNone(
@@ -28,7 +29,7 @@ const Preview = ({ selectedNpc }) => {
       justifyContent={'center'}
       width={'95%'}
     >
-      <TableContainer border="1px solid" borderColor="white">
+      <TableContainer border="1px solid" borderColor={ALL_COLOR.WHITE}>
         <Table variant="simple" size={'lg'}>
           <Thead>
             <Tr>
@@ -37,7 +38,7 @@ const Preview = ({ selectedNpc }) => {
                 textAlign={'center'}
                 borderRight="1px solid white"
                 fontSize="lg"
-                color={'white'}
+                color={ALL_COLOR.WHITE}
               >
                 제목
               </Th>
@@ -46,7 +47,7 @@ const Preview = ({ selectedNpc }) => {
                 textAlign={'center'}
                 borderRight="1px solid white"
                 fontSize="lg"
-                color={'white'}
+                color={ALL_COLOR.WHITE}
               >
                 목표
               </Th>
@@ -55,7 +56,7 @@ const Preview = ({ selectedNpc }) => {
                 textAlign={'center'}
                 borderRight="1px solid white"
                 fontSize="lg"
-                color={'white'}
+                color={ALL_COLOR.WHITE}
               >
                 보상
               </Th>
@@ -64,7 +65,7 @@ const Preview = ({ selectedNpc }) => {
                 textAlign={'center'}
                 borderRight="1px solid white"
                 fontSize="lg"
-                color={'white'}
+                color={ALL_COLOR.WHITE}
               >
                 카파
               </Th>
@@ -80,10 +81,10 @@ const Preview = ({ selectedNpc }) => {
                       fontSize="md"
                       fontWeight={'700'}
                       borderRight="1px solid white"
-                      color={'#FFA34E'}
+                      color={ALL_COLOR.ORANGE}
                       textAlign={'center'}
                       cursor={'pointer'}
-                      _hover={{ color: '#EFBE85' }}
+                      _hover={{ color: ALL_COLOR.BEIGE }}
                       paddingX={2}
                       paddingY={2}
                     >
@@ -100,7 +101,7 @@ const Preview = ({ selectedNpc }) => {
                       minW="320px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={'white'}
+                      color={ALL_COLOR.WHITE}
                       fontWeight={'700'}
                       whiteSpace="normal"
                       paddingX={4}
@@ -121,7 +122,7 @@ const Preview = ({ selectedNpc }) => {
                       minW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={'white'}
+                      color={ALL_COLOR.WHITE}
                       fontWeight={'700'}
                       whiteSpace="normal"
                       paddingX={4}
@@ -148,7 +149,9 @@ const Preview = ({ selectedNpc }) => {
                     >
                       <Text
                         color={
-                          quest.quest_required_kappa ? '#FFD700' : '#FF0000'
+                          quest.quest_required_kappa
+                            ? ALL_COLOR.YELLOW
+                            : ALL_COLOR.RED
                         }
                       >
                         {quest.quest_required_kappa ? 'Y' : 'N'}

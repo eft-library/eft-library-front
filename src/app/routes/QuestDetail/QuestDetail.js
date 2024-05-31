@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { useParams } from 'react-router-dom';
 import QuestInfo from '../QuestDetail/QuestInfo/QuestInfo';
 import QuestContents from '../QuestDetail/QuestContents/QuestContents';
@@ -19,7 +19,7 @@ const QuestDetail = () => {
     <Box
       className="Main"
       bgSize="cover"
-      bg={MAP_COLOR.MAP_BACKGROUND}
+      bg={ALL_COLOR.BACKGROUND}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -38,7 +38,7 @@ const QuestDetail = () => {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={MAP_COLOR.MAP_LIGHT_GRAY}
+        borderColor={ALL_COLOR.LIGHT_GRAY}
         borderRadius={'lg'}
         paddingBottom={'20px'}
       >

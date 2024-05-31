@@ -1,4 +1,5 @@
 import { Skeleton, Box, Image, Slider } from '@chakra-ui/react';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const ImageSliderSkeleton = () => {
   return (
@@ -24,7 +25,7 @@ const ImageSliderSkeleton = () => {
               key={index}
               boxSize="sm"
               border={'1px'}
-              borderColor={'white'}
+              borderColor={ALL_COLOR.WHITE}
               width="100%"
               height={'280px'}
             >

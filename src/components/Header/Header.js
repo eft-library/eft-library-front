@@ -1,7 +1,7 @@
 import { Heading, VStack, Button, Grid, GridItem, Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import HeaderSkeleton from 'src/components/Header/HeaderSkeleton';
 import hooks from 'src/hooks/hooks';
 import API_PATH from 'src/api/api_path';
@@ -35,7 +35,7 @@ const Header = () => {
           size={'2xl'}
           alignItems={'center'}
           justifyContent={'center'}
-          color={MAP_COLOR.MAP_WHITE}
+          color={ALL_COLOR.WHITE}
         >
           <Link to={'/'}>TKL</Link>
         </Heading>
@@ -48,8 +48,8 @@ const Header = () => {
             variant="solid"
             fontWeight="bold"
             bg="transparent"
-            _hover={{ bg: MAP_COLOR.MAP_DARK_GRAY }}
-            color={MAP_COLOR.MAP_WHITE}
+            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+            color={ALL_COLOR.WHITE}
             p="4"
             boxShadow="none"
             backdropFilter="blur(8px)"
@@ -64,14 +64,10 @@ const Header = () => {
                 top="50px"
                 onMouseEnter={() => setSelectedMenu(main.main_menu_value)}
                 onMouseLeave={() => setSelectedMenu(null)}
-                bg={MAP_COLOR.MAP_BLACK}
+                bg={ALL_COLOR.MAP_BLACK}
               >
                 {main.sub_menus.map((sub, sub_index) => (
-                  <Box
-                    p={2}
-                    key={sub_index}
-                    _hover={{ bg: MAP_COLOR.MAP_GRAY }}
-                  >
+                  <Box p={2} key={sub_index} _hover={{ bg: ALL_COLOR.GRAY }}>
                     <Link to={sub.sub_menu_link} fontSize="lg">
                       {sub.sub_menu_kr_name}
                     </Link>

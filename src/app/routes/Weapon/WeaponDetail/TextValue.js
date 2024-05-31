@@ -1,5 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const TextValue = ({ value }) => {
   return (
@@ -11,7 +12,7 @@ const TextValue = ({ value }) => {
       alignItems="center"
       flexDirection={'column'}
     >
-      <Text color="white" textAlign="center">
+      <Text color={ALL_COLOR.WHITE} textAlign="center">
         {value}
       </Text>
     </Box>

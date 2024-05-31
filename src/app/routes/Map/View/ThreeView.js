@@ -1,7 +1,7 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
-import { MAP_COLOR, ALL_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import ThreeViewSkeleton from '../View/ThreeViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ const ThreeView = ({ map, viewItemList }) => {
     <Canvas
       camera={{ position: [0, 60, 0] }}
       style={{
-        backgroundColor: MAP_COLOR.MAP_THREE_BACKGROUND,
+        backgroundColor: ALL_COLOR.THREE_BACKGROUND,
         height: '100vh',
       }}
     >

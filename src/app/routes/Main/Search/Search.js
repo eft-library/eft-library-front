@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
 import API_PATH from 'src/api/api_path';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const Search = () => {
   const { apiData: searchList, loading } = hooks.useGetApiWithNone(
@@ -72,7 +73,7 @@ const Search = () => {
                   backgroundColor: 'white',
                   border: 'none',
                   borderRadius: '4px',
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                  boxShadow: ALL_COLOR.WHITE_SHADOW,
                   padding: '5px 0',
                   zIndex: 10,
                   width: inputIsFocused ? '100%' : '',

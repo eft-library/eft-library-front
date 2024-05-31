@@ -7,6 +7,7 @@ import DividerContents from 'src/components/DividerContents/DividerContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const MapOfTarkovExtraction = ({ extractionList }) => {
   const { allColumn } = useStore();
@@ -25,7 +26,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
           spacing={2}
           width={'100%'}
           outline={'1px solid'}
-          outlineColor={'white'}
+          outlineColor={ALL_COLOR.WHITE}
           borderRadius={'lg'}
           p={2}
           mb={6}
@@ -42,7 +43,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
             spacing={2}
             width={'100%'}
             outline={'1px solid'}
-            outlineColor={'white'}
+            outlineColor={ALL_COLOR.WHITE}
             borderRadius={'lg'}
             p={2}
             mb={4}
@@ -76,7 +77,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
                 <Box key={index}>
                   <Image src={process.env.REACT_APP_NAS_URL + item.image} />
                   <Text
-                    color={'white'}
+                    color={ALL_COLOR.WHITE}
                     mt={2}
                     mb={
                       extraction.extraction_requirements.length === index + 1

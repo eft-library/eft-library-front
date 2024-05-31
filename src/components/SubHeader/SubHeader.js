@@ -1,10 +1,10 @@
 import { Heading } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const SubHeader = ({ title }) => {
   return (
-    <Heading as={'h1'} size={'xl'} color={MAP_COLOR.MAP_WHITE}>
+    <Heading as={'h1'} size={'xl'} color={ALL_COLOR.WHITE}>
       {title}
     </Heading>
   );

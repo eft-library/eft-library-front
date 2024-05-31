@@ -1,7 +1,7 @@
 import SVG_CONSTANTS from 'src/utils/consts/svgConsts';
-import { ITEM_COLOR } from 'src/utils/consts/colorConsts';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import PropTypes from 'prop-types';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const DynamicJpgSVG = ({ x, y, svgValue }) => {
   switch (svgValue) {
@@ -10,7 +10,7 @@ const DynamicJpgSVG = ({ x, y, svgValue }) => {
         <SVG_CONSTANTS.JPG_EXTRACTION
           x={x}
           y={y}
-          color={ITEM_COLOR.PMC_EXTRACTION}
+          color={ALL_COLOR.PMC_EXTRACTION}
         />
       );
     case ALL_ITEM.SCAV_EXTRACTION:
@@ -18,7 +18,7 @@ const DynamicJpgSVG = ({ x, y, svgValue }) => {
         <SVG_CONSTANTS.JPG_EXTRACTION
           x={x}
           y={y}
-          color={ITEM_COLOR.SCAV_EXTRACTION}
+          color={ALL_COLOR.SCAV_EXTRACTION}
         />
       );
     case ALL_ITEM.SHARED_EXTRACTION:
@@ -26,7 +26,7 @@ const DynamicJpgSVG = ({ x, y, svgValue }) => {
         <SVG_CONSTANTS.JPG_EXTRACTION
           x={x}
           y={y}
-          color={ITEM_COLOR.SHARED_EXTRACTION}
+          color={ALL_COLOR.SHARED_EXTRACTION}
         />
       );
   }

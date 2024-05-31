@@ -5,6 +5,7 @@ import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 
 const RenderKnife = ({ knifeList }) => {
@@ -16,7 +17,7 @@ const RenderKnife = ({ knifeList }) => {
         columnDesign={[2, null, 5]}
         column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.knife)}
         isShadow
-        shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {knifeList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
@@ -34,7 +35,7 @@ const RenderKnife = ({ knifeList }) => {
             alignItems="center"
             flexDirection={'column'}
           >
-            <Text color="white" textAlign="center">
+            <Text color={ALL_COLOR.WHITE} textAlign="center">
               {item.knife_hit_radius} m
             </Text>
           </Box>

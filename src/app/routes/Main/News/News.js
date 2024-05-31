@@ -1,12 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import YoutubeNews from '../News/YoutubeNews';
 
 const News = () => {
   return (
     <Box
       border="1px solid"
-      borderColor={MAIN_COLOR.MAIN_WHITE}
+      borderColor={ALL_COLOR.WHITE}
       borderRadius={'lg'}
       width={'85%'}
       margin="0 auto"

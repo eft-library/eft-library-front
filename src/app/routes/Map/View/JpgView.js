@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { useWindowSize } from '@react-hook/window-size';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicJpgSVG from 'src/components/ViewSVG/DynamicJpgSVG';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -52,7 +52,7 @@ const JpgView = ({ map, viewItemList }) => {
           <svg
             width={width}
             height={height / 1.3}
-            fill={MAP_COLOR.MAP_THREE_BACKGROUND}
+            fill={ALL_COLOR.THREE_BACKGROUND}
             onClick={handleClick}
           >
             <image

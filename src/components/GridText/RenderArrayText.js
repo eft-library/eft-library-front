@@ -1,5 +1,6 @@
 import { GridItem, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const RenderArrayText = ({ arrayText }) => (
   <GridItem
@@ -11,7 +12,7 @@ const RenderArrayText = ({ arrayText }) => (
     {arrayText.map((text, atIndex) => (
       <Text
         key={atIndex}
-        color={'white'}
+        color={ALL_COLOR.WHITE}
         mt={atIndex !== 0 ? 2 : 0}
         fontWeight={600}
         textAlign="center"

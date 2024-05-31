@@ -1,5 +1,6 @@
 import { SimpleGrid, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const GridTitle = ({ columnDesign, column, isShadow, shadowColor }) => {
   return (
@@ -8,7 +9,7 @@ const GridTitle = ({ columnDesign, column, isShadow, shadowColor }) => {
       spacing={2}
       width={'95%'}
       outline={'2px solid'}
-      outlineColor={'white'}
+      outlineColor={ALL_COLOR.WHITE}
       borderRadius={'lg'}
       boxShadow={isShadow ? shadowColor : ''}
       p={2}
@@ -16,7 +17,7 @@ const GridTitle = ({ columnDesign, column, isShadow, shadowColor }) => {
     >
       {column.map((item, index) => (
         <Text
-          color={'white'}
+          color={ALL_COLOR.WHITE}
           key={index}
           textAlign={'center'}
           fontWeight={700}

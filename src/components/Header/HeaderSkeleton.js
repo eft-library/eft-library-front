@@ -1,6 +1,6 @@
 import { Grid, GridItem, Button, Skeleton, Heading } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const HeaderSkeleton = () => {
   const naviMenuSkeleton = Array.from({ length: 3 }, (_, index) => index);
@@ -25,7 +25,7 @@ const HeaderSkeleton = () => {
           size={'2xl'}
           alignItems={'center'}
           justifyContent={'center'}
-          color={MAP_COLOR.MAP_WHITE}
+          color={ALL_COLOR.WHITE}
         >
           <Link to={'/'}>TKL</Link>
         </Heading>
@@ -37,7 +37,7 @@ const HeaderSkeleton = () => {
             variant="solid"
             fontWeight="bold"
             bg="transparent"
-            color={MAP_COLOR.MAP_WHITE}
+            color={ALL_COLOR.WHITE}
             p="4"
             boxShadow="none"
             backdropFilter="blur(8px)"

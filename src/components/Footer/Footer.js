@@ -1,5 +1,5 @@
 import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicSVG from '../ViewSVG/DynamicSVG';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
@@ -12,7 +12,7 @@ const Footer = () => {
     <Box
       className="Main"
       bgSize="cover"
-      bg={MAP_COLOR.MAP_BACKGROUND}
+      bg={ALL_COLOR.BACKGROUND}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -33,7 +33,7 @@ const Footer = () => {
               .useColumnListByJson(allColumn, COLUMN_KEY.footer)
               .text.map((item, index) => (
                 <Text
-                  color={MAP_COLOR.MAP_WHITE}
+                  color={ALL_COLOR.WHITE}
                   m={2}
                   fontWeight={'bold'}
                   key={index}
@@ -53,7 +53,7 @@ const Footer = () => {
                   >
                     <DynamicSVG svgValue={item.name} isEnable={true} />
                     <Text
-                      color={MAP_COLOR.MAP_WHITE}
+                      color={ALL_COLOR.WHITE}
                       fontWeight={'bold'}
                       textAlign={'center'}
                     >

@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import PropTypes from 'prop-types';
 
 const LinkSelector = ({ itemList, itemDesc, itemLink, mt }) => {
@@ -23,7 +23,7 @@ const LinkSelector = ({ itemList, itemDesc, itemLink, mt }) => {
           colorScheme={
             item.map_id === param.mapId ? 'whiteAlpha' : 'blackAlpha'
           }
-          _hover={{ bg: MAP_COLOR.MAP_LIGHT_GRAY }}
+          _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
           fontWeight="bold"
           borderWidth="2px"
           m="2"

@@ -1,6 +1,6 @@
 import { Box, Text, Stack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { useState, useEffect } from 'react';
 import ThreeView from '../Map/View/ThreeView';
 import JpgView from '../Map/View/JpgView';
@@ -77,12 +77,12 @@ const Map = () => {
           />
         )}
         <Stack spacing={4}>
-          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+          <Text as={'b'} color={ALL_COLOR.WHITE}>
             2D MAP
           </Text>
           <JpgView map={mapData} viewItemList={viewItemList} />
           <br />
-          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+          <Text as={'b'} color={ALL_COLOR.WHITE}>
             3D MAP
           </Text>
           <ThreeView

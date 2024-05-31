@@ -1,6 +1,6 @@
 import { Skeleton } from '@chakra-ui/react';
 import { Box, Text, Stack } from '@chakra-ui/react';
-import { MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const MapViewSkeleton = () => {
   return (
@@ -16,12 +16,12 @@ const MapViewSkeleton = () => {
       >
         <Skeleton height="100px" width="100%" />
         <Stack spacing={4}>
-          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+          <Text as={'b'} color={ALL_COLOR.WHITE}>
             2D MAP
           </Text>
           <Skeleton height="400px" width="100%" />
           <br />
-          <Text as={'b'} color={MAP_COLOR.MAP_WHITE}>
+          <Text as={'b'} color={ALL_COLOR.WHITE}>
             3D MAP
           </Text>
           <Skeleton height="800px" width="100%" />

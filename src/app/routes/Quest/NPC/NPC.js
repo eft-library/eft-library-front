@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Text, Flex } from '@chakra-ui/react';
-import { MAIN_COLOR, MAP_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import API_PATH from 'src/api/api_path';
@@ -29,15 +29,15 @@ const NPC = ({ selectedNpc, onClickNpc }) => {
               w="120px"
               h="120px"
               onClick={() => onClickNpc(npcItem.npc_id)}
-              color={'white'}
+              color={ALL_COLOR.WHITE}
               backgroundImage={`url(${process.env.REACT_APP_NAS_URL + npcItem.npc_img_path})`}
               outline={
                 selectedNpc === npcItem.npc_id ? '4px solid' : '1px solid'
               }
               outlineColor={
                 selectedNpc === npcItem.npc_id
-                  ? MAP_COLOR.MAP_DARK_YELLOW
-                  : MAIN_COLOR.MAIN_WHITE
+                  ? ALL_COLOR.DARK_YELLOW
+                  : ALL_COLOR.WHITE
               }
               borderRadius={'lg'}
               onMouseEnter={handleHover}

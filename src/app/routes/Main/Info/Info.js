@@ -1,5 +1,5 @@
 import { Grid, GridItem, Box, Text } from '@chakra-ui/react';
-import { MAIN_COLOR } from 'src/utils/consts/colorConsts';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { Link } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
 import InfoSkeleton from '../Info/InfoSkeleton';
@@ -35,7 +35,7 @@ const Info = () => {
               w="120px"
               h="120px"
               border="1px solid"
-              borderColor={MAIN_COLOR.MAIN_WHITE}
+              borderColor={ALL_COLOR.WHITE}
               borderRadius={'lg'}
               display="flex"
               justifyContent="center"
@@ -47,7 +47,7 @@ const Info = () => {
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
-            <Text color={MAIN_COLOR.MAIN_WHITE} textAlign={'center'} mt={'2'}>
+            <Text color={ALL_COLOR.WHITE} textAlign={'center'} mt={'2'}>
               {map.info_kr_name}
             </Text>
           </Link>
