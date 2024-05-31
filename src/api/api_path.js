@@ -10,8 +10,8 @@ const API_PATH = {
   GET_ALL_WEAPON: '/api/weapon/all',
   GET_ALL_BOSS: '/api/boss/all',
   GET_MAP_OF_TARKOV: '/api/map_of_tarkov/detail',
-  GET_COLUMN: '/api/table_column/column',
   GET_SEARCH: '/api/search/info',
+  GET_ALL_COLUMN: '/api/table_column/all',
 };
 
 export default API_PATH;

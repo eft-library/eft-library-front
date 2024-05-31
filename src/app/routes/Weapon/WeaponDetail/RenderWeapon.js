@@ -2,16 +2,14 @@ import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridContents from 'src/components/GridContents/GridContents';
-import API_PATH from 'src/api/api_path';
-import hooks from 'src/hooks/hooks';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const RenderWeapon = ({ gunList, category }) => {
-  const { apiData: column, loading } = hooks.useGetApiWithNone(
-    API_PATH.GET_COLUMN + '/WEAPON',
-  );
+  const { allColumn } = useColumnStore();
 
   const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === 'WEAOPN_COLUMN')
+    return columnObj.find((item) => item.column_id === COLUMN_KEY.weapon)
       .column_value_kr;
   };
 
@@ -42,8 +40,6 @@ const RenderWeapon = ({ gunList, category }) => {
     }
   };
 
-  if (!column || loading) return null;
-
   return (
     <>
       <SimpleGrid
@@ -57,7 +53,7 @@ const RenderWeapon = ({ gunList, category }) => {
         p={2}
         mb={6}
       >
-        {columnList(column).map((item, index) => (
+        {columnList(allColumn).map((item, index) => (
           <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
             <Text
               color={'white'}

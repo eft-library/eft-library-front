@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 import RenderText from 'src/components/GridText/RenderText';
 import RenderArrayText from 'src/components/GridText/RenderArrayText';
 import RenderJsonText from 'src/components/GridText/RenderJsonText';
-import API_PATH from 'src/api/api_path';
-import hooks from 'src/hooks/hooks';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const BossDetail = ({ bossList, bossId }) => {
-  const { apiData: column, loading } = hooks.useGetApiWithNone(
-    API_PATH.GET_COLUMN + '/BOSS',
-  );
+  const { allColumn } = useColumnStore();
 
   const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === 'BOSS_COLUMN')
+    return columnObj.find((item) => item.column_id === COLUMN_KEY.boss)
       .column_value_kr;
   };
-
-  if (!column || loading) return null;
 
   return (
     <Box
@@ -36,7 +32,7 @@ const BossDetail = ({ bossList, bossId }) => {
         p={2}
         mb={6}
       >
-        {columnList(column).map((item, index) => (
+        {columnList(allColumn).map((item, index) => (
           <RenderText text={item} key={index} />
         ))}
       </SimpleGrid>

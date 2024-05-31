@@ -7,23 +7,25 @@ import RenderThrowable from './RenderThrowable';
 import RenderStationary from './RenderStationary';
 import { Box } from '@chakra-ui/react';
 import API_PATH from 'src/api/api_path';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const WeaponDetail = ({ category }) => {
+  const { allColumn } = useColumnStore();
+
   const { apiData: weapon, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_WEAPON,
   );
-  const { apiData: columnData, loading: columnLoading } =
-    hooks.useGetApiWithNone(API_PATH.GET_COLUMN + '/WEAPON');
 
   const checkGunInclude = () => {
-    const gunCategoryList = columnData.find(
-      (item) => item.column_id === 'GUN_CATEGORY_INFO',
+    const gunCategoryList = allColumn.find(
+      (item) => item.column_id === COLUMN_KEY.gun,
     ).column_value_kr;
 
     return gunCategoryList.includes(category);
   };
 
-  if (!weapon || !columnData || loading || columnLoading) return null;
+  if (!weapon || loading) return null;
 
   return (
     <Box

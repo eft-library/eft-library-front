@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageRouter from 'src/routes/router';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { useColumnStore } from 'src/stores/store';
+import API_PATH from 'src/api/api_path';
+import hooks from 'src/hooks/hooks';
 
 function App() {
+  const { setColumn } = useColumnStore();
+  const { apiData: columnData, loading } = hooks.useGetApiWithNone(
+    API_PATH.GET_ALL_COLUMN,
+  );
+
+  // 우클릭 막기
+  useEffect(() => {
+    document.oncontextmenu = function () {
+      return false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (columnData) {
+      setColumn(columnData);
+    }
+  }, [columnData]);
+
+  if (!columnData || loading) return null;
+
   return (
     <ChakraProvider>
       <CSSReset />

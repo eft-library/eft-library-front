@@ -11,8 +11,11 @@ import MapViewSkeleton from './View/MapViewSkeleton';
 import PageParent from 'src/components/PageParent/PageParent';
 import LinkSelector from 'src/components/LinkSelector/LinkSelector';
 import API_PATH from 'src/api/api_path';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const Map = () => {
+  const { allColumn } = useColumnStore();
   const params = useParams();
   const { apiData: map, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_MAP,
@@ -22,13 +25,10 @@ const Map = () => {
   const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
     mapData ? mapData.map_jpg_item_path : null,
   );
-  const { apiData: column, loading: columnLoading } = hooks.useGetApiWithNone(
-    API_PATH.GET_COLUMN + '/MAP',
-  );
 
   const columnList = (columnObj) => {
     const col = columnObj.find(
-      (item) => item.column_id === 'MAP_COLUMN',
+      (item) => item.column_id === COLUMN_KEY.map,
     ).column_json_value;
     col.sort((a, b) => a.map_order - b.map_order);
     return col;
@@ -51,8 +51,7 @@ const Map = () => {
     }
   };
 
-  if (!mapData || !column || loading || columnLoading)
-    return <MapViewSkeleton />;
+  if (!mapData || loading) return <MapViewSkeleton />;
 
   return (
     <PageParent>
@@ -65,7 +64,7 @@ const Map = () => {
         />
       )}
       <LinkSelector
-        itemList={columnList(column)}
+        itemList={columnList(allColumn)}
         itemDesc="map_name_kr"
         itemLink="map_link"
         mt={3}

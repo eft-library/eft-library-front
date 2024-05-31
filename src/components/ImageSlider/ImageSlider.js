@@ -56,26 +56,6 @@ const ImageSlider = ({ mapList, imagePath, sliderOption, useZoom }) => {
           ))}
         </Slider>
       </div>
-      <Gallery>
-        {/* <Box boxSize="sm" border={'1px'} borderColor={'white'} height={'100%'}>
-          <Item
-            original={process.env.REACT_APP_NAS_URL + mapList[0].map_main_image}
-            thumbnail={
-              process.env.REACT_APP_NAS_URL + mapList[0].map_main_image
-            }
-            width="1024"
-            height="768"
-          >
-            {({ ref, open }) => (
-              <img
-                ref={ref}
-                onClick={open}
-                src={process.env.REACT_APP_NAS_URL + mapList[0].map_main_image}
-              />
-            )}
-          </Item>
-        </Box> */}
-      </Gallery>
     </div>
   );
 };
@@ -84,6 +64,7 @@ ImageSlider.propTypes = {
   mapList: PropTypes.array,
   imagePath: PropTypes.string,
   sliderOption: PropTypes.object,
+  useZoom: PropTypes.bool,
 };
 
 export default ImageSlider;

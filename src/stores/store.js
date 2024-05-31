@@ -40,3 +40,16 @@ export const useBossStore = create(
     },
   ),
 );
+
+export const useColumnStore = create(
+  persist(
+    (set) => ({
+      allColumn: {},
+      setColumn: (columnInfo) => set(() => ({ allColumn: columnInfo })),
+    }),
+    {
+      name: 'column-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);

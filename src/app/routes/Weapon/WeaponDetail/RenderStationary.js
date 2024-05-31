@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import TextValue from './TextValue';
 import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
-import API_PATH from 'src/api/api_path';
-import hooks from 'src/hooks/hooks';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const RenderStationary = ({ stationaryList, category }) => {
-  const { apiData: column, loading } = hooks.useGetApiWithNone(
-    API_PATH.GET_COLUMN + '/WEAPON',
-  );
+  const { allColumn } = useColumnStore();
 
   const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === 'STATIONARY_COLUMN')
+    return columnObj.find((item) => item.column_id === COLUMN_KEY.stationary)
       .column_value_kr;
   };
 
@@ -24,13 +22,11 @@ const RenderStationary = ({ stationaryList, category }) => {
     return isGeneralCategory && isMatchingCategory;
   };
 
-  if (!column || loading) return null;
-
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={columnList(column)}
+        column={columnList(allColumn)}
         isShadow
         shadowColor="0px 1px 1px rgb(202, 238, 18, 0.7)"
       />

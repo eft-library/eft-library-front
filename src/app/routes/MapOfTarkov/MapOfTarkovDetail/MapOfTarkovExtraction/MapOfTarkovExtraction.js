@@ -3,21 +3,17 @@ import { SimpleGrid, Image, GridItem, Text } from '@chakra-ui/react';
 import RenderArrayText from 'src/components/GridText/RenderArrayText';
 import RenderText from 'src/components/GridText/RenderText';
 import PropTypes from 'prop-types';
-import hooks from 'src/hooks/hooks';
-import API_PATH from 'src/api/api_path';
 import DividerContents from 'src/components/DividerContents/DividerContents';
+import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
+import { useColumnStore } from 'src/stores/store';
 
 const MapOfTarkovExtraction = ({ extractionList }) => {
-  const { apiData: column, loading } = hooks.useGetApiWithNone(
-    API_PATH.GET_COLUMN + '/EXTRACTION',
-  );
+  const { allColumn } = useColumnStore();
 
   const columnList = (columnObj) => {
-    return columnObj.find((item) => item.column_id === 'EXTRACTION_COLUMN')
+    return columnObj.find((item) => item.column_id === COLUMN_KEY.extraction)
       .column_value_kr;
   };
-
-  if (!column || loading) return null;
 
   return (
     <DividerContents headText="탈출구">
@@ -38,7 +34,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
           p={2}
           mb={6}
         >
-          {columnList(column).map((item, index) => (
+          {columnList(allColumn).map((item, index) => (
             <RenderText text={item} key={index} />
           ))}
         </SimpleGrid>
