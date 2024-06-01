@@ -22,11 +22,11 @@ const RenderKnife = ({ knifeList }) => {
       {knifeList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
-            <Image src={item.knife_image} maxH={'200px'} />
+            <Image src={item.image} maxH={'200px'} />
           </Box>
-          <TextValue value={item.knife_name} />
-          <TextValue value={item.knife_slash_damage} />
-          <TextValue value={item.knife_stab_damage} />
+          <TextValue value={item.name} />
+          <TextValue value={item.slash_damage} />
+          <TextValue value={item.stab_damage} />
           <Box
             w={'100%'}
             h={'100%'}
@@ -36,7 +36,7 @@ const RenderKnife = ({ knifeList }) => {
             flexDirection={'column'}
           >
             <Text color={ALL_COLOR.WHITE} textAlign="center">
-              {item.knife_hit_radius} m
+              {item.hit_radius} m
             </Text>
           </Box>
         </GridContents>

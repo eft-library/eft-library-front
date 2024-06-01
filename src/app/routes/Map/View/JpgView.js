@@ -57,11 +57,11 @@ const JpgView = ({ map, viewItemList }) => {
             onClick={handleClick}
           >
             <image
-              xlinkHref={hooks.useImageLink(map.map_jpg_path)}
+              xlinkHref={hooks.useImageLink(map.jpg_image)}
               width="100%"
               height="100%"
             />
-            {map.map_jpg_item_path.map(
+            {map.jpg_item_path.map(
               (item, index) =>
                 viewItemList.includes(ALL_ITEM[item.childValue]) && (
                   <DynamicJpgSVG

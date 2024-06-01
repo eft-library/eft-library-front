@@ -155,10 +155,5 @@ export const LOOT = {
 // Wrapped Item
 export const ITEM_LIST = [EXTRACTIONS, SPAWNS, MISCELLANEOUS, LOOT];
 
-// child value 리스트
-export const CHILD_VALUE_LIST = ITEM_LIST.map((item) =>
-  item.child.map((childItem) => childItem.value),
-).flat();
-
 // root, child value 리스트
 export const ALL_VALUE_LIST = Object.values(ALL_ITEM);

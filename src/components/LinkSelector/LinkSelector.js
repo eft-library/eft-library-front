@@ -20,9 +20,7 @@ const LinkSelector = ({ itemList, itemDesc, itemLink, mt }) => {
         <Button
           key={index}
           variant={'solid'}
-          colorScheme={
-            item.map_id === param.mapId ? 'whiteAlpha' : 'blackAlpha'
-          }
+          colorScheme={item.id === param.mapId ? 'whiteAlpha' : 'blackAlpha'}
           _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
           fontWeight="bold"
           borderWidth="2px"

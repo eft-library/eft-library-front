@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DividerContents from 'src/components/DividerContents/DividerContents';
 
 const BossContent = ({ bossList, bossId }) => {
-  let bossInfo = bossList.find((boss) => boss.boss_id == bossId);
+  let bossInfo = bossList.find((boss) => boss.id == bossId);
 
   return (
     <Box w={'95%'}>
@@ -12,21 +12,21 @@ const BossContent = ({ bossList, bossId }) => {
           <Text
             mb={1}
             dangerouslySetInnerHTML={{
-              __html: `${bossInfo.boss_location_guide}`,
+              __html: `${bossInfo.location_guide}`,
             }}
           />
         </Box>
       </DividerContents>
       <DividerContents headText="피통">
         <Box display={'flex'} alignItems={'center'}>
-          {bossInfo.boss_health_img_path.map((boss, index) => (
+          {bossInfo.health_image.map((boss, index) => (
             <Image key={index} src={boss} ml={index !== 0 ? 10 : 0} />
           ))}
         </Box>
       </DividerContents>
       <DividerContents headText="전리품">
         <Box display={'flex'} alignItems={'center'}>
-          {bossInfo.boss_loot.map((boss, index) => (
+          {bossInfo.loot.map((boss, index) => (
             <Image key={index} src={boss} ml={index !== 0 ? 10 : 0} />
           ))}
         </Box>

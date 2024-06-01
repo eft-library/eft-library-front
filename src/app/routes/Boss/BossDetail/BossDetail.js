@@ -10,7 +10,6 @@ import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const BossDetail = ({ bossList, bossId }) => {
   const { allColumn } = useStore();
-
   return (
     <Box
       display="flex"
@@ -37,7 +36,7 @@ const BossDetail = ({ bossList, bossId }) => {
       </SimpleGrid>
       {bossList.map(
         (boss, index) =>
-          (boss.boss_id === bossId || bossId === true) && (
+          (boss.id === bossId || bossId === true) && (
             <SimpleGrid
               columns={[2, null, 7]}
               spacing={2}
@@ -49,21 +48,21 @@ const BossDetail = ({ bossList, bossId }) => {
               mb={4}
               key={index}
             >
-              <Image src={boss.boss_img_path} />
-              <RenderText text={boss.boss_name_kr} />
-              <RenderText text={boss.boss_faction} />
+              <Image src={boss.image} />
+              <RenderText text={boss.name_kr} />
+              <RenderText text={boss.faction} />
               <RenderJsonText
-                jsonArrayText={boss.boss_location_spawn_chance_kr}
+                jsonArrayText={boss.location_spawn_chance_kr}
                 jatType={'location'}
                 isDivider
               />
               <RenderJsonText
-                jsonArrayText={boss.boss_location_spawn_chance_kr}
+                jsonArrayText={boss.location_spawn_chance_kr}
                 jatType={'chance'}
                 isDivider
               />
-              <RenderText text={boss.boss_health_total} />
-              <RenderArrayText arrayText={boss.boss_followers_kr} />
+              <RenderText text={boss.health_total} />
+              <RenderArrayText arrayText={boss.followers_kr} />
             </SimpleGrid>
           ),
       )}

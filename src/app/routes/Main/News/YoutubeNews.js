@@ -1,6 +1,5 @@
 import { YOUTUBE_OPTION } from 'src/utils/consts/libraryConsts';
 import YouTube from 'react-youtube';
-import YoutubeSkeleton from '../News/YoutubeSkeleton';
 import hooks from 'src/hooks/hooks';
 import API_PATH from 'src/api/api_path';
 
@@ -10,12 +9,12 @@ const YoutubeNews = () => {
   );
 
   if (!youtube || loading) {
-    return <YoutubeSkeleton />;
+    return null;
   }
 
   return (
     <YouTube
-      videoId={youtube.youtube_id}
+      videoId={youtube.id}
       opts={YOUTUBE_OPTION}
       onEnd={(e) => {
         e.target.stopVideo(0);

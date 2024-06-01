@@ -18,17 +18,22 @@ const MapOfTarkov = () => {
 
   if (!mapOfTarkov || loading) return null;
 
+  const sortList = (columnList) => {
+    columnList.sort((a, b) => {
+      return a.order - b.order;
+    });
+    return columnList;
+  };
+
   return (
     <PageParent>
       <SubHeader title="지도" />
       <LinkSelector
-        itemList={hooks.useColumnListByJson(
-          allColumn,
-          COLUMN_KEY.mapOfTarkov,
-          false,
+        itemList={sortList(
+          hooks.useColumnListByJson(allColumn, COLUMN_KEY.mapOfTarkov, false),
         )}
-        itemDesc="map_name_kr"
-        itemLink="map_link"
+        itemDesc="name_kr"
+        itemLink="link"
         mt={6}
       />
       <MapOfTarkovDetail mapOfTarkov={mapOfTarkov} />

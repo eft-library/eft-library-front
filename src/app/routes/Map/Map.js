@@ -7,7 +7,6 @@ import JpgView from '../Map/View/JpgView';
 import SubMapSelector from '../Map/Selector/SubMapSelector';
 import ItemSelector from '../Map/Selector/ItemSelector';
 import hooks from 'src/hooks/hooks';
-import MapViewSkeleton from './View/MapViewSkeleton';
 import PageParent from 'src/components/PageParent/PageParent';
 import LinkSelector from 'src/components/LinkSelector/LinkSelector';
 import API_PATH from 'src/api/api_path';
@@ -20,7 +19,7 @@ const Map = () => {
   const [mapData, setMapData] = useState(null);
   const [subMap, setSubMap] = useState(null);
   const { viewItemList, onClickItem, onClickAllItem } = hooks.useItemFilter(
-    mapData ? mapData.map_jpg_item_path : null,
+    mapData ? mapData.jpg_item_path : null,
   );
   const { apiData: map, loading } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_MAP,
@@ -29,27 +28,27 @@ const Map = () => {
   useEffect(() => {
     if (map) {
       const newMap = map.filter((item) => {
-        return item.map_id === params.mapId;
+        return item.id === params.mapId;
       })[0];
       setMapData(newMap);
-      setSubMap(newMap.map_sub);
+      setSubMap(newMap.sub);
     }
   }, [params, loading]);
 
-  const onClickSubMap = (map_value) => {
-    setMapData(map_value);
-    if (map_value.depth === 1) {
-      setSubMap(map_value.map_sub);
+  const onClickSubMap = (value) => {
+    setMapData(value);
+    if (value.depth === 1) {
+      setSubMap(value.sub);
     }
   };
 
-  if (!mapData || loading) return <MapViewSkeleton />;
+  if (!mapData || loading) return null;
 
   return (
     <PageParent>
       {viewItemList && (
         <ItemSelector
-          originItemList={mapData.map_jpg_item_path}
+          originItemList={mapData.jpg_item_path}
           viewItemList={viewItemList}
           onClickItem={onClickItem}
           onClickAllItem={onClickAllItem}
@@ -57,8 +56,8 @@ const Map = () => {
       )}
       <LinkSelector
         itemList={hooks.useColumnListByJson(allColumn, COLUMN_KEY.map, true)}
-        itemDesc="map_name_kr"
-        itemLink="map_link"
+        itemDesc="name_kr"
+        itemLink="link"
         mt={3}
       />
       <Box
@@ -73,7 +72,7 @@ const Map = () => {
           <SubMapSelector
             onClickSubMap={onClickSubMap}
             subMap={subMap}
-            mapId={mapData.map_id}
+            mapId={mapData.id}
           />
         )}
         <Stack spacing={4}>
@@ -86,7 +85,7 @@ const Map = () => {
             3D MAP
           </Text>
           <ThreeView
-            key={mapData.map_id}
+            key={mapData.id}
             map={mapData}
             viewItemList={viewItemList}
           />

@@ -2,15 +2,15 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
-import ThreeViewSkeleton from '../View/ThreeViewSkeleton';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import { MapControls } from '@react-three/drei';
 
 const ThreeView = ({ map, viewItemList }) => {
-  const collada = hooks.useLoadMap(map.map_three_path, true);
+  const collada = hooks.useLoadMap(map.three_image, true);
   const door = hooks.useLoadMap('/tkw_map/filter/door.dae', false);
-  if (!collada || !door) return <ThreeViewSkeleton />;
+
+  if (!collada || !door) return null;
 
   return (
     <Canvas
@@ -31,7 +31,7 @@ const ThreeView = ({ map, viewItemList }) => {
         <primitive object={door.colladaData.scene} position={[0, 10, 0]} />
         <primitive object={collada.colladaData.scene} position={[0, 0, 0]} />
 
-        {map.map_three_item_path.map(
+        {map.three_item_path.map(
           (item, index) =>
             viewItemList.includes(ALL_ITEM[item.childValue]) && (
               <mesh key={index} position={item.position} scale={2}>

@@ -10,15 +10,13 @@ const SubMapSelector = ({ onClickSubMap, subMap, mapId }) => {
         <Text
           key={index}
           onClick={() => onClickSubMap(sub)}
-          color={
-            mapId === sub.map_id ? ALL_COLOR.YELLOW : ALL_COLOR.DARK_YELLOW
-          }
+          color={mapId === sub.id ? ALL_COLOR.YELLOW : ALL_COLOR.DARK_YELLOW}
           fontWeight="bold"
           _hover={{ color: ALL_COLOR.DARK_YELLOW }}
           p="2"
           cursor="pointer"
         >
-          * {sub.map_name_kr}
+          * {sub.name_kr}
         </Text>
       ))}
     </HStack>

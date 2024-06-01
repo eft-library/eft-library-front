@@ -8,7 +8,7 @@ const QuestContents = ({ quest }) => {
     <Box w={'95%'}>
       <DividerContents headText="목표">
         <Box>
-          {quest.quest_objectives_kr.map((objectives, index) => (
+          {quest.objectives_kr.map((objectives, index) => (
             <Text
               key={index}
               color={ALL_COLOR.WHITE}
@@ -24,7 +24,7 @@ const QuestContents = ({ quest }) => {
       </DividerContents>
       <DividerContents headText="보상">
         <Box>
-          {quest.quest_rewards_kr.map((rewards, index) => (
+          {quest.rewards_kr.map((rewards, index) => (
             <Text
               key={index}
               color={ALL_COLOR.WHITE}
@@ -46,7 +46,7 @@ const QuestContents = ({ quest }) => {
             fontWeight={700}
             fontSize="lg"
             dangerouslySetInnerHTML={{
-              __html: `${quest.quest_guide}`,
+              __html: `${quest.guide}`,
             }}
           />
         </Box>

@@ -9,11 +9,11 @@ import { MOT_IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 const MapOfTarkovDetail = ({ mapOfTarkov }) => {
   return (
     <Box w={'95%'} mt={10}>
-      <DividerContents headText={mapOfTarkov.map_info.map_sub[0].map_name_kr}>
+      <DividerContents headText={mapOfTarkov.map_info.sub[0].name_kr}>
         <Box display={'flex'} alignItems={'center'}>
           <ImageSlider
-            mapList={mapOfTarkov.map_info.map_sub}
-            imagePath="map_jpg_path"
+            mapList={mapOfTarkov.map_info.sub}
+            imagePath="jpg_image"
             sliderOption={MOT_IMAGE_SLIDER_OPTION}
             useZoom
           />

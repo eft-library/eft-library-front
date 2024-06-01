@@ -13,10 +13,9 @@ const RenderWeapon = ({ gunList, category }) => {
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
     const isGeneralCategory =
-      item.weapon_category !== 'Special weapons' &&
-      item.weapon_category !== 'Stationary weapons';
-    const isMatchingCategory =
-      item.weapon_category === category || category === 'ALL';
+      item.category !== 'Special weapons' &&
+      item.category !== 'Stationary weapons';
+    const isMatchingCategory = item.category === category || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
 
@@ -75,11 +74,11 @@ const RenderWeapon = ({ gunList, category }) => {
                 alignItems={'center'}
                 justifyContent={'center'}
               >
-                <Image src={item.weapon_img} maxH={'200px'} />
+                <Image src={item.image} maxH={'200px'} />
               </Box>
             </GridItem>
-            <TextValue value={item.weapon_short_name} />
-            <TextValue value={sliceDefaultAmmo(item.weapon_default_ammo)} />
+            <TextValue value={item.short_name} />
+            <TextValue value={sliceDefaultAmmo(item.default_ammo)} />
             <Box
               w={'100%'}
               h={'100%'}
@@ -88,16 +87,16 @@ const RenderWeapon = ({ gunList, category }) => {
               alignItems="center"
               flexDirection={'column'}
             >
-              {item.weapon_modes_kr.map((mode, mIndex) => (
+              {item.modes_kr.map((mode, mIndex) => (
                 <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
                   {mode}
                 </Text>
               ))}
             </Box>
-            <TextValue value={item.weapon_fire_rate} />
-            <TextValue value={item.weapon_ergonomics} />
-            <TextValue value={item.weapon_recoil_horizontal} />
-            <TextValue value={item.weapon_recoil_vertical} />
+            <TextValue value={item.fire_rate} />
+            <TextValue value={item.ergonomics} />
+            <TextValue value={item.recoil_horizontal} />
+            <TextValue value={item.recoil_vertical} />
           </GridContents>
         ) : null,
       )}

@@ -28,14 +28,12 @@ const NPC = ({ selectedNpc, onClickNpc }) => {
               cursor={'pointer'}
               w="120px"
               h="120px"
-              onClick={() => onClickNpc(npcItem.npc_id)}
+              onClick={() => onClickNpc(npcItem.id)}
               color={ALL_COLOR.WHITE}
-              backgroundImage={`url(${hooks.useImageLink(npcItem.npc_img_path)})`}
-              outline={
-                selectedNpc === npcItem.npc_id ? '4px solid' : '1px solid'
-              }
+              backgroundImage={`url(${hooks.useImageLink(npcItem.image)})`}
+              outline={selectedNpc === npcItem.id ? '4px solid' : '1px solid'}
               outlineColor={
-                selectedNpc === npcItem.npc_id
+                selectedNpc === npcItem.id
                   ? ALL_COLOR.DARK_YELLOW
                   : ALL_COLOR.WHITE
               }
@@ -44,7 +42,7 @@ const NPC = ({ selectedNpc, onClickNpc }) => {
               onMouseLeave={handleHoverExit}
             />
             <Text color={'white'} textAlign={'center'} mt={'2'}>
-              {npcItem.npc_name_kr}
+              {npcItem.name_kr}
             </Text>
           </Flex>
         ))}

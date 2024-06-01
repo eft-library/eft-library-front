@@ -46,7 +46,7 @@ const Main = () => {
         <News />
         <ImageSlider
           mapList={map}
-          imagePath="map_main_image"
+          imagePath="main_image"
           sliderOption={MAIN_IMAGE_SLIDER_OPTION}
           useZoom={false}
         />

@@ -2,7 +2,6 @@ import { Grid, GridItem, Box, Text } from '@chakra-ui/react';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { Link } from 'react-router-dom';
 import hooks from 'src/hooks/hooks';
-import InfoSkeleton from '../Info/InfoSkeleton';
 import API_PATH from 'src/api/api_path';
 
 const Info = () => {
@@ -20,7 +19,7 @@ const Info = () => {
     e.target.style.opacity = '1'; // 이미지 불투명도 원래대로
   };
 
-  if (!mainInfo || loading) return <InfoSkeleton />;
+  if (!mainInfo || loading) return null;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -30,7 +29,7 @@ const Info = () => {
         gap={12}
       >
         {mainInfo.map((map, index) => (
-          <Link to={map.info_link} key={index}>
+          <Link to={map.link} key={index}>
             <GridItem
               w="120px"
               h="120px"
@@ -41,14 +40,14 @@ const Info = () => {
               justifyContent="center"
               alignItems="center"
               cursor={'pointer'}
-              backgroundImage={`url(${hooks.useImageLink(map.info_image)})`}
+              backgroundImage={`url(${hooks.useImageLink(map.image)})`}
               backgroundSize={'cover'}
               backgroundPosition={'center'}
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
             <Text color={ALL_COLOR.WHITE} textAlign={'center'} mt={'2'}>
-              {map.info_kr_name}
+              {map.kr_name}
             </Text>
           </Link>
         ))}

@@ -13,9 +13,9 @@ const RenderStationary = ({ stationaryList, category }) => {
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
-    const isGeneralCategory = item.weapon_category === 'Stationary weapons';
+    const isGeneralCategory = item.category === 'Stationary weapons';
     const isMatchingCategory =
-      item.weapon_category === 'Stationary weapons' || category === 'ALL';
+      item.category === 'Stationary weapons' || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
 
@@ -35,10 +35,10 @@ const RenderStationary = ({ stationaryList, category }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              <Image src={hooks.useImageLink(item.weapon_img)} maxH={'200px'} />
+              <Image src={hooks.useImageLink(item.image)} maxH={'200px'} />
             </Box>
-            <TextValue value={item.weapon_short_name} />
-            <TextValue value={item.weapon_carliber} />
+            <TextValue value={item.short_name} />
+            <TextValue value={item.carliber} />
             <Box
               w={'100%'}
               h={'100%'}
@@ -47,13 +47,13 @@ const RenderStationary = ({ stationaryList, category }) => {
               alignItems="center"
               flexDirection={'column'}
             >
-              {item.weapon_modes_kr.map((mode, mIndex) => (
+              {item.modes_kr.map((mode, mIndex) => (
                 <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
                   {mode}
                 </Text>
               ))}
             </Box>
-            <TextValue value={item.weapon_fire_rate} />
+            <TextValue value={item.fire_rate} />
           </GridContents>
         ) : null,
       )}

@@ -28,8 +28,8 @@ const Boss = () => {
         onClickEvent={onClickBoss}
         itemList={boss}
         currentId={bossId}
-        selectorId={'boss_id'}
-        itemDesc="boss_name_kr"
+        selectorId={'id'}
+        itemDesc="name_kr"
       />
       <Box w={'95%'}>
         <BossDetail bossList={boss} bossId={bossId} />

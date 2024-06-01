@@ -11,7 +11,7 @@ const QuestInfo = ({ quest }) => {
         h="160px"
         backgroundColor={ALL_COLOR.WHITE}
         color={ALL_COLOR.WHITE}
-        backgroundImage={`url(${hooks.useImageLink(quest.npc_img_path)})`}
+        backgroundImage={`url(${hooks.useImageLink(quest.image)})`}
         backgroundRepeat={'no-repeat'}
         backgroundSize={'cover'}
         outline={'4px solid'}
@@ -25,7 +25,7 @@ const QuestInfo = ({ quest }) => {
         fontWeight={'700'}
         fontSize="lg"
       >
-        {quest.quest_name_kr}
+        {quest.name_kr}
       </Text>
       <Text
         color={ALL_COLOR.WHITE}
@@ -33,7 +33,7 @@ const QuestInfo = ({ quest }) => {
         fontWeight={'700'}
         fontSize="lg"
       >
-        {quest.quest_name_en}
+        {quest.name_en}
       </Text>
       <Text
         color={ALL_COLOR.WHITE}
@@ -42,7 +42,7 @@ const QuestInfo = ({ quest }) => {
         fontSize="md"
         fontWeight={'600'}
       >
-        {quest.quest_required_kappa ? '✅' : '❌'}&nbsp;&nbsp;&nbsp;Kappa
+        {quest.required_kappa ? '✅' : '❌'}&nbsp;&nbsp;&nbsp;Kappa
       </Text>
     </Box>
   );

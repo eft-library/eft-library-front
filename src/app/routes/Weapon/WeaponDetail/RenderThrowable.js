@@ -24,9 +24,9 @@ const RenderThrowable = ({ throwableList }) => {
       {throwableList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
-            <Image src={item.throwable_image} maxH={'200px'} />
+            <Image src={item.image} maxH={'200px'} />
           </Box>
-          <TextValue value={item.throwable_short_name} />
+          <TextValue value={item.short_name} />
           <Box
             w={'100%'}
             h={'100%'}
@@ -35,18 +35,18 @@ const RenderThrowable = ({ throwableList }) => {
             alignItems="center"
             flexDirection={'column'}
           >
-            {detailThrowable.includes(item.throwable_short_name) ? (
+            {detailThrowable.includes(item.short_name) ? (
               <>
                 <Text color={ALL_COLOR.WHITE} textAlign="center" mb={2}>
-                  충격시 {item.throwable_min_fuse} 초
+                  충격시 {item.min_fuse} 초
                 </Text>
                 <Text color={ALL_COLOR.WHITE} textAlign="center">
-                  (충격 신관이 발동되지 않은 경우 {item.throwable_fuse} 초)
+                  (충격 신관이 발동되지 않은 경우 {item.fuse} 초)
                 </Text>
               </>
             ) : (
               <Text color={ALL_COLOR.WHITE} textAlign="center">
-                {item.throwable_fuse} 초
+                {item.fuse} 초
               </Text>
             )}
           </Box>
@@ -59,8 +59,8 @@ const RenderThrowable = ({ throwableList }) => {
             flexDirection={'column'}
           >
             <Text color={ALL_COLOR.WHITE} textAlign="center">
-              {item.throwable_min_explosion_distance} ~&nbsp;
-              {item.throwable_max_explosion_distance} m
+              {item.min_explosion_distance} ~&nbsp;
+              {item.max_explosion_distance} m
             </Text>
           </Box>
           <Box
@@ -72,7 +72,7 @@ const RenderThrowable = ({ throwableList }) => {
             flexDirection={'column'}
           >
             <Text color={ALL_COLOR.WHITE} textAlign="center">
-              {item.throwable_fragments} m
+              {item.fragments} m
             </Text>
           </Box>
         </GridContents>

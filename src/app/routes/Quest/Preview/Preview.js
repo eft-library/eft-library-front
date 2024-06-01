@@ -74,8 +74,7 @@ const Preview = ({ selectedNpc }) => {
           <Tbody>
             {allQuest.map(
               (quest, index) =>
-                selectedNpc === null ||
-                selectedNpc === quest.quest_npc_value ? (
+                selectedNpc === null || selectedNpc === quest.npc_value ? (
                   <Tr key={index}>
                     <Td
                       fontSize="md"
@@ -88,12 +87,12 @@ const Preview = ({ selectedNpc }) => {
                       paddingX={2}
                       paddingY={2}
                     >
-                      <Link to={`/quest/detail/${quest.quest_id}`}>
-                        {quest.quest_name_kr}
+                      <Link to={`/quest/detail/${quest.id}`}>
+                        {quest.name_kr}
                       </Link>
                       <br />
-                      <Link to={`/quest/detail/${quest.quest_id}`}>
-                        {quest.quest_name_en}
+                      <Link to={`/quest/detail/${quest.id}`}>
+                        {quest.name_en}
                       </Link>
                     </Td>
                     <Td
@@ -107,7 +106,7 @@ const Preview = ({ selectedNpc }) => {
                       paddingX={4}
                       paddingY={4}
                     >
-                      {quest.quest_objectives_kr.map((obj, oIndex) => (
+                      {quest.objectives_kr.map((obj, oIndex) => (
                         <Text
                           key={oIndex}
                           mb={1}
@@ -128,7 +127,7 @@ const Preview = ({ selectedNpc }) => {
                       paddingX={4}
                       paddingY={4}
                     >
-                      {quest.quest_rewards_kr.map((rewards, rIndex) => (
+                      {quest.rewards_kr.map((rewards, rIndex) => (
                         <Text
                           key={rIndex}
                           mb={1}
@@ -149,12 +148,12 @@ const Preview = ({ selectedNpc }) => {
                     >
                       <Text
                         color={
-                          quest.quest_required_kappa
+                          quest.required_kappa
                             ? ALL_COLOR.YELLOW
                             : ALL_COLOR.RED
                         }
                       >
-                        {quest.quest_required_kappa ? 'Y' : 'N'}
+                        {quest.required_kappa ? 'Y' : 'N'}
                       </Text>
                     </Td>
                   </Tr>

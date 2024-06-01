@@ -54,32 +54,26 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Image src={hooks.useImageLink(extraction.extraction_image)} />
+              <Image src={hooks.useImageLink(extraction.image)} />
             </GridItem>
 
-            <RenderText text={extraction.extraction_name} />
-            <RenderText text={extraction.extraction_faction} />
-            <RenderText
-              text={extraction.extraction_always_available ? '✅' : '❌'}
-            />
-            <RenderText text={extraction.extraction_single_use ? '✅' : '❌'} />
+            <RenderText text={extraction.name} />
+            <RenderText text={extraction.faction} />
+            <RenderText text={extraction.always_available ? '✅' : '❌'} />
+            <RenderText text={extraction.single_use ? '✅' : '❌'} />
             <GridItem
               display="flex"
               justifyContent="center"
               alignItems="center"
               flexDirection={'column'}
             >
-              {extraction.extraction_requirements.map((item, index) => (
+              {extraction.requirements.map((item, index) => (
                 <Box key={index}>
                   <Image src={hooks.useImageLink(item.image)} />
                   <Text
                     color={ALL_COLOR.WHITE}
                     mt={2}
-                    mb={
-                      extraction.extraction_requirements.length === index + 1
-                        ? 0
-                        : 10
-                    }
+                    mb={extraction.requirements.length === index + 1 ? 0 : 10}
                     fontWeight={600}
                     textAlign="center"
                   >
@@ -88,7 +82,7 @@ const MapOfTarkovExtraction = ({ extractionList }) => {
                 </Box>
               ))}
             </GridItem>
-            <RenderArrayText arrayText={extraction.extraction_tip} />
+            <RenderArrayText arrayText={extraction.tip} />
           </SimpleGrid>
         ))}
       </Box>

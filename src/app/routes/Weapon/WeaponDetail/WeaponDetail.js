@@ -19,8 +19,8 @@ const WeaponDetail = ({ category }) => {
 
   const checkGunInclude = () => {
     const gunCategoryList = allColumn.find(
-      (item) => item.column_id === COLUMN_KEY.gun,
-    ).column_value_kr;
+      (item) => item.id === COLUMN_KEY.gun,
+    ).value_kr;
 
     return gunCategoryList.includes(category);
   };

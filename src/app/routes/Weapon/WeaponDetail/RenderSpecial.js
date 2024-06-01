@@ -6,15 +6,16 @@ import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
 import hooks from 'src/hooks/hooks';
+import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
 const RenderSpecial = ({ specialList, category }) => {
   const { allColumn } = useStore();
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (item) => {
-    const isGeneralCategory = item.weapon_category === 'Special weapons';
+    const isGeneralCategory = item.category === 'Special weapons';
     const isMatchingCategory =
-      item.weapon_category === 'Special weapons' || category === 'ALL';
+      item.category === 'Special weapons' || category === 'ALL';
     return isGeneralCategory && isMatchingCategory;
   };
 
@@ -34,9 +35,9 @@ const RenderSpecial = ({ specialList, category }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              <Image src={item.weapon_img} maxH={'200px'} />
+              <Image src={item.image} maxH={'200px'} />
             </Box>
-            <TextValue value={item.weapon_short_name} />
+            <TextValue value={item.short_name} />
           </GridContents>
         ) : null,
       )}
