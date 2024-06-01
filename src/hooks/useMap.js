@@ -22,7 +22,6 @@ export const useLoadMap = (map_three_path, isMap) => {
 
         // 모델의 모든 자식 노드를 반복하여 선을 입력값으로 설정
         loadedColladaData.scene.traverse((child) => {
-          console.log(child);
           if (child.isLine) {
             // 선의 재질을 설정
             const lineMaterial = new LineBasicMaterial({

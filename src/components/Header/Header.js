@@ -44,7 +44,7 @@ const Header = () => {
         {navi.map((main, index) => (
           <Button
             key={index}
-            onMouseEnter={() => changeMenu(main.main_menu_value)}
+            onMouseEnter={() => changeMenu(main.value)}
             variant="solid"
             fontWeight="bold"
             bg="transparent"
@@ -55,21 +55,21 @@ const Header = () => {
             backdropFilter="blur(8px)"
             backdropContrast="60%"
           >
-            {main.main_menu_kr_name}
-            {selectedMenu === main.main_menu_value && (
+            {main.kr_name}
+            {selectedMenu === main.value && (
               <VStack
                 align="stretch"
                 p={4}
                 position="absolute"
                 top="50px"
-                onMouseEnter={() => setSelectedMenu(main.main_menu_value)}
+                onMouseEnter={() => setSelectedMenu(main.value)}
                 onMouseLeave={() => setSelectedMenu(null)}
                 bg={ALL_COLOR.MAP_BLACK}
               >
                 {main.sub_menus.map((sub, sub_index) => (
                   <Box p={2} key={sub_index} _hover={{ bg: ALL_COLOR.GRAY }}>
-                    <Link to={sub.sub_menu_link} fontSize="lg">
-                      {sub.sub_menu_kr_name}
+                    <Link to={sub.link} fontSize="lg">
+                      {sub.kr_name}
                     </Link>
                   </Box>
                 ))}

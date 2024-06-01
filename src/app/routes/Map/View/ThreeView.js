@@ -1,6 +1,5 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
-import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
@@ -33,7 +32,7 @@ const ThreeView = ({ map, viewItemList }) => {
 
         {map.three_item_path.map(
           (item, index) =>
-            viewItemList.includes(ALL_ITEM[item.childValue]) && (
+            viewItemList.includes(item.childValue) && (
               <mesh key={index} position={item.position} scale={2}>
                 <boxGeometry args={item.boxArgs} />
                 <meshStandardMaterial

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useWindowSize } from '@react-hook/window-size';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import DynamicJpgSVG from 'src/components/ViewSVG/DynamicJpgSVG';
-import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import hooks from 'src/hooks/hooks';
 
@@ -63,7 +62,7 @@ const JpgView = ({ map, viewItemList }) => {
             />
             {map.jpg_item_path.map(
               (item, index) =>
-                viewItemList.includes(ALL_ITEM[item.childValue]) && (
+                viewItemList.includes(item.childValue) && (
                   <DynamicJpgSVG
                     key={index}
                     svgValue={item.childValue}

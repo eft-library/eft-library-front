@@ -1,6 +1,5 @@
 import SVG_CONSTANTS from 'src/utils/consts/svgConsts';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
-import { ALL_ITEM } from 'src/utils/consts/itemConsts';
 import PropTypes from 'prop-types';
 
 // 값에 해당하는 SVG를 리턴해주는 함수
@@ -11,7 +10,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
   const footerWidth = 40;
 
   switch (svgValue) {
-    case ALL_ITEM.PMC_EXTRACTION:
+    case 'PMC_EXTRACTION':
       return (
         <SVG_CONSTANTS.EXTRACTION
           x={x}
@@ -22,7 +21,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
           opacity={isEnable ? '1' : '0.5'}
         />
       );
-    case ALL_ITEM.SCAV_EXTRACTION:
+    case 'SCAV_EXTRACTION':
       return (
         <SVG_CONSTANTS.EXTRACTION
           x={x}
@@ -33,7 +32,7 @@ const DynamicSVG = ({ x, y, svgValue, isEnable }) => {
           opacity={isEnable ? '1' : '0.5'}
         />
       );
-    case ALL_ITEM.SHARED_EXTRACTION:
+    case 'SHARED_EXTRACTION':
       return (
         <SVG_CONSTANTS.EXTRACTION
           x={x}
