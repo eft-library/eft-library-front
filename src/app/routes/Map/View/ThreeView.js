@@ -4,12 +4,12 @@ import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import hooks from 'src/hooks/hooks';
 import PropTypes from 'prop-types';
 import { MapControls } from '@react-three/drei';
+import ItemBox from './ThreeItem';
 
 const ThreeView = ({ map, viewItemList }) => {
   const collada = hooks.useLoadMap(map.three_image, true);
-  const door = hooks.useLoadMap('/tkw_map/filter/door.dae', false);
 
-  if (!collada || !door) return null;
+  if (!collada) return null;
 
   return (
     <Canvas
@@ -27,19 +27,17 @@ const ThreeView = ({ map, viewItemList }) => {
           console.log(e.point);
         }}
       >
-        <primitive object={door.colladaData.scene} position={[0, 10, 0]} />
         <primitive object={collada.colladaData.scene} position={[0, 0, 0]} />
 
         {map.three_item_path.map(
           (item, index) =>
             viewItemList.includes(item.childValue) && (
-              <mesh key={index} position={item.position} scale={2}>
-                <boxGeometry args={item.boxArgs} />
-                <meshStandardMaterial
-                  color={ALL_COLOR[item.color]}
-                  depthTest={false}
-                />
-              </mesh>
+              <ItemBox
+                position={item.position}
+                boxArgs={item.boxArgs}
+                key={index}
+                value="test"
+              />
             ),
         )}
       </group>
