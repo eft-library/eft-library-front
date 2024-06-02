@@ -7,12 +7,21 @@ import BossDetail from '../../Boss/BossDetail/BossDetail';
 import { MOT_IMAGE_SLIDER_OPTION } from 'src/utils/consts/libraryConsts';
 
 const MapOfTarkovDetail = ({ mapOfTarkov }) => {
+  const sortSubList = (subMapList) => {
+    subMapList.sort((a, b) => {
+      return a.order - b.order;
+    });
+    return subMapList;
+  };
+
   return (
     <Box w={'95%'} mt={10}>
-      <DividerContents headText={mapOfTarkov.map_info.sub[0].name_kr}>
+      <DividerContents
+        headText={sortSubList(mapOfTarkov.map_info.sub)[0].name_kr}
+      >
         <Box display={'flex'} alignItems={'center'}>
           <ImageSlider
-            mapList={mapOfTarkov.map_info.sub}
+            mapList={sortSubList(mapOfTarkov.map_info.sub)}
             imagePath="jpg_image"
             sliderOption={MOT_IMAGE_SLIDER_OPTION}
             useZoom
