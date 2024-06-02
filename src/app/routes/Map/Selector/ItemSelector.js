@@ -1,4 +1,3 @@
-import { ITEM_LIST } from 'src/utils/consts/itemConsts';
 import {
   Accordion,
   AccordionItem,
@@ -15,6 +14,7 @@ import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import DynamicSVG from 'src/components/ViewSVG/DynamicSVG';
 import PropTypes from 'prop-types';
+import { useStore } from 'src/stores/store';
 
 const ItemSelector = ({
   viewItemList,
@@ -22,6 +22,7 @@ const ItemSelector = ({
   onClickAllItem,
   originItemList,
 }) => {
+  const { itemFilter } = useStore();
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState(originItemList);
 
@@ -137,7 +138,7 @@ const ItemSelector = ({
               전체
             </Text>
           </Box>
-          {ITEM_LIST.map(
+          {itemFilter.map(
             (item, index) =>
               originalItem.includes(item.value) && (
                 <div key={index}>
@@ -152,7 +153,7 @@ const ItemSelector = ({
                   >
                     {item.kr}
                   </Text>
-                  {item.child.map((childItem, childIndex) => (
+                  {item.sub.map((childItem, childIndex) => (
                     <Flex key={childIndex} mt={4}>
                       {viewItemList.includes(childItem.value) ? (
                         <DynamicSVG

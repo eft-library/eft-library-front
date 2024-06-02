@@ -7,9 +7,12 @@ import API_PATH from 'src/api/api_path';
 import hooks from 'src/hooks/hooks';
 
 function App() {
-  const { setColumn, allColumn } = useStore();
+  const { setColumn, allColumn, setItemFilter } = useStore();
   const { apiData: columnData } = hooks.useGetApiWithNone(
     API_PATH.GET_ALL_COLUMN,
+  );
+  const { apiData: apiItemFilter } = hooks.useGetApiWithNone(
+    API_PATH.GET_ITEM_FILTER,
   );
 
   // 우클릭 막기
@@ -23,7 +26,11 @@ function App() {
     if (columnData) {
       setColumn(columnData);
     }
-  }, [columnData]);
+
+    if (apiItemFilter) {
+      setItemFilter(apiItemFilter);
+    }
+  }, [columnData, apiItemFilter]);
 
   return (
     <ChakraProvider>

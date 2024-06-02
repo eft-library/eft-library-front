@@ -8,21 +8,25 @@ export const useStore = create(
       (set) => ({
         // Boss
         bossId: 'RESHALA',
-        setBossId: (boss) => set((state) => ({ ...state, bossId: boss })),
+        setBossId: (value) => set((state) => ({ ...state, bossId: value })),
 
         // Column
         allColumn: {},
-        setColumn: (columnInfo) =>
-          set((state) => ({ ...state, allColumn: columnInfo })),
+        setColumn: (value) => set((state) => ({ ...state, allColumn: value })),
 
         // 무기
         weaponCategory: 'ALL',
-        setWeaponCategory: (category) =>
-          set((state) => ({ ...state, weaponCategory: category })),
+        setWeaponCategory: (value) =>
+          set((state) => ({ ...state, weaponCategory: value })),
 
         // Quest
         npcId: 'PRAPOR',
-        setNpcId: (npc) => set((state) => ({ ...state, npcId: npc })),
+        setNpcId: (value) => set((state) => ({ ...state, npcId: value })),
+
+        // Item Filter
+        itemFilter: [],
+        setItemFilter: (value) =>
+          set((state) => ({ ...state, itemFilter: value })),
       }),
       {
         name: 'app-storage',

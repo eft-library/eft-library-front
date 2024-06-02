@@ -27,7 +27,7 @@ const ItemBox = ({ position, boxArgs, childValue }) => {
 ItemBox.propTypes = {
   position: PropTypes.array,
   boxArgs: PropTypes.array,
-  value: PropTypes.string,
+  childValue: PropTypes.string,
 };
 
 export default ItemBox;

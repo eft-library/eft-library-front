@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { ITEM_LIST, ALL_VALUE_LIST } from 'src/utils/consts/itemConsts';
+import { useStore } from 'src/stores/store';
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
  */
 export const useItemFilter = (mapItem) => {
-  const [viewItemList, setViewItemList] = useState(ALL_VALUE_LIST);
+  const { itemFilter } = useStore();
+  const [viewItemList, setViewItemList] = useState(extractValues(itemFilter));
   useEffect(() => {
     if (mapItem) {
       const valuesSet = new Set();
@@ -24,7 +25,7 @@ export const useItemFilter = (mapItem) => {
    * 아이템 클릭 이벤트
    */
   const onClickItem = (clickValue) => {
-    const rootValueList = ITEM_LIST.map((item) => item.value);
+    const rootValueList = itemFilter.map((item) => item.value);
 
     if (rootValueList.includes(clickValue)) {
       handleRootItemClick(clickValue);
@@ -54,8 +55,8 @@ export const useItemFilter = (mapItem) => {
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
    */
   const handleRootItemClick = (clickValue) => {
-    const rootList = ITEM_LIST.find((item) => item.value === clickValue);
-    const childList = rootList.child.map((childItem) => childItem.value);
+    const rootList = itemFilter.find((item) => item.value === clickValue);
+    const childList = rootList.sub.map((childItem) => childItem.value);
 
     const shouldRemoveAllChild = checkAllChild(viewItemList, childList);
 
@@ -78,10 +79,11 @@ export const useItemFilter = (mapItem) => {
    * root의 모든 아이템 제거 시 root 제거, 모두 추가될 경우 root 추가
    */
   const handleChildItemClick = (clickValue) => {
-    const rootList = ITEM_LIST.find((item) =>
+    const rootList = itemFilter.find((item) =>
       findObjectWithValue(item, clickValue),
     );
-    const childList = rootList.child.map((childItem) => childItem.value);
+
+    const childList = rootList.sub.map((childItem) => childItem.value);
 
     let updatedItemList = viewItemList.includes(clickValue)
       ? viewItemList.filter((item) => item !== clickValue)
@@ -120,8 +122,8 @@ const findObjectWithValue = (obj, value) => {
   }
 
   // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색
-  if (obj.child) {
-    for (const childObj of obj.child) {
+  if (obj.sub) {
+    for (const childObj of obj.sub) {
       const result = findObjectWithValue(childObj, value);
       // 만약 하위 객체에서 값을 찾았다면 해당 객체 반환
       if (result) {
@@ -149,4 +151,23 @@ const checkAllChild = (itemList, childList) => {
  */
 const checkSomeChild = (itemList, childList) => {
   return childList.some((childValue) => itemList.includes(childValue));
+};
+
+/**
+ * valueList 추출
+ */
+const extractValues = (data) => {
+  let values = [];
+
+  data.forEach((item) => {
+    values.push(item.value);
+
+    if (item.sub && Array.isArray(item.sub)) {
+      item.sub.forEach((subItem) => {
+        values.push(subItem.value);
+      });
+    }
+  });
+
+  return values;
 };

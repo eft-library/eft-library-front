@@ -12,6 +12,7 @@ const API_PATH = {
   GET_MAP_OF_TARKOV: '/api/map_of_tarkov/detail',
   GET_SEARCH: '/api/search/info',
   GET_ALL_COLUMN: '/api/table_column/all',
+  GET_ITEM_FILTER: '/api/item_filter/all',
 };
 
 export default API_PATH;
