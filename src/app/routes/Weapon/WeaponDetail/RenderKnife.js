@@ -1,6 +1,6 @@
 import { Text, Image, Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import TextValue from './TextValue';
+import GridCenterText from '../../../../components/GridText/GridCenterText';
 import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
@@ -24,9 +24,9 @@ const RenderKnife = ({ knifeList }) => {
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Image src={item.image} maxH={'200px'} />
           </Box>
-          <TextValue value={item.name} />
-          <TextValue value={item.slash_damage} />
-          <TextValue value={item.stab_damage} />
+          <GridCenterText value={item.name} />
+          <GridCenterText value={item.slash_damage} />
+          <GridCenterText value={item.stab_damage} />
           <Box
             w={'100%'}
             h={'100%'}

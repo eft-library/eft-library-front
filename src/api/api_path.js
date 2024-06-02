@@ -13,6 +13,7 @@ const API_PATH = {
   GET_SEARCH: '/api/search/info',
   GET_ALL_COLUMN: '/api/table_column/all',
   GET_ITEM_FILTER: '/api/item_filter/all',
+  GET_ALL_HEADSET: '/api/item/headset',
 };
 
 export default API_PATH;

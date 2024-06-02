@@ -1,6 +1,6 @@
 import { Image, Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import TextValue from './TextValue';
+import GridCenterText from '../../../../components/GridText/GridCenterText';
 import GridTitle from 'src/components/GridTitle/GridTitle';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
@@ -37,7 +37,7 @@ const RenderSpecial = ({ specialList, category }) => {
             >
               <Image src={item.image} maxH={'200px'} />
             </Box>
-            <TextValue value={item.short_name} />
+            <GridCenterText value={item.short_name} />
           </GridContents>
         ) : null,
       )}

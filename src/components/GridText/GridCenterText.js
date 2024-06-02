@@ -2,7 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { ALL_COLOR } from 'src/utils/consts/colorConsts';
 
-const TextValue = ({ value }) => {
+const GridCenterText = ({ value }) => {
   return (
     <Box
       w={'100%'}
@@ -19,8 +19,8 @@ const TextValue = ({ value }) => {
   );
 };
 
-TextValue.propTypes = {
+GridCenterText.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default TextValue;
+export default GridCenterText;

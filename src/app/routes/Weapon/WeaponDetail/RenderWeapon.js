@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import TextValue from './TextValue';
+import GridCenterText from '../../../../components/GridText/GridCenterText';
 import GridContents from 'src/components/GridContents/GridContents';
 import { COLUMN_KEY } from 'src/utils/consts/columnConsts';
 import { useStore } from 'src/stores/store';
@@ -77,8 +77,8 @@ const RenderWeapon = ({ gunList, category }) => {
                 <Image src={item.image} maxH={'200px'} />
               </Box>
             </GridItem>
-            <TextValue value={item.short_name} />
-            <TextValue value={sliceDefaultAmmo(item.default_ammo)} />
+            <GridCenterText value={item.short_name} />
+            <GridCenterText value={sliceDefaultAmmo(item.default_ammo)} />
             <Box
               w={'100%'}
               h={'100%'}
@@ -93,10 +93,10 @@ const RenderWeapon = ({ gunList, category }) => {
                 </Text>
               ))}
             </Box>
-            <TextValue value={item.fire_rate} />
-            <TextValue value={item.ergonomics} />
-            <TextValue value={item.recoil_horizontal} />
-            <TextValue value={item.recoil_vertical} />
+            <GridCenterText value={item.fire_rate} />
+            <GridCenterText value={item.ergonomics} />
+            <GridCenterText value={item.recoil_horizontal} />
+            <GridCenterText value={item.recoil_vertical} />
           </GridContents>
         ) : null,
       )}
