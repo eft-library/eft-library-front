@@ -12,4 +12,5 @@ export const COLUMN_KEY = {
   gun: 'GUN_CATEGORY_INFO',
   footer: 'FOOTER_COLUMN',
   headset: 'HEAD_PHONE_COLUMN',
+  headwear: 'HEAD_WEAR_COLUMN',
 };

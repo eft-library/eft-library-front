@@ -14,6 +14,7 @@ const API_PATH = {
   GET_ALL_COLUMN: '/api/table_column/all',
   GET_ITEM_FILTER: '/api/item_filter/all',
   GET_ALL_HEADSET: '/api/item/headset',
+  GET_ALL_HEAD_WEAR: '/api/item/head_wear',
 };
 
 export default API_PATH;
