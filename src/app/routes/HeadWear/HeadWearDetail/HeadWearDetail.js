@@ -18,11 +18,11 @@ const HeadWearDetail = ({ headWearList }) => {
 
   const ricochetStr = (ricochetChance) => {
     if (ricochetChance < 0.2) {
-      return 'Low';
+      return '낮음';
     } else if (ricochetChance < 0.4) {
-      return 'Medium';
+      return '중간';
     } else {
-      return 'High';
+      return '높음';
     }
   };
 
