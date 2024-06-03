@@ -14,4 +14,5 @@ export const COLUMN_KEY = {
   headset: 'HEAD_PHONE_COLUMN',
   headwear: 'HEAD_WEAR_COLUMN',
   armorVest: 'ARMOR_VEST_COLUMN',
+  rig: 'RIG_COLUMN',
 };

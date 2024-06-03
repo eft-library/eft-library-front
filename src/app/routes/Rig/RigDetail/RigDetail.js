@@ -9,23 +9,29 @@ import { Box, Image, Text } from '@chakra-ui/react';
 import GridCenterText from 'src/components/GridText/GridCenterText';
 import RenderArrayText from 'src/components/GridText/RenderArrayText';
 
-const ArmorVestDetail = ({ armorVestList }) => {
+const RigDetail = ({ rigList }) => {
   const { allColumn } = useStore();
+
+  const noClassColumn = (column) => {
+    return column.filter((item) => item === '사진' || item === '이름');
+  };
+
   return (
     <>
       <GridTitle
-        columnDesign={[2, null, 6]}
-        column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.armorVest)}
+        columnDesign={[2, null, 7]}
+        column={hooks.useColumnListByKr(allColumn, COLUMN_KEY.rig)}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
-      {armorVestList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 6]} key={index}>
+      {rigList.class_rig.map((item, index) => (
+        <GridContents columnDesign={[2, null, 7]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Image src={item.image} maxH={'200px'} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.durability} />
+          <GridCenterText value={item.capacity} />
           <GridCenterText value={item.class_value} />
           <RenderArrayText arrayText={item.areas_kr} />
           <Box
@@ -42,12 +48,29 @@ const ArmorVestDetail = ({ armorVestList }) => {
           </Box>
         </GridContents>
       ))}
+      <Box mb={20} />
+      <GridTitle
+        columnDesign={[2, null, 2]}
+        column={noClassColumn(
+          hooks.useColumnListByKr(allColumn, COLUMN_KEY.headwear),
+        )}
+        isShadow
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+      />
+      {rigList.no_class_rig.map((item, index) => (
+        <GridContents columnDesign={[2, null, 2]} key={index}>
+          <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
+            <Image src={item.image} maxH={'200px'} />
+          </Box>
+          <GridCenterText value={item.name} />
+        </GridContents>
+      ))}
     </>
   );
 };
 
-ArmorVestDetail.propTypes = {
-  armorVestList: PropTypes.array,
+RigDetail.propTypes = {
+  rigList: PropTypes.array,
 };
 
-export default ArmorVestDetail;
+export default RigDetail;
