@@ -14,7 +14,7 @@ const Rig = () => {
 
   return (
     <PageParent>
-      <SubHeader title="전술조끼" />
+      <SubHeader title="전술 조끼" />
       <Box mb={10} />
       <RigDetail rigList={rigList} />
     </PageParent>

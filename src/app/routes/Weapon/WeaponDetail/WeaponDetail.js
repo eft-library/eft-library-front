@@ -38,15 +38,19 @@ const WeaponDetail = ({ category }) => {
       {(category === 'ALL' || checkGunInclude()) && (
         <RenderWeapon gunList={weapon.gun} category={category} />
       )}
+      <Box mb={20} />
       {(category === 'ALL' || category === 'Special weapons') && (
         <RenderSpecial specialList={weapon.gun} category={category} />
       )}
+      <Box mb={20} />
       {(category === 'ALL' || category === 'Stationary weapons') && (
         <RenderStationary stationaryList={weapon.gun} category={category} />
       )}
+      <Box mb={20} />
       {(category === 'ALL' || category === 'Knife') && (
         <RenderKnife knifeList={weapon.knife} />
       )}
+      <Box mb={20} />
       {(category === 'ALL' || category === 'Throwable weapon') && (
         <RenderThrowable throwableList={weapon.throwable} />
       )}

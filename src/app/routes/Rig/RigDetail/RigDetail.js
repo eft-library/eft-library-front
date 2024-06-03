@@ -58,7 +58,7 @@ const RigDetail = ({ rigList }) => {
       <GridTitle
         columnDesign={[2, null, 4]}
         column={noClassColumn(
-          hooks.useColumnListByKr(allColumn, COLUMN_KEY.headwear),
+          hooks.useColumnListByKr(allColumn, COLUMN_KEY.rig),
         )}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
@@ -89,7 +89,7 @@ const RigDetail = ({ rigList }) => {
 };
 
 RigDetail.propTypes = {
-  rigList: PropTypes.array,
+  rigList: PropTypes.object,
 };
 
 export default RigDetail;

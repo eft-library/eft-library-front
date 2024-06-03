@@ -14,7 +14,7 @@ const ArmorVest = () => {
 
   return (
     <PageParent>
-      <SubHeader title="방탄조끼" />
+      <SubHeader title="방탄 조끼" />
       <Box mb={10} />
       <ArmorVestDetail armorVestList={armorVestList} />
     </PageParent>
