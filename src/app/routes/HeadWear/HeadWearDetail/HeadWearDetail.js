@@ -16,16 +16,6 @@ const HeadWearDetail = ({ headWearList }) => {
     return column.filter((item) => item === '사진' || item === '이름');
   };
 
-  const ricochetStr = (ricochetChance) => {
-    if (ricochetChance < 0.2) {
-      return '낮음';
-    } else if (ricochetChance < 0.4) {
-      return '중간';
-    } else {
-      return '높음';
-    }
-  };
-
   return (
     <>
       <GridTitle
@@ -43,7 +33,7 @@ const HeadWearDetail = ({ headWearList }) => {
           <GridCenterText value={item.class_value} />
           <RenderArrayText arrayText={item.areas_kr} />
           <GridCenterText value={item.durability} />
-          <GridCenterText value={ricochetStr(item.ricochet_chance)} />
+          <GridCenterText value={item.ricochet_str_kr} />
           <Box
             w={'100%'}
             h={'100%'}
