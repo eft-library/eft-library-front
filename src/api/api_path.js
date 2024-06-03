@@ -15,6 +15,7 @@ const API_PATH = {
   GET_ITEM_FILTER: '/api/item_filter/all',
   GET_ALL_HEADSET: '/api/item/headset',
   GET_ALL_HEAD_WEAR: '/api/item/head_wear',
+  GET_ALL_ARMOR_VEST: '/api/item/armor_vest',
 };
 
 export default API_PATH;

@@ -12,7 +12,7 @@ import Headset from 'src/app/routes/Headset/Headset';
 import HeadWear from 'src/app/routes/HeadWear/HeadWear';
 import Medical from 'src/components/Item/Medical/Medical';
 import Rig from 'src/components/Item/Rig/Rig';
-import Vest from 'src/components/Item/Vest/Vest';
+import ArmorVest from 'src/app/routes/ArmorVest/ArmorVest';
 import Weapon from 'src/app/routes/Weapon/Weapon';
 import Quest from 'src/app/routes/Quest/Quest';
 import QuestDetail from 'src/app/routes/QuestDetail/QuestDetail';
@@ -36,7 +36,7 @@ const PageRouter = {
   MEDICAL: Medical,
   RIG: Rig,
   KEY: Key,
-  VEST: Vest,
+  ARMOR_VEST: ArmorVest,
   WEAPON: Weapon,
   QUEST: Quest,
   QUSET_DETAIL: QuestDetail,

@@ -56,7 +56,7 @@ function App() {
           <Route path="/medical" element={<PageRouter.MEDICAL />} />
           <Route path="/container" element={<PageRouter.CONTAINER />} />
           <Route path="/rig" element={<PageRouter.RIG />} />
-          <Route path="/armor-vest" element={<PageRouter.VEST />} />
+          <Route path="/armor-vest" element={<PageRouter.ARMOR_VEST />} />
           <Route path="/key" element={<PageRouter.KEY />} />
           <Route path="/bag" element={<PageRouter.BAG />} />
           <Route path="/headset" element={<PageRouter.HEADSET />} />
