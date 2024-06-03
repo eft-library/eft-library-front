@@ -13,7 +13,13 @@ const RigDetail = ({ rigList }) => {
   const { allColumn } = useStore();
 
   const noClassColumn = (column) => {
-    return column.filter((item) => item === '사진' || item === '이름');
+    return column.filter(
+      (item) =>
+        item === '사진' ||
+        item === '이름' ||
+        item === '슬롯' ||
+        item === '무게',
+    );
   };
 
   return (
@@ -50,7 +56,7 @@ const RigDetail = ({ rigList }) => {
       ))}
       <Box mb={20} />
       <GridTitle
-        columnDesign={[2, null, 2]}
+        columnDesign={[2, null, 4]}
         column={noClassColumn(
           hooks.useColumnListByKr(allColumn, COLUMN_KEY.headwear),
         )}
@@ -58,11 +64,24 @@ const RigDetail = ({ rigList }) => {
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {rigList.no_class_rig.map((item, index) => (
-        <GridContents columnDesign={[2, null, 2]} key={index}>
+        <GridContents columnDesign={[2, null, 4]} key={index}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Image src={item.image} maxH={'200px'} />
           </Box>
           <GridCenterText value={item.name} />
+          <GridCenterText value={item.capacity} />
+          <Box
+            w={'100%'}
+            h={'100%'}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection={'column'}
+          >
+            <Text color={ALL_COLOR.WHITE} textAlign="center">
+              {item.weight} kg
+            </Text>
+          </Box>
         </GridContents>
       ))}
     </>
