@@ -29,7 +29,7 @@ const HeadWearDetail = ({ headWearList }) => {
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Image src={item.image} maxH={'200px'} />
           </Box>
-          <GridCenterText value={item.short_name} />
+          <GridCenterText value={item.name} />
           <GridCenterText value={item.class_value} />
           <RenderArrayText arrayText={item.areas_kr} />
           <GridCenterText value={item.durability} />
