@@ -9,16 +9,34 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@react-hook/window-size": "^3.1.1",
+    "@react-spring/three": "^9.7.3",
+    "@react-three/drei": "^9.106.0",
+    "@react-three/fiber": "^8.16.8",
+    "@types/react-slick": "^0.23.13",
+    "@types/three": "^0.165.0",
+    "downshift": "^9.0.6",
+    "framer-motion": "^11.2.10",
+    "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.3"
+    "react-photoswipe-gallery": "^3.0.1",
+    "react-slick": "^0.30.2",
+    "react-youtube": "^10.1.0",
+    "react-zoom-pan-pinch": "^3.4.4",
+    "slick-carousel": "^1.8.1",
+    "three": "^0.165.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "typescript": "^5"
   }
 }
