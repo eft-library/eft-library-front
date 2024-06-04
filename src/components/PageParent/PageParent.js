@@ -26,7 +26,7 @@ const PageParent = ({ children }) => {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={ALL_COLOR.LIGHT_GRAY}
+        borderColor={ALL_COLOR.WHITE}
         borderRadius={'lg'}
         paddingBottom={'20px'}
       >

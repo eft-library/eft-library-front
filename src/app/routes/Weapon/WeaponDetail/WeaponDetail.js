@@ -36,23 +36,33 @@ const WeaponDetail = ({ category }) => {
       flexDirection={'column'}
     >
       {(category === 'ALL' || checkGunInclude()) && (
-        <RenderWeapon gunList={weapon.gun} category={category} />
+        <>
+          <RenderWeapon gunList={weapon.gun} category={category} />
+          <Box mb={20} />
+        </>
       )}
-      <Box mb={20} />
       {(category === 'ALL' || category === 'Special weapons') && (
-        <RenderSpecial specialList={weapon.gun} category={category} />
+        <>
+          <RenderSpecial specialList={weapon.gun} category={category} />
+          <Box mb={20} />
+        </>
       )}
-      <Box mb={20} />
       {(category === 'ALL' || category === 'Stationary weapons') && (
-        <RenderStationary stationaryList={weapon.gun} category={category} />
+        <>
+          <RenderStationary stationaryList={weapon.gun} category={category} />
+          <Box mb={20} />
+        </>
       )}
-      <Box mb={20} />
       {(category === 'ALL' || category === 'Knife') && (
-        <RenderKnife knifeList={weapon.knife} />
+        <>
+          <RenderKnife knifeList={weapon.knife} />
+          <Box mb={20} />
+        </>
       )}
-      <Box mb={20} />
       {(category === 'ALL' || category === 'Throwable weapon') && (
-        <RenderThrowable throwableList={weapon.throwable} />
+        <>
+          <RenderThrowable throwableList={weapon.throwable} />
+        </>
       )}
     </Box>
   );
