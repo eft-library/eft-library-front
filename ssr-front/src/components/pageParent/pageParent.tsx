@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface PageParentType {
   children: ReactNode;
