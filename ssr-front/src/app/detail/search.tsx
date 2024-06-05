@@ -25,6 +25,7 @@ export default function Search() {
       }}
     >
       <Downshift
+        id="main-search"
         onChange={(selection) => router.push(selection.link)}
         itemToString={(item) => (item ? item.value : "")}
         isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
