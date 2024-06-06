@@ -21,17 +21,15 @@
 
 export const SPECIAL_COLUMN = {
   id: "SPECIAL_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름"],
   type: "WEAPON",
   value_en: ["사진", "이름"],
-} as const;
+};
 
 export type SpecialColumnKeys = keyof typeof SPECIAL_COLUMN;
 
 export const KNIFE_COLUMN = {
   id: "KNIFE_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "기본 데미지", "찌르기 데미지", "기본 공격 범위"],
   type: "WEAPON",
   value_en: ["사진", "이름", "기본 데미지", "찌르기 데미지", "기본 공격 범위"],
@@ -41,7 +39,6 @@ export type KnifeColumnKeys = keyof typeof KNIFE_COLUMN;
 
 export const STATIONARY_COLUMN = {
   id: "STATIONARY_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "탄약통", "발사모드", "발사 속도"],
   type: "WEAPON",
   value_en: ["사진", "이름", "탄약통", "발사모드", "발사 속도"],
@@ -51,7 +48,6 @@ export type StationaryColumnKeys = keyof typeof STATIONARY_COLUMN;
 
 export const GUN_CATEGORY_INFO = {
   id: "GUN_CATEGORY_INFO",
-  json_value: null,
   value_kr: [
     "Assault carbine",
     "Assault rifle",
@@ -81,7 +77,6 @@ export type GunCategoryInfoKeys = keyof typeof GUN_CATEGORY_INFO;
 
 export const THROWABLE_COLUMN = {
   id: "THROWABLE_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "폭발 지연", "폭발 거리", "파편 반경"],
   type: "WEAPON",
   value_en: ["사진", "이름", "폭발 지연", "폭발 거리", "파편 반경"],
@@ -163,16 +158,13 @@ export const WEAPON_TYPE = {
       desc_kr: "특수 무기",
     },
   ],
-  value_kr: null,
   type: "WEAPON",
-  value_en: null,
 };
 
 export type WeaponTypeKeys = keyof typeof WEAPON_TYPE;
 
 export const WEAOPN_COLUMN = {
   id: "WEAOPN_COLUMN",
-  json_value: null,
   value_kr: [
     "사진",
     "이름",
@@ -200,7 +192,6 @@ export type WeaponColumnKeys = keyof typeof WEAOPN_COLUMN;
 
 export const BOSS_COLUMN = {
   id: "BOSS_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
   type: "BOSS",
   value_en: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
@@ -237,9 +228,7 @@ export const FOOTER_COLUMN = {
       },
     ],
   },
-  value_kr: null,
   type: "FOOTER",
-  value_en: null,
 };
 
 export type FooterColumnKeys = keyof typeof FOOTER_COLUMN;
@@ -308,16 +297,13 @@ export const MAP_COLUMN = {
       name_kr: "팩토리",
     },
   ],
-  value_kr: null,
   type: "MAP",
-  value_en: null,
 };
 
 export type MapColumnKeys = keyof typeof MAP_COLUMN;
 
 export const EXTRACTION_COLUMN = {
   id: "EXTRACTION_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
   type: "EXTRACTION",
   value_en: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
@@ -327,7 +313,6 @@ export type ExtractionColumnKeys = keyof typeof EXTRACTION_COLUMN;
 
 export const HEAD_WEAR_COLUMN = {
   id: "HEAD_WEAR_COLUMN",
-  json_value: null,
   value_kr: [
     "사진",
     "이름",
@@ -353,7 +338,6 @@ export type HeadWearColumnKeys = keyof typeof HEAD_WEAR_COLUMN;
 
 export const HEAD_PHONE_COLUMN = {
   id: "HEAD_PHONE_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름"],
   type: "HEAD_PHONE",
   value_en: ["사진", "이름"],
@@ -425,16 +409,13 @@ export const MAP_OF_TARKOV_COLUMN = {
       name_kr: "연구소",
     },
   ],
-  value_kr: null,
   type: "MAP_OF_TARKOV",
-  value_en: null,
 };
 
 export type MapOfTarkovColumnKeys = keyof typeof MAP_OF_TARKOV_COLUMN;
 
 export const ARMOR_VEST_COLUMN = {
   id: "ARMOR_VEST_COLUMN",
-  json_value: null,
   value_kr: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
   type: "ARMOR_VEST",
   value_en: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
@@ -444,7 +425,6 @@ export type ArmorVestColumnKeys = keyof typeof ARMOR_VEST_COLUMN;
 
 export const RIG_COLUMN = {
   id: "RIG_COLUMN",
-  json_value: null,
   value_kr: [
     "사진",
     "이름",

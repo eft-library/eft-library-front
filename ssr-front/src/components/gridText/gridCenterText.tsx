@@ -2,7 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 interface GridCenterTextProps {
-  value: string;
+  value: string | number;
 }
 
 export default function GridCenterText({ value }: GridCenterTextProps) {

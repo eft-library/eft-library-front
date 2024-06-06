@@ -4,7 +4,7 @@ import { persist, devtools } from "zustand/middleware";
 
 export type AppStateType = {
   bossId: string;
-  allColumn: Record<string, any>;
+  // allColumn: Record<string, any>;
   weaponCategory: string;
   npcId: string;
   itemFilter: any[];
@@ -12,7 +12,7 @@ export type AppStateType = {
 
 export type AppActionsType = {
   setBossId: (value: string) => void;
-  setColumn: (value: Record<string, any>) => void;
+  // setColumn: (value: Record<string, any>) => void;
   setWeaponCategory: (value: string) => void;
   setNpcId: (value: string) => void;
   setItemFilter: (value: any[]) => void;
@@ -26,7 +26,7 @@ export type AppStoreType = AppStateType & AppActionsType;
 
 export const defaultInitState: AppStateType = {
   bossId: "RESHALA",
-  allColumn: {},
+  // allColumn: {},
   weaponCategory: "ALL",
   npcId: "PRAPOR",
   itemFilter: [],
@@ -40,7 +40,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
           ({
             ...initState,
             setBossId: (value: string) => set({ bossId: value }),
-            setColumn: (value: ObjectType) => set({ allColumn: value }),
+            // setColumn: (value: ObjectType) => set({ allColumn: value }),
             setWeaponCategory: (value: string) =>
               set({ weaponCategory: value }),
             setNpcId: (value: string) => set({ npcId: value }),
@@ -48,7 +48,6 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
           } satisfies AppStoreType),
         {
           name: "app-store",
-          skipHydration: true,
         }
       )
     )
