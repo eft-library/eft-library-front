@@ -1,7 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import ArmorVestDetail from "./detail.tsx/armorVestDetail";
+import ArmorVestDetail from "./contents/armorVestDetail";
 
 export default function ArmorVest() {
   return (

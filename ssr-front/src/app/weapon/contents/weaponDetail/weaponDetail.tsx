@@ -4,11 +4,11 @@ import { GUN_CATEGORY_INFO } from "@/util/consts/columnConsts";
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import WeaponKnife from "../contents/weaponKnife";
-import WeaponThrowable from "../contents/weaponThrowable";
-import WeaponStationary from "../contents/weaponStationary";
-import WeaponSpecial from "../contents/weaponSpecial";
-import WeaponGun from "../contents/weaponGun";
+import WeaponKnife from "../weaponRender/weaponKnife";
+import WeaponThrowable from "../weaponRender/weaponThrowable";
+import WeaponStationary from "../weaponRender/weaponStationary";
+import WeaponSpecial from "../weaponRender/weaponSpecial";
+import WeaponGun from "../weaponRender/weaponGun";
 
 interface WeaponDetailType {
   category: string;

@@ -1,4 +1,4 @@
-import Main from "@/app/detail/main";
+import Main from "@/app/contents/main";
 
 export default async function App() {
   return <Main />;

@@ -1,6 +1,5 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
-import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { WEAOPN_COLUMN } from "@/util/consts/columnConsts";

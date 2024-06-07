@@ -5,7 +5,7 @@ import PageParent from "@/components/pageParent/pageParent";
 import { useAppStore } from "@/store/provider";
 import { WEAPON_TYPE } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import WeaponDetail from "./detail/weaponDetail/weaponDetail";
+import WeaponDetail from "./contents/weaponDetail/weaponDetail";
 
 export default function Weapon() {
   const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);

@@ -1,7 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import RigDetail from "./rigDetail";
+import RigDetail from "./contents/rigDetail";
 
 export default function Rig() {
   return (
