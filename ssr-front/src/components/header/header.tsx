@@ -1,10 +1,11 @@
 "use client";
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { Heading, VStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
+import { VStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import TopNaviLogi from "@/assets/topNaviLogo";
 
 interface SubMenu {
   parent_value: string;
@@ -51,16 +52,10 @@ export default function Header() {
       backdropContrast={"60%"}
     >
       <GridItem colSpan={1} h="14" />
-      <GridItem colSpan={1} h="14" textAlign={"center"}>
-        <Heading
-          as={"h1"}
-          size={"2xl"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          color={ALL_COLOR.WHITE}
-        >
-          <Link href={"/"}>TKL</Link>
-        </Heading>
+      <GridItem colSpan={1} h="14" display={"flex"} justifyContent={"center"}>
+        <Link href={"/"}>
+          <TopNaviLogi />
+        </Link>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
         {headerData.length > 0 &&

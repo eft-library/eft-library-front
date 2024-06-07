@@ -23,7 +23,7 @@ export default function Footer() {
         templateColumns="repeat(3, 1fr)"
         gap={6}
         width={"60%"}
-        height={"300px"}
+        height={"220px"}
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
