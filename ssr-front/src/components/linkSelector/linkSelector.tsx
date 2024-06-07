@@ -22,7 +22,7 @@ export default function LinkSelector({
   itemLink,
   mt,
 }: LinkSelectorType) {
-  const param = useParams<{ mapId: string }>();
+  const param = useParams<{ id: string }>();
 
   return (
     <Flex
@@ -37,7 +37,7 @@ export default function LinkSelector({
         <Button
           key={index}
           variant={"solid"}
-          colorScheme={item.id === param.mapId ? "whiteAlpha" : "blackAlpha"}
+          colorScheme={item.id === param.id ? "whiteAlpha" : "blackAlpha"}
           _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
           fontWeight="bold"
           borderWidth="2px"
