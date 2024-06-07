@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
 
-interface ThreeItemPath {
-  boxArgs: number[];
-  position: number[];
+interface JpgItemPath {
+  x: number;
+  y: number;
   childValue: string;
   motherValue: string;
 }
@@ -11,24 +11,23 @@ interface ThreeItemPath {
 interface ItemType {
   value: string;
   kr: string;
-  update_time: string;
   en: string;
-  sub: SubItemType[];
+  update_time: string;
+  sub: SubMap[];
 }
 
-interface SubItemType {
-  parent_value: string;
-  value: string;
+type SubMap = {
   kr: string;
-  en: string;
+  value: string;
   update_time: string;
-  sub: SubItemType[];
-}
+  parent_value: string;
+  en: string;
+};
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
  */
-export const useItemFilter = (mapItem: ThreeItemPath[]) => {
+export const useItemFilter = (mapItem: JpgItemPath[]) => {
   const { itemFilter } = useAppStore((state) => state);
   const [viewItemList, setViewItemList] = useState<string[]>(
     extractValues(itemFilter)
@@ -83,7 +82,7 @@ export const useItemFilter = (mapItem: ThreeItemPath[]) => {
   const handleRootItemClick = (clickValue: string) => {
     const rootList: ItemType = itemFilter.find(
       (item) => item.value === clickValue
-    );
+    )!;
     const childList = rootList.sub.map((childItem) => childItem.value);
 
     const shouldRemoveAllChild = checkAllChild(viewItemList, childList);
@@ -109,7 +108,7 @@ export const useItemFilter = (mapItem: ThreeItemPath[]) => {
   const handleChildItemClick = (clickValue: string) => {
     const rootList: ItemType = itemFilter.find((item) =>
       findObjectWithValue(item, clickValue)
-    );
+    )!;
 
     const childList = rootList.sub.map((childItem) => childItem.value);
 
@@ -141,19 +140,26 @@ export const useItemFilter = (mapItem: ThreeItemPath[]) => {
 };
 
 /**
+ * child 있는지 확인
+ */
+const isItemType = (obj: ItemType | SubMap): obj is ItemType => {
+  return (obj as ItemType).sub !== undefined;
+};
+
+/**
  * child의 value로 root 찾기
  */
 const findObjectWithValue = (
-  obj: ItemType,
+  obj: ItemType | SubMap,
   value: string
-): ItemType | undefined => {
+): ItemType | SubMap | undefined => {
   // 현재 객체의 value가 주어진 값과 일치하면 현재 객체를 반환
   if (obj.value === value) {
     return obj;
   }
 
   // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색
-  if (obj.sub) {
+  if (isItemType(obj) && obj.sub) {
     for (const childObj of obj.sub) {
       const result = findObjectWithValue(childObj, value);
       // 만약 하위 객체에서 값을 찾았다면 해당 객체 반환

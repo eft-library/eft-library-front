@@ -7,7 +7,23 @@ export type AppStateType = {
   // allColumn: Record<string, any>;
   weaponCategory: string;
   npcId: string;
-  itemFilter: any[];
+  itemFilter: ItemFilterType[];
+};
+
+type SubMap = {
+  kr: string;
+  value: string;
+  update_time: string;
+  parent_value: string;
+  en: string;
+};
+
+type ItemFilterType = {
+  value: string;
+  kr: string;
+  en: string;
+  update_time: string;
+  sub: SubMap[];
 };
 
 export type AppActionsType = {

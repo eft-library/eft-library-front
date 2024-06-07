@@ -47,8 +47,9 @@ export const useLoadMap = (map_three_path: string, isMap: boolean) => {
       }
     };
 
-    loadMapData();
+    if (map_three_path !== null) {
+      loadMapData();
+    }
   }, [map_three_path]);
-
   return map;
 };

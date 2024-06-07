@@ -5,7 +5,7 @@ import type { AllColorKeys } from "@/util/consts/colorConsts";
 interface DynamicJPGType {
   x: number;
   y: number;
-  svgValue: AllColorKeys;
+  svgValue: AllColorKeys | string;
 }
 
 export default function DynamicJPG({ x, y, svgValue }: DynamicJPGType) {
