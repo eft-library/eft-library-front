@@ -2,16 +2,13 @@
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { HStack, Text } from "@chakra-ui/react";
-import { Vector3 } from "three";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
+import type { SubMap, SubMapSelector } from "@/types/types";
 
-export default function SubMapSelector({
-  onClickMap,
-  mapId,
-}: SubMapSelectorType) {
+export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
   const param = useParams<{ id: string }>();
   const [subMap, setSubMap] = useState<SubMap[]>();
 
@@ -38,46 +35,4 @@ export default function SubMapSelector({
       ))}
     </HStack>
   );
-}
-interface SubMapSelectorType {
-  onClickMap: Function;
-  mapId: string;
-}
-
-type Vector3Like = [
-  width?: number,
-  height?: number,
-  depth?: number,
-  widthSegments?: number,
-  heightSegments?: number,
-  depthSegments?: number
-];
-
-interface ThreeItemPath {
-  boxArgs: Vector3Like;
-  position: Vector3;
-  childValue: string;
-}
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
-
-interface SubMap {
-  name_en: string;
-  three_image: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  parent_value: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  main_image: string;
 }

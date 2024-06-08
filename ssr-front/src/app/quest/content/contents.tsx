@@ -17,20 +17,11 @@ import { useAppStore } from "@/store/provider";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface QuestType {
-  id: string;
-  npc_value: string;
-  name_kr: string;
-  name_en: string;
-  required_kappa: boolean;
-  objectives_kr: string[];
-  rewards_kr: string[];
-}
+import type { Quest } from "@/types/types";
 
 export default function Contents() {
   const { npcId } = useAppStore((state) => state);
-  const [quest, setQuest] = useState<QuestType[]>([]);
+  const [quest, setQuest] = useState<Quest[]>([]);
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);

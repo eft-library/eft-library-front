@@ -1,28 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
-
-interface ItemType {
-  value: string;
-  kr: string;
-  en: string;
-  update_time: string;
-  sub: SubMap[];
-}
-
-type SubMap = {
-  kr: string;
-  value: string;
-  update_time: string;
-  parent_value: string;
-  en: string;
-};
+import type { JpgItemPath, Item, SubMap } from "@/types/types";
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
@@ -80,7 +58,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
    */
   const handleRootItemClick = (clickValue: string) => {
-    const rootList: ItemType = itemFilter.find(
+    const rootList: Item = itemFilter.find(
       (item) => item.value === clickValue
     )!;
     const childList = rootList.sub.map((childItem) => childItem.value);
@@ -106,7 +84,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * root의 모든 아이템 제거 시 root 제거, 모두 추가될 경우 root 추가
    */
   const handleChildItemClick = (clickValue: string) => {
-    const rootList: ItemType = itemFilter.find((item) =>
+    const rootList: Item = itemFilter.find((item) =>
       findObjectWithValue(item, clickValue)
     )!;
 
@@ -142,24 +120,24 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
 /**
  * child 있는지 확인
  */
-const isItemType = (obj: ItemType | SubMap): obj is ItemType => {
-  return (obj as ItemType).sub !== undefined;
+const isItem = (obj: Item | SubMap): obj is Item => {
+  return (obj as Item).sub !== undefined;
 };
 
 /**
  * child의 value로 root 찾기
  */
 const findObjectWithValue = (
-  obj: ItemType | SubMap,
+  obj: Item | SubMap,
   value: string
-): ItemType | SubMap | undefined => {
+): Item | SubMap | undefined => {
   // 현재 객체의 value가 주어진 값과 일치하면 현재 객체를 반환
   if (obj.value === value) {
     return obj;
   }
 
   // 현재 객체에 child 속성이 있다면 해당 배열을 순회하면서 탐색
-  if (isItemType(obj) && obj.sub) {
+  if (isItem(obj) && obj.sub) {
     for (const childObj of obj.sub) {
       const result = findObjectWithValue(childObj, value);
       // 만약 하위 객체에서 값을 찾았다면 해당 객체 반환
@@ -193,7 +171,7 @@ const checkSomeChild = (itemList: string[], childList: string[]) => {
 /**
  * valueList 추출
  */
-const extractValues = (data: ItemType[]) => {
+const extractValues = (data: Item[]) => {
   let values: string[] = [];
 
   data.forEach((item) => {

@@ -1,13 +1,5 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-
-interface ExtractionSVGType {
-  x: number;
-  y: number;
-  height: number;
-  opacity: string;
-  color: string;
-  width: number;
-}
+import type { ExtractionSVG } from "@/types/types";
 
 export default function ExtractionSVG({
   color,
@@ -16,7 +8,7 @@ export default function ExtractionSVG({
   opacity,
   x,
   y,
-}: ExtractionSVGType) {
+}: ExtractionSVG) {
   return (
     <svg
       version="1.1"

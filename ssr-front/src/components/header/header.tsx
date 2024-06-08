@@ -7,28 +7,7 @@ import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { fetchDataWithNone } from "@/lib/api";
 import TopNaviLogi from "@/assets/topNaviLogo";
-
-interface SubMenu {
-  parent_value: string;
-  en_name: string;
-  order: number;
-  update_time: string;
-  kr_name: string;
-  value: string;
-  link: string;
-  image: string;
-}
-
-interface Menu {
-  en_name: string;
-  link: string | null;
-  order: number;
-  update_time: string;
-  value: string;
-  kr_name: string;
-  image: string | null;
-  sub_menus: SubMenu[];
-}
+import type { Menu } from "@/types/types";
 
 export default function Header() {
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);

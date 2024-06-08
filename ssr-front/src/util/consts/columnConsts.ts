@@ -16,5 +16,3 @@ export const COLUMN_KEY = {
   armorVest: "ARMOR_VEST_COLUMN",
   rig: "RIG_COLUMN",
 } as const;
-
-export type AllColumnKeys = keyof typeof COLUMN_KEY;

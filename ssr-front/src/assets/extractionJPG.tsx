@@ -1,12 +1,7 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { ExtractionJPG } from "@/types/types";
 
-interface ExtractionJPGType {
-  x: number;
-  y: number;
-  color: string;
-}
-
-export default function ExtractionJPG({ x, y, color }: ExtractionJPGType) {
+export default function ExtractionJPG({ x, y, color }: ExtractionJPG) {
   return (
     <>
       <g transform={`translate(${x}, ${y})`}>

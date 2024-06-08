@@ -1,11 +1,8 @@
 import { GridItem, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { RenderArrayText } from "@/types/types";
 
-interface RenderArrayTextType {
-  arrayText: string[];
-}
-
-export default function RenderArrayText({ arrayText }: RenderArrayTextType) {
+export default function RenderArrayText({ arrayText }: RenderArrayText) {
   return (
     <GridItem
       display="flex"

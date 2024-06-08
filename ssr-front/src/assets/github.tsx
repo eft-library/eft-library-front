@@ -1,9 +1,6 @@
-interface GithubType {
-  width: number;
-  height: number;
-}
+import type { Size } from "@/types/types";
 
-export default function Github({ width, height }: GithubType) {
+export default function Github({ width, height }: Size) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

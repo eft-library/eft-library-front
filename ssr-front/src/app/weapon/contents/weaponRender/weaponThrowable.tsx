@@ -9,36 +9,10 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import type { WeaponThrowable, Column } from "@/types/types";
 
-interface ThrowableListType {
-  [key: string]: any;
-}
-
-interface WeaponThrowableType {
-  throwableList: ThrowableListType[];
-}
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-export default function WeaponThrowable({
-  throwableList,
-}: WeaponThrowableType) {
-  const [column, setColumn] = useState<ColumnType>();
+export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(

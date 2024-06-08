@@ -1,20 +1,9 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
+import type { BossContents, BossInfo } from "@/types/types";
 
-interface BossContentsType {
-  bossList: BossInfoType[];
-  bossId: string;
-}
-
-interface BossInfoType {
-  id: string;
-  loot: string[];
-  health_image: string[];
-  location_guide: string;
-}
-
-export default function BossContents({ bossList, bossId }: BossContentsType) {
-  let bossInfo: BossInfoType = bossList.find((boss) => boss.id == bossId) || {
+export default function BossContents({ bossList, bossId }: BossContents) {
+  let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId) || {
     location_guide: "",
     health_image: [""],
     loot: [""],

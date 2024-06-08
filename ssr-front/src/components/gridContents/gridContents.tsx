@@ -1,16 +1,9 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { type ReactNode } from "react";
+import type { GridContents } from "@/types/types";
 
-interface GridContentsType {
-  children: ReactNode;
-  columnDesign: Array<number | null>;
-}
-
-export default function GridContents({
-  children,
-  columnDesign,
-}: GridContentsType) {
+export default function GridContents({ children, columnDesign }: GridContents) {
   return (
     <SimpleGrid
       columns={columnDesign}

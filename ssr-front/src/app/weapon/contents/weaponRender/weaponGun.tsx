@@ -8,46 +8,10 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import type { WeaponGun, Column } from "@/types/types";
 
-interface GunListType {
-  name: string;
-  short_name: string;
-  image: string;
-  category: string;
-  caliber: string;
-  modes_kr: string[];
-  fire_rate: number;
-  carliber: string;
-  default_ammo: string;
-  ergonomics: number;
-  recoil_horizontal: number;
-  recoil_vertical: number;
-}
-
-interface WeaponGunType {
-  gunList: GunListType[];
-  category: string;
-}
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-export default function WeaponGun({ gunList, category }: WeaponGunType) {
-  const [column, setColumn] = useState<ColumnType>();
+export default function WeaponGun({ gunList, category }: WeaponGun) {
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -92,7 +56,7 @@ export default function WeaponGun({ gunList, category }: WeaponGunType) {
         outline={"2px solid"}
         outlineColor={ALL_COLOR.WHITE}
         borderRadius={"lg"}
-        boxShadow="0 0 14px rgb(202, 238, 18, 0.7)"
+        boxShadow={ALL_COLOR.BOX_SHADOW}
         p={2}
         mb={6}
       >

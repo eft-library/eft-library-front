@@ -7,33 +7,10 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-
-// IconType 인터페이스 정의
-interface IconType {
-  link: string;
-  name: string;
-}
-
-// TextType 인터페이스 정의
-interface TextType {
-  value: string;
-}
-
-// FooterJsonValue 인터페이스 정의
-interface FooterJsonValue {
-  icon: IconType[];
-  text: TextType[];
-}
-
-// FooterColumn 인터페이스 정의
-interface FooterColumnType {
-  id: string;
-  json_value: FooterJsonValue;
-  type: string;
-}
+import type { FooterColumn } from "@/types/types";
 
 export default function Footer() {
-  const [column, setColumn] = useState<FooterColumnType>();
+  const [column, setColumn] = useState<FooterColumn>();
 
   useEffect(() => {
     fetchDataWithNone(

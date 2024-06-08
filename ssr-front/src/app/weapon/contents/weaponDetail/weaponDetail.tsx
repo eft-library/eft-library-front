@@ -10,31 +10,11 @@ import WeaponThrowable from "../weaponRender/weaponThrowable";
 import WeaponStationary from "../weaponRender/weaponStationary";
 import WeaponSpecial from "../weaponRender/weaponSpecial";
 import WeaponGun from "../weaponRender/weaponGun";
+import type { WeaponDetail, Column } from "@/types/types";
 
-interface WeaponDetailType {
-  category: string;
-}
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-export default function WeaponDetail({ category }: WeaponDetailType) {
+export default function WeaponDetail({ category }: WeaponDetail) {
   const [weapon, setWeapon] = useState({ knife: [], throwable: [], gun: [] });
-  const [column, setColumn] = useState<ColumnType>();
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -47,7 +27,7 @@ export default function WeaponDetail({ category }: WeaponDetailType) {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_WEAPON, setWeapon);
   }, []);
 
-  const checkGunInclude = (columnList: ColumnType) => {
+  const checkGunInclude = (columnList: Column) => {
     return columnList.value_kr.includes(category);
   };
 

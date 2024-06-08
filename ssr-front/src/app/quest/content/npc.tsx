@@ -7,16 +7,11 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
-
-interface NPCType {
-  id: string;
-  image: string;
-  name_kr: string;
-}
+import type { NPC } from "@/types/types";
 
 export default function NPC() {
   const { npcId, setNpcId } = useAppStore((state) => state);
-  const [npc, setNpc] = useState<NPCType[]>([]);
+  const [npc, setNpc] = useState<NPC[]>([]);
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_NPC, setNpc);

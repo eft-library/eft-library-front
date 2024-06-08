@@ -10,33 +10,10 @@ import { Box } from "@chakra-ui/react";
 import BossContents from "./contents/bossContents";
 import BossDetail from "./contents/bossDetail";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface SpawnChance {
-  order: number;
-  chance: number;
-  location: string;
-}
-
-interface BossType {
-  id: string;
-  name_kr: string;
-  name_en: string;
-  image: string;
-  health_total: number;
-  loot: string[];
-  spawn: string[];
-  faction: string;
-  location_spawn_chance_en: SpawnChance[];
-  location_spawn_chance_kr: SpawnChance[];
-  followers_en: string[];
-  followers_kr: string[];
-  health_image: string[];
-  location_guide: string;
-  update_time: string;
-}
+import type { Boss } from "@/types/types";
 
 export default function Boss() {
-  const [boss, setBoss] = useState<BossType[]>([]);
+  const [boss, setBoss] = useState<Boss[]>([]);
   const { bossId, setBossId } = useAppStore((state) => state);
 
   useEffect(() => {

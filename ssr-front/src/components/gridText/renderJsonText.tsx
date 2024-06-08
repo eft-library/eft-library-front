@@ -1,22 +1,13 @@
 import React from "react";
 import { GridItem, Divider, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-
-interface JsonArrayTextType {
-  [key: string]: any;
-}
-
-interface RenderJsonTextType {
-  jsonArrayText: JsonArrayTextType[];
-  jatType: string;
-  isDivider: boolean;
-}
+import type { RenderJsonText } from "@/types/types";
 
 export default function RenderJsonText({
   jsonArrayText,
   jatType,
   isDivider,
-}: RenderJsonTextType) {
+}: RenderJsonText) {
   return (
     <GridItem
       display="flex"

@@ -1,9 +1,6 @@
-interface LogoType {
-  width: number;
-  height: number;
-}
+import type { Size } from "@/types/types";
 
-export default function Logo({ width, height }: LogoType) {
+export default function Logo({ width, height }: Size) {
   return (
     <svg
       id="Layer_1"

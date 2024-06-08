@@ -14,10 +14,10 @@ import JPGView from "./contents/jpgView";
 import ThreeView from "./contents/threeView";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import { Vector3 } from "three";
+import type { Column, Map } from "@/types/types";
 
 export default function Map() {
-  const [mapData, setMapData] = useState<MapInfo>({
+  const [mapData, setMapData] = useState<Map>({
     name_en: "Sample Name EN",
     three_image: null,
     jpg_image: "path/to/jpg_image",
@@ -36,7 +36,7 @@ export default function Map() {
     mapData.jpg_item_path
   );
   const param = useParams();
-  const [column, setColumn] = useState<ColumnType>();
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -49,11 +49,11 @@ export default function Map() {
     fetchDataWithNone(`${API_ENDPOINTS.GET_MAP}/${param.id}`, setMapData);
   }, [param.id]);
 
-  const onClickMap = (value: MapInfo) => {
+  const onClickMap = (value: Map) => {
     setMapData(value);
   };
 
-  const sortList = (columnList: ColumnType) => {
+  const sortList = (columnList: Column) => {
     const result = columnList.json_value.sort((a, b) => {
       return a.order - b.order;
     });
@@ -106,74 +106,3 @@ export default function Map() {
     </PageParent>
   );
 }
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-interface MapInfo {
-  name_en: string;
-  three_image: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  main_image: string;
-  sub: SubMap[];
-}
-
-interface ThreeItemPath {
-  boxArgs: Vector3Like;
-  position: Vector3;
-  childValue: string;
-}
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
-
-interface SubMap {
-  name_en: string;
-  three_image: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  parent_value: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  main_image: string;
-}
-
-type Vector3Like = [
-  width?: number,
-  height?: number,
-  depth?: number,
-  widthSegments?: number,
-  heightSegments?: number,
-  depthSegments?: number
-];

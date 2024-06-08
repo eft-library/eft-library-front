@@ -7,24 +7,14 @@ import "slick-carousel/slick/slick-theme.css";
 import "photoswipe/dist/photoswipe.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import { formatImage } from "@/lib/formatImage";
-
-interface SliderOption {
-  [key: string]: any;
-}
-
-interface ImageSliderProps {
-  mapList: any[];
-  imagePath: string;
-  sliderOption: SliderOption;
-  useZoom: boolean;
-}
+import type { ImageSlider } from "@/types/types";
 
 export default function ImageSlider({
   mapList,
   imagePath,
   sliderOption,
   useZoom,
-}: ImageSliderProps) {
+}: ImageSlider) {
   return (
     <div
       style={{

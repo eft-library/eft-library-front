@@ -1,19 +1,13 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-
-interface GridTitleType {
-  columnDesign: Array<number | null>;
-  column: string[];
-  isShadow: boolean;
-  shadowColor: string;
-}
+import type { GridTitle } from "@/types/types";
 
 export default function GridTitle({
   columnDesign,
   column,
   isShadow,
   shadowColor,
-}: GridTitleType) {
+}: GridTitle) {
   return (
     <SimpleGrid
       columns={columnDesign}

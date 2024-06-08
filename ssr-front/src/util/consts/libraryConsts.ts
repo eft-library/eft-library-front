@@ -6,8 +6,6 @@ export const YOUTUBE_OPTION = {
   },
 } as const;
 
-export type YoutubeOptionKeys = keyof typeof YOUTUBE_OPTION;
-
 export const MOT_IMAGE_SLIDER_OPTION = {
   dots: true,
   infinite: true,
@@ -19,8 +17,6 @@ export const MOT_IMAGE_SLIDER_OPTION = {
   draggable: false,
 } as const;
 
-export type MotImageSliderOptionKeys = keyof typeof MOT_IMAGE_SLIDER_OPTION;
-
 export const MAIN_IMAGE_SLIDER_OPTION = {
   dots: true,
   infinite: true,
@@ -31,5 +27,3 @@ export const MAIN_IMAGE_SLIDER_OPTION = {
   autoplaySpeed: 3000,
   draggable: false,
 } as const;
-
-export type MainImageSliderOptionKeys = keyof typeof MAIN_IMAGE_SLIDER_OPTION;

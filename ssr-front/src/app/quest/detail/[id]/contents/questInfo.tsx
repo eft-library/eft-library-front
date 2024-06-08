@@ -1,16 +1,9 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
+import type { QuestInfo } from "@/types/types";
 
-interface QuestType {
-  [key: string]: any;
-}
-
-interface QuestInfoType {
-  quest: QuestType;
-}
-
-export default function QuestInfo({ quest }: QuestInfoType) {
+export default function QuestInfo({ quest }: QuestInfo) {
   return (
     <Box justifyContent="center" alignItems={"center"}>
       <Box

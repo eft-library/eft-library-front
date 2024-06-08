@@ -1,9 +1,6 @@
-interface YoutubeType {
-  width: number;
-  height: number;
-}
+import type { Size } from "@/types/types";
 
-export default function Youtube({ width, height }: YoutubeType) {
+export default function Youtube({ width, height }: Size) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

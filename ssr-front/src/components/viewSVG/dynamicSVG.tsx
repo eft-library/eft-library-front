@@ -3,20 +3,9 @@ import Chzzk from "@/assets/chzzk";
 import Github from "@/assets/github";
 import Youtube from "@/assets/youtube";
 import ExtractionSVG from "@/assets/extractionSVG";
+import { type DynamicSVG } from "@/types/types";
 
-interface DynamicSVGType {
-  x: number;
-  y: number;
-  svgValue: string;
-  isEnable: boolean;
-}
-
-export default function DynamicSVG({
-  x,
-  y,
-  svgValue,
-  isEnable,
-}: DynamicSVGType) {
+export default function DynamicSVG({ x, y, svgValue, isEnable }: DynamicSVG) {
   const itemHeight = 25;
   const itemWidth = 25;
   const footerHeigth = 40;

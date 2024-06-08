@@ -1,18 +1,9 @@
 import { Box, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { QuestContents } from "@/types/types";
 
-interface QuestType {
-  objectives_kr: string[];
-  rewards_kr: string[];
-  guide: string;
-}
-
-interface QuestContentsType {
-  quest: QuestType;
-}
-
-export default function QuestContents({ quest }: QuestContentsType) {
+export default function QuestContents({ quest }: QuestContents) {
   return (
     <Box w={"95%"}>
       <DividerContents headText="목표">

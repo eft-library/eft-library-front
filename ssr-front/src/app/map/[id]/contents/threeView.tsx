@@ -6,8 +6,9 @@ import { Canvas } from "@react-three/fiber";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useLoadMap } from "@/hooks/useMap";
 import { Vector3 } from "three";
+import type { ThreeView } from "@/types/types";
 
-export default function ThreeView({ map, viewItemList }: ThreeViewType) {
+export default function ThreeView({ map, viewItemList }: ThreeView) {
   const collada = useLoadMap(map.three_image, true);
 
   if (!collada) {
@@ -47,62 +48,3 @@ export default function ThreeView({ map, viewItemList }: ThreeViewType) {
     </Canvas>
   );
 }
-
-interface ThreeViewType {
-  map: MapInfo;
-  viewItemList: string[];
-}
-
-interface MapInfo {
-  name_en: string;
-  three_image: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  main_image: string;
-  sub: SubMap[];
-}
-
-interface ThreeItemPath {
-  boxArgs: Vector3Like;
-  position: Vector3;
-  childValue: string;
-}
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
-
-interface SubMap {
-  name_en: string;
-  three_image: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  parent_value: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  main_image: string;
-}
-
-type Vector3Like = [
-  width?: number,
-  height?: number,
-  depth?: number,
-  widthSegments?: number,
-  heightSegments?: number,
-  depthSegments?: number
-];

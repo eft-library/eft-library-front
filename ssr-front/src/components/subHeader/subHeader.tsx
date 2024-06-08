@@ -1,9 +1,6 @@
 import { Heading } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-
-interface SubHeader {
-  title: string;
-}
+import type { SubHeader } from "@/types/types";
 
 export default function SubHeader({ title }: SubHeader) {
   return (

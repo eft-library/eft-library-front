@@ -10,11 +10,12 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import type { MapOfTarkovExtraction, Column } from "@/types/types";
 
 export default function MapOfTarkovExtraction({
   extractionList,
-}: MapOfTarkovExtractionType) {
-  const [column, setColumn] = useState<ColumnType>();
+}: MapOfTarkovExtraction) {
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -99,43 +100,4 @@ export default function MapOfTarkovExtraction({
       </Box>
     </DividerContents>
   );
-}
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-interface MapOfTarkovExtractionType {
-  extractionList: ExtractionInfoType[];
-}
-
-interface Requirement {
-  desc: string;
-  image: string;
-}
-
-interface ExtractionInfoType {
-  name: string;
-  faction: string;
-  single_use: boolean;
-  tip: string[];
-  update_time: string;
-  image: string;
-  id: string;
-  always_available: boolean;
-  requirements: Requirement[];
-  map: string;
 }

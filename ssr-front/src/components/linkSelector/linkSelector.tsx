@@ -4,24 +4,14 @@ import { Flex, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useParams } from "next/navigation";
-
-interface ItemListType {
-  [key: string]: any;
-}
-
-interface LinkSelectorType {
-  itemList: ItemListType[];
-  itemDesc: string;
-  itemLink: string;
-  mt: number;
-}
+import type { LinkSelector } from "@/types/types";
 
 export default function LinkSelector({
   itemList,
   itemDesc,
   itemLink,
   mt,
-}: LinkSelectorType) {
+}: LinkSelector) {
   const param = useParams<{ id: string }>();
 
   return (

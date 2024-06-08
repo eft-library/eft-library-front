@@ -1,12 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { type ReactNode } from "react";
+import type { PageParent } from "@/types/types";
 
-interface PageParentType {
-  children: ReactNode;
-}
-
-export default function PageParent({ children }: PageParentType) {
+export default function PageParent({ children }: PageParent) {
   return (
     <Box
       className="Main"

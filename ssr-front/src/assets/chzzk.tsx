@@ -1,9 +1,6 @@
-interface ChzzkType {
-  width: number;
-  height: number;
-}
+import type { Size } from "@/types/types";
 
-export default function Chzzk({ width, height }: ChzzkType) {
+export default function Chzzk({ width, height }: Size) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

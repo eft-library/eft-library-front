@@ -7,16 +7,15 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { Youtube } from "@/types/types";
 
 const YoutubeNews = () => {
-  interface YoutubeType {
-    id: string;
-  }
-
-  const [youtube, setYoutube] = useState<YoutubeType>({ id: "" });
+  const [youtube, setYoutube] = useState<Youtube>();
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_YOUTUBE, setYoutube);
   }, []);
+
+  if (!youtube) return null;
 
   return (
     <YouTube

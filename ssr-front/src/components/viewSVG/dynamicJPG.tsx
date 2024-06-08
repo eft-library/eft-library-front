@@ -1,13 +1,7 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ExtractionJPG from "@/assets/extractionJPG";
-import type { AllColorKeys } from "@/util/consts/colorConsts";
+import type { DynamicJPG } from "@/types/types";
 
-interface DynamicJPGType {
-  x: number;
-  y: number;
-  svgValue: AllColorKeys | string;
-}
-
-export default function DynamicJPG({ x, y, svgValue }: DynamicJPGType) {
+export default function DynamicJPG({ x, y, svgValue }: DynamicJPG) {
   return <ExtractionJPG x={x} y={y} color={ALL_COLOR[svgValue]} />;
 }

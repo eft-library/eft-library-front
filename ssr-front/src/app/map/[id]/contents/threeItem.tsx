@@ -1,27 +1,13 @@
 import { useTexture } from "@react-three/drei";
 import { formatImage } from "@/lib/formatImage";
 import { Vector3 } from "three";
-
-type Vector3Like = [
-  width?: number,
-  height?: number,
-  depth?: number,
-  widthSegments?: number,
-  heightSegments?: number,
-  depthSegments?: number
-];
-
-interface ItemBoxType {
-  position: Vector3;
-  boxArgs: Vector3Like;
-  childValue: string;
-}
+import type { ThreeItemPath } from "@/types/types";
 
 export default function ItemBox({
   position,
   boxArgs,
   childValue,
-}: ItemBoxType) {
+}: ThreeItemPath) {
   // 아이콘 완성되면 개발
   const checkItem = (value: string) => {
     return "/tkw_item/boss_spawn.png";

@@ -6,24 +6,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import { ARMOR_VEST_COLUMN } from "@/util/consts/columnConsts";
-
-interface ArmorVestListType {
-  name: string;
-  image: string;
-  durability: number;
-  capacity: number;
-  class_value: number;
-  areas_kr: string[];
-  weight: number;
-}
+import type { ArmorVest } from "@/types/types";
 
 export default async function ArmorVestDetail() {
   const response = await fetch(API_ENDPOINTS.GET_ALL_ARMOR_VEST, {
     next: { revalidate: 60000 },
   });
   const data = await response.json();
-  const armorVestList: ArmorVestListType[] = data.data;
+  const armorVestList: ArmorVest[] = data.data;
 
   const columnResponse = await fetch(
     `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.armorVest}`,

@@ -6,17 +6,14 @@ import Info from "@/app/contents/info";
 import News from "@/app/contents/news";
 import Search from "@/app/contents/search";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface MainInfoType {
-  [key: string]: any;
-}
+import type { SubMenu } from "@/types/types";
 
 export default async function Main() {
   const response = await fetch(API_ENDPOINTS.GET_ALL_MAP, {
     next: { revalidate: 60000 },
   });
   const data = await response.json();
-  const mainInfo: MainInfoType[] = data.data;
+  const mainInfo: SubMenu[] = data.data;
 
   return (
     <Box

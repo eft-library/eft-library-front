@@ -5,18 +5,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface HeadsetListType {
-  name: string;
-  image: string;
-}
+import type { HeadsetList } from "@/types/types";
 
 export default async function HeadsetDetail() {
   const resp = await fetch(API_ENDPOINTS.GET_ALL_HEADSET, {
     next: { revalidate: 60000 },
   });
   const data = await resp.json();
-  const headsetList: HeadsetListType[] = data.data;
+  const headsetList: HeadsetList[] = data.data;
 
   const columnResponse = await fetch(
     `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headset}`,

@@ -18,27 +18,14 @@ import DynamicSVG from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface ItemSelectorType {
-  viewItemList: string[];
-  onClickItem: Function;
-  onClickAllItem: Function;
-  originItemList: JpgItemPath[];
-}
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
+import type { ItemSelector } from "@/types/types";
 
 export default function ItemSelector({
   viewItemList,
   onClickItem,
   onClickAllItem,
   originItemList,
-}: ItemSelectorType) {
+}: ItemSelector) {
   const { itemFilter, setItemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>([]);

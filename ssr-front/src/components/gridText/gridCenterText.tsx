@@ -1,11 +1,8 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { GridCenterText } from "@/types/types";
 
-interface GridCenterTextProps {
-  value: string | number;
-}
-
-export default function GridCenterText({ value }: GridCenterTextProps) {
+export default function GridCenterText({ value }: GridCenterText) {
   return (
     <Box
       w={"100%"}

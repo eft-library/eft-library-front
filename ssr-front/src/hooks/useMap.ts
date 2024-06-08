@@ -7,10 +7,7 @@ import {
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
 import * as THREE from "three";
-
-interface ColladaData {
-  colladaData: Collada;
-}
+import type { ColladaData } from "@/types/types";
 
 export const useLoadMap = (map_three_path: string, isMap: boolean) => {
   const [map, setMap] = useState<ColladaData | null>(null);

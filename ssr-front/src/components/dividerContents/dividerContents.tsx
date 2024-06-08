@@ -1,16 +1,11 @@
 import { Heading, Divider } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { type ReactNode } from "react";
-
-interface DividerContentsType {
-  children: ReactNode;
-  headText: string;
-}
+import type { DividerContents } from "@/types/types";
 
 export default function DividerContents({
   children,
   headText,
-}: DividerContentsType) {
+}: DividerContents) {
   return (
     <>
       <Heading as={"h3"} size={"lg"} color={ALL_COLOR.WHITE} mb={3} mt={6}>

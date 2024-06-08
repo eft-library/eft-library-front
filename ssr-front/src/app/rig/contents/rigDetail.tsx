@@ -6,28 +6,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-
-interface RigType {
-  name: string;
-  image: string;
-  durability: number;
-  capacity: number;
-  class_value: string;
-  areas_kr: string[];
-  weight: number;
-}
-
-interface RigListType {
-  class_rig: RigType[];
-  no_class_rig: RigType[];
-}
+import type { RigList } from "@/types/types";
 
 export default async function RigDetail() {
   const response = await fetch(API_ENDPOINTS.GET_ALL_RIG, {
     next: { revalidate: 60000 },
   });
   const data = await response.json();
-  const rigList: RigListType = data.data;
+  const rigList: RigList = data.data;
 
   const columnResponse = await fetch(
     `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.rig}`,

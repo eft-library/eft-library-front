@@ -6,29 +6,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-
-interface HeadwearType {
-  name: string;
-  image: string;
-  durability: number;
-  capacity: number;
-  class_value: string;
-  areas_kr: string[];
-  weight: number;
-  ricochet_str_kr: string;
-}
-
-interface HeadwearListType {
-  class_head_wear: HeadwearType[];
-  no_class_head_wear: HeadwearType[];
-}
+import type { HeadwearList } from "@/types/types";
 
 export default async function HeadWearDetail() {
   const resp = await fetch(API_ENDPOINTS.GET_ALL_HEAD_WEAR, {
     next: { revalidate: 60000 },
   });
   const data = await resp.json();
-  const headWearList: HeadwearListType = data.data;
+  const headWearList: HeadwearList = data.data;
 
   const columnResponse = await fetch(
     `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headwear}`,

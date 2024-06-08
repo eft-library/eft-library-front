@@ -9,27 +9,11 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import WeaponDetail from "./contents/weaponDetail/weaponDetail";
-
-interface ColumnType {
-  id: string;
-  type: string;
-  update_time: string;
-  value_kr: string[] | null;
-  value_en: string[] | null;
-  json_value: JsonValueType[] | null;
-}
-
-// JsonValueType 인터페이스 정의
-interface JsonValueType {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
+import type { Column } from "@/types/types";
 
 export default function Weapon() {
   const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);
-  const [column, setColumn] = useState<ColumnType>();
+  const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
