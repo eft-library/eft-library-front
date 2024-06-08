@@ -1,8 +1,12 @@
+"use client";
+
 import Logo from "@/assets/logo";
-import { Box, Flex, Text, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text, SimpleGrid, GridItem } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 export default function NotFound() {
+  const size = useWindowSize();
   return (
     <Box
       className="Main"
@@ -26,24 +30,74 @@ export default function NotFound() {
         justifyContent="center"
         paddingBottom={"20px"}
       >
-        <Box
+        <SimpleGrid columns={[2, null, 2]} spacing={2} width={"100%"}>
+          <GridItem
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Box display={"flex"} flexDirection={"column"}>
+              <Text
+                color={ALL_COLOR.WHITE}
+                mb={6}
+                style={{ fontSize: size.width ? size.width / 30 : "inherit" }}
+              >
+                404 ERROR
+              </Text>
+              <Text
+                style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
+                color={ALL_COLOR.WHITE}
+                mb={2}
+              >
+                Page Not Found
+              </Text>
+              <Text
+                size={"sm"}
+                color={ALL_COLOR.WHITE}
+                style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
+              >
+                죄송합니다. 페이지를 찾을 수 없습니다.
+              </Text>
+            </Box>
+          </GridItem>
+          <Logo
+            width={size.width ? size.width / 2.5 : 400}
+            height={size.height ? size.height / 2.5 : 300}
+          />
+        </SimpleGrid>
+        {/* <Box
           display={"flex"}
           alignItems={"center"}
           justifyContent={"space-evenly"}
         >
           <Box display={"flex"} flexDirection={"column"}>
-            <Heading color={ALL_COLOR.WHITE} mb={6}>
+            <Text
+              color={ALL_COLOR.WHITE}
+              mb={6}
+              style={{ fontSize: size.width ? size.width / 30 : "inherit" }}
+            >
               404 ERROR
-            </Heading>
-            <Heading size={"sm"} color={ALL_COLOR.WHITE} mb={2}>
+            </Text>
+            <Text
+              style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
+              color={ALL_COLOR.WHITE}
+              mb={2}
+            >
               Page Not Found
-            </Heading>
-            <Heading size={"sm"} color={ALL_COLOR.WHITE}>
+            </Text>
+            <Text
+              size={"sm"}
+              color={ALL_COLOR.WHITE}
+              style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
+            >
               죄송합니다. 페이지를 찾을 수 없습니다.
-            </Heading>
+            </Text>
           </Box>
-          <Logo width={400} height={300} />
-        </Box>
+          <Logo
+            width={size.width ? size.width / 2 : 400}
+            height={size.height ? size.height / 2 : 300}
+          />
+        </Box> */}
       </Flex>
     </Box>
   );
