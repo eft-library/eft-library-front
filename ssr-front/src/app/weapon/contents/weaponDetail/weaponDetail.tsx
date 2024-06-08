@@ -4,6 +4,7 @@ import { GUN_CATEGORY_INFO } from "@/util/consts/columnConsts";
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 import WeaponKnife from "../weaponRender/weaponKnife";
 import WeaponThrowable from "../weaponRender/weaponThrowable";
 import WeaponStationary from "../weaponRender/weaponStationary";
@@ -18,7 +19,7 @@ export default function WeaponDetail({ category }: WeaponDetailType) {
   const [weapon, setWeapon] = useState({ knife: [], throwable: [], gun: [] });
 
   useEffect(() => {
-    fetchDataWithNone("/api/weapon/all", setWeapon);
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_WEAPON, setWeapon);
   }, []);
 
   const checkGunInclude = () => {

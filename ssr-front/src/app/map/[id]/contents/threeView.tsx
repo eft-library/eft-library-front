@@ -4,7 +4,7 @@ import ItemBox from "./threeItem";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { useLoadMap } from "../../../../../hooks/useMap";
+import { useLoadMap } from "@/hooks/useMap";
 import { Vector3 } from "three";
 
 export default function ThreeView({ map, viewItemList }: ThreeViewType) {

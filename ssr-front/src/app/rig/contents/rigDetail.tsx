@@ -5,6 +5,7 @@ import RenderArrayText from "@/components/gridText/renderArrayText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { RIG_COLUMN } from "@/util/consts/columnConsts";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface RigType {
   name: string;
@@ -22,8 +23,8 @@ interface RigListType {
 }
 
 export default async function RigDetail() {
-  const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/item/rig`, {
-    next: { revalidate: 600 },
+  const resp = await fetch(API_ENDPOINTS.GET_ALL_RIG, {
+    next: { revalidate: 60000 },
   });
   const data = await resp.json();
   const rigList: RigListType = data.data;

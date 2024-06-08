@@ -16,6 +16,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface QuestType {
   id: string;
@@ -32,7 +33,7 @@ export default function Contents() {
   const [quest, setQuest] = useState<QuestType[]>([]);
 
   useEffect(() => {
-    fetchDataWithNone("/api/quest/all", setQuest);
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);
   }, []);
 
   return (

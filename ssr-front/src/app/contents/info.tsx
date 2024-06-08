@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 
 export default function Info() {
   const [main, setMain] = useState([]);
@@ -20,7 +21,7 @@ export default function Info() {
   };
 
   useEffect(() => {
-    fetchDataWithNone("/api/menu/info", setMain);
+    fetchDataWithNone(API_ENDPOINTS.GET_MENU_INFO, setMain);
   }, []);
 
   return (

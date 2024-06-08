@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { MAIN_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";
@@ -7,20 +5,18 @@ import ImageSlider from "@/components/imageSlider/imageSlider";
 import Info from "@/app/contents/info";
 import News from "@/app/contents/news";
 import Search from "@/app/contents/search";
-import { useAppStore } from "@/store/provider";
-import { fetchDataWithNone } from "@/lib/api";
-import { useEffect, useState } from "react";
+import API_ENDPOINTS from "@/config/endPoints";
 
-export default function Main() {
-  interface MainInfoType {
-    [key: string]: any;
-  }
+interface MainInfoType {
+  [key: string]: any;
+}
 
-  const [mainInfo, setMainInfo] = useState<MainInfoType[]>([]);
-  useEffect(() => {
-    fetchDataWithNone("/api/map/all", setMainInfo);
-  }, []);
-  const { bossId } = useAppStore((state) => state);
+export default async function Main() {
+  const response = await fetch(API_ENDPOINTS.GET_ALL_MAP, {
+    next: { revalidate: 60000 },
+  });
+  const data = await response.json();
+  const mainInfo: MainInfoType[] = data.data;
 
   return (
     <Box

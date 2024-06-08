@@ -6,6 +6,7 @@ import LinkSelector from "@/components/linkSelector/linkSelector";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 import { MAP_OF_TARKOV_COLUMN } from "@/util/consts/columnConsts";
 import MapOfTarkovContents from "./contents/MapOfTarkovContents";
 
@@ -47,7 +48,10 @@ export default function MapOfTarkov() {
     extraction_info: [],
   });
   useEffect(() => {
-    fetchDataWithNone(`/api/map_of_tarkov/detail/${param.id}`, setMapOfTarkov);
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${param.id}`,
+      setMapOfTarkov
+    );
   }, [param.id]);
 
   const sortList = () => {

@@ -5,6 +5,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 import QuestInfo from "./contents/questInfo";
 import QuestContents from "./contents/questContents";
 import "@/assets/quest.css";
@@ -17,7 +18,7 @@ export default function QuestDetail() {
     guide: "",
   });
   useEffect(() => {
-    fetchDataWithNone(`/api/quest/detail/${param.id}`, setQuestDetail);
+    fetchDataWithNone(`${API_ENDPOINTS.GET_QUEST}/${param.id}`, setQuestDetail);
   }, [param]);
 
   return (

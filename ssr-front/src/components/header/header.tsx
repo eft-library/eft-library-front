@@ -4,6 +4,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { VStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import API_ENDPOINTS from "@/config/endPoints";
 import { fetchDataWithNone } from "@/lib/api";
 import TopNaviLogi from "@/assets/topNaviLogo";
 
@@ -38,7 +39,7 @@ export default function Header() {
   };
 
   useEffect(() => {
-    fetchDataWithNone("/api/menu/navi", setHeaderData);
+    fetchDataWithNone(API_ENDPOINTS.GET_NAVI_MENU, setHeaderData);
   }, []);
 
   return (

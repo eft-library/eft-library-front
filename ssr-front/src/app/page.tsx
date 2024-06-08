@@ -1,5 +1,5 @@
 import Main from "@/app/contents/main";
 
-export default async function App() {
+export default function App() {
   return <Main />;
 }

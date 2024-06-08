@@ -5,6 +5,7 @@ import RenderArrayText from "@/components/gridText/renderArrayText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { HEAD_WEAR_COLUMN } from "@/util/consts/columnConsts";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface HeadwearType {
   name: string;
@@ -23,12 +24,9 @@ interface HeadwearListType {
 }
 
 export default async function HeadWearDetail() {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/item/head_wear`,
-    {
-      next: { revalidate: 600 },
-    }
-  );
+  const resp = await fetch(API_ENDPOINTS.GET_ALL_HEAD_WEAR, {
+    next: { revalidate: 60000 },
+  });
   const data = await resp.json();
   const headWearList: HeadwearListType = data.data;
 

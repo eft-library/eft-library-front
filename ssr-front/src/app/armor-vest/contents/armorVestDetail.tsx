@@ -4,6 +4,7 @@ import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
+import API_ENDPOINTS from "@/config/endPoints";
 import { ARMOR_VEST_COLUMN } from "@/util/consts/columnConsts";
 
 interface ArmorVestListType {
@@ -17,13 +18,10 @@ interface ArmorVestListType {
 }
 
 export default async function ArmorVestDetail() {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/item/armor_vest`,
-    {
-      next: { revalidate: 600 },
-    }
-  );
-  const data = await resp.json();
+  const response = await fetch(API_ENDPOINTS.GET_ALL_ARMOR_VEST, {
+    next: { revalidate: 60000 },
+  });
+  const data = await response.json();
   const armorVestList: ArmorVestListType[] = data.data;
   return (
     <>

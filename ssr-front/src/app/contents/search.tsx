@@ -4,6 +4,7 @@ import Downshift from "downshift";
 import { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import API_ENDPOINTS from "@/config/endPoints";
 import { useRouter } from "next/navigation";
 
 export default function Search() {
@@ -11,7 +12,7 @@ export default function Search() {
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const [searchList, setSearchList] = useState([]);
   useEffect(() => {
-    fetchDataWithNone("/api/search/info", setSearchList);
+    fetchDataWithNone(API_ENDPOINTS.GET_SEARCH, setSearchList);
   }, []);
 
   return (

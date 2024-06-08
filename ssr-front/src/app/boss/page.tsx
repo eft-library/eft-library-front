@@ -9,6 +9,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import { Box } from "@chakra-ui/react";
 import BossContents from "./contents/bossContents";
 import BossDetail from "./contents/bossDetail";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface SpawnChance {
   order: number;
@@ -39,7 +40,7 @@ export default function Boss() {
   const { bossId, setBossId } = useAppStore((state) => state);
 
   useEffect(() => {
-    fetchDataWithNone(`/api/boss/all`, setBoss);
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_BOSS, setBoss);
   }, []);
 
   const onClickBoss = (bossValue: string) => {

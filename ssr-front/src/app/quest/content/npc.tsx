@@ -5,6 +5,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 
 interface NPCType {
@@ -18,7 +19,7 @@ export default function NPC() {
   const [npc, setNpc] = useState<NPCType[]>([]);
 
   useEffect(() => {
-    fetchDataWithNone("/api/quest/npc", setNpc);
+    fetchDataWithNone(API_ENDPOINTS.GET_NPC, setNpc);
   }, []);
 
   const handleHover = (e: any) => {

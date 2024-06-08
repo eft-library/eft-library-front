@@ -4,6 +4,7 @@ import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image } from "@chakra-ui/react";
 import { HEAD_PHONE_COLUMN } from "@/util/consts/columnConsts";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface HeadsetListType {
   name: string;
@@ -11,12 +12,9 @@ interface HeadsetListType {
 }
 
 export default async function HeadsetDetail() {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/item/headset`,
-    {
-      next: { revalidate: 600 },
-    }
-  );
+  const resp = await fetch(API_ENDPOINTS.GET_ALL_HEADSET, {
+    next: { revalidate: 60000 },
+  });
   const data = await resp.json();
   const headsetList: HeadsetListType[] = data.data;
 

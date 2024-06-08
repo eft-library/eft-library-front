@@ -1,7 +1,7 @@
 export const fetchDataWithNone = async (api: string, setData: Function) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${api}`, {
-      next: { revalidate: 6000 },
+    const response = await fetch(`${api}`, {
+      next: { revalidate: 60000 },
     });
 
     if (!response.ok) {

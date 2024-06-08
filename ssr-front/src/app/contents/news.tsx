@@ -3,6 +3,7 @@
 import { YOUTUBE_OPTION } from "@/util/consts/libraryConsts";
 import YouTube from "react-youtube";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
@@ -14,7 +15,7 @@ const YoutubeNews = () => {
 
   const [youtube, setYoutube] = useState<YoutubeType>({ id: "" });
   useEffect(() => {
-    fetchDataWithNone("/api/news/youtube", setYoutube);
+    fetchDataWithNone(API_ENDPOINTS.GET_YOUTUBE, setYoutube);
   }, []);
 
   return (

@@ -17,6 +17,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import DynamicSVG from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
 import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 
 interface ItemSelectorType {
   viewItemList: string[];
@@ -43,7 +44,7 @@ export default function ItemSelector({
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchDataWithNone(`/api/item_filter/all`, setItemFilter);
+    fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
   }, [setItemFilter]);
 
   useEffect(() => {

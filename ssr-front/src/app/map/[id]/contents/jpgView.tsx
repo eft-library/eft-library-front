@@ -6,7 +6,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import DynamicJPG from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
 import { Vector3 } from "three";
-import { useWindowSize } from "../../../../../hooks/useWindowSize";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 export default function JPGView({ map, viewItemList }: JPGViewType) {
   const size = useWindowSize();
