@@ -23,6 +23,7 @@ export default function Search() {
         width: "100%",
         position: "relative",
         marginBottom: "40px",
+        marginTop: "40px",
       }}
     >
       <Downshift
@@ -34,7 +35,6 @@ export default function Search() {
         {({
           getInputProps,
           getItemProps,
-          getLabelProps,
           getMenuProps,
           isOpen,
           inputValue,
@@ -43,7 +43,6 @@ export default function Search() {
           getRootProps,
         }) => (
           <div style={{ width: "40%" }}>
-            <label {...getLabelProps()}>Enter a fruit</label>
             <div
               style={{
                 position: "relative",
