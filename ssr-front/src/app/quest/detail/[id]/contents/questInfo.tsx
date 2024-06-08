@@ -5,7 +5,12 @@ import type { QuestInfo } from "@/types/types";
 
 export default function QuestInfo({ quest }: QuestInfo) {
   return (
-    <Box justifyContent="center" alignItems={"center"}>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent="center"
+      alignItems={"center"}
+    >
       <Box
         w="160px"
         h="160px"
@@ -25,7 +30,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
         fontWeight={"700"}
         fontSize="lg"
       >
-        {quest.name_kr}
+        {quest.title_kr}
       </Text>
       <Text
         color={ALL_COLOR.WHITE}
@@ -33,7 +38,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
         fontWeight={"700"}
         fontSize="lg"
       >
-        {quest.name_en}
+        {quest.title_en}
       </Text>
       <Text
         color={ALL_COLOR.WHITE}

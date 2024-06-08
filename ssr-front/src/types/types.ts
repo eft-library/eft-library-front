@@ -456,6 +456,8 @@ export interface Quest {
   npc_value: string;
   name_kr: string;
   name_en: string;
+  title_kr: string;
+  title_en: string;
   required_kappa: boolean;
   objectives_kr: string[];
   rewards_kr: string[];

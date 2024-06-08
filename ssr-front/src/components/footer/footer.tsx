@@ -1,6 +1,13 @@
 "use client";
 
-import { Text, Grid, GridItem, Box, Flex } from "@chakra-ui/react";
+import {
+  Text,
+  Grid,
+  GridItem,
+  Box,
+  Flex,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import DynamicSVG from "../viewSVG/dynamicSVG";
 import { useEffect, useState } from "react";
@@ -8,9 +15,12 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { FooterColumn } from "@/types/types";
+import { ColorMode } from "@/hooks/useColorTheme";
 
 export default function Footer() {
   const [column, setColumn] = useState<FooterColumn>();
+  const bgColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.BACKGROUND);
+  const textColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
 
   useEffect(() => {
     fetchDataWithNone(
@@ -25,7 +35,7 @@ export default function Footer() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={ALL_COLOR.BACKGROUND}
+      bg={bgColor}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -43,12 +53,7 @@ export default function Footer() {
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
             {column.json_value.text.map((item, index) => (
-              <Text
-                color={ALL_COLOR.WHITE}
-                m={2}
-                fontWeight={"bold"}
-                key={index}
-              >
+              <Text color={textColor} m={2} fontWeight={"bold"} key={index}>
                 {item.value}
               </Text>
             ))}
@@ -67,7 +72,7 @@ export default function Footer() {
                     y={0}
                   />
                   <Text
-                    color={ALL_COLOR.WHITE}
+                    color={textColor}
                     fontWeight={"bold"}
                     textAlign={"center"}
                   >
@@ -79,7 +84,15 @@ export default function Footer() {
           </Flex>
         </GridItem>
         <GridItem colSpan={1} h="14" />
-        <GridItem colStart={3} colEnd={6} h="14" />
+        <GridItem
+          colStart={3}
+          colEnd={6}
+          h="14"
+          display="flex"
+          justifyContent="flex-end"
+        >
+          <ColorMode />
+        </GridItem>
       </Grid>
     </Box>
   );

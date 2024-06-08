@@ -93,11 +93,11 @@ export default function Contents() {
                       paddingY={2}
                     >
                       <Link href={`/quest/detail/${item.id}`}>
-                        {item.name_kr}
+                        {item.title_kr}
                       </Link>
                       <br />
                       <Link href={`/quest/detail/${item.id}`}>
-                        {item.name_en}
+                        {item.title_en}
                       </Link>
                     </Td>
                     <Td
