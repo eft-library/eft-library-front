@@ -272,12 +272,18 @@ export interface JpgItemPath {
   motherValue: string;
 }
 
+export interface SubItem {
+  value: string;
+  kr: string;
+  en: string;
+}
+
 export interface Item {
   value: string;
   kr: string;
   en: string;
   update_time: string;
-  sub: SubMap[];
+  sub: SubItem[];
 }
 
 export interface JPGView {

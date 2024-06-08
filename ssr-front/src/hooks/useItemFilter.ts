@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
-import type { JpgItemPath, Item, SubMap } from "@/types/types";
+import type { JpgItemPath, Item, SubItem } from "@/types/types";
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
@@ -120,7 +120,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
 /**
  * child 있는지 확인
  */
-const isItem = (obj: Item | SubMap): obj is Item => {
+const isItem = (obj: Item | SubItem): obj is Item => {
   return (obj as Item).sub !== undefined;
 };
 
@@ -128,9 +128,9 @@ const isItem = (obj: Item | SubMap): obj is Item => {
  * child의 value로 root 찾기
  */
 const findObjectWithValue = (
-  obj: Item | SubMap,
+  obj: Item | SubItem,
   value: string
-): Item | SubMap | undefined => {
+): Item | SubItem | undefined => {
   // 현재 객체의 value가 주어진 값과 일치하면 현재 객체를 반환
   if (obj.value === value) {
     return obj;

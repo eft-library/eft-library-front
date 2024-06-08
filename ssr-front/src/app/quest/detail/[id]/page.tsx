@@ -9,17 +9,16 @@ import API_ENDPOINTS from "@/config/endPoints";
 import QuestInfo from "./contents/questInfo";
 import QuestContents from "./contents/questContents";
 import "@/assets/quest.css";
+import type { Quest } from "@/types/types";
 
 export default function QuestDetail() {
   const param = useParams<{ id: string }>();
-  const [questDetail, setQuestDetail] = useState({
-    objectives_kr: [],
-    rewards_kr: [],
-    guide: "",
-  });
+  const [questDetail, setQuestDetail] = useState<Quest>();
   useEffect(() => {
     fetchDataWithNone(`${API_ENDPOINTS.GET_QUEST}/${param.id}`, setQuestDetail);
   }, [param]);
+
+  if (!questDetail) return null;
 
   return (
     <Box
