@@ -1,9 +1,9 @@
 "use client";
 
-import { GUN_CATEGORY_INFO } from "@/util/consts/columnConsts";
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import WeaponKnife from "../weaponRender/weaponKnife";
 import WeaponThrowable from "../weaponRender/weaponThrowable";
@@ -15,16 +15,43 @@ interface WeaponDetailType {
   category: string;
 }
 
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
+}
+
 export default function WeaponDetail({ category }: WeaponDetailType) {
   const [weapon, setWeapon] = useState({ knife: [], throwable: [], gun: [] });
+  const [column, setColumn] = useState<ColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.gun}`,
+      setColumn
+    );
+  }, []);
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_WEAPON, setWeapon);
   }, []);
 
-  const checkGunInclude = () => {
-    return GUN_CATEGORY_INFO.value_kr.includes(category);
+  const checkGunInclude = (columnList: ColumnType) => {
+    return columnList.value_kr.includes(category);
   };
+
+  if (!column) return null;
 
   return (
     <Box
@@ -35,7 +62,7 @@ export default function WeaponDetail({ category }: WeaponDetailType) {
       flexDirection={"column"}
     >
       <>
-        {(category === "ALL" || checkGunInclude()) && (
+        {(category === "ALL" || checkGunInclude(column)) && (
           <>
             <WeaponGun gunList={weapon.gun} category={category} />
             {category === "ALL" && <Box mb={20} />}

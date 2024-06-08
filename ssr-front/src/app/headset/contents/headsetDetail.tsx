@@ -3,7 +3,7 @@ import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image } from "@chakra-ui/react";
-import { HEAD_PHONE_COLUMN } from "@/util/consts/columnConsts";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 
 interface HeadsetListType {
@@ -18,11 +18,21 @@ export default async function HeadsetDetail() {
   const data = await resp.json();
   const headsetList: HeadsetListType[] = data.data;
 
+  const columnResponse = await fetch(
+    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headset}`,
+    {
+      next: { revalidate: 60000 },
+    }
+  );
+
+  const columnData = await columnResponse.json();
+  const column = columnData.data;
+
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={HEAD_PHONE_COLUMN.value_kr}
+        column={column.value_kr}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

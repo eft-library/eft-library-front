@@ -1,9 +1,14 @@
+"use client";
+
 import { Image, Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { SPECIAL_COLUMN } from "@/util/consts/columnConsts";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 
 interface SpecialListType {
   name: string;
@@ -21,10 +26,38 @@ interface WeaponSpecialType {
   category: string;
 }
 
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
+}
+
 export default function WeaponSpecial({
   specialList,
   category,
 }: WeaponSpecialType) {
+  const [column, setColumn] = useState<ColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.special}`,
+      setColumn
+    );
+  }, []);
+
+  if (!column) return null;
+
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory === "Special weapons";
@@ -36,7 +69,7 @@ export default function WeaponSpecial({
     <>
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={SPECIAL_COLUMN.value_kr}
+        column={column.value_kr}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

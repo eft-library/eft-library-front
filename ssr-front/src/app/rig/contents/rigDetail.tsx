@@ -4,7 +4,7 @@ import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
-import { RIG_COLUMN } from "@/util/consts/columnConsts";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 
 interface RigType {
@@ -23,11 +23,21 @@ interface RigListType {
 }
 
 export default async function RigDetail() {
-  const resp = await fetch(API_ENDPOINTS.GET_ALL_RIG, {
+  const response = await fetch(API_ENDPOINTS.GET_ALL_RIG, {
     next: { revalidate: 60000 },
   });
-  const data = await resp.json();
+  const data = await response.json();
   const rigList: RigListType = data.data;
+
+  const columnResponse = await fetch(
+    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.rig}`,
+    {
+      next: { revalidate: 60000 },
+    }
+  );
+
+  const columnData = await columnResponse.json();
+  const column = columnData.data;
 
   const noClassColumn = (column: string[]) => {
     return column.filter(
@@ -35,12 +45,12 @@ export default async function RigDetail() {
         item === "사진" || item === "이름" || item === "슬롯" || item === "무게"
     );
   };
-  console.log(rigList);
+
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 7]}
-        column={RIG_COLUMN.value_kr}
+        column={column.value_kr}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
@@ -71,7 +81,7 @@ export default async function RigDetail() {
       <Box mb={20} />
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={noClassColumn(RIG_COLUMN.value_kr)}
+        column={noClassColumn(column.value_kr)}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

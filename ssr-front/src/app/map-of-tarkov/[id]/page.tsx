@@ -7,46 +7,21 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-import { MAP_OF_TARKOV_COLUMN } from "@/util/consts/columnConsts";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import MapOfTarkovContents from "./contents/MapOfTarkovContents";
 
 export default function MapOfTarkov() {
   const param = useParams<{ id: string }>();
-  const [mapOfTarkov, setMapOfTarkov] = useState<MapOfTarkovData>({
-    boss_list: [],
-    map_info: {
-      name_en: "string",
-      three_image: "string",
-      jpg_image: "string",
-      depth: 1,
-      link: "string",
-      update_time: "string",
-      name_kr: "string",
-      id: "string",
-      three_item_path: [],
-      jpg_item_path: [],
-      order: 1,
-      main_image: "string",
-      sub: [
-        {
-          name_kr: "",
-          name_en: "",
-          three_image: "",
-          three_item_path: [],
-          jpg_item_path: [],
-          order: 0,
-          parent_value: "",
-          update_time: "",
-          id: "",
-          jpg_image: "",
-          depth: 0,
-          link: "",
-          main_image: "",
-        },
-      ],
-    },
-    extraction_info: [],
-  });
+  const [mapOfTarkov, setMapOfTarkov] = useState<MapOfTarkovData>();
+  const [column, setColumn] = useState<ColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.mapOfTarkov}`,
+      setColumn
+    );
+  }, []);
+
   useEffect(() => {
     fetchDataWithNone(
       `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${param.id}`,
@@ -55,11 +30,13 @@ export default function MapOfTarkov() {
   }, [param.id]);
 
   const sortList = () => {
-    const result = MAP_OF_TARKOV_COLUMN.json_value.sort((a, b) => {
+    const result = column.json_value.sort((a, b) => {
       return a.order - b.order;
     });
     return result;
   };
+
+  if (!column || !mapOfTarkov) return null;
 
   return (
     <PageParent>
@@ -73,6 +50,23 @@ export default function MapOfTarkov() {
       <MapOfTarkovContents mapOfTarkov={mapOfTarkov} />
     </PageParent>
   );
+}
+
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
 }
 
 interface Boss {

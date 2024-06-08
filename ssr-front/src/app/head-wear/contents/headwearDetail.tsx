@@ -4,8 +4,8 @@ import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
-import { HEAD_WEAR_COLUMN } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 
 interface HeadwearType {
   name: string;
@@ -30,6 +30,16 @@ export default async function HeadWearDetail() {
   const data = await resp.json();
   const headWearList: HeadwearListType = data.data;
 
+  const columnResponse = await fetch(
+    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headwear}`,
+    {
+      next: { revalidate: 60000 },
+    }
+  );
+
+  const columnData = await columnResponse.json();
+  const column = columnData.data;
+
   const noClassColumn = (column: string[]) => {
     return column.filter((item) => item === "사진" || item === "이름");
   };
@@ -38,7 +48,7 @@ export default async function HeadWearDetail() {
     <>
       <GridTitle
         columnDesign={[2, null, 7]}
-        column={HEAD_WEAR_COLUMN.value_kr}
+        column={column.value_kr}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
@@ -69,7 +79,7 @@ export default async function HeadWearDetail() {
       <Box mb={20} />
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={HEAD_WEAR_COLUMN.value_kr}
+        column={noClassColumn(column.value_kr)}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

@@ -1,36 +1,30 @@
+"use client";
+
 import { SimpleGrid, Image, GridItem, Text, Box } from "@chakra-ui/react";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import RenderText from "@/components/gridText/renderText";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import { EXTRACTION_COLUMN } from "@/util/consts/columnConsts";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
-
-interface MapOfTarkovExtractionType {
-  extractionList: ExtractionInfoType[];
-}
-
-interface Requirement {
-  desc: string;
-  image: string;
-}
-
-interface ExtractionInfoType {
-  name: string;
-  faction: string;
-  single_use: boolean;
-  tip: string[];
-  update_time: string;
-  image: string;
-  id: string;
-  always_available: boolean;
-  requirements: Requirement[];
-  map: string;
-}
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import API_ENDPOINTS from "@/config/endPoints";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
 
 export default function MapOfTarkovExtraction({
   extractionList,
 }: MapOfTarkovExtractionType) {
+  const [column, setColumn] = useState<ColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.extraction}`,
+      setColumn
+    );
+  }, []);
+
+  if (!column) return null;
+
   return (
     <DividerContents headText="탈출구">
       <Box
@@ -50,7 +44,7 @@ export default function MapOfTarkovExtraction({
           p={2}
           mb={6}
         >
-          {EXTRACTION_COLUMN.value_kr.map((item, index) => (
+          {column.value_kr.map((item, index) => (
             <RenderText text={item} key={index} />
           ))}
         </SimpleGrid>
@@ -105,4 +99,43 @@ export default function MapOfTarkovExtraction({
       </Box>
     </DividerContents>
   );
+}
+
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
+}
+
+interface MapOfTarkovExtractionType {
+  extractionList: ExtractionInfoType[];
+}
+
+interface Requirement {
+  desc: string;
+  image: string;
+}
+
+interface ExtractionInfoType {
+  name: string;
+  faction: string;
+  single_use: boolean;
+  tip: string[];
+  update_time: string;
+  image: string;
+  id: string;
+  always_available: boolean;
+  requirements: Requirement[];
+  map: string;
 }

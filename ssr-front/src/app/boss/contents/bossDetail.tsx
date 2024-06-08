@@ -1,8 +1,13 @@
+"use client";
+
 import { Box, SimpleGrid, Image } from "@chakra-ui/react";
 import RenderText from "@/components/gridText/renderText";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import RenderJsonText from "@/components/gridText/renderJsonText";
-import { BOSS_COLUMN } from "@/util/consts/columnConsts";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 interface BossDetailType {
@@ -34,7 +39,35 @@ interface BossType {
   update_time: string;
 }
 
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
+}
+
 export default function BossDetail({ bossList, bossId }: BossDetailType) {
+  const [column, setColumn] = useState<ColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.boss}`,
+      setColumn
+    );
+  }, []);
+
+  if (!column) return null;
+
   return (
     <Box
       display="flex"
@@ -53,7 +86,7 @@ export default function BossDetail({ bossList, bossId }: BossDetailType) {
         p={2}
         mb={6}
       >
-        {BOSS_COLUMN.value_kr.map((item, index) => (
+        {column.value_kr.map((item, index) => (
           <RenderText text={item} key={index} />
         ))}
       </SimpleGrid>

@@ -1,11 +1,49 @@
 "use client";
 
 import { Text, Grid, GridItem, Box, Flex } from "@chakra-ui/react";
-import { FOOTER_COLUMN } from "@/util/consts/columnConsts";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import DynamicSVG from "../viewSVG/dynamicSVG";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
+
+// IconType 인터페이스 정의
+interface IconType {
+  link: string;
+  name: string;
+}
+
+// TextType 인터페이스 정의
+interface TextType {
+  value: string;
+}
+
+// FooterJsonValue 인터페이스 정의
+interface FooterJsonValue {
+  icon: IconType[];
+  text: TextType[];
+}
+
+// FooterColumn 인터페이스 정의
+interface FooterColumnType {
+  id: string;
+  json_value: FooterJsonValue;
+  type: string;
+}
 
 export default function Footer() {
+  const [column, setColumn] = useState<FooterColumnType>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.footer}`,
+      setColumn
+    );
+  }, []);
+
+  if (!column) return null;
+
   return (
     <Box
       className="Main"
@@ -27,7 +65,7 @@ export default function Footer() {
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
-            {FOOTER_COLUMN.json_value.text.map((item, index) => (
+            {column.json_value.text.map((item, index) => (
               <Text
                 color={ALL_COLOR.WHITE}
                 m={2}
@@ -38,7 +76,7 @@ export default function Footer() {
               </Text>
             ))}
             <Flex direction="row" m={1}>
-              {FOOTER_COLUMN.json_value.icon.map((item, index) => (
+              {column.json_value.icon.map((item, index) => (
                 <Box
                   ml={index === 0 ? "" : 4}
                   key={index}

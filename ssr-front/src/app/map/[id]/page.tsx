@@ -5,15 +5,15 @@ import { useParams } from "next/navigation";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import API_ENDPOINTS from "@/config/endPoints";
 import PageParent from "@/components/pageParent/pageParent";
 import LinkSelector from "@/components/linkSelector/linkSelector";
-import { MAP_COLUMN } from "@/util/consts/columnConsts";
 import { useItemFilter } from "@/hooks/useItemFilter";
 import ItemSelector from "./contents/itemSelector";
 import SubMapSelector from "./contents/subMapSelector";
 import JPGView from "./contents/jpgView";
 import ThreeView from "./contents/threeView";
+import API_ENDPOINTS from "@/config/endPoints";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import { Vector3 } from "three";
 
 export default function Map() {
@@ -32,40 +32,35 @@ export default function Map() {
     main_image: "path/to/main_image",
     sub: [],
   });
-  const [subMap, setSubMap] = useState<SubMap[]>([]);
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
     mapData.jpg_item_path
   );
   const param = useParams();
+  const [column, setColumn] = useState<ColumnType>();
 
   useEffect(() => {
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_MAP}/${param.id}`,
-      (data: MapInfo) => {
-        // setMapData를 호출하여 mapData 상태를 업데이트합니다.
-        setMapData(data);
-
-        // 데이터에 sub 속성이 있는지 확인하고, 있을 경우에만 setSubMap을 호출하여 subMap 상태를 업데이트합니다.
-        if (data.sub) {
-          setSubMap(data.sub);
-        }
-      }
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.map}`,
+      setColumn
     );
+  }, []);
+
+  useEffect(() => {
+    fetchDataWithNone(`${API_ENDPOINTS.GET_MAP}/${param.id}`, setMapData);
   }, [param.id]);
 
   const onClickMap = (value: MapInfo) => {
     setMapData(value);
-    if (value.depth === 1) {
-      setSubMap(value.sub);
-    }
   };
 
-  const sortList = () => {
-    const result = MAP_COLUMN.json_value.sort((a, b) => {
+  const sortList = (columnList: ColumnType) => {
+    const result = columnList.json_value.sort((a, b) => {
       return a.order - b.order;
     });
     return result;
   };
+
+  if (!column) return null;
 
   return (
     <PageParent>
@@ -78,7 +73,7 @@ export default function Map() {
         />
       )}
       <LinkSelector
-        itemList={sortList()}
+        itemList={sortList(column)}
         itemDesc="name_kr"
         itemLink="link"
         mt={3}
@@ -91,13 +86,7 @@ export default function Map() {
         width="100%"
         height="100%"
       >
-        {subMap && subMap.length > 1 && (
-          <SubMapSelector
-            onClickMap={onClickMap}
-            subMap={subMap}
-            mapId={mapData.id}
-          />
-        )}
+        <SubMapSelector onClickMap={onClickMap} mapId={mapData.id} />
         <Stack spacing={4}>
           <Text as={"b"} color={ALL_COLOR.WHITE}>
             2D MAP
@@ -116,6 +105,23 @@ export default function Map() {
       </Box>
     </PageParent>
   );
+}
+
+interface ColumnType {
+  id: string;
+  type: string;
+  update_time: string;
+  value_kr: string[] | null;
+  value_en: string[] | null;
+  json_value: JsonValueType[] | null;
+}
+
+// JsonValueType 인터페이스 정의
+interface JsonValueType {
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
 }
 
 interface MapInfo {
