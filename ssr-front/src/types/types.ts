@@ -3,17 +3,17 @@ import type { ReactNode } from "react";
 import { Vector3 } from "three";
 import { Collada } from "three/examples/jsm/loaders/ColladaLoader.js";
 
-export interface Vector3Like {
-  width?: number;
-  height?: number;
-  depth?: number;
-  widthSegments?: number;
-  heightSegments?: number;
-  depthSegments?: number;
-}
+export type Vector3Like = [
+  width?: number,
+  height?: number,
+  depth?: number,
+  widthSegments?: number,
+  heightSegments?: number,
+  depthSegments?: number
+];
 
 export interface ThreeItemPath {
-  boxArgs: Vector3Like[];
+  boxArgs: Vector3Like;
   position: Vector3;
   childValue: string;
 }
