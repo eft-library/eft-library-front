@@ -5,9 +5,9 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import DynamicJPG from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
-import { Vector3 } from "three";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import type { JPGView } from "@/types/types";
+import JPGSkeleton from "../skeleton/jpgSkeleton";
 
 export default function JPGView({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
@@ -30,7 +30,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
     console.log(`SVG 기준의 클릭한 위치의 x 좌표: ${svgX}, y 좌표: ${svgY}`);
   };
 
-  if (!size.width || !size.height) return null;
+  if (!size.width || !size.height) return <JPGSkeleton />;
 
   return (
     <Box

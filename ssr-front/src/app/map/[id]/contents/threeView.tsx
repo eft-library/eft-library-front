@@ -5,15 +5,13 @@ import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useLoadMap } from "@/hooks/useMap";
-import { Vector3 } from "three";
 import type { ThreeView } from "@/types/types";
+import ThreeSkeleton from "../skeleton/threeSkeleton";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const collada = useLoadMap(map.three_image, true);
 
-  if (!collada) {
-    return <div style={{ color: "white" }}>로딩중 입니다.</div>; // collada가 null인 경우에는 아무것도 렌더링하지 않음
-  }
+  if (!collada) return <ThreeSkeleton />;
 
   return (
     <Canvas

@@ -19,6 +19,7 @@ import { useAppStore } from "@/store/provider";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { ItemSelector } from "@/types/types";
+import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
 
 export default function ItemSelector({
   viewItemList,
@@ -28,7 +29,7 @@ export default function ItemSelector({
 }: ItemSelector) {
   const { itemFilter, setItemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
-  const [originalItem, setOriginalItem] = useState<string[]>([]);
+  const [originalItem, setOriginalItem] = useState<string[]>();
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
@@ -56,6 +57,8 @@ export default function ItemSelector({
       );
     }
   };
+
+  if (!originalItem || !itemFilter) return <ItemSelectorSkeleton />;
 
   return (
     <Accordion
