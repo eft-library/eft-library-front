@@ -16,7 +16,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { FooterColumn } from "@/types/types";
 import { ColorMode } from "@/hooks/useColorTheme";
-import Loading from "./skeleton";
+import FooterSkeleton from "./footerSkeleton";
 
 export default function Footer() {
   const [column, setColumn] = useState<FooterColumn>();
@@ -30,7 +30,7 @@ export default function Footer() {
     );
   }, []);
 
-  if (!column) return <Loading />;
+  if (!column) return <FooterSkeleton />;
 
   return (
     <Box

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function Loading() {
+export default function FooterSkeleton() {
   const bgColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.BACKGROUND);
   return (
     <Box

@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { fetchDataWithNone } from "@/lib/api";
 import TopNaviLogi from "@/assets/topNaviLogo";
+import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 
 export default function Header() {
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-  const [headerData, setHeaderData] = useState<Menu[]>([]); // 초기 상태를 빈 배열로 설정
+  const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
 
   const changeMenu = (menuName: string) => {
     setSelectedMenu(menuName);
@@ -20,6 +21,8 @@ export default function Header() {
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_NAVI_MENU, setHeaderData);
   }, []);
+
+  if (!headerData) return <HeaderSkeleton />;
 
   return (
     <Grid
