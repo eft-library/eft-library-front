@@ -2,8 +2,11 @@ import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
 import type { QuestInfo } from "@/types/types";
+import InfoSkeleton from "../../skeleton/infoSkeleton";
 
 export default function QuestInfo({ quest }: QuestInfo) {
+  if (!quest) return <InfoSkeleton />;
+
   return (
     <Box
       display={"flex"}

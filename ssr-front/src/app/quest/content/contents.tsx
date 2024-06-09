@@ -18,14 +18,17 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Quest } from "@/types/types";
+import ContentsSkeleton from "../skeleton/contentsSkeleton";
 
 export default function Contents() {
   const { npcId } = useAppStore((state) => state);
-  const [quest, setQuest] = useState<Quest[]>([]);
+  const [quest, setQuest] = useState<Quest[]>();
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);
   }, []);
+
+  if (!quest) return <ContentsSkeleton />;
 
   return (
     <Box

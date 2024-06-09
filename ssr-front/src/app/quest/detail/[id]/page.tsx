@@ -18,8 +18,6 @@ export default function QuestDetail() {
     fetchDataWithNone(`${API_ENDPOINTS.GET_QUEST}/${param.id}`, setQuestDetail);
   }, [param]);
 
-  if (!questDetail) return null;
-
   return (
     <Box
       className="Main"

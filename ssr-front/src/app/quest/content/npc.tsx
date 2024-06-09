@@ -8,10 +8,11 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import type { NPC } from "@/types/types";
+import NPCSkeleton from "../skeleton/npcSkeleton";
 
 export default function NPC() {
   const { npcId, setNpcId } = useAppStore((state) => state);
-  const [npc, setNpc] = useState<NPC[]>([]);
+  const [npc, setNpc] = useState<NPC[]>();
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_NPC, setNpc);
@@ -26,6 +27,8 @@ export default function NPC() {
     e.target.style.transform = "scale(1)"; // 이미지 축소
     e.target.style.opacity = "1"; // 이미지 불투명도 원래대로
   };
+
+  if (!npc) return <NPCSkeleton />;
 
   return (
     <Box display="flex" justifyContent="center" alignItems={"center"} mb={10}>
