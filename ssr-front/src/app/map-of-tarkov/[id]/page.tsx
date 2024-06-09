@@ -10,6 +10,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import MapOfTarkovContents from "./contents/MapOfTarkovContents";
 import type { Column, MapOfTarkov } from "@/types/types";
+import ContentsSkeleton from "../skeleton/contentsSkeleton";
 
 export default function MapOfTarkov() {
   const param = useParams<{ id: string }>();
@@ -37,7 +38,7 @@ export default function MapOfTarkov() {
     return result;
   };
 
-  if (!column || !mapOfTarkov) return null;
+  if (!column || !mapOfTarkov) return <ContentsSkeleton />;
 
   return (
     <PageParent>

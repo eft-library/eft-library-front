@@ -1,7 +1,7 @@
 # 바로 해보자
 
 2. 아이템 필터 store에 넣어놓아야 할 것 같다 => 아니면 다시 밖으로 빼야 함
-3. skeleton 만들기 - quest, map, map of tarkov
+3. skeleton 만들기 - quest, map of tarkov
 4. gltfjsx 이거로 그냥 뽑아서 react에서 바로 그리는 것도 생각해보자
 5. 퀘스트에서 아이템 바로 이동하는 것 구현하기
 6. 라이트 모드 전체 적용하기
