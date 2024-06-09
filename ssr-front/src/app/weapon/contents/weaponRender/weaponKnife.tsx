@@ -8,6 +8,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponKnife, Column } from "@/types/types";
+import WeaponSkeleton from "../skeleton/weaponSkeleton";
 
 export default function WeaponKnife({ knifeList }: WeaponKnife) {
   const [column, setColumn] = useState<Column>();
@@ -19,7 +20,7 @@ export default function WeaponKnife({ knifeList }: WeaponKnife) {
     );
   }, []);
 
-  if (!column) return null;
+  if (!column) return <WeaponSkeleton />;
 
   return (
     <>

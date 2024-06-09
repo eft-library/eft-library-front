@@ -11,6 +11,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import { formatImage } from "@/lib/formatImage";
 import type { WeaponStationary, Column } from "@/types/types";
+import WeaponSkeleton from "../skeleton/weaponSkeleton";
 
 export default function WeaponStationary({
   stationaryList,
@@ -33,7 +34,7 @@ export default function WeaponStationary({
     return isGeneralCategory && isMatchingCategory;
   };
 
-  if (!column) return null;
+  if (!column) return <WeaponSkeleton />;
 
   return (
     <>

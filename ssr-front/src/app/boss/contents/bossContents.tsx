@@ -1,14 +1,12 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import type { BossContents, BossInfo } from "@/types/types";
+import ContentsSkeleton from "./skeleton/contentsSkeleton";
 
 export default function BossContents({ bossList, bossId }: BossContents) {
-  let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId) || {
-    location_guide: "",
-    health_image: [""],
-    loot: [""],
-    id: "",
-  };
+  let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId);
+
+  if (!bossInfo) return <ContentsSkeleton />;
 
   return (
     <Box w={"95%"}>

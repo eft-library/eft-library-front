@@ -7,7 +7,7 @@ import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-import InfoLoading from "./skeleton/infoSkeleton";
+import InfoSkeleton from "./skeleton/infoSkeleton";
 import type { SubMenu } from "@/types/types";
 
 export default function Info() {
@@ -26,7 +26,7 @@ export default function Info() {
     fetchDataWithNone(API_ENDPOINTS.GET_MENU_INFO, setMain);
   }, []);
 
-  if (!main) return <InfoLoading />;
+  if (!main) return <InfoSkeleton />;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">

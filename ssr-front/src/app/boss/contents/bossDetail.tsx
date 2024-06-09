@@ -10,6 +10,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { Column, BossDetail } from "@/types/types";
+import DetailSkeleton from "./skeleton/detailSkeleton";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
   const [column, setColumn] = useState<Column>();
@@ -21,7 +22,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
     );
   }, []);
 
-  if (!column) return null;
+  if (!column) return <DetailSkeleton />;
 
   return (
     <Box

@@ -1,6 +1,6 @@
 import { Box, Grid, GridItem, SkeletonText } from "@chakra-ui/react";
 
-export default function InfoLoading() {
+export default function InfoSkeleton() {
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Grid
@@ -8,8 +8,8 @@ export default function InfoLoading() {
         templateRows="repeat(4, 1fr)"
         gap={12}
       >
-        {[...Array(16)].map((item) => (
-          <Box key={item}>
+        {[...Array(16)].map((_, index) => (
+          <Box key={index}>
             <GridItem
               w="120px"
               h="120px"

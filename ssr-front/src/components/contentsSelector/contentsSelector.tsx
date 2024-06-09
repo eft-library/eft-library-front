@@ -1,6 +1,7 @@
 import { Box, SimpleGrid, Flex, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { ContentsSelector } from "@/types/types";
+import ContentsSelectorSkeleton from "./contentsSelectorSkeleton";
 
 export default function ContentsSelector({
   onClickEvent,
@@ -9,6 +10,8 @@ export default function ContentsSelector({
   selectorId,
   itemDesc,
 }: ContentsSelector) {
+  if (!itemList || itemList.length < 1) return <ContentsSelectorSkeleton />;
+
   return (
     <Box
       display="flex"

@@ -10,6 +10,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponThrowable, Column } from "@/types/types";
+import WeaponSkeleton from "../skeleton/weaponSkeleton";
 
 export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
   const [column, setColumn] = useState<Column>();
@@ -23,7 +24,7 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
 
   const detailThrowable = ["RGN", "RGO"];
 
-  if (!column) return null;
+  if (!column) return <WeaponSkeleton />;
 
   return (
     <>

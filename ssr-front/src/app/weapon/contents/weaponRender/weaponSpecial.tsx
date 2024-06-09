@@ -10,6 +10,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, WeaponSpecial } from "@/types/types";
+import WeaponSkeleton from "../skeleton/weaponSkeleton";
 
 export default function WeaponSpecial({
   specialList,
@@ -24,7 +25,7 @@ export default function WeaponSpecial({
     );
   }, []);
 
-  if (!column) return null;
+  if (!column) return <WeaponSkeleton />;
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (itemCategory: string) => {
