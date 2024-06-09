@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { Youtube } from "@/types/types";
+import NewsSkeleton from "./skeleton/newsSkeleton";
 
 const YoutubeNews = () => {
   const [youtube, setYoutube] = useState<Youtube>();
@@ -15,7 +16,7 @@ const YoutubeNews = () => {
     fetchDataWithNone(API_ENDPOINTS.GET_YOUTUBE, setYoutube);
   }, []);
 
-  if (!youtube) return null;
+  if (!youtube) return <NewsSkeleton />;
 
   return (
     <YouTube

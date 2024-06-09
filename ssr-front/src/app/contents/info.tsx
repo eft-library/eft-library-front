@@ -7,9 +7,11 @@ import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
+import InfoLoading from "./skeleton/infoSkeleton";
+import type { SubMenu } from "@/types/types";
 
 export default function Info() {
-  const [main, setMain] = useState([]);
+  const [main, setMain] = useState<SubMenu[]>();
   const handleHover = (e: any) => {
     e.target.style.transform = "scale(1.1)"; // 이미지 확대
     e.target.style.opacity = "0.8"; // 이미지 불투명도 변경
@@ -23,6 +25,8 @@ export default function Info() {
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_MENU_INFO, setMain);
   }, []);
+
+  if (!main) return <InfoLoading />;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
