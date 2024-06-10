@@ -5,10 +5,10 @@ import YouTube from "react-youtube";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
-import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { Box } from "@chakra-ui/react";
 import type { Youtube } from "@/types/types";
 import NewsSkeleton from "./skeleton/newsSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 const YoutubeNews = () => {
   const [youtube, setYoutube] = useState<Youtube>();
@@ -30,11 +30,11 @@ const YoutubeNews = () => {
 };
 
 export default function News() {
-  const bgColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
+  const { backWhite } = useColorValue();
   return (
     <Box
       border="1px solid"
-      borderColor={bgColor}
+      borderColor={backWhite}
       borderRadius={"lg"}
       width={"85%"}
       margin="0 auto"

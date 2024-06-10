@@ -12,23 +12,33 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-import type { Quest } from "@/types/types";
+import type { Quest, Column } from "@/types/types";
+import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSkeleton from "../skeleton/contentsSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function Contents() {
+  const { blackWhite, orange, darkLightYellow, red, beige } = useColorValue();
   const { npcId } = useAppStore((state) => state);
   const [quest, setQuest] = useState<Quest[]>();
+  const [column, setColumn] = useState<Column>();
+
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.quest}`,
+      setColumn
+    );
+  }, []);
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);
   }, []);
 
-  if (!quest) return <ContentsSkeleton />;
+  if (!quest || !column) return <ContentsSkeleton />;
 
   return (
     <Box
@@ -37,46 +47,22 @@ export default function Contents() {
       justifyContent={"center"}
       width={"95%"}
     >
-      <TableContainer border="1px solid" borderColor={ALL_COLOR.WHITE}>
+      <TableContainer border="1px solid" borderColor={blackWhite}>
         <Table variant="simple" size={"lg"}>
           <Thead>
             <Tr>
-              <Th
-                fontWeight={"800"}
-                textAlign={"center"}
-                borderRight="1px solid white"
-                fontSize="lg"
-                color={ALL_COLOR.WHITE}
-              >
-                제목
-              </Th>
-              <Th
-                fontWeight={"800"}
-                textAlign={"center"}
-                borderRight="1px solid white"
-                fontSize="lg"
-                color={ALL_COLOR.WHITE}
-              >
-                목표
-              </Th>
-              <Th
-                fontWeight={"800"}
-                textAlign={"center"}
-                borderRight="1px solid white"
-                fontSize="lg"
-                color={ALL_COLOR.WHITE}
-              >
-                보상
-              </Th>
-              <Th
-                fontWeight={"800"}
-                textAlign={"center"}
-                borderRight="1px solid white"
-                fontSize="lg"
-                color={ALL_COLOR.WHITE}
-              >
-                카파
-              </Th>
+              {column.value_kr.map((item, index) => (
+                <Th
+                  key={index}
+                  fontWeight={"800"}
+                  textAlign={"center"}
+                  borderRight="1px solid white"
+                  fontSize="lg"
+                  color={blackWhite}
+                >
+                  {item}
+                </Th>
+              ))}
             </Tr>
           </Thead>
           <Tbody>
@@ -88,10 +74,10 @@ export default function Contents() {
                       fontSize="md"
                       fontWeight={"700"}
                       borderRight="1px solid white"
-                      color={ALL_COLOR.ORANGE}
+                      color={orange}
                       textAlign={"center"}
                       cursor={"pointer"}
-                      _hover={{ color: ALL_COLOR.BEIGE }}
+                      _hover={{ color: beige }}
                       paddingX={2}
                       paddingY={2}
                     >
@@ -108,7 +94,7 @@ export default function Contents() {
                       minW="320px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={ALL_COLOR.WHITE}
+                      color={blackWhite}
                       fontWeight={"700"}
                       whiteSpace="normal"
                       paddingX={4}
@@ -129,7 +115,7 @@ export default function Contents() {
                       minW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={ALL_COLOR.WHITE}
+                      color={blackWhite}
                       fontWeight={"700"}
                       whiteSpace="normal"
                       paddingX={4}
@@ -154,11 +140,7 @@ export default function Contents() {
                       paddingX={2}
                       paddingY={2}
                     >
-                      <Text
-                        color={
-                          item.required_kappa ? ALL_COLOR.YELLOW : ALL_COLOR.RED
-                        }
-                      >
+                      <Text color={item.required_kappa ? darkLightYellow : red}>
                         {item.required_kappa ? "Y" : "N"}
                       </Text>
                     </Td>

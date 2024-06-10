@@ -4,17 +4,18 @@ import { SimpleGrid, Image, GridItem, Text, Box } from "@chakra-ui/react";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import RenderText from "@/components/gridText/renderText";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import type { MapOfTarkovExtraction, Column } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function MapOfTarkovExtraction({
   extractionList,
 }: MapOfTarkovExtraction) {
+  const { blackWhite } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function MapOfTarkovExtraction({
           spacing={2}
           width={"100%"}
           outline={"1px solid"}
-          outlineColor={ALL_COLOR.WHITE}
+          outlineColor={blackWhite}
           borderRadius={"lg"}
           p={2}
           mb={6}
@@ -55,7 +56,7 @@ export default function MapOfTarkovExtraction({
             spacing={2}
             width={"100%"}
             outline={"1px solid"}
-            outlineColor={ALL_COLOR.WHITE}
+            outlineColor={blackWhite}
             borderRadius={"lg"}
             p={2}
             mb={4}
@@ -83,7 +84,7 @@ export default function MapOfTarkovExtraction({
                 <Box key={index}>
                   <Image src={formatImage(item.image)} alt="extraction" />
                   <Text
-                    color={ALL_COLOR.WHITE}
+                    color={blackWhite}
                     mt={2}
                     mb={extraction.requirements.length === index + 1 ? 0 : 10}
                     fontWeight={600}

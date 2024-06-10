@@ -1,33 +1,38 @@
+"use client";
+
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import type { HeadwearList } from "@/types/types";
+import type { HeadwearList, Column } from "@/types/types";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import useColorValue from "@/hooks/useColorValue";
 
-export default async function HeadWearDetail() {
-  const resp = await fetch(API_ENDPOINTS.GET_ALL_HEAD_WEAR, {
-    next: { revalidate: 60000 },
-  });
-  const data = await resp.json();
-  const headWearList: HeadwearList = data.data;
+export default function HeadWearDetail() {
+  const { yellowShadow, blackWhite } = useColorValue();
+  const [headWearList, setHeadWearList] = useState<HeadwearList>();
+  const [column, setColumn] = useState<Column>();
 
-  const columnResponse = await fetch(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headwear}`,
-    {
-      next: { revalidate: 60000 },
-    }
-  );
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headwear}`,
+      setColumn
+    );
+  }, []);
 
-  const columnData = await columnResponse.json();
-  const column = columnData.data;
+  useEffect(() => {
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEAD_WEAR, setHeadWearList);
+  }, []);
 
   const noClassColumn = (column: string[]) => {
     return column.filter((item) => item === "사진" || item === "이름");
   };
+
+  if (!column || !headWearList) return null;
 
   return (
     <>
@@ -35,7 +40,7 @@ export default async function HeadWearDetail() {
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {headWearList.class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 7]} key={index}>
@@ -55,7 +60,7 @@ export default async function HeadWearDetail() {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={ALL_COLOR.WHITE} textAlign="center">
+            <Text color={blackWhite} textAlign="center">
               {item.weight} kg
             </Text>
           </Box>
@@ -66,7 +71,7 @@ export default async function HeadWearDetail() {
         columnDesign={[2, null, 2]}
         column={noClassColumn(column.value_kr)}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {headWearList.no_class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 2]} key={index}>

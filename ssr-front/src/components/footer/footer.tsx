@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Text,
-  Grid,
-  GridItem,
-  Box,
-  Flex,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { Text, Grid, GridItem, Box, Flex } from "@chakra-ui/react";
 import DynamicSVG from "../viewSVG/dynamicSVG";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -17,11 +9,11 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { FooterColumn } from "@/types/types";
 import { ColorMode } from "@/hooks/useColorTheme";
 import FooterSkeleton from "./footerSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function Footer() {
+  const { backWhite, whiteBack } = useColorValue();
   const [column, setColumn] = useState<FooterColumn>();
-  const bgColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.BACKGROUND);
-  const textColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
 
   useEffect(() => {
     fetchDataWithNone(
@@ -36,7 +28,7 @@ export default function Footer() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={bgColor}
+      bg={whiteBack}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -54,7 +46,7 @@ export default function Footer() {
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
             {column.json_value.text.map((item, index) => (
-              <Text color={textColor} m={2} fontWeight={"bold"} key={index}>
+              <Text color={backWhite} m={2} fontWeight={"bold"} key={index}>
                 {item.value}
               </Text>
             ))}
@@ -73,7 +65,7 @@ export default function Footer() {
                     y={0}
                   />
                   <Text
-                    color={textColor}
+                    color={backWhite}
                     fontWeight={"bold"}
                     textAlign={"center"}
                   >

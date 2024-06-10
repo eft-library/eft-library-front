@@ -4,18 +4,19 @@ import { Image, Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, WeaponSpecial } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function WeaponSpecial({
   specialList,
   category,
 }: WeaponSpecial) {
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function WeaponSpecial({
         columnDesign={[2, null, 2]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {specialList.map((item, index) =>
         shouldRenderWeapon(item.category) ? (

@@ -1,10 +1,13 @@
+"use client";
+
 import { Box, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { QuestContents } from "@/types/types";
 import ContentsSkeleton from "../../skeleton/contentsSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function QuestContents({ quest }: QuestContents) {
+  const { blackWhite } = useColorValue();
   if (!quest) return <ContentsSkeleton />;
 
   return (
@@ -14,7 +17,7 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.objectives_kr.map((objectives, index) => (
             <Text
               key={index}
-              color={ALL_COLOR.WHITE}
+              color={blackWhite}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -30,7 +33,7 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.rewards_kr.map((rewards, index) => (
             <Text
               key={index}
-              color={ALL_COLOR.WHITE}
+              color={blackWhite}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -44,7 +47,7 @@ export default function QuestContents({ quest }: QuestContents) {
       <DividerContents headText="가이드">
         <Box>
           <Text
-            color={ALL_COLOR.WHITE}
+            color={blackWhite}
             mt={1}
             fontWeight={700}
             fontSize="lg"

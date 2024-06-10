@@ -1,29 +1,32 @@
+"use client";
+
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-import type { RigList } from "@/types/types";
+import type { RigList, Column } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
 
-export default async function RigDetail() {
-  const response = await fetch(API_ENDPOINTS.GET_ALL_RIG, {
-    next: { revalidate: 60000 },
-  });
-  const data = await response.json();
-  const rigList: RigList = data.data;
+export default function RigDetail() {
+  const { blackWhite, yellowShadow } = useColorValue();
+  const [rigList, setRigList] = useState<RigList>();
+  const [column, setColumn] = useState<Column>();
 
-  const columnResponse = await fetch(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.rig}`,
-    {
-      next: { revalidate: 60000 },
-    }
-  );
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.rig}`,
+      setColumn
+    );
+  }, []);
 
-  const columnData = await columnResponse.json();
-  const column = columnData.data;
+  useEffect(() => {
+    fetchDataWithNone(`${API_ENDPOINTS.GET_ALL_RIG}`, setRigList);
+  }, []);
 
   const noClassColumn = (column: string[]) => {
     return column.filter(
@@ -32,13 +35,15 @@ export default async function RigDetail() {
     );
   };
 
+  if (!column || !rigList) return null;
+
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {rigList.class_rig.map((item, index) => (
         <GridContents columnDesign={[2, null, 7]} key={index}>
@@ -58,7 +63,7 @@ export default async function RigDetail() {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={ALL_COLOR.WHITE} textAlign="center">
+            <Text color={blackWhite} textAlign="center">
               {item.weight} kg
             </Text>
           </Box>
@@ -69,7 +74,7 @@ export default async function RigDetail() {
         columnDesign={[2, null, 4]}
         column={noClassColumn(column.value_kr)}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {rigList.no_class_rig.map((item, index) => (
         <GridContents columnDesign={[2, null, 4]} key={index}>
@@ -86,7 +91,7 @@ export default async function RigDetail() {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={ALL_COLOR.WHITE} textAlign="center">
+            <Text color={blackWhite} textAlign="center">
               {item.weight} kg
             </Text>
           </Box>

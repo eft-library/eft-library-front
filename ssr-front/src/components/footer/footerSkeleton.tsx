@@ -5,18 +5,16 @@ import {
   GridItem,
   Skeleton,
   SkeletonText,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function FooterSkeleton() {
-  const bgColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.BACKGROUND);
   return (
     <Box
       className="Main"
       bgSize="cover"
       bgPosition="center"
-      bg={bgColor}
+      bg={ALL_COLOR.BACKGROUND}
       display="flex"
       flexDirection="column"
       alignItems="center"

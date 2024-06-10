@@ -1,7 +1,6 @@
 "use client";
 
-import { Grid, GridItem, Box, Text, useColorModeValue } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { Grid, GridItem, Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
@@ -9,9 +8,10 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import InfoSkeleton from "./skeleton/infoSkeleton";
 import type { SubMenu } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function Info() {
-  const bgColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
+  const { backWhite } = useColorValue();
   const [main, setMain] = useState<SubMenu[]>();
   const handleHover = (e: any) => {
     e.target.style.transform = "scale(1.1)"; // 이미지 확대
@@ -42,7 +42,7 @@ export default function Info() {
               w="120px"
               h="120px"
               border="1px solid"
-              borderColor={bgColor}
+              borderColor={backWhite}
               borderRadius={"lg"}
               display="flex"
               justifyContent="center"
@@ -54,7 +54,7 @@ export default function Info() {
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
-            <Text color={bgColor} textAlign={"center"} mt={"2"}>
+            <Text color={backWhite} textAlign={"center"} mt={"2"}>
               {map.kr_name}
             </Text>
           </Link>

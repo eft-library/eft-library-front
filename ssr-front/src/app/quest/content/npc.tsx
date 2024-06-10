@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, SimpleGrid, Text, Flex } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -9,8 +8,10 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import type { NPC } from "@/types/types";
 import NPCSkeleton from "../skeleton/npcSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function NPC() {
+  const { blackWhite, lightDarkYellow } = useColorValue();
   const { npcId, setNpcId } = useAppStore((state) => state);
   const [npc, setNpc] = useState<NPC[]>();
 
@@ -40,17 +41,15 @@ export default function NPC() {
               w="120px"
               h="120px"
               onClick={() => setNpcId(npcItem.id)}
-              color={ALL_COLOR.WHITE}
+              color={blackWhite}
               backgroundImage={`url(${formatImage(npcItem.image)})`}
               outline={npcId === npcItem.id ? "4px solid" : "1px solid"}
-              outlineColor={
-                npcId === npcItem.id ? ALL_COLOR.DARK_YELLOW : ALL_COLOR.WHITE
-              }
+              outlineColor={npcId === npcItem.id ? lightDarkYellow : blackWhite}
               borderRadius={"lg"}
               onMouseEnter={handleHover}
               onMouseLeave={handleHoverExit}
             />
-            <Text color={"white"} textAlign={"center"} mt={"2"}>
+            <Text color={blackWhite} textAlign={"center"} mt={"2"}>
               {npcItem.name_kr}
             </Text>
           </Flex>

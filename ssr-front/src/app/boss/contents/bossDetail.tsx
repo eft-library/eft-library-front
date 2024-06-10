@@ -8,11 +8,12 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { Column, BossDetail } from "@/types/types";
 import DetailSkeleton from "./skeleton/detailSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
+  const { blackWhite } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
         spacing={2}
         width={"100%"}
         outline={"1px solid"}
-        outlineColor={ALL_COLOR.WHITE}
+        outlineColor={blackWhite}
         borderRadius={"lg"}
         p={2}
         mb={6}
@@ -54,7 +55,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               spacing={2}
               width={"100%"}
               outline={"1px solid"}
-              outlineColor={ALL_COLOR.WHITE}
+              outlineColor={blackWhite}
               borderRadius={"lg"}
               p={2}
               mb={4}

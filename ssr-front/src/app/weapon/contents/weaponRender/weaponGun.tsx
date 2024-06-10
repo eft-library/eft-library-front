@@ -3,15 +3,16 @@
 import { Box, SimpleGrid, Text, Image, GridItem } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponGun, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function WeaponGun({ gunList, category }: WeaponGun) {
+  const { blackWhite, yellowShadow, whiteBlackShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -55,20 +56,20 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
         spacing={2}
         width={"95%"}
         outline={"2px solid"}
-        outlineColor={ALL_COLOR.WHITE}
+        outlineColor={blackWhite}
         borderRadius={"lg"}
-        boxShadow={ALL_COLOR.BOX_SHADOW}
+        boxShadow={whiteBlackShadow}
         p={2}
         mb={6}
       >
         {column.value_kr.map((item, index) => (
           <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
             <Text
-              color={ALL_COLOR.WHITE}
+              color={blackWhite}
               key={index}
               textAlign={"center"}
               fontWeight={700}
-              textShadow={ALL_COLOR.YELLOW_SHADOW}
+              textShadow={yellowShadow}
             >
               {item}
             </Text>
@@ -98,7 +99,7 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
               flexDirection={"column"}
             >
               {item.modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
+                <Text key={mIndex} color={blackWhite} textAlign="center">
                   {mode}
                 </Text>
               ))}

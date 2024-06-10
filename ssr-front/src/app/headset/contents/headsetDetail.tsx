@@ -1,28 +1,33 @@
+"use client";
+
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-import type { HeadsetList } from "@/types/types";
+import type { HeadsetList, Column } from "@/types/types";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import useColorValue from "@/hooks/useColorValue";
 
-export default async function HeadsetDetail() {
-  const resp = await fetch(API_ENDPOINTS.GET_ALL_HEADSET, {
-    next: { revalidate: 60000 },
-  });
-  const data = await resp.json();
-  const headsetList: HeadsetList[] = data.data;
+export default function HeadsetDetail() {
+  const { yellowShadow } = useColorValue();
+  const [headsetList, setHeadsetList] = useState<HeadsetList[]>();
+  const [column, setColumn] = useState<Column>();
 
-  const columnResponse = await fetch(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headset}`,
-    {
-      next: { revalidate: 60000 },
-    }
-  );
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headset}`,
+      setColumn
+    );
+  }, []);
 
-  const columnData = await columnResponse.json();
-  const column = columnData.data;
+  useEffect(() => {
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEADSET, setHeadsetList);
+  }, []);
+
+  if (!column || !headsetList) return null;
 
   return (
     <>
@@ -30,7 +35,7 @@ export default async function HeadsetDetail() {
         columnDesign={[2, null, 2]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {headsetList.map((item, index) => (
         <GridContents columnDesign={[2, null, 2]} key={index}>

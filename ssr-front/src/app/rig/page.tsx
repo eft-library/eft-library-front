@@ -1,3 +1,5 @@
+"use client";
+
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";

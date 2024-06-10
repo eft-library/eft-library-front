@@ -1,6 +1,5 @@
 "use client";
 
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,8 +9,10 @@ import QuestInfo from "./contents/questInfo";
 import QuestContents from "./contents/questContents";
 import "@/assets/quest.css";
 import type { Quest } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function QuestDetail() {
+  const { whiteBack, darkLightgray } = useColorValue();
   const param = useParams<{ id: string }>();
   const [questDetail, setQuestDetail] = useState<Quest>();
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function QuestDetail() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={ALL_COLOR.BACKGROUND}
+      bg={whiteBack}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -41,7 +42,7 @@ export default function QuestDetail() {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={ALL_COLOR.LIGHT_GRAY}
+        borderColor={darkLightgray}
         borderRadius={"lg"}
         paddingBottom={"20px"}
       >

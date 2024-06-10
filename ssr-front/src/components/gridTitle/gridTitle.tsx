@@ -1,6 +1,6 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { GridTitle } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function GridTitle({
   columnDesign,
@@ -8,13 +8,14 @@ export default function GridTitle({
   isShadow,
   shadowColor,
 }: GridTitle) {
+  const { blackWhite } = useColorValue();
   return (
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
       width={"95%"}
       outline={"2px solid"}
-      outlineColor={ALL_COLOR.WHITE}
+      outlineColor={blackWhite}
       borderRadius={"lg"}
       boxShadow={isShadow ? shadowColor : ""}
       p={2}
@@ -22,7 +23,7 @@ export default function GridTitle({
     >
       {column.map((item, index) => (
         <Text
-          color={ALL_COLOR.WHITE}
+          color={blackWhite}
           key={index}
           textAlign={"center"}
           fontWeight={700}

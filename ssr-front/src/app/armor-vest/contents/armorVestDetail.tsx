@@ -1,29 +1,34 @@
+"use client";
+
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Image, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import type { ArmorVest } from "@/types/types";
+import type { ArmorVest, Column } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
+import { useEffect, useState } from "react";
+import { fetchDataWithNone } from "@/lib/api";
 
-export default async function ArmorVestDetail() {
-  const response = await fetch(API_ENDPOINTS.GET_ALL_ARMOR_VEST, {
-    next: { revalidate: 60000 },
-  });
-  const data = await response.json();
-  const armorVestList: ArmorVest[] = data.data;
+export default function ArmorVestDetail() {
+  const { yellowShadow, blackWhite } = useColorValue();
+  const [armorVestList, setArmotVestList] = useState<ArmorVest[]>();
+  const [column, setColumn] = useState<Column>();
 
-  const columnResponse = await fetch(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.armorVest}`,
-    {
-      next: { revalidate: 60000 },
-    }
-  );
+  useEffect(() => {
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.armorVest}`,
+      setColumn
+    );
+  }, []);
 
-  const columnData = await columnResponse.json();
-  const column = columnData.data;
+  useEffect(() => {
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_ARMOR_VEST, setArmotVestList);
+  }, []);
+
+  if (!armorVestList || !column) return null;
 
   return (
     <>
@@ -31,7 +36,7 @@ export default async function ArmorVestDetail() {
         columnDesign={[2, null, 6]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {armorVestList.map((item, index) => (
         <GridContents columnDesign={[2, null, 6]} key={index}>
@@ -50,7 +55,7 @@ export default async function ArmorVestDetail() {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={ALL_COLOR.WHITE} textAlign="center">
+            <Text color={blackWhite} textAlign="center">
               {item.weight} kg
             </Text>
           </Box>

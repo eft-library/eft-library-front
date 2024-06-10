@@ -3,12 +3,13 @@
 import ItemBox from "./threeItem";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useLoadMap } from "@/hooks/useMap";
 import type { ThreeView } from "@/types/types";
 import ThreeSkeleton from "../skeleton/threeSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
+  const { threBack } = useColorValue();
   const collada = useLoadMap(map.three_image, true);
 
   if (!collada) return <ThreeSkeleton />;
@@ -17,7 +18,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
     <Canvas
       camera={{ position: [0, 60, 0] }}
       style={{
-        backgroundColor: ALL_COLOR.THREE_BACKGROUND,
+        backgroundColor: threBack,
         height: "100vh",
       }}
     >

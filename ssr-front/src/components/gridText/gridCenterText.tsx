@@ -1,8 +1,9 @@
 import { Box, Text } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { GridCenterText } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function GridCenterText({ value }: GridCenterText) {
+  const { blackWhite } = useColorValue();
   return (
     <Box
       w={"100%"}
@@ -12,7 +13,7 @@ export default function GridCenterText({ value }: GridCenterText) {
       alignItems="center"
       flexDirection={"column"}
     >
-      <Text color={ALL_COLOR.WHITE} textAlign="center">
+      <Text color={blackWhite} textAlign="center">
         {value}
       </Text>
     </Box>

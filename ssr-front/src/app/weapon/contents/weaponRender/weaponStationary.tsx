@@ -4,7 +4,6 @@ import { Text, Image, Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -12,11 +11,13 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import { formatImage } from "@/lib/formatImage";
 import type { WeaponStationary, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function WeaponStationary({
   stationaryList,
   category,
 }: WeaponStationary) {
+  const { blackWhite, yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function WeaponStationary({
         columnDesign={[2, null, 5]}
         column={column.value_kr}
         isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
+        shadowColor={yellowShadow}
       />
       {stationaryList.map((item, index) =>
         shouldRenderWeapon(item.category) ? (
@@ -69,7 +70,7 @@ export default function WeaponStationary({
               flexDirection={"column"}
             >
               {item.modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color={ALL_COLOR.WHITE} textAlign="center">
+                <Text key={mIndex} color={blackWhite} textAlign="center">
                   {mode}
                 </Text>
               ))}

@@ -2,7 +2,6 @@ export const ALL_COLOR = {
   BACKGROUND: "#111111",
   BEIGE: "#EFBE85",
   BLACK: "#010101",
-  BLACK_90: "#1e1e24",
   BLUE: "#00489a",
   DARK_GRAY: "#B8B8B8",
   DARK_YELLOW: "#d2b82e",

@@ -2,16 +2,17 @@
 
 import Logo from "@/assets/logo";
 import { Box, Flex, Text, SimpleGrid, GridItem } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function NotFound() {
+  const { whiteBack, blackWhite } = useColorValue();
   const size = useWindowSize();
   return (
     <Box
       className="Main"
       bgSize="cover"
-      bg={ALL_COLOR.BACKGROUND}
+      bg={whiteBack}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -38,7 +39,7 @@ export default function NotFound() {
           >
             <Box display={"flex"} flexDirection={"column"}>
               <Text
-                color={ALL_COLOR.WHITE}
+                color={blackWhite}
                 mb={6}
                 style={{ fontSize: size.width ? size.width / 30 : "inherit" }}
               >
@@ -46,14 +47,14 @@ export default function NotFound() {
               </Text>
               <Text
                 style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
-                color={ALL_COLOR.WHITE}
+                color={blackWhite}
                 mb={2}
               >
                 Page Not Found
               </Text>
               <Text
                 size={"sm"}
-                color={ALL_COLOR.WHITE}
+                color={blackWhite}
                 style={{ fontSize: size.width ? size.width / 80 : "inherit" }}
               >
                 죄송합니다. 페이지를 찾을 수 없습니다.

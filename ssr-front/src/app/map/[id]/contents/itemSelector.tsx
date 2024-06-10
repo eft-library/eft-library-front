@@ -13,13 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import DynamicSVG from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { ItemSelector } from "@/types/types";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function ItemSelector({
   viewItemList,
@@ -27,6 +27,7 @@ export default function ItemSelector({
   onClickAllItem,
   originItemList,
 }: ItemSelector) {
+  const { scrollHover, scrollThumb, scrollTrack, blackWhite } = useColorValue();
   const { itemFilter, setItemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
@@ -73,14 +74,14 @@ export default function ItemSelector({
       overflowY="hidden"
       height={"75%"}
       borderRadius="md"
-      border={isOpen ? `1px solid ${ALL_COLOR.WHITE}` : "none"}
+      border={isOpen ? `1px solid ${blackWhite}` : "none"}
       defaultIndex={[0]}
     >
       <AccordionItem
-        borderTop={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
-        borderLeft={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
-        borderRight={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
-        borderBottom={`1px solid ${ALL_COLOR.WHITE}`}
+        borderTop={isOpen ? "none" : `1px solid ${blackWhite}`}
+        borderLeft={isOpen ? "none" : `1px solid ${blackWhite}`}
+        borderRight={isOpen ? "none" : `1px solid ${blackWhite}`}
+        borderBottom={`1px solid ${blackWhite}`}
         borderRadius="md"
       >
         <Heading
@@ -94,11 +95,11 @@ export default function ItemSelector({
               flex="1"
               textAlign="left"
               fontWeight={700}
-              color={ALL_COLOR.WHITE}
+              color={blackWhite}
             >
               Filter
             </Box>
-            <AccordionIcon color={ALL_COLOR.WHITE} />
+            <AccordionIcon color={blackWhite} />
           </AccordionButton>
         </Heading>
         <AccordionPanel
@@ -107,15 +108,15 @@ export default function ItemSelector({
               width: "6px",
             },
             "&::-webkit-scrollbar-track": {
-              background: ALL_COLOR.SCROLL_TRACK,
+              background: scrollTrack,
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb": {
-              background: ALL_COLOR.SCROLL_THUMB,
+              background: scrollThumb,
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: ALL_COLOR.SCROLL_HOVER,
+              background: scrollHover,
             },
           }}
           position={"fixed"}
@@ -128,7 +129,7 @@ export default function ItemSelector({
           overflowY={"auto"}
         >
           <Box
-            color={ALL_COLOR.WHITE}
+            color={blackWhite}
             display={"flex"}
             alignItems={"center"}
             cursor={"pointer"}
@@ -157,7 +158,7 @@ export default function ItemSelector({
                     mt={"20px"}
                     onClick={() => onClickItem(item.value)}
                     opacity={viewItemList.includes(item.value) ? "" : "0.5"}
-                    color={ALL_COLOR.WHITE}
+                    color={blackWhite}
                     fontWeight={"600"}
                     fontSize={"xl"}
                     cursor={"pointer"}
@@ -186,7 +187,7 @@ export default function ItemSelector({
                         opacity={
                           viewItemList.includes(childItem.value) ? "" : "0.5"
                         }
-                        color={ALL_COLOR.WHITE}
+                        color={blackWhite}
                         cursor={"pointer"}
                         pl={"10px"}
                       >

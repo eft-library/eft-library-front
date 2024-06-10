@@ -2,7 +2,6 @@
 
 import { Box, Text, Stack } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import PageParent from "@/components/pageParent/pageParent";
@@ -15,8 +14,10 @@ import ThreeView from "./contents/threeView";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, Map } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function Map() {
+  const { blackWhite } = useColorValue();
   const [mapData, setMapData] = useState<Map>({
     name_en: "Sample Name EN",
     three_image: null,
@@ -88,12 +89,12 @@ export default function Map() {
       >
         <SubMapSelector onClickMap={onClickMap} mapId={mapData.id} />
         <Stack spacing={4}>
-          <Text as={"b"} color={ALL_COLOR.WHITE}>
+          <Text as={"b"} color={blackWhite}>
             2D MAP
           </Text>
           <JPGView map={mapData} viewItemList={viewItemList} />
           <br />
-          <Text as={"b"} color={ALL_COLOR.WHITE}>
+          <Text as={"b"} color={blackWhite}>
             3D MAP
           </Text>
           <ThreeView

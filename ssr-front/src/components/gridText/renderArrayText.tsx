@@ -1,8 +1,9 @@
 import { GridItem, Text } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { RenderArrayText } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function RenderArrayText({ arrayText }: RenderArrayText) {
+  const { blackWhite } = useColorValue();
   return (
     <GridItem
       display="flex"
@@ -13,7 +14,7 @@ export default function RenderArrayText({ arrayText }: RenderArrayText) {
       {arrayText.map((text, atIndex) => (
         <Text
           key={atIndex}
-          color={ALL_COLOR.WHITE}
+          color={blackWhite}
           mt={atIndex !== 0 ? 2 : 0}
           fontWeight={600}
           textAlign="center"

@@ -1,16 +1,16 @@
 import { SimpleGrid } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { type ReactNode } from "react";
 import type { GridContents } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function GridContents({ children, columnDesign }: GridContents) {
+  const { blackWhite } = useColorValue();
   return (
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
       width={"95%"}
       outline={"1px solid"}
-      outlineColor={ALL_COLOR.WHITE}
+      outlineColor={blackWhite}
       borderRadius={"lg"}
       p={2}
       mb={4}

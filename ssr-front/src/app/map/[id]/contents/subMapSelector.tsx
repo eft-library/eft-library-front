@@ -1,14 +1,15 @@
 "use client";
 
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { HStack, Text } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { SubMap, SubMapSelector } from "@/types/types";
+import useColorValue from "@/hooks/useColorValue";
 
 export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
+  const { lightDarkYellow, darkLightYellow } = useColorValue();
   const param = useParams<{ id: string }>();
   const [subMap, setSubMap] = useState<SubMap[]>();
 
@@ -24,9 +25,9 @@ export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
         <Text
           key={index}
           onClick={() => onClickMap(sub)}
-          color={mapId === sub.id ? ALL_COLOR.YELLOW : ALL_COLOR.DARK_YELLOW}
+          color={mapId === sub.id ? darkLightYellow : lightDarkYellow}
           fontWeight="bold"
-          _hover={{ color: ALL_COLOR.DARK_YELLOW }}
+          _hover={{ color: lightDarkYellow }}
           p="2"
           cursor="pointer"
         >
