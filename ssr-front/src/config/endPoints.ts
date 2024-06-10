@@ -21,6 +21,7 @@ const API_ENDPOINTS = {
   GET_ALL_HEAD_WEAR: baseUrl + "/api/item/head_wear",
   GET_ALL_ARMOR_VEST: baseUrl + "/api/item/armor_vest",
   GET_ALL_RIG: baseUrl + "/api/item/rig",
+  GET_ALL_BACKPACK: baseUrl + "/api/item/backpack",
 };
 
 export default API_ENDPOINTS;

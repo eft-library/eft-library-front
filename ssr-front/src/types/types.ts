@@ -50,6 +50,19 @@ export interface ArmorVest {
   weight: number;
 }
 
+export interface BackpackGrids {
+  width: number;
+  height: number;
+}
+
+export interface Backpack {
+  name: string;
+  image: string;
+  capacity: number;
+  grids: BackpackGrids[];
+  weight: number;
+}
+
 export interface ExtractionSVG extends ExtractionJPG {
   width: number;
   height: number;

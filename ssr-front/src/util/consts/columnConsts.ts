@@ -16,4 +16,5 @@ export const COLUMN_KEY = {
   armorVest: "ARMOR_VEST_COLUMN",
   rig: "RIG_COLUMN",
   quest: "QUEST_COLUMN",
+  backpack: "BACKPACK_COLUMN",
 } as const;
