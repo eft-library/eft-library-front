@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { PageParent } from "@/types/types";

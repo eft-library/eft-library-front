@@ -6,7 +6,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useRouter } from "next/navigation";
-import { useColorModeValue, Box } from "@chakra-ui/react";
+import { useColorModeValue, Box, List, ListItem } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 
 export default function Search() {
@@ -40,8 +40,8 @@ export default function Search() {
         isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
       >
         {({
+          getInputProps,
           getItemProps,
-          getMenuProps,
           isOpen,
           inputValue,
           highlightedIndex,
@@ -56,40 +56,36 @@ export default function Search() {
               {...getRootProps({}, { suppressRefError: true })}
             >
               <input
-                style={{
-                  fontSize: "18px",
-                  width: "100%",
-                  height: "50px",
-                  borderRadius: "10px",
-                  paddingLeft: "20px",
-                  backgroundColor: bgColor,
-                  boxSizing: "border-box",
-                  border: "2px solid",
-                  borderColor: borderColor,
-                }}
-                onFocus={() => setInputIsFocused(true)}
-                onBlur={() => setInputIsFocused(false)}
-              />{" "}
+                {...getInputProps({
+                  placeholder: "검색어를 입력해주세요",
+                  style: {
+                    fontSize: "18px",
+                    width: "100%",
+                    height: "50px",
+                    borderRadius: "10px",
+                    paddingLeft: "20px",
+                  },
+                  onFocus: () => setInputIsFocused(true), // 입력란이 포커스를 받으면 상태 변경
+                  onBlur: () => setInputIsFocused(false), // 입력란이 포커스를 잃으면 상태 변경
+                })}
+              />
               <Search2Icon
                 position={"absolute"}
                 top={"50%"}
                 right={"10px"}
                 transform={"translateY(-50%)"}
               />
-              <ul
-                {...getMenuProps()}
-                style={{
-                  position: "absolute",
-                  top: "calc(100% + 5px)",
-                  left: 0,
-                  backgroundColor: bgColor,
-                  border: "none",
-                  borderRadius: "4px",
-                  boxShadow: shadowColor,
-                  padding: "5px 0",
-                  zIndex: 10,
-                  width: inputIsFocused ? "100%" : "",
-                }}
+              <List
+                position={"absolute"}
+                top={"calc(100% + 5px)"}
+                left={0}
+                backgroundColor={bgColor}
+                border={"none"}
+                borderRadius={"4px"}
+                boxShadow={shadowColor}
+                padding={"5px 0"}
+                zIndex={10}
+                width={inputIsFocused ? "100%" : ""}
               >
                 {isOpen &&
                   searchList
@@ -98,14 +94,16 @@ export default function Search() {
                         !inputValue || item.value.includes(inputValue)
                     )
                     .map((item: any, index: number) => (
-                      <li
+                      <ListItem
                         key={item.id}
                         {...getItemProps({
                           index,
                           item,
                           style: {
                             backgroundColor:
-                              highlightedIndex === index ? liColor : bgColor,
+                              highlightedIndex === index
+                                ? "lightgray"
+                                : "white",
                             fontWeight:
                               selectedItem === item ? "bold" : "normal",
                             cursor: "pointer",
@@ -114,9 +112,9 @@ export default function Search() {
                         })}
                       >
                         {item.value}
-                      </li>
+                      </ListItem>
                     ))}
-              </ul>
+              </List>
             </Box>
           </Box>
         )}
