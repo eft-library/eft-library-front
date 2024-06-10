@@ -1,7 +1,14 @@
 "use client";
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { VStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
+import {
+  VStack,
+  Button,
+  Grid,
+  GridItem,
+  Box,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -11,6 +18,12 @@ import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 
 export default function Header() {
+  const bgColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
+  const subColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.MAP_BLACK);
+  const hoverColor = useColorModeValue(
+    ALL_COLOR.DARK_GRAY,
+    ALL_COLOR.LIGHT_GRAY
+  );
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
 
@@ -37,7 +50,7 @@ export default function Header() {
       <GridItem colSpan={1} h="14" />
       <GridItem colSpan={1} h="14" display={"flex"} justifyContent={"center"}>
         <Link href={"/"}>
-          <TopNaviLogi />
+          <TopNaviLogi color={bgColor} />
         </Link>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
@@ -49,8 +62,8 @@ export default function Header() {
               variant="solid"
               fontWeight="bold"
               bg="transparent"
-              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-              color={ALL_COLOR.WHITE}
+              _hover={{ bg: hoverColor }}
+              color={bgColor}
               p="4"
               boxShadow="none"
               backdropFilter="blur(8px)"
@@ -65,10 +78,10 @@ export default function Header() {
                   top="50px"
                   onMouseEnter={() => setSelectedMenu(main.value)}
                   onMouseLeave={() => setSelectedMenu(null)}
-                  bg={ALL_COLOR.MAP_BLACK}
+                  bg={subColor}
                 >
                   {main.sub_menus.map((sub, sub_index) => (
-                    <Box p={2} key={sub_index} _hover={{ bg: ALL_COLOR.GRAY }}>
+                    <Box p={2} key={sub_index} _hover={{ bg: hoverColor }}>
                       <Link href={sub.link}>{sub.kr_name}</Link>
                     </Box>
                   ))}

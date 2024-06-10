@@ -485,3 +485,7 @@ export interface MapOfTarkovExtraction {
 export interface ColladaData {
   colladaData: Collada;
 }
+
+export interface TopNaviLogo {
+  color: string;
+}

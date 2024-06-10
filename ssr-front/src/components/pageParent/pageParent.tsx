@@ -1,13 +1,15 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { PageParent } from "@/types/types";
 
 export default function PageParent({ children }: PageParent) {
+  const bgColor = useColorModeValue(ALL_COLOR.WHITE, ALL_COLOR.BACKGROUND);
+  const flexBgColor = useColorModeValue(ALL_COLOR.BACKGROUND, ALL_COLOR.WHITE);
   return (
     <Box
       className="Main"
       bgSize="cover"
-      bg={ALL_COLOR.BACKGROUND}
+      bg={bgColor}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -26,7 +28,7 @@ export default function PageParent({ children }: PageParent) {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={ALL_COLOR.WHITE}
+        borderColor={flexBgColor}
         borderRadius={"lg"}
         paddingBottom={"20px"}
       >

@@ -7,7 +7,7 @@ export const YOUTUBE_OPTION = {
 } as const;
 
 export const MOT_IMAGE_SLIDER_OPTION = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 1000,
   slidesToShow: 1,
@@ -18,7 +18,7 @@ export const MOT_IMAGE_SLIDER_OPTION = {
 } as const;
 
 export const MAIN_IMAGE_SLIDER_OPTION = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 1000,
   slidesToShow: 1,

@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         <ChakraProvider>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <CSSReset />
