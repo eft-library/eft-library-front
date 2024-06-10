@@ -57,13 +57,15 @@ export default function Search() {
             >
               <input
                 {...getInputProps({
-                  placeholder: "검색어를 입력해주세요",
                   style: {
                     fontSize: "18px",
                     width: "100%",
                     height: "50px",
                     borderRadius: "10px",
                     paddingLeft: "20px",
+                    boxSizing: "border-box",
+                    border: "2px solid",
+                    borderColor: borderColor,
                   },
                   onFocus: () => setInputIsFocused(true), // 입력란이 포커스를 받으면 상태 변경
                   onBlur: () => setInputIsFocused(false), // 입력란이 포커스를 잃으면 상태 변경
@@ -101,9 +103,7 @@ export default function Search() {
                           item,
                           style: {
                             backgroundColor:
-                              highlightedIndex === index
-                                ? "lightgray"
-                                : "white",
+                              highlightedIndex === index ? liColor : bgColor,
                             fontWeight:
                               selectedItem === item ? "bold" : "normal",
                             cursor: "pointer",
