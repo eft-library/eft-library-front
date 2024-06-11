@@ -11,6 +11,7 @@ import type { HeadwearList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import useColorValue from "@/hooks/useColorValue";
+import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function HeadWearDetail() {
   const { yellowShadow, blackWhite } = useColorValue();
@@ -32,7 +33,7 @@ export default function HeadWearDetail() {
     return column.filter((item) => item === "사진" || item === "이름");
   };
 
-  if (!column || !headWearList) return null;
+  if (!column || !headWearList) return <WeaponSkeleton />;
 
   return (
     <>

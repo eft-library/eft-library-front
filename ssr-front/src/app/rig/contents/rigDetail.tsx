@@ -11,6 +11,7 @@ import type { RigList, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function RigDetail() {
   const { blackWhite, yellowShadow } = useColorValue();
@@ -35,7 +36,7 @@ export default function RigDetail() {
     );
   };
 
-  if (!column || !rigList) return null;
+  if (!column || !rigList) return <WeaponSkeleton />;
 
   return (
     <>

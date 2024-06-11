@@ -10,6 +10,7 @@ import type { Backpack, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function BackpackDetail() {
   const { yellowShadow, blackWhite } = useColorValue();
@@ -27,7 +28,7 @@ export default function BackpackDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_BACKPACK, setBackpackList);
   }, []);
 
-  if (!backpackList || !column) return null;
+  if (!backpackList || !column) return <WeaponSkeleton />;
 
   return (
     <>

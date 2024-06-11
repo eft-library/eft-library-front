@@ -11,6 +11,7 @@ import type { ArmorVest, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function ArmorVestDetail() {
   const { yellowShadow, blackWhite } = useColorValue();
@@ -28,7 +29,7 @@ export default function ArmorVestDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_ARMOR_VEST, setArmotVestList);
   }, []);
 
-  if (!armorVestList || !column) return null;
+  if (!armorVestList || !column) return <WeaponSkeleton />;
 
   return (
     <>

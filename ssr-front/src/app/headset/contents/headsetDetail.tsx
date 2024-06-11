@@ -10,6 +10,7 @@ import type { HeadsetList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import useColorValue from "@/hooks/useColorValue";
+import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function HeadsetDetail() {
   const { yellowShadow } = useColorValue();
@@ -27,7 +28,7 @@ export default function HeadsetDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEADSET, setHeadsetList);
   }, []);
 
-  if (!column || !headsetList) return null;
+  if (!column || !headsetList) return <WeaponSkeleton />;
 
   return (
     <>
