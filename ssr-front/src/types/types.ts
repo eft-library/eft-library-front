@@ -304,6 +304,11 @@ export interface JPGView {
   viewItemList: string[];
 }
 
+export interface MapDetail {
+  mapData: Map;
+  onClickMap: Function;
+}
+
 export interface Map {
   name_en: string;
   three_image: string;

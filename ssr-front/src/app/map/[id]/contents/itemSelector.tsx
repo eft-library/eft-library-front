@@ -15,8 +15,6 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import DynamicSVG from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
-import { fetchDataWithNone } from "@/lib/api";
-import API_ENDPOINTS from "@/config/endPoints";
 import type { ItemSelector } from "@/types/types";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
 import useColorValue from "@/hooks/useColorValue";
@@ -28,13 +26,9 @@ export default function ItemSelector({
   originItemList,
 }: ItemSelector) {
   const { scrollHover, scrollThumb, scrollTrack, blackWhite } = useColorValue();
-  const { itemFilter, setItemFilter } = useAppStore((state) => state);
+  const { itemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
-
-  useEffect(() => {
-    fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
-  }, [setItemFilter]);
 
   useEffect(() => {
     if (originItemList) {
@@ -50,7 +44,12 @@ export default function ItemSelector({
     }
   }, [originItemList]);
 
+  if (!originalItem || !itemFilter) return <ItemSelectorSkeleton />;
+
   const checkAll = () => {
+    console.log(
+      viewItemList.sort().toString() === originalItem.sort().toString()
+    );
     if (originalItem) {
       return (
         viewItemList.length === originalItem.length &&
@@ -58,8 +57,6 @@ export default function ItemSelector({
       );
     }
   };
-
-  if (!originalItem || !itemFilter) return <ItemSelectorSkeleton />;
 
   return (
     <Accordion

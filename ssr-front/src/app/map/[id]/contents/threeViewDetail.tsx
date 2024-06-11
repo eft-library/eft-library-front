@@ -1,0 +1,49 @@
+"use client";
+
+import { Box, Text, Stack } from "@chakra-ui/react";
+import ItemSelector from "./itemSelector";
+import SubMapSelector from "./subMapSelector";
+import JPGView from "./jpgView";
+import ThreeView from "./threeView";
+import useColorValue from "@/hooks/useColorValue";
+import { useItemFilter } from "@/hooks/useItemFilter";
+import type { MapDetail } from "@/types/types";
+
+export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
+  const { blackWhite } = useColorValue();
+  const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
+    mapData.jpg_item_path
+  );
+
+  if (!viewItemList) return null;
+
+  return (
+    <Box
+      className="CenterBox"
+      borderRadius="lg"
+      padding="20px"
+      margin="5px"
+      width="100%"
+      height="100%"
+    >
+      <ItemSelector
+        originItemList={mapData.jpg_item_path}
+        viewItemList={viewItemList}
+        onClickItem={onClickItem}
+        onClickAllItem={onClickAllItem}
+      />
+      <SubMapSelector onClickMap={onClickMap} mapId={mapData.id} />
+      <Stack spacing={4}>
+        <Text as={"b"} color={blackWhite}>
+          2D MAP
+        </Text>
+        <JPGView map={mapData} viewItemList={viewItemList} />
+        <br />
+        <Text as={"b"} color={blackWhite}>
+          3D MAP
+        </Text>
+        <ThreeView key={mapData.id} map={mapData} viewItemList={viewItemList} />
+      </Stack>
+    </Box>
+  );
+}

@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
 import type { JpgItemPath, Item, SubItem } from "@/types/types";
+import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 
 /**
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
  */
 export const useItemFilter = (mapItem: JpgItemPath[]) => {
-  const { itemFilter } = useAppStore((state) => state);
+  const { itemFilter, setItemFilter } = useAppStore((state) => state);
   const [viewItemList, setViewItemList] = useState<string[]>(
     extractValues(itemFilter)
   );
+
+  useEffect(() => {
+    fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
+  }, [setItemFilter]);
+
   useEffect(() => {
     if (mapItem) {
       const valuesSet = new Set<string>();
@@ -174,6 +181,8 @@ const checkSomeChild = (itemList: string[], childList: string[]) => {
 const extractValues = (data: Item[]) => {
   let values: string[] = [];
 
+  if (data.length == 0) return null;
+
   data.forEach((item) => {
     values.push(item.value);
 
@@ -183,6 +192,5 @@ const extractValues = (data: Item[]) => {
       });
     }
   });
-
   return values;
 };
