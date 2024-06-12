@@ -418,6 +418,10 @@ export interface WeaponSpecial {
   category: string;
 }
 
+export interface KeyDetail {
+  category: string;
+}
+
 export interface WeaponDetail {
   category: string;
 }

@@ -19,4 +19,5 @@ export const COLUMN_KEY = {
   backpack: "BACKPACK_COLUMN",
   container: "CONTAINER_COLUMN",
   key: "KEY_COLUMN",
+  keyType: "KEY_TYPE",
 } as const;
