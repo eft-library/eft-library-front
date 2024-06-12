@@ -63,6 +63,22 @@ export interface Backpack {
   weight: number;
 }
 
+export interface Container {
+  name: string;
+  image: string;
+  capacity: number;
+  grids: BackpackGrids[];
+}
+
+export interface Key {
+  name: string;
+  image: string;
+  uses: number;
+  use_map_en: string;
+  use_map_kr: string;
+  map_value: string;
+}
+
 export interface ExtractionSVG extends ExtractionJPG {
   width: number;
   height: number;
