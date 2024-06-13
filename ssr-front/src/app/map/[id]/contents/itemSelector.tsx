@@ -47,9 +47,6 @@ export default function ItemSelector({
   if (!originalItem || !itemFilter) return <ItemSelectorSkeleton />;
 
   const checkAll = () => {
-    console.log(
-      viewItemList.sort().toString() === originalItem.sort().toString()
-    );
     if (originalItem) {
       return (
         viewItemList.length === originalItem.length &&

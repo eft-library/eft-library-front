@@ -12,37 +12,48 @@ export type Vector3Like = [
   depthSegments?: number
 ];
 
+interface strID {
+  id: string;
+}
+
 export interface ThreeItemPath {
   boxArgs: Vector3Like;
   position: Vector3;
   childValue: string;
 }
 
-export interface Youtube {
-  id: string;
-}
+export interface Youtube extends strID {}
 
 export interface BossContents {
   bossList: BossInfo[];
   bossId: string;
 }
 
-export interface BossInfo {
-  id: string;
+export interface BossDetail {
+  bossList: Boss[];
+  bossId: string | true;
+}
+
+export interface BossInfo extends strID {
   loot: string[];
   health_image: string[];
   location_guide: string;
 }
 
-export interface NPC {
-  id: string;
-  image: string;
+interface CommonData {
   name_kr: string;
+  name_en: string;
+  image: string;
 }
 
-export interface ArmorVest {
+export interface NPC extends strID, CommonData {}
+
+interface NameImage {
   name: string;
   image: string;
+}
+
+interface DefenseData extends NameImage {
   durability: number;
   capacity: number;
   class_value: number;
@@ -50,29 +61,45 @@ export interface ArmorVest {
   weight: number;
 }
 
-export interface BackpackGrids {
-  width: number;
-  height: number;
-}
+export interface HeadsetList extends NameImage {}
 
-export interface Backpack {
-  name: string;
-  image: string;
+export interface Backpack extends NameImage {
   capacity: number;
-  grids: BackpackGrids[];
+  grids: Size[];
   weight: number;
 }
 
-export interface ExtractionSVG extends ExtractionJPG {
-  width: number;
-  height: number;
-  opacity: string;
+export interface Extraction extends strID {
+  name: string;
+  faction: string;
+  single_use: boolean;
+  tip: string[];
+  image: string;
+  always_available: boolean;
+  requirements: Requirement[];
+  map: string;
 }
 
-export interface ExtractionJPG {
-  x: number;
-  y: number;
-  color: string;
+export interface Icon {
+  link: string;
+  name: string;
+}
+
+export interface Requirement {
+  desc: string;
+  image: string;
+}
+
+export interface ArmorVest extends DefenseData {}
+
+export interface Headwear extends DefenseData {
+  ricochet_str_kr: string;
+}
+
+export interface Rig extends DefenseData {}
+
+export interface ExtractionSVG extends ExtractionJPG, Size {
+  opacity: string;
 }
 
 export interface Size {
@@ -86,22 +113,61 @@ export interface SpawnChance {
   location: string;
 }
 
-export interface Boss {
-  id: string;
+interface MenuData {
+  en_name: string;
+  link: string | null;
+  order: number;
+  value: string;
+  kr_name: string;
+  image: string | null;
+}
+
+export interface Menu extends MenuData {
+  sub_menus: SubMenu[];
+}
+
+export interface SubMenu extends MenuData {
+  parent_value: string;
+}
+
+export interface JsonValue extends strID {
+  link: string;
   name_kr: string;
+  value: string;
+  desc_en: string;
+  desc_kr: string;
+  order: number;
+}
+
+interface MapData extends strID {
   name_en: string;
-  image: string;
+  three_image: string;
+  jpg_image: string;
+  depth: number;
+  link: string;
+  name_kr: string;
+  three_item_path: ThreeItemPath[];
+  jpg_item_path: JpgItemPath[];
+  order: number;
+  main_image: string;
+}
+
+export interface Map extends MapData {
+  sub: SubMap[];
+}
+
+export interface SubMap extends MapData {
+  parent_value: string;
+}
+
+export interface Boss extends BossInfo, CommonData {
   health_total: number;
-  loot: string[];
   spawn: string[];
   faction: string;
   location_spawn_chance_en: SpawnChance[];
   location_spawn_chance_kr: SpawnChance[];
   followers_en: string[];
   followers_kr: string[];
-  health_image: string[];
-  location_guide: string;
-  update_time: string;
 }
 
 export interface ContentsSelector {
@@ -112,28 +178,17 @@ export interface ContentsSelector {
   itemDesc: string;
 }
 
+export interface LinkSelector {
+  itemList: JsonValue[];
+  itemDesc: string;
+  itemLink: string;
+  mt: number;
+}
+
 export interface MapOfTarkov {
   boss_list: Boss[];
   map_info: Map;
   extraction_info: Extraction[];
-}
-
-export interface Extraction {
-  name: string;
-  faction: string;
-  single_use: boolean;
-  tip: string[];
-  update_time: string;
-  image: string;
-  id: string;
-  always_available: boolean;
-  requirements: Requirement[];
-  map: string;
-}
-
-export interface Requirement {
-  desc: string;
-  image: string;
 }
 
 export interface MapOfTarkovContents {
@@ -145,17 +200,15 @@ export interface DividerContents {
   headText: string;
 }
 
-export interface Column {
-  id: string;
+export interface Column extends strID {
   type: string;
-  update_time: string;
+
   value_kr: string[] | null;
   value_en: string[] | null;
   json_value: JsonValue[] | null;
 }
 
-export interface FooterColumn {
-  id: string;
+export interface FooterColumn extends strID {
   json_value: FooterJsonValue;
   type: string;
 }
@@ -163,11 +216,6 @@ export interface FooterColumn {
 export interface FooterJsonValue {
   icon: Icon[];
   text: Text[];
-}
-
-export interface Icon {
-  link: string;
-  name: string;
 }
 
 export interface Text {
@@ -208,28 +256,6 @@ export interface GridTitle {
   shadowColor: string;
 }
 
-export interface Menu {
-  en_name: string;
-  link: string | null;
-  order: number;
-  update_time: string;
-  value: string;
-  kr_name: string;
-  image: string | null;
-  sub_menus: SubMenu[];
-}
-
-export interface SubMenu {
-  parent_value: string;
-  en_name: string;
-  order: number;
-  update_time: string;
-  kr_name: string;
-  value: string;
-  link: string;
-  image: string;
-}
-
 export interface SliderOption {
   dots: boolean;
   infinite: boolean;
@@ -248,28 +274,6 @@ export interface ImageSlider {
   useZoom: boolean;
 }
 
-export interface JsonValue {
-  id: string;
-  link: string;
-  name_kr: string;
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  order: number;
-}
-
-export interface LinkSelector {
-  itemList: JsonValue[];
-  itemDesc: string;
-  itemLink: string;
-  mt: number;
-}
-
-export interface BossDetail {
-  bossList: Boss[];
-  bossId: string | true;
-}
-
 export interface PageParent {
   children: ReactNode;
 }
@@ -278,11 +282,27 @@ export interface OrbitControl {
   reset: () => void;
 }
 
-export interface JpgItemPath {
+interface Coordinate {
   x: number;
   y: number;
+}
+
+export interface ExtractionJPG extends Coordinate {
+  color: string;
+}
+
+export interface JpgItemPath extends Coordinate {
   childValue: string;
   motherValue: string;
+}
+
+export interface DynamicSVG extends Coordinate {
+  svgValue: string;
+  isEnable: boolean;
+}
+
+export interface DynamicJPG extends Coordinate {
+  svgValue: AllColorKeys | string;
 }
 
 export interface SubItem {
@@ -295,7 +315,7 @@ export interface Item {
   value: string;
   kr: string;
   en: string;
-  update_time: string;
+
   sub: SubItem[];
 }
 
@@ -309,54 +329,9 @@ export interface MapDetail {
   onClickMap: Function;
 }
 
-export interface Map {
-  name_en: string;
-  three_image: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  main_image: string;
-  sub: SubMap[];
-}
-
 export interface SubMapSelector {
   onClickMap: Function;
   mapId: string;
-}
-
-export interface SubMap {
-  name_en: string;
-  three_image: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  parent_value: string;
-  update_time: string;
-  name_kr: string;
-  id: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  main_image: string;
-}
-
-export interface DynamicSVG {
-  x: number;
-  y: number;
-  svgValue: string;
-  isEnable: boolean;
-}
-
-export interface DynamicJPG {
-  x: number;
-  y: number;
-  svgValue: AllColorKeys | string;
 }
 
 export interface SubHeader {
@@ -371,74 +346,27 @@ export interface WeaponKnife {
   knifeList: JsonArrayText[];
 }
 
-// interface StationaryList {
-//     name: string;
-//     short_name: string;
-//     image: string;
-//     category: string;
-//     caliber: string;
-//     modes_kr: string[];
-//     fire_rate: number;
-//     carliber: string;
-//   }
+interface Category {
+  category: string;
+}
 
-export interface WeaponStationary {
+export interface WeaponStationary extends Category {
   stationaryList: JsonArrayText[];
-  category: string;
 }
 
-// interface SpecialListType {
-//     name: string;
-//     short_name: string;
-//     image: string;
-//     category: string;
-//     caliber: string;
-//     modes_kr: string[];
-//     fire_rate: number;
-//     carliber: string;
-//   }
-export interface WeaponSpecial {
+export interface WeaponSpecial extends Category {
   specialList: JsonArrayText[];
-  category: string;
 }
 
-export interface WeaponDetail {
-  category: string;
-}
-
-export interface Rig {
-  name: string;
-  image: string;
-  durability: number;
-  capacity: number;
-  class_value: string;
-  areas_kr: string[];
-  weight: number;
-}
+export interface WeaponDetail extends Category {}
 
 export interface RigList {
   class_rig: Rig[];
   no_class_rig: Rig[];
 }
 
-// interface GunListType {
-//     name: string;
-//     short_name: string;
-//     image: string;
-//     category: string;
-//     caliber: string;
-//     modes_kr: string[];
-//     fire_rate: number;
-//     carliber: string;
-//     default_ammo: string;
-//     ergonomics: number;
-//     recoil_horizontal: number;
-//     recoil_vertical: number;
-//   }
-
-export interface WeaponGun {
+export interface WeaponGun extends Category {
   gunList: JsonArrayText[];
-  category: string;
 }
 
 export interface ItemSelector {
@@ -448,39 +376,19 @@ export interface ItemSelector {
   originItemList: JpgItemPath[];
 }
 
-export interface Headwear {
-  name: string;
-  image: string;
-  durability: number;
-  capacity: number;
-  class_value: string;
-  areas_kr: string[];
-  weight: number;
-  ricochet_str_kr: string;
-}
-
 export interface HeadwearList {
   class_head_wear: Headwear[];
   no_class_head_wear: Headwear[];
 }
 
-export interface HeadsetList {
-  name: string;
-  image: string;
-}
-
-export interface Quest {
-  id: string;
+export interface Quest extends strID, CommonData {
   npc_value: string;
-  name_kr: string;
-  name_en: string;
   title_kr: string;
   title_en: string;
   required_kappa: boolean;
   objectives_kr: string[];
   rewards_kr: string[];
   guide: string;
-  image: string;
 }
 
 export interface QuestContents {
