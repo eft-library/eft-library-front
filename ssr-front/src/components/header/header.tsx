@@ -9,6 +9,8 @@ import TopNaviLogi from "@/assets/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
+import { useSession } from "next-auth/react";
+import Login from "../login/login";
 
 export default function Header() {
   const { backWhite, whiteMapBlack, darkLightgray } = useColorValue();
@@ -77,6 +79,7 @@ export default function Header() {
               )}
             </Button>
           ))}
+        <Login />
       </GridItem>
     </Grid>
   );

@@ -5,6 +5,7 @@ import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import { AppStoreProvider } from "@/store/provider";
 import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
+import AuthContext from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Tarkov Korea Library",
@@ -19,13 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ChakraProvider>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <CSSReset />
-          <Header />
-          <AppStoreProvider>{children}</AppStoreProvider>
-          <Footer />
-        </ChakraProvider>
+        <AuthContext>
+          <ChakraProvider>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <CSSReset />
+            <Header />
+            <AppStoreProvider>{children}</AppStoreProvider>
+            <Footer />
+          </ChakraProvider>
+        </AuthContext>
       </body>
     </html>
   );
