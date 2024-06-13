@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.API_URL;
 
 const API_ENDPOINTS = {
   GET_YOUTUBE: baseUrl + "/api/news/youtube",
