@@ -202,7 +202,6 @@ export interface DividerContents {
 
 export interface Column extends strID {
   type: string;
-
   value_kr: string[] | null;
   value_en: string[] | null;
   json_value: JsonValue[] | null;
@@ -415,3 +414,33 @@ export interface ColladaData {
 export interface TopNaviLogo {
   color: string;
 }
+
+export interface Container {
+  name: string;
+  image: string;
+  capacity: number;
+  grids: Size[];
+}
+
+export interface Key {
+  name: string;
+  image: string;
+  uses: number;
+  use_map_en: string;
+  use_map_kr: string;
+  map_value: string;
+}
+
+export interface Container extends NameImage {
+  capacity: number;
+  grids: Size[];
+}
+
+export interface Key extends NameImage {
+  uses: number;
+  use_map_en: string;
+  use_map_kr: string;
+  map_value: string;
+}
+
+export interface KeyDetail extends Category {}
