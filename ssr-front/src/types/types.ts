@@ -426,9 +426,9 @@ export interface Key {
   name: string;
   image: string;
   uses: number;
-  use_map_en: string;
-  use_map_kr: string;
-  map_value: string;
+  use_map_en: string[];
+  use_map_kr: string[];
+  map_value: string[];
 }
 
 export interface Container extends NameImage {
@@ -438,9 +438,9 @@ export interface Container extends NameImage {
 
 export interface Key extends NameImage {
   uses: number;
-  use_map_en: string;
-  use_map_kr: string;
-  map_value: string;
+  use_map_en: string[];
+  use_map_kr: string[];
+  map_value: string[];
 }
 
 export interface KeyDetail extends Category {}

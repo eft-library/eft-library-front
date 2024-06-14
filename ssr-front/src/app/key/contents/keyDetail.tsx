@@ -9,6 +9,7 @@ import { Box, Image } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
+import RenderArrayText from "@/components/gridText/renderArrayText";
 import useColorValue from "@/hooks/useColorValue";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
@@ -28,8 +29,8 @@ export default function KeyDetail({ category }: KeyDetail) {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_KEY, setKeyList);
   }, []);
 
-  const checkViewKey = (mapValue: string, keyCategory: string) => {
-    return keyCategory === "ALL" || mapValue === keyCategory;
+  const checkViewKey = (mapValue: Array<string>, keyCategory: string) => {
+    return keyCategory === "ALL" || mapValue.includes(keyCategory);
   };
 
   if (!column || !keyList) return <WeaponSkeleton />;
@@ -59,7 +60,7 @@ export default function KeyDetail({ category }: KeyDetail) {
               <Image src={item.image} maxH={"200px"} alt={item.name} />
             </Box>
             <GridCenterText value={item.name} />
-            <GridCenterText value={item.use_map_kr} />
+            <RenderArrayText arrayText={item.use_map_kr} />
             <GridCenterText value={item.uses} />
           </GridContents>
         ) : null
