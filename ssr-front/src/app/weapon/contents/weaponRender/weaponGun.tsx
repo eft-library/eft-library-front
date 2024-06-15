@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid, Text, Image, GridItem } from "@chakra-ui/react";
+import { Box, Text, Image, GridItem } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import { useEffect, useState } from "react";
@@ -10,9 +10,10 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponGun, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
+import GridTitle from "@/components/gridTitle/gridTitle";
 
 export default function WeaponGun({ gunList, category }: WeaponGun) {
-  const { blackWhite, yellowShadow, whiteBlackShadow } = useColorValue();
+  const { blackWhite, yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -51,31 +52,13 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
 
   return (
     <>
-      <SimpleGrid
-        columns={[2, null, 9]}
-        spacing={2}
-        width={"95%"}
-        outline={"2px solid"}
-        outlineColor={blackWhite}
-        borderRadius={"lg"}
-        boxShadow={whiteBlackShadow}
-        p={2}
-        mb={6}
-      >
-        {column.value_kr.map((item, index) => (
-          <GridItem key={index} colSpan={index === 0 ? 2 : 1}>
-            <Text
-              color={blackWhite}
-              key={index}
-              textAlign={"center"}
-              fontWeight={700}
-              textShadow={yellowShadow}
-            >
-              {item}
-            </Text>
-          </GridItem>
-        ))}
-      </SimpleGrid>
+      <GridTitle
+        columnDesign={[2, null, 9]}
+        column={column.value_kr}
+        isShadow
+        shadowColor={yellowShadow}
+        isWeapon
+      />
       {gunList.map((item, index) =>
         shouldRenderWeapon(item.category) ? (
           <GridContents columnDesign={[2, null, 9]} key={index}>

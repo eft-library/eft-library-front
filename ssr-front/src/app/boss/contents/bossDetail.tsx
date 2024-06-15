@@ -13,7 +13,7 @@ import DetailSkeleton from "./skeleton/detailSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
-  const { blackWhite } = useColorValue();
+  const { blackWhite, whiteBlack } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -39,7 +39,10 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
         width={"100%"}
         outline={"1px solid"}
         outlineColor={blackWhite}
+        bg={whiteBlack}
         borderRadius={"lg"}
+        position={["-webkit-sticky", "sticky"]}
+        top={16}
         p={2}
         mb={6}
       >

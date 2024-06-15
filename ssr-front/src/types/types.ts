@@ -254,6 +254,7 @@ export interface GridTitle {
   column: string[];
   isShadow: boolean;
   shadowColor: string;
+  isWeapon?: boolean;
 }
 
 export interface SliderOption {
