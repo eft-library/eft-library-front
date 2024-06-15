@@ -125,12 +125,13 @@ export default function ProvisionsDetail() {
                     </Text>
                   ) : null}
                   <Box key={index} display={"flex"}>
+                    <Text>-&nbsp;</Text>
                     <Text
                       color={checkPlus(text["krSkill"])}
                       fontWeight={600}
                       textAlign="center"
                     >
-                      - {fixStr(text["krSkill"])}
+                      {fixStr(text["krSkill"])}
                     </Text>
                     <Text
                       color={checkPlus(text["value"])}
