@@ -24,7 +24,7 @@ export default function GridCenterText({
   const addPlusMinus = (text: number | string) => {
     if (typeof text === "number") {
       if (text > 0) {
-        return `+ ${text}`;
+        return `+${text}`;
       } else {
         return text;
       }

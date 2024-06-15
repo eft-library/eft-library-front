@@ -450,5 +450,5 @@ export interface Provisions extends CommonData, strID, Category {
   short_name: string;
   energy: number;
   hydration: number;
-  stim_effects: JsonArrayText;
+  stim_effects: JsonArrayText[];
 }
