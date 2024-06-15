@@ -7,7 +7,7 @@ import { Box, Image, GridItem, Text } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import useColorValue from "@/hooks/useColorValue";
@@ -36,11 +36,14 @@ export default function ProvisionsDetail() {
       const key = `${effect.delay}-${effect.duration}`;
       if (!seen.has(key)) {
         seen.add(key);
+      } else if (effect.skillName === "Painkiller") {
+        // pass
       } else {
         delete effect.delay;
         delete effect.duration;
       }
     }
+    console.log(effects);
     return effects;
   }
 
@@ -113,18 +116,15 @@ export default function ProvisionsDetail() {
           >
             {item.stim_effects.length > 0 ? (
               filterStimEffects(item.stim_effects).map((text, index) => (
-                <>
+                <React.Fragment key={index}>
                   {text["delay"] && text["duration"] ? (
-                    <Text
-                      key={index}
-                      color={ALL_COLOR.LIGHT_YELLO}
-                      mt={4}
-                      fontWeight={600}
-                    >
-                      {text["delay"]}초 지연 / {text["duration"]}초 지속
+                    <Text color={ALL_COLOR.LIGHT_YELLO} mt={4} fontWeight={600}>
+                      {text["skillName"] === "Painkiller"
+                        ? `${text["duration"]}초 지속`
+                        : `${text["delay"]}초 지연 / ${text["duration"]}초 지속`}
                     </Text>
                   ) : null}
-                  <Box key={index} display={"flex"}>
+                  <Box display={"flex"}>
                     <Text>-&nbsp;</Text>
                     <Text
                       color={checkPlus(text["krSkill"])}
@@ -138,10 +138,12 @@ export default function ProvisionsDetail() {
                       fontWeight={600}
                       textAlign="center"
                     >
-                      &nbsp;{addPlusMinus(text["value"])}
+                      {text["skillName"] === "Painkiller"
+                        ? ``
+                        : ` ${addPlusMinus(text["value"])}`}
                     </Text>
                   </Box>
-                </>
+                </React.Fragment>
               ))
             ) : (
               <Text color={blackWhite}>-</Text>
