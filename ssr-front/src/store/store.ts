@@ -24,7 +24,7 @@ export type AppStoreType = AppStateType & AppActionsType;
 export const defaultInitState: AppStateType = {
   bossId: "RESHALA",
   weaponCategory: "ALL",
-  keyCategory: "CUSTOM",
+  keyCategory: "CUSTOMS",
   npcId: "PRAPOR",
   itemFilter: [],
 };

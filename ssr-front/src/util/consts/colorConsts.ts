@@ -20,6 +20,7 @@ export const ALL_COLOR = {
   THREE_BACKGROUND: "#1e1e24",
   WHITE: "#ffffff",
   YELLOW: "#ffd700",
+  LIGHT_YELLO: "#FDFFA7",
 
   // Item
   DISABLE: "#f4f4f4",

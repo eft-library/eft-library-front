@@ -109,7 +109,6 @@ export default function ProvisionsDetail() {
           <GridItem
             display="flex"
             justifyContent="center"
-            alignItems="center"
             flexDirection={"column"}
           >
             {item.stim_effects.length > 0 ? (
@@ -118,10 +117,9 @@ export default function ProvisionsDetail() {
                   {text["delay"] && text["duration"] ? (
                     <Text
                       key={index}
-                      color={blackWhite}
+                      color={ALL_COLOR.LIGHT_YELLO}
                       mt={4}
                       fontWeight={600}
-                      textAlign="center"
                     >
                       {text["delay"]}초 지연 / {text["duration"]}초 지속
                     </Text>
@@ -132,7 +130,7 @@ export default function ProvisionsDetail() {
                       fontWeight={600}
                       textAlign="center"
                     >
-                      {fixStr(text["krSkill"])}
+                      - {fixStr(text["krSkill"])}
                     </Text>
                     <Text
                       color={checkPlus(text["value"])}
