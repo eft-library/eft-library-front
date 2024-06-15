@@ -20,4 +20,5 @@ export const COLUMN_KEY = {
   container: "CONTAINER_COLUMN",
   key: "KEY_COLUMN",
   keyType: "KEY_TYPE",
+  food_drink: "FOOD_DRINK_COLUMN",
 } as const;

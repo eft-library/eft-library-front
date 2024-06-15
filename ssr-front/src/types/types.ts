@@ -228,6 +228,7 @@ export interface GridContents {
 
 export interface GridCenterText {
   value: string | number;
+  isEffect?: Boolean;
 }
 
 export interface RenderArrayText {
@@ -444,3 +445,10 @@ export interface Key extends NameImage {
 }
 
 export interface KeyDetail extends Category {}
+
+export interface Provisions extends CommonData, strID, Category {
+  short_name: string;
+  energy: number;
+  hydration: number;
+  stim_effects: JsonArrayText;
+}

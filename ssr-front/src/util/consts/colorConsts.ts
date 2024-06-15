@@ -12,6 +12,7 @@ export const ALL_COLOR = {
   ORANGE: "#FFA34E",
   PINK: "#ff80ed",
   RED: "#FF0000",
+  LIGHT_BLUE: "#00E0FF",
   SCROLL_HOVER: "#B4B4B4",
   SCROLL_THUMB: "#EEEEEE",
   SCROLL_TRACK: "#5C5C5C",

@@ -24,6 +24,7 @@ const API_ENDPOINTS = {
   GET_ALL_BACKPACK: baseUrl + "/api/item/backpack",
   GET_ALL_CONTAINER: baseUrl + "/api/item/container",
   GET_ALL_KEY: baseUrl + "/api/item/key",
+  GET_ALL_FOOD_DRINK: baseUrl + "/api/item/food_drink",
 };
 
 export default API_ENDPOINTS;
