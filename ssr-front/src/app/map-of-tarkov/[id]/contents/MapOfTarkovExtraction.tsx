@@ -1,10 +1,9 @@
 "use client";
 
-import { SimpleGrid, Image, GridItem, Text, Box } from "@chakra-ui/react";
+import { SimpleGrid, GridItem, Text, Box } from "@chakra-ui/react";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import RenderText from "@/components/gridText/renderText";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import { formatImage } from "@/lib/formatImage";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
@@ -83,7 +82,7 @@ export default function MapOfTarkovExtraction({
             >
               {extraction.requirements.map((item, index) => (
                 <Box key={index}>
-                  <Image src={formatImage(item.image)} alt="extraction" />
+                  <ImageZoom imgPath={item.image} needFormat />
                   <Text
                     color={blackWhite}
                     mt={2}
