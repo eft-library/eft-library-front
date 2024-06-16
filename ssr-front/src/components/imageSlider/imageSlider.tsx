@@ -4,10 +4,9 @@ import Slider from "react-slick";
 import { Box, Image } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "photoswipe/dist/photoswipe.css";
-import { Gallery, Item } from "react-photoswipe-gallery";
 import { formatImage } from "@/lib/formatImage";
 import type { ImageSlider } from "@/types/types";
+import ImageZoom from "../imageZoom/imageZoom";
 
 export default function ImageSlider({
   mapList,
@@ -36,25 +35,7 @@ export default function ImageSlider({
           {mapList.map((map, index) => (
             <Box boxSize="sm" key={index} height={"100%"}>
               {useZoom ? (
-                <Gallery>
-                  <Item
-                    original={formatImage(map[imagePath])}
-                    thumbnail={formatImage(map[imagePath])}
-                    width="1440"
-                    height="810.06"
-                  >
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={formatImage(map[imagePath])}
-                        boxSize="100%"
-                        cursor="pointer"
-                        alt="image"
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <ImageZoom needFormat isMax={false} imgPath={map[imagePath]} />
               ) : (
                 <Image
                   alt="image"

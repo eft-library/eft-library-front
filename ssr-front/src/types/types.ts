@@ -453,3 +453,9 @@ export interface Provisions extends CommonData, strID, Category {
   hydration: number;
   stim_effects: JsonArrayText[];
 }
+
+export interface ImageZoom {
+  imgPath: string;
+  needFormat?: boolean;
+  isMax?: boolean;
+}

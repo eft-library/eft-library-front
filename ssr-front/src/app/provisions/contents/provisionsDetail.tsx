@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function ProvisionsDetail() {
@@ -104,7 +105,7 @@ export default function ProvisionsDetail() {
       {provisionList.map((item, index) => (
         <GridContents columnDesign={[2, null, 5]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name_kr} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name_kr} />
           <GridCenterText value={item.energy} isEffect />

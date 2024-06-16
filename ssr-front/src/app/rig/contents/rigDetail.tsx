@@ -4,13 +4,14 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { RigList, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function RigDetail() {
@@ -49,7 +50,7 @@ export default function RigDetail() {
       {rigList.class_rig.map((item, index) => (
         <GridContents columnDesign={[2, null, 7]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.durability} />
@@ -80,7 +81,7 @@ export default function RigDetail() {
       {rigList.no_class_rig.map((item, index) => (
         <GridContents columnDesign={[2, null, 4]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.capacity} />

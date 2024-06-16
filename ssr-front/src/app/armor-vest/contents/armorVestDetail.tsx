@@ -4,7 +4,7 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { ArmorVest, Column } from "@/types/types";
@@ -12,6 +12,7 @@ import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function ArmorVestDetail() {
   const { yellowShadow, blackWhite } = useColorValue();
@@ -42,7 +43,7 @@ export default function ArmorVestDetail() {
       {armorVestList.map((item, index) => (
         <GridContents columnDesign={[2, null, 6]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.durability} />

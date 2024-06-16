@@ -1,6 +1,6 @@
 "use client";
 
-import { Image, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -11,6 +11,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, WeaponSpecial } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function WeaponSpecial({
   specialList,
@@ -51,7 +52,7 @@ export default function WeaponSpecial({
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Image src={item.image} maxH={"200px"} alt={item.name} />
+              <ImageZoom imgPath={item.image} />
             </Box>
             <GridCenterText value={item.short_name} />
           </GridContents>

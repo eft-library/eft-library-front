@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Image, Box } from "@chakra-ui/react";
+import { Text, Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -12,6 +12,7 @@ import { formatImage } from "@/lib/formatImage";
 import type { WeaponStationary, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function WeaponStationary({
   stationaryList,
@@ -53,11 +54,7 @@ export default function WeaponStationary({
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Image
-                src={formatImage(item.image)}
-                maxH={"200px"}
-                alt={item.name}
-              />
+              <ImageZoom imgPath={item.image} />
             </Box>
             <GridCenterText value={item.short_name} />
             <GridCenterText value={item.carliber} />

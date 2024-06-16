@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid, Image } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import RenderText from "@/components/gridText/renderText";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import RenderJsonText from "@/components/gridText/renderJsonText";
@@ -11,6 +11,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, BossDetail } from "@/types/types";
 import DetailSkeleton from "./skeleton/detailSkeleton";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
   const { blackWhite, whiteBlack } = useColorValue();
@@ -64,7 +65,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               mb={4}
               key={index}
             >
-              <Image src={boss.image} alt={boss.name_kr} />
+              <ImageZoom imgPath={boss.image} isMax={false} />
               <RenderText text={boss.name_kr} />
               <RenderText text={boss.faction} />
               <RenderJsonText

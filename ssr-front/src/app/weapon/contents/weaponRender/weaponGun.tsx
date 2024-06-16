@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Text, Image, GridItem } from "@chakra-ui/react";
+import { Box, Text, GridItem } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import type { WeaponGun, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 import GridTitle from "@/components/gridTitle/gridTitle";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function WeaponGun({ gunList, category }: WeaponGun) {
   const { blackWhite, yellowShadow } = useColorValue();
@@ -68,7 +69,7 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                <Image src={item.image} maxH={"200px"} alt={item.name} />
+                <ImageZoom imgPath={item.image} />
               </Box>
             </GridItem>
             <GridCenterText value={item.short_name} />

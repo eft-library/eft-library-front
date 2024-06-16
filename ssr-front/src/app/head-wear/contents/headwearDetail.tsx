@@ -4,13 +4,14 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import RenderArrayText from "@/components/gridText/renderArrayText";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { HeadwearList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function HeadWearDetail() {
@@ -46,7 +47,7 @@ export default function HeadWearDetail() {
       {headWearList.class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 7]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.class_value} />
@@ -77,7 +78,7 @@ export default function HeadWearDetail() {
       {headWearList.no_class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 2]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt="item" />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
         </GridContents>

@@ -3,13 +3,14 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box, Image } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { HeadsetList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function HeadsetDetail() {
@@ -41,7 +42,7 @@ export default function HeadsetDetail() {
       {headsetList.map((item, index) => (
         <GridContents columnDesign={[2, null, 2]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Image src={item.image} maxH={"200px"} alt={item.name} />
+            <ImageZoom imgPath={item.image} />
           </Box>
           <GridCenterText value={item.name} />
         </GridContents>

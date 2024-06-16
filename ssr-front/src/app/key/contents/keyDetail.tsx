@@ -5,12 +5,13 @@ import { fetchDataWithNone } from "@/lib/api";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Key, Column, KeyDetail } from "@/types/types";
-import { Box, Image } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import RenderArrayText from "@/components/gridText/renderArrayText";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function KeyDetail({ category }: KeyDetail) {
@@ -57,7 +58,7 @@ export default function KeyDetail({ category }: KeyDetail) {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Image src={item.image} maxH={"200px"} alt={item.name} />
+              <ImageZoom imgPath={item.image} />
             </Box>
             <GridCenterText value={item.name} />
             <RenderArrayText arrayText={item.use_map_kr} />

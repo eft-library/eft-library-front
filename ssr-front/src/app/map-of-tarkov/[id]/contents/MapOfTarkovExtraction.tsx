@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import type { MapOfTarkovExtraction, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function MapOfTarkovExtraction({
   extractionList,
@@ -67,7 +68,7 @@ export default function MapOfTarkovExtraction({
               justifyContent="center"
               alignItems="center"
             >
-              <Image src={formatImage(extraction.image)} alt="extraction" />
+              <ImageZoom imgPath={extraction.image} needFormat />
             </GridItem>
 
             <RenderText text={extraction.name} />

@@ -1,7 +1,9 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import type { BossContents, BossInfo } from "@/types/types";
 import ContentsSkeleton from "./skeleton/contentsSkeleton";
+import ImageZoom from "@/components/imageZoom/imageZoom";
+import React from "react";
 
 export default function BossContents({ bossList, bossId }: BossContents) {
   let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId);
@@ -23,24 +25,20 @@ export default function BossContents({ bossList, bossId }: BossContents) {
       <DividerContents headText="피통">
         <Box display={"flex"} alignItems={"center"}>
           {bossInfo.health_image.map((boss, index) => (
-            <Image
-              key={index}
-              src={boss}
-              ml={index !== 0 ? 10 : 0}
-              alt="health"
-            />
+            <React.Fragment key={index}>
+              <ImageZoom imgPath={boss} isMax={false} />
+              <Box ml={10} />
+            </React.Fragment>
           ))}
         </Box>
       </DividerContents>
       <DividerContents headText="전리품">
         <Box display={"flex"} alignItems={"center"}>
           {bossInfo.loot.map((boss, index) => (
-            <Image
-              key={index}
-              src={boss}
-              ml={index !== 0 ? 10 : 0}
-              alt="loot"
-            />
+            <React.Fragment key={index}>
+              <ImageZoom imgPath={boss} isMax={false} />
+              <Box ml={10} />
+            </React.Fragment>
           ))}
         </Box>
       </DividerContents>
