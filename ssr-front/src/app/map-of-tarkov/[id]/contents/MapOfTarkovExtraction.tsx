@@ -80,22 +80,30 @@ export default function MapOfTarkovExtraction({
               alignItems="center"
               flexDirection={"column"}
             >
-              {extraction.requirements.map((item, index) => (
-                <Box key={index}>
-                  <ImageZoom imgPath={item.image} needFormat />
-                  <Text
-                    color={blackWhite}
-                    mt={2}
-                    mb={extraction.requirements.length === index + 1 ? 0 : 10}
-                    fontWeight={600}
-                    textAlign="center"
-                  >
-                    {item.desc}
-                  </Text>
-                </Box>
-              ))}
+              {extraction.requirements.length > 0 ? (
+                extraction.requirements.map((item, index) => (
+                  <Box key={index} display={"flex"} flexDirection={"column"}>
+                    <ImageZoom imgPath={item.image} needFormat />
+                    <Text
+                      color={blackWhite}
+                      mt={2}
+                      mb={extraction.requirements.length === index + 1 ? 0 : 10}
+                      fontWeight={600}
+                      textAlign="center"
+                    >
+                      {item.desc}
+                    </Text>
+                  </Box>
+                ))
+              ) : (
+                <Text>-</Text>
+              )}
             </GridItem>
-            <RenderArrayText arrayText={extraction.tip} />
+            {extraction.tip.length > 0 ? (
+              <RenderArrayText arrayText={extraction.tip} />
+            ) : (
+              <RenderText text={"-"} />
+            )}
           </SimpleGrid>
         ))}
       </Box>
