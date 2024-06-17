@@ -15,7 +15,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 export default function MapOfTarkovExtraction({
   extractionList,
 }: MapOfTarkovExtraction) {
-  const { blackWhite } = useColorValue();
+  const { blackWhite, whiteBlack } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -25,8 +25,18 @@ export default function MapOfTarkovExtraction({
     );
   }, []);
 
+  // 줄바꿈 처리
+  const formatTextWithLineBreaks = (text: string) => {
+    return text.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   if (!column) return null;
-  console.log(extractionList);
+
   return (
     <DividerContents headText="탈출구">
       <Box
@@ -37,22 +47,27 @@ export default function MapOfTarkovExtraction({
         flexDirection={"column"}
       >
         <SimpleGrid
-          columns={[2, null, 7]}
+          columns={[2, null, 9]}
           spacing={2}
           width={"100%"}
           outline={"1px solid"}
+          position={["-webkit-sticky", "sticky"]}
           outlineColor={blackWhite}
           borderRadius={"lg"}
+          bg={whiteBlack}
+          top={16}
           p={2}
           mb={6}
         >
           {column.value_kr.map((item, index) => (
-            <RenderText text={item} key={index} />
+            <GridItem key={index} colSpan={index === 0 || index === 5 ? 2 : 1}>
+              <RenderText text={item} />
+            </GridItem>
           ))}
         </SimpleGrid>
         {extractionList.map((extraction, index) => (
           <SimpleGrid
-            columns={[2, null, 7]}
+            columns={[2, null, 9]}
             spacing={2}
             width={"100%"}
             outline={"1px solid"}
@@ -64,6 +79,7 @@ export default function MapOfTarkovExtraction({
           >
             <GridItem
               display="flex"
+              colSpan={2}
               justifyContent="center"
               alignItems="center"
             >
@@ -79,10 +95,16 @@ export default function MapOfTarkovExtraction({
               justifyContent="center"
               alignItems="center"
               flexDirection={"column"}
+              colSpan={2}
             >
               {extraction.requirements.length > 0 ? (
                 extraction.requirements.map((item, index) => (
-                  <Box key={index} display={"flex"} flexDirection={"column"}>
+                  <Box
+                    key={index}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                  >
                     <ImageZoom imgPath={item.image} needFormat />
                     <Text
                       color={blackWhite}
@@ -91,7 +113,7 @@ export default function MapOfTarkovExtraction({
                       fontWeight={600}
                       textAlign="center"
                     >
-                      {item.desc}
+                      {formatTextWithLineBreaks(item.desc)}
                     </Text>
                   </Box>
                 ))
