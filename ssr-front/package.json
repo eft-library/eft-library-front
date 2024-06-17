@@ -28,6 +28,7 @@
     "react-slick": "^0.30.2",
     "react-youtube": "^10.1.0",
     "react-zoom-pan-pinch": "^3.4.4",
+    "sharp": "^0.33.4",
     "slick-carousel": "^1.8.1",
     "three": "^0.165.0",
     "zustand": "^4.5.2"

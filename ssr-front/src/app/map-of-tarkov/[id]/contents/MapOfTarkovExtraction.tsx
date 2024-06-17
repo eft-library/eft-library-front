@@ -26,7 +26,7 @@ export default function MapOfTarkovExtraction({
   }, []);
 
   if (!column) return null;
-
+  console.log(extractionList);
   return (
     <DividerContents headText="탈출구">
       <Box
