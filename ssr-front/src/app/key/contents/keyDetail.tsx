@@ -58,7 +58,7 @@ export default function KeyDetail({ category }: KeyDetail) {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <ImageZoom imgPath={item.image} />
+              <ImageZoom originalImg={item.image} thumbnail={item.image} />
             </Box>
             <GridCenterText value={item.name} />
             <RenderArrayText arrayText={item.use_map_kr} />

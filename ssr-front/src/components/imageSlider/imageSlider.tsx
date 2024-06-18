@@ -35,7 +35,12 @@ export default function ImageSlider({
           {mapList.map((map, index) => (
             <Box boxSize="sm" key={index} height={"100%"}>
               {useZoom ? (
-                <ImageZoom needFormat isMax={false} imgPath={map[imagePath]} />
+                <ImageZoom
+                  needFormat
+                  isMax={false}
+                  originalImg={map[imagePath]}
+                  thumbnail={map[imagePath]}
+                />
               ) : (
                 <Image
                   alt="image"

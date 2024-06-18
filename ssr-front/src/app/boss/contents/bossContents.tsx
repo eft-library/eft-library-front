@@ -26,7 +26,7 @@ export default function BossContents({ bossList, bossId }: BossContents) {
         <Box display={"flex"} alignItems={"center"}>
           {bossInfo.health_image.map((boss, index) => (
             <React.Fragment key={index}>
-              <ImageZoom imgPath={boss} isMax={false} />
+              <ImageZoom originalImg={boss} thumbnail={boss} isMax={false} />
               <Box ml={10} />
             </React.Fragment>
           ))}
@@ -36,7 +36,7 @@ export default function BossContents({ bossList, bossId }: BossContents) {
         <Box display={"flex"} alignItems={"center"}>
           {bossInfo.loot.map((boss, index) => (
             <React.Fragment key={index}>
-              <ImageZoom imgPath={boss} isMax={false} />
+              <ImageZoom originalImg={boss} thumbnail={boss} isMax={false} />
               <Box ml={10} />
             </React.Fragment>
           ))}

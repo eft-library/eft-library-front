@@ -83,7 +83,11 @@ export default function MapOfTarkovExtraction({
               justifyContent="center"
               alignItems="center"
             >
-              <ImageZoom imgPath={extraction.image} needFormat />
+              <ImageZoom
+                originalImg={extraction.image}
+                thumbnail={extraction.image_thumbnail}
+                needFormat
+              />
             </GridItem>
 
             <RenderText text={extraction.name} />
@@ -106,7 +110,11 @@ export default function MapOfTarkovExtraction({
                     alignItems={"center"}
                   >
                     {item.image && (
-                      <ImageZoom imgPath={item.image} needFormat />
+                      <ImageZoom
+                        originalImg={item.image}
+                        thumbnail={item.thumbnail}
+                        needFormat
+                      />
                     )}
                     <Text
                       color={blackWhite}

@@ -75,6 +75,7 @@ export interface Extraction extends strID {
   single_use: boolean;
   tip: string[];
   image: string;
+  image_thumbnail: string;
   always_available: boolean;
   requirements: Requirement[];
   map: string;
@@ -88,6 +89,7 @@ export interface Icon {
 export interface Requirement {
   desc: string;
   image: string;
+  thumbnail: string;
 }
 
 export interface ArmorVest extends DefenseData {}
@@ -455,7 +457,8 @@ export interface Provisions extends CommonData, strID, Category {
 }
 
 export interface ImageZoom {
-  imgPath: string;
+  originalImg: string;
+  thumbnail: string;
   needFormat?: boolean;
   isMax?: boolean;
 }

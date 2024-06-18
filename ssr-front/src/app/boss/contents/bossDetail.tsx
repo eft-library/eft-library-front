@@ -65,7 +65,11 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               mb={4}
               key={index}
             >
-              <ImageZoom imgPath={boss.image} isMax={false} />
+              <ImageZoom
+                originalImg={boss.image}
+                thumbnail={boss.image}
+                isMax={false}
+              />
               <RenderText text={boss.name_kr} />
               <RenderText text={boss.faction} />
               <RenderJsonText

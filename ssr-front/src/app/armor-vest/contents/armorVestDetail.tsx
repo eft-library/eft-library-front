@@ -43,7 +43,7 @@ export default function ArmorVestDetail() {
       {armorVestList.map((item, index) => (
         <GridContents columnDesign={[2, null, 6]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <ImageZoom imgPath={item.image} />
+            <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.durability} />

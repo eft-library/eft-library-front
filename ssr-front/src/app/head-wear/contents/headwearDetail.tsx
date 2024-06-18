@@ -47,7 +47,7 @@ export default function HeadWearDetail() {
       {headWearList.class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 7]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <ImageZoom imgPath={item.image} />
+            <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
           <GridCenterText value={item.name} />
           <GridCenterText value={item.class_value} />
@@ -78,7 +78,7 @@ export default function HeadWearDetail() {
       {headWearList.no_class_head_wear.map((item, index) => (
         <GridContents columnDesign={[2, null, 2]} key={index}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <ImageZoom imgPath={item.image} />
+            <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
           <GridCenterText value={item.name} />
         </GridContents>
