@@ -105,7 +105,9 @@ export default function MapOfTarkovExtraction({
                     flexDirection={"column"}
                     alignItems={"center"}
                   >
-                    <ImageZoom imgPath={item.image} needFormat />
+                    {item.image && (
+                      <ImageZoom imgPath={item.image} needFormat />
+                    )}
                     <Text
                       color={blackWhite}
                       mt={2}
