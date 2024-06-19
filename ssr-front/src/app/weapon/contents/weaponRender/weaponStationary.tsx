@@ -54,7 +54,11 @@ export default function WeaponStationary({
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <ImageZoom originalImg={item.image} thumbnail={item.image} />
+              <ImageZoom
+                originalImg={item.image}
+                thumbnail={item.image}
+                needFormat
+              />
             </Box>
             <GridCenterText value={item.short_name} />
             <GridCenterText value={item.carliber} />
