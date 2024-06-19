@@ -43,6 +43,7 @@ export default function ImageZoom({
             // h={isMax ? imageSize.height : 801.06}
             // placeholder="blur"
             maxH={isMax ? "200px" : ""}
+            fallbackSrc="/loading.jpg"
             cursor={"pointer"}
             // style={{
             //   maxHeight: isMax ? "200px" : "",

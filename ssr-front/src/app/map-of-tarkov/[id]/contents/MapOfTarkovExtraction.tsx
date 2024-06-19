@@ -87,6 +87,7 @@ export default function MapOfTarkovExtraction({
                 originalImg={extraction.image}
                 thumbnail={extraction.image_thumbnail}
                 needFormat
+                isMax={false}
               />
             </GridItem>
 
@@ -114,6 +115,7 @@ export default function MapOfTarkovExtraction({
                         originalImg={item.image}
                         thumbnail={item.thumbnail}
                         needFormat
+                        isMax={false}
                       />
                     )}
                     <Text
