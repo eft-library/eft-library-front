@@ -392,6 +392,8 @@ export interface Quest extends strID, CommonData {
   objectives_kr: string[];
   rewards_kr: string[];
   guide: string;
+  requires: JsonArrayText[];
+  next: JsonArrayText[];
 }
 
 export interface QuestContents {

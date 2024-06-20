@@ -1,10 +1,12 @@
 "use client";
 
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import type { QuestInfo } from "@/types/types";
 import InfoSkeleton from "../../skeleton/infoSkeleton";
 import useColorValue from "@/hooks/useColorValue";
+import Link from "next/link";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function QuestInfo({ quest }: QuestInfo) {
   const { blackWhite } = useColorValue();
@@ -16,6 +18,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
       flexDirection={"column"}
       justifyContent="center"
       alignItems={"center"}
+      w={"100%"}
     >
       <Box
         w="160px"
@@ -55,6 +58,67 @@ export default function QuestInfo({ quest }: QuestInfo) {
       >
         {quest.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
       </Text>
+      <Flex
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        mt={4}
+        w={"100%"}
+      >
+        <Box display={"flex"} flexDirection={"column"} w={"50%"}>
+          <Text
+            color={ALL_COLOR.YELLOW}
+            fontWeight={"700"}
+            fontSize="md"
+            textAlign={"center"}
+          >
+            이전
+          </Text>
+          {quest.requires && quest.requires.length > 0 ? (
+            quest.requires.map((item, index) => (
+              <Text
+                key={index}
+                color={blackWhite}
+                fontWeight={"700"}
+                textAlign={"center"}
+                cursor={"pointer"}
+              >
+                <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
+              </Text>
+            ))
+          ) : (
+            <Text color={blackWhite} fontWeight={"700"} textAlign={"center"}>
+              -
+            </Text>
+          )}
+        </Box>
+        <Box display={"flex"} flexDirection={"column"} w={"50%"}>
+          <Text
+            color={ALL_COLOR.YELLOW}
+            fontWeight={"700"}
+            textAlign={"center"}
+          >
+            다음
+          </Text>
+          {quest.next && quest.next.length > 0 ? (
+            quest.next.map((item, index) => (
+              <Text
+                key={index}
+                color={blackWhite}
+                fontWeight={"700"}
+                textAlign={"center"}
+                cursor={"pointer"}
+              >
+                <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
+              </Text>
+            ))
+          ) : (
+            <Text color={blackWhite} fontWeight={"700"} textAlign={"center"}>
+              -
+            </Text>
+          )}
+        </Box>
+      </Flex>
     </Box>
   );
 }
