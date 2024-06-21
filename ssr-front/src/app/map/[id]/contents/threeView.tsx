@@ -14,6 +14,9 @@ import { formatImage } from "@/lib/formatImage";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const { threBack } = useColorValue();
+
+  // 성능 개선 이전 사용하던 코드 - dae 파일을 불러온 뒤 traverse로 각 line을 색칠했음
+  // 현재는 export edge 옵션을 추가해서 gltf로 추출하고, three 라이브러리 lineBasicMaterial 색상을 수정했음
   // const collada = useLoadMap(map.three_image, true);
 
   // if (!collada) return <ThreeSkeleton />;
