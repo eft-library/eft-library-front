@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import MapOfTarkovContents from "./contents/MapOfTarkovContents";
+import MapOfTarkovContents from "./contents/mapOfTarkovContents";
 import type { Column, MapOfTarkov } from "@/types/types";
 import ContentsSkeleton from "../skeleton/contentsSkeleton";
 

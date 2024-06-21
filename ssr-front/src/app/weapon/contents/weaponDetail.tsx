@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-import WeaponKnife from "../weaponRender/weaponKnife";
-import WeaponThrowable from "../weaponRender/weaponThrowable";
-import WeaponStationary from "../weaponRender/weaponStationary";
-import WeaponSpecial from "../weaponRender/weaponSpecial";
-import WeaponGun from "../weaponRender/weaponGun";
+import WeaponKnife from "./weaponRender/weaponKnife";
+import WeaponThrowable from "./weaponRender/weaponThrowable";
+import WeaponStationary from "./weaponRender/weaponStationary";
+import WeaponSpecial from "./weaponRender/weaponSpecial";
+import WeaponGun from "./weaponRender/weaponGun";
 import type { WeaponDetail, Column } from "@/types/types";
 
 export default function WeaponDetail({ category }: WeaponDetail) {

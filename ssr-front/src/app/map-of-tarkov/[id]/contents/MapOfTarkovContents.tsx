@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import MapOfTarkovExtraction from "./MapOfTarkovExtraction";
+import MapOfTarkovExtraction from "./mapOfTarkovExtraction";
 import ImageSlider from "@/components/imageSlider/imageSlider";
 import BossDetail from "@/app/boss/contents/bossDetail";
 import { MOT_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";

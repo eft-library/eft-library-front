@@ -373,6 +373,26 @@ export interface WeaponSpecial extends Category {
 
 export interface WeaponDetail extends Category {}
 
+export interface MedicalDetail extends Category {}
+
+export interface Medical extends strID, CommonData, Category {
+  short_name: string;
+  cures_en: string[];
+  cures_kr: string[];
+  buff: JsonArrayText[];
+  debuff: JsonArrayText[];
+  use_time: number;
+  uses: number;
+  energy_impact: number;
+  hydration_impact: number;
+  painkiller_duration: number;
+  hitpoints: number;
+}
+
+export interface MedicalList {
+  medicalList: Medical[];
+}
+
 export interface RigList {
   class_rig: Rig[];
   no_class_rig: Rig[];

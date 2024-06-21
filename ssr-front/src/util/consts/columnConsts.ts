@@ -21,4 +21,9 @@ export const COLUMN_KEY = {
   key: "KEY_COLUMN",
   keyType: "KEY_TYPE",
   food_drink: "FOOD_DRINK_COLUMN",
+  drug: "DRUG_COLUMN",
+  stimulant: "STIMULANT_COLUMN",
+  medicalItem: "MEDICAL_ITEM_COLUMN",
+  medikit: "MEDIKIT_COLUMN",
+  medicalType: "MEDICAL_TYPE",
 } as const;

@@ -9,6 +9,7 @@ export type AppStateType = {
   keyCategory: string;
   npcId: string;
   itemFilter: Item[];
+  medicalCategory: string;
 };
 
 export type AppActionsType = {
@@ -17,6 +18,7 @@ export type AppActionsType = {
   setKeyCategory: (value: string) => void;
   setNpcId: (value: string) => void;
   setItemFilter: (value: any[]) => void;
+  setMedicalCategory: (value: string) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -26,6 +28,7 @@ export const defaultInitState: AppStateType = {
   weaponCategory: "ALL",
   keyCategory: "CUSTOMS",
   npcId: "PRAPOR",
+  medicalCategory: "ALL",
   itemFilter: [],
 };
 
@@ -42,6 +45,8 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
             setKeyCategory: (value: string) => set({ keyCategory: value }),
             setNpcId: (value: string) => set({ npcId: value }),
             setItemFilter: (value: any[]) => set({ itemFilter: value }),
+            setMedicalCategory: (value: string) =>
+              set({ medicalCategory: value }),
           } satisfies AppStoreType),
         {
           name: "app-store",

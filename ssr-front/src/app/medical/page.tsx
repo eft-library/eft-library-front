@@ -8,22 +8,21 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import WeaponDetail from "./contents/weaponDetail";
 import type { Column } from "@/types/types";
 
-export default function Weapon() {
-  const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);
+export default function Medical() {
+  const { medicalCategory, setMedicalCategory } = useAppStore((state) => state);
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.weaponType}`,
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.medicalType}`,
       setColumn
     );
   }, []);
 
   const onClickCategory = (category: string) => {
-    setWeaponCategory(category);
+    setMedicalCategory(category);
   };
 
   if (!column) return null;
@@ -34,11 +33,10 @@ export default function Weapon() {
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}
-        currentId={weaponCategory}
+        currentId={medicalCategory}
         selectorId="value"
         itemDesc="desc_kr"
       />
-      <WeaponDetail category={weaponCategory} />
     </PageParent>
   );
 }
