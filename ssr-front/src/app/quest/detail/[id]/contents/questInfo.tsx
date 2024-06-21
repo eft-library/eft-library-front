@@ -71,6 +71,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
             fontWeight={"700"}
             fontSize="md"
             textAlign={"center"}
+            mb={2}
           >
             이전
           </Text>
@@ -82,6 +83,8 @@ export default function QuestInfo({ quest }: QuestInfo) {
                 fontWeight={"700"}
                 textAlign={"center"}
                 cursor={"pointer"}
+                _hover={{ color: ALL_COLOR.YELLOW }}
+                mb={1}
               >
                 <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
               </Text>
@@ -97,6 +100,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
             color={ALL_COLOR.YELLOW}
             fontWeight={"700"}
             textAlign={"center"}
+            mb={2}
           >
             다음
           </Text>
@@ -108,6 +112,8 @@ export default function QuestInfo({ quest }: QuestInfo) {
                 fontWeight={"700"}
                 textAlign={"center"}
                 cursor={"pointer"}
+                _hover={{ color: ALL_COLOR.YELLOW }}
+                mb={1}
               >
                 <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
               </Text>
