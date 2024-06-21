@@ -7,6 +7,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import MedicalMedikit from "./medicalRender/medicalMedikit";
 import MedicalItem from "./medicalRender/medicalItem";
+import MedicalDrug from "./medicalRender/medicalDrug";
 
 export default function MedicalDetail({ category }: MedicalDetail) {
   const [medical, setMedical] = useState<Medical[]>(null);
@@ -27,7 +28,10 @@ export default function MedicalDetail({ category }: MedicalDetail) {
     >
       <>
         {(category === "ALL" || category === "Drug") && (
-          <>{category === "ALL" && <Box mb={20} />}</>
+          <>
+            <MedicalDrug medicalList={medical} />
+            {category === "ALL" && <Box mb={20} />}
+          </>
         )}
         {(category === "ALL" || category === "Stimulant") && (
           <>{category === "ALL" && <Box mb={20} />}</>

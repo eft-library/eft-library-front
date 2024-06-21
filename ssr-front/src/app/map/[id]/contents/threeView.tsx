@@ -3,14 +3,14 @@
 import ItemBox from "./threeItem";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useLoadMap } from "@/hooks/useMap";
 import type { ThreeView } from "@/types/types";
 import ThreeSkeleton from "../skeleton/threeSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 import { useGLTF } from "@react-three/drei";
-import { useEffect } from "react";
-import * as THREE from "three";
 import { formatImage } from "@/lib/formatImage";
+// import { useEffect } from "react";
+// import * as THREE from "three";
+// import { useLoadMap } from "@/hooks/useMap";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const { threBack } = useColorValue();
@@ -23,7 +23,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
 
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
 
-  if (!nodes || !materials) return null;
+  if (!nodes || !materials) return <ThreeSkeleton />;
 
   return (
     <Canvas
