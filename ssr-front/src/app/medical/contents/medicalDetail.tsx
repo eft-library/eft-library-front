@@ -5,6 +5,8 @@ import type { MedicalDetail, Medical } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
+import MedicalMedikit from "./medicalRender/medicalMedikit";
+import MedicalItem from "./medicalRender/medicalItem";
 
 export default function MedicalDetail({ category }: MedicalDetail) {
   const [medical, setMedical] = useState<Medical[]>(null);
@@ -31,9 +33,16 @@ export default function MedicalDetail({ category }: MedicalDetail) {
           <>{category === "ALL" && <Box mb={20} />}</>
         )}
         {(category === "ALL" || category === "Medical item") && (
-          <>{category === "ALL" && <Box mb={20} />}</>
+          <>
+            <MedicalItem medicalList={medical} />
+            {category === "ALL" && <Box mb={20} />}
+          </>
         )}
-        {(category === "ALL" || category === "Medikit") && <></>}
+        {(category === "ALL" || category === "Medikit") && (
+          <>
+            <MedicalMedikit medicalList={medical} />
+          </>
+        )}
       </>
     </Box>
   );

@@ -9,6 +9,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
+import MedicalDetail from "./contents/medicalDetail";
 
 export default function Medical() {
   const { medicalCategory, setMedicalCategory } = useAppStore((state) => state);
@@ -37,6 +38,7 @@ export default function Medical() {
         selectorId="value"
         itemDesc="desc_kr"
       />
+      <MedicalDetail category={medicalCategory} />
     </PageParent>
   );
 }
