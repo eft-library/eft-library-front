@@ -8,7 +8,20 @@
 6. 식료품, 전리품 퀘스트 제목 추가??
 7. loading 이미지 하나 만들어 달라고 하기
 
-# 나중에
+# 남은거
 
-1. gltfjsx 이거로 그냥 뽑아서 react에서 바로 그리는 것도 생각해보자 - 3d loader 성능 개선
-2. 퀘스트 저장
+1. gltf 뽑기
+2. 로그인 기능 완벽하게 만들기 - 오늘의 퀘스트, 게시판
+3. 의료품, 총알, 하이드아웃 개발
+4. 아이템에 퀘스트 연동 - 전리품, 열쇠, 식량
+5. 아이템 바로 이동하는 것 구현
+6. 지도에 아이템 좌표 찍기
+7. 데이터 넣기
+8. 전리품 페이지 기획 및 개발
+9. 퀘스트 설명 주소 다 바꾸기
+
+# 모듈 수정하기
+
+https://stackoverflow.com/questions/43152833/sketchup-model-collada-three-js-no-edges
+
+three - materials - lineBasicMaterial

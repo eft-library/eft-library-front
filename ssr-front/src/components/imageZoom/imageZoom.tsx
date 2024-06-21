@@ -38,7 +38,7 @@ export default function ImageZoom({
             ref={ref}
             onClick={open}
             maxH={isMax ? "200px" : ""}
-            fallbackSrc="/loading.jpg"
+            fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
             alt="image"
@@ -60,7 +60,7 @@ export default function ImageZoom({
             ref={ref}
             onClick={open}
             maxH={isMax ? "200px" : ""}
-            fallbackSrc="/loading.jpg"
+            fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
             alt="image"
