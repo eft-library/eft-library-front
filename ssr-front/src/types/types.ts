@@ -342,8 +342,17 @@ export interface SubHeader {
   title: string;
 }
 
-export interface WeaponThrowable extends strID {
-  throwableList: JsonArrayText[];
+export interface Throwable extends strID, NameImage {
+  short_name: string;
+  min_fuse: number;
+  fuse: number;
+  min_explosion_distance: number;
+  max_explosion_distance: number;
+  fragments: number;
+}
+
+export interface WeaponThrowable {
+  throwableList: Throwable[];
 }
 
 export interface WeaponKnife {
