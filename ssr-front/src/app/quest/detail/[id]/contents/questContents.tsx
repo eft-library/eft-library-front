@@ -14,9 +14,9 @@ export default function QuestContents({ quest }: QuestContents) {
     <Box w={"95%"}>
       <DividerContents headText="목표">
         <Box>
-          {quest.objectives_kr.map((objectives, index) => (
+          {quest.objectives_kr.map((objectives) => (
             <Text
-              key={index}
+              key={objectives}
               color={blackWhite}
               mt={1}
               fontWeight={700}
@@ -30,9 +30,9 @@ export default function QuestContents({ quest }: QuestContents) {
       </DividerContents>
       <DividerContents headText="보상">
         <Box>
-          {quest.rewards_kr.map((rewards, index) => (
+          {quest.rewards_kr.map((rewards) => (
             <Text
-              key={index}
+              key={rewards}
               color={blackWhite}
               mt={1}
               fontWeight={700}

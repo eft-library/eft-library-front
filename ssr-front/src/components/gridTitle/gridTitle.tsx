@@ -26,11 +26,10 @@ export default function GridTitle({
       mb={6}
     >
       {column.map((item, index) => (
-        <GridItem key={index} colSpan={isWeapon ? (index === 0 ? 2 : 1) : 1}>
+        <GridItem key={item} colSpan={isWeapon ? (index === 0 ? 2 : 1) : 1}>
           <Text
             flexGrow={1}
             color={blackWhite}
-            key={index}
             textAlign={"center"}
             fontWeight={700}
             textShadow={isShadow ? shadowColor : ""}

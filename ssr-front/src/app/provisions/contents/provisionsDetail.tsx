@@ -44,7 +44,6 @@ export default function ProvisionsDetail() {
         delete effect.duration;
       }
     }
-    console.log(effects);
     return effects;
   }
 
@@ -102,8 +101,8 @@ export default function ProvisionsDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {provisionList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 5]} key={index}>
+      {provisionList.map((item) => (
+        <GridContents columnDesign={[2, null, 5]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -116,8 +115,8 @@ export default function ProvisionsDetail() {
             flexDirection={"column"}
           >
             {item.stim_effects.length > 0 ? (
-              filterStimEffects(item.stim_effects).map((text, index) => (
-                <React.Fragment key={index}>
+              filterStimEffects(item.stim_effects).map((text) => (
+                <React.Fragment key={text["krSkill"]}>
                   {text["delay"] && text["duration"] ? (
                     <Text color={ALL_COLOR.LIGHT_YELLO} mt={4} fontWeight={600}>
                       {text["skillName"] === "Painkiller"

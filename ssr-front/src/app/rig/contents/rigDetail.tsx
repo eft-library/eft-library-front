@@ -47,8 +47,8 @@ export default function RigDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {rigList.class_rig.map((item, index) => (
-        <GridContents columnDesign={[2, null, 7]} key={index}>
+      {rigList.class_rig.map((item) => (
+        <GridContents columnDesign={[2, null, 7]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -78,8 +78,8 @@ export default function RigDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {rigList.no_class_rig.map((item, index) => (
-        <GridContents columnDesign={[2, null, 4]} key={index}>
+      {rigList.no_class_rig.map((item) => (
+        <GridContents columnDesign={[2, null, 4]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

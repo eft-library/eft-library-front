@@ -75,9 +75,9 @@ export default function QuestInfo({ quest }: QuestInfo) {
             이전
           </Text>
           {quest.requires && quest.requires.length > 0 ? (
-            quest.requires.map((item, index) => (
+            quest.requires.map((item) => (
               <Text
-                key={index}
+                key={item.id}
                 color={blackWhite}
                 fontWeight={"700"}
                 textAlign={"center"}
@@ -101,9 +101,9 @@ export default function QuestInfo({ quest }: QuestInfo) {
             다음
           </Text>
           {quest.next && quest.next.length > 0 ? (
-            quest.next.map((item, index) => (
+            quest.next.map((item) => (
               <Text
-                key={index}
+                key={item.id}
                 color={blackWhite}
                 fontWeight={"700"}
                 textAlign={"center"}

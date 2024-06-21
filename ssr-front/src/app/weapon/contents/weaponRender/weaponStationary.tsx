@@ -46,9 +46,9 @@ export default function WeaponStationary({
         isShadow
         shadowColor={yellowShadow}
       />
-      {stationaryList.map((item, index) =>
+      {stationaryList.map((item) =>
         shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 5]} key={index}>
+          <GridContents columnDesign={[2, null, 5]} key={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}

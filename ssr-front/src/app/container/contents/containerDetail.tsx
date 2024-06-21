@@ -39,8 +39,8 @@ export default function ContainerDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {containerList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 4]} key={index}>
+      {containerList.map((item) => (
+        <GridContents columnDesign={[2, null, 4]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

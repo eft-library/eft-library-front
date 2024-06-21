@@ -24,7 +24,7 @@ export default function MapOfTarkovContents({
         <Box display={"flex"} alignItems={"center"}>
           <ImageSlider
             mapList={sortSubList(mapOfTarkov.map_info.sub)}
-            imagePath="jpg_image"
+            imagePath="mot_image"
             sliderOption={MOT_IMAGE_SLIDER_OPTION}
             useZoom
           />

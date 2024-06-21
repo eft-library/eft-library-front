@@ -9,14 +9,12 @@ import TopNaviLogi from "@/assets/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
-import { useSession } from "next-auth/react";
 import Login from "../login/login";
 
 export default function Header() {
   const { backWhite, whiteMapBlack, darkLightgray } = useColorValue();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
-
   const changeMenu = (menuName: string) => {
     setSelectedMenu(menuName);
   };
@@ -45,9 +43,9 @@ export default function Header() {
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
         {headerData.length > 0 &&
-          headerData.map((main, index) => (
+          headerData.map((main) => (
             <Button
-              key={index}
+              key={main.value}
               onMouseEnter={() => changeMenu(main.value)}
               variant="solid"
               fontWeight="bold"
@@ -70,8 +68,8 @@ export default function Header() {
                   onMouseLeave={() => setSelectedMenu(null)}
                   bg={whiteMapBlack}
                 >
-                  {main.sub_menus.map((sub, sub_index) => (
-                    <Box p={2} key={sub_index} _hover={{ bg: darkLightgray }}>
+                  {main.sub_menus.map((sub) => (
+                    <Box p={2} key={sub.value} _hover={{ bg: darkLightgray }}>
                       <Link href={sub.link}>{sub.kr_name}</Link>
                     </Box>
                   ))}

@@ -1,12 +1,14 @@
 "use client";
 
 import Slider from "react-slick";
-import { Box, Image } from "@chakra-ui/react";
+import { Image, Box } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { formatImage } from "@/lib/formatImage";
 import type { ImageSlider } from "@/types/types";
 import ImageZoom from "../imageZoom/imageZoom";
+import { Gallery } from "react-photoswipe-gallery";
+import React from "react";
 
 export default function ImageSlider({
   mapList,
@@ -15,43 +17,39 @@ export default function ImageSlider({
   useZoom,
 }: ImageSlider) {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        marginBottom: "40px",
-        marginTop: "40px",
-      }}
+    <Box
+      w={"100%"}
+      h={"100%"}
+      display={"flex"}
+      justifyContent={"center"}
+      mb={"40px"}
+      mt={"40px"}
     >
-      <div
-        style={{
-          width: "95%",
-          height: "30%",
-        }}
-      >
-        <Slider {...sliderOption}>
-          {mapList.map((map, index) => (
-            <Box boxSize="sm" key={index} height={"100%"}>
-              {useZoom ? (
+      <Box w={"95%"} h={"30%"}>
+        <Gallery>
+          <Slider {...sliderOption}>
+            {mapList.map((map) =>
+              useZoom ? (
                 <ImageZoom
+                  key={map.id}
                   needFormat
                   isMax={false}
+                  isLoop
                   originalImg={map[imagePath]}
                   thumbnail={map[imagePath]}
                 />
               ) : (
                 <Image
+                  key={map.id}
                   alt="image"
                   src={formatImage(map[imagePath])}
                   boxSize="100%"
                 />
-              )}
-            </Box>
-          ))}
-        </Slider>
-      </div>
-    </div>
+              )
+            )}
+          </Slider>
+        </Gallery>
+      </Box>
+    </Box>
   );
 }

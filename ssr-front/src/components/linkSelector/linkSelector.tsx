@@ -14,7 +14,6 @@ export default function LinkSelector({
 }: LinkSelector) {
   const { darkLightgray, blackWhite } = useColorValue();
   const param = useParams<{ id: string }>();
-
   return (
     <Flex
       mt={mt}
@@ -24,9 +23,9 @@ export default function LinkSelector({
       width="100%"
       borderRadius={"lg"}
     >
-      {itemList.map((item, index) => (
+      {itemList.map((item) => (
         <Button
-          key={index}
+          key={item.id}
           variant={"solid"}
           color={blackWhite}
           _hover={{ bg: darkLightgray }}

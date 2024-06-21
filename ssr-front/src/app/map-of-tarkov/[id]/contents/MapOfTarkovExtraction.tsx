@@ -27,8 +27,8 @@ export default function MapOfTarkovExtraction({
 
   // 줄바꿈 처리
   const formatTextWithLineBreaks = (text: string) => {
-    return text.split("\n").map((line, index) => (
-      <span key={index}>
+    return text.split("\n").map((line) => (
+      <span key={line}>
         {line}
         <br />
       </span>
@@ -60,12 +60,12 @@ export default function MapOfTarkovExtraction({
           mb={6}
         >
           {column.value_kr.map((item, index) => (
-            <GridItem key={index} colSpan={index === 0 || index === 5 ? 2 : 1}>
+            <GridItem key={item} colSpan={index === 0 || index === 5 ? 2 : 1}>
               <RenderText text={item} />
             </GridItem>
           ))}
         </SimpleGrid>
-        {extractionList.map((extraction, index) => (
+        {extractionList.map((extraction) => (
           <SimpleGrid
             columns={[2, null, 9]}
             spacing={2}
@@ -75,7 +75,7 @@ export default function MapOfTarkovExtraction({
             borderRadius={"lg"}
             p={2}
             mb={4}
-            key={index}
+            key={extraction.id}
           >
             <GridItem
               display="flex"
@@ -105,7 +105,7 @@ export default function MapOfTarkovExtraction({
               {extraction.requirements.length > 0 ? (
                 extraction.requirements.map((item, index) => (
                   <Box
-                    key={index}
+                    key={item.desc}
                     display={"flex"}
                     flexDirection={"column"}
                     alignItems={"center"}

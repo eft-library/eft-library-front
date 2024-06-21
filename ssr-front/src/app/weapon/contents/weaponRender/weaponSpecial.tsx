@@ -44,9 +44,9 @@ export default function WeaponSpecial({
         isShadow
         shadowColor={yellowShadow}
       />
-      {specialList.map((item, index) =>
+      {specialList.map((item) =>
         shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 2]} key={index}>
+          <GridContents columnDesign={[2, null, 2]} key={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}

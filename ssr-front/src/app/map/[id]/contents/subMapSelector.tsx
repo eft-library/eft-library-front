@@ -21,9 +21,9 @@ export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
 
   return (
     <HStack justifyContent="center">
-      {subMap.map((sub, index) => (
+      {subMap.map((sub) => (
         <Text
-          key={index}
+          key={sub.id}
           onClick={() => onClickMap(sub)}
           color={mapId === sub.id ? darkLightYellow : lightDarkYellow}
           fontWeight="bold"

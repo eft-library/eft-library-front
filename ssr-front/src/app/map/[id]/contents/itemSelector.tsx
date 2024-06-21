@@ -145,9 +145,9 @@ export default function ItemSelector({
             </Text>
           </Box>
           {itemFilter.map(
-            (item, index) =>
+            (item) =>
               originalItem.includes(item.value) && (
-                <div key={index}>
+                <Box key={item.value}>
                   <Text
                     mt={"20px"}
                     onClick={() => onClickItem(item.value)}
@@ -159,8 +159,8 @@ export default function ItemSelector({
                   >
                     {item.kr}
                   </Text>
-                  {item.sub.map((childItem, childIndex) => (
-                    <Flex key={childIndex} mt={4}>
+                  {item.sub.map((childItem) => (
+                    <Flex key={childItem.value} mt={4}>
                       {viewItemList.includes(childItem.value) ? (
                         <DynamicSVG
                           x={0}
@@ -189,7 +189,7 @@ export default function ItemSelector({
                       </Text>
                     </Flex>
                   ))}
-                </div>
+                </Box>
               )
           )}
         </AccordionPanel>

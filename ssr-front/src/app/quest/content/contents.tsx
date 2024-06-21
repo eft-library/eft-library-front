@@ -51,9 +51,9 @@ export default function Contents() {
         <Table variant="simple" size={"lg"}>
           <Thead>
             <Tr>
-              {column.value_kr.map((item, index) => (
+              {column.value_kr.map((item) => (
                 <Th
-                  key={index}
+                  key={item}
                   fontWeight={"800"}
                   textAlign={"center"}
                   borderRight="1px solid white"
@@ -67,9 +67,9 @@ export default function Contents() {
           </Thead>
           <Tbody>
             {quest.map(
-              (item, index) =>
+              (item) =>
                 npcId === null || npcId === item.npc_value ? (
-                  <Tr key={index}>
+                  <Tr key={item.id}>
                     <Td
                       fontSize="md"
                       fontWeight={"700"}

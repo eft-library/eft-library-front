@@ -33,12 +33,12 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
         <primitive object={collada.colladaData.scene} position={[0, 0, 0]} />
 
         {map.three_item_path.map(
-          (item, index) =>
+          (item) =>
             viewItemList.includes(item.childValue) && (
               <ItemBox
                 position={item.position}
                 boxArgs={item.boxArgs}
-                key={index}
+                key={item.position.toString()}
                 childValue="test"
               />
             )

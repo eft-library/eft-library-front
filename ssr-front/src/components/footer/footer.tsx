@@ -45,8 +45,13 @@ export default function Footer() {
       >
         <GridItem colSpan={1} h="14">
           <Flex direction="column" justifyContent="center">
-            {column.json_value.text.map((item, index) => (
-              <Text color={backWhite} m={2} fontWeight={"bold"} key={index}>
+            {column.json_value.text.map((item) => (
+              <Text
+                color={backWhite}
+                m={2}
+                fontWeight={"bold"}
+                key={item.value}
+              >
                 {item.value}
               </Text>
             ))}
@@ -54,7 +59,7 @@ export default function Footer() {
               {column.json_value.icon.map((item, index) => (
                 <Box
                   ml={index === 0 ? "" : 4}
-                  key={index}
+                  key={item.name}
                   cursor={"pointer"}
                   onClick={() => window.open(item.link, "_blank")}
                 >

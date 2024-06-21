@@ -39,8 +39,8 @@ export default function BackpackDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {backpackList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 5]} key={index}>
+      {backpackList.map((item) => (
+        <GridContents columnDesign={[2, null, 5]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

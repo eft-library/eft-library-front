@@ -44,8 +44,8 @@ export default function HeadWearDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {headWearList.class_head_wear.map((item, index) => (
-        <GridContents columnDesign={[2, null, 7]} key={index}>
+      {headWearList.class_head_wear.map((item) => (
+        <GridContents columnDesign={[2, null, 7]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -75,8 +75,8 @@ export default function HeadWearDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {headWearList.no_class_head_wear.map((item, index) => (
-        <GridContents columnDesign={[2, null, 2]} key={index}>
+      {headWearList.no_class_head_wear.map((item) => (
+        <GridContents columnDesign={[2, null, 2]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

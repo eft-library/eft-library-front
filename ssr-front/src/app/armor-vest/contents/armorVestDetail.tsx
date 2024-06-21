@@ -40,8 +40,8 @@ export default function ArmorVestDetail() {
         isShadow
         shadowColor={yellowShadow}
       />
-      {armorVestList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 6]} key={index}>
+      {armorVestList.map((item) => (
+        <GridContents columnDesign={[2, null, 6]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

@@ -36,8 +36,8 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
         isShadow
         shadowColor={yellowShadow}
       />
-      {throwableList.map((item, index) => (
-        <GridContents columnDesign={[2, null, 5]} key={index}>
+      {throwableList.map((item) => (
+        <GridContents columnDesign={[2, null, 5]} key={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

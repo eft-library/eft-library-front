@@ -61,9 +61,9 @@ interface DefenseData extends NameImage {
   weight: number;
 }
 
-export interface HeadsetList extends NameImage {}
+export interface HeadsetList extends NameImage, strID {}
 
-export interface Backpack extends NameImage {
+export interface Backpack extends NameImage, strID {
   capacity: number;
   grids: Size[];
   weight: number;
@@ -92,13 +92,13 @@ export interface Requirement {
   thumbnail: string;
 }
 
-export interface ArmorVest extends DefenseData {}
+export interface ArmorVest extends DefenseData, strID {}
 
-export interface Headwear extends DefenseData {
+export interface Headwear extends DefenseData, strID {
   ricochet_str_kr: string;
 }
 
-export interface Rig extends DefenseData {}
+export interface Rig extends DefenseData, strID {}
 
 export interface ExtractionSVG extends ExtractionJPG, Size {
   opacity: string;
@@ -149,6 +149,7 @@ interface MapData extends strID {
   link: string;
   name_kr: string;
   three_item_path: ThreeItemPath[];
+  mot_image: string;
   jpg_item_path: JpgItemPath[];
   order: number;
   main_image: string;
@@ -341,7 +342,7 @@ export interface SubHeader {
   title: string;
 }
 
-export interface WeaponThrowable {
+export interface WeaponThrowable extends strID {
   throwableList: JsonArrayText[];
 }
 
@@ -421,14 +422,14 @@ export interface TopNaviLogo {
   color: string;
 }
 
-export interface Container {
+export interface Container extends strID {
   name: string;
   image: string;
   capacity: number;
   grids: Size[];
 }
 
-export interface Key {
+export interface Key extends strID {
   name: string;
   image: string;
   uses: number;
@@ -463,4 +464,5 @@ export interface ImageZoom {
   thumbnail: string;
   needFormat?: boolean;
   isMax?: boolean;
+  isLoop?: boolean;
 }

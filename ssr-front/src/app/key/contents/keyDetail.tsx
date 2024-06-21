@@ -50,9 +50,9 @@ export default function KeyDetail({ category }: KeyDetail) {
         isShadow
         shadowColor={yellowShadow}
       />
-      {keyList.map((item, index) =>
+      {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (
-          <GridContents columnDesign={[2, null, 4]} key={index}>
+          <GridContents columnDesign={[2, null, 4]} key={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}

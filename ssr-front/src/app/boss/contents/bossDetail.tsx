@@ -47,12 +47,12 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
         p={2}
         mb={6}
       >
-        {column.value_kr.map((item, index) => (
-          <RenderText text={item} key={index} />
+        {column.value_kr.map((item) => (
+          <RenderText text={item} key={item} />
         ))}
       </SimpleGrid>
       {bossList.map(
-        (boss, index) =>
+        (boss) =>
           (boss.id === bossId || bossId === true) && (
             <SimpleGrid
               columns={[2, null, 7]}
@@ -63,7 +63,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               borderRadius={"lg"}
               p={2}
               mb={4}
-              key={index}
+              key={boss.id}
             >
               <ImageZoom
                 originalImg={boss.image}

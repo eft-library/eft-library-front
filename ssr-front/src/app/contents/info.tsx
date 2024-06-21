@@ -36,8 +36,8 @@ export default function Info() {
         templateRows="repeat(4, 1fr)"
         gap={12}
       >
-        {main.map((map: any, index: number) => (
-          <Link href={map.link} key={index}>
+        {main.map((map: any) => (
+          <Link href={map.link} key={map.value}>
             <GridItem
               w="120px"
               h="120px"

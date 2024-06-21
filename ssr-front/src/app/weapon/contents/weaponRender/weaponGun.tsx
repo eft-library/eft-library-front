@@ -60,9 +60,9 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
         shadowColor={yellowShadow}
         isWeapon
       />
-      {gunList.map((item, index) =>
+      {gunList.map((item) =>
         shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 9]} key={index}>
+          <GridContents columnDesign={[2, null, 9]} key={item.id}>
             <GridItem colSpan={2}>
               <Box
                 display={"flex"}
@@ -82,8 +82,8 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
               alignItems="center"
               flexDirection={"column"}
             >
-              {item.modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color={blackWhite} textAlign="center">
+              {item.modes_kr.map((mode) => (
+                <Text key={mode} color={blackWhite} textAlign="center">
                   {mode}
                 </Text>
               ))}

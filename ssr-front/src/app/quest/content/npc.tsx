@@ -34,8 +34,8 @@ export default function NPC() {
   return (
     <Box display="flex" justifyContent="center" alignItems={"center"} mb={10}>
       <SimpleGrid columns={[2, null, 5]} spacing={12}>
-        {npc.map((npcItem, index) => (
-          <Flex key={index} flexDirection={"column"}>
+        {npc.map((npcItem) => (
+          <Flex key={npcItem.id} flexDirection={"column"}>
             <Box
               cursor={"pointer"}
               w="120px"

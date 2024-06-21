@@ -62,10 +62,10 @@ export default function JPGView({ map, viewItemList }: JPGView) {
               height="100%"
             />
             {map.jpg_item_path.map(
-              (item, index) =>
+              (item) =>
                 viewItemList.includes(item.childValue) && (
                   <DynamicJPG
-                    key={index}
+                    key={item.x}
                     svgValue={item.childValue}
                     x={item.x}
                     y={item.y}
