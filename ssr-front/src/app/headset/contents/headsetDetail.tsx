@@ -27,20 +27,22 @@ export default function HeadsetDetail() {
       setColumn
     );
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEADSET, setHeadsetList);
-  }, [param]);
+  }, []);
 
   useEffect(() => {
     itemRef.current = param.get("id");
-    if (typeof window !== "undefined") {
-      const targetId = param.get("id");
-
-      if (targetId && headsetList && headsetList.length > 0) {
+    if (
+      typeof window !== "undefined" &&
+      headsetList &&
+      headsetList.length > 0
+    ) {
+      setTimeout(() => {
+        const targetId = param.get("id");
         const targetElement = document.getElementById(targetId);
-        console.log(targetElement);
-        if (targetElement) {
+        if (targetId && targetElement) {
           targetElement.scrollIntoView({ behavior: "smooth" });
         }
-      }
+      }, 500);
     }
   }, [param, headsetList]);
 
