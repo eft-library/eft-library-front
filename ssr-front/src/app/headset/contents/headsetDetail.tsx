@@ -27,16 +27,16 @@ export default function HeadsetDetail() {
       setColumn
     );
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEADSET, setHeadsetList);
-  }, []);
+  }, [param]);
 
   useEffect(() => {
     itemRef.current = param.get("id");
     if (typeof window !== "undefined") {
-      // 클라이언트 사이드에서만 실행
       const targetId = param.get("id");
 
       if (targetId && headsetList && headsetList.length > 0) {
         const targetElement = document.getElementById(targetId);
+        console.log(targetElement);
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: "smooth" });
         }
