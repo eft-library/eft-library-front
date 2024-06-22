@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -41,7 +41,7 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.short_name} />
+          <GridCenterText>{item.short_name}</GridCenterText>
           <Box
             w={"100%"}
             h={"100%"}
@@ -52,17 +52,15 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
           >
             {detailThrowable.includes(item.short_name) ? (
               <>
-                <Text color={blackWhite} textAlign="center" mb={2}>
+                <GridCenterText mb={2}>
                   충격시 {item.min_fuse} 초
-                </Text>
-                <Text color={blackWhite} textAlign="center">
+                </GridCenterText>
+                <GridCenterText>
                   (충격 신관이 발동되지 않은 경우 {item.fuse} 초)
-                </Text>
+                </GridCenterText>
               </>
             ) : (
-              <Text color={blackWhite} textAlign="center">
-                {item.fuse} 초
-              </Text>
+              <GridCenterText>{item.fuse} 초</GridCenterText>
             )}
           </Box>
           <Box
@@ -73,10 +71,10 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={blackWhite} textAlign="center">
+            <GridCenterText>
               {item.min_explosion_distance} ~&nbsp;
               {item.max_explosion_distance} m
-            </Text>
+            </GridCenterText>
           </Box>
           <Box
             w={"100%"}
@@ -86,9 +84,7 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
             alignItems="center"
             flexDirection={"column"}
           >
-            <Text color={blackWhite} textAlign="center">
-              {item.fragments} m
-            </Text>
+            <GridCenterText>{item.fragments} m</GridCenterText>
           </Box>
         </GridContents>
       ))}

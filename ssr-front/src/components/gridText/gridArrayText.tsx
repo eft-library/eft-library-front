@@ -1,8 +1,8 @@
 import { GridItem, Text } from "@chakra-ui/react";
-import type { RenderArrayText } from "@/types/types";
+import type { GridArrayText } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 
-export default function RenderArrayText({ arrayText }: RenderArrayText) {
+export default function GridArrayText({ arrayText }: GridArrayText) {
   const { blackWhite } = useColorValue();
   return (
     <GridItem

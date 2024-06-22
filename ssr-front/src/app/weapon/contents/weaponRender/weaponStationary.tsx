@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import { formatImage } from "@/lib/formatImage";
 import type { WeaponStationary, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
@@ -18,7 +17,7 @@ export default function WeaponStationary({
   stationaryList,
   category,
 }: WeaponStationary) {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -60,8 +59,8 @@ export default function WeaponStationary({
                 needFormat
               />
             </Box>
-            <GridCenterText value={item.short_name} />
-            <GridCenterText value={item.carliber} />
+            <GridCenterText>{item.short_name}</GridCenterText>
+            <GridCenterText>{item.carliber}</GridCenterText>
             <Box
               w={"100%"}
               h={"100%"}
@@ -70,13 +69,11 @@ export default function WeaponStationary({
               alignItems="center"
               flexDirection={"column"}
             >
-              {item.modes_kr.map((mode, mIndex) => (
-                <Text key={mIndex} color={blackWhite} textAlign="center">
-                  {mode}
-                </Text>
+              {item.modes_kr.map((mode) => (
+                <GridCenterText key={mode}>{mode}</GridCenterText>
               ))}
             </Box>
-            <GridCenterText value={item.fire_rate} />
+            <GridCenterText>{item.fire_rate}</GridCenterText>
           </GridContents>
         ) : null
       )}

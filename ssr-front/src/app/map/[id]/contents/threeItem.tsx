@@ -1,6 +1,5 @@
 import { useTexture } from "@react-three/drei";
 import { formatImage } from "@/lib/formatImage";
-import { Vector3 } from "three";
 import type { ThreeItemPath } from "@/types/types";
 
 export default function ItemBox({

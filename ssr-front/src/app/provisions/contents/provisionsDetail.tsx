@@ -3,16 +3,17 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box, Image, GridItem, Text } from "@chakra-ui/react";
+import { Box, GridItem, Text } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
+import EffectText from "./effectText";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ProvisionsDetail() {
   const { yellowShadow, blackWhite } = useColorValue();
@@ -30,22 +31,21 @@ export default function ProvisionsDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_FOOD_DRINK, setProvisionList);
   }, []);
 
-  // delay, duration이 이미 있으면 제거
-  function filterStimEffects(effects) {
+  const filterStimEffects = (effects) => {
     const seen = new Set();
-    for (const effect of effects) {
+    return effects.filter((effect) => {
       const key = `${effect.delay}-${effect.duration}`;
       if (!seen.has(key)) {
         seen.add(key);
-      } else if (effect.skillName === "Painkiller") {
-        // pass
-      } else {
+        return true;
+      } else if (effect.skillName !== "Painkiller") {
         delete effect.delay;
         delete effect.duration;
+        return true;
       }
-    }
-    return effects;
-  }
+      return false;
+    });
+  };
 
   const checkPlus = (effect: number | string) => {
     if (typeof effect === "number") {
@@ -57,36 +57,14 @@ export default function ProvisionsDetail() {
         return ALL_COLOR.RED;
       }
     }
-
-    if (typeof effect === "string") {
-      if (effect === "손 떨림") {
-        return ALL_COLOR.RED;
-      } else if (effect === "진통제") {
-        return ALL_COLOR.LIGHT_BLUE;
-      } else {
-        return blackWhite;
-      }
-    }
-  };
-
-  const fixStr = (value: string) => {
-    const fixList = ["손 떨림", "진통제"];
-    if (fixList.includes(value)) {
-      return `${value}`;
-    }
-
-    return `${value} :`;
   };
 
   const addPlusMinus = (text: number | string) => {
     if (typeof text === "number") {
-      // 진통제, 손 떨림 경우
-      if (text === 0) {
-        return "";
-      } else if (text > 0) {
+      if (text > 0) {
         return `+${text}`;
       } else {
-        return `${text}`;
+        return text;
       }
     }
   };
@@ -103,50 +81,27 @@ export default function ProvisionsDetail() {
       />
       {provisionList.map((item) => (
         <GridContents columnDesign={[2, null, 5]} key={item.id}>
-          <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+          <Box display="flex" alignItems="center" justifyContent="center">
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name_kr} />
-          <GridCenterText value={item.energy} isEffect />
-          <GridCenterText value={item.hydration} isEffect />
+          <GridCenterText>{item.name_kr} </GridCenterText>
+          <GridCenterText otherColor={checkPlus(item.energy)}>
+            {addPlusMinus(item.energy)}
+          </GridCenterText>
+          <GridCenterText otherColor={checkPlus(item.hydration)}>
+            {addPlusMinus(item.hydration)}
+          </GridCenterText>
           <GridItem
             display="flex"
             justifyContent="center"
-            flexDirection={"column"}
+            flexDirection="column"
           >
             {item.stim_effects.length > 0 ? (
               filterStimEffects(item.stim_effects).map((text) => (
-                <React.Fragment key={text["krSkill"]}>
-                  {text["delay"] && text["duration"] ? (
-                    <Text color={ALL_COLOR.LIGHT_YELLO} mt={4} fontWeight={600}>
-                      {text["skillName"] === "Painkiller"
-                        ? `${text["duration"]}초 지속`
-                        : `${text["delay"]}초 지연 / ${text["duration"]}초 지속`}
-                    </Text>
-                  ) : null}
-                  <Box display={"flex"}>
-                    <Text>-&nbsp;</Text>
-                    <Text
-                      color={checkPlus(text["krSkill"])}
-                      fontWeight={600}
-                      textAlign="center"
-                    >
-                      {fixStr(text["krSkill"])}
-                    </Text>
-                    <Text
-                      color={checkPlus(text["value"])}
-                      fontWeight={600}
-                      textAlign="center"
-                    >
-                      {text["skillName"] === "Painkiller"
-                        ? ``
-                        : ` ${addPlusMinus(text["value"])}`}
-                    </Text>
-                  </Box>
-                </React.Fragment>
+                <EffectText key={text.krSkill} text={text} />
               ))
             ) : (
-              <Text color={blackWhite}>-</Text>
+              <GridCenterText>-</GridCenterText>
             )}
           </GridItem>
         </GridContents>

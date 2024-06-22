@@ -1,7 +1,7 @@
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
-import RenderArrayText from "@/components/gridText/renderArrayText";
+import GridArrayText from "@/components/gridText/gridArrayText";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -10,10 +10,10 @@ import type { Column, MedicalList } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
-import { Text, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 export default function MedicalItem({ medicalList }: MedicalList) {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -44,21 +44,10 @@ export default function MedicalItem({ medicalList }: MedicalList) {
               >
                 <ImageZoom originalImg={item.image} thumbnail={item.image} />
               </Box>
-              <GridCenterText value={item.name_kr} />
-              <RenderArrayText arrayText={item.cures_kr} />
-              <GridCenterText value={item.uses} />
-              <Box
-                w={"100%"}
-                h={"100%"}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                flexDirection={"column"}
-              >
-                <Text color={blackWhite} textAlign="center">
-                  {item.use_time} 초
-                </Text>
-              </Box>
+              <GridCenterText>{item.name_kr}</GridCenterText>
+              <GridArrayText arrayText={item.cures_kr} />
+              <GridCenterText>{item.uses}</GridCenterText>
+              <GridCenterText>{item.use_time} 초</GridCenterText>
             </GridContents>
           )
       )}

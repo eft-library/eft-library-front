@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Text, GridItem } from "@chakra-ui/react";
+import { Box, GridItem } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function WeaponGun({ gunList, category }: WeaponGun) {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -72,8 +72,10 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
                 <ImageZoom originalImg={item.image} thumbnail={item.image} />
               </Box>
             </GridItem>
-            <GridCenterText value={item.short_name} />
-            <GridCenterText value={sliceDefaultAmmo(item.default_ammo)} />
+            <GridCenterText>{item.short_name}</GridCenterText>
+            <GridCenterText>
+              {sliceDefaultAmmo(item.default_ammo)}
+            </GridCenterText>
             <Box
               w={"100%"}
               h={"100%"}
@@ -83,15 +85,13 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
               flexDirection={"column"}
             >
               {item.modes_kr.map((mode) => (
-                <Text key={mode} color={blackWhite} textAlign="center">
-                  {mode}
-                </Text>
+                <GridCenterText key={mode}>{mode}</GridCenterText>
               ))}
             </Box>
-            <GridCenterText value={item.fire_rate} />
-            <GridCenterText value={item.ergonomics} />
-            <GridCenterText value={item.recoil_horizontal} />
-            <GridCenterText value={item.recoil_vertical} />
+            <GridCenterText>{item.fire_rate}</GridCenterText>
+            <GridCenterText>{item.ergonomics}</GridCenterText>
+            <GridCenterText>{item.recoil_horizontal}</GridCenterText>
+            <GridCenterText>{item.recoil_vertical}</GridCenterText>
           </GridContents>
         ) : null
       )}

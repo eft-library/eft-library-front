@@ -9,7 +9,7 @@ import { Box } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import RenderArrayText from "@/components/gridText/renderArrayText";
+import GridArrayText from "@/components/gridText/gridArrayText";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
@@ -60,9 +60,9 @@ export default function KeyDetail({ category }: KeyDetail) {
             >
               <ImageZoom originalImg={item.image} thumbnail={item.image} />
             </Box>
-            <GridCenterText value={item.name} />
-            <RenderArrayText arrayText={item.use_map_kr} />
-            <GridCenterText value={item.uses} />
+            <GridCenterText>{item.name} </GridCenterText>
+            <GridArrayText arrayText={item.use_map_kr} />
+            <GridCenterText>{item.uses}</GridCenterText>
           </GridContents>
         ) : null
       )}

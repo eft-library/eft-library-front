@@ -54,7 +54,7 @@ export default function WeaponSpecial({
             >
               <ImageZoom originalImg={item.image} thumbnail={item.image} />
             </Box>
-            <GridCenterText value={item.short_name} />
+            <GridCenterText>{item.short_name}</GridCenterText>
           </GridContents>
         ) : null
       )}

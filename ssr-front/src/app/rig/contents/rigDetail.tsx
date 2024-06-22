@@ -3,8 +3,8 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import RenderArrayText from "@/components/gridText/renderArrayText";
-import { Box, Text } from "@chakra-ui/react";
+import GridArrayText from "@/components/gridText/gridArrayText";
+import { Box } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { RigList, Column } from "@/types/types";
@@ -15,7 +15,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function RigDetail() {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [rigList, setRigList] = useState<RigList>();
   const [column, setColumn] = useState<Column>();
 
@@ -52,23 +52,12 @@ export default function RigDetail() {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name} />
-          <GridCenterText value={item.durability} />
-          <GridCenterText value={item.capacity} />
-          <GridCenterText value={item.class_value} />
-          <RenderArrayText arrayText={item.areas_kr} />
-          <Box
-            w={"100%"}
-            h={"100%"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
-          >
-            <Text color={blackWhite} textAlign="center">
-              {item.weight} kg
-            </Text>
-          </Box>
+          <GridCenterText>{item.name} </GridCenterText>
+          <GridCenterText>{item.durability} </GridCenterText>
+          <GridCenterText>{item.capacity} </GridCenterText>
+          <GridCenterText>{item.class_value} </GridCenterText>
+          <GridArrayText arrayText={item.areas_kr} />
+          <GridCenterText>{item.weight} kg</GridCenterText>
         </GridContents>
       ))}
       <Box mb={20} />
@@ -83,20 +72,9 @@ export default function RigDetail() {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name} />
-          <GridCenterText value={item.capacity} />
-          <Box
-            w={"100%"}
-            h={"100%"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
-          >
-            <Text color={blackWhite} textAlign="center">
-              {item.weight} kg
-            </Text>
-          </Box>
+          <GridCenterText>{item.name}</GridCenterText>
+          <GridCenterText>{item.capacity}</GridCenterText>
+          <GridCenterText>{item.weight} kg</GridCenterText>
         </GridContents>
       ))}
     </>

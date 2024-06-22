@@ -3,7 +3,7 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Backpack, Column } from "@/types/types";
@@ -14,7 +14,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 
 export default function BackpackDetail() {
-  const { yellowShadow, blackWhite } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [backpackList, setBackpackList] = useState<Backpack[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -44,32 +44,12 @@ export default function BackpackDetail() {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name} />
-          <GridCenterText value={item.capacity} />
-          <Box
-            w={"100%"}
-            h={"100%"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
-          >
-            <Text color={blackWhite} textAlign="center">
-              {item.grids[0].width} x {item.grids[0].height}
-            </Text>
-          </Box>
-          <Box
-            w={"100%"}
-            h={"100%"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
-          >
-            <Text color={blackWhite} textAlign="center">
-              {item.weight} kg
-            </Text>
-          </Box>
+          <GridCenterText>{item.name}</GridCenterText>
+          <GridCenterText>{item.capacity} </GridCenterText>
+          <GridCenterText>
+            {item.grids[0].width} x {item.grids[0].height}
+          </GridCenterText>
+          <GridCenterText>{item.weight} kg</GridCenterText>
         </GridContents>
       ))}
     </>

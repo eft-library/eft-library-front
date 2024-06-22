@@ -1,13 +1,13 @@
 import React from "react";
 import { GridItem, Divider, Text } from "@chakra-ui/react";
-import type { RenderJsonText } from "@/types/types";
+import type { GridJsonText } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 
-export default function RenderJsonText({
+export default function GridJsonText({
   jsonArrayText,
   jatType,
   isDivider,
-}: RenderJsonText) {
+}: GridJsonText) {
   const { blackWhite } = useColorValue();
   return (
     <GridItem

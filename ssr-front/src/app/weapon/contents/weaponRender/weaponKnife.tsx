@@ -1,4 +1,4 @@
-import { Text, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -12,7 +12,7 @@ import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function WeaponKnife({ knifeList }: WeaponKnife) {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -37,21 +37,10 @@ export default function WeaponKnife({ knifeList }: WeaponKnife) {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name} />
-          <GridCenterText value={item.slash_damage} />
-          <GridCenterText value={item.stab_damage} />
-          <Box
-            w={"100%"}
-            h={"100%"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
-          >
-            <Text color={blackWhite} textAlign="center">
-              {item.hit_radius} m
-            </Text>
-          </Box>
+          <GridCenterText>{item.name}</GridCenterText>
+          <GridCenterText>{item.slash_damage}</GridCenterText>
+          <GridCenterText>{item.stab_damage}</GridCenterText>
+          <GridCenterText>{item.hit_radius} m</GridCenterText>
         </GridContents>
       ))}
     </>

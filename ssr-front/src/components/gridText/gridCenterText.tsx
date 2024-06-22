@@ -1,35 +1,14 @@
 import { Box, Text } from "@chakra-ui/react";
 import type { GridCenterText } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function GridCenterText({
-  value,
-  isEffect = false,
+  children,
+  mb = 0,
+  mt = 0,
+  otherColor,
 }: GridCenterText) {
   const { blackWhite } = useColorValue();
-
-  const checkPlus = (effect: number | string) => {
-    if (typeof effect === "number") {
-      if (effect == 0) {
-        return blackWhite;
-      } else if (effect > 0) {
-        return ALL_COLOR.LIGHT_BLUE;
-      } else {
-        return ALL_COLOR.RED;
-      }
-    }
-  };
-
-  const addPlusMinus = (text: number | string) => {
-    if (typeof text === "number") {
-      if (text > 0) {
-        return `+${text}`;
-      } else {
-        return text;
-      }
-    }
-  };
 
   return (
     <Box
@@ -40,13 +19,25 @@ export default function GridCenterText({
       alignItems="center"
       flexDirection={"column"}
     >
-      {isEffect ? (
-        <Text color={checkPlus(value)} textAlign="center">
-          {addPlusMinus(value)}
+      {otherColor ? (
+        <Text
+          color={otherColor}
+          textAlign="center"
+          fontWeight={600}
+          mb={mb}
+          mt={mt}
+        >
+          {children}
         </Text>
       ) : (
-        <Text color={blackWhite} textAlign="center">
-          {value}
+        <Text
+          color={blackWhite}
+          textAlign="center"
+          fontWeight={600}
+          mb={mb}
+          mt={mt}
+        >
+          {children}
         </Text>
       )}
     </Box>

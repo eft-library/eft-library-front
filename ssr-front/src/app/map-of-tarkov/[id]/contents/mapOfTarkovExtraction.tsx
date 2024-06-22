@@ -1,8 +1,8 @@
 "use client";
 
-import { SimpleGrid, GridItem, Text, Box } from "@chakra-ui/react";
-import RenderArrayText from "@/components/gridText/renderArrayText";
-import RenderText from "@/components/gridText/renderText";
+import { SimpleGrid, GridItem, Box } from "@chakra-ui/react";
+import GridArrayText from "@/components/gridText/gridArrayText";
+import GridCenterText from "@/components/gridText/gridCenterText";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -61,7 +61,7 @@ export default function MapOfTarkovExtraction({
         >
           {column.value_kr.map((item, index) => (
             <GridItem key={item} colSpan={index === 0 || index === 5 ? 2 : 1}>
-              <RenderText text={item} />
+              <GridCenterText>{item}</GridCenterText>
             </GridItem>
           ))}
         </SimpleGrid>
@@ -90,11 +90,14 @@ export default function MapOfTarkovExtraction({
                 isMax={false}
               />
             </GridItem>
-
-            <RenderText text={extraction.name} />
-            <RenderText text={extraction.faction} />
-            <RenderText text={extraction.always_available ? "✅" : "❌"} />
-            <RenderText text={extraction.single_use ? "✅" : "❌"} />
+            <GridCenterText>{extraction.name}</GridCenterText>
+            <GridCenterText>{extraction.faction}</GridCenterText>
+            <GridCenterText>
+              {extraction.always_available ? "✅" : "❌"}
+            </GridCenterText>
+            <GridCenterText>
+              {extraction.single_use ? "✅" : "❌"}
+            </GridCenterText>
             <GridItem
               display="flex"
               justifyContent="center"
@@ -118,25 +121,22 @@ export default function MapOfTarkovExtraction({
                         isMax={false}
                       />
                     )}
-                    <Text
-                      color={blackWhite}
+                    <GridCenterText
                       mt={2}
                       mb={extraction.requirements.length === index + 1 ? 0 : 10}
-                      fontWeight={600}
-                      textAlign="center"
                     >
                       {formatTextWithLineBreaks(item.desc)}
-                    </Text>
+                    </GridCenterText>
                   </Box>
                 ))
               ) : (
-                <Text>-</Text>
+                <GridCenterText>-</GridCenterText>
               )}
             </GridItem>
             {extraction.tip.length > 0 ? (
-              <RenderArrayText arrayText={extraction.tip} />
+              <GridArrayText arrayText={extraction.tip} />
             ) : (
-              <RenderText text={"-"} />
+              <GridCenterText>-</GridCenterText>
             )}
           </SimpleGrid>
         ))}

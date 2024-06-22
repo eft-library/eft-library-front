@@ -1,9 +1,9 @@
 "use client";
 
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import RenderText from "@/components/gridText/renderText";
-import RenderArrayText from "@/components/gridText/renderArrayText";
-import RenderJsonText from "@/components/gridText/renderJsonText";
+import GridCenterText from "@/components/gridText/gridCenterText";
+import GridArrayText from "@/components/gridText/gridArrayText";
+import GridJsonText from "@/components/gridText/gridJsonText";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -48,7 +48,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
         mb={6}
       >
         {column.value_kr.map((item) => (
-          <RenderText text={item} key={item} />
+          <GridCenterText key={item}>{item}</GridCenterText>
         ))}
       </SimpleGrid>
       {bossList.map(
@@ -70,20 +70,20 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
                 thumbnail={boss.image}
                 isMax={false}
               />
-              <RenderText text={boss.name_kr} />
-              <RenderText text={boss.faction} />
-              <RenderJsonText
+              <GridCenterText>{boss.name_kr}</GridCenterText>
+              <GridCenterText>{boss.faction}</GridCenterText>
+              <GridJsonText
                 jsonArrayText={boss.location_spawn_chance_kr}
                 jatType={"location"}
                 isDivider
               />
-              <RenderJsonText
+              <GridJsonText
                 jsonArrayText={boss.location_spawn_chance_kr}
                 jatType={"chance"}
                 isDivider
               />
-              <RenderText text={boss.health_total} />
-              <RenderArrayText arrayText={boss.followers_kr} />
+              <GridCenterText>{boss.health_total}</GridCenterText>
+              <GridArrayText arrayText={boss.followers_kr} />
             </SimpleGrid>
           )
       )}

@@ -12,6 +12,7 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Text, Box, GridItem } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React from "react";
+import DrugText from "./drugText";
 
 export default function MedicalDrug({ medicalList }: MedicalList) {
   const { blackWhite, yellowShadow } = useColorValue();
@@ -25,7 +26,7 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
   }, []);
 
   if (!column) return <WeaponSkeleton />;
-  console.log(medicalList);
+
   return (
     <>
       <GridTitle
@@ -38,76 +39,61 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
         (item) =>
           item.category === "Drug" && (
             <GridContents columnDesign={[2, null, 6]} key={item.id}>
-              <Box
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
+              <Box display="flex" alignItems="center" justifyContent="center">
                 <ImageZoom originalImg={item.image} thumbnail={item.image} />
               </Box>
-              <GridCenterText value={item.name_kr} />
+              <GridCenterText>{item.name_kr}</GridCenterText>
               <GridItem
                 display="flex"
                 justifyContent="center"
-                alignItems={"center"}
-                flexDirection={"column"}
+                alignItems="center"
+                flexDirection="column"
               >
                 <Text color={ALL_COLOR.LIGHT_YELLO} mt={4} fontWeight={600}>
                   {item.painkiller_duration}초 지속
                 </Text>
-                <Box display={"flex"} mb={4}>
+                <Box display="flex" mb={4}>
                   <Text>-&nbsp;</Text>
                   <Text color={ALL_COLOR.LIGHT_BLUE}>진통제</Text>
                 </Box>
                 {item.hydration_impact > 0 && (
-                  <Box display={"flex"} mb={4}>
-                    <Text>수분 :&nbsp;</Text>
-                    <Text color={ALL_COLOR.LIGHT_BLUE}>
-                      {item.hydration_impact}
-                    </Text>
-                  </Box>
+                  <DrugText
+                    label="수분"
+                    value={item.hydration_impact}
+                    positive
+                  />
                 )}
                 {item.energy_impact > 0 && (
-                  <Box display={"flex"} mb={4}>
-                    <Text>에너지 :&nbsp;</Text>
-                    <Text color={ALL_COLOR.LIGHT_BLUE}>
-                      {item.energy_impact}
-                    </Text>
-                  </Box>
+                  <DrugText
+                    label="에너지"
+                    value={item.energy_impact}
+                    positive
+                  />
                 )}
               </GridItem>
               <GridItem
                 display="flex"
                 justifyContent="center"
-                alignItems={"center"}
-                flexDirection={"column"}
+                alignItems="center"
+                flexDirection="column"
               >
                 {item.hydration_impact < 0 && (
-                  <Box display={"flex"} mb={4}>
-                    <Text>수분 :&nbsp;</Text>
-                    <Text color={ALL_COLOR.RED}>{item.hydration_impact}</Text>
-                  </Box>
+                  <DrugText
+                    label="수분"
+                    value={item.hydration_impact}
+                    positive={false}
+                  />
                 )}
                 {item.energy_impact < 0 && (
-                  <Box display={"flex"} mb={4}>
-                    <Text>에너지 :&nbsp;</Text>
-                    <Text color={ALL_COLOR.RED}>{item.energy_impact}</Text>
-                  </Box>
+                  <DrugText
+                    label="에너지"
+                    value={item.energy_impact}
+                    positive={false}
+                  />
                 )}
               </GridItem>
-              <GridCenterText value={item.uses} />
-              <Box
-                w={"100%"}
-                h={"100%"}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                flexDirection={"column"}
-              >
-                <Text color={blackWhite} textAlign="center">
-                  {item.use_time} 초
-                </Text>
-              </Box>
+              <GridCenterText>{item.uses} </GridCenterText>
+              <GridCenterText>{item.use_time} 초 </GridCenterText>
             </GridContents>
           )
       )}

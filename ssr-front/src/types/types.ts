@@ -230,11 +230,13 @@ export interface GridContents {
 }
 
 export interface GridCenterText {
-  value: string | number;
-  isEffect?: Boolean;
+  children: ReactNode;
+  mb?: number;
+  mt?: number;
+  otherColor?: string;
 }
 
-export interface RenderArrayText {
+export interface GridArrayText {
   arrayText: string[];
 }
 
@@ -242,14 +244,10 @@ export interface JsonArrayText {
   [key: string]: any;
 }
 
-export interface RenderJsonText {
+export interface GridJsonText {
   jsonArrayText: JsonArrayText[];
   jatType: string;
   isDivider: boolean;
-}
-
-export interface RenderText {
-  text: string | number;
 }
 
 export interface GridTitle {

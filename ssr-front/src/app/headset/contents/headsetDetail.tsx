@@ -44,7 +44,7 @@ export default function HeadsetDetail() {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText value={item.name} />
+          <GridCenterText>{item.name}</GridCenterText>
         </GridContents>
       ))}
     </>
