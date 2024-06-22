@@ -8,8 +8,8 @@ import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "Tarkov Korea Library",
-  description: "Tarkov Korea Library",
+  title: "Tarkov Library",
+  description: "Tarkov Library",
 };
 
 export default function RootLayout({
