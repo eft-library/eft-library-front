@@ -40,7 +40,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
           geometry={nodes.mesh_0_2.geometry}
           material={materials.PaletteMaterial001}
         >
-          <Edges visible={true} scale={1} color="black" />
+          <Edges visible={true} scale={1} color="black" threshold={15} />
         </mesh>
         {map.three_item_path.map(
           (item) =>
