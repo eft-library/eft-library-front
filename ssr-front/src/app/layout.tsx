@@ -6,6 +6,7 @@ import { AppStoreProvider } from "@/store/provider";
 import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Tarkov Library",
@@ -24,8 +25,10 @@ export default function RootLayout({
           <ChakraProvider>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             <CSSReset />
-            <Header />
-            <AppStoreProvider>{children}</AppStoreProvider>
+            <Suspense>
+              <Header />
+              <AppStoreProvider>{children}</AppStoreProvider>
+            </Suspense>
             <Footer />
           </ChakraProvider>
         </AuthContext>
