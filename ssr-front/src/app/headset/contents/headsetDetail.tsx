@@ -31,12 +31,15 @@ export default function HeadsetDetail() {
 
   useEffect(() => {
     itemRef.current = param.get("id");
-    const targetId = param.get("id");
+    if (typeof window !== "undefined") {
+      // 클라이언트 사이드에서만 실행
+      const targetId = param.get("id");
 
-    if (targetId && headsetList && headsetList.length > 0) {
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: "smooth" });
+      if (targetId && headsetList && headsetList.length > 0) {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
       }
     }
   }, [param, headsetList]);
