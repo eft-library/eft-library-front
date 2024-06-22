@@ -22,7 +22,6 @@ export default function HeadsetDetail() {
   const itemRef = useRef(null);
 
   useEffect(() => {
-    itemRef.current = param.get("id");
     fetchDataWithNone(
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headset}`,
       setColumn
@@ -31,15 +30,16 @@ export default function HeadsetDetail() {
   }, []);
 
   useEffect(() => {
+    itemRef.current = param.get("id");
     const targetId = param.get("id");
 
-    if (targetId) {
+    if (targetId && headsetList && headsetList.length > 0) {
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, [param.get("id"), headsetList]);
+  }, [param, headsetList]);
 
   if (!column || !headsetList) return <WeaponSkeleton />;
 
