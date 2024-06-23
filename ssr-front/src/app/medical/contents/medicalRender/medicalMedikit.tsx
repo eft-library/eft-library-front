@@ -11,10 +11,13 @@ import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Box } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function MedicalMedikit({ medicalList }: MedicalList) {
   const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
+  const param = useSearchParams();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -22,6 +25,8 @@ export default function MedicalMedikit({ medicalList }: MedicalList) {
       setColumn
     );
   }, []);
+
+  useScrollMove(param.get("id"), medicalList, "MEDICAL");
 
   if (!column) return <WeaponSkeleton />;
 
@@ -36,7 +41,11 @@ export default function MedicalMedikit({ medicalList }: MedicalList) {
       {medicalList.map(
         (item) =>
           item.category === "Medikit" && (
-            <GridContents columnDesign={[2, null, 5]} key={item.id}>
+            <GridContents
+              columnDesign={[2, null, 5]}
+              key={item.id}
+              id={item.id}
+            >
               <Box
                 display={"flex"}
                 alignItems={"center"}

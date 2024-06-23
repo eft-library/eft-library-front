@@ -12,9 +12,12 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import GridArrayText from "@/components/gridText/gridArrayText";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
+import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function KeyDetail({ category }: KeyDetail) {
+  const param = useSearchParams();
   const { yellowShadow } = useColorValue();
   const [keyList, setKeyList] = useState<Key[]>();
   const [column, setColumn] = useState<Column>();
@@ -24,11 +27,10 @@ export default function KeyDetail({ category }: KeyDetail) {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.key}`,
       setColumn
     );
-  }, []);
-
-  useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_KEY, setKeyList);
   }, []);
+
+  useScrollMove(param.get("id"), keyList, "KEY");
 
   const checkViewKey = (mapValue: Array<string>, keyCategory: string) => {
     return keyCategory === "ALL" || mapValue.includes(keyCategory);
@@ -52,7 +54,7 @@ export default function KeyDetail({ category }: KeyDetail) {
       />
       {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (
-          <GridContents columnDesign={[2, null, 4]} key={item.id}>
+          <GridContents columnDesign={[2, null, 4]} key={item.id} id={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}

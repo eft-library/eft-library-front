@@ -12,10 +12,13 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Text, Box, GridItem } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import DrugText from "./drugText";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function MedicalDrug({ medicalList }: MedicalList) {
-  const { blackWhite, yellowShadow } = useColorValue();
+  const { yellowShadow } = useColorValue();
+  const param = useSearchParams();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -24,6 +27,8 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
       setColumn
     );
   }, []);
+
+  useScrollMove(param.get("id"), medicalList, "MEDICAL");
 
   if (!column) return <WeaponSkeleton />;
 
@@ -38,7 +43,11 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
       {medicalList.map(
         (item) =>
           item.category === "Drug" && (
-            <GridContents columnDesign={[2, null, 6]} key={item.id}>
+            <GridContents
+              columnDesign={[2, null, 6]}
+              key={item.id}
+              id={item.id}
+            >
               <Box display="flex" alignItems="center" justifyContent="center">
                 <ImageZoom originalImg={item.image} thumbnail={item.image} />
               </Box>

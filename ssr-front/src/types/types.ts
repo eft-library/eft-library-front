@@ -224,7 +224,7 @@ export interface Text {
   value: string;
 }
 
-export interface GridContents {
+export interface GridContents extends strID {
   children: ReactNode;
   columnDesign: Array<number | null>;
 }

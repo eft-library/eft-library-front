@@ -11,10 +11,13 @@ import type { ArmorVest, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import ImageZoom from "@/components/imageZoom/imageZoom";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function ArmorVestDetail() {
+  const param = useSearchParams();
   const { yellowShadow } = useColorValue();
   const [armorVestList, setArmotVestList] = useState<ArmorVest[]>();
   const [column, setColumn] = useState<Column>();
@@ -24,11 +27,10 @@ export default function ArmorVestDetail() {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.armorVest}`,
       setColumn
     );
-  }, []);
-
-  useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_ARMOR_VEST, setArmotVestList);
   }, []);
+
+  useScrollMove(param.get("id"), armorVestList);
 
   if (!armorVestList || !column) return <WeaponSkeleton />;
 
@@ -41,7 +43,7 @@ export default function ArmorVestDetail() {
         shadowColor={yellowShadow}
       />
       {armorVestList.map((item) => (
-        <GridContents columnDesign={[2, null, 6]} key={item.id}>
+        <GridContents columnDesign={[2, null, 6]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

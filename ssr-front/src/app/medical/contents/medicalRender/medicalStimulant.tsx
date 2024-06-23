@@ -12,10 +12,13 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Box, GridItem } from "@chakra-ui/react";
 import React from "react";
 import StimulantText from "./stimulantText";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function MedicalStimulant({ medicalList }: MedicalList) {
   const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
+  const param = useSearchParams();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -23,6 +26,8 @@ export default function MedicalStimulant({ medicalList }: MedicalList) {
       setColumn
     );
   }, []);
+
+  useScrollMove(param.get("id"), medicalList, "MEDICAL");
 
   const filterStimEffects = (effects) => {
     const seen = new Set();
@@ -51,7 +56,11 @@ export default function MedicalStimulant({ medicalList }: MedicalList) {
       {medicalList.map(
         (item) =>
           item.category === "Stimulant" && (
-            <GridContents columnDesign={[2, null, 4]} key={item.id}>
+            <GridContents
+              columnDesign={[2, null, 4]}
+              key={item.id}
+              id={item.id}
+            >
               <Box display="flex" alignItems="center" justifyContent="center">
                 <ImageZoom originalImg={item.image} thumbnail={item.image} />
               </Box>

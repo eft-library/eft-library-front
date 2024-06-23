@@ -9,6 +9,7 @@ import type { ImageSlider } from "@/types/types";
 import ImageZoom from "../imageZoom/imageZoom";
 import { Gallery } from "react-photoswipe-gallery";
 import React from "react";
+import Link from "next/link";
 
 export default function ImageSlider({
   mapList,
@@ -39,12 +40,15 @@ export default function ImageSlider({
                   thumbnail={map[imagePath]}
                 />
               ) : (
-                <Image
-                  key={map.id}
-                  alt="image"
-                  src={formatImage(map[imagePath])}
-                  boxSize="100%"
-                />
+                <Link href={`/map-of-tarkov/${map.id}`}>
+                  <Image
+                    key={map.id}
+                    cursor={"pointer"}
+                    alt="image"
+                    src={formatImage(map[imagePath])}
+                    boxSize="100%"
+                  />
+                </Link>
               )
             )}
           </Slider>

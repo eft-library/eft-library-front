@@ -9,12 +9,15 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { HeadwearList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { fetchDataWithNone } from "@/lib/api";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function HeadWearDetail() {
+  const param = useSearchParams();
   const { yellowShadow } = useColorValue();
   const [headWearList, setHeadWearList] = useState<HeadwearList>();
   const [column, setColumn] = useState<Column>();
@@ -24,11 +27,10 @@ export default function HeadWearDetail() {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.headwear}`,
       setColumn
     );
-  }, []);
-
-  useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_HEAD_WEAR, setHeadWearList);
   }, []);
+
+  useScrollMove(param.get("id"), headWearList);
 
   const noClassColumn = (column: string[]) => {
     return column.filter((item) => item === "사진" || item === "이름");
@@ -45,7 +47,7 @@ export default function HeadWearDetail() {
         shadowColor={yellowShadow}
       />
       {headWearList.class_head_wear.map((item) => (
-        <GridContents columnDesign={[2, null, 7]} key={item.id}>
+        <GridContents columnDesign={[2, null, 7]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -65,7 +67,7 @@ export default function HeadWearDetail() {
         shadowColor={yellowShadow}
       />
       {headWearList.no_class_head_wear.map((item) => (
-        <GridContents columnDesign={[2, null, 2]} key={item.id}>
+        <GridContents columnDesign={[2, null, 2]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

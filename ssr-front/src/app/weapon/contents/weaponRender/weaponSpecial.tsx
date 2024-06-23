@@ -12,6 +12,8 @@ import type { Column, WeaponSpecial } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function WeaponSpecial({
   specialList,
@@ -19,6 +21,7 @@ export default function WeaponSpecial({
 }: WeaponSpecial) {
   const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
+  const param = useSearchParams();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -26,6 +29,8 @@ export default function WeaponSpecial({
       setColumn
     );
   }, []);
+
+  useScrollMove(param.get("id"), specialList, "WEAPON");
 
   if (!column) return <WeaponSkeleton />;
 
@@ -46,7 +51,7 @@ export default function WeaponSpecial({
       />
       {specialList.map((item) =>
         shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 2]} key={item.id}>
+          <GridContents columnDesign={[2, null, 2]} key={item.id} id={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}

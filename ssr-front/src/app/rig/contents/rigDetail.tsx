@@ -11,10 +11,13 @@ import type { RigList, Column } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
+import { useSearchParams } from "next/navigation";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function RigDetail() {
+  const param = useSearchParams();
   const { yellowShadow } = useColorValue();
   const [rigList, setRigList] = useState<RigList>();
   const [column, setColumn] = useState<Column>();
@@ -24,11 +27,10 @@ export default function RigDetail() {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.rig}`,
       setColumn
     );
-  }, []);
-
-  useEffect(() => {
     fetchDataWithNone(`${API_ENDPOINTS.GET_ALL_RIG}`, setRigList);
   }, []);
+
+  useScrollMove(param.get("id"), rigList);
 
   const noClassColumn = (column: string[]) => {
     return column.filter(
@@ -48,7 +50,7 @@ export default function RigDetail() {
         shadowColor={yellowShadow}
       />
       {rigList.class_rig.map((item) => (
-        <GridContents columnDesign={[2, null, 7]} key={item.id}>
+        <GridContents columnDesign={[2, null, 7]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -68,7 +70,7 @@ export default function RigDetail() {
         shadowColor={yellowShadow}
       />
       {rigList.no_class_rig.map((item) => (
-        <GridContents columnDesign={[2, null, 4]} key={item.id}>
+        <GridContents columnDesign={[2, null, 4]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

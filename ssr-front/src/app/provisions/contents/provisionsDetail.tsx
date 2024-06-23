@@ -14,8 +14,10 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { useSearchParams } from "next/navigation";
 
 export default function ProvisionsDetail() {
+  const param = useSearchParams();
   const { yellowShadow, blackWhite } = useColorValue();
   const [provisionList, setProvisionList] = useState<Provisions[]>();
   const [column, setColumn] = useState<Column>();
@@ -25,11 +27,24 @@ export default function ProvisionsDetail() {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.food_drink}`,
       setColumn
     );
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_FOOD_DRINK, setProvisionList);
   }, []);
 
   useEffect(() => {
-    fetchDataWithNone(API_ENDPOINTS.GET_ALL_FOOD_DRINK, setProvisionList);
-  }, []);
+    if (
+      typeof window !== "undefined" &&
+      provisionList &&
+      provisionList.length > 0
+    ) {
+      setTimeout(() => {
+        const targetId = param.get("id");
+        const targetElement = document.getElementById(targetId);
+        if (targetId && targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 500);
+    }
+  }, [param, provisionList]);
 
   const filterStimEffects = (effects) => {
     const seen = new Set();
@@ -80,7 +95,7 @@ export default function ProvisionsDetail() {
         shadowColor={yellowShadow}
       />
       {provisionList.map((item) => (
-        <GridContents columnDesign={[2, null, 5]} key={item.id}>
+        <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
           <Box display="flex" alignItems="center" justifyContent="center">
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

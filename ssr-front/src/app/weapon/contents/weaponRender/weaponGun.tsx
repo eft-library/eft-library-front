@@ -12,10 +12,13 @@ import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import ImageZoom from "@/components/imageZoom/imageZoom";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function WeaponGun({ gunList, category }: WeaponGun) {
   const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
+  const param = useSearchParams();
 
   useEffect(() => {
     fetchDataWithNone(
@@ -23,6 +26,8 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
       setColumn
     );
   }, []);
+
+  useScrollMove(param.get("id"), gunList, "WEAPON");
 
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (itemCategory: string) => {
@@ -62,7 +67,7 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
       />
       {gunList.map((item) =>
         shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 9]} key={item.id}>
+          <GridContents columnDesign={[2, null, 9]} key={item.id} id={item.id}>
             <GridItem colSpan={2}>
               <Box
                 display={"flex"}
