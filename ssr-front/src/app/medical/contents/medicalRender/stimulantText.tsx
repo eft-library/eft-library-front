@@ -14,6 +14,19 @@ export default function StimulantText({ effect, itemID, type }) {
     return "";
   };
 
+  const checkSkillColor = (text) => {
+    const blue = ["진통제", "해독제"];
+    const red = ["손 떨림", "터널 효과"];
+
+    if (blue.includes(text)) {
+      return ALL_COLOR.LIGHT_BLUE;
+    } else if (red.includes(text)) {
+      return ALL_COLOR.RED;
+    } else {
+      return blackWhite;
+    }
+  };
+
   return (
     <React.Fragment key={effect.krSkill}>
       {effect.delay != null && effect.duration != null && (
@@ -29,7 +42,9 @@ export default function StimulantText({ effect, itemID, type }) {
         <Text color={blackWhite} fontWeight={700}>
           -&nbsp;
         </Text>
-        <Text fontWeight={600}>{effect.krSkill}</Text>
+        <Text fontWeight={600} color={checkSkillColor(effect.krSkill)}>
+          {effect.krSkill}
+        </Text>
         <Text
           fontWeight={600}
           color={type === "buff" ? ALL_COLOR.LIGHT_BLUE : ALL_COLOR.RED}

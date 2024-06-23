@@ -30,7 +30,7 @@ export default function Medical() {
 
   return (
     <PageParent>
-      <SubHeader title="무기" />
+      <SubHeader title="의료품" />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}
