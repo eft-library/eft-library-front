@@ -21,6 +21,13 @@ export const ALL_COLOR = {
   WHITE: "#ffffff",
   YELLOW: "#ffd700",
   LIGHT_YELLO: "#FDFFA7",
+  LIGHT_GREEN: "#3DBA00",
+  DARK_GREEN: "#2E6D0F",
+  BRIGHT_GOLD: "#DE8E13",
+  DARG_BROWN: "#694F27",
+  CHOCOLATE_BROWN: "#86552D",
+  BURGUNDY: "#831C16",
+  DARK_MARRON: "#5B0803",
 
   // Item
   DISABLE: "#f4f4f4",

@@ -139,6 +139,7 @@ export interface JsonValue extends strID {
   desc_en: string;
   desc_kr: string;
   order: number;
+  color?: string;
 }
 
 interface MapData extends strID {
@@ -179,6 +180,8 @@ export interface ContentsSelector {
   currentId: string;
   selectorId: string;
   itemDesc: string;
+  isSpace?: boolean;
+  isEng?: boolean;
 }
 
 export interface LinkSelector {
@@ -256,6 +259,7 @@ export interface GridTitle {
   isShadow: boolean;
   shadowColor: string;
   isWeapon?: boolean;
+  isAmmo?: boolean;
 }
 
 export interface SliderOption {
@@ -389,6 +393,22 @@ export interface Medical extends strID, CommonData, Category {
 
 export interface MedicalList {
   medicalList: Medical[];
+}
+
+export interface AmmoDetail extends Category {}
+
+export interface Ammo extends strID, Category {
+  name: string;
+  round: string;
+  damage: number;
+  penetration_power: number;
+  armor_damage: number;
+  accuracy_modifier: number;
+  recoil_modifier: number;
+  light_bleed_modifier: number;
+  heavy_bleed_modifier: number;
+  efficiency: number[];
+  image: string;
 }
 
 export interface RigList {

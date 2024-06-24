@@ -9,9 +9,12 @@ export const useScrollMove = (
   data: any,
   reset: string = "None"
 ) => {
-  const { setKeyCategory, setMedicalCategory, setWeaponCategory } = useAppStore(
-    (state) => state
-  );
+  const {
+    setKeyCategory,
+    setMedicalCategory,
+    setWeaponCategory,
+    setAmmoCategory,
+  } = useAppStore((state) => state);
 
   useEffect(() => {
     if (id) {
@@ -21,6 +24,8 @@ export const useScrollMove = (
         setMedicalCategory("ALL");
       } else if (reset === "WEAPON") {
         setWeaponCategory("ALL");
+      } else if (reset === "AMMO") {
+        setAmmoCategory("ALL");
       }
     }
 

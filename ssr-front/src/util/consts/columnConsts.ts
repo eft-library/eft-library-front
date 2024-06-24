@@ -26,4 +26,6 @@ export const COLUMN_KEY = {
   medicalItem: "MEDICAL_ITEM_COLUMN",
   medikit: "MEDIKIT_COLUMN",
   medicalType: "MEDICAL_TYPE",
+  ammoType: "AMMO_TYPE",
+  ammo: "AMMO_COLUMN",
 } as const;

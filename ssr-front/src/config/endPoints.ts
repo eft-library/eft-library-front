@@ -26,6 +26,7 @@ const API_ENDPOINTS = {
   GET_ALL_KEY: baseUrl + "/api/item/key",
   GET_ALL_FOOD_DRINK: baseUrl + "/api/item/food_drink",
   GET_ALL_MEDICAL: baseUrl + "/api/item/medical",
+  GET_ALL_AMMO: baseUrl + "/api/item/ammo",
 };
 
 export default API_ENDPOINTS;

@@ -40,9 +40,8 @@ export default function ImageSlider({
                   thumbnail={map[imagePath]}
                 />
               ) : (
-                <Link href={`/map-of-tarkov/${map.id}`}>
+                <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
                   <Image
-                    key={map.id}
                     cursor={"pointer"}
                     alt="image"
                     src={formatImage(map[imagePath])}

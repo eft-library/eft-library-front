@@ -8,8 +8,28 @@ export default function GridTitle({
   isShadow,
   shadowColor,
   isWeapon = false,
+  isAmmo = false,
 }: GridTitle) {
   const { blackWhite, whiteBlack } = useColorValue();
+
+  const checkColSpan = (index: number) => {
+    if (isWeapon) {
+      if (index === 0) {
+        return 2;
+      } else {
+        1;
+      }
+    } else if (isAmmo) {
+      if (index === 9) {
+        return 2;
+      } else {
+        return 1;
+      }
+    } else {
+      return 1;
+    }
+  };
+
   return (
     <SimpleGrid
       columns={columnDesign}
@@ -26,7 +46,7 @@ export default function GridTitle({
       mb={6}
     >
       {column.map((item, index) => (
-        <GridItem key={item} colSpan={isWeapon ? (index === 0 ? 2 : 1) : 1}>
+        <GridItem key={item} colSpan={checkColSpan(index)}>
           <Text
             flexGrow={1}
             color={blackWhite}

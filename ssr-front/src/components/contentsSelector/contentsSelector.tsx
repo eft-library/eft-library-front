@@ -9,6 +9,8 @@ export default function ContentsSelector({
   currentId,
   selectorId,
   itemDesc,
+  isSpace = true,
+  isEng = false,
 }: ContentsSelector) {
   const { blackWhite, darkLightgray } = useColorValue();
 
@@ -21,8 +23,16 @@ export default function ContentsSelector({
       alignItems={"center"}
       mb={14}
       mt={10}
+      w={"100%"}
     >
-      <SimpleGrid columns={[2, null, 7]} spacing={4}>
+      <SimpleGrid
+        columns={[2, null, 7]}
+        spacing={isSpace ? 4 : 2}
+        display="flex"
+        justifyContent="center"
+        alignItems={"center"}
+        flexWrap={"wrap"}
+      >
         {itemList.map((item, index) => (
           <Flex
             flexDirection={"column"}
@@ -35,14 +45,18 @@ export default function ContentsSelector({
               h="40px"
               color={blackWhite}
               outline={"1px solid"}
-              outlineColor={blackWhite}
+              outlineColor={item.color ? item.color : blackWhite}
               borderRadius={"lg"}
               _hover={{ bg: darkLightgray }}
               bg={currentId === item[selectorId] ? darkLightgray : ""}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              p={2}
             >
               <Text
                 color={blackWhite}
-                mt={2}
+                fontSize={isEng ? (index === 0 ? 16 : 12) : 16}
                 fontWeight={700}
                 textAlign="center"
               >
