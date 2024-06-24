@@ -43,6 +43,11 @@ export const ALL_COLOR = {
   BLACK_SHADOW: "0px 2px 4px rgba(1, 1, 1, 0.8)",
   YELLOW_SHADOW: "0px 1px 1px rgb(202, 238, 18, 0.7)",
   BOX_SHADOW: "0 0 14px rgb(202, 238, 18, 0.7)",
+  BLUE_SHADOW: "0px 1px 1px rgb(144, 189, 255, 0.7)",
+  MINT_SHADOW: "0px 1px 1px rgb(97, 255, 227)",
+  RED_SHADOW: "0px 1px 1px rgb(255, 78, 78)",
+  ORANGE_SHADOW: "0px 1px 1px rgb(255, 177, 105)",
+  LIGHT_YELLOW_SHADOW: "0px 1px 1px rgb(255, 245, 0)",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;

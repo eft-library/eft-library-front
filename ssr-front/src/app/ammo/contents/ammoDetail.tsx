@@ -15,10 +15,11 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import EfficiencyBox from "./efficiencyBox";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function AmmoDetail({ category }: AmmoDetail) {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
+  const { yellowShadow, blackWhite } = useColorValue();
   const [ammoList, setAmmoList] = useState<Ammo[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -32,8 +33,67 @@ export default function AmmoDetail({ category }: AmmoDetail) {
 
   useScrollMove(param.get("id"), ammoList, "AMMO");
 
+  const addPlusMinus = (text) => {
+    if (typeof text === "number") {
+      if (text === 0) return "0";
+      return text > 0 ? `+${text}` : `${text}`;
+    }
+    return "";
+  };
+
   const checkViewAmmo = (ammoCategory: string) => {
     return category === "ALL" || category === ammoCategory;
+  };
+
+  const checkTitleColor = (ammoCategory: string) => {
+    const lifle = [
+      "9x39mm",
+      "6.8x51mm",
+      "5.56x45mm NATO",
+      "7.62x51mm NATO",
+      "7.62x54mmR",
+      ".366 TKM",
+      "7.62x39mm",
+      "12.7x55mm STs-130",
+      ".300 Blackout",
+      ".338 Lapua Magnum",
+      "5.45x39mm",
+    ];
+    const other = ["40x46mm", "other"];
+    const pdw = ["4.6x30mm HK", "5.7x28mm FN"];
+    const pistol = [
+      "9x18mm Makarov",
+      "9x21mm Gyurza",
+      ".45 ACP",
+      "7.62x25mm Tokarev",
+      ".357 Magnum",
+      "9x19mm Parabellum",
+    ];
+    const shotgun = ["23x75mm", "12/70", "20/70"];
+
+    if (lifle.includes(ammoCategory)) {
+      return ALL_COLOR.BLUE_SHADOW;
+    } else if (other.includes(ammoCategory)) {
+      return ALL_COLOR.LIGHT_YELLOW_SHADOW;
+    } else if (pdw.includes(ammoCategory)) {
+      return ALL_COLOR.MINT_SHADOW;
+    } else if (pistol.includes(ammoCategory)) {
+      return ALL_COLOR.ORANGE_SHADOW;
+    } else if (shotgun.includes(ammoCategory)) {
+      return ALL_COLOR.RED_SHADOW;
+    } else {
+      return yellowShadow;
+    }
+  };
+
+  const checkColor = (value: number) => {
+    if (value === 0) {
+      return blackWhite;
+    } else if (value > 0) {
+      return ALL_COLOR.LIGHT_BLUE;
+    } else {
+      return ALL_COLOR.RED;
+    }
   };
 
   const floatToPercent = (value: number) => {
@@ -59,7 +119,7 @@ export default function AmmoDetail({ category }: AmmoDetail) {
         column={column.value_kr}
         isShadow
         isAmmo
-        shadowColor={yellowShadow}
+        shadowColor={checkTitleColor(category)}
       />
       {ammoList.map((item) =>
         checkViewAmmo(item.category) ? (
@@ -75,17 +135,25 @@ export default function AmmoDetail({ category }: AmmoDetail) {
             <GridCenterText>{item.damage} </GridCenterText>
             <GridCenterText>{item.penetration_power} </GridCenterText>
             <GridCenterText>{item.armor_damage}</GridCenterText>
-            <GridCenterText>
-              {floatToPercent(item.accuracy_modifier)}
+            <GridCenterText
+              otherColor={checkColor(floatToPercent(item.accuracy_modifier))}
+            >
+              {addPlusMinus(floatToPercent(item.accuracy_modifier))}
             </GridCenterText>
-            <GridCenterText>
-              {floatToPercent(item.recoil_modifier)}
+            <GridCenterText
+              otherColor={checkColor(floatToPercent(item.recoil_modifier))}
+            >
+              {addPlusMinus(floatToPercent(item.recoil_modifier))}
             </GridCenterText>
-            <GridCenterText>
-              {floatToPercent(item.light_bleed_modifier)}
+            <GridCenterText
+              otherColor={checkColor(floatToPercent(item.light_bleed_modifier))}
+            >
+              {addPlusMinus(floatToPercent(item.light_bleed_modifier))}
             </GridCenterText>
-            <GridCenterText>
-              {floatToPercent(item.heavy_bleed_modifier)}
+            <GridCenterText
+              otherColor={checkColor(floatToPercent(item.heavy_bleed_modifier))}
+            >
+              {addPlusMinus(floatToPercent(item.heavy_bleed_modifier))}
             </GridCenterText>
             <GridItem
               colSpan={2}
