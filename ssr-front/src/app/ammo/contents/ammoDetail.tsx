@@ -96,6 +96,16 @@ export default function AmmoDetail({ category }: AmmoDetail) {
     }
   };
 
+  const recoilColor = (value: number) => {
+    if (value === 0) {
+      return blackWhite;
+    } else if (value < 0) {
+      return ALL_COLOR.LIGHT_BLUE;
+    } else {
+      return ALL_COLOR.RED;
+    }
+  };
+
   const floatToPercent = (value: number) => {
     if (value !== 0) {
       return Math.round(value * 100);
@@ -141,7 +151,7 @@ export default function AmmoDetail({ category }: AmmoDetail) {
               {addPlusMinus(floatToPercent(item.accuracy_modifier))}
             </GridCenterText>
             <GridCenterText
-              otherColor={checkColor(floatToPercent(item.recoil_modifier))}
+              otherColor={recoilColor(floatToPercent(item.recoil_modifier))}
             >
               {addPlusMinus(floatToPercent(item.recoil_modifier))}
             </GridCenterText>
