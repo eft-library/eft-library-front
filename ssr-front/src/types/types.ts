@@ -411,6 +411,14 @@ export interface Ammo extends strID, Category {
   image: string;
 }
 
+export interface LootDetail extends Category {}
+
+export interface Loot extends strID, Category {
+  name: string;
+  image: string;
+  notes: JsonArrayText;
+}
+
 export interface RigList {
   class_rig: Rig[];
   no_class_rig: Rig[];

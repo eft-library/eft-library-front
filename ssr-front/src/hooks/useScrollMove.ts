@@ -14,6 +14,7 @@ export const useScrollMove = (
     setMedicalCategory,
     setWeaponCategory,
     setAmmoCategory,
+    setLootCategory,
   } = useAppStore((state) => state);
 
   useEffect(() => {
@@ -26,6 +27,8 @@ export const useScrollMove = (
         setWeaponCategory("ALL");
       } else if (reset === "AMMO") {
         setAmmoCategory("ALL");
+      } else if (reset === "LOOT") {
+        setLootCategory("ALL");
       }
     }
 

@@ -11,6 +11,7 @@ export type AppStateType = {
   itemFilter: Item[];
   medicalCategory: string;
   ammoCategory: string;
+  lootCategory: string;
 };
 
 export type AppActionsType = {
@@ -21,6 +22,7 @@ export type AppActionsType = {
   setItemFilter: (value: any[]) => void;
   setMedicalCategory: (value: string) => void;
   setAmmoCategory: (value: string) => void;
+  setLootCategory: (value: string) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -32,6 +34,7 @@ export const defaultInitState: AppStateType = {
   npcId: "PRAPOR",
   medicalCategory: "ALL",
   ammoCategory: "ALL",
+  lootCategory: "ALL",
   itemFilter: [],
 };
 
@@ -51,6 +54,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
             setMedicalCategory: (value: string) =>
               set({ medicalCategory: value }),
             setAmmoCategory: (value: string) => set({ ammoCategory: value }),
+            setLootCategory: (value: string) => set({ lootCategory: value }),
           } satisfies AppStoreType),
         {
           name: "app-store",

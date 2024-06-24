@@ -28,4 +28,6 @@ export const COLUMN_KEY = {
   medicalType: "MEDICAL_TYPE",
   ammoType: "AMMO_TYPE",
   ammo: "AMMO_COLUMN",
+  lootType: "LOOT_TYPE",
+  loot: "LOOT_COLUMN",
 } as const;
