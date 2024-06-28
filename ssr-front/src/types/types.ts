@@ -414,7 +414,8 @@ export interface Ammo extends strID, Category {
 export interface LootDetail extends Category {}
 
 export interface Loot extends strID, Category {
-  name: string;
+  name_en: string;
+  name_kr: string;
   image: string;
   notes: JsonArrayText;
 }

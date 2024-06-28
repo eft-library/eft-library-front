@@ -63,7 +63,7 @@ export default function LootDetail({ category }: LootDetail) {
             >
               <ImageZoom originalImg={item.image} thumbnail={item.image} />
             </Box>
-            <GridCenterText>{item.name} </GridCenterText>
+            <GridCenterText>{item.name_kr} </GridCenterText>
             <GridItem
               display={"flex"}
               flexDirection={"column"}
