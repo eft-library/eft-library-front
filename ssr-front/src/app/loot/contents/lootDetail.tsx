@@ -70,21 +70,29 @@ export default function LootDetail({ category }: LootDetail) {
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                퀘스트
-              </Text>
-              {item.notes.quest &&
-                item.notes.quest.map((quest) => (
-                  <Link href={`/quest/detail/${quest.id}`}>
-                    <Text
-                      color={blackWhite}
-                      fontWeight={600}
-                      _hover={{ color: beige }}
-                    >
-                      -&nbsp;{quest.name_kr}
-                    </Text>
-                  </Link>
-                ))}
+              {item.notes && item.notes.quest ? (
+                <>
+                  <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
+                    퀘스트
+                  </Text>
+                  {item.notes.quest &&
+                    item.notes.quest.map((quest) => (
+                      <Link href={`/quest/detail/${quest.id}`}>
+                        <Text
+                          color={blackWhite}
+                          fontWeight={600}
+                          _hover={{ color: beige }}
+                        >
+                          -&nbsp;{quest.name_kr}
+                        </Text>
+                      </Link>
+                    ))}
+                </>
+              ) : (
+                <Text color={blackWhite} fontWeight={600}>
+                  -
+                </Text>
+              )}
             </GridItem>
           </GridContents>
         ) : null

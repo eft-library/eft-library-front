@@ -436,8 +436,8 @@ export interface ItemSelector {
 }
 
 export interface HeadwearList {
-  class_head_wear: Headwear[];
-  no_class_head_wear: Headwear[];
+  class_headwear: Headwear[];
+  no_class_headwear: Headwear[];
 }
 
 export interface Quest extends strID, CommonData {
