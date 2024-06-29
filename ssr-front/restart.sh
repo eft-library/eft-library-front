@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 포트 번호를 첫 번째 인수로 받아옴
-port=3000
+port=4000
 
 # 해당 포트를 사용 중인 프로세스의 PID를 찾아서 변수에 저장
 pid=$(netstat -tnlp | grep ":$port\b" | awk '{print $7}' | cut -d'/' -f1)
