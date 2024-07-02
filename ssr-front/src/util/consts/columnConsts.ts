@@ -30,4 +30,6 @@ export const COLUMN_KEY = {
   ammo: "AMMO_COLUMN",
   lootType: "LOOT_TYPE",
   loot: "LOOT_COLUMN",
+  hideoutType: "HIDEOUT_TYPE",
+  hideout: "HIDEOUT_COLUMN",
 } as const;

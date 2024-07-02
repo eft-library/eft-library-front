@@ -1,7 +1,6 @@
 "use client";
 
 import { SimpleGrid, GridItem, Box } from "@chakra-ui/react";
-import GridArrayText from "@/components/gridText/gridArrayText";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
@@ -134,7 +133,29 @@ export default function MapOfTarkovExtraction({
               )}
             </GridItem>
             {extraction.tip.length > 0 ? (
-              <GridArrayText arrayText={extraction.tip} />
+              extraction.tip.map((item, index) => (
+                <Box
+                  key={item.desc}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"center"}
+                >
+                  {item.image && (
+                    <ImageZoom
+                      originalImg={item.image}
+                      thumbnail={item.thumbnail}
+                      needFormat
+                      isMax={false}
+                    />
+                  )}
+                  <GridCenterText
+                    mt={2}
+                    mb={extraction.requirements.length === index + 1 ? 0 : 10}
+                  >
+                    {formatTextWithLineBreaks(item.desc)}
+                  </GridCenterText>
+                </Box>
+              ))
             ) : (
               <GridCenterText>-</GridCenterText>
             )}

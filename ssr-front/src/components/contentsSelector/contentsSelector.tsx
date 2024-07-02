@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Flex, Text } from "@chakra-ui/react";
+import { Box, SimpleGrid, Flex, Text, Image } from "@chakra-ui/react";
 import type { ContentsSelector } from "@/types/types";
 import ContentsSelectorSkeleton from "./contentsSelectorSkeleton";
 import useColorValue from "@/hooks/useColorValue";
@@ -11,6 +11,7 @@ export default function ContentsSelector({
   itemDesc,
   isSpace = true,
   isEng = false,
+  isImage = false,
 }: ContentsSelector) {
   const { blackWhite, darkLightgray } = useColorValue();
 
@@ -41,8 +42,8 @@ export default function ContentsSelector({
           >
             <Box
               cursor={"pointer"}
-              w="110px"
-              h="40px"
+              w={isImage ? "50px" : "110px"}
+              h={isImage ? "50px" : "110px"}
               color={blackWhite}
               outline={"1px solid"}
               outlineColor={item.color ? item.color : blackWhite}
@@ -54,14 +55,18 @@ export default function ContentsSelector({
               justifyContent={"center"}
               p={2}
             >
-              <Text
-                color={blackWhite}
-                fontSize={isEng ? (index === 0 ? 16 : 12) : 16}
-                fontWeight={700}
-                textAlign="center"
-              >
-                {item[itemDesc]}
-              </Text>
+              {isImage ? (
+                <Image src={item["image"]} />
+              ) : (
+                <Text
+                  color={blackWhite}
+                  fontSize={isEng ? (index === 0 ? 16 : 12) : 16}
+                  fontWeight={700}
+                  textAlign="center"
+                >
+                  {item[itemDesc]}
+                </Text>
+              )}
             </Box>
           </Flex>
         ))}

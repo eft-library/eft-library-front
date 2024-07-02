@@ -28,6 +28,7 @@ const API_ENDPOINTS = {
   GET_ALL_MEDICAL: baseUrl + "/api/item/medical",
   GET_ALL_AMMO: baseUrl + "/api/item/ammo",
   GET_ALL_LOOT: baseUrl + "/api/item/loot",
+  GET_ALL_HIDEOUT: baseUrl + "/api/hideout/all",
 };
 
 export default API_ENDPOINTS;

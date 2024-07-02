@@ -73,7 +73,7 @@ export interface Extraction extends strID {
   name: string;
   faction: string;
   single_use: boolean;
-  tip: string[];
+  tip: Requirement[];
   image: string;
   image_thumbnail: string;
   always_available: boolean;
@@ -182,6 +182,7 @@ export interface ContentsSelector {
   itemDesc: string;
   isSpace?: boolean;
   isEng?: boolean;
+  isImage?: boolean;
 }
 
 export interface LinkSelector {
@@ -521,4 +522,75 @@ export interface ImageZoom {
   needFormat?: boolean;
   isMax?: boolean;
   isLoop?: boolean;
+}
+
+export interface HideoutDetail extends Category {}
+
+export interface Hideout {
+  master_id: string;
+  master_name_en: string;
+  master_name_kr: string | null;
+  image: string;
+  data: HideoutLevel[];
+}
+
+interface HideoutLevel {
+  bonus: Bonus[];
+  crafts: Craft[];
+  level_id: string;
+  level_info: LevelInfo[];
+  item_require: ItemRequire[];
+  skill_require: SkillRequire[];
+  trader_require: TraderRequire[];
+  station_require: StationRequire[];
+}
+
+interface Bonus {
+  value: number;
+  name_en: string;
+  name_kr: string | null;
+  skill_name_en: string | null;
+  skill_name_kr: string | null;
+}
+
+interface Craft {
+  level: number | null;
+  name_en: string | null;
+  name_kr: string | null;
+}
+
+interface LevelInfo {
+  level: number;
+  construction_time: number;
+}
+
+interface ItemRequire {
+  id: string;
+  count: number;
+  image: string;
+  name_en: string;
+  name_kr: string | null;
+  quantity: number;
+}
+
+interface SkillRequire {
+  level: number | null;
+  name_en: string | null;
+  name_kr: string | null;
+}
+
+interface TraderRequire {
+  image: string | null;
+  value: number | null;
+  compare: string | null;
+  name_en: string | null;
+  name_kr: string | null;
+  require_type: string | null;
+}
+
+interface StationRequire {
+  image: string | null;
+  level: number | null;
+  name_en: string | null;
+  name_kr: string | null;
 }

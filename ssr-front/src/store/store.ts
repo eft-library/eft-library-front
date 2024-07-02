@@ -12,6 +12,7 @@ export type AppStateType = {
   medicalCategory: string;
   ammoCategory: string;
   lootCategory: string;
+  hideoutCategory: string;
 };
 
 export type AppActionsType = {
@@ -23,6 +24,7 @@ export type AppActionsType = {
   setMedicalCategory: (value: string) => void;
   setAmmoCategory: (value: string) => void;
   setLootCategory: (value: string) => void;
+  setHideoutCategory: (value: string) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -35,6 +37,7 @@ export const defaultInitState: AppStateType = {
   medicalCategory: "ALL",
   ammoCategory: "ALL",
   lootCategory: "ALL",
+  hideoutCategory: "5d388e97081959000a123acf",
   itemFilter: [],
 };
 
@@ -55,6 +58,8 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
               set({ medicalCategory: value }),
             setAmmoCategory: (value: string) => set({ ammoCategory: value }),
             setLootCategory: (value: string) => set({ lootCategory: value }),
+            setHideoutCategory: (value: string) =>
+              set({ hideoutCategory: value }),
           } satisfies AppStoreType),
         {
           name: "app-store",
