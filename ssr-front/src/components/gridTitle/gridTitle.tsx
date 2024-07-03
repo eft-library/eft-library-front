@@ -10,6 +10,7 @@ export default function GridTitle({
   isWeapon = false,
   isAmmo = false,
   isExtraction = false,
+  isHideout = false,
   titleWidth = "95%",
 }: GridTitle) {
   const { blackWhite, whiteBlack } = useColorValue();
@@ -29,6 +30,10 @@ export default function GridTitle({
       }
     } else if (isExtraction) {
       if (index === 0 || index === 5 || index === 6) {
+        return 2;
+      } else return 1;
+    } else if (isHideout) {
+      if (index === 0 || index === 1) {
         return 2;
       } else return 1;
     } else {

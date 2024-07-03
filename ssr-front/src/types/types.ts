@@ -272,6 +272,7 @@ export interface GridTitle {
   isAmmo?: boolean;
   titleWidth?: string;
   isExtraction?: boolean;
+  isHideout?: boolean;
 }
 
 export interface SliderOption {
