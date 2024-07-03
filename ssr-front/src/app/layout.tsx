@@ -26,8 +26,10 @@ export default function RootLayout({
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             <CSSReset />
             <Suspense>
-              <Header />
-              <AppStoreProvider>{children}</AppStoreProvider>
+              <AppStoreProvider>
+                <Header />
+                {children}
+              </AppStoreProvider>
             </Suspense>
             <Footer />
           </ChakraProvider>

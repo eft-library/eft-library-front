@@ -68,7 +68,6 @@ export default function LootDetail({ category }: LootDetail) {
               display={"flex"}
               flexDirection={"column"}
               justifyContent={"center"}
-              alignItems={"center"}
             >
               {item.notes && item.notes.quest ? (
                 <>

@@ -9,14 +9,23 @@ import TopNaviLogi from "@/assets/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
+import { useAppStore } from "@/store/provider";
 import Login from "../login/login";
 
 export default function Header() {
+  const { setNpcId } = useAppStore((state) => state);
   const { backWhite, whiteMapBlack, darkLightgray } = useColorValue();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
+
   const changeMenu = (menuName: string) => {
     setSelectedMenu(menuName);
+  };
+
+  const setQuest = (parent: string, value: string) => {
+    if (parent === "QUEST") {
+      setNpcId(value);
+    }
   };
 
   useEffect(() => {
@@ -56,6 +65,7 @@ export default function Header() {
               boxShadow="none"
               backdropFilter="blur(8px)"
               backdropContrast="60%"
+              cursor={"default"}
             >
               {main.kr_name}
               {selectedMenu === main.value && (
@@ -67,10 +77,21 @@ export default function Header() {
                   onMouseEnter={() => setSelectedMenu(main.value)}
                   onMouseLeave={() => setSelectedMenu(null)}
                   bg={whiteMapBlack}
+                  borderRadius={"lg"}
                 >
                   {main.sub_menus.map((sub) => (
-                    <Box p={2} key={sub.value} _hover={{ bg: darkLightgray }}>
-                      <Link href={sub.link}>{sub.kr_name}</Link>
+                    <Box
+                      p={2}
+                      key={sub.value}
+                      _hover={{ bg: darkLightgray }}
+                      borderRadius={"lg"}
+                    >
+                      <Link
+                        onClick={() => setQuest(sub.parent_value, sub.value)}
+                        href={sub.link}
+                      >
+                        {sub.kr_name}
+                      </Link>
                     </Box>
                   ))}
                 </VStack>

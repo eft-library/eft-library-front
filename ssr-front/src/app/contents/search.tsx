@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Box, List, ListItem } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import useColorValue from "@/hooks/useColorValue";
+import "./input.css";
 
 export default function Search() {
   const { whiteBack, darkLightgray, blackWhite, whiteBlackShadow } =
@@ -52,6 +53,7 @@ export default function Search() {
             >
               <input
                 {...getInputProps({
+                  placeholder: "검색어를 입력해주세요",
                   style: {
                     fontSize: "18px",
                     width: "100%",

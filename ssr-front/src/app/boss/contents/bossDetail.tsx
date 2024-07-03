@@ -65,11 +65,13 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               mb={4}
               key={boss.id}
             >
-              <ImageZoom
-                originalImg={boss.image}
-                thumbnail={boss.image}
-                isMax={false}
-              />
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <ImageZoom originalImg={boss.image} thumbnail={boss.image} />
+              </Box>
               <GridCenterText>{boss.name_kr}</GridCenterText>
               <GridCenterText>{boss.faction}</GridCenterText>
               <GridJsonText

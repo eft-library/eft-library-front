@@ -5,7 +5,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Key, Column, KeyDetail } from "@/types/types";
-import { Box } from "@chakra-ui/react";
+import { Box, GridItem, Text } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
@@ -15,10 +15,12 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import Link from "next/link";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function KeyDetail({ category }: KeyDetail) {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
+  const { yellowShadow, blackWhite, beige } = useColorValue();
   const [keyList, setKeyList] = useState<Key[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -47,14 +49,14 @@ export default function KeyDetail({ category }: KeyDetail) {
       flexDirection={"column"}
     >
       <GridTitle
-        columnDesign={[2, null, 4]}
+        columnDesign={[2, null, 5]}
         column={column.value_kr}
         isShadow
         shadowColor={yellowShadow}
       />
       {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (
-          <GridContents columnDesign={[2, null, 4]} key={item.id} id={item.id}>
+          <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
             <Box
               display={"flex"}
               alignItems={"center"}
@@ -65,6 +67,35 @@ export default function KeyDetail({ category }: KeyDetail) {
             <GridCenterText>{item.name} </GridCenterText>
             <GridArrayText arrayText={item.use_map_kr} />
             <GridCenterText>{item.uses}</GridCenterText>
+            <GridItem
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+            >
+              {item.notes && item.notes.quest ? (
+                <>
+                  <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
+                    퀘스트
+                  </Text>
+                  {item.notes.quest &&
+                    item.notes.quest.map((quest) => (
+                      <Link href={`/quest/detail/${quest.id}`}>
+                        <Text
+                          color={blackWhite}
+                          fontWeight={600}
+                          _hover={{ color: beige }}
+                        >
+                          -&nbsp;{quest.name_kr}
+                        </Text>
+                      </Link>
+                    ))}
+                </>
+              ) : (
+                <Text color={blackWhite} fontWeight={600}>
+                  -
+                </Text>
+              )}
+            </GridItem>
           </GridContents>
         ) : null
       )}

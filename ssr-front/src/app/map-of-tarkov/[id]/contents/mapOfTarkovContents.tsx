@@ -30,9 +30,11 @@ export default function MapOfTarkovContents({
           />
         </Box>
       </DividerContents>
-      <DividerContents headText="보스">
-        <BossDetail bossList={mapOfTarkov.boss_list} bossId={true} />
-      </DividerContents>
+      {mapOfTarkov.boss_list.length > 0 && (
+        <DividerContents headText="보스">
+          <BossDetail bossList={mapOfTarkov.boss_list} bossId={true} />
+        </DividerContents>
+      )}
       <MapOfTarkovExtraction extractionList={mapOfTarkov.extraction_info} />
     </Box>
   );

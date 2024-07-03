@@ -171,8 +171,8 @@ export default function AmmoDetail({ category }: AmmoDetail) {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              {item.efficiency.map((efficiency) => (
-                <EfficiencyBox value={efficiency} />
+              {item.efficiency.map((efficiency, index) => (
+                <EfficiencyBox key={index} value={efficiency} />
               ))}
             </GridItem>
           </GridContents>

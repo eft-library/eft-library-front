@@ -15,19 +15,20 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function ProvisionsDetail() {
   const param = useSearchParams();
-  const { yellowShadow, blackWhite } = useColorValue();
+  const { yellowShadow, blackWhite, beige } = useColorValue();
   const [provisionList, setProvisionList] = useState<Provisions[]>();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.food_drink}`,
+      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.provisions}`,
       setColumn
     );
-    fetchDataWithNone(API_ENDPOINTS.GET_ALL_FOOD_DRINK, setProvisionList);
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_PROVISIONS, setProvisionList);
   }, []);
 
   useEffect(() => {
@@ -89,13 +90,13 @@ export default function ProvisionsDetail() {
   return (
     <>
       <GridTitle
-        columnDesign={[2, null, 5]}
+        columnDesign={[2, null, 6]}
         column={column.value_kr}
         isShadow
         shadowColor={yellowShadow}
       />
       {provisionList.map((item) => (
-        <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
+        <GridContents columnDesign={[2, null, 6]} key={item.id} id={item.id}>
           <Box display="flex" alignItems="center" justifyContent="center">
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -117,6 +118,35 @@ export default function ProvisionsDetail() {
               ))
             ) : (
               <GridCenterText>-</GridCenterText>
+            )}
+          </GridItem>
+          <GridItem
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+          >
+            {item.notes && item.notes.quest ? (
+              <>
+                <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
+                  퀘스트
+                </Text>
+                {item.notes.quest &&
+                  item.notes.quest.map((quest) => (
+                    <Link href={`/quest/detail/${quest.id}`}>
+                      <Text
+                        color={blackWhite}
+                        fontWeight={600}
+                        _hover={{ color: beige }}
+                      >
+                        -&nbsp;{quest.name_kr}
+                      </Text>
+                    </Link>
+                  ))}
+              </>
+            ) : (
+              <Text color={blackWhite} fontWeight={600}>
+                -
+              </Text>
             )}
           </GridItem>
         </GridContents>

@@ -505,6 +505,7 @@ export interface Key extends NameImage {
   use_map_en: string[];
   use_map_kr: string[];
   map_value: string[];
+  notes: JsonArrayText;
 }
 
 export interface KeyDetail extends Category {}
@@ -514,6 +515,7 @@ export interface Provisions extends CommonData, strID, Category {
   energy: number;
   hydration: number;
   stim_effects: JsonArrayText[];
+  notes: JsonArrayText;
 }
 
 export interface ImageZoom {

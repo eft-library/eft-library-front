@@ -89,7 +89,7 @@ export default function Footer() {
           display="flex"
           justifyContent="flex-end"
         >
-          <ColorMode />
+          {/* <ColorMode /> */}
         </GridItem>
       </Grid>
     </Box>

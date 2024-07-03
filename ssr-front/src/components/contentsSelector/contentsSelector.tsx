@@ -43,7 +43,7 @@ export default function ContentsSelector({
             <Box
               cursor={"pointer"}
               w={isImage ? "50px" : "110px"}
-              h={isImage ? "50px" : "110px"}
+              h={isImage ? "50px" : "40px"}
               color={blackWhite}
               outline={"1px solid"}
               outlineColor={item.color ? item.color : blackWhite}

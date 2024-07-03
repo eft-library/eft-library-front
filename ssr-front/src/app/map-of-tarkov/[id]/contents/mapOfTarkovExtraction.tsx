@@ -132,7 +132,7 @@ export default function MapOfTarkovExtraction({
                 <GridCenterText>-</GridCenterText>
               )}
             </GridItem>
-            {extraction.tip.length > 0 ? (
+            {extraction.tip && extraction.tip.length > 0 ? (
               extraction.tip.map((item, index) => (
                 <Box
                   key={item.desc}
