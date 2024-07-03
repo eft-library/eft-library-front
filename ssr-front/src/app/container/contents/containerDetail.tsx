@@ -46,7 +46,7 @@ export default function ContainerDetail() {
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
-          <GridCenterText>{item.name}</GridCenterText>
+          <GridCenterText>{item.name_kr}</GridCenterText>
           <GridCenterText>{item.capacity}</GridCenterText>
           <GridCenterText>
             {item.grids[0].width} x {item.grids[0].height}

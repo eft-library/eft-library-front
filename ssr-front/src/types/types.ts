@@ -260,6 +260,7 @@ export interface JsonArrayText {
 export interface GridJsonText {
   jsonArrayText: JsonArrayText[];
   jatType: string;
+  word?: string;
   isDivider: boolean;
 }
 
@@ -492,7 +493,8 @@ export interface TopNaviLogo {
 }
 
 export interface Container extends strID {
-  name: string;
+  name_en: string;
+  name_kr: string;
   image: string;
   capacity: number;
   grids: Size[];

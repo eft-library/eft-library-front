@@ -144,11 +144,11 @@ export default function AmmoDetail({ category }: AmmoDetail) {
             <GridCenterText>{item.name} </GridCenterText>
             <GridCenterText>{item.damage} </GridCenterText>
             <GridCenterText>{item.penetration_power} </GridCenterText>
-            <GridCenterText>{item.armor_damage}</GridCenterText>
+            <GridCenterText>{item.armor_damage} %</GridCenterText>
             <GridCenterText
               otherColor={checkColor(floatToPercent(item.accuracy_modifier))}
             >
-              {addPlusMinus(floatToPercent(item.accuracy_modifier))}
+              {addPlusMinus(floatToPercent(item.accuracy_modifier))} %
             </GridCenterText>
             <GridCenterText
               otherColor={recoilColor(floatToPercent(item.recoil_modifier))}
@@ -158,12 +158,12 @@ export default function AmmoDetail({ category }: AmmoDetail) {
             <GridCenterText
               otherColor={checkColor(floatToPercent(item.light_bleed_modifier))}
             >
-              {addPlusMinus(floatToPercent(item.light_bleed_modifier))}
+              {addPlusMinus(floatToPercent(item.light_bleed_modifier))} %
             </GridCenterText>
             <GridCenterText
               otherColor={checkColor(floatToPercent(item.heavy_bleed_modifier))}
             >
-              {addPlusMinus(floatToPercent(item.heavy_bleed_modifier))}
+              {addPlusMinus(floatToPercent(item.heavy_bleed_modifier))} %
             </GridCenterText>
             <GridItem
               colSpan={2}

@@ -69,6 +69,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
                 jsonArrayText={boss.location_spawn_chance_kr}
                 jatType={"chance"}
                 isDivider
+                word="%"
               />
               <GridCenterText>{boss.health_total}</GridCenterText>
               <GridArrayText arrayText={boss.followers_kr} />

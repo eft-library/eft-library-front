@@ -7,6 +7,7 @@ export default function GridJsonText({
   jsonArrayText,
   jatType,
   isDivider,
+  word = "",
 }: GridJsonText) {
   const { blackWhite } = useColorValue();
   return (
@@ -25,7 +26,7 @@ export default function GridJsonText({
             fontWeight={600}
             textAlign="center"
           >
-            {text[jatType]}
+            {text[jatType]} {word}
           </Text>
           {isDivider && jsonArrayText.length !== jatIndex + 1 && (
             <Divider
