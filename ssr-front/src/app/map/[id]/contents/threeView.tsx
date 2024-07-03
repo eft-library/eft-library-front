@@ -11,7 +11,8 @@ import { formatImage } from "@/lib/formatImage";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const { threBack } = useColorValue();
-  const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
+  // const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
+  const { nodes, materials } = useGLTF("/customs.glb") as any;
 
   if (!nodes || !materials) return <ThreeSkeleton />;
 
@@ -32,18 +33,29 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group
-        dispose={null}
         onClick={(e) => {
           console.log(e.point);
         }}
       >
+        <mesh
+          geometry={nodes.mesh_0.geometry}
+          material={materials.PaletteMaterial002}
+        >
+          <Edges visible={true} scale={1} color="black" threshold={15} />
+        </mesh>
+        <mesh
+          geometry={nodes.mesh_0_1.geometry}
+          material={materials["신형 아스팔트"]}
+        >
+          <Edges visible={true} scale={1} color="black" threshold={15} />
+        </mesh>
         <mesh
           geometry={nodes.mesh_0_2.geometry}
           material={materials.PaletteMaterial001}
         >
           <Edges visible={true} scale={1} color="black" threshold={15} />
         </mesh>
-        {map.three_item_path.map(
+        {/* {map.three_item_path.map(
           (item) =>
             viewItemList.includes(item.childValue) && (
               <ItemBox
@@ -53,7 +65,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
                 childValue="test"
               />
             )
-        )}
+        )} */}
       </group>
     </Canvas>
   );

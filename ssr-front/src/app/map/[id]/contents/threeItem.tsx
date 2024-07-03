@@ -9,7 +9,7 @@ export default function ItemBox({
 }: ThreeItemPath) {
   // 아이콘 완성되면 개발
   const checkItem = (value: string) => {
-    return "/tkw_item/boss_spawn.png";
+    return "/tkl_item/boss_spawn.png";
   };
 
   const texture = useTexture(formatImage(checkItem(childValue)));
