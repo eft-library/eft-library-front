@@ -9,6 +9,8 @@ export default function GridTitle({
   shadowColor,
   isWeapon = false,
   isAmmo = false,
+  isExtraction = false,
+  titleWidth = "95%",
 }: GridTitle) {
   const { blackWhite, whiteBlack } = useColorValue();
 
@@ -25,6 +27,10 @@ export default function GridTitle({
       } else {
         return 1;
       }
+    } else if (isExtraction) {
+      if (index === 0 || index === 5 || index === 6) {
+        return 2;
+      } else return 1;
     } else {
       return 1;
     }
@@ -34,7 +40,7 @@ export default function GridTitle({
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
-      width={"95%"}
+      width={titleWidth}
       outline={"2px solid"}
       outlineColor={blackWhite}
       borderRadius={"lg"}

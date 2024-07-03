@@ -15,11 +15,11 @@ import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import GridNotes from "@/components/gridText/gridNotes";
 
 export default function ProvisionsDetail() {
   const param = useSearchParams();
-  const { yellowShadow, blackWhite, beige } = useColorValue();
+  const { yellowShadow, blackWhite } = useColorValue();
   const [provisionList, setProvisionList] = useState<Provisions[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -120,35 +120,7 @@ export default function ProvisionsDetail() {
               <GridCenterText>-</GridCenterText>
             )}
           </GridItem>
-          <GridItem
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"center"}
-          >
-            {item.notes && item.notes.quest ? (
-              <>
-                <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                  퀘스트
-                </Text>
-                {item.notes.quest &&
-                  item.notes.quest.map((quest) => (
-                    <Link href={`/quest/detail/${quest.id}`}>
-                      <Text
-                        color={blackWhite}
-                        fontWeight={600}
-                        _hover={{ color: beige }}
-                      >
-                        -&nbsp;{quest.name_kr}
-                      </Text>
-                    </Link>
-                  ))}
-              </>
-            ) : (
-              <Text color={blackWhite} fontWeight={600}>
-                -
-              </Text>
-            )}
-          </GridItem>
+          <GridNotes notes={item.notes} />
         </GridContents>
       ))}
     </>

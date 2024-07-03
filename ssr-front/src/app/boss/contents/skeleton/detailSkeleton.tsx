@@ -1,10 +1,4 @@
-import {
-  Box,
-  GridItem,
-  SimpleGrid,
-  Skeleton,
-  SkeletonText,
-} from "@chakra-ui/react";
+import { SimpleGrid, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 export default function DetailSkeleton() {
   return (

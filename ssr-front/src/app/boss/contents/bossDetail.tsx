@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridArrayText from "@/components/gridText/gridArrayText";
 import GridJsonText from "@/components/gridText/gridJsonText";
@@ -10,11 +10,13 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, BossDetail } from "@/types/types";
 import DetailSkeleton from "./skeleton/detailSkeleton";
+import GridTitle from "@/components/gridTitle/gridTitle";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
+import GridContents from "@/components/gridContents/gridContents";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
-  const { blackWhite, whiteBlack } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -34,36 +36,20 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
       width={"100%"}
       flexDirection={"column"}
     >
-      <SimpleGrid
-        columns={[2, null, 7]}
-        spacing={2}
-        width={"100%"}
-        outline={"1px solid"}
-        outlineColor={blackWhite}
-        bg={whiteBlack}
-        borderRadius={"lg"}
-        position={["-webkit-sticky", "sticky"]}
-        top={16}
-        p={2}
-        mb={6}
-      >
-        {column.value_kr.map((item) => (
-          <GridCenterText key={item}>{item}</GridCenterText>
-        ))}
-      </SimpleGrid>
+      <GridTitle
+        columnDesign={[2, null, 7]}
+        column={column.value_kr}
+        isShadow
+        shadowColor={yellowShadow}
+        titleWidth="100%"
+      />
       {bossList.map(
         (boss) =>
           (boss.id === bossId || bossId === true) && (
-            <SimpleGrid
-              columns={[2, null, 7]}
-              spacing={2}
-              width={"100%"}
-              outline={"1px solid"}
-              outlineColor={blackWhite}
-              borderRadius={"lg"}
-              p={2}
-              mb={4}
-              key={boss.id}
+            <GridContents
+              columnDesign={[2, null, 7]}
+              contentsWidth="100%"
+              id={boss.id}
             >
               <Box
                 display={"flex"}
@@ -86,7 +72,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               />
               <GridCenterText>{boss.health_total}</GridCenterText>
               <GridArrayText arrayText={boss.followers_kr} />
-            </SimpleGrid>
+            </GridContents>
           )
       )}
     </Box>

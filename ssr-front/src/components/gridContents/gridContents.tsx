@@ -6,13 +6,14 @@ export default function GridContents({
   children,
   columnDesign,
   id,
+  contentsWidth = "95%",
 }: GridContents) {
   const { blackWhite } = useColorValue();
   return (
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
-      width={"95%"}
+      width={contentsWidth}
       outline={"1px solid"}
       outlineColor={blackWhite}
       borderRadius={"lg"}

@@ -228,9 +228,18 @@ export interface Text {
   value: string;
 }
 
+export interface GridImageText {
+  jsonList: JsonArrayText[];
+}
+
 export interface GridContents extends strID {
   children: ReactNode;
+  contentsWidth?: string;
   columnDesign: Array<number | null>;
+}
+
+export interface GridNotes {
+  notes: JsonArrayText;
 }
 
 export interface GridCenterText {
@@ -261,6 +270,8 @@ export interface GridTitle {
   shadowColor: string;
   isWeapon?: boolean;
   isAmmo?: boolean;
+  titleWidth?: string;
+  isExtraction?: boolean;
 }
 
 export interface SliderOption {

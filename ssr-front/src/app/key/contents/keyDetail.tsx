@@ -10,17 +10,16 @@ import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridArrayText from "@/components/gridText/gridArrayText";
+import GridNotes from "@/components/gridText/gridNotes";
 import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
-import Link from "next/link";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function KeyDetail({ category }: KeyDetail) {
   const param = useSearchParams();
-  const { yellowShadow, blackWhite, beige } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [keyList, setKeyList] = useState<Key[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -67,35 +66,7 @@ export default function KeyDetail({ category }: KeyDetail) {
             <GridCenterText>{item.name} </GridCenterText>
             <GridArrayText arrayText={item.use_map_kr} />
             <GridCenterText>{item.uses}</GridCenterText>
-            <GridItem
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"center"}
-            >
-              {item.notes && item.notes.quest ? (
-                <>
-                  <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                    퀘스트
-                  </Text>
-                  {item.notes.quest &&
-                    item.notes.quest.map((quest) => (
-                      <Link href={`/quest/detail/${quest.id}`}>
-                        <Text
-                          color={blackWhite}
-                          fontWeight={600}
-                          _hover={{ color: beige }}
-                        >
-                          -&nbsp;{quest.name_kr}
-                        </Text>
-                      </Link>
-                    ))}
-                </>
-              ) : (
-                <Text color={blackWhite} fontWeight={600}>
-                  -
-                </Text>
-              )}
-            </GridItem>
+            <GridNotes notes={item.notes} />
           </GridContents>
         ) : null
       )}
