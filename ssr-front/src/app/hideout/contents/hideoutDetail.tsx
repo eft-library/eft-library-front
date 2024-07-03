@@ -100,6 +100,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                             <ImageZoom
                               originalImg={item.image}
                               thumbnail={item.image}
+                              isHideout
                             />
                           </Box>
                           <Text fontWeight={600}>
@@ -142,7 +143,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                               thumbnail={trader.image}
                             />
                           </Box>
-                          <Text fontWeight={600}>{trader.name_en}</Text>
+                          <Text fontWeight={600}>{trader.name_kr}</Text>
                           <Text fontWeight={600}>{trader.value} 이상</Text>
                         </Box>
                       ))}

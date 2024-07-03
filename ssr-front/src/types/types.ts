@@ -536,6 +536,7 @@ export interface ImageZoom {
   needFormat?: boolean;
   isMax?: boolean;
   isLoop?: boolean;
+  isHideout?: boolean;
 }
 
 export interface HideoutDetail extends Category {}

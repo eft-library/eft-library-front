@@ -13,6 +13,7 @@ export default function ImageZoom({
   needFormat = false,
   isMax = true,
   isLoop = false,
+  isHideout = false,
 }: ImageZoom) {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -24,6 +25,16 @@ export default function ImageZoom({
       setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
     };
   }, [originalImg, needFormat]);
+
+  const returnMaxH = () => {
+    if (isHideout) {
+      return 20;
+    } else if (isMax) {
+      return 200;
+    } else {
+      ("");
+    }
+  };
 
   if (isLoop)
     return (
@@ -37,7 +48,7 @@ export default function ImageZoom({
           <Image
             ref={ref}
             onClick={open}
-            maxH={isMax ? "200px" : ""}
+            maxH={returnMaxH()}
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
@@ -59,7 +70,7 @@ export default function ImageZoom({
           <Image
             ref={ref}
             onClick={open}
-            maxH={isMax ? "200px" : ""}
+            maxH={returnMaxH()}
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
