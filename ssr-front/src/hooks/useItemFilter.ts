@@ -181,7 +181,7 @@ const checkSomeChild = (itemList: string[], childList: string[]) => {
 const extractValues = (data: Item[]) => {
   let values: string[] = [];
 
-  if (data.length == 0) return null;
+  if (!data || data.length == 0) return null;
 
   data.forEach((item) => {
     values.push(item.value);

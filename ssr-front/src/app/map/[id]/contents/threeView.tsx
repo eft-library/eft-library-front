@@ -32,6 +32,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group
+        dispose={null}
         onClick={(e) => {
           console.log(e.point);
         }}
