@@ -11,8 +11,7 @@ import { formatImage } from "@/lib/formatImage";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const { threBack } = useColorValue();
-  // const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
-  const { nodes, materials } = useGLTF("/customs.glb") as any;
+  const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
 
   if (!nodes || !materials) return <ThreeSkeleton />;
 
@@ -55,7 +54,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
         >
           <Edges visible={true} scale={1} color="black" threshold={15} />
         </mesh>
-        {/* {map.three_item_path.map(
+        {map.three_item_path.map(
           (item) =>
             viewItemList.includes(item.childValue) && (
               <ItemBox
@@ -65,7 +64,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
                 childValue="test"
               />
             )
-        )} */}
+        )}
       </group>
     </Canvas>
   );
