@@ -13,7 +13,9 @@ export default function Bonus({ bonuses }: BonusList) {
       } else if (text > 1) {
         return `+${text}`;
       }
-      return text > 0 ? `+${text * 100} %` : `${text * 100} %`;
+      return text > 0
+        ? `+${Math.round(text * 100)} %`
+        : `${Math.round(text * 100)} %`;
     }
     return "";
   };
