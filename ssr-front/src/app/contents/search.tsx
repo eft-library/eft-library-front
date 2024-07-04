@@ -125,7 +125,7 @@ export default function Search() {
                     )
                     .map((item, index) => (
                       <ListItem
-                        key={item.id}
+                        key={item.value}
                         {...getItemProps({
                           index,
                           item,
