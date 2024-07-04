@@ -50,6 +50,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
               columnDesign={[2, null, 7]}
               contentsWidth="100%"
               id={boss.id}
+              key={boss.id}
             >
               <Box
                 display={"flex"}

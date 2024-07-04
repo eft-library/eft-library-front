@@ -9,8 +9,12 @@ import { Box, List, ListItem } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import useColorValue from "@/hooks/useColorValue";
 import "./input.css";
+import { useAppStore } from "@/store/provider";
 
 export default function Search() {
+  const { setBossId, setHideoutCategory, setNpcId } = useAppStore(
+    (state) => state
+  );
   const { whiteBack, darkLightgray, blackWhite, whiteBlackShadow } =
     useColorValue();
   const router = useRouter();
@@ -33,6 +37,18 @@ export default function Search() {
     }
   };
 
+  const onClickItem = (item) => {
+    // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함
+    if (item.type === "TRADER") {
+      setNpcId(item.page_value);
+    } else if (item.type === "BOSS") {
+      setBossId(item.page_value);
+    } else if (item.type === "HIDEOUT") {
+      setHideoutCategory(item.page_value);
+    }
+    router.push(item.link);
+  };
+
   return (
     <Box
       display={"flex"}
@@ -44,7 +60,7 @@ export default function Search() {
     >
       <Downshift
         id="main-search"
-        onChange={(selection) => router.push(selection.link)}
+        onChange={(selection) => onClickItem(selection)}
         itemToString={(item) => (item ? item.value : "")}
         inputValue={inputValue} // Downshift가 inputValue를 제어하도록 설정
         onInputValueChange={(value) => setInputValue(value)} // inputValue 변경 시 상태 업데이트
