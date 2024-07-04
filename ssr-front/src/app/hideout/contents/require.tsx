@@ -9,6 +9,8 @@ export default function Require({ items, type }: RequireList) {
       return `x ${item.quantity}`;
     } else if (type === "station") {
       return `${item.level || item.value} 레벨`;
+    } else if (type === "trader" || type === "skill") {
+      return `${item.level || item.value}`;
     } else {
       return `${item.level || item.value} 이상`;
     }
