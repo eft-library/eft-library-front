@@ -54,7 +54,12 @@ export default function LootDetail({ category }: LootDetail) {
       />
       {lootList.map((item) =>
         checkViewLoot(item.category) ? (
-          <GridContents columnDesign={[2, null, 3]} key={item.id} id={item.id}>
+          <GridContents
+            columnDesign={[2, null, 3]}
+            key={item.id}
+            id={item.id}
+            isHideout
+          >
             <Box
               display={"flex"}
               alignItems={"center"}

@@ -55,7 +55,12 @@ export default function KeyDetail({ category }: KeyDetail) {
       />
       {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (
-          <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
+          <GridContents
+            columnDesign={[2, null, 5]}
+            key={item.id}
+            id={item.id}
+            isHideout
+          >
             <Box
               display={"flex"}
               alignItems={"center"}

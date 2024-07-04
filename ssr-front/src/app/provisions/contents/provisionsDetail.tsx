@@ -96,7 +96,12 @@ export default function ProvisionsDetail() {
         shadowColor={yellowShadow}
       />
       {provisionList.map((item) => (
-        <GridContents columnDesign={[2, null, 6]} key={item.id} id={item.id}>
+        <GridContents
+          columnDesign={[2, null, 6]}
+          key={item.id}
+          id={item.id}
+          isHideout
+        >
           <Box display="flex" alignItems="center" justifyContent="center">
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>

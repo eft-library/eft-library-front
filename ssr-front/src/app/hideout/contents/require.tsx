@@ -4,6 +4,16 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { RequireList } from "@/types/types";
 
 export default function Require({ items, type }: RequireList) {
+  const checkType = (item) => {
+    if (type === "item") {
+      return `x ${item.quantity}`;
+    } else if (type === "station") {
+      return `${item.level || item.value} 레벨`;
+    } else {
+      return `${item.level || item.value} 이상`;
+    }
+  };
+
   return (
     items.length > 0 && (
       <>
@@ -27,9 +37,7 @@ export default function Require({ items, type }: RequireList) {
             <Text fontWeight={600}>{item.name_kr}</Text>
             <Text fontWeight={600} color={ALL_COLOR.HIDE_ORANGE}>
               &nbsp;
-              {type === "item"
-                ? `x ${item.quantity}`
-                : `${item.level || item.value} 이상`}
+              {checkType(item)}
             </Text>
           </Box>
         ))}

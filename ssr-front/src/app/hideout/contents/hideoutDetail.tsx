@@ -16,7 +16,7 @@ import Require from "./require";
 import Bonus from "./bonus";
 
 export default function HideoutDetail({ category }: HideoutDetail) {
-  const { yellowShadow } = useColorValue();
+  const { yellowShadow, blackWhite } = useColorValue();
   const [hideoutList, setHideoutList] = useState<Hideout[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -37,7 +37,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
     // let minutes = Math.floor((sec % 3600) / 60); // 분 계산
     // let remainingSeconds = sec % 60; // 남은 초 계산
 
-    return hours + "시간 ";
+    return hours + " 시간 ";
   };
 
   if (!hideoutList || !column) return <WeaponSkeleton />;
@@ -60,44 +60,55 @@ export default function HideoutDetail({ category }: HideoutDetail) {
       {hideoutList.map((hideout) =>
         checkViewHideout(hideout.master_id)
           ? hideout.data.map((info) => (
-              <GridContents
-                columnDesign={[2, null, 5]}
-                key={info.level_id}
-                id={info.level_id}
-                isHideout
-              >
-                <GridItem
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  colSpan={2}
+              <React.Fragment key={info.level_id}>
+                <Box display={"flex"} w={"95%"} mb={2} mt={2}>
+                  <Text
+                    fontWeight={600}
+                    color={blackWhite}
+                    textShadow={yellowShadow}
+                    fontSize={"large"}
+                  >
+                    {hideout.master_name_kr} {info.level_info[0].level}
+                  </Text>
+                </Box>
+                <GridContents
+                  columnDesign={[2, null, 5]}
+                  id={info.level_id}
+                  isHideout
                 >
-                  <Require items={info.item_require} type="item" />
-                  <Require items={info.skill_require} type="skill" />
-                  <Require items={info.trader_require} type="trader" />
-                  <Require items={info.station_require} type="station" />
-                </GridItem>
-                <GridItem
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  colSpan={2}
-                >
-                  <Bonus bonuses={info.bonus} />
-                  {info.crafts.length > 0 && (
-                    <>
-                      {info.crafts.map((craft, index) => (
-                        <Text fontWeight={600} key={index}>
-                          {craft.name_kr}
-                        </Text>
-                      ))}
-                    </>
-                  )}
-                </GridItem>
-                <GridCenterText>
-                  {changeTime(info.level_info[0].construction_time)}
-                </GridCenterText>
-              </GridContents>
+                  <GridItem
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    colSpan={2}
+                  >
+                    <Require items={info.item_require} type="item" />
+                    <Require items={info.skill_require} type="skill" />
+                    <Require items={info.trader_require} type="trader" />
+                    <Require items={info.station_require} type="station" />
+                  </GridItem>
+                  <GridItem
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    colSpan={2}
+                  >
+                    <Bonus bonuses={info.bonus} />
+                    {info.crafts.length > 0 && (
+                      <>
+                        {info.crafts.map((craft, index) => (
+                          <Text fontWeight={600} key={index}>
+                            {craft.name_kr}
+                          </Text>
+                        ))}
+                      </>
+                    )}
+                  </GridItem>
+                  <GridCenterText>
+                    {changeTime(info.level_info[0].construction_time)}
+                  </GridCenterText>
+                </GridContents>
+              </React.Fragment>
             ))
           : null
       )}

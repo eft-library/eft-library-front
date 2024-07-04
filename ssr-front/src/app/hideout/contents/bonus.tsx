@@ -8,8 +8,12 @@ export default function Bonus({ bonuses }: BonusList) {
 
   const addPlusMinus = (text) => {
     if (typeof text === "number") {
-      if (text === 0) return "0";
-      return text > 0 ? `+${text}` : `${text}`;
+      if (text === 0) {
+        return "0";
+      } else if (text > 1) {
+        return `+${text}`;
+      }
+      return text > 0 ? `+${text * 100} %` : `${text * 100} %`;
     }
     return "";
   };
