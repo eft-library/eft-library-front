@@ -36,12 +36,17 @@ export default function Bonus({ bonuses }: BonusList) {
     return (
       <Box display={"flex"} alignItems={"center"}>
         <Text fontWeight={600}>{bonus.name_kr}</Text>
-        {bonus.skill_name_kr && (
+        {bonus.name_en === "Unlocks equipment modification" && (
           <Text fontWeight={600}>{bonus.skill_name_kr}</Text>
         )}
-        <Text fontWeight={600} color={checkPlus(bonus.value)}>
-          &nbsp;{addPlusMinus(bonus.value)}
-        </Text>
+        {bonus.skill_name_kr && (
+          <Text fontWeight={600}>&nbsp;{bonus.skill_name_kr}</Text>
+        )}
+        {bonus.name_en !== "Unlocks equipment modification" && (
+          <Text fontWeight={600} color={checkPlus(bonus.value)}>
+            &nbsp;{addPlusMinus(bonus.value)}
+          </Text>
+        )}
       </Box>
     );
   };

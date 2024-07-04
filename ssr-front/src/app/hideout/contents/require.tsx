@@ -7,12 +7,8 @@ export default function Require({ items, type }: RequireList) {
   const checkType = (item) => {
     if (type === "item") {
       return `x ${item.quantity}`;
-    } else if (type === "station") {
-      return `${item.level || item.value} 레벨`;
-    } else if (type === "trader" || type === "skill") {
-      return `${item.level || item.value}`;
     } else {
-      return `${item.level || item.value} 이상`;
+      return `${item.level || item.value} 레벨`;
     }
   };
 
@@ -36,6 +32,7 @@ export default function Require({ items, type }: RequireList) {
                 />
               </Box>
             )}
+            {type === "trader" && <Box mr={2}></Box>}
             <Text fontWeight={600}>{item.name_kr}</Text>
             <Text fontWeight={600} color={ALL_COLOR.HIDE_ORANGE}>
               &nbsp;
