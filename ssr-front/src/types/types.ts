@@ -604,6 +604,7 @@ interface SkillRequire {
   level: number | null;
   name_en: string | null;
   name_kr: string | null;
+  image: string | null;
 }
 
 interface TraderRequire {

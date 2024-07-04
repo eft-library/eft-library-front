@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { RequireList } from "@/types/types";
+import { formatImage } from "@/lib/formatImage";
 
 export default function Require({ items, type }: RequireList) {
   const checkType = (item) => {
@@ -26,13 +27,17 @@ export default function Require({ items, type }: RequireList) {
                 alignItems={"center"}
               >
                 <ImageZoom
-                  originalImg={item.image}
-                  thumbnail={item.image}
+                  originalImg={
+                    type === "skill" ? formatImage(item.image) : item.image
+                  }
+                  thumbnail={
+                    type === "skill" ? formatImage(item.image) : item.image
+                  }
                   isHideout
                 />
               </Box>
             )}
-            {type === "trader" && <Box mr={2}></Box>}
+            {(type === "trader" || type === "skill") && <Box mr={2} />}
             <Text fontWeight={600}>{item.name_kr}</Text>
             <Text fontWeight={600} color={ALL_COLOR.HIDE_ORANGE}>
               &nbsp;
