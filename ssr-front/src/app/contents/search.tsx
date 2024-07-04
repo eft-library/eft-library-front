@@ -14,11 +14,24 @@ export default function Search() {
   const { whiteBack, darkLightgray, blackWhite, whiteBlackShadow } =
     useColorValue();
   const router = useRouter();
-  const [inputIsFocused, setInputIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState([]);
+
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_SEARCH, setSearchList);
   }, []);
+
+  // 스크롤 부모로 전파 막기
+  const handleScroll = (event) => {
+    const list = event.target;
+    if (list.scrollTop === 0) {
+      // 스크롤이 맨 위에 있을 때
+      list.scrollTop = 1;
+    } else if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
+      // 스크롤이 맨 아래에 있을 때
+      list.scrollTop = list.scrollHeight - list.clientHeight - 1;
+    }
+  };
 
   return (
     <Box
@@ -33,15 +46,16 @@ export default function Search() {
         id="main-search"
         onChange={(selection) => router.push(selection.link)}
         itemToString={(item) => (item ? item.value : "")}
-        isOpen={inputIsFocused} // 입력란이 포커스를 받으면 드롭다운이 열리도록 설정
+        inputValue={inputValue} // Downshift가 inputValue를 제어하도록 설정
+        onInputValueChange={(value) => setInputValue(value)} // inputValue 변경 시 상태 업데이트
+        isOpen={inputValue.length > 0} // 입력된 값이 있을 때만 드롭다운을 열도록 설정
       >
         {({
           getInputProps,
           getItemProps,
           isOpen,
-          inputValue,
           highlightedIndex,
-          selectedItem,
+          // selectedItem,
           getRootProps,
         }) => (
           <Box w={"40%"}>
@@ -55,6 +69,7 @@ export default function Search() {
                 {...getInputProps({
                   placeholder: "검색어를 입력해주세요",
                   style: {
+                    fontWeight: 600,
                     fontSize: "18px",
                     width: "100%",
                     height: "50px",
@@ -64,8 +79,6 @@ export default function Search() {
                     border: "2px solid",
                     borderColor: blackWhite,
                   },
-                  onFocus: () => setInputIsFocused(true), // 입력란이 포커스를 받으면 상태 변경
-                  onBlur: () => setInputIsFocused(false), // 입력란이 포커스를 잃으면 상태 변경
                 })}
               />
               <Search2Icon
@@ -74,25 +87,27 @@ export default function Search() {
                 right={"10px"}
                 transform={"translateY(-50%)"}
               />
-              <List
-                position={"absolute"}
-                top={"calc(100% + 5px)"}
-                left={0}
-                backgroundColor={whiteBack}
-                border={"none"}
-                borderRadius={"4px"}
-                boxShadow={whiteBlackShadow}
-                padding={"5px 0"}
-                zIndex={10}
-                width={inputIsFocused ? "100%" : ""}
-              >
-                {isOpen &&
-                  searchList
+              {isOpen && (
+                <List
+                  position={"absolute"}
+                  top={"calc(100% + 5px)"}
+                  left={0}
+                  backgroundColor={whiteBack}
+                  border={"none"}
+                  borderRadius={"4px"}
+                  boxShadow={whiteBlackShadow}
+                  padding={"5px 0"}
+                  zIndex={10}
+                  width={"100%"}
+                  maxHeight={"800px"} // 목록의 최대 높이를 설정하여 스크롤 가능하게 함
+                  overflowY={"auto"} // 세로 스크롤 추가
+                  onScroll={handleScroll}
+                >
+                  {searchList
                     .filter(
-                      (item: any) =>
-                        !inputValue || item.value.includes(inputValue)
+                      (item) => !inputValue || item.value.includes(inputValue)
                     )
-                    .map((item: any, index: number) => (
+                    .map((item, index) => (
                       <ListItem
                         key={item.id}
                         {...getItemProps({
@@ -103,8 +118,7 @@ export default function Search() {
                               highlightedIndex === index
                                 ? darkLightgray
                                 : whiteBack,
-                            fontWeight:
-                              selectedItem === item ? "bold" : "normal",
+                            fontWeight: 600,
                             cursor: "pointer",
                             padding: "8px 10px",
                           },
@@ -113,7 +127,8 @@ export default function Search() {
                         {item.value}
                       </ListItem>
                     ))}
-              </List>
+                </List>
+              )}
             </Box>
           </Box>
         )}
