@@ -7,6 +7,7 @@ export default function GridContents({
   columnDesign,
   id,
   contentsWidth = "95%",
+  isHideout = false,
 }: GridContents) {
   const { blackWhite } = useColorValue();
   return (
@@ -17,6 +18,7 @@ export default function GridContents({
       outline={"1px solid"}
       outlineColor={blackWhite}
       borderRadius={"lg"}
+      justifyItems={isHideout ? "center" : ""}
       p={2}
       mb={4}
       id={id}

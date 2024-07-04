@@ -19,7 +19,7 @@ export default function GridNotes({ notes }: GridNotes) {
           </Text>
           {notes.quest &&
             notes.quest.map((quest) => (
-              <Link href={`/quest/detail/${quest.id}`}>
+              <Link href={`/quest/detail/${quest.id}`} key={quest.id}>
                 <Text
                   color={blackWhite}
                   fontWeight={600}

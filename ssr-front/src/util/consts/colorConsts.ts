@@ -48,6 +48,11 @@ export const ALL_COLOR = {
   RED_SHADOW: "0px 1px 1px rgb(255, 78, 78)",
   ORANGE_SHADOW: "0px 1px 1px rgb(255, 177, 105)",
   LIGHT_YELLOW_SHADOW: "0px 1px 1px rgb(255, 245, 0)",
+
+  // HIDEOUT
+  HIDE_RED: "#ff7676",
+  HIDE_BLUE: "#3586ff",
+  HIDE_ORANGE: "#ffa843",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;

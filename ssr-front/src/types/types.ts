@@ -236,6 +236,7 @@ export interface GridContents extends strID {
   children: ReactNode;
   contentsWidth?: string;
   columnDesign: Array<number | null>;
+  isHideout?: boolean;
 }
 
 export interface GridNotes {
@@ -551,6 +552,10 @@ export interface Hideout {
   data: HideoutLevel[];
 }
 
+export interface BonusList {
+  bonuses: Bonus[];
+}
+
 interface HideoutLevel {
   bonus: Bonus[];
   crafts: Craft[];
@@ -579,6 +584,11 @@ interface Craft {
 interface LevelInfo {
   level: number;
   construction_time: number;
+}
+
+export interface RequireList {
+  items: ItemRequire[] | SkillRequire[] | TraderRequire[] | StationRequire[];
+  type: string;
 }
 
 interface ItemRequire {

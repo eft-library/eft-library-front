@@ -12,11 +12,11 @@ import useColorValue from "@/hooks/useColorValue";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
-import ImageZoom from "@/components/imageZoom/imageZoom";
+import Require from "./require";
+import Bonus from "./bonus";
 
 export default function HideoutDetail({ category }: HideoutDetail) {
-  const { yellowShadow, blackWhite, beige } = useColorValue();
+  const { yellowShadow } = useColorValue();
   const [hideoutList, setHideoutList] = useState<Hideout[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -38,14 +38,6 @@ export default function HideoutDetail({ category }: HideoutDetail) {
     // let remainingSeconds = sec % 60; // 남은 초 계산
 
     return hours + "시간 ";
-  };
-
-  const addPlusMinus = (text) => {
-    if (typeof text === "number") {
-      if (text === 0) return "0";
-      return text > 0 ? `+${text}` : `${text}`;
-    }
-    return "";
   };
 
   if (!hideoutList || !column) return <WeaponSkeleton />;
@@ -72,6 +64,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                 columnDesign={[2, null, 5]}
                 key={info.level_id}
                 id={info.level_id}
+                isHideout
               >
                 <GridItem
                   display={"flex"}
@@ -79,101 +72,10 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                   justifyContent={"center"}
                   colSpan={2}
                 >
-                  {info.item_require.length > 0 && (
-                    <>
-                      <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                        Require Item
-                      </Text>
-                      {info.item_require.map((item) => (
-                        <Box
-                          display={"flex"}
-                          alignItems={"center"}
-                          key={item.id}
-                        >
-                          <Box
-                            w={20}
-                            h={20}
-                            display={"flex"}
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                          >
-                            <ImageZoom
-                              originalImg={item.image}
-                              thumbnail={item.image}
-                              isHideout
-                            />
-                          </Box>
-                          <Text fontWeight={600}>
-                            {item.name_en} x {item.quantity}
-                          </Text>
-                        </Box>
-                      ))}
-                    </>
-                  )}
-                  {info.skill_require.length > 0 && (
-                    <>
-                      <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                        Require Skill
-                      </Text>
-                      {info.skill_require.map((skill, index) => (
-                        <Box key={index} display={"flex"} alignItems={"center"}>
-                          <Text fontWeight={600}>
-                            {skill.name_en} {skill.level} 이상
-                          </Text>
-                        </Box>
-                      ))}
-                    </>
-                  )}
-                  {info.trader_require.length > 0 && (
-                    <>
-                      <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                        Require Trader
-                      </Text>
-                      {info.trader_require.map((trader, index) => (
-                        <Box display={"flex"} alignItems={"center"} key={index}>
-                          <Box
-                            w={20}
-                            h={20}
-                            display={"flex"}
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                          >
-                            <ImageZoom
-                              originalImg={trader.image}
-                              thumbnail={trader.image}
-                            />
-                          </Box>
-                          <Text fontWeight={600}>{trader.name_kr}</Text>
-                          <Text fontWeight={600}>{trader.value} 이상</Text>
-                        </Box>
-                      ))}
-                    </>
-                  )}
-                  {info.station_require.length > 0 && (
-                    <>
-                      <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                        Require Station
-                      </Text>
-                      {info.station_require.map((station, index) => (
-                        <Box display={"flex"} alignItems={"center"} key={index}>
-                          <Box
-                            w={20}
-                            h={20}
-                            display={"flex"}
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                          >
-                            <ImageZoom
-                              originalImg={station.image}
-                              thumbnail={station.image}
-                            />
-                          </Box>
-                          <Text fontWeight={600}>{station.name_en}</Text>
-                          <Text fontWeight={600}>{station.level} 이상</Text>
-                        </Box>
-                      ))}
-                    </>
-                  )}
+                  <Require items={info.item_require} type="item" />
+                  <Require items={info.skill_require} type="skill" />
+                  <Require items={info.trader_require} type="trader" />
+                  <Require items={info.station_require} type="station" />
                 </GridItem>
                 <GridItem
                   display={"flex"}
@@ -181,36 +83,12 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                   justifyContent={"center"}
                   colSpan={2}
                 >
-                  {info.bonus.length > 0 && (
-                    <>
-                      <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
-                        Bonus
-                      </Text>
-                      {info.bonus.map((bonus, index) =>
-                        bonus.skill_name_kr ? (
-                          <Text fontWeight={600} key={index}>
-                            {bonus.skill_name_kr} {addPlusMinus(bonus.value)}
-                          </Text>
-                        ) : (
-                          <Text fontWeight={600} key={index}>
-                            {bonus.name_en} {addPlusMinus(bonus.value)}
-                          </Text>
-                        )
-                      )}
-                    </>
-                  )}
+                  <Bonus bonuses={info.bonus} />
                   {info.crafts.length > 0 && (
                     <>
-                      <Text
-                        color={ALL_COLOR.LIGHT_YELLO}
-                        fontWeight={600}
-                        mt={2}
-                      >
-                        Crafts
-                      </Text>
                       {info.crafts.map((craft, index) => (
                         <Text fontWeight={600} key={index}>
-                          {craft.name_en}
+                          {craft.name_kr}
                         </Text>
                       ))}
                     </>
