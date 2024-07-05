@@ -12,23 +12,22 @@ export default function GridNotes({ notes }: GridNotes) {
       flexDirection={"column"}
       justifyContent={"center"}
     >
-      {notes && notes.quest ? (
+      {notes.length ? (
         <>
           <Text color={ALL_COLOR.LIGHT_YELLO} fontWeight={600}>
             퀘스트
           </Text>
-          {notes.quest &&
-            notes.quest.map((quest) => (
-              <Link href={`/quest/detail/${quest.id}`} key={quest.id}>
-                <Text
-                  color={blackWhite}
-                  fontWeight={600}
-                  _hover={{ color: beige }}
-                >
-                  -&nbsp;{quest.name_kr}
-                </Text>
-              </Link>
-            ))}
+          {notes.map((quest) => (
+            <Link href={`/quest/detail/${quest.id}`} key={quest.id}>
+              <Text
+                color={blackWhite}
+                fontWeight={600}
+                _hover={{ color: beige }}
+              >
+                -&nbsp;{quest.name_kr}
+              </Text>
+            </Link>
+          ))}
         </>
       ) : (
         <Box

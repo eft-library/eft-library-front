@@ -68,7 +68,7 @@ export default function LootDetail({ category }: LootDetail) {
               <ImageZoom originalImg={item.image} thumbnail={item.image} />
             </Box>
             <GridCenterText>{item.name_kr} </GridCenterText>
-            <GridNotes notes={item.notes} />
+            <GridNotes notes={item.related_quests} />
           </GridContents>
         ) : null
       )}

@@ -432,7 +432,7 @@ export interface Loot extends strID, Category {
   name_en: string;
   name_kr: string;
   image: string;
-  notes: JsonArrayText;
+  related_quests: JsonArrayText[];
 }
 
 export interface RigList {
@@ -501,26 +501,17 @@ export interface Container extends strID {
   grids: Size[];
 }
 
-export interface Key extends strID {
-  name: string;
-  image: string;
-  uses: number;
-  use_map_en: string[];
-  use_map_kr: string[];
-  map_value: string[];
-}
-
 export interface Container extends NameImage {
   capacity: number;
   grids: Size[];
 }
 
-export interface Key extends NameImage {
+export interface Key extends NameImage, strID {
   uses: number;
   use_map_en: string[];
   use_map_kr: string[];
   map_value: string[];
-  notes: JsonArrayText;
+  related_quests: JsonArrayText[];
 }
 
 export interface KeyDetail extends Category {}
@@ -530,7 +521,7 @@ export interface Provisions extends CommonData, strID, Category {
   energy: number;
   hydration: number;
   stim_effects: JsonArrayText[];
-  notes: JsonArrayText;
+  related_quests: JsonArrayText[];
 }
 
 export interface ImageZoom {

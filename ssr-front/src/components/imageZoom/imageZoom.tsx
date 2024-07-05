@@ -30,9 +30,9 @@ export default function ImageZoom({
     if (isHideout) {
       return 20;
     } else if (isMax) {
-      return 100;
+      return 110;
     } else {
-      ("");
+      return "";
     }
   };
 

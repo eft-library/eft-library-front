@@ -125,7 +125,7 @@ export default function ProvisionsDetail() {
               <GridCenterText>-</GridCenterText>
             )}
           </GridItem>
-          <GridNotes notes={item.notes} />
+          <GridNotes notes={item.related_quests} />
         </GridContents>
       ))}
     </>
