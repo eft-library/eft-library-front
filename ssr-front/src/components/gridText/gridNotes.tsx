@@ -24,7 +24,7 @@ export default function GridNotes({ notes }: GridNotes) {
                 fontWeight={600}
                 _hover={{ color: beige }}
               >
-                -&nbsp;{quest.name_kr}
+                {quest.name_kr}
               </Text>
             </Link>
           ))}
