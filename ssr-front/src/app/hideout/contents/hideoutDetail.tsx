@@ -98,7 +98,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                       <>
                         {info.crafts.map((craft, index) => (
                           <Text fontWeight={600} key={index}>
-                            {craft.name_kr}
+                            {craft.name_kr} 제작
                           </Text>
                         ))}
                       </>
