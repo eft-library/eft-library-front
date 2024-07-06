@@ -30,7 +30,7 @@ export default function Hideout() {
 
   return (
     <PageParent>
-      <SubHeader title="하이드아웃" />
+      <SubHeader title="은신처" />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}
