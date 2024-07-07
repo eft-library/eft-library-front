@@ -20,6 +20,7 @@ export interface ThreeItemPath {
   boxArgs: Vector3Like;
   position: Vector3;
   childValue: string;
+  filterInfo: SubFilter[];
 }
 
 export interface Youtube extends strID {}
@@ -154,6 +155,14 @@ interface MapData extends strID {
   jpg_item_path: JpgItemPath[];
   order: number;
   main_image: string;
+}
+
+export interface SubFilter {
+  en: string;
+  parent_value: string;
+  kr: string;
+  image: string;
+  value: string;
 }
 
 export interface Map extends MapData {

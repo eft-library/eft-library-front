@@ -3,17 +3,25 @@
 import ItemBox from "./threeItem";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import type { ThreeView } from "@/types/types";
+import type { ThreeView, SubFilter } from "@/types/types";
 import ThreeSkeleton from "../skeleton/threeSkeleton";
 import useColorValue from "@/hooks/useColorValue";
 import { useGLTF, Edges } from "@react-three/drei";
 import { formatImage } from "@/lib/formatImage";
+import { useState, useEffect } from "react";
+import { fetchDataWithNone } from "@/lib/api";
+import API_ENDPOINTS from "@/config/endPoints";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const { threBack } = useColorValue();
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
+  const [filterInfo, setFilterInfo] = useState<SubFilter[]>(null);
 
-  if (!nodes || !materials) return <ThreeSkeleton />;
+  useEffect(() => {
+    fetchDataWithNone(`${API_ENDPOINTS.GET_SUB_FILTER}`, setFilterInfo);
+  }, []);
+
+  if (!nodes || !materials || !filterInfo) return <ThreeSkeleton />;
 
   return (
     <Canvas
@@ -221,7 +229,8 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
                 position={item.position}
                 boxArgs={item.boxArgs}
                 key={item.position.toString()}
-                childValue="test"
+                childValue={item.childValue}
+                filterInfo={filterInfo}
               />
             )
         )}

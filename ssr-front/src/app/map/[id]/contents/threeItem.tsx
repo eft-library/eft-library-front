@@ -6,10 +6,11 @@ export default function ItemBox({
   position,
   boxArgs,
   childValue,
+  filterInfo,
 }: ThreeItemPath) {
-  // 아이콘 완성되면 개발
   const checkItem = (value: string) => {
-    return "/tkl_item/test.png";
+    const itemInfo = filterInfo.find((item) => item.value === value);
+    return itemInfo.image;
   };
 
   const texture = useTexture(formatImage(checkItem(childValue)));
