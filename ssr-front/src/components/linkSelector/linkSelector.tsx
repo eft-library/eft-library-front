@@ -14,6 +14,7 @@ export default function LinkSelector({
 }: LinkSelector) {
   const { darkLightgray, blackWhite } = useColorValue();
   const param = useParams<{ id: string }>();
+
   return (
     <Flex
       mt={mt}

@@ -4,6 +4,7 @@ const nextConfig = {
     domains: ["image.tarkovlibrary.com", "assets.tarkov.dev"],
     formats: ["image/avif", "image/webp"],
   },
+  reactStrictMode: false,
 };
 
 export default nextConfig;

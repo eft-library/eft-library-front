@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppStore } from "@/store/provider";
 import type { JpgItemPath, Item, SubItem } from "@/types/types";
 import { fetchDataWithNone } from "@/lib/api";
@@ -13,23 +13,40 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
     extractValues(itemFilter)
   );
 
+  // itemFilter가 비어있을 때만 데이터를 가져옵니다.
   useEffect(() => {
-    fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
-  }, [setItemFilter]);
+    if (itemFilter.length === 0) {
+      fetchDataWithNone(API_ENDPOINTS.GET_ITEM_FILTER, setItemFilter);
+    }
+  }, [itemFilter, setItemFilter]);
+
+  // mapItem이 변경될 때마다 viewItemList를 업데이트합니다.
+  const valuesList = useMemo(() => {
+    const valuesSet = new Set<string>();
+    mapItem.forEach((item) => {
+      valuesSet.add(item.childValue);
+      valuesSet.add(item.motherValue);
+    });
+    return [...valuesSet];
+  }, [mapItem]);
 
   useEffect(() => {
-    if (mapItem) {
-      const valuesSet = new Set<string>();
-      mapItem.forEach((item) => {
-        valuesSet.add(item.childValue);
-        valuesSet.add(item.motherValue);
-      });
-
-      // Set 객체를 배열로 변환합니다.
-      const valuesList: string[] = [...valuesSet];
+    if (valuesList.length > 0) {
       setViewItemList(valuesList);
     }
-  }, [mapItem]);
+  }, [valuesList]);
+
+  const updateViewItemList = (
+    newItems: string[],
+    removeItems: string[] = []
+  ) => {
+    setViewItemList((prev) => {
+      const updatedSet = new Set(prev);
+      newItems.forEach((item) => updatedSet.add(item));
+      removeItems.forEach((item) => updatedSet.delete(item));
+      return [...updatedSet];
+    });
+  };
 
   /**
    * 아이템 클릭 이벤트
@@ -48,14 +65,6 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 아이템 전체 선택 또는 해제
    */
   const onClickAllItem = (isAll: boolean) => {
-    const valuesSet = new Set<string>();
-    mapItem.forEach((item) => {
-      valuesSet.add(item.childValue);
-      valuesSet.add(item.motherValue);
-    });
-
-    // Set 객체를 배열로 변환합니다.
-    const valuesList: string[] = [...valuesSet];
     setViewItemList(isAll ? [] : valuesList);
   };
 
@@ -69,19 +78,10 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
       (item) => item.value === clickValue
     )!;
     const childList = rootList.sub.map((childItem) => childItem.value);
-
     const shouldRemoveAllChild = checkAllChild(viewItemList, childList);
-
-    if (shouldRemoveAllChild) {
-      const filteredList = viewItemList.filter(
-        (item) => !childList.includes(item)
-      );
-      setViewItemList(filteredList.filter((item) => item !== clickValue));
-    } else {
-      const result = [...viewItemList, ...childList];
-      result.push(clickValue);
-      setViewItemList([...new Set(result)]);
-    }
+    const newItems = shouldRemoveAllChild ? [] : [...childList, clickValue];
+    const removeItems = shouldRemoveAllChild ? [clickValue, ...childList] : [];
+    updateViewItemList(newItems, removeItems);
   };
 
   /**
@@ -102,7 +102,6 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
       : [...viewItemList, clickValue];
 
     const isHaveAllChild = checkAllChild(updatedItemList, childList);
-
     const isHaveAnyMissingChild = checkSomeChild(updatedItemList, childList);
 
     // 전부 있거나, 몇 개만 있을 경우 root 추가
@@ -154,7 +153,7 @@ const findObjectWithValue = (
     }
   }
 
-  // 현재 객체와 하위 객체에서 값이 발견되지 않으면 null 반환
+  // 현재 객체와 하위 객체에서 값이 발견되지 않으면 undefined 반환
   return undefined;
 };
 
@@ -181,7 +180,7 @@ const checkSomeChild = (itemList: string[], childList: string[]) => {
 const extractValues = (data: Item[]) => {
   let values: string[] = [];
 
-  if (!data || data.length == 0) return null;
+  if (!data || data.length == 0) return [];
 
   data.forEach((item) => {
     values.push(item.value);
