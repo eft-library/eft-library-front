@@ -27,7 +27,7 @@ export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
           onClick={() => onClickMap(sub)}
           color={mapId === sub.id ? darkLightYellow : lightDarkYellow}
           fontWeight="bold"
-          _hover={{ color: lightDarkYellow }}
+          _hover={{ color: darkLightYellow }}
           p="2"
           cursor="pointer"
         >

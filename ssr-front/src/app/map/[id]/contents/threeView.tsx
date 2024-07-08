@@ -20,7 +20,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
   useEffect(() => {
     fetchDataWithNone(`${API_ENDPOINTS.GET_SUB_FILTER}`, setFilterInfo);
   }, []);
-  console.log(map);
+
   if (!nodes || !materials || !filterInfo) return <ThreeSkeleton />;
 
   return (
