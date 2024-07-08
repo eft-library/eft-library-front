@@ -1,7 +1,6 @@
 "use client";
 
 import { Text, Grid, GridItem, Box, Flex } from "@chakra-ui/react";
-import DynamicSVG from "../viewSVG/dynamicSVG";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -9,6 +8,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { FooterColumn } from "@/types/types";
 import { ColorMode } from "@/hooks/useColorTheme";
 import FooterSkeleton from "./footerSkeleton";
+import { FooterSVG } from "../viewSVG/dynamicSVG";
 import useColorValue from "@/hooks/useColorValue";
 
 export default function Footer() {
@@ -63,12 +63,7 @@ export default function Footer() {
                   cursor={"pointer"}
                   onClick={() => window.open(item.link, "_blank")}
                 >
-                  <DynamicSVG
-                    svgValue={item.name}
-                    isEnable={true}
-                    x={0}
-                    y={0}
-                  />
+                  <FooterSVG svgValue={item.name} />
                   <Text
                     color={backWhite}
                     fontWeight={"bold"}

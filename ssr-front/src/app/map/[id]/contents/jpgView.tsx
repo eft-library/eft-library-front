@@ -2,7 +2,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import DynamicJPG from "@/components/viewSVG/dynamicJPG";
+import { ItemJPG } from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import type { JPGView } from "@/types/types";
@@ -64,7 +64,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
             {map.jpg_item_path.map(
               (item) =>
                 viewItemList.includes(item.childValue) && (
-                  <DynamicJPG
+                  <ItemJPG
                     key={item.x}
                     svgValue={item.childValue}
                     x={item.x}

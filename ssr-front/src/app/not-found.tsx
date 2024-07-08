@@ -1,6 +1,6 @@
 "use client";
 
-import Logo from "@/assets/logo";
+import Logo from "@/assets/navi/logo";
 import { Box, Flex, Text, SimpleGrid, GridItem } from "@chakra-ui/react";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import useColorValue from "@/hooks/useColorValue";

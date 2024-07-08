@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
-import DynamicSVG from "@/components/viewSVG/dynamicSVG";
+import { ItemSVG } from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
 import type { ItemSelector } from "@/types/types";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
@@ -162,14 +162,14 @@ export default function ItemSelector({
                   {item.sub.map((childItem) => (
                     <Flex key={childItem.value} mt={4}>
                       {viewItemList.includes(childItem.value) ? (
-                        <DynamicSVG
+                        <ItemSVG
                           x={0}
                           y={0}
                           svgValue={childItem.value}
                           isEnable={true}
                         />
                       ) : (
-                        <DynamicSVG
+                        <ItemSVG
                           x={0}
                           y={0}
                           svgValue={childItem.value}

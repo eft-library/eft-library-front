@@ -101,7 +101,7 @@ export interface Headwear extends DefenseData, strID {
 
 export interface Rig extends DefenseData, strID {}
 
-export interface ExtractionSVG extends ExtractionJPG, Size {
+export interface SVG extends JPG, Size {
   opacity: string;
 }
 
@@ -317,8 +317,8 @@ interface Coordinate {
   y: number;
 }
 
-export interface ExtractionJPG extends Coordinate {
-  color: string;
+export interface JPG extends Coordinate {
+  color?: string;
 }
 
 export interface JpgItemPath extends Coordinate {

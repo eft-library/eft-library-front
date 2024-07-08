@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { fetchDataWithNone } from "@/lib/api";
-import TopNaviLogi from "@/assets/topNaviLogo";
+import TopNaviLogi from "@/assets/navi/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
