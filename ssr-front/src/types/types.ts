@@ -23,6 +23,12 @@ export interface ThreeItemPath {
   filterInfo: SubFilter[];
 }
 
+export interface ThreeModel {
+  filterInfo: SubFilter[];
+  viewItemList: string[];
+  map: SubMap | Map;
+}
+
 export interface Youtube extends strID {}
 
 export interface BossContents {

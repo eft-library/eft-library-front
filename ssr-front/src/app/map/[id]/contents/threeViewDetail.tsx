@@ -4,10 +4,14 @@ import { Box, Text, Stack } from "@chakra-ui/react";
 import ItemSelector from "./itemSelector";
 import SubMapSelector from "./subMapSelector";
 import JPGView from "./jpgView";
-import ThreeView from "./threeView";
+import ThreeView from "./three/threeView";
 import useColorValue from "@/hooks/useColorValue";
 import { useItemFilter } from "@/hooks/useItemFilter";
 import type { MapDetail } from "@/types/types";
+import JPGSkeleton from "../skeleton/jpgSkeleton";
+import ThreeSkeleton from "../skeleton/threeSkeleton";
+import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
+import PageParent from "@/components/pageParent/pageParent";
 
 export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
   const { blackWhite } = useColorValue();
@@ -15,7 +19,14 @@ export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
     mapData.jpg_item_path
   );
 
-  if (!viewItemList) return null;
+  if (!viewItemList)
+    return (
+      <PageParent>
+        <ItemSelectorSkeleton />
+        <JPGSkeleton />
+        <ThreeSkeleton />
+      </PageParent>
+    );
 
   return (
     <Box

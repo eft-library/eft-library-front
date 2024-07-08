@@ -9,6 +9,9 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, Map } from "@/types/types";
 import ThreeViewDetail from "./contents/threeViewDetail";
+import JPGSkeleton from "./skeleton/jpgSkeleton";
+import ThreeSkeleton from "./skeleton/threeSkeleton";
+import ItemSelectorSkeleton from "./skeleton/itemSelectorSkeleton";
 
 export default function Map() {
   const [mapData, setMapData] = useState<Map>();
@@ -37,7 +40,14 @@ export default function Map() {
     return result;
   };
 
-  if (!column || !mapData) return null;
+  if (!column || !mapData)
+    return (
+      <PageParent>
+        <ItemSelectorSkeleton />
+        <JPGSkeleton />
+        <ThreeSkeleton />
+      </PageParent>
+    );
 
   return (
     <PageParent>
