@@ -42,6 +42,9 @@ export default function BossContents({ bossList, bossId }: BossContents) {
           ))}
         </Box>
       </DividerContents>
+      <DividerContents headText="추종자 전리품">
+        <Text>asd</Text>
+      </DividerContents>
     </Box>
   );
 }
