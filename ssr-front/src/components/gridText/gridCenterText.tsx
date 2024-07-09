@@ -7,8 +7,9 @@ export default function GridCenterText({
   mb = 0,
   mt = 0,
   otherColor,
+  isHover = false,
 }: GridCenterText) {
-  const { blackWhite } = useColorValue();
+  const { blackWhite, beige } = useColorValue();
 
   return (
     <Box
@@ -26,12 +27,14 @@ export default function GridCenterText({
           fontWeight={600}
           mb={mb}
           mt={mt}
+          _hover={isHover ? { color: beige } : {}}
         >
           {children}
         </Text>
       ) : (
         <Text
           color={blackWhite}
+          _hover={isHover ? { color: beige } : {}}
           textAlign="center"
           fontWeight={600}
           mb={mb}

@@ -51,6 +51,8 @@ export interface BossDetail {
 export interface BossInfo extends strID {
   location_guide: string;
   followers_health: JsonArrayText[];
+  boss_loot_list: JsonArrayText[];
+  followers_loot_list: JsonArrayText[];
 }
 
 interface CommonData {
@@ -271,6 +273,7 @@ export interface GridCenterText {
   mb?: number;
   mt?: number;
   otherColor?: string;
+  isHover?: boolean;
 }
 
 export interface GridArrayText {

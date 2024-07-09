@@ -1,5 +1,6 @@
 export const COLUMN_KEY = {
   boss: "BOSS_COLUMN",
+  bossLoot: "BOSS_LOOT_COLUMN",
   map: "MAP_COLUMN",
   mapOfTarkov: "MAP_OF_TARKOV_COLUMN",
   extraction: "EXTRACTION_COLUMN",
