@@ -52,6 +52,7 @@ export default function ImageZoom({
             ref={ref}
             onClick={open}
             maxH={returnMaxH()}
+            height={returnMaxH()}
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
@@ -74,6 +75,7 @@ export default function ImageZoom({
             ref={ref}
             onClick={open}
             maxH={returnMaxH()}
+            height={returnMaxH()}
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
