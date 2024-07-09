@@ -13,6 +13,7 @@ export default function GridTitle({
   isHideout = false,
   titleWidth = "95%",
   isNote = false,
+  isQuest = false,
 }: GridTitle) {
   const { blackWhite, whiteBlack } = useColorValue();
 
@@ -35,6 +36,10 @@ export default function GridTitle({
 
     if (isHideout) {
       return index === 0 || index === 1 ? 2 : 1;
+    }
+
+    if (isQuest) {
+      return index === 4 ? 2 : 1;
     }
 
     return 1;

@@ -299,6 +299,7 @@ export interface GridTitle {
   isExtraction?: boolean;
   isHideout?: boolean;
   isNote?: boolean;
+  isQuest?: boolean;
 }
 
 export interface SliderOption {
@@ -490,6 +491,19 @@ export interface Quest extends strID, CommonData {
   guide: string;
   requires: JsonArrayText[];
   next: JsonArrayText[];
+  sub: RelatedQuests[];
+}
+
+export interface RelatedQuests {
+  item_name: string;
+  quest_id: string;
+  quest_name: string;
+  in_raid: boolean | null;
+  type: string;
+  item_id: string;
+  desc_text: string[] | null;
+  count: number;
+  item_image: string;
 }
 
 export interface QuestContents {

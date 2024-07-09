@@ -32,4 +32,5 @@ export const COLUMN_KEY = {
   loot: "LOOT_COLUMN",
   hideoutType: "HIDEOUT_TYPE",
   hideout: "HIDEOUT_COLUMN",
+  questRelated: "QUEST_RELATED_COLUMN",
 } as const;
