@@ -36,7 +36,6 @@ export default function News() {
         className="box box1"
         w="27.5%"
         p="20px"
-        border="1px solid #000"
         overflow="hidden"
         position="relative"
       >
@@ -117,7 +116,6 @@ export default function News() {
         className="box box2"
         w="27.5%"
         p="20px"
-        border="1px solid #000"
         overflow="hidden"
         position="relative"
       >
