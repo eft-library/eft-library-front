@@ -1,7 +1,7 @@
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const API_ENDPOINTS = {
-  GET_YOUTUBE: baseUrl + "/api/news/youtube",
+  GET_NEWS: baseUrl + "/api/news/news",
   GET_NAVI_MENU: baseUrl + "/api/menu/navi",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
   GET_ALL_MAP: baseUrl + "/api/map/all",

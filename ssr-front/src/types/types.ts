@@ -29,7 +29,14 @@ export interface ThreeModel {
   map: SubMap | Map;
 }
 
-export interface Youtube extends strID {}
+export interface News {
+  game_version: string;
+  arena_version: string;
+  patch_link: string;
+  event_link: string;
+  youtube_id: string;
+  next_update: string[];
+}
 
 export interface BossContents {
   bossList: BossInfo[];
