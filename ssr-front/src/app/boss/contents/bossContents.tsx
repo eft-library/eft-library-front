@@ -17,6 +17,7 @@ import useColorValue from "@/hooks/useColorValue";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Link from "next/link";
+import BossLoot from "./bossLoot";
 
 export default function BossContents({ bossList, bossId }: BossContents) {
   const { yellowShadow } = useColorValue();
@@ -113,130 +114,8 @@ export default function BossContents({ bossList, bossId }: BossContents) {
           </Box>
         </DividerContents>
       )}
-      {bossInfo.boss_loot_list.length > 0 && (
-        <DividerContents headText="전리품">
-          <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            w={"100%"}
-            h={"100%"}
-            mt={-6}
-          >
-            <ContentsSelector
-              onClickEvent={clickBossLoot}
-              itemList={bossInfo.boss_loot_list}
-              currentId={bossLootId}
-              selectorId="item_type"
-              itemDesc="item_type_kr"
-              isEng
-            />
-            <Box
-              mt={-6}
-              display={"flex"}
-              flexDirection={"column"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              w={"100%"}
-            >
-              <GridTitle
-                columnDesign={[2, null, 2]}
-                column={column.value_kr}
-                isShadow
-                shadowColor={yellowShadow}
-                titleWidth="100%"
-              />
-              {bossInfo.boss_loot_list.map((loot) => (
-                <GridContents
-                  columnDesign={[2, null, 2]}
-                  contentsWidth="100%"
-                  id={loot.item_id}
-                  key={loot.item_id}
-                >
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <ImageZoom
-                      originalImg={loot.item_image}
-                      thumbnail={loot.item_image}
-                    />
-                  </Box>
-                  <GridCenterText isHover>
-                    <Link href={loot.link + loot.item_id}>
-                      {loot.item_name}
-                    </Link>
-                  </GridCenterText>
-                </GridContents>
-              ))}
-            </Box>
-          </Box>
-        </DividerContents>
-      )}
-      {bossInfo.followers_loot_list.length > 0 && (
-        <DividerContents headText="추종자 전리품">
-          <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            w={"100%"}
-            h={"100%"}
-            mt={-6}
-          >
-            <ContentsSelector
-              onClickEvent={clickFollowersLoot}
-              itemList={bossInfo.followers_loot_list}
-              currentId={followersId}
-              selectorId="item_type"
-              itemDesc="item_type_kr"
-              isEng
-            />
-            <Box
-              mt={-6}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              flexDirection={"column"}
-              w={"100%"}
-            >
-              <GridTitle
-                columnDesign={[2, null, 2]}
-                column={column.value_kr}
-                isShadow
-                shadowColor={yellowShadow}
-                titleWidth="100%"
-              />
-              {bossInfo.followers_loot_list.map((loot) => (
-                <GridContents
-                  columnDesign={[2, null, 2]}
-                  contentsWidth="100%"
-                  id={loot.item_id}
-                  key={loot.item_id}
-                >
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <ImageZoom
-                      originalImg={loot.item_image}
-                      thumbnail={loot.item_image}
-                    />
-                  </Box>
-                  <GridCenterText isHover>
-                    <Link href={loot.link + loot.item_id}>
-                      {loot.item_name}
-                    </Link>
-                  </GridCenterText>
-                </GridContents>
-              ))}
-            </Box>
-          </Box>
-        </DividerContents>
-      )}
+      <BossLoot lootList={bossInfo.boss_loot_list} column={column} />
+      <BossLoot lootList={bossInfo.followers_loot_list} column={column} />
     </Box>
   );
 }
