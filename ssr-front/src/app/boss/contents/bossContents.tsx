@@ -81,14 +81,7 @@ export default function BossContents({ bossList, bossId }: BossContents) {
         </DividerContents>
       )}
       <DividerContents headText="전리품">
-        <Box display={"flex"} alignItems={"center"}>
-          {bossInfo.loot.map((boss, index) => (
-            <React.Fragment key={index}>
-              <ImageZoom originalImg={boss} thumbnail={boss} />
-              <Box ml={10} />
-            </React.Fragment>
-          ))}
-        </Box>
+        <Box display={"flex"} alignItems={"center"}></Box>
       </DividerContents>
       <DividerContents headText="추종자 전리품">
         <Text>asd</Text>

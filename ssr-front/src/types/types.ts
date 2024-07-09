@@ -49,8 +49,6 @@ export interface BossDetail {
 }
 
 export interface BossInfo extends strID {
-  loot: string[];
-  health_image: string[];
   location_guide: string;
   followers_health: JsonArrayText[];
 }
