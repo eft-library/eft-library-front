@@ -10,7 +10,7 @@ import { Box, Link } from "@chakra-ui/react";
 import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 
-export default function BossLoot({ lootList, column }) {
+export default function BossLoot({ lootList, column, title }) {
   const { yellowShadow } = useColorValue();
   const [lootId, setLootId] = useState<string>();
 
@@ -26,7 +26,7 @@ export default function BossLoot({ lootList, column }) {
   return (
     <>
       {lootList.length > 0 && (
-        <DividerContents headText="전리품">
+        <DividerContents headText={title}>
           <Box
             display={"flex"}
             alignItems={"center"}
