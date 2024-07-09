@@ -48,15 +48,16 @@ export default function KeyDetail({ category }: KeyDetail) {
       flexDirection={"column"}
     >
       <GridTitle
-        columnDesign={[2, null, 5]}
+        columnDesign={[2, null, 6]}
         column={column.value_kr}
         isShadow
+        isNote
         shadowColor={yellowShadow}
       />
       {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (
           <GridContents
-            columnDesign={[2, null, 5]}
+            columnDesign={[2, null, 6]}
             key={item.id}
             id={item.id}
             isHideout
@@ -71,7 +72,7 @@ export default function KeyDetail({ category }: KeyDetail) {
             <GridCenterText>{item.name} </GridCenterText>
             <GridArrayText arrayText={item.use_map_kr} />
             <GridCenterText>{item.uses}</GridCenterText>
-            <GridNotes notes={item.related_quests} />
+            <GridNotes isKey notes={item.related_quests} />
           </GridContents>
         ) : null
       )}

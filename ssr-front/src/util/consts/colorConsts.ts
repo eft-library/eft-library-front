@@ -28,6 +28,8 @@ export const ALL_COLOR = {
   CHOCOLATE_BROWN: "#86552D",
   BURGUNDY: "#831C16",
   DARK_MARRON: "#5B0803",
+  LIGHT_RED: "#ff7a7a",
+  QUEST_YELLO: "#ffe6a7",
 
   // Shadow
   WHITE_SHADOW: "0px 2px 4px rgba(0, 0, 0, 0.1)",

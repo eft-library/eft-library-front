@@ -12,33 +12,32 @@ export default function GridTitle({
   isExtraction = false,
   isHideout = false,
   titleWidth = "95%",
+  isNote = false,
 }: GridTitle) {
   const { blackWhite, whiteBlack } = useColorValue();
 
   const checkColSpan = (index: number) => {
-    if (isWeapon) {
-      if (index === 0) {
-        return 2;
-      } else {
-        1;
-      }
-    } else if (isAmmo) {
-      if (index === 9) {
-        return 2;
-      } else {
-        return 1;
-      }
-    } else if (isExtraction) {
-      if (index === 0 || index === 5 || index === 6) {
-        return 2;
-      } else return 1;
-    } else if (isHideout) {
-      if (index === 0 || index === 1) {
-        return 2;
-      } else return 1;
-    } else {
-      return 1;
+    if (isNote) {
+      return columnDesign[2] === index + 2 ? 2 : 1;
     }
+
+    if (isWeapon) {
+      return index === 0 ? 2 : 1;
+    }
+
+    if (isAmmo) {
+      return index === 9 ? 2 : 1;
+    }
+
+    if (isExtraction) {
+      return index === 0 || index === 5 || index === 6 ? 2 : 1;
+    }
+
+    if (isHideout) {
+      return index === 0 || index === 1 ? 2 : 1;
+    }
+
+    return 1;
   };
 
   return (

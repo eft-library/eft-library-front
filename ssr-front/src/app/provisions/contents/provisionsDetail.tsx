@@ -90,14 +90,15 @@ export default function ProvisionsDetail() {
   return (
     <>
       <GridTitle
-        columnDesign={[2, null, 6]}
+        columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
         shadowColor={yellowShadow}
+        isNote
       />
       {provisionList.map((item) => (
         <GridContents
-          columnDesign={[2, null, 6]}
+          columnDesign={[2, null, 7]}
           key={item.id}
           id={item.id}
           isHideout

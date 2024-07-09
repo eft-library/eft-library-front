@@ -47,15 +47,16 @@ export default function LootDetail({ category }: LootDetail) {
       flexDirection={"column"}
     >
       <GridTitle
-        columnDesign={[2, null, 3]}
+        columnDesign={[2, null, 4]}
         column={column.value_kr}
         isShadow
+        isNote
         shadowColor={yellowShadow}
       />
       {lootList.map((item) =>
         checkViewLoot(item.category) ? (
           <GridContents
-            columnDesign={[2, null, 3]}
+            columnDesign={[2, null, 4]}
             key={item.id}
             id={item.id}
             isHideout

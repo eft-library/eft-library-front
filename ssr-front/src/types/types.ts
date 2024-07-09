@@ -256,6 +256,7 @@ export interface GridContents extends strID {
 
 export interface GridNotes {
   notes: JsonArrayText;
+  isKey?: boolean;
 }
 
 export interface GridCenterText {
@@ -290,6 +291,7 @@ export interface GridTitle {
   titleWidth?: string;
   isExtraction?: boolean;
   isHideout?: boolean;
+  isNote?: boolean;
 }
 
 export interface SliderOption {
