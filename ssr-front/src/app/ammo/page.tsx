@@ -38,7 +38,7 @@ export default function Ammo() {
         selectorId="value"
         isSpace={false}
         itemDesc="desc_kr"
-        isEng
+        isAmmo
       />
       <AmmoDetail category={ammoCategory} />
     </PageParent>

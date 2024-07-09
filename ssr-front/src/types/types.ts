@@ -52,6 +52,7 @@ export interface BossInfo extends strID {
   loot: string[];
   health_image: string[];
   location_guide: string;
+  followers_health: JsonArrayText[];
 }
 
 interface CommonData {
@@ -198,13 +199,14 @@ export interface Boss extends BossInfo, CommonData {
 
 export interface ContentsSelector {
   onClickEvent: Function;
-  itemList: Item[] | Boss[] | JsonValue[];
+  itemList: Item[] | Boss[] | JsonValue[] | JsonArrayText[];
   currentId: string;
   selectorId: string;
   itemDesc: string;
   isSpace?: boolean;
   isEng?: boolean;
   isImage?: boolean;
+  isAmmo?: boolean;
 }
 
 export interface LinkSelector {
@@ -569,6 +571,7 @@ export interface ImageZoom {
   isMax?: boolean;
   isLoop?: boolean;
   isHideout?: boolean;
+  isBoss?: boolean;
 }
 
 export interface HideoutDetail extends Category {}

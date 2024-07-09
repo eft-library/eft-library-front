@@ -11,15 +11,17 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
       return note.name_kr;
     } else {
       return note.in_raid ? (
-        <Text display={"flex"}>
-          {note.name_kr}&nbsp;(
+        <Box display={"flex"} _hover={{ color: beige }}>
+          <Text>{note.name_kr}&nbsp;</Text>
+          <Text>(</Text>
           <Text color={ALL_COLOR.LIGHT_RED}>인레이드&nbsp;</Text>
-          {note.count}개 필요)
-        </Text>
+          <Text>{note.count}개 필요)</Text>
+        </Box>
       ) : (
-        <Text>
-          {note.name_kr} ({note.count}개 필요)
-        </Text>
+        <Box _hover={{ color: beige }} display={"flex"}>
+          <Text>{note.name_kr}</Text>
+          <Text>&nbsp;({note.count}개 필요)</Text>
+        </Box>
       );
     }
   };
@@ -37,11 +39,7 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
           </Text>
           {notes.map((quest) => (
             <Link href={`/quest/detail/${quest.id}`} key={quest.id}>
-              <Text
-                color={blackWhite}
-                fontWeight={600}
-                _hover={{ color: beige }}
-              >
+              <Text color={blackWhite} fontWeight={600}>
                 {returnText(quest)}
               </Text>
             </Link>

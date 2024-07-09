@@ -11,11 +11,39 @@ export default function ContentsSelector({
   itemDesc,
   isSpace = true,
   isEng = false,
+  isAmmo = false,
   isImage = false,
 }: ContentsSelector) {
   const { blackWhite, darkLightgray } = useColorValue();
 
   if (!itemList || itemList.length < 1) return <ContentsSelectorSkeleton />;
+
+  const checkFontSize = (index: number) => {
+    if (isAmmo) {
+      return index === 0 ? 16 : 12;
+    }
+    // if (isEng) {
+    //   return 16;
+    // }
+    return 16;
+  };
+
+  const checkBoxWidth = () => {
+    if (isImage) {
+      return "50px";
+    }
+    if (isEng) {
+      return "140px";
+    }
+    return "110px";
+  };
+
+  const checkBoxHeight = () => {
+    if (isImage) {
+      return "50px";
+    }
+    return "40px";
+  };
 
   return (
     <Box
@@ -42,8 +70,8 @@ export default function ContentsSelector({
           >
             <Box
               cursor={"pointer"}
-              w={isImage ? "50px" : "110px"}
-              h={isImage ? "50px" : "40px"}
+              w={checkBoxWidth()}
+              h={checkBoxHeight()}
               color={blackWhite}
               outline={"1px solid"}
               outlineColor={item.color ? item.color : blackWhite}
@@ -60,7 +88,7 @@ export default function ContentsSelector({
               ) : (
                 <Text
                   color={blackWhite}
-                  fontSize={isEng ? (index === 0 ? 16 : 12) : 16}
+                  fontSize={checkFontSize(index)}
                   fontWeight={700}
                   textAlign="center"
                 >
