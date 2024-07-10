@@ -3,7 +3,7 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box, GridItem, Text } from "@chakra-ui/react";
+import { Box, GridItem } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
@@ -15,6 +15,7 @@ import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSearchParams } from "next/navigation";
 import GridNotes from "@/components/gridText/gridNotes";
+import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function ProvisionsDetail() {
   const param = useSearchParams();
@@ -29,21 +30,7 @@ export default function ProvisionsDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_PROVISIONS, setProvisionList);
   }, []);
 
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      provisionList &&
-      provisionList.length > 0
-    ) {
-      setTimeout(() => {
-        const targetId = param.get("id");
-        const targetElement = document.getElementById(targetId);
-        if (targetId && targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 500);
-    }
-  }, [param, provisionList]);
+  useScrollMove(param.get("id"), provisionList);
 
   const filterStimEffects = (effects) => {
     const seen = new Set();

@@ -24,7 +24,7 @@ export default function GridContents({
       p={2}
       mb={4}
       id={id}
-      bg={param.get("id") === id ? ALL_COLOR.MED_BAG_FIVE : ""}
+      bg={param.get("id") === id ? ALL_COLOR.HILIGHT_GRAY : ""}
     >
       {children}
     </SimpleGrid>
