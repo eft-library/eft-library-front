@@ -7,11 +7,10 @@ import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { Box, Link } from "@chakra-ui/react";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 
 export default function BossLoot({ lootList, column, title }) {
-  const { yellowShadow } = useColorValue();
   const [lootId, setLootId] = useState<string>();
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function BossLoot({ lootList, column, title }) {
                 columnDesign={[2, null, 2]}
                 column={column.value_kr}
                 isShadow
-                shadowColor={yellowShadow}
+                shadowColor={ALL_COLOR.YELLOW_SHADOW}
                 titleWidth="100%"
               />
               {lootList.map((loot) => (

@@ -7,16 +7,14 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useRouter } from "next/navigation";
 import { Box, List, ListItem } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
-import useColorValue from "@/hooks/useColorValue";
 import "./input.css";
 import { useAppStore } from "@/store/provider";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function Search() {
   const { setBossId, setHideoutCategory, setNpcId } = useAppStore(
     (state) => state
   );
-  const { whiteBack, darkLightgray, blackWhite, whiteBlackShadow } =
-    useColorValue();
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState([]);
@@ -93,7 +91,7 @@ export default function Search() {
                     paddingLeft: "20px",
                     boxSizing: "border-box",
                     border: "2px solid",
-                    borderColor: blackWhite,
+                    borderColor: ALL_COLOR.WHITE,
                   },
                 })}
               />
@@ -108,10 +106,10 @@ export default function Search() {
                   position={"absolute"}
                   top={"calc(100% + 5px)"}
                   left={0}
-                  backgroundColor={whiteBack}
+                  backgroundColor={ALL_COLOR.BACKGROUND}
                   border={"none"}
                   borderRadius={"4px"}
-                  boxShadow={whiteBlackShadow}
+                  boxShadow={ALL_COLOR.BLACK_SHADOW}
                   padding={"5px 0"}
                   zIndex={10}
                   width={"100%"}
@@ -121,7 +119,11 @@ export default function Search() {
                 >
                   {searchList
                     .filter(
-                      (item) => !inputValue || item.value.includes(inputValue)
+                      (item) =>
+                        !inputValue ||
+                        item.value
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase())
                     )
                     .map((item, index) => (
                       <ListItem
@@ -132,8 +134,8 @@ export default function Search() {
                           style: {
                             backgroundColor:
                               highlightedIndex === index
-                                ? darkLightgray
-                                : whiteBack,
+                                ? ALL_COLOR.LIGHT_GRAY
+                                : ALL_COLOR.BACKGROUND,
                             fontWeight: 600,
                             cursor: "pointer",
                             padding: "8px 10px",

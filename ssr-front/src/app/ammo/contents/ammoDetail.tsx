@@ -4,7 +4,6 @@ import { Box, GridItem } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import useColorValue from "@/hooks/useColorValue";
 import type { AmmoDetail, Ammo, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -19,7 +18,6 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function AmmoDetail({ category }: AmmoDetail) {
   const param = useSearchParams();
-  const { yellowShadow, blackWhite } = useColorValue();
   const [ammoList, setAmmoList] = useState<Ammo[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -82,13 +80,13 @@ export default function AmmoDetail({ category }: AmmoDetail) {
     } else if (shotgun.includes(ammoCategory)) {
       return ALL_COLOR.RED_SHADOW;
     } else {
-      return yellowShadow;
+      return ALL_COLOR.YELLOW_SHADOW;
     }
   };
 
   const checkColor = (value: number) => {
     if (value === 0) {
-      return blackWhite;
+      return ALL_COLOR.WHITE;
     } else if (value > 0) {
       return ALL_COLOR.LIGHT_BLUE;
     } else {
@@ -98,7 +96,7 @@ export default function AmmoDetail({ category }: AmmoDetail) {
 
   const recoilColor = (value: number) => {
     if (value === 0) {
-      return blackWhite;
+      return ALL_COLOR.WHITE;
     } else if (value < 0) {
       return ALL_COLOR.LIGHT_BLUE;
     } else {

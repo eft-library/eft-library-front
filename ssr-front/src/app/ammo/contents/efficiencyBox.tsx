@@ -1,12 +1,7 @@
-"use client";
-
-import useColorValue from "@/hooks/useColorValue";
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function EfficiencyBox({ value }) {
-  const { blackWhite } = useColorValue();
-
   const checkColor = (val: number) => {
     switch (val) {
       case 6:
@@ -36,7 +31,7 @@ export default function EfficiencyBox({ value }) {
       width={10}
       height={10}
       border="1px solid"
-      borderColor={blackWhite}
+      borderColor={ALL_COLOR.WHITE}
       ml={1}
     >
       <Text color={ALL_COLOR.WHITE} fontWeight={600}>

@@ -1,6 +1,8 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import type { GridContents } from "@/types/types";
 import useColorValue from "@/hooks/useColorValue";
+import { useSearchParams } from "next/navigation";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function GridContents({
   children,
@@ -9,6 +11,7 @@ export default function GridContents({
   contentsWidth = "95%",
   isHideout = false,
 }: GridContents) {
+  const param = useSearchParams();
   const { blackWhite } = useColorValue();
   return (
     <SimpleGrid
@@ -22,6 +25,7 @@ export default function GridContents({
       p={2}
       mb={4}
       id={id}
+      bg={param.get("id") === id ? ALL_COLOR.MED_BAG_FIVE : ""}
     >
       {children}
     </SimpleGrid>

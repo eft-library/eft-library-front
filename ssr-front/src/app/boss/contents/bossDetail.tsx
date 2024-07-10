@@ -11,12 +11,11 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, BossDetail } from "@/types/types";
 import DetailSkeleton from "./skeleton/detailSkeleton";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import GridContents from "@/components/gridContents/gridContents";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function BossDetail({ bossList, bossId }: BossDetail) {
-  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function BossDetail({ bossList, bossId }: BossDetail) {
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
         titleWidth="100%"
       />
       {bossList.map(

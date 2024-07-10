@@ -7,17 +7,16 @@ import { Box } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Backpack, Column } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchDataWithNone } from "@/lib/api";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function BackpackDetail() {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
   const [backpackList, setBackpackList] = useState<Backpack[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -39,7 +38,7 @@ export default function BackpackDetail() {
         columnDesign={[2, null, 5]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {backpackList.map((item) => (
         <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>

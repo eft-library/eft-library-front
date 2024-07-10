@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, Text } from "@chakra-ui/react";
-import useColorValue from "@/hooks/useColorValue";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import YoutubeNews from "./youtube";
 import Link from "next/link";
@@ -12,7 +11,6 @@ import type { News } from "@/types/types";
 import NewsSkeleton from "./skeleton/newsSkeleton";
 
 export default function News() {
-  const { backWhite } = useColorValue();
   const [news, setNews] = useState<News>(null);
 
   useEffect(() => {
@@ -24,7 +22,7 @@ export default function News() {
   return (
     <Box
       border="1px solid"
-      borderColor={backWhite}
+      borderColor={ALL_COLOR.WHITE}
       borderRadius={"lg"}
       width={"85%"}
       margin="0 auto"
