@@ -13,9 +13,16 @@ const handler = NextAuth({
       clientSecret: process.env.NEXT_PUBLIC_NAVER_SECRET || "",
     }),
   ],
+  session: {
+    maxAge: 2 * 60 * 60, // 1일 (단위: 초)
+    updateAge: 2 * 60 * 60, // 세션이 업데이트되는 빈도 (단위: 초)
+  },
+  jwt: {
+    maxAge: 2 * 60 * 60, // 1일 (단위: 초)
+  },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account) {
+      if (user) {
         try {
           const res = await fetch("http://localhost:8000/api/user/add", {
             method: "POST",
