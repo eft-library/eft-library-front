@@ -14,15 +14,42 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account) {
+        try {
+          const res = await fetch("http://localhost:8000/api/user/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            }),
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to add user");
+          }
+
+          const data = await res.json();
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, account }) {
-      // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
       }
       return token;
     },
     async session({ session, token, user }) {
-      // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       return session;
     },
