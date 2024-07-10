@@ -36,7 +36,10 @@ export const useScrollMove = (
       setTimeout(() => {
         const targetElement = document.getElementById(id);
         if (id && targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth" });
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center", // "start", "center", "end", "nearest"
+          });
         }
       }, 500);
     }
