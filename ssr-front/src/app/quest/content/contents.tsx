@@ -19,10 +19,9 @@ import API_ENDPOINTS from "@/config/endPoints";
 import type { Quest, Column } from "@/types/types";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSkeleton from "../skeleton/contentsSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function Contents() {
-  const { blackWhite, orange, darkLightYellow, red, beige } = useColorValue();
   const { npcId } = useAppStore((state) => state);
   const [quest, setQuest] = useState<Quest[]>();
   const [column, setColumn] = useState<Column>();
@@ -47,7 +46,7 @@ export default function Contents() {
       justifyContent={"center"}
       width={"95%"}
     >
-      <TableContainer border="1px solid" borderColor={blackWhite}>
+      <TableContainer border="1px solid" borderColor={ALL_COLOR.WHITE}>
         <Table variant="simple" size={"lg"}>
           <Thead>
             <Tr>
@@ -58,7 +57,7 @@ export default function Contents() {
                   textAlign={"center"}
                   borderRight="1px solid white"
                   fontSize="lg"
-                  color={blackWhite}
+                  color={ALL_COLOR.WHITE}
                 >
                   {item}
                 </Th>
@@ -74,10 +73,10 @@ export default function Contents() {
                       fontSize="md"
                       fontWeight={"700"}
                       borderRight="1px solid white"
-                      color={orange}
+                      color={ALL_COLOR.ORANGE}
                       textAlign={"center"}
                       cursor={"pointer"}
-                      _hover={{ color: beige }}
+                      _hover={{ color: ALL_COLOR.BEIGE }}
                       paddingX={2}
                       paddingY={2}
                     >
@@ -94,7 +93,7 @@ export default function Contents() {
                       minW="320px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={blackWhite}
+                      color={ALL_COLOR.WHITE}
                       fontWeight={"700"}
                       whiteSpace="normal"
                       paddingX={4}
@@ -116,7 +115,7 @@ export default function Contents() {
                       minW="300px"
                       fontSize="md"
                       borderRight="1px solid white"
-                      color={blackWhite}
+                      color={ALL_COLOR.WHITE}
                       fontWeight={"700"}
                       whiteSpace="normal"
                       paddingX={4}
@@ -142,7 +141,11 @@ export default function Contents() {
                       paddingX={2}
                       paddingY={2}
                     >
-                      <Text color={item.required_kappa ? darkLightYellow : red}>
+                      <Text
+                        color={
+                          item.required_kappa ? ALL_COLOR.YELLOW : ALL_COLOR.RED
+                        }
+                      >
                         {item.required_kappa ? "Y" : "N"}
                       </Text>
                     </Td>

@@ -5,21 +5,20 @@ import { fetchDataWithNone } from "@/lib/api";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Key, Column, KeyDetail } from "@/types/types";
-import { Box, GridItem, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridArrayText from "@/components/gridText/gridArrayText";
 import GridNotes from "@/components/gridText/gridNotes";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function KeyDetail({ category }: KeyDetail) {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
   const [keyList, setKeyList] = useState<Key[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -52,7 +51,7 @@ export default function KeyDetail({ category }: KeyDetail) {
         column={column.value_kr}
         isShadow
         isNote
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {keyList.map((item) =>
         checkViewKey(item.map_value, category) ? (

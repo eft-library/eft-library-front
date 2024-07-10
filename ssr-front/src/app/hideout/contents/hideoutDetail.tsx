@@ -8,15 +8,14 @@ import API_ENDPOINTS from "@/config/endPoints";
 import type { HideoutDetail, Hideout, Column } from "@/types/types";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import useColorValue from "@/hooks/useColorValue";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Require from "./require";
 import Bonus from "./bonus";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function HideoutDetail({ category }: HideoutDetail) {
-  const { yellowShadow, blackWhite } = useColorValue();
   const [hideoutList, setHideoutList] = useState<Hideout[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -55,7 +54,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
         column={column.value_kr}
         isShadow
         isHideout
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {hideoutList.map((hideout) =>
         checkViewHideout(hideout.master_id)
@@ -64,8 +63,8 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                 <Box display={"flex"} w={"95%"} mb={2} mt={2}>
                   <Text
                     fontWeight={600}
-                    color={blackWhite}
-                    textShadow={yellowShadow}
+                    color={ALL_COLOR.WHITE}
+                    textShadow={ALL_COLOR.YELLOW_SHADOW}
                     fontSize={"large"}
                   >
                     {hideout.master_name_kr} {info.level_info[0].level}

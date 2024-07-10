@@ -4,7 +4,7 @@ import { Box, Text, GridItem } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import type { QuestContents, Column } from "@/types/types";
 import ContentsSkeleton from "../../skeleton/contentsSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+
 import GridTitle from "@/components/gridTitle/gridTitle";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -16,7 +16,6 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
 
 export default function QuestContents({ quest }: QuestContents) {
-  const { blackWhite, yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.objectives_kr.map((objectives) => (
             <Text
               key={objectives}
-              color={blackWhite}
+              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -51,7 +50,7 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.rewards_kr.map((rewards) => (
             <Text
               key={rewards}
-              color={blackWhite}
+              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
               fontSize="lg"
@@ -79,7 +78,7 @@ export default function QuestContents({ quest }: QuestContents) {
                 columnDesign={[2, null, 6]}
                 column={column.value_kr}
                 isShadow
-                shadowColor={yellowShadow}
+                shadowColor={ALL_COLOR.YELLOW_SHADOW}
                 isQuest
                 titleWidth="100%"
               />
@@ -136,7 +135,7 @@ export default function QuestContents({ quest }: QuestContents) {
         )}
         <Box>
           <Text
-            color={blackWhite}
+            color={ALL_COLOR.WHITE}
             mt={1}
             fontWeight={700}
             fontSize="lg"

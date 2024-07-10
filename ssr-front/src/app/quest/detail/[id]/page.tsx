@@ -9,10 +9,9 @@ import QuestInfo from "./contents/questInfo";
 import QuestContents from "./contents/questContents";
 import "@/assets/quest.css";
 import type { Quest } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function QuestDetail() {
-  const { whiteBack, darkLightgray } = useColorValue();
   const param = useParams<{ id: string }>();
   const [questDetail, setQuestDetail] = useState<Quest>();
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function QuestDetail() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={whiteBack}
+      bg={ALL_COLOR.WHITE}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -42,7 +41,7 @@ export default function QuestDetail() {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={darkLightgray}
+        borderColor={ALL_COLOR.LIGHT_GRAY}
         borderRadius={"lg"}
         paddingBottom={"20px"}
       >

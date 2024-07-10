@@ -1,7 +1,7 @@
 import { Box, SimpleGrid, Flex, Text, Image } from "@chakra-ui/react";
 import type { ContentsSelector } from "@/types/types";
 import ContentsSelectorSkeleton from "./contentsSelectorSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ContentsSelector({
   onClickEvent,
@@ -14,8 +14,6 @@ export default function ContentsSelector({
   isAmmo = false,
   isImage = false,
 }: ContentsSelector) {
-  const { blackWhite, darkLightgray } = useColorValue();
-
   if (!itemList || itemList.length < 1) return <ContentsSelectorSkeleton />;
 
   const checkFontSize = (index: number) => {
@@ -72,12 +70,12 @@ export default function ContentsSelector({
               cursor={"pointer"}
               w={checkBoxWidth()}
               h={checkBoxHeight()}
-              color={blackWhite}
+              color={ALL_COLOR.WHITE}
               outline={"1px solid"}
-              outlineColor={item.color ? item.color : blackWhite}
+              outlineColor={item.color ? item.color : ALL_COLOR.WHITE}
               borderRadius={"lg"}
-              _hover={{ bg: darkLightgray }}
-              bg={currentId === item[selectorId] ? darkLightgray : ""}
+              _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+              bg={currentId === item[selectorId] ? ALL_COLOR.LIGHT_GRAY : ""}
               display={"flex"}
               alignItems={"center"}
               justifyContent={"center"}
@@ -87,7 +85,7 @@ export default function ContentsSelector({
                 <Image src={item["image"]} />
               ) : (
                 <Text
-                  color={blackWhite}
+                  color={ALL_COLOR.WHITE}
                   fontSize={checkFontSize(index)}
                   fontWeight={700}
                   textAlign="center"

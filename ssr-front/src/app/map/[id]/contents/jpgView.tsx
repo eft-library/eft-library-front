@@ -7,10 +7,9 @@ import { formatImage } from "@/lib/formatImage";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import type { JPGView } from "@/types/types";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function JPGView({ map, viewItemList }: JPGView) {
-  const { threBack } = useColorValue();
   const size = useWindowSize();
 
   const handleClick = (e: any) => {
@@ -53,7 +52,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
           <svg
             width={size.width}
             height={size.height / 1.3}
-            fill={threBack}
+            fill={ALL_COLOR.THREE_BACKGROUND}
             onClick={handleClick}
           >
             <image

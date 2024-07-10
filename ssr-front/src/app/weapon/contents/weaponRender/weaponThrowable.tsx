@@ -10,13 +10,12 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponThrowable, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
-  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
   const param = useSearchParams();
 
@@ -39,7 +38,7 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
         columnDesign={[2, null, 5]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {throwableList.map((item) => (
         <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>

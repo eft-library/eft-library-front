@@ -14,11 +14,10 @@ import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridNotes from "@/components/gridText/gridNotes";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function LootDetail({ category }: LootDetail) {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
   const [lootList, setLootList] = useState<Loot[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -51,7 +50,7 @@ export default function LootDetail({ category }: LootDetail) {
         column={column.value_kr}
         isShadow
         isNote
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {lootList.map((item) =>
         checkViewLoot(item.category) ? (

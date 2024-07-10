@@ -1,7 +1,7 @@
 import React from "react";
 import { GridItem, Divider, Text } from "@chakra-ui/react";
 import type { GridJsonText } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function GridJsonText({
   jsonArrayText,
@@ -9,7 +9,6 @@ export default function GridJsonText({
   isDivider,
   word = "",
 }: GridJsonText) {
-  const { blackWhite } = useColorValue();
   return (
     <GridItem
       display="flex"
@@ -21,7 +20,7 @@ export default function GridJsonText({
         <React.Fragment key={jatIndex}>
           <Text
             key={jatIndex}
-            color={blackWhite}
+            color={ALL_COLOR.WHITE}
             mt={jatIndex !== 0 ? 1 : 0}
             fontWeight={600}
             textAlign="center"
@@ -32,7 +31,7 @@ export default function GridJsonText({
             <Divider
               mt={1}
               w={"40%"}
-              borderColor={blackWhite}
+              borderColor={ALL_COLOR.WHITE}
               borderWidth={"1px"}
               borderStyle={"dashed"}
             />

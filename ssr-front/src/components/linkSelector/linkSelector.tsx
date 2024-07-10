@@ -4,7 +4,7 @@ import { Flex, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { LinkSelector } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function LinkSelector({
   itemList,
@@ -12,7 +12,6 @@ export default function LinkSelector({
   itemLink,
   mt,
 }: LinkSelector) {
-  const { darkLightgray, blackWhite } = useColorValue();
   const param = useParams<{ id: string }>();
 
   return (
@@ -28,9 +27,9 @@ export default function LinkSelector({
         <Button
           key={item.id}
           variant={"solid"}
-          color={blackWhite}
-          _hover={{ bg: darkLightgray }}
-          bg={item.id === param.id ? darkLightgray : ""}
+          color={ALL_COLOR.WHITE}
+          _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+          bg={item.id === param.id ? ALL_COLOR.LIGHT_GRAY : ""}
           fontWeight="bold"
           borderWidth="2px"
           m="2"

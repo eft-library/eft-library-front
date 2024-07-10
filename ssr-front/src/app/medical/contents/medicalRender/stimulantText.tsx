@@ -1,12 +1,9 @@
 import React from "react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import useColorValue from "@/hooks/useColorValue";
 import { Text, Box } from "@chakra-ui/react";
 
 export default function StimulantText({ effect, itemID, type }) {
-  const { blackWhite } = useColorValue();
-
-  const addPlusMinus = (text) => {
+  const addPlusMinus = (text: string | number) => {
     if (typeof text === "number") {
       if (text === 0) return "";
       return text > 0 ? `+${text}` : `${text}`;
@@ -14,7 +11,7 @@ export default function StimulantText({ effect, itemID, type }) {
     return "";
   };
 
-  const checkSkillColor = (text) => {
+  const checkSkillColor = (text: string) => {
     const blue = ["진통제", "해독제"];
     const red = ["손 떨림", "터널 효과"];
 
@@ -23,7 +20,7 @@ export default function StimulantText({ effect, itemID, type }) {
     } else if (red.includes(text)) {
       return ALL_COLOR.RED;
     } else {
-      return blackWhite;
+      return ALL_COLOR.WHITE;
     }
   };
 
@@ -39,7 +36,7 @@ export default function StimulantText({ effect, itemID, type }) {
         </Text>
       )}
       <Box display="flex" ml={4}>
-        <Text color={blackWhite} fontWeight={700}>
+        <Text color={ALL_COLOR.WHITE} fontWeight={700}>
           -&nbsp;
         </Text>
         <Text fontWeight={600} color={checkSkillColor(effect.krSkill)}>

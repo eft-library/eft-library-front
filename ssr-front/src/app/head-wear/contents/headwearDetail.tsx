@@ -11,14 +11,13 @@ import type { HeadwearList, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchDataWithNone } from "@/lib/api";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function HeadWearDetail() {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
   const [headWearList, setHeadWearList] = useState<HeadwearList>();
   const [column, setColumn] = useState<Column>();
 
@@ -44,7 +43,7 @@ export default function HeadWearDetail() {
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {headWearList.class_headwear.map((item) => (
         <GridContents columnDesign={[2, null, 7]} key={item.id} id={item.id}>
@@ -64,7 +63,7 @@ export default function HeadWearDetail() {
         columnDesign={[2, null, 2]}
         column={noClassColumn(column.value_kr)}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {headWearList.no_class_headwear.map((item) => (
         <GridContents columnDesign={[2, null, 2]} key={item.id} id={item.id}>

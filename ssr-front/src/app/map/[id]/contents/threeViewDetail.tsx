@@ -5,16 +5,15 @@ import ItemSelector from "./itemSelector";
 import SubMapSelector from "./subMapSelector";
 import JPGView from "./jpgView";
 import ThreeView from "./three/threeView";
-import useColorValue from "@/hooks/useColorValue";
 import { useItemFilter } from "@/hooks/useItemFilter";
 import type { MapDetail } from "@/types/types";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
 import ThreeSkeleton from "../skeleton/threeSkeleton";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
 import PageParent from "@/components/pageParent/pageParent";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
-  const { blackWhite } = useColorValue();
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
     mapData.jpg_item_path
   );
@@ -45,12 +44,12 @@ export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
       />
       <SubMapSelector onClickMap={onClickMap} mapId={mapData.id} />
       <Stack spacing={4}>
-        <Text as={"b"} color={blackWhite}>
+        <Text as={"b"} color={ALL_COLOR.WHITE}>
           2D MAP
         </Text>
         <JPGView map={mapData} viewItemList={viewItemList} />
         <br />
-        <Text as={"b"} color={blackWhite}>
+        <Text as={"b"} color={ALL_COLOR.WHITE}>
           3D MAP
         </Text>
         <ThreeView key={mapData.id} map={mapData} viewItemList={viewItemList} />

@@ -8,13 +8,12 @@ import { fetchDataWithNone } from "@/lib/api";
 import TopNaviLogi from "@/assets/navi/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import Login from "../login/login";
 
 export default function Header() {
   const { setNpcId } = useAppStore((state) => state);
-  const { backWhite, whiteMapBlack, darkLightgray } = useColorValue();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
 
@@ -47,7 +46,7 @@ export default function Header() {
       <GridItem colSpan={1} h="14" />
       <GridItem colSpan={1} h="14" display={"flex"} justifyContent={"center"}>
         <Link href={"/"}>
-          <TopNaviLogi color={backWhite} />
+          <TopNaviLogi color={ALL_COLOR.WHITE} />
         </Link>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
@@ -59,8 +58,8 @@ export default function Header() {
               variant="solid"
               fontWeight="bold"
               bg="transparent"
-              _hover={{ bg: darkLightgray }}
-              color={backWhite}
+              _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+              color={ALL_COLOR.WHITE}
               p="4"
               boxShadow="none"
               backdropFilter="blur(8px)"
@@ -76,14 +75,14 @@ export default function Header() {
                   top="50px"
                   onMouseEnter={() => setSelectedMenu(main.value)}
                   onMouseLeave={() => setSelectedMenu(null)}
-                  bg={whiteMapBlack}
+                  bg={ALL_COLOR.MAP_BLACK}
                   borderRadius={"lg"}
                 >
                   {main.sub_menus.map((sub) => (
                     <Box
                       p={2}
                       key={sub.value}
-                      _hover={{ bg: darkLightgray }}
+                      _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
                       borderRadius={"lg"}
                     >
                       <Link

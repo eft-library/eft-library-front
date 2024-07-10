@@ -4,12 +4,10 @@ import { Box, Text, Flex } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import type { QuestInfo } from "@/types/types";
 import InfoSkeleton from "../../skeleton/infoSkeleton";
-import useColorValue from "@/hooks/useColorValue";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function QuestInfo({ quest }: QuestInfo) {
-  const { blackWhite } = useColorValue();
   if (!quest) return <InfoSkeleton />;
 
   return (
@@ -23,17 +21,17 @@ export default function QuestInfo({ quest }: QuestInfo) {
       <Box
         w="160px"
         h="160px"
-        backgroundColor={blackWhite}
-        color={blackWhite}
+        backgroundColor={ALL_COLOR.WHITE}
+        color={ALL_COLOR.WHITE}
         backgroundImage={`url(${formatImage(quest.image)})`}
         backgroundRepeat={"no-repeat"}
         backgroundSize={"cover"}
         outline={"4px solid"}
-        outlineColor={blackWhite}
+        outlineColor={ALL_COLOR.WHITE}
         borderRadius={"lg"}
       />
       <Text
-        color={blackWhite}
+        color={ALL_COLOR.WHITE}
         textAlign={"center"}
         mt={"4"}
         fontWeight={"700"}
@@ -42,7 +40,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
         {quest.title_kr}
       </Text>
       <Text
-        color={blackWhite}
+        color={ALL_COLOR.WHITE}
         textAlign={"center"}
         fontWeight={"700"}
         fontSize="lg"
@@ -50,7 +48,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
         {quest.title_en}
       </Text>
       <Text
-        color={blackWhite}
+        color={ALL_COLOR.WHITE}
         textAlign={"center"}
         mt={"1"}
         fontSize="md"
@@ -79,7 +77,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
             quest.requires.map((item) => (
               <Text
                 key={item.id}
-                color={blackWhite}
+                color={ALL_COLOR.WHITE}
                 fontWeight={"700"}
                 textAlign={"center"}
                 cursor={"pointer"}
@@ -90,7 +88,11 @@ export default function QuestInfo({ quest }: QuestInfo) {
               </Text>
             ))
           ) : (
-            <Text color={blackWhite} fontWeight={"700"} textAlign={"center"}>
+            <Text
+              color={ALL_COLOR.WHITE}
+              fontWeight={"700"}
+              textAlign={"center"}
+            >
               -
             </Text>
           )}
@@ -108,7 +110,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
             quest.next.map((item) => (
               <Text
                 key={item.id}
-                color={blackWhite}
+                color={ALL_COLOR.WHITE}
                 fontWeight={"700"}
                 textAlign={"center"}
                 cursor={"pointer"}
@@ -119,7 +121,11 @@ export default function QuestInfo({ quest }: QuestInfo) {
               </Text>
             ))
           ) : (
-            <Text color={blackWhite} fontWeight={"700"} textAlign={"center"}>
+            <Text
+              color={ALL_COLOR.WHITE}
+              fontWeight={"700"}
+              textAlign={"center"}
+            >
               -
             </Text>
           )}

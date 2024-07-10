@@ -1,13 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import useColorValue from "@/hooks/useColorValue";
 
 export default function EffectText({ text }) {
-  const { blackWhite } = useColorValue();
-
-  const checkPlus = (effect) => {
+  const checkPlus = (effect: string | number) => {
     if (typeof effect === "number") {
-      if (effect === 0) return blackWhite;
+      if (effect === 0) return ALL_COLOR.WHITE;
       return effect > 0 ? ALL_COLOR.LIGHT_BLUE : ALL_COLOR.RED;
     }
 
@@ -18,17 +15,17 @@ export default function EffectText({ text }) {
         case "진통제":
           return ALL_COLOR.LIGHT_BLUE;
         default:
-          return blackWhite;
+          return ALL_COLOR.WHITE;
       }
     }
   };
 
-  const fixStr = (value) => {
+  const fixStr = (value: string) => {
     const fixList = ["손 떨림", "진통제"];
     return fixList.includes(value) ? value : `${value} :`;
   };
 
-  const addPlusMinus = (text) => {
+  const addPlusMinus = (text: string | number) => {
     if (typeof text === "number") {
       if (text === 0) return "";
       return text > 0 ? `+${text}` : `${text}`;

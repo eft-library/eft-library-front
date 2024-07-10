@@ -17,7 +17,7 @@ import { ItemSVG } from "@/components/viewSVG/dynamicSVG";
 import { useAppStore } from "@/store/provider";
 import type { ItemSelector } from "@/types/types";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ItemSelector({
   viewItemList,
@@ -25,7 +25,6 @@ export default function ItemSelector({
   onClickAllItem,
   originItemList,
 }: ItemSelector) {
-  const { scrollHover, scrollThumb, scrollTrack, blackWhite } = useColorValue();
   const { itemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
@@ -68,14 +67,14 @@ export default function ItemSelector({
       overflowY="hidden"
       height={"75%"}
       borderRadius="md"
-      border={isOpen ? `1px solid ${blackWhite}` : "none"}
+      border={isOpen ? `1px solid ${ALL_COLOR.WHITE}` : "none"}
       defaultIndex={[0]}
     >
       <AccordionItem
-        borderTop={isOpen ? "none" : `1px solid ${blackWhite}`}
-        borderLeft={isOpen ? "none" : `1px solid ${blackWhite}`}
-        borderRight={isOpen ? "none" : `1px solid ${blackWhite}`}
-        borderBottom={`1px solid ${blackWhite}`}
+        borderTop={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
+        borderLeft={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
+        borderRight={isOpen ? "none" : `1px solid ${ALL_COLOR.WHITE}`}
+        borderBottom={`1px solid ${ALL_COLOR.WHITE}`}
         borderRadius="md"
       >
         <Heading
@@ -89,11 +88,11 @@ export default function ItemSelector({
               flex="1"
               textAlign="left"
               fontWeight={700}
-              color={blackWhite}
+              color={ALL_COLOR.WHITE}
             >
               Filter
             </Box>
-            <AccordionIcon color={blackWhite} />
+            <AccordionIcon color={ALL_COLOR.WHITE} />
           </AccordionButton>
         </Heading>
         <AccordionPanel
@@ -102,15 +101,15 @@ export default function ItemSelector({
               width: "6px",
             },
             "&::-webkit-scrollbar-track": {
-              background: scrollTrack,
+              background: ALL_COLOR.SCROLL_TRACK,
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb": {
-              background: scrollThumb,
+              background: ALL_COLOR.SCROLL_THUMB,
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: scrollHover,
+              background: ALL_COLOR.SCROLL_HOVER,
             },
           }}
           position={"fixed"}
@@ -123,7 +122,7 @@ export default function ItemSelector({
           overflowY={"auto"}
         >
           <Box
-            color={blackWhite}
+            color={ALL_COLOR.WHITE}
             display={"flex"}
             alignItems={"center"}
             cursor={"pointer"}
@@ -152,7 +151,7 @@ export default function ItemSelector({
                     mt={"20px"}
                     onClick={() => onClickItem(item.value)}
                     opacity={viewItemList.includes(item.value) ? "" : "0.5"}
-                    color={blackWhite}
+                    color={ALL_COLOR.WHITE}
                     fontWeight={"600"}
                     fontSize={"xl"}
                     cursor={"pointer"}
@@ -181,7 +180,7 @@ export default function ItemSelector({
                         opacity={
                           viewItemList.includes(childItem.value) ? "" : "0.5"
                         }
-                        color={blackWhite}
+                        color={ALL_COLOR.WHITE}
                         cursor={"pointer"}
                         pl={"10px"}
                       >

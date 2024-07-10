@@ -1,17 +1,13 @@
-"use client";
-
 import { Box, Flex } from "@chakra-ui/react";
 import type { PageParent } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function PageParent({ children }: PageParent) {
-  const { whiteBack, backWhite } = useColorValue();
-
   return (
     <Box
       className="Main"
       bgSize="cover"
-      bg={whiteBack}
+      bg={ALL_COLOR.BACKGROUND}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -30,7 +26,7 @@ export default function PageParent({ children }: PageParent) {
         height="100vh"
         justifyContent="center"
         border="1px"
-        borderColor={backWhite}
+        borderColor={ALL_COLOR.WHITE}
         borderRadius={"lg"}
         paddingBottom={"20px"}
       >

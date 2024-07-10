@@ -9,10 +9,9 @@ import type { FooterColumn } from "@/types/types";
 import { ColorMode } from "@/hooks/useColorTheme";
 import FooterSkeleton from "./footerSkeleton";
 import { FooterSVG } from "../viewSVG/dynamicSVG";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function Footer() {
-  const { backWhite, whiteBack } = useColorValue();
   const [column, setColumn] = useState<FooterColumn>();
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function Footer() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={whiteBack}
+      bg={ALL_COLOR.BACKGROUND}
       bgPosition="center"
       display="flex"
       flexDirection="column"
@@ -47,7 +46,7 @@ export default function Footer() {
           <Flex direction="column" justifyContent="center">
             {column.json_value.text.map((item) => (
               <Text
-                color={backWhite}
+                color={ALL_COLOR.WHITE}
                 m={2}
                 fontWeight={"bold"}
                 key={item.value}
@@ -65,7 +64,7 @@ export default function Footer() {
                 >
                   <FooterSVG svgValue={item.name} />
                   <Text
-                    color={backWhite}
+                    color={ALL_COLOR.WHITE}
                     fontWeight={"bold"}
                     textAlign={"center"}
                   >

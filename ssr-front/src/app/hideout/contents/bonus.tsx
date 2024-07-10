@@ -1,11 +1,8 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import useColorValue from "@/hooks/useColorValue";
 import type { BonusList } from "@/types/types";
 
 export default function Bonus({ bonuses }: BonusList) {
-  const { blackWhite } = useColorValue();
-
   const checkNoPercent = (value: string) => {
     const noPercentList = [
       "Unlocks armor repair via repair kits",
@@ -35,7 +32,7 @@ export default function Bonus({ bonuses }: BonusList) {
   const checkPlus = (effect: number | string) => {
     if (typeof effect === "number") {
       if (effect == 0) {
-        return blackWhite;
+        return ALL_COLOR.WHITE;
       } else if (effect > 0) {
         return ALL_COLOR.HIDE_BLUE;
       } else {

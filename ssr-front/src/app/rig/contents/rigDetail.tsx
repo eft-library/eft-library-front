@@ -8,7 +8,7 @@ import { Box } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { RigList, Column } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { useSearchParams } from "next/navigation";
@@ -18,7 +18,6 @@ import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function RigDetail() {
   const param = useSearchParams();
-  const { yellowShadow } = useColorValue();
   const [rigList, setRigList] = useState<RigList>();
   const [column, setColumn] = useState<Column>();
 
@@ -47,7 +46,7 @@ export default function RigDetail() {
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {rigList.class_rig.map((item) => (
         <GridContents columnDesign={[2, null, 7]} key={item.id} id={item.id}>
@@ -67,7 +66,7 @@ export default function RigDetail() {
         columnDesign={[2, null, 4]}
         column={noClassColumn(column.value_kr)}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {rigList.no_class_rig.map((item) => (
         <GridContents columnDesign={[2, null, 4]} key={item.id} id={item.id}>

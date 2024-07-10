@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import type { GridCenterText } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function GridCenterText({
   children,
@@ -9,8 +9,6 @@ export default function GridCenterText({
   otherColor,
   isHover = false,
 }: GridCenterText) {
-  const { blackWhite, beige } = useColorValue();
-
   return (
     <Box
       w={"100%"}
@@ -27,14 +25,14 @@ export default function GridCenterText({
           fontWeight={600}
           mb={mb}
           mt={mt}
-          _hover={isHover ? { color: beige } : {}}
+          _hover={isHover ? { color: ALL_COLOR.BEIGE } : {}}
         >
           {children}
         </Text>
       ) : (
         <Text
-          color={blackWhite}
-          _hover={isHover ? { color: beige } : {}}
+          color={ALL_COLOR.WHITE}
+          _hover={isHover ? { color: ALL_COLOR.BEIGE } : {}}
           textAlign="center"
           fontWeight={600}
           mb={mb}

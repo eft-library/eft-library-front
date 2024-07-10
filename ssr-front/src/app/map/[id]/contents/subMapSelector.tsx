@@ -6,10 +6,9 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { SubMap, SubMapSelector } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
-  const { lightDarkYellow, darkLightYellow } = useColorValue();
   const param = useParams<{ id: string }>();
   const [subMap, setSubMap] = useState<SubMap[]>();
 
@@ -25,9 +24,9 @@ export default function SubMapSelector({ onClickMap, mapId }: SubMapSelector) {
         <Text
           key={sub.id}
           onClick={() => onClickMap(sub)}
-          color={mapId === sub.id ? darkLightYellow : lightDarkYellow}
+          color={mapId === sub.id ? ALL_COLOR.YELLOW : ALL_COLOR.DARK_YELLOW}
           fontWeight="bold"
-          _hover={{ color: darkLightYellow }}
+          _hover={{ color: ALL_COLOR.YELLOW }}
           p="2"
           cursor="pointer"
         >

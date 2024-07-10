@@ -8,10 +8,9 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import type { NPC } from "@/types/types";
 import NPCSkeleton from "../skeleton/npcSkeleton";
-import useColorValue from "@/hooks/useColorValue";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function NPC() {
-  const { blackWhite, lightDarkYellow } = useColorValue();
   const { npcId, setNpcId } = useAppStore((state) => state);
   const [npc, setNpc] = useState<NPC[]>();
 
@@ -41,15 +40,17 @@ export default function NPC() {
               w="120px"
               h="120px"
               onClick={() => setNpcId(npcItem.id)}
-              color={blackWhite}
+              color={ALL_COLOR.WHITE}
               backgroundImage={`url(${formatImage(npcItem.image)})`}
               outline={npcId === npcItem.id ? "4px solid" : "1px solid"}
-              outlineColor={npcId === npcItem.id ? lightDarkYellow : blackWhite}
+              outlineColor={
+                npcId === npcItem.id ? ALL_COLOR.DARK_YELLOW : ALL_COLOR.WHITE
+              }
               borderRadius={"lg"}
               onMouseEnter={handleHover}
               onMouseLeave={handleHoverExit}
             />
-            <Text color={blackWhite} textAlign={"center"} mt={"2"}>
+            <Text color={ALL_COLOR.WHITE} textAlign={"center"} mt={"2"}>
               {npcItem.name_kr}
             </Text>
           </Flex>

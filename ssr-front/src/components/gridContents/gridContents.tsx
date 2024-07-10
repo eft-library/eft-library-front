@@ -1,6 +1,5 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import type { GridContents } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
 import { useSearchParams } from "next/navigation";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
@@ -12,14 +11,14 @@ export default function GridContents({
   isHideout = false,
 }: GridContents) {
   const param = useSearchParams();
-  const { blackWhite } = useColorValue();
+
   return (
     <SimpleGrid
       columns={columnDesign}
       spacing={2}
       width={contentsWidth}
       outline={"1px solid"}
-      outlineColor={blackWhite}
+      outlineColor={ALL_COLOR.WHITE}
       borderRadius={"lg"}
       justifyItems={isHideout ? "center" : ""}
       p={2}

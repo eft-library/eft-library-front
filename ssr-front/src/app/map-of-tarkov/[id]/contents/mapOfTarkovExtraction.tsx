@@ -8,16 +8,15 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import type { MapOfTarkovExtraction, Column } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
 import GridImageText from "@/components/gridText/girdImageText";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function MapOfTarkovExtraction({
   extractionList,
 }: MapOfTarkovExtraction) {
-  const { yellowShadow } = useColorValue();
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function MapOfTarkovExtraction({
           columnDesign={[2, null, 10]}
           column={column.value_kr}
           isShadow
-          shadowColor={yellowShadow}
+          shadowColor={ALL_COLOR.YELLOW_SHADOW}
           titleWidth="100%"
           isExtraction
         />

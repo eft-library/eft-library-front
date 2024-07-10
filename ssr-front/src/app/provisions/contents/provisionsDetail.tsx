@@ -9,7 +9,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import EffectText from "./effectText";
@@ -19,7 +18,6 @@ import GridNotes from "@/components/gridText/gridNotes";
 
 export default function ProvisionsDetail() {
   const param = useSearchParams();
-  const { yellowShadow, blackWhite } = useColorValue();
   const [provisionList, setProvisionList] = useState<Provisions[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -66,7 +64,7 @@ export default function ProvisionsDetail() {
   const checkPlus = (effect: number | string) => {
     if (typeof effect === "number") {
       if (effect == 0) {
-        return blackWhite;
+        return ALL_COLOR.WHITE;
       } else if (effect > 0) {
         return ALL_COLOR.LIGHT_BLUE;
       } else {
@@ -93,7 +91,7 @@ export default function ProvisionsDetail() {
         columnDesign={[2, null, 7]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
         isNote
       />
       {provisionList.map((item) => (

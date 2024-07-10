@@ -4,15 +4,14 @@ import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import type { ThreeView, SubFilter } from "@/types/types";
 import ThreeSkeleton from "../../skeleton/threeSkeleton";
-import useColorValue from "@/hooks/useColorValue";
 import { useState, useEffect, Suspense } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import Loader from "./loader";
 import ThreeModel from "./threeModel";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
-  const { threBack } = useColorValue();
   const [filterInfo, setFilterInfo] = useState<SubFilter[] | null>(null);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
     <Canvas
       camera={{ position: [0, 60, 0] }}
       style={{
-        backgroundColor: threBack,
+        backgroundColor: ALL_COLOR.THREE_BACKGROUND,
         height: "100vh",
       }}
     >

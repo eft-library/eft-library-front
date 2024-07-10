@@ -6,7 +6,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, MedicalList } from "@/types/types";
-import useColorValue from "@/hooks/useColorValue";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Text, Box, GridItem } from "@chakra-ui/react";
@@ -17,7 +16,6 @@ import DrugText from "./drugText";
 import { useScrollMove } from "@/hooks/useScrollMove";
 
 export default function MedicalDrug({ medicalList }: MedicalList) {
-  const { yellowShadow } = useColorValue();
   const param = useSearchParams();
   const [column, setColumn] = useState<Column>();
 
@@ -38,7 +36,7 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
         columnDesign={[2, null, 6]}
         column={column.value_kr}
         isShadow
-        shadowColor={yellowShadow}
+        shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {medicalList.map(
         (item) =>
