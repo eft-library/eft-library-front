@@ -22,7 +22,7 @@ export default function QuestDetail() {
     <Box
       className="Main"
       bgSize="cover"
-      bg={ALL_COLOR.WHITE}
+      bg={ALL_COLOR.BLACK}
       bgPosition="center"
       display="flex"
       flexDirection="column"
