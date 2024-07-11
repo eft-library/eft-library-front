@@ -53,11 +53,13 @@ const handler = NextAuth({
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
+        token.provider = account.provider;
       }
       return token;
     },
     async session({ session, token, user }) {
       session.accessToken = token.accessToken;
+      session.provider = token.provider;
       return session;
     },
   },

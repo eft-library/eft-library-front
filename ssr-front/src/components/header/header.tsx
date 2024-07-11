@@ -98,6 +98,9 @@ export default function Header() {
             </Button>
           ))}
         <Login />
+        <Button>
+          <Link href={"/user/quest"}>내 퀘스트</Link>
+        </Button>
       </GridItem>
     </Grid>
   );
