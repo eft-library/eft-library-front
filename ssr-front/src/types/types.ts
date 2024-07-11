@@ -530,10 +530,6 @@ export interface ColladaData {
   colladaData: Collada;
 }
 
-export interface TopNaviLogo {
-  color: string;
-}
-
 export interface Container extends strID {
   name_en: string;
   name_kr: string;

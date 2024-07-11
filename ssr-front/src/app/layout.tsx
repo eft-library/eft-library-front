@@ -9,8 +9,8 @@ import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Tarkov Library",
-  description: "Tarkov Library",
+  title: "EFT Library",
+  description: "EFT Library",
 };
 
 export default function RootLayout({

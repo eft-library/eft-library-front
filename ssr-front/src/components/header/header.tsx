@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { fetchDataWithNone } from "@/lib/api";
-import TopNaviLogi from "@/assets/navi/topNaviLogo";
+import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import type { Menu } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
@@ -46,7 +46,7 @@ export default function Header() {
       <GridItem colSpan={1} h="14" />
       <GridItem colSpan={1} h="14" display={"flex"} justifyContent={"center"}>
         <Link href={"/"}>
-          <TopNaviLogi color={ALL_COLOR.WHITE} />
+          <TopNaviLogo />
         </Link>
       </GridItem>
       <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
