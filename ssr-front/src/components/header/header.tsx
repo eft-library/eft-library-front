@@ -44,12 +44,26 @@ export default function Header() {
       backdropContrast={"60%"}
     >
       <GridItem colSpan={1} h="14" />
-      <GridItem colSpan={1} h="14" display={"flex"} justifyContent={"center"}>
+      <GridItem
+        colSpan={1}
+        h="14"
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <Link href={"/"}>
           <TopNaviLogo />
         </Link>
       </GridItem>
-      <GridItem colStart={3} colEnd={6} h="14" textAlign={"center"}>
+      <GridItem
+        colStart={3}
+        colEnd={6}
+        h="14"
+        textAlign={"center"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         {headerData.length > 0 &&
           headerData.map((main) => (
             <Button
