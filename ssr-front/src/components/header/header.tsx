@@ -11,11 +11,13 @@ import type { Menu } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import Login from "../login/login";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
   const { setNpcId } = useAppStore((state) => state);
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[]>(); // 초기 상태를 빈 배열로 설정
+  const { data: session } = useSession();
 
   const changeMenu = (menuName: string) => {
     setSelectedMenu(menuName);
@@ -111,10 +113,12 @@ export default function Header() {
               )}
             </Button>
           ))}
-        {/* <Login />
-        <Button>
-          <Link href={"/user/quest"}>내 퀘스트</Link>
-        </Button> */}
+        {session && (
+          <Button>
+            <Link href={"/user/quest"}>내 퀘스트</Link>
+          </Button>
+        )}
+        <Login />
       </GridItem>
     </Grid>
   );

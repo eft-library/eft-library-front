@@ -656,3 +656,31 @@ interface StationRequire {
   name_en: string | null;
   name_kr: string | null;
 }
+
+interface UserQuestInfo {
+  quest_id: string;
+  quest_name_en: string;
+  quest_name_kr: string;
+  objectives_en: string[];
+  objectives_kr: string[];
+  next: UserNextQuest[];
+}
+
+interface UserNextQuest {
+  id: string;
+  name: string;
+  name_kr: string;
+}
+
+export interface UserQuest {
+  npc_id: string;
+  npc_name_kr: string;
+  npc_name_en: string;
+  npc_image: string;
+  quest_info: UserQuestInfo[];
+}
+
+export interface UserQuestDetail {
+  userQuestList: UserQuest[];
+  successQuest: Function;
+}

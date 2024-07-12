@@ -32,7 +32,9 @@ export default function LinkSelector({
           borderWidth="2px"
           m="2"
         >
-          <Link href={item[itemLink]}>{item[itemDesc]}</Link>
+          <Link href={item[itemLink]} prefetch>
+            {item[itemDesc]}
+          </Link>
         </Button>
       ))}
     </Flex>
