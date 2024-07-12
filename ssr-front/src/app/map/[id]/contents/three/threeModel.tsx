@@ -19,12 +19,18 @@ export default function ThreeModel({
         <>
           <mesh
             geometry={nodes.mesh_0.geometry}
-            material={materials["신형 아스팔트"]}
+            material={materials.PaletteMaterial002}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
           <mesh
             geometry={nodes.mesh_0_1.geometry}
+            material={materials["신형 아스팔트"]}
+          >
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh
+            geometry={nodes.mesh_0_2.geometry}
             material={materials.PaletteMaterial001}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
