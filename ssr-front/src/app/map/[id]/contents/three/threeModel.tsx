@@ -36,23 +36,17 @@ export default function ThreeModel({
           <mesh geometry={nodes.mesh_0.geometry} material={materials.room}>
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
+          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
           <mesh
-            geometry={nodes.mesh_0_1.geometry}
+            geometry={nodes.mesh_0_2.geometry}
             material={materials.PaletteMaterial002}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
-          <mesh geometry={nodes.mesh_0_2.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
           <mesh
             geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_4.geometry}
             material={materials.PaletteMaterial001}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
@@ -89,16 +83,16 @@ export default function ThreeModel({
       )}
       {map.id === "CUSTOMS_GA_THIRD_FLOOR_DORMITORY" && (
         <>
+          <mesh geometry={nodes.mesh_0.geometry} material={materials.room}>
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
           <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial001}
+            geometry={nodes.mesh_0_2.geometry}
+            material={materials.PaletteMaterial002}
           >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_2.geometry} material={materials.복}>
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
           <mesh
@@ -109,7 +103,7 @@ export default function ThreeModel({
           </mesh>
           <mesh
             geometry={nodes.mesh_0_4.geometry}
-            material={materials.PaletteMaterial002}
+            material={materials.PaletteMaterial001}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
@@ -117,27 +111,21 @@ export default function ThreeModel({
       )}
       {map.id === "CUSTOMS_NA_FIRST_FLOOR_DORMITORY" && (
         <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial001}
-          >
+          <mesh geometry={nodes.mesh_0.geometry} material={materials.복}>
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.room}>
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
           <mesh
-            geometry={nodes.mesh_0_1.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_2.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_3.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_4.geometry}
+            geometry={nodes.mesh_0_2.geometry}
             material={materials.PaletteMaterial002}
+          >
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh
+            geometry={nodes.mesh_0_3.geometry}
+            material={materials.PaletteMaterial001}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
@@ -147,7 +135,7 @@ export default function ThreeModel({
         <>
           <mesh
             geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial001}
+            material={materials.PaletteMaterial002}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
@@ -165,13 +153,35 @@ export default function ThreeModel({
           </mesh>
           <mesh
             geometry={nodes.mesh_0_4.geometry}
-            material={materials.PaletteMaterial002}
+            material={materials.PaletteMaterial001}
           >
             <Edges visible={true} scale={1} color="black" threshold={15} />
           </mesh>
         </>
       )}
       {map.id === "GROUND_ZERO" && (
+        <>
+          <mesh
+            geometry={nodes.mesh_0.geometry}
+            material={materials.PaletteMaterial001}
+          >
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh
+            geometry={nodes.mesh_0_1.geometry}
+            material={materials.PaletteMaterial003}
+          >
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+          <mesh
+            geometry={nodes.mesh_0_2.geometry}
+            material={materials.PaletteMaterial002}
+          >
+            <Edges visible={true} scale={1} color="black" threshold={15} />
+          </mesh>
+        </>
+      )}
+      {map.id === "GROUND_ZERO_UNDERGROUND" && (
         <>
           <mesh
             geometry={nodes.mesh_0.geometry}
