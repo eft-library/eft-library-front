@@ -686,3 +686,9 @@ export interface UserQuestDetail {
   userQuestList: UserQuest[];
   successQuest: Function;
 }
+
+export interface UserQuestList {
+  userQuest: UserQuest;
+  successQuest: Function;
+  deleteQuest: Function;
+}

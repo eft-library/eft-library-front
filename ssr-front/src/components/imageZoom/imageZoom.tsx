@@ -80,6 +80,7 @@ export default function ImageZoom({
             maxH={returnMaxH()}
             height={returnMaxH()}
             fallbackSrc="/loading.gif"
+            borderRadius={isQuest ? "lg" : ""}
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
             alt="image"
