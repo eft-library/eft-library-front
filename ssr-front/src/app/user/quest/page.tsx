@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import PageParent from "@/components/pageParent/pageParent";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import SubHeader from "@/components/subHeader/subHeader";
 import UserQuestDetail from "./contents/userQuestDetail";
 import type { UserQuest } from "@/types/types";
+import { useRouter } from "next/navigation";
 
 export default function UserQuest() {
   const [userQuest, setUserQuest] = useState<UserQuest[]>();
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const getUserQuest = async () => {
@@ -25,12 +27,12 @@ export default function UserQuest() {
           }),
         });
 
-        if (!res.ok) {
-          throw new Error("Failed to add user");
-        }
-
         const response = await res.json();
-        if (response.status === 200 && response.data.length > 0) {
+        if (response.msg !== "OK") {
+          alert("로그인 다시");
+          signOut();
+          router.push("/");
+        } else if (response.status === 200 && response.data.length > 0) {
           setUserQuest(response.data);
         }
       } catch (error) {
@@ -44,7 +46,6 @@ export default function UserQuest() {
 
   const successUserQuest = async (quest_id: string, next: any) => {
     try {
-      console.log(next);
       // 전체 퀘스트에서 완료한 것 제외하고 다음 단계 추가하기
       const onlyQuestIdList = userQuest.flatMap((npc) =>
         npc.quest_info.map((quest) => quest.quest_id)
@@ -67,12 +68,13 @@ export default function UserQuest() {
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to add user");
-      }
-
       const response = await res.json();
-      if (response.status === 200 && response.data.length > 0) {
+
+      if (response.msg !== "OK") {
+        alert("로그인 다시");
+        signOut();
+        router.push("/");
+      } else if (response.status === 200 && response.data.length > 0) {
         setUserQuest(response.data);
       }
     } catch (error) {

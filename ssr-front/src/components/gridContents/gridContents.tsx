@@ -9,6 +9,7 @@ export default function GridContents({
   id,
   contentsWidth = "95%",
   isHideout = false,
+  padding = 0,
 }: GridContents) {
   const param = useSearchParams();
 
@@ -24,6 +25,7 @@ export default function GridContents({
       p={2}
       mb={4}
       id={id}
+      padding={padding}
       bg={param.get("id") === id ? ALL_COLOR.HILIGHT_GRAY : ""}
     >
       {children}

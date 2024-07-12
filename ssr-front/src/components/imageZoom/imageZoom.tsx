@@ -15,6 +15,7 @@ export default function ImageZoom({
   isLoop = false,
   isHideout = false,
   isBoss = false,
+  isQuest = false,
 }: ImageZoom) {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -30,6 +31,8 @@ export default function ImageZoom({
   const returnMaxH = () => {
     if (isHideout) {
       return 20;
+    } else if (isQuest) {
+      return 10;
     } else if (isBoss) {
       return 640;
     } else if (isMax) {

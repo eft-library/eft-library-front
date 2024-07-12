@@ -12,8 +12,10 @@ import {
   GridItem,
   Button,
 } from "@chakra-ui/react";
+import { formatImage } from "@/lib/formatImage";
 import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 
 export default function UserQuestDetail({
   userQuestList,
@@ -32,12 +34,24 @@ export default function UserQuestDetail({
               _expanded={{ bg: ALL_COLOR.HIDE_RED, color: ALL_COLOR.WHITE }}
               borderRadius={"lg"}
             >
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                mr={2}
+              >
+                <ImageZoom
+                  isQuest
+                  originalImg={formatImage(npc.npc_image)}
+                  thumbnail={formatImage(npc.npc_image)}
+                />
+              </Box>
               <Box as="span" flex={1} textAlign={"left"} fontWeight={800}>
                 {npc.npc_name_kr}
               </Box>
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel>
+            <AccordionPanel p={1} mt={3}>
               {npc.quest_info.map((quest) => (
                 <GridContents
                   key={quest.quest_id}
@@ -50,6 +64,7 @@ export default function UserQuestDetail({
                     alignItems={"center"}
                     flexDirection={"column"}
                     justifyContent={"center"}
+                    padding={2}
                   >
                     <Text fontWeight={600}>{quest.quest_name_kr}</Text>
                   </GridItem>

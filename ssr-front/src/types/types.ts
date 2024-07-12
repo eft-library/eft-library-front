@@ -261,6 +261,7 @@ export interface GridContents extends strID {
   contentsWidth?: string;
   columnDesign: Array<number | null>;
   isHideout?: boolean;
+  padding?: number;
 }
 
 export interface GridNotes {
@@ -574,6 +575,7 @@ export interface ImageZoom {
   isLoop?: boolean;
   isHideout?: boolean;
   isBoss?: boolean;
+  isQuest?: boolean;
 }
 
 export interface HideoutDetail extends Category {}
