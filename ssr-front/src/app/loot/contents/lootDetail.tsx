@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, GridItem, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import type { LootDetail, Loot, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";

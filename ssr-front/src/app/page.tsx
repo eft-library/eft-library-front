@@ -1,5 +1,3 @@
-"use client";
-
 import Info from "@/app/contents/info";
 import News from "@/app/contents/news";
 import Search from "@/app/contents/search";

@@ -1,5 +1,3 @@
-"use client";
-
 import { YOUTUBE_OPTION } from "@/util/consts/libraryConsts";
 import YouTube from "react-youtube";
 

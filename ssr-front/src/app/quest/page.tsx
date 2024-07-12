@@ -1,5 +1,3 @@
-"use client";
-
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Flex } from "@chakra-ui/react";

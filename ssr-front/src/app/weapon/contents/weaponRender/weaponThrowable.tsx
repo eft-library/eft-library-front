@@ -18,6 +18,7 @@ import { useScrollMove } from "@/hooks/useScrollMove";
 export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
   const [column, setColumn] = useState<Column>();
   const param = useSearchParams();
+  const detailThrowable = ["RGN", "RGO"];
 
   useEffect(() => {
     fetchDataWithNone(
@@ -25,8 +26,6 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
       setColumn
     );
   }, []);
-
-  const detailThrowable = ["RGN", "RGO"];
 
   useScrollMove(param.get("id"), throwableList, "WEAPON");
 

@@ -21,9 +21,6 @@ export default function WeaponDetail({ category }: WeaponDetail) {
       `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.gun}`,
       setColumn
     );
-  }, []);
-
-  useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_WEAPON, setWeapon);
   }, []);
 

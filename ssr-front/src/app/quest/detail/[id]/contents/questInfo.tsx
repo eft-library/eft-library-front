@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import type { QuestInfo } from "@/types/types";

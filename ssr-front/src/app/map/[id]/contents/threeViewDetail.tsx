@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Text, Stack } from "@chakra-ui/react";
 import ItemSelector from "./itemSelector";
 import SubMapSelector from "./subMapSelector";

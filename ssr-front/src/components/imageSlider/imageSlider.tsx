@@ -1,5 +1,3 @@
-"use client";
-
 import Slider from "react-slick";
 import { Image, Box } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
