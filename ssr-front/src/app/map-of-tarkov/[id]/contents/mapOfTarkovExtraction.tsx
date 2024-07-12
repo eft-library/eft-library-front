@@ -47,6 +47,7 @@ export default function MapOfTarkovExtraction({
         />
         {extractionList.map((extraction) => (
           <GridContents
+            key={extraction.id}
             columnDesign={[2, null, 10]}
             contentsWidth="100%"
             id={extraction.id}
