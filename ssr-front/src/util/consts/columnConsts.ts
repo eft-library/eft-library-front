@@ -14,6 +14,7 @@ export const COLUMN_KEY = {
   footer: "FOOTER_COLUMN",
   headset: "HEAD_PHONE_COLUMN",
   headwear: "HEAD_WEAR_COLUMN",
+  faceCover: "FACE_COVER_COLUMN",
   armorVest: "ARMOR_VEST_COLUMN",
   rig: "RIG_COLUMN",
   quest: "QUEST_COLUMN",

@@ -484,6 +484,11 @@ export interface HeadwearList {
   no_class_headwear: Headwear[];
 }
 
+export interface FaceCoverList {
+  class_face_cover: Headwear[];
+  no_class_face_cover: Headwear[];
+}
+
 export interface Quest extends strID, CommonData {
   npc_value: string;
   title_kr: string;
