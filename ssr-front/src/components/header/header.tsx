@@ -53,7 +53,7 @@ export default function Header() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Link href={"/"}>
+        <Link href={"/"} aria-label="EFT Library">
           <TopNaviLogo />
         </Link>
       </GridItem>
