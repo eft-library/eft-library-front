@@ -1,7 +1,6 @@
 "use client";
 
-import { Text, Grid, GridItem, Box, Flex, Icon, Image } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Text, Grid, GridItem, Box, Flex, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -41,6 +40,26 @@ export default function Footer() {
       <Grid templateColumns="repeat(4, 1fr)" width={"60%"} height={"300px"}>
         <GridItem colSpan={3} h="14">
           <Flex direction="column" justifyContent="center">
+            <Box display={"flex"} m={1}>
+              <Text
+                color={ALL_COLOR.FOOTER_YELLO}
+                fontWeight={"bold"}
+                _hover={{ color: ALL_COLOR.MAIN_YELLO }}
+              >
+                <Link href="/privacy" target="_blank">
+                  개인정보처리방침 (Privacy Policy),&nbsp;
+                </Link>
+              </Text>
+              <Text
+                color={ALL_COLOR.FOOTER_YELLO}
+                fontWeight={"bold"}
+                _hover={{ color: ALL_COLOR.MAIN_YELLO }}
+              >
+                <Link href="/terms" target="_blank">
+                  이용 약관
+                </Link>
+              </Text>
+            </Box>
             {column.json_value.text.map((item) => (
               <Text
                 color={ALL_COLOR.WHITE}
@@ -51,21 +70,32 @@ export default function Footer() {
                 {item.value}
               </Text>
             ))}
-            <Text color={ALL_COLOR.WHITE} m={1} fontWeight={"bold"}>
-              <Link href="https://eftlibrary.com/" target="_blank">
-                EFT Library
-              </Link>
-              &nbsp;by <span property="cc:attributionName">TKL</span> is
-              licensed under&nbsp;
-              <Link
-                href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
-                target="_blank"
-                rel="license noopener noreferrer"
-                style={{ display: "inline-block" }}
+            <Box display={"flex"} m={1}>
+              <Text
+                color={ALL_COLOR.FOOTER_YELLO}
+                fontWeight={"bold"}
+                _hover={{ color: ALL_COLOR.MAIN_YELLO }}
               >
-                CC BY-NC-ND 4.0
-              </Link>
-            </Text>
+                <Link href="https://eftlibrary.com/" target="_blank">
+                  EFT Library
+                </Link>
+              </Text>
+              &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
+              <Text
+                color={ALL_COLOR.FOOTER_YELLO}
+                fontWeight={"bold"}
+                _hover={{ color: ALL_COLOR.MAIN_YELLO }}
+              >
+                <Link
+                  href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
+                  target="_blank"
+                  rel="license noopener noreferrer"
+                  style={{ display: "inline-block" }}
+                >
+                  CC BY-NC-ND 4.0
+                </Link>
+              </Text>
+            </Box>
             <Link
               href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
               target="_blank"
