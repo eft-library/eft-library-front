@@ -7,11 +7,21 @@ import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
-import { Head } from "next/document";
 
 export const metadata: Metadata = {
   title: "EFT Library",
   description: "EFT Library",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      "naver-site-verification":
+        process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION,
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -22,16 +32,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        {/* <Head>
-          <meta
-            name="google-site-verification"
-            content="fwQM42iUI8aUkCo-qQSXxpsLWW5aGnh7b6v1p4PxQKk"
-          />
-          <meta
-            name="naver-site-verification"
-            content="e81b437a336ec54d9d4603a962c921a0c72a5161"
-          />
-        </Head> */}
         <AuthContext>
           <ChakraProvider>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
