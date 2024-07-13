@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Head>
+        {/* <Head>
           <meta
             name="google-site-verification"
             content="fwQM42iUI8aUkCo-qQSXxpsLWW5aGnh7b6v1p4PxQKk"
@@ -31,7 +31,7 @@ export default function RootLayout({
             name="naver-site-verification"
             content="e81b437a336ec54d9d4603a962c921a0c72a5161"
           />
-        </Head>
+        </Head> */}
         <AuthContext>
           <ChakraProvider>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />

@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /user
+
+# Host
+Host: https://eftlibrary.com
+
+# Sitemaps
+Sitemap: https://eftlibrary.com/sitemap.xml
+Sitemap: https://eftlibrary.com/server-sitemap-index.xml
