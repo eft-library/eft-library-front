@@ -80,7 +80,9 @@ export default function Footer() {
                   EFT Library
                 </Link>
               </Text>
-              &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
+              <Text color={ALL_COLOR.WHITE} fontWeight={"bold"}>
+                &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
+              </Text>
               <Text
                 color={ALL_COLOR.FOOTER_YELLO}
                 fontWeight={"bold"}
@@ -90,7 +92,6 @@ export default function Footer() {
                   href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
                   target="_blank"
                   rel="license noopener noreferrer"
-                  style={{ display: "inline-block" }}
                 >
                   CC BY-NC-ND 4.0
                 </Link>
@@ -100,6 +101,7 @@ export default function Footer() {
               href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
               target="_blank"
               rel="license noopener noreferrer"
+              style={{ display: "inline-block", width: "146px" }}
             >
               <Image
                 m={1}

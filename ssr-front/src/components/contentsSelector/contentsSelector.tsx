@@ -33,7 +33,7 @@ export default function ContentsSelector({
     if (isEng) {
       return "140px";
     }
-    return "110px";
+    return "120px";
   };
 
   const checkBoxHeight = () => {

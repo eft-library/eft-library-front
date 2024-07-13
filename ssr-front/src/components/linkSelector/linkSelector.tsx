@@ -22,20 +22,20 @@ export default function LinkSelector({
       borderRadius={"lg"}
     >
       {itemList.map((item) => (
-        <Button
-          key={item.id}
-          variant={"solid"}
-          color={ALL_COLOR.WHITE}
-          _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-          bg={item.id === param.id ? ALL_COLOR.LIGHT_GRAY : ""}
-          fontWeight="bold"
-          borderWidth="2px"
-          m="2"
-        >
-          <Link href={item[itemLink]} prefetch>
+        <Link href={item[itemLink]} prefetch>
+          <Button
+            key={item.id}
+            variant={"solid"}
+            color={ALL_COLOR.WHITE}
+            _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+            bg={item.id === param.id ? ALL_COLOR.LIGHT_GRAY : ""}
+            fontWeight="bold"
+            borderWidth="2px"
+            m="2"
+          >
             {item[itemDesc]}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       ))}
     </Flex>
   );

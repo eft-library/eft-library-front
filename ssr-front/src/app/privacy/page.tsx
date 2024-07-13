@@ -255,17 +255,15 @@ export default function Privacy() {
         <Text mb={3} fontWeight={600}>
           ▶ 개인정보보호책임자
           <br />
-          - 성명 : 김철수
-          <br />
-          - 전화번호 : 02-1234-5678
-          <br />- 이메일 : privacy@tkl.com
+          - 성명 : 문희재
+          <br />- 이메일 : tarkovlibrary@gmail.com
         </Text>
 
         <Heading as="h2" size="lg" mt={10} mb={3}>
           10. 기타
         </Heading>
         <Text mb={3} fontWeight={600}>
-          본 개인정보처리방침은 2023년 7월 1일부터 적용됩니다.
+          본 개인정보처리방침은 2024년 7월 14일부터 적용됩니다.
         </Text>
 
         <Text mb={3} fontWeight={600}>

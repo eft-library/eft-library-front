@@ -1,6 +1,6 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
-import { Box, Heading, Text, VStack, Divider } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 
 export default function Terms() {
   return (
