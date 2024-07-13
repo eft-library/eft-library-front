@@ -36,6 +36,33 @@ export default function Contents() {
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);
   }, []);
+  const getTitle = (item) => {
+    // 첫 번째 부분 추출
+    let firstPart = item.title_kr
+      .substring(0, item.title_kr.indexOf("("))
+      .trim();
+
+    // 두 번째 부분 추출
+    let secondPart = item.title_kr.substring(item.title_kr.indexOf("(")).trim();
+
+    return (
+      <Td
+        fontSize="md"
+        fontWeight={"700"}
+        borderRight="1px solid white"
+        color={ALL_COLOR.ORANGE}
+        textAlign={"center"}
+        cursor={"pointer"}
+        _hover={{ color: ALL_COLOR.BEIGE }}
+        paddingX={2}
+        paddingY={2}
+      >
+        <Link href={`/quest/detail/${item.id}`}>{firstPart}</Link>
+        <br />
+        <Link href={`/quest/detail/${item.id}`}>{secondPart}</Link>
+      </Td>
+    );
+  };
 
   if (!quest || !column) return <ContentsSkeleton />;
 
@@ -69,25 +96,7 @@ export default function Contents() {
               (item) =>
                 npcId === null || npcId === item.npc_value ? (
                   <Tr key={item.id}>
-                    <Td
-                      fontSize="md"
-                      fontWeight={"700"}
-                      borderRight="1px solid white"
-                      color={ALL_COLOR.ORANGE}
-                      textAlign={"center"}
-                      cursor={"pointer"}
-                      _hover={{ color: ALL_COLOR.BEIGE }}
-                      paddingX={2}
-                      paddingY={2}
-                    >
-                      <Link href={`/quest/detail/${item.id}`}>
-                        {item.title_kr}
-                      </Link>
-                      <br />
-                      <Link href={`/quest/detail/${item.id}`}>
-                        {item.title_en}
-                      </Link>
-                    </Td>
+                    {getTitle(item)}
                     <Td
                       maxW="520px"
                       minW="320px"

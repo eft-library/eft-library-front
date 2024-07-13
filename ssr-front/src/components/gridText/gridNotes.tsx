@@ -4,14 +4,21 @@ import Link from "next/link";
 import type { GridNotes, JsonArrayText } from "@/types/types";
 
 export default function GridNotes({ notes, isKey = false }: GridNotes) {
+  const getTitle = (title: string) => {
+    // 첫 번째 부분 추출
+    let firstPart = title.substring(0, title.indexOf("(")).trim();
+
+    return <Text fontWeight={600}>{firstPart}</Text>;
+  };
+
   const returnText = (note: JsonArrayText) => {
     if (isKey) {
       return note.name_kr;
     } else {
       return note.in_raid ? (
         <Box display={"flex"} _hover={{ color: ALL_COLOR.BEIGE }}>
-          <Text fontWeight={600}>{note.name_kr}&nbsp;</Text>
-          <Text fontWeight={600}>(</Text>
+          {getTitle(note.name_kr)}
+          <Text fontWeight={600}>&nbsp;(</Text>
           <Text fontWeight={600} color={ALL_COLOR.LIGHT_RED}>
             인레이드&nbsp;
           </Text>

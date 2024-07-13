@@ -10,7 +10,7 @@ import "@/assets/quest.css";
 export default function UserQuest() {
   return (
     <PageParent>
-      <SubHeader title="사용자 퀘스트 개발 중" />
+      <SubHeader title="사용자 퀘스트" />
       <Box mb={10} />
       <UserQuestDetail />
     </PageParent>

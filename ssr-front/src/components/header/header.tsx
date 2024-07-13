@@ -95,19 +95,19 @@ export default function Header() {
                   borderRadius={"lg"}
                 >
                   {main.sub_menus.map((sub) => (
-                    <Box
-                      p={2}
-                      key={sub.value}
-                      _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-                      borderRadius={"lg"}
+                    <Link
+                      onClick={() => setQuest(sub.parent_value, sub.value)}
+                      href={sub.link}
                     >
-                      <Link
-                        onClick={() => setQuest(sub.parent_value, sub.value)}
-                        href={sub.link}
+                      <Box
+                        p={2}
+                        key={sub.value}
+                        _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+                        borderRadius={"lg"}
                       >
                         {sub.kr_name}
-                      </Link>
-                    </Box>
+                      </Box>
+                    </Link>
                   ))}
                 </VStack>
               )}
@@ -118,7 +118,7 @@ export default function Header() {
             <Link href={"/user/quest"}>내 퀘스트</Link>
           </Button>
         )}
-        <Login />
+        {/* <Login /> */}
       </GridItem>
     </Grid>
   );

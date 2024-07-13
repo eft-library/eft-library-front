@@ -8,6 +8,36 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 export default function QuestInfo({ quest }: QuestInfo) {
   if (!quest) return <InfoSkeleton />;
 
+  const getTitle = (title: string) => {
+    // 첫 번째 부분 추출
+    let firstPart = title.substring(0, title.indexOf("(")).trim();
+
+    // 두 번째 부분 추출
+    let secondPart = title.substring(title.indexOf("(")).trim();
+
+    return (
+      <>
+        <Text
+          color={ALL_COLOR.WHITE}
+          textAlign={"center"}
+          mt={"4"}
+          fontWeight={"700"}
+          fontSize="lg"
+        >
+          {firstPart}
+        </Text>
+        <Text
+          color={ALL_COLOR.WHITE}
+          textAlign={"center"}
+          fontWeight={"700"}
+          fontSize="lg"
+        >
+          {secondPart}
+        </Text>
+      </>
+    );
+  };
+
   return (
     <Box
       display={"flex"}
@@ -28,23 +58,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
         outlineColor={ALL_COLOR.WHITE}
         borderRadius={"lg"}
       />
-      <Text
-        color={ALL_COLOR.WHITE}
-        textAlign={"center"}
-        mt={"4"}
-        fontWeight={"700"}
-        fontSize="lg"
-      >
-        {quest.title_kr}
-      </Text>
-      <Text
-        color={ALL_COLOR.WHITE}
-        textAlign={"center"}
-        fontWeight={"700"}
-        fontSize="lg"
-      >
-        {quest.title_en}
-      </Text>
+      {getTitle(quest.title_kr)}
       <Text
         color={ALL_COLOR.WHITE}
         textAlign={"center"}

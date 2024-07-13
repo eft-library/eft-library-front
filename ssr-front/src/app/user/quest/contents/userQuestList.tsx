@@ -11,6 +11,8 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
+import Link from "next/link";
 
 export default function UserQuestList({
   userQuest,
@@ -36,6 +38,35 @@ export default function UserQuestList({
       setCheckedQuest(allQuestIds);
     }
   };
+  const getTitle = (item) => {
+    // 첫 번째 부분 추출
+    let firstPart = item.quest_name_kr
+      .substring(0, item.quest_name_kr.indexOf("("))
+      .trim();
+
+    // 두 번째 부분 추출
+    let secondPart = item.quest_name_kr
+      .substring(item.quest_name_kr.indexOf("("))
+      .trim();
+
+    return (
+      <Box
+        display={"flex"}
+        color={ALL_COLOR.ORANGE}
+        _hover={{ color: ALL_COLOR.BEIGE }}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Link href={`/quest/detail/${item.quest_id}`} target="_blank">
+          <Text fontWeight={600}>{firstPart}</Text>
+        </Link>
+        <Link href={`/quest/detail/${item.quest_id}`} target="_blank">
+          <Text fontWeight={600}>{secondPart}</Text>
+        </Link>
+      </Box>
+    );
+  };
 
   return (
     <AccordionPanel p={1} mt={3}>
@@ -46,6 +77,7 @@ export default function UserQuestList({
         mb={2}
       >
         <Checkbox
+          borderColor={ALL_COLOR.WHITE}
           sx={{
             "input + span": {
               width: "25px", // 체크박스 크기 조절
@@ -67,12 +99,14 @@ export default function UserQuestList({
           contentsWidth="100%"
         >
           <GridItem
+            p={2}
             display={"flex"}
             alignItems={"center"}
             flexDirection={"column"}
             justifyContent={"center"}
           >
             <Checkbox
+              borderColor={ALL_COLOR.WHITE}
               sx={{
                 "input + span": {
                   width: "25px", // 체크박스 크기 조절
@@ -84,13 +118,14 @@ export default function UserQuestList({
             />
           </GridItem>
           <GridItem
+            p={2}
             display={"flex"}
             alignItems={"center"}
             flexDirection={"column"}
             justifyContent={"center"}
             colSpan={3}
           >
-            <Text fontWeight={600}>{quest.quest_name_kr}</Text>
+            {getTitle(quest)}
           </GridItem>
           <GridItem
             colSpan={4}
@@ -98,6 +133,7 @@ export default function UserQuestList({
             justifyItems={"center"}
             flexDirection={"column"}
             justifyContent={"center"}
+            p={2}
           >
             <Box
               display={"flex"}
@@ -118,6 +154,7 @@ export default function UserQuestList({
             </Box>
           </GridItem>
           <GridItem
+            p={2}
             display={"flex"}
             colSpan={3}
             justifyItems={"center"}

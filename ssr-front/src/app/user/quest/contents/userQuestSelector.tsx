@@ -1,50 +1,63 @@
 "use client";
 
 import Downshift from "downshift";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-import { useRouter } from "next/navigation";
-import { Box, List, ListItem } from "@chakra-ui/react";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { Box, List, ListItem, Text } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import "@/assets/input.css";
-import { useAppStore } from "@/store/provider";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function Search() {
-  const { setBossId, setHideoutCategory, setNpcId } = useAppStore(
-    (state) => state
-  );
-  const router = useRouter();
+export default function UserQuestSelector() {
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]); // 다중 선택을 위한 상태 추가
+  const menuRef = useRef(null);
 
   useEffect(() => {
-    fetchDataWithNone(API_ENDPOINTS.GET_SEARCH, setSearchList);
+    fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setSearchList);
   }, []);
 
-  // 스크롤 부모로 전파 막기
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   const handleScroll = (event) => {
     const list = event.target;
     if (list.scrollTop === 0) {
-      // 스크롤이 맨 위에 있을 때
       list.scrollTop = 1;
     } else if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
-      // 스크롤이 맨 아래에 있을 때
       list.scrollTop = list.scrollHeight - list.clientHeight - 1;
     }
   };
 
-  const onClickItem = (item) => {
-    // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함
-    if (item.type === "TRADER") {
-      setNpcId(item.page_value);
-    } else if (item.type === "BOSS") {
-      setBossId(item.page_value);
-    } else if (item.type === "HIDEOUT") {
-      setHideoutCategory(item.page_value);
+  const onClickQuest = (quest) => {
+    const alreadySelected = selectedItems.find((id) => id === quest.id);
+    if (!alreadySelected) {
+      setSelectedItems([...selectedItems, quest.id]);
     }
-    router.push(item.link);
+  };
+
+  const removeSelected = (indexToRemove) => {
+    setSelectedItems(
+      selectedItems.filter((item, index) => index !== indexToRemove)
+    );
   };
 
   return (
@@ -55,25 +68,38 @@ export default function Search() {
       position={"relative"}
       marginBottom={"40px"}
       marginTop={"40px"}
+      flexDirection={"column"}
     >
+      <Box
+        border={"2px solid"}
+        borderColor={ALL_COLOR.WHITE}
+        w={"100%"}
+        h={"100px"}
+        mb={4}
+      >
+        {JSON.stringify(selectedItems)}
+      </Box>
       <Downshift
         id="main-search"
-        onChange={(selection) => onClickItem(selection)}
-        itemToString={(item) => (item ? item.value : "")}
-        inputValue={inputValue} // Downshift가 inputValue를 제어하도록 설정
-        onInputValueChange={(value) => setInputValue(value)} // inputValue 변경 시 상태 업데이트
-        isOpen={inputValue.length > 0} // 입력된 값이 있을 때만 드롭다운을 열도록 설정
+        selectedItem={selectedItems}
+        onChange={(selection) => onClickQuest(selection)}
+        itemToString={(item: any) => (item ? item.title_kr : "")}
+        inputValue={inputValue}
+        onInputValueChange={(value) => setInputValue(value)}
+        isOpen={isOpen}
+        onOuterClick={() => setIsOpen(false)}
       >
         {({
           getInputProps,
           getItemProps,
           isOpen,
           highlightedIndex,
-          // selectedItem,
           getRootProps,
+          selectedItem,
         }) => (
-          <Box w={"40%"}>
+          <Box w={"100%"}>
             <Box
+              ref={menuRef}
               position={"relative"}
               display={"inline-block"}
               w={"100%"}
@@ -81,7 +107,7 @@ export default function Search() {
             >
               <input
                 {...getInputProps({
-                  placeholder: "검색어를 입력해주세요",
+                  placeholder: "퀘스트를 선택해주세요",
                   style: {
                     fontWeight: 600,
                     fontSize: "18px",
@@ -93,6 +119,7 @@ export default function Search() {
                     border: "2px solid",
                     borderColor: ALL_COLOR.WHITE,
                   },
+                  onClick: () => setIsOpen(true),
                 })}
               />
               <Search2Icon
@@ -113,21 +140,21 @@ export default function Search() {
                   padding={"5px 0"}
                   zIndex={10}
                   width={"100%"}
-                  maxHeight={"800px"} // 목록의 최대 높이를 설정하여 스크롤 가능하게 함
-                  overflowY={"auto"} // 세로 스크롤 추가
+                  maxHeight={"400px"}
+                  overflowY={"auto"}
                   onScroll={handleScroll}
                 >
                   {searchList
                     .filter(
                       (item) =>
                         !inputValue ||
-                        item.value
+                        item.title_kr
                           .toLowerCase()
                           .includes(inputValue.toLowerCase())
                     )
                     .map((item, index) => (
                       <ListItem
-                        key={item.value}
+                        key={item.id}
                         {...getItemProps({
                           index,
                           item,
@@ -142,7 +169,7 @@ export default function Search() {
                           },
                         })}
                       >
-                        {item.value}
+                        <Text>{item.title_kr}</Text>
                       </ListItem>
                     ))}
                 </List>

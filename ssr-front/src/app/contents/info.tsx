@@ -53,7 +53,12 @@ export default function Info() {
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
             />
-            <Text color={ALL_COLOR.WHITE} textAlign={"center"} mt={"2"}>
+            <Text
+              color={ALL_COLOR.WHITE}
+              textAlign={"center"}
+              mt={"2"}
+              fontWeight={600}
+            >
               {map.kr_name}
             </Text>
           </Link>

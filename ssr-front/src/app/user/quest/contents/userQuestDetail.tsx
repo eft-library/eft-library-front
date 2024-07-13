@@ -16,6 +16,7 @@ import UserQuestList from "./userQuestList";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
+import UserQuestSelector from "./userQuestSelector";
 
 export default function UserQuestDetail() {
   const [indices, setIndices] = useState([0]);
@@ -133,8 +134,9 @@ export default function UserQuestDetail() {
 
   return (
     <Box w={"95%"} h="100%">
+      <UserQuestSelector />
       {!userQuest[0].npc_id ? (
-        <Text>퀘스트 없음</Text>
+        <Text>퀘스트 추가 Please~~~</Text>
       ) : (
         <Accordion allowMultiple defaultIndex={indices}>
           {userQuest.map((npc) => (
