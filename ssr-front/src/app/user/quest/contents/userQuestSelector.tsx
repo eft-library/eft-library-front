@@ -5,15 +5,26 @@ import { useState, useEffect, useRef } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { Box, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  List,
+  ListItem,
+  Text,
+  Wrap,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Button,
+} from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import "@/assets/input.css";
+import type { UserQuestSelector } from "@/types/types";
 
-export default function UserQuestSelector() {
+export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]); // 다중 선택을 위한 상태 추가
+  const [selectedItems, setSelectedItems] = useState([]);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -48,15 +59,17 @@ export default function UserQuestSelector() {
   };
 
   const onClickQuest = (quest) => {
-    const alreadySelected = selectedItems.find((id) => id === quest.id);
+    const alreadySelected = selectedItems.find(
+      (originQuest) => originQuest.id === quest.id
+    );
     if (!alreadySelected) {
-      setSelectedItems([...selectedItems, quest.id]);
+      setSelectedItems([...selectedItems, quest]);
     }
   };
 
-  const removeSelected = (indexToRemove) => {
+  const removeSelected = (quest) => {
     setSelectedItems(
-      selectedItems.filter((item, index) => index !== indexToRemove)
+      selectedItems.filter((originQuest) => originQuest.id !== quest.id)
     );
   };
 
@@ -71,21 +84,51 @@ export default function UserQuestSelector() {
       flexDirection={"column"}
     >
       <Box
+        display={"flex"}
+        justifyContent={"flex-end"}
+        alignItems={"center"}
+        mb={2}
+      >
+        <Button
+          onClick={() => {
+            updateQuest(selectedItems);
+            setSelectedItems([]);
+          }}
+        >
+          추가
+        </Button>
+      </Box>
+      <Box
         border={"2px solid"}
         borderColor={ALL_COLOR.WHITE}
         w={"100%"}
-        h={"100px"}
+        h={"140px"}
         mb={4}
+        overflow={"auto"}
+        p={1}
       >
-        {JSON.stringify(selectedItems)}
+        <Wrap spacing={2}>
+          {selectedItems.map((quest) => (
+            <Tag
+              size={"lg"}
+              key={quest.id}
+              borderRadius="full"
+              variant="solid"
+              colorScheme="green"
+            >
+              <TagLabel fontWeight={600}>{quest.title_kr}</TagLabel>
+              <TagCloseButton onClick={() => removeSelected(quest)} />
+            </Tag>
+          ))}
+        </Wrap>
       </Box>
       <Downshift
         id="main-search"
-        selectedItem={selectedItems}
+        selectedItem={null} // 다중 선택이므로 null로 설정
         onChange={(selection) => onClickQuest(selection)}
-        itemToString={(item: any) => (item ? item.title_kr : "")}
+        itemToString={(item) => (item ? item.title_kr : "")}
         inputValue={inputValue}
-        onInputValueChange={(value) => setInputValue(value)}
+        onInputValueChange={(inputValue) => setInputValue(inputValue || "")} // 빈 문자열로 설정
         isOpen={isOpen}
         onOuterClick={() => setIsOpen(false)}
       >
@@ -95,7 +138,6 @@ export default function UserQuestSelector() {
           isOpen,
           highlightedIndex,
           getRootProps,
-          selectedItem,
         }) => (
           <Box w={"100%"}>
             <Box
@@ -119,7 +161,10 @@ export default function UserQuestSelector() {
                     border: "2px solid",
                     borderColor: ALL_COLOR.WHITE,
                   },
-                  onClick: () => setIsOpen(true),
+                  onClick: () => {
+                    setIsOpen(true);
+                    setInputValue("");
+                  },
                 })}
               />
               <Search2Icon

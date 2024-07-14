@@ -692,3 +692,7 @@ export interface UserQuestList {
   successQuest: Function;
   deleteQuest: Function;
 }
+
+export interface UserQuestSelector {
+  updateQuest: Function;
+}

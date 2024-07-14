@@ -96,12 +96,12 @@ export default function Header() {
                 >
                   {main.sub_menus.map((sub) => (
                     <Link
+                      key={sub.value}
                       onClick={() => setQuest(sub.parent_value, sub.value)}
                       href={sub.link}
                     >
                       <Box
                         p={2}
-                        key={sub.value}
                         _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
                         borderRadius={"lg"}
                       >

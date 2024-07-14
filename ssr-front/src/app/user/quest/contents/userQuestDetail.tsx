@@ -67,7 +67,7 @@ export default function UserQuestDetail() {
         ...next.map((quest) => quest.id),
       ];
 
-      const res = await fetch("http://localhost:8000/api/user/quest/success", {
+      const res = await fetch("http://localhost:8000/api/user/quest/update", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
@@ -130,11 +130,44 @@ export default function UserQuestDetail() {
     }
   };
 
+  const updateUserQuest = async (selectedList: any) => {
+    try {
+      const onlyQuestIdList = userQuest.flatMap((npc) =>
+        npc.quest_info.map((quest) => quest.quest_id)
+      );
+      const onlySelectQuestIdList = selectedList.flatMap((quest) => quest.id);
+      const newQuestList = [
+        ...new Set([...onlyQuestIdList, ...onlySelectQuestIdList]),
+      ];
+      const res = await fetch("http://localhost:8000/api/user/quest/update", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider: session.provider,
+          userQuestList: newQuestList,
+        }),
+      });
+      const response = await res.json();
+      if (response.msg !== "OK") {
+        alert("로그인 다시");
+        signOut();
+        router.push("/");
+      } else if (response.status === 200 && response.data.length > 0) {
+        setUserQuest(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!userQuest) return null;
 
   return (
     <Box w={"95%"} h="100%">
-      <UserQuestSelector />
+      <UserQuestSelector updateQuest={updateUserQuest} />
       {!userQuest[0].npc_id ? (
         <Text>퀘스트 추가 Please~~~</Text>
       ) : (
