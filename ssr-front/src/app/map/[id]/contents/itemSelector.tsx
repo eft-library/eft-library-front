@@ -158,36 +158,33 @@ export default function ItemSelector({
                   >
                     {item.kr}
                   </Text>
-                  {item.sub.map((childItem) => (
-                    <Flex key={childItem.value} mt={4}>
-                      {viewItemList.includes(childItem.value) ? (
+                  {item.sub
+                    .filter((childItem) =>
+                      originItemList.some(
+                        (org) => childItem.value === org.childValue
+                      )
+                    )
+                    .map((childItem) => (
+                      <Flex key={childItem.value} mt={4}>
                         <ItemSVG
                           x={0}
                           y={0}
                           svgValue={childItem.value}
-                          isEnable={true}
+                          isEnable={viewItemList.includes(childItem.value)}
                         />
-                      ) : (
-                        <ItemSVG
-                          x={0}
-                          y={0}
-                          svgValue={childItem.value}
-                          isEnable={false}
-                        />
-                      )}
-                      <Text
-                        onClick={() => onClickItem(childItem.value)}
-                        opacity={
-                          viewItemList.includes(childItem.value) ? "" : "0.5"
-                        }
-                        color={ALL_COLOR.WHITE}
-                        cursor={"pointer"}
-                        pl={"10px"}
-                      >
-                        {childItem.kr}
-                      </Text>
-                    </Flex>
-                  ))}
+                        <Text
+                          onClick={() => onClickItem(childItem.value)}
+                          opacity={
+                            viewItemList.includes(childItem.value) ? "" : "0.5"
+                          }
+                          color={ALL_COLOR.WHITE}
+                          cursor={"pointer"}
+                          pl={"10px"}
+                        >
+                          {childItem.kr}
+                        </Text>
+                      </Flex>
+                    ))}
                 </Box>
               )
           )}

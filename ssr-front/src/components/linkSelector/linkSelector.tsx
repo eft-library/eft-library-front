@@ -22,9 +22,8 @@ export default function LinkSelector({
       borderRadius={"lg"}
     >
       {itemList.map((item) => (
-        <Link href={item[itemLink]} prefetch>
+        <Link href={item[itemLink]} prefetch key={item.id}>
           <Button
-            key={item.id}
             variant={"solid"}
             color={ALL_COLOR.WHITE}
             _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
