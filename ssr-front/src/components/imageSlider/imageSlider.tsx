@@ -1,3 +1,5 @@
+"use client";
+
 import Slider from "react-slick";
 import { Image, Box } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
@@ -7,6 +9,7 @@ import type { ImageSlider } from "@/types/types";
 import ImageZoom from "../imageZoom/imageZoom";
 import { Gallery } from "react-photoswipe-gallery";
 import React from "react";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import Link from "next/link";
 
 export default function ImageSlider({
@@ -15,6 +18,7 @@ export default function ImageSlider({
   sliderOption,
   useZoom,
 }: ImageSlider) {
+  const size = useWindowSize();
   return (
     <Box
       w={"100%"}
@@ -40,6 +44,8 @@ export default function ImageSlider({
               ) : (
                 <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
                   <Image
+                    w={size.width}
+                    h={size.height}
                     cursor={"pointer"}
                     alt="image"
                     src={formatImage(map[imagePath])}
