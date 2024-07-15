@@ -13,13 +13,13 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 export default function Info() {
   const [main, setMain] = useState<SubMenu[]>();
   const handleHover = (e: any) => {
-    e.target.style.transform = "scale(1.1)"; // 이미지 확대
-    e.target.style.opacity = "0.8"; // 이미지 불투명도 변경
+    e.currentTarget.style.transform = "scale(1.1)"; // GridItem에 호버 효과 적용
+    e.currentTarget.style.opacity = "0.8"; // GridItem에 호버 효과 적용
   };
 
   const handleHoverExit = (e: any) => {
-    e.target.style.transform = "scale(1)"; // 이미지 축소
-    e.target.style.opacity = "1"; // 이미지 불투명도 원래대로
+    e.currentTarget.style.transform = "scale(1)"; // GridItem에 호버 효과 적용
+    e.currentTarget.style.opacity = "1"; // GridItem에 호버 효과 적용
   };
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function Info() {
       >
         {main.map((map: any) => (
           <Link href={map.link} key={map.value}>
-            <GridItem
+            <Box
               w="120px"
               h="120px"
               border="1px solid"
@@ -58,7 +58,7 @@ export default function Info() {
                 objectFit="cover"
                 borderRadius="lg"
               />
-            </GridItem>
+            </Box>
             <Text
               color={ALL_COLOR.WHITE}
               textAlign="center"
