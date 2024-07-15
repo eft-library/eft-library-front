@@ -16,11 +16,16 @@ export default function ItemBox({
   };
 
   const meshscale = () => {
-    const scale = zoomLevel - 90;
-    if (scale < 10) {
+    const scale = zoomLevel;
+    console.log(scale);
+    if (scale <= 100) {
+      return 3;
+    } else if (scale > 100 && scale <= 120) {
+      return 5;
+    } else if (scale > 120 && scale <= 200) {
+      return 7;
+    } else if (scale > 200) {
       return 10;
-    } else if (scale > 50) {
-      return 50;
     } else {
       return scale;
     }

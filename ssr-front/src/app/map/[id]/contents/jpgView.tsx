@@ -67,7 +67,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
           initialScale={1}
           initialPositionX={-450}
           initialPositionY={100}
-          minScale={0.5}
+          minScale={0.8}
           wheel={{ step: 0.1 }}
           ref={transformWrapperRef}
           onZoom={handleZoom}
