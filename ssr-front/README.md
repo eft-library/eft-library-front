@@ -1,9 +1,8 @@
 # 남은거
 
-3. 아이콘 클릭하면 툴팁 떠서 퀘스트 연동하기
-4. Open Graph 적용하기 - https://recodelog.com/blog/next/metadata-og-twitter
-5. webp, avif로 수정하기
-6. 리프레시 토큰 적용해야 함
+1. Open Graph 적용하기 - https://recodelog.com/blog/next/metadata-og-twitter
+2. webp, avif로 수정하기
+3. 리프레시 토큰 적용해야 함
 
 ## 급하지 않음
 

@@ -342,12 +342,12 @@ interface Coordinate {
 
 export interface JPG extends Coordinate {
   color?: string;
-  clickItem: Function;
 }
 
 export interface JpgItemPath extends Coordinate {
   childValue: string;
   motherValue: string;
+  quest_info: UserNextQuest[];
 }
 
 export interface DynamicSVG extends Coordinate {
@@ -357,7 +357,6 @@ export interface DynamicSVG extends Coordinate {
 
 export interface DynamicJPG extends Coordinate {
   svgValue: AllColorKeys | string;
-  clickItem: Function;
 }
 
 export interface SubItem {

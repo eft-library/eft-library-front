@@ -5,27 +5,25 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
+  Text,
 } from "@chakra-ui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { ItemJPG } from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
 import { useWindowSize } from "@/hooks/useWindowSize";
-import type { JPGView } from "@/types/types";
+import type { JPGView, JpgItemPath } from "@/types/types";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useRef, useState } from "react";
+import Link from "next/link";
 
 export default function JPGView({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
   const transformWrapperRef = useRef(null);
   const [scale, setScale] = useState(1);
-  const [popoverItem, setPopoverItem] = useState(null); // 팝오버에 표시될 아이템 정보 상태
+  const [popoverItem, setPopoverItem] = useState<JpgItemPath>(null); // 팝오버에 표시될 아이템 정보 상태
 
   const handleItemClick = (item) => {
     setPopoverItem(item); // 아이템 클릭 시 팝오버 아이템 설정
@@ -89,35 +87,78 @@ export default function JPGView({ map, viewItemList }: JPGView) {
               {map.jpg_item_path.map(
                 (item) =>
                   viewItemList.includes(item.childValue) && (
-                    <ItemJPG
+                    <g
+                      onClick={() => handleItemClick(item)}
                       key={item.x}
-                      svgValue={item.childValue}
-                      x={item.x}
-                      y={item.y}
-                      scale={1 / scale}
-                      clickItem={() => handleItemClick(item)}
-                    />
+                      cursor={"pointer"}
+                    >
+                      <ItemJPG
+                        svgValue={item.childValue}
+                        x={item.x}
+                        y={item.y}
+                        scale={1 / scale}
+                      />
+                    </g>
                   )
               )}
             </svg>
+            {popoverItem && (
+              <Popover
+                placement="top"
+                isOpen={true}
+                onClose={() => setPopoverItem(null)}
+              >
+                <PopoverTrigger>
+                  <Text
+                    borderRadius={"lg"}
+                    fontWeight={600}
+                    p={1}
+                    position={"absolute"}
+                    left={popoverItem.x}
+                    top={popoverItem.y - 40}
+                    color={ALL_COLOR.WHITE}
+                    bg={ALL_COLOR.BLACK}
+                    _hover={{ color: ALL_COLOR.BEIGE, bg: ALL_COLOR.AMMO_ONE }}
+                    cursor={"pointer"}
+                  >
+                    닫기
+                  </Text>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      flexDirection={"column"}
+                      justifyContent={"center"}
+                    >
+                      <Text fontWeight={800}>연관 퀘스트</Text>
+                      {popoverItem.quest_info &&
+                      popoverItem.quest_info.length > 0 ? (
+                        popoverItem.quest_info.map((quest) => (
+                          <Link
+                            href={`/quest/detail/${quest.id}`}
+                            target="_blank"
+                            key={quest.id}
+                          >
+                            <Text
+                              _hover={{ color: ALL_COLOR.BEIGE }}
+                              fontWeight={600}
+                            >
+                              {quest.name_kr}
+                            </Text>
+                          </Link>
+                        ))
+                      ) : (
+                        <Text fontWeight={800}>-</Text>
+                      )}
+                    </Box>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            )}
           </TransformComponent>
-          {popoverItem && (
-            <Popover
-              placement="right"
-              isOpen={true}
-              onClose={() => setPopoverItem(null)}
-            >
-              <PopoverTrigger>
-                <span>Click me</span>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverBody>
-                  Popover content for {popoverItem.svgValue}
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
-          )}
         </TransformWrapper>
       </Box>
     </Box>
