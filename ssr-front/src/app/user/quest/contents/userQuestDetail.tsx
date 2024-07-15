@@ -13,154 +13,85 @@ import { formatImage } from "@/lib/formatImage";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import UserQuestList from "./userQuestList";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import UserQuestSelector from "./userQuestSelector";
+import USER_API_ENDPOINTS from "@/config/userEndPoints";
+import { fetchUserData } from "@/lib/api";
 
 export default function UserQuestDetail() {
   const [indices, setIndices] = useState([0]);
   const [userQuest, setUserQuest] = useState<UserQuest[]>();
   const { data: session } = useSession();
-  const router = useRouter();
 
+  // get
   useEffect(() => {
     const getUserQuest = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/api/user/quest", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${session.accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            provider: session.provider,
-          }),
-        });
-
-        const response = await res.json();
-        if (response.msg !== "OK") {
-          alert("로그인 다시");
-          signOut();
-          router.push("/");
-        } else if (response.status === 200 && response.data.length > 0) {
-          setUserQuest(response.data);
-          setIndices(response.data.map((_, index) => index));
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      await fetchUserData(
+        USER_API_ENDPOINTS.GET_USER_QUEST,
+        "POST",
+        { provider: session.provider },
+        setUserQuest
+      );
+      setIndices(userQuest.map((_, index) => index));
     };
+
     if (session && session.accessToken && session.provider) {
       getUserQuest();
     }
   }, [session]);
 
-  const successUserQuest = async (quest_id: string, next: any) => {
-    try {
-      // 전체 퀘스트에서 완료한 것 제외하고 다음 단계 추가하기
-      const onlyQuestIdList = userQuest.flatMap((npc) =>
-        npc.quest_info.map((quest) => quest.quest_id)
-      );
-      const newQuestList = [
-        ...onlyQuestIdList.filter((quest) => quest !== quest_id),
-        ...next.map((quest) => quest.id),
-      ];
+  // success
+  const successUserQuest = async (quest_id, next) => {
+    const onlyQuestIdList = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    const newQuestList = [
+      ...onlyQuestIdList.filter((quest) => quest !== quest_id),
+      ...next.map((quest) => quest.id),
+    ];
 
-      const res = await fetch("http://localhost:8000/api/user/quest/update", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          provider: session.provider,
-          userQuestList: newQuestList,
-        }),
-      });
-
-      const response = await res.json();
-
-      if (response.msg !== "OK") {
-        alert("로그인 다시");
-        signOut();
-        router.push("/");
-      } else if (response.status === 200 && response.data.length > 0) {
-        setUserQuest(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await fetchUserData(
+      USER_API_ENDPOINTS.UPDATE_USER_QUEST,
+      "POST",
+      { provider: session.provider, userQuestList: newQuestList },
+      setUserQuest
+    );
   };
 
-  const deleteUserQuest = async (deleteList: string[]) => {
-    try {
-      // 전체 퀘스트에서 완료한 것 제외하고 다음 단계 추가하기
+  // delete
+  const deleteUserQuest = async (deleteList) => {
+    const onlyQuestIdList = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    const newQuestList = onlyQuestIdList.filter(
+      (quest_id) => !deleteList.includes(quest_id)
+    );
 
-      const onlyQuestIdList = userQuest.flatMap((npc) =>
-        npc.quest_info.map((quest) => quest.quest_id)
-      );
-      const newQuestList = onlyQuestIdList.filter(
-        (quest_id) => !deleteList.includes(quest_id)
-      );
-
-      const res = await fetch("http://localhost:8000/api/user/quest/delete", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          provider: session.provider,
-          userQuestList: newQuestList,
-        }),
-      });
-
-      const response = await res.json();
-
-      if (response.msg !== "OK") {
-        alert("로그인 다시");
-        signOut();
-        router.push("/");
-      } else if (response.status === 200 && response.data.length > 0) {
-        setUserQuest(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await fetchUserData(
+      USER_API_ENDPOINTS.DELETE_USER_QUEST,
+      "POST",
+      { provider: session.provider, userQuestList: newQuestList },
+      setUserQuest
+    );
   };
 
-  const updateUserQuest = async (selectedList: any) => {
-    try {
-      const onlyQuestIdList = userQuest.flatMap((npc) =>
-        npc.quest_info.map((quest) => quest.quest_id)
-      );
-      const onlySelectQuestIdList = selectedList.flatMap((quest) => quest.id);
-      const newQuestList = [
-        ...new Set([...onlyQuestIdList, ...onlySelectQuestIdList]),
-      ];
-      const res = await fetch("http://localhost:8000/api/user/quest/update", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          provider: session.provider,
-          userQuestList: newQuestList,
-        }),
-      });
-      const response = await res.json();
-      if (response.msg !== "OK") {
-        alert("로그인 다시");
-        signOut();
-        router.push("/");
-      } else if (response.status === 200 && response.data.length > 0) {
-        setUserQuest(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  // update
+  const updateUserQuest = async (selectedList) => {
+    const onlyQuestIdList = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    const onlySelectQuestIdList = selectedList.flatMap((quest) => quest.id);
+    const newQuestList = [
+      ...new Set([...onlyQuestIdList, ...onlySelectQuestIdList]),
+    ];
+
+    await fetchUserData(
+      USER_API_ENDPOINTS.UPDATE_USER_QUEST,
+      "POST",
+      { provider: session.provider, userQuestList: newQuestList },
+      setUserQuest
+    );
   };
 
   if (!userQuest) return null;

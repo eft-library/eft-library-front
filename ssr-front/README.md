@@ -2,7 +2,7 @@
 
 1. Open Graph 적용하기 - https://recodelog.com/blog/next/metadata-og-twitter
 2. webp, avif로 수정하기
-3. 리프레시 토큰 적용해야 함
+3. Stationary weapon 아이콘 필요함
 
 ## 급하지 않음
 
