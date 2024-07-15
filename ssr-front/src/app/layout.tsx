@@ -21,12 +21,20 @@ export const metadata: Metadata = {
     "타르코프 공략",
     "타르코프 하이드아웃 정보",
   ],
+  metadataBase: new URL("https://eftlibrary.com"),
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     other: {
       "naver-site-verification":
         process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION,
     },
+  },
+  openGraph: {
+    siteName: "Escape From Tarkov Library",
+    title: "EFT Library",
+    description: "Tarkov 공략 페이지 입니다.",
+    images: "/og.png",
+    url: "https://eftlibrary.com",
   },
   robots: {
     index: true,
