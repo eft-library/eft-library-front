@@ -52,7 +52,7 @@ export default function Info() {
             >
               <Image
                 src={formatImage(map.image)}
-                alt={map.kr_name}
+                alt={map.en_name}
                 w="100%"
                 h="100%"
                 objectFit="cover"
