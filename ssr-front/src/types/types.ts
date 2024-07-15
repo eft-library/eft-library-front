@@ -342,6 +342,7 @@ interface Coordinate {
 
 export interface JPG extends Coordinate {
   color?: string;
+  clickItem: Function;
 }
 
 export interface JpgItemPath extends Coordinate {
@@ -356,6 +357,7 @@ export interface DynamicSVG extends Coordinate {
 
 export interface DynamicJPG extends Coordinate {
   svgValue: AllColorKeys | string;
+  clickItem: Function;
 }
 
 export interface SubItem {

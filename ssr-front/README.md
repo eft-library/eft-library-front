@@ -1,8 +1,7 @@
 # 남은거
 
-2. 확대 축소 할 때 아이콘 크기 조절이 가능한지
 3. 아이콘 클릭하면 툴팁 떠서 퀘스트 연동하기
-4. Open Graph 적용하기
+4. Open Graph 적용하기 - https://recodelog.com/blog/next/metadata-og-twitter
 5. webp, avif로 수정하기
 6. 리프레시 토큰 적용해야 함
 

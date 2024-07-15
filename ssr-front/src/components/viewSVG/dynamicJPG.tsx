@@ -41,12 +41,12 @@ const jpgComponents = {
   WOOD_BOX: ItemJpg.WoodBox,
 };
 
-export const ItemJPG = ({ x, y, svgValue, scale }: DynamicJPG) => {
+export const ItemJPG = ({ x, y, svgValue, scale, clickItem }: DynamicJPG) => {
   const Jpg = jpgComponents[svgValue];
 
   if (!Jpg) {
     return null;
   }
 
-  return <Jpg x={x} y={y} scale={scale} />;
+  return <Jpg x={x} y={y} scale={scale} clickItem={clickItem} />;
 };

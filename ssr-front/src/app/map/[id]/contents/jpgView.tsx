@@ -1,6 +1,17 @@
 "use client";
 
-import { Box, Button, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from "@chakra-ui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { ItemJPG } from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
@@ -14,6 +25,11 @@ export default function JPGView({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
   const transformWrapperRef = useRef(null);
   const [scale, setScale] = useState(1);
+  const [popoverItem, setPopoverItem] = useState(null); // 팝오버에 표시될 아이템 정보 상태
+
+  const handleItemClick = (item) => {
+    setPopoverItem(item); // 아이템 클릭 시 팝오버 아이템 설정
+  };
 
   const handleZoom = (e) => {
     setScale(e.state.scale);
@@ -41,15 +57,6 @@ export default function JPGView({ map, viewItemList }: JPGView) {
       alignItems={"center"}
       justifyContent={"center"}
     >
-      {/* <HStack spacing={4} mb={4}>
-        <Button onClick={() => transformWrapperRef.current?.zoomIn()}>+</Button>
-        <Button onClick={() => transformWrapperRef.current?.zoomOut()}>
-          -
-        </Button>
-        <Button onClick={() => transformWrapperRef.current?.resetTransform()}>
-          Reset
-        </Button>
-      </HStack> */}
       <Box
         boxSize="sm"
         height={"100%"}
@@ -88,11 +95,29 @@ export default function JPGView({ map, viewItemList }: JPGView) {
                       x={item.x}
                       y={item.y}
                       scale={1 / scale}
+                      clickItem={() => handleItemClick(item)}
                     />
                   )
               )}
             </svg>
           </TransformComponent>
+          {popoverItem && (
+            <Popover
+              placement="right"
+              isOpen={true}
+              onClose={() => setPopoverItem(null)}
+            >
+              <PopoverTrigger>
+                <span>Click me</span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverBody>
+                  Popover content for {popoverItem.svgValue}
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          )}
         </TransformWrapper>
       </Box>
     </Box>
