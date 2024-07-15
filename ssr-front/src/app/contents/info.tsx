@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, GridItem, Box, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
@@ -42,21 +42,27 @@ export default function Info() {
               h="120px"
               border="1px solid"
               borderColor={ALL_COLOR.WHITE}
-              borderRadius={"lg"}
+              borderRadius="lg"
               display="flex"
               justifyContent="center"
               alignItems="center"
-              cursor={"pointer"}
-              backgroundImage={`url(${formatImage(map.image)})`}
-              backgroundSize={"cover"}
-              backgroundPosition={"center"}
+              cursor="pointer"
               onMouseEnter={handleHover} // 호버시 효과 적용
               onMouseLeave={handleHoverExit} // 호버 이후 효과 제거
-            />
+            >
+              <Image
+                src={formatImage(map.image)}
+                alt={map.kr_name}
+                w="100%"
+                h="100%"
+                objectFit="cover"
+                borderRadius="lg"
+              />
+            </GridItem>
             <Text
               color={ALL_COLOR.WHITE}
-              textAlign={"center"}
-              mt={"2"}
+              textAlign="center"
+              mt="2"
               fontWeight={600}
             >
               {map.kr_name}
