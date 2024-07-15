@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Button, HStack } from "@chakra-ui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { ItemJPG } from "@/components/viewSVG/dynamicJPG";
 import { formatImage } from "@/lib/formatImage";
@@ -8,22 +8,22 @@ import { useWindowSize } from "@/hooks/useWindowSize";
 import type { JPGView } from "@/types/types";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { useRef, useState } from "react";
 
 export default function JPGView({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
+  const transformWrapperRef = useRef(null);
+  const [scale, setScale] = useState(1);
 
-  const handleClick = (e: any) => {
-    // SVG 요소 가져오기
+  const handleZoom = (e) => {
+    setScale(e.state.scale);
+  };
+
+  const handleClick = (e) => {
     const svg = e.currentTarget;
-
-    // SVG 요소의 위치와 크기 얻기
     const svgRect = svg.getBoundingClientRect();
-
-    // 클릭한 위치의 x와 y 좌표 (브라우저 창 기준)
     const clientX = e.clientX;
     const clientY = e.clientY;
-
-    // SVG 요소 내에서의 상대적인 x와 y 좌표 계산
     const svgX = clientX - svgRect.left;
     const svgY = clientY - svgRect.top;
 
@@ -34,46 +34,67 @@ export default function JPGView({ map, viewItemList }: JPGView) {
 
   return (
     <Box
-      boxSize="sm"
       height={"100%"}
       width={"100%"}
       display={"flex"}
+      flexDirection="column"
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <TransformWrapper
-        initialScale={1}
-        initialPositionX={200}
-        initialPositionY={100}
-        minScale={0.5}
-        wheel={{ disabled: true }}
+      <HStack spacing={4} mb={4}>
+        <Button onClick={() => transformWrapperRef.current?.zoomIn()}>+</Button>
+        <Button onClick={() => transformWrapperRef.current?.zoomOut()}>
+          -
+        </Button>
+        <Button onClick={() => transformWrapperRef.current?.resetTransform()}>
+          Reset
+        </Button>
+      </HStack>
+      <Box
+        boxSize="sm"
+        height={"100%"}
+        width={"100%"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
       >
-        <TransformComponent>
-          <svg
-            width={size.width}
-            height={size.height / 1.3}
-            fill={ALL_COLOR.THREE_BACKGROUND}
-            onClick={handleClick}
-          >
-            <image
-              xlinkHref={formatImage(map.jpg_image)}
-              width="100%"
-              height="100%"
-            />
-            {map.jpg_item_path.map(
-              (item) =>
-                viewItemList.includes(item.childValue) && (
-                  <ItemJPG
-                    key={item.x}
-                    svgValue={item.childValue}
-                    x={item.x}
-                    y={item.y}
-                  />
-                )
-            )}
-          </svg>
-        </TransformComponent>
-      </TransformWrapper>
+        <TransformWrapper
+          initialScale={1}
+          initialPositionX={-450}
+          initialPositionY={100}
+          minScale={0.5}
+          wheel={{ step: 0.1 }}
+          ref={transformWrapperRef}
+          onZoom={handleZoom}
+        >
+          <TransformComponent>
+            <svg
+              width={size.width}
+              height={size.height / 1.3}
+              fill={ALL_COLOR.THREE_BACKGROUND}
+              onClick={handleClick}
+            >
+              <image
+                xlinkHref={formatImage(map.jpg_image)}
+                width="100%"
+                height="100%"
+              />
+              {map.jpg_item_path.map(
+                (item) =>
+                  viewItemList.includes(item.childValue) && (
+                    <ItemJPG
+                      key={item.x}
+                      svgValue={item.childValue}
+                      x={item.x}
+                      y={item.y}
+                      scale={1 / scale}
+                    />
+                  )
+              )}
+            </svg>
+          </TransformComponent>
+        </TransformWrapper>
+      </Box>
     </Box>
   );
 }

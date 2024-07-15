@@ -1,17 +1,17 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { JPG } from "@/types/types";
 
-export default function MedCase({ x, y }: JPG) {
+export default function MedCase({ x, y, scale }: JPG) {
   return (
     <>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-1"
           fill={ALL_COLOR.WHITE}
           d="M19,9V6H9V9H2.27V23h24V9Zm6.23,2V22h-22V10h6.79V7h8v3h7.21Z"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <rect
           className="cls-1"
           fill={ALL_COLOR.WHITE}
@@ -21,14 +21,14 @@ export default function MedCase({ x, y }: JPG) {
           height="2"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-2"
           fill={ALL_COLOR.MED_CASE_TWO}
           d="M17.06,11H4.27v4.5h20V11H17.06Zm-1.5,2.67H14.44v1.12h-.75V13.67H12.56v-.75h1.13V11.79h.75v1.13h1.12Z"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <rect
           className="cls-3"
           fill={ALL_COLOR.MED_CASE_THREE}
@@ -38,10 +38,10 @@ export default function MedCase({ x, y }: JPG) {
           height="4.5"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path d="M18.06,10V7h-8v3H3.27V22h22V10H18.06Zm-7-2h6v2h-6ZM24.27,21h-20V16.5h20Zm0-5.5h-20V11h20Z" />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <polygon
           className="cls-4"
           fill={ALL_COLOR.RED}

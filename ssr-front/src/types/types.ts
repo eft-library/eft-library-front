@@ -335,6 +335,7 @@ export interface OrbitControl {
 interface Coordinate {
   x: number;
   y: number;
+  scale: number;
 }
 
 export interface JPG extends Coordinate {

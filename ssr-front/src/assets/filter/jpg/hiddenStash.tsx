@@ -1,34 +1,34 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { JPG } from "@/types/types";
 
-export default function HiddenStash({ x, y }: JPG) {
+export default function HiddenStash({ x, y, scale }: JPG) {
   return (
     <>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-1"
           fill={ALL_COLOR.WHITE}
           d="M20.45,8.49a2.13,2.13,0,0,0,.15-.75V6.66A2.92,2.92,0,0,0,21.16,5c0-2.84-4.37-5-10.16-5S.84,2.14.84,5A2.92,2.92,0,0,0,1.4,6.66V7.74a2.13,2.13,0,0,0,.15.75C.44,9.69-.94,19.09.9,23.44,1.79,25.55,3.2,26,4.23,26H17.77c1,0,2.44-.45,3.33-2.56C22.94,19.09,21.56,9.69,20.45,8.49Zm-1-.68"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path d="M19.37,8.68A2,2,0,0,0,19.5,8V7A2.68,2.68,0,0,0,20,5.5C20,2.93,16.13,1,11,1S2,2.93,2,5.5A2.68,2.68,0,0,0,2.5,7V8a2,2,0,0,0,.13.68c-1,1.11-2.21,9.88-.58,13.93.8,2,2,2.39,3,2.39H17c.91,0,2.15-.42,2.95-2.39C21.58,18.56,20.36,9.79,19.37,8.68ZM11,2c4.42,0,8,1.57,8,3.5S15.42,9,11,9,3,7.43,3,5.5,6.58,2,11,2Zm7.49,6.06C18.41,9.46,15.36,11,11,11S3.59,9.46,3.51,8.06A12.91,12.91,0,0,0,11,10,12.91,12.91,0,0,0,18.49,8.06Zm.44,14.37c-.47,1-1.1,1.54-1.93,1.54H5c-.83,0-1.46-.51-1.93-1.54-1.62-3.58-.47-11.19.15-12.79C4.53,11,7.48,12,11,12s6.47-1,7.77-2.36C19.4,11.25,20.55,18.85,18.93,22.43Z" />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-2"
           fill={ALL_COLOR.HIDDEN_STASH_TWO}
           d="M3.51,8.06C3.59,9.46,6.64,11,11,11s7.41-1.54,7.49-2.94A12.91,12.91,0,0,1,11,10,12.91,12.91,0,0,1,3.51,8.06Z"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-3"
           fill={ALL_COLOR.HIDDEN_STASH_THREE}
           d="M11,12c-3.52,0-6.47-1-7.78-2.36-.62,1.6-1.77,9.21-.15,12.79C3.54,23.46,4.17,24,5,24H17c.83,0,1.46-.51,1.93-1.54,1.62-3.58.47-11.18-.16-12.79C17.47,11,14.52,12,11,12Z"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <ellipse
           className="cls-4"
           fill={ALL_COLOR.HIDDEN_STASH_FOUR}
@@ -38,7 +38,7 @@ export default function HiddenStash({ x, y }: JPG) {
           ry="3.5"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-5"
           fill={ALL_COLOR.HIDDEN_STASH_FIVE}

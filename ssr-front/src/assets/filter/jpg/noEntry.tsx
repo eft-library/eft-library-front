@@ -1,17 +1,17 @@
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { JPG } from "@/types/types";
 
-export default function NoEntry({ x, y }: JPG) {
+export default function NoEntry({ x, y, scale }: JPG) {
   return (
     <>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-1"
           fill={ALL_COLOR.WHITE}
           d="M14,2A12,12,0,1,0,26,14,12,12,0,0,0,14,2Z"
         />
       </g>
-      <g transform={`translate(${x}, ${y})`}>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <path
           className="cls-2"
           fill={ALL_COLOR.RED}
