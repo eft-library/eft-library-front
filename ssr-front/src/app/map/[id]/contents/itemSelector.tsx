@@ -167,6 +167,7 @@ export default function ItemSelector({
                     .map((childItem) => (
                       <Flex key={childItem.value} mt={4}>
                         <ItemSVG
+                          scale={2}
                           x={0}
                           y={0}
                           svgValue={childItem.value}
