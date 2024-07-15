@@ -120,6 +120,9 @@ export const ALL_COLOR = {
   WEAPON_BOX_TWO: "#705436",
   WOOD_BOX_TWO: "#beead3",
   WOOD_BOX_THREE: "#a9dbc2",
+  STATIONARY_TWO: "#ce9a4e",
+  STATIONARY_THREE: "#ce9800",
+  STATIONARY_FOUR: "#563c29",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;

@@ -34,6 +34,7 @@ import SupplyCrate from "./jpg/supplyCrate";
 import ToolBox from "./jpg/toolBox";
 import WeaponBox from "./jpg/weaponBox";
 import WoodBox from "./jpg/woodBox";
+import StationaryWeapon from "./jpg/stationaryWeapon";
 
 const ItemJpg = {
   AmmoBox,
@@ -72,6 +73,7 @@ const ItemJpg = {
   ToolBox,
   WeaponBox,
   WoodBox,
+  StationaryWeapon,
 };
 
 export default ItemJpg;

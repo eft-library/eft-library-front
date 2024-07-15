@@ -34,6 +34,7 @@ import SupplyCrate from "./svg/supplyCrate";
 import ToolBox from "./svg/toolBox";
 import WeaponBox from "./svg/weaponBox";
 import WoodBox from "./svg/woodBox";
+import StationaryWeapon from "./svg/stationaryWeapon";
 
 const ItemSvg = {
   AmmoBox,
@@ -72,6 +73,7 @@ const ItemSvg = {
   ToolBox,
   WeaponBox,
   WoodBox,
+  StationaryWeapon,
 };
 
 export default ItemSvg;

@@ -1,8 +1,9 @@
 import React from "react";
-import { useGLTF, Edges } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import ItemBox from "./threeItem";
 import { formatImage } from "@/lib/formatImage";
 import type { ThreeModel } from "@/types/types";
+import RenderMesh from "./renderMesh";
 
 export default function ThreeModel({
   map,
@@ -13,195 +14,23 @@ export default function ThreeModel({
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
   if (!nodes || !materials) return null;
 
+  // 준비중 리스트
+  const prepareMapList = [
+    "FACTORY",
+    "INTERCHANGE",
+    "LIGHT_HOUSE",
+    "RESERVE",
+    "SHORELINE",
+    "STREET_OF_TARKOV",
+    "THE_LAB",
+  ];
+
   return (
     <>
-      {map.id === "CUSTOMS" && (
-        <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_1.geometry}
-            material={materials["신형 아스팔트"]}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_2.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "CUSTOMS_GA_FIRST_FLOOR_DORMITORY" && (
-        <>
-          <mesh geometry={nodes.mesh_0.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_2.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "CUSTOMS_GA_SECOND_FLOOR_DORMITORY" && (
-        <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_2.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_4.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "CUSTOMS_GA_THIRD_FLOOR_DORMITORY" && (
-        <>
-          <mesh geometry={nodes.mesh_0.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_2.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_4.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "CUSTOMS_NA_FIRST_FLOOR_DORMITORY" && (
-        <>
-          <mesh geometry={nodes.mesh_0.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_2.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "CUSTOMS_NA_SECOND_FLOOR_DORMITORY" && (
-        <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_1.geometry} material={materials.복}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh geometry={nodes.mesh_0_2.geometry} material={materials.room}>
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_3.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_4.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "GROUND_ZERO" && (
-        <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_1.geometry}
-            material={materials.PaletteMaterial003}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_2.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
-      )}
-      {map.id === "GROUND_ZERO_UNDERGROUND" && (
-        <>
-          <mesh
-            geometry={nodes.mesh_0.geometry}
-            material={materials.PaletteMaterial002}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-          <mesh
-            geometry={nodes.mesh_0_1.geometry}
-            material={materials.PaletteMaterial001}
-          >
-            <Edges visible={true} scale={1} color="black" threshold={15} />
-          </mesh>
-        </>
+      {prepareMapList.includes(map.id) ? (
+        <RenderMesh mapId={"PREPARE"} nodes={nodes} materials={materials} />
+      ) : (
+        <RenderMesh mapId={map.id} nodes={nodes} materials={materials} />
       )}
       {map.three_item_path.map(
         (item) =>

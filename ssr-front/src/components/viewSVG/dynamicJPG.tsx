@@ -16,12 +16,12 @@ const jpgComponents = {
   KEY_CARD: ItemJpg.KeyCard,
   LEVER: ItemJpg.Lever,
   LOCKED: ItemJpg.Locked,
-  LOOTING_POINT: ItemJpg.LootingPoint, // 데이터 추가
-  MARKED_ROOM: ItemJpg.MarkedRoom, // 데이터 추가
+  LOOTING_POINT: ItemJpg.LootingPoint,
+  MARKED_ROOM: ItemJpg.MarkedRoom,
   MED_BAG: ItemJpg.MedBag,
   MED_CASE: ItemJpg.MedCase,
-  MINE_AREA: ItemJpg.MineArea, // 데이터 추가
-  NO_ENTRY: ItemJpg.NoEntry, // 데이터 추가
+  MINE_AREA: ItemJpg.MineArea,
+  NO_ENTRY: ItemJpg.NoEntry,
   PMC_EXTRACTION: ItemJpg.PmcExtraction,
   PMC_SPAWN: ItemJpg.PmcSpawn,
   QUEST_RELATED: ItemJpg.QuestRelated,
@@ -30,11 +30,11 @@ const jpgComponents = {
   SCAV_EXTRACTION: ItemJpg.ScavExtraction,
   SCAV_SPAWN: ItemJpg.ScavSpawn,
   SHARED_EXTRACTION: ItemJpg.SharedExtraction,
-  SNIPER_LOCATION: ItemJpg.SniperLocation, // 데이터 추가
+  SNIPER_LOCATION: ItemJpg.SniperLocation,
   SNIPER_SCAV_SPAWN: ItemJpg.SniperScavSpawn,
   SPORTS_BAG: ItemJpg.SportsBag,
-  STATIONARY_WEAPON: ItemJpg.SportsBag, // 바꿔야 함
-  SUITCASE: ItemJpg.Suitcase, // 데이터 추가
+  STATIONARY_WEAPON: ItemJpg.StationaryWeapon,
+  SUITCASE: ItemJpg.Suitcase,
   SUPPLY_CRATE: ItemJpg.SupplyCrate,
   TOOL_BOX: ItemJpg.ToolBox,
   WEAPON_BOX: ItemJpg.WeaponBox,
