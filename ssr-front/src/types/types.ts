@@ -21,12 +21,14 @@ export interface ThreeItemPath {
   position: Vector3;
   childValue: string;
   filterInfo: SubFilter[];
+  zoomLevel: number;
 }
 
 export interface ThreeModel {
   filterInfo: SubFilter[];
   viewItemList: string[];
   map: SubMap | Map;
+  zoomLevel: number;
 }
 
 export interface News {

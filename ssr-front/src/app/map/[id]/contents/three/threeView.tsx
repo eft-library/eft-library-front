@@ -4,7 +4,7 @@ import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import type { ThreeView, SubFilter } from "@/types/types";
 import ThreeSkeleton from "../../skeleton/threeSkeleton";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import Loader from "./loader";
@@ -13,12 +13,32 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function ThreeView({ map, viewItemList }: ThreeView) {
   const [filterInfo, setFilterInfo] = useState<SubFilter[] | null>(null);
+  const controlsRef = useRef(null);
+  const [zoomLevel, setZoomLevel] = useState(0);
 
   useEffect(() => {
     fetchDataWithNone(`${API_ENDPOINTS.GET_SUB_FILTER}`, setFilterInfo);
   }, []);
 
-  if (!filterInfo) return <ThreeSkeleton />;
+  useEffect(() => {
+    const handleZoomChange = () => {
+      if (controlsRef.current) {
+        setZoomLevel(controlsRef.current.object.position.y);
+      }
+    };
+
+    if (controlsRef.current) {
+      controlsRef.current.addEventListener("change", handleZoomChange);
+    }
+
+    return () => {
+      if (controlsRef.current) {
+        controlsRef.current.removeEventListener("change", handleZoomChange);
+      }
+    };
+  }, [controlsRef]);
+
+  if (!filterInfo || !controlsRef) return <ThreeSkeleton />;
 
   return (
     <Canvas
@@ -33,6 +53,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
         enableDamping
         dampingFactor={0.1} // 감속 계수 설정 (0에서 1 사이의 값)
         enableZoom={true}
+        ref={controlsRef}
       />
       <ambientLight intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
@@ -42,6 +63,7 @@ export default function ThreeView({ map, viewItemList }: ThreeView) {
             map={map}
             filterInfo={filterInfo}
             viewItemList={viewItemList}
+            zoomLevel={zoomLevel}
           />
         </Suspense>
       </group>

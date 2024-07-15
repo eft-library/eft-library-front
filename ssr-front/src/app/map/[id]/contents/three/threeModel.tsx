@@ -8,9 +8,9 @@ export default function ThreeModel({
   map,
   filterInfo,
   viewItemList,
+  zoomLevel,
 }: ThreeModel) {
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
-
   if (!nodes || !materials) return null;
 
   return (
@@ -212,6 +212,7 @@ export default function ThreeModel({
               key={item.position.toString()}
               childValue={item.childValue}
               filterInfo={filterInfo}
+              zoomLevel={zoomLevel}
             />
           )
       )}

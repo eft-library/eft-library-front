@@ -8,10 +8,22 @@ export default function ItemBox({
   boxArgs,
   childValue,
   filterInfo,
+  zoomLevel,
 }: ThreeItemPath) {
   const checkItem = (value: string) => {
     const itemInfo = filterInfo.find((item) => item.value === value);
     return itemInfo.image;
+  };
+
+  const meshscale = () => {
+    const scale = zoomLevel - 90;
+    if (scale < 1) {
+      return 1;
+    } else if (scale > 50) {
+      return 50;
+    } else {
+      return scale;
+    }
   };
 
   const imageUrl = formatImage(checkItem(childValue));
@@ -34,12 +46,16 @@ export default function ItemBox({
     );
   }, [imageUrl]);
 
+  useEffect(() => {
+    console.log(zoomLevel);
+  }, [zoomLevel]);
+
   if (loading) {
     return null; // 텍스처가 로드될 때까지 아무것도 렌더링하지 않음
   }
 
   return (
-    <mesh position={position} scale={2}>
+    <mesh position={position} scale={1}>
       <boxGeometry args={boxArgs} />
       <meshStandardMaterial
         map={texture}

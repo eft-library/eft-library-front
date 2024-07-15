@@ -1,14 +1,10 @@
-import { YOUTUBE_OPTION } from "@/util/consts/libraryConsts";
-import YouTube from "react-youtube";
+import { YouTubeEmbed } from "@next/third-parties/google";
+import { Box } from "@chakra-ui/react";
 
 export default function YoutubeNews({ youtubeId }) {
   return (
-    <YouTube
-      videoId={youtubeId}
-      opts={YOUTUBE_OPTION}
-      onEnd={(e) => {
-        e.target.stopVideo(0);
-      }}
-    />
+    <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+      <YouTubeEmbed videoid={youtubeId} height={280} width={480} />
+    </Box>
   );
 }
