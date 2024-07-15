@@ -17,8 +17,8 @@ export default function ItemBox({
 
   const meshscale = () => {
     const scale = zoomLevel - 90;
-    if (scale < 1) {
-      return 1;
+    if (scale < 10) {
+      return 10;
     } else if (scale > 50) {
       return 50;
     } else {
@@ -46,16 +46,12 @@ export default function ItemBox({
     );
   }, [imageUrl]);
 
-  useEffect(() => {
-    console.log(zoomLevel);
-  }, [zoomLevel]);
-
   if (loading) {
     return null; // 텍스처가 로드될 때까지 아무것도 렌더링하지 않음
   }
 
   return (
-    <mesh position={position} scale={1}>
+    <mesh position={position} scale={meshscale()}>
       <boxGeometry args={boxArgs} />
       <meshStandardMaterial
         map={texture}

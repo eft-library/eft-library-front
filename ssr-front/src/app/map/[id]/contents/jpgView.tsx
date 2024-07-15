@@ -41,7 +41,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <HStack spacing={4} mb={4}>
+      {/* <HStack spacing={4} mb={4}>
         <Button onClick={() => transformWrapperRef.current?.zoomIn()}>+</Button>
         <Button onClick={() => transformWrapperRef.current?.zoomOut()}>
           -
@@ -49,7 +49,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
         <Button onClick={() => transformWrapperRef.current?.resetTransform()}>
           Reset
         </Button>
-      </HStack>
+      </HStack> */}
       <Box
         boxSize="sm"
         height={"100%"}
