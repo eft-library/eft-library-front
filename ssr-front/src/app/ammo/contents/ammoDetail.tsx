@@ -1,32 +1,20 @@
 "use client";
 
 import { Box, GridItem } from "@chakra-ui/react";
+import GridContents from "@/components/gridContents/gridContents";
+import GridCenterText from "@/components/gridText/gridCenterText";
+import GridTitle from "@/components/gridTitle/gridTitle";
 import type { AmmoDetail, Ammo, Column } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import EfficiencyBox from "./efficiencyBox";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import dynamic from "next/dynamic";
-
-const GridContents = dynamic(
-  () => import("@/components/gridContents/gridContents"),
-  { ssr: false }
-);
-const GridCenterText = dynamic(
-  () => import("@/components/gridText/gridCenterText"),
-  { ssr: false }
-);
-const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
-  ssr: false,
-});
-const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
-  ssr: false,
-});
-const EfficiencyBox = dynamic(() => import("./efficiencyBox"), { ssr: false });
 
 export default function AmmoDetail({ category }: AmmoDetail) {
   const param = useSearchParams();

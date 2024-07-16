@@ -1,17 +1,12 @@
 "use client";
 
 import { MAIN_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";
+import ImageSlider from "@/components/imageSlider/imageSlider";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { SubMenu } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import SliderSkeleton from "./skeleton/sliderSkeleton";
-import dynamic from "next/dynamic";
-
-const ImageSlider = dynamic(
-  () => import("@/components/imageSlider/imageSlider"),
-  { ssr: false }
-);
 
 export default function Slider() {
   const [slider, setSlider] = useState<SubMenu[]>();

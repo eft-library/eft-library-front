@@ -7,16 +7,9 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const ContentsSelector = dynamic(
-  () => import("@/components/contentsSelector/contentsSelector"),
-  { ssr: false }
-);
-const AmmoDetail = dynamic(() => import("./contents/ammoDetail"), {
-  ssr: false,
-});
+import AmmoDetail from "./contents/ammoDetail";
 
 export default function Ammo() {
   const { ammoCategory, setAmmoCategory } = useAppStore((state) => state);

@@ -7,18 +7,9 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const KeyDetail = dynamic(() => import("./contents/keyDetail"), {
-  ssr: false,
-});
-const ContentsSelector = dynamic(
-  () => import("@/components/contentsSelector/contentsSelector"),
-  {
-    ssr: false,
-  }
-);
+import KeyDetail from "./contents/keyDetail";
 
 export default function Key() {
   const { keyCategory, setKeyCategory } = useAppStore((state) => state);

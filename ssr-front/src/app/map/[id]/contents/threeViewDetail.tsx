@@ -1,4 +1,8 @@
 import { Box, Text, Stack } from "@chakra-ui/react";
+import ItemSelector from "./itemSelector";
+import SubMapSelector from "./subMapSelector";
+import JPGView from "./jpgView";
+import ThreeView from "./three/threeView";
 import { useItemFilter } from "@/hooks/useItemFilter";
 import type { MapDetail } from "@/types/types";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
@@ -6,20 +10,6 @@ import ThreeSkeleton from "../skeleton/threeSkeleton";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
 import PageParent from "@/components/pageParent/pageParent";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import dynamic from "next/dynamic";
-
-const ThreeView = dynamic(() => import("./three/threeView"), {
-  ssr: false,
-});
-const JPGView = dynamic(() => import("./jpgView"), {
-  ssr: false,
-});
-const SubMapSelector = dynamic(() => import("./subMapSelector"), {
-  ssr: false,
-});
-const ItemSelector = dynamic(() => import("./itemSelector"), {
-  ssr: false,
-});
 
 export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(

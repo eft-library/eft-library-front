@@ -7,10 +7,8 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import type { News } from "@/types/types";
 import NewsSkeleton from "../skeleton/newsSkeleton";
-import dynamic from "next/dynamic";
-
-const YoutubeNews = dynamic(() => import("./youtube"), { ssr: false });
-const NewsText = dynamic(() => import("./newsText"), { ssr: false });
+import NewsText from "./newsText";
+import YoutubeNews from "./youtube";
 
 export default function News() {
   const [news, setNews] = useState<News>(null);

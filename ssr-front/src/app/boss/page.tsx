@@ -1,25 +1,16 @@
 "use client";
 
 import SubHeader from "@/components/subHeader/subHeader";
+import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import PageParent from "@/components/pageParent/pageParent";
 import { useAppStore } from "@/store/provider";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { Box } from "@chakra-ui/react";
+import BossContents from "./contents/bossContents";
+import BossDetail from "./contents/bossDetail";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Boss } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const ContentsSelector = dynamic(
-  () => import("@/components/contentsSelector/contentsSelector"),
-  { ssr: false }
-);
-const BossContents = dynamic(() => import("./contents/bossContents"), {
-  ssr: false,
-});
-const BossDetail = dynamic(() => import("./contents/bossDetail"), {
-  ssr: false,
-});
 
 export default function Boss() {
   const [boss, setBoss] = useState<Boss[]>([]);

@@ -1,40 +1,18 @@
 "use client";
 
 import { GridItem, Box } from "@chakra-ui/react";
+import GridCenterText from "@/components/gridText/gridCenterText";
+import DividerContents from "@/components/dividerContents/dividerContents";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import type { MapOfTarkovExtraction, Column } from "@/types/types";
+import ImageZoom from "@/components/imageZoom/imageZoom";
+import GridTitle from "@/components/gridTitle/gridTitle";
+import GridContents from "@/components/gridContents/gridContents";
+import GridImageText from "@/components/gridText/girdImageText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import dynamic from "next/dynamic";
-
-const GridContents = dynamic(
-  () => import("@/components/gridContents/gridContents"),
-  { ssr: false }
-);
-const GridCenterText = dynamic(
-  () => import("@/components/gridText/gridCenterText"),
-  { ssr: false }
-);
-const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
-  ssr: false,
-});
-const GridImageText = dynamic(
-  () => import("@/components/gridText/girdImageText"),
-  {
-    ssr: false,
-  }
-);
-const DividerContents = dynamic(
-  () => import("@/components/dividerContents/dividerContents"),
-  {
-    ssr: false,
-  }
-);
-const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
-  ssr: false,
-});
 
 export default function MapOfTarkovExtraction({
   extractionList,

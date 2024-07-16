@@ -7,18 +7,9 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const HideoutDetail = dynamic(() => import("./contents/hideoutDetail"), {
-  ssr: false,
-});
-const ContentsSelector = dynamic(
-  () => import("@/components/contentsSelector/contentsSelector"),
-  {
-    ssr: false,
-  }
-);
+import HideoutDetail from "./contents/hideoutDetail";
 
 export default function Hideout() {
   const { hideoutCategory, setHideoutCategory } = useAppStore((state) => state);

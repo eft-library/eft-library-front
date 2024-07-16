@@ -1,11 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
-
-const ArmorVestDetail = dynamic(() => import("./contents/armorVestDetail"), {
-  ssr: false,
-});
+import ArmorVestDetail from "./contents/armorVestDetail";
 
 export default function ArmorVest() {
   return (

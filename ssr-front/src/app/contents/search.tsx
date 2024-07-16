@@ -1,6 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import Downshift from "downshift";
 import { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -10,8 +10,6 @@ import { Search2Icon } from "@chakra-ui/icons";
 import "@/assets/input.css";
 import { useAppStore } from "@/store/provider";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-
-const Downshift = dynamic(() => import("downshift"), { ssr: false });
 
 export default function Search() {
   const { setBossId, setHideoutCategory, setNpcId } = useAppStore(
@@ -61,7 +59,7 @@ export default function Search() {
       <Downshift
         id="main-search"
         onChange={(selection) => onClickItem(selection)}
-        itemToString={(item: any) => (item ? item.value : "")}
+        itemToString={(item) => (item ? item.value : "")}
         inputValue={inputValue} // Downshift가 inputValue를 제어하도록 설정
         onInputValueChange={(value) => setInputValue(value)} // inputValue 변경 시 상태 업데이트
         isOpen={inputValue.length > 0} // 입력된 값이 있을 때만 드롭다운을 열도록 설정

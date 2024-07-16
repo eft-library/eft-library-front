@@ -1,11 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
-
-const ContainerDetail = dynamic(() => import("./contents/containerDetail"), {
-  ssr: false,
-});
+import ContainerDetail from "./contents/containerDetail";
 
 export default function Container() {
   return (

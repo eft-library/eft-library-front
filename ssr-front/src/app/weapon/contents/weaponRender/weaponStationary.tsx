@@ -1,6 +1,9 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
+import GridCenterText from "@/components/gridText/gridCenterText";
+import GridTitle from "@/components/gridTitle/gridTitle";
+import GridContents from "@/components/gridContents/gridContents";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -8,24 +11,9 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponStationary, Column } from "@/types/types";
 import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/hooks/useScrollMove";
-import dynamic from "next/dynamic";
-
-const GridContents = dynamic(
-  () => import("@/components/gridContents/gridContents"),
-  { ssr: false }
-);
-const GridCenterText = dynamic(
-  () => import("@/components/gridText/gridCenterText"),
-  { ssr: false }
-);
-const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
-  ssr: false,
-});
-const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
-  ssr: false,
-});
 
 export default function WeaponStationary({
   stationaryList,

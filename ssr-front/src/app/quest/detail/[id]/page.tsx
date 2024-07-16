@@ -5,17 +5,11 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
+import QuestInfo from "./contents/questInfo";
+import QuestContents from "./contents/questContents";
 import "@/assets/quest.css";
 import type { Quest } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import dynamic from "next/dynamic";
-
-const QuestInfo = dynamic(() => import("./contents/questInfo"), {
-  ssr: false,
-});
-const QuestContents = dynamic(() => import("./contents/questContents"), {
-  ssr: false,
-});
 
 export default function QuestDetail() {
   const param = useParams<{ id: string }>();

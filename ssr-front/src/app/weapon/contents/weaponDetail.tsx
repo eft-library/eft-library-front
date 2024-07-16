@@ -5,28 +5,12 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
+import WeaponKnife from "./weaponRender/weaponKnife";
+import WeaponThrowable from "./weaponRender/weaponThrowable";
+import WeaponStationary from "./weaponRender/weaponStationary";
+import WeaponSpecial from "./weaponRender/weaponSpecial";
+import WeaponGun from "./weaponRender/weaponGun";
 import type { WeaponDetail, Column } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const WeaponKnife = dynamic(() => import("./weaponRender/weaponKnife"), {
-  ssr: false,
-});
-const WeaponThrowable = dynamic(
-  () => import("./weaponRender/weaponThrowable"),
-  { ssr: false }
-);
-const WeaponStationary = dynamic(
-  () => import("./weaponRender/weaponStationary"),
-  {
-    ssr: false,
-  }
-);
-const WeaponSpecial = dynamic(() => import("./weaponRender/weaponSpecial"), {
-  ssr: false,
-});
-const WeaponGun = dynamic(() => import("./weaponRender/weaponGun"), {
-  ssr: false,
-});
 
 export default function WeaponDetail({ category }: WeaponDetail) {
   const [weapon, setWeapon] = useState({ knife: [], throwable: [], gun: [] });

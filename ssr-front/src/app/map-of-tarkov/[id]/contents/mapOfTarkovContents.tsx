@@ -1,26 +1,10 @@
 import { Box } from "@chakra-ui/react";
+import DividerContents from "@/components/dividerContents/dividerContents";
+import MapOfTarkovExtraction from "./mapOfTarkovExtraction";
+import ImageSlider from "@/components/imageSlider/imageSlider";
+import BossDetail from "@/app/boss/contents/bossDetail";
 import { MOT_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";
 import type { MapOfTarkovContents, SubMap } from "@/types/types";
-import dynamic from "next/dynamic";
-
-const DividerContents = dynamic(
-  () => import("@/components/dividerContents/dividerContents"),
-  {
-    ssr: false,
-  }
-);
-const MapOfTarkovExtraction = dynamic(() => import("./mapOfTarkovExtraction"), {
-  ssr: false,
-});
-const ImageSlider = dynamic(
-  () => import("@/components/imageSlider/imageSlider"),
-  {
-    ssr: false,
-  }
-);
-const BossDetail = dynamic(() => import("@/app/boss/contents/bossDetail"), {
-  ssr: false,
-});
 
 export default function MapOfTarkovContents({
   mapOfTarkov,
