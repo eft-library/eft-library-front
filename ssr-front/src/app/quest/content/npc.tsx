@@ -50,7 +50,12 @@ export default function NPC() {
               onMouseEnter={handleHover}
               onMouseLeave={handleHoverExit}
             />
-            <Text color={ALL_COLOR.WHITE} textAlign={"center"} mt={"2"}>
+            <Text
+              color={ALL_COLOR.WHITE}
+              textAlign={"center"}
+              mt={"2"}
+              fontWeight={600}
+            >
               {npcItem.name_kr}
             </Text>
           </Flex>
