@@ -7,9 +7,18 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import LootDetail from "./contents/lootDetail";
+import dynamic from "next/dynamic";
+
+const LootDetail = dynamic(() => import("./contents/lootDetail"), {
+  ssr: false,
+});
+const ContentsSelector = dynamic(
+  () => import("@/components/contentsSelector/contentsSelector"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Loot() {
   const { lootCategory, setLootCategory } = useAppStore((state) => state);

@@ -1,11 +1,25 @@
 "use client";
 
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import DividerContents from "@/components/dividerContents/dividerContents";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import { formatImage } from "@/lib/formatImage";
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const ContentsSelector = dynamic(
+  () => import("@/components/contentsSelector/contentsSelector"),
+  {
+    ssr: false,
+  }
+);
+const DividerContents = dynamic(
+  () => import("@/components/dividerContents/dividerContents"),
+  {
+    ssr: false,
+  }
+);
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function BossHealth({ healthList }) {
   const [healthId, setHealthId] = useState<string>();

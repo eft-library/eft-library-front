@@ -7,9 +7,18 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import MedicalDetail from "./contents/medicalDetail";
+import dynamic from "next/dynamic";
+
+const MedicalDetail = dynamic(() => import("./contents/medicalDetail"), {
+  ssr: false,
+});
+const ContentsSelector = dynamic(
+  () => import("@/components/contentsSelector/contentsSelector"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Medical() {
   const { medicalCategory, setMedicalCategory } = useAppStore((state) => state);

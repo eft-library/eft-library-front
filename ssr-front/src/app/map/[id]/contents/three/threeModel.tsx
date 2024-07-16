@@ -1,8 +1,12 @@
 import React from "react";
 import { useGLTF, Edges } from "@react-three/drei";
-import ItemBox from "./threeItem";
 import { formatImage } from "@/lib/formatImage";
 import type { ThreeModel } from "@/types/types";
+import dynamic from "next/dynamic";
+
+const ItemBox = dynamic(() => import("./threeItem"), {
+  ssr: false,
+});
 
 export default function ThreeModel({
   map,

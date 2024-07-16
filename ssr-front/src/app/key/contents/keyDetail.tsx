@@ -6,16 +6,35 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Key, Column, KeyDetail } from "@/types/types";
 import { Box } from "@chakra-ui/react";
-import GridContents from "@/components/gridContents/gridContents";
-import GridCenterText from "@/components/gridText/gridCenterText";
-import GridTitle from "@/components/gridTitle/gridTitle";
-import GridArrayText from "@/components/gridText/gridArrayText";
-import GridNotes from "@/components/gridText/gridNotes";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import dynamic from "next/dynamic";
+
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const GridArrayText = dynamic(
+  () => import("@/components/gridText/gridArrayText"),
+  {
+    ssr: false,
+  }
+);
+const GridNotes = dynamic(() => import("@/components/gridText/gridNotes"), {
+  ssr: false,
+});
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function KeyDetail({ category }: KeyDetail) {
   const param = useSearchParams();

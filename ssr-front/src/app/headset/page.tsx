@@ -1,7 +1,11 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import HeadsetDetail from "./contents/headsetDetail";
+import dynamic from "next/dynamic";
+
+const HeadsetDetail = dynamic(() => import("./contents/headsetDetail"), {
+  ssr: false,
+});
 
 export default function Headset() {
   return (

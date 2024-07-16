@@ -1,9 +1,15 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Flex } from "@chakra-ui/react";
-import NPC from "./content/npc";
-import Contents from "./content/contents";
 import "@/assets/quest.css";
+import dynamic from "next/dynamic";
+
+const NPC = dynamic(() => import("./content/npc"), {
+  ssr: false,
+});
+const Contents = dynamic(() => import("./content/contents"), {
+  ssr: false,
+});
 
 export default function Quest() {
   return (

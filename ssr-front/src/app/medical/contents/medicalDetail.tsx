@@ -5,10 +5,23 @@ import type { MedicalDetail, Medical } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
-import MedicalMedikit from "./medicalRender/medicalMedikit";
-import MedicalItem from "./medicalRender/medicalItem";
-import MedicalDrug from "./medicalRender/medicalDrug";
-import MedicalStimulant from "./medicalRender/medicalStimulant";
+import dynamic from "next/dynamic";
+
+const MedicalMedikit = dynamic(() => import("./medicalRender/medicalMedikit"), {
+  ssr: false,
+});
+const MedicalItem = dynamic(() => import("./medicalRender/medicalItem"), {
+  ssr: false,
+});
+const MedicalDrug = dynamic(() => import("./medicalRender/medicalDrug"), {
+  ssr: false,
+});
+const MedicalStimulant = dynamic(
+  () => import("./medicalRender/medicalStimulant"),
+  {
+    ssr: false,
+  }
+);
 
 export default function MedicalDetail({ category }: MedicalDetail) {
   const [medical, setMedical] = useState<Medical[]>(null);

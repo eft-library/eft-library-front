@@ -1,19 +1,33 @@
-import GridCenterText from "@/components/gridText/gridCenterText";
-import GridTitle from "@/components/gridTitle/gridTitle";
-import GridContents from "@/components/gridContents/gridContents";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, MedicalList } from "@/types/types";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Box, GridItem } from "@chakra-ui/react";
 import React from "react";
-import StimulantText from "./stimulantText";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import dynamic from "next/dynamic";
+
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const StimulantText = dynamic(() => import("./stimulantText"), {
+  ssr: false,
+});
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function MedicalStimulant({ medicalList }: MedicalList) {
   const [column, setColumn] = useState<Column>();

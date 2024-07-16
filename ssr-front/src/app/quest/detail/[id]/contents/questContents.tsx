@@ -1,19 +1,35 @@
 "use client";
 
 import { Box, Text, GridItem } from "@chakra-ui/react";
-import DividerContents from "@/components/dividerContents/dividerContents";
 import type { QuestContents, Column } from "@/types/types";
 import ContentsSkeleton from "../../skeleton/contentsSkeleton";
-
-import GridTitle from "@/components/gridTitle/gridTitle";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import GridContents from "@/components/gridContents/gridContents";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import GridCenterText from "@/components/gridText/gridCenterText";
+import dynamic from "next/dynamic";
+
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const DividerContents = dynamic(
+  () => import("@/components/dividerContents/dividerContents"),
+  {
+    ssr: false,
+  }
+);
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function QuestContents({ quest }: QuestContents) {
   const [column, setColumn] = useState<Column>();

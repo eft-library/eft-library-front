@@ -1,14 +1,36 @@
 "use client";
 
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import DividerContents from "@/components/dividerContents/dividerContents";
-import GridContents from "@/components/gridContents/gridContents";
-import GridCenterText from "@/components/gridText/gridCenterText";
-import GridTitle from "@/components/gridTitle/gridTitle";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import { Box, Link } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const ContentsSelector = dynamic(
+  () => import("@/components/contentsSelector/contentsSelector"),
+  {
+    ssr: false,
+  }
+);
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const DividerContents = dynamic(
+  () => import("@/components/dividerContents/dividerContents"),
+  {
+    ssr: false,
+  }
+);
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function BossLoot({ lootList, column, title }) {
   const [lootId, setLootId] = useState<string>();

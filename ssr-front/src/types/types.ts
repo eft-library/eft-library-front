@@ -40,6 +40,10 @@ export interface News {
   next_update: string[];
 }
 
+export interface NewsText {
+  news: News;
+}
+
 export interface BossContents {
   bossList: BossInfo[];
   bossId: string;

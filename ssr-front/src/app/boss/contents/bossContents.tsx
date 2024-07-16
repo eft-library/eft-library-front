@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, Text } from "@chakra-ui/react";
-import DividerContents from "@/components/dividerContents/dividerContents";
 import type { BossContents, BossInfo, Column } from "@/types/types";
 import ContentsSkeleton from "./skeleton/contentsSkeleton";
 import React, { useEffect } from "react";
@@ -9,8 +8,14 @@ import { useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import BossLoot from "./bossLoot";
-import BossHealth from "./bossHealth";
+import dynamic from "next/dynamic";
+
+const DividerContents = dynamic(
+  () => import("@/components/dividerContents/dividerContents"),
+  { ssr: false }
+);
+const BossLoot = dynamic(() => import("./bossLoot"), { ssr: false });
+const BossHealth = dynamic(() => import("./bossHealth"), { ssr: false });
 
 export default function BossContents({ bossList, bossId }: BossContents) {
   let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId);

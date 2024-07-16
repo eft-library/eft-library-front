@@ -7,9 +7,18 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import WeaponDetail from "./contents/weaponDetail";
 import type { Column } from "@/types/types";
+import dynamic from "next/dynamic";
+
+const WeaponDetail = dynamic(() => import("./contents/weaponDetail"), {
+  ssr: false,
+});
+const ContentsSelector = dynamic(
+  () => import("@/components/contentsSelector/contentsSelector"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Weapon() {
   const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);

@@ -1,21 +1,37 @@
 "use client";
 
-import GridTitle from "@/components/gridTitle/gridTitle";
-import GridCenterText from "@/components/gridText/gridCenterText";
-import GridContents from "@/components/gridContents/gridContents";
 import { Box, GridItem } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
-import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSearchParams } from "next/navigation";
-import GridNotes from "@/components/gridText/gridNotes";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import dynamic from "next/dynamic";
+
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const GridNotes = dynamic(() => import("@/components/gridText/gridNotes"), {
+  ssr: false,
+});
+const EffectText = dynamic(() => import("./effectText"), {
+  ssr: false,
+});
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function ProvisionsDetail() {
   const param = useSearchParams();

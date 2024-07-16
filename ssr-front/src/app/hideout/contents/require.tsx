@@ -1,8 +1,12 @@
 import { Box, Text } from "@chakra-ui/react";
-import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { RequireList } from "@/types/types";
 import { formatImage } from "@/lib/formatImage";
+import dynamic from "next/dynamic";
+
+const ImageZoom = dynamic(() => import("@/components/imageZoom/imageZoom"), {
+  ssr: false,
+});
 
 export default function Require({ items, type }: RequireList) {
   const checkType = (item) => {

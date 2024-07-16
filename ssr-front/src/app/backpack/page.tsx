@@ -1,7 +1,11 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import BackpackDetail from "./contents/backpackDetail";
+import dynamic from "next/dynamic";
+
+const BackpackDetail = dynamic(() => import("./contents/backpackDetail"), {
+  ssr: false,
+});
 
 export default function Backpack() {
   return (

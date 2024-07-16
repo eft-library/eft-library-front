@@ -7,13 +7,27 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { HideoutDetail, Hideout, Column } from "@/types/types";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
-import GridTitle from "@/components/gridTitle/gridTitle";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import GridContents from "@/components/gridContents/gridContents";
-import GridCenterText from "@/components/gridText/gridCenterText";
-import Require from "./require";
-import Bonus from "./bonus";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import dynamic from "next/dynamic";
+
+const GridContents = dynamic(
+  () => import("@/components/gridContents/gridContents"),
+  { ssr: false }
+);
+const GridCenterText = dynamic(
+  () => import("@/components/gridText/gridCenterText"),
+  { ssr: false }
+);
+const GridTitle = dynamic(() => import("@/components/gridTitle/gridTitle"), {
+  ssr: false,
+});
+const Require = dynamic(() => import("./require"), {
+  ssr: false,
+});
+const Bonus = dynamic(() => import("./bonus"), {
+  ssr: false,
+});
 
 export default function HideoutDetail({ category }: HideoutDetail) {
   const [hideoutList, setHideoutList] = useState<Hideout[]>(null);
