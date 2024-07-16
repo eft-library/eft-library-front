@@ -1,9 +1,8 @@
 import React from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Edges } from "@react-three/drei";
 import ItemBox from "./threeItem";
 import { formatImage } from "@/lib/formatImage";
 import type { ThreeModel } from "@/types/types";
-import RenderMesh from "./renderMesh";
 
 export default function ThreeModel({
   map,
@@ -14,24 +13,17 @@ export default function ThreeModel({
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
   if (!nodes || !materials) return null;
 
-  // 준비중 리스트
-  const prepareMapList = [
-    "FACTORY",
-    "INTERCHANGE",
-    "LIGHT_HOUSE",
-    "RESERVE",
-    "SHORELINE",
-    "STREET_OF_TARKOV",
-    "THE_LAB",
-  ];
-
   return (
     <>
-      {prepareMapList.includes(map.id) ? (
-        <RenderMesh mapId={"PREPARE"} nodes={nodes} materials={materials} />
-      ) : (
-        <RenderMesh mapId={map.id} nodes={nodes} materials={materials} />
-      )}
+      {map.map_json.map((data) => (
+        <mesh
+          geometry={nodes[data.geometry].geometry}
+          material={materials[data.material]}
+          key={data.geometry}
+        >
+          <Edges visible={true} scale={1} color="black" threshold={15} />
+        </mesh>
+      ))}
       {map.three_item_path.map(
         (item) =>
           viewItemList.includes(item.childValue) && (

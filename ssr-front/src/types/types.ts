@@ -166,6 +166,7 @@ interface MapData extends strID {
   depth: number;
   link: string;
   name_kr: string;
+  map_json: JsonArrayText[];
   three_item_path: ThreeItemPath[];
   mot_image: string;
   jpg_item_path: JpgItemPath[];
