@@ -125,6 +125,8 @@ export default function UserQuestList({
             <Button
               w={"100px"}
               onClick={() => successQuest(quest.quest_id, quest.next)}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
             >
               완료
             </Button>

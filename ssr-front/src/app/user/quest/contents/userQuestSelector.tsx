@@ -94,6 +94,8 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
             updateQuest(selectedItems);
             setSelectedItems([]);
           }}
+          border={"1px solid"}
+          borderColor={ALL_COLOR.WHITE}
         >
           추가
         </Button>
@@ -112,12 +114,18 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
             <Tag
               size={"lg"}
               key={quest.id}
-              borderRadius="full"
               variant="solid"
-              colorScheme="green"
+              bg={ALL_COLOR.BLACK}
+              color={ALL_COLOR.WHITE}
+              border={"1px solid"}
+              mt={1}
+              ml={1}
             >
               <TagLabel fontWeight={600}>{quest.title_kr}</TagLabel>
-              <TagCloseButton onClick={() => removeSelected(quest)} />
+              <TagCloseButton
+                onClick={() => removeSelected(quest)}
+                color={ALL_COLOR.WHITE}
+              />
             </Tag>
           ))}
         </Wrap>

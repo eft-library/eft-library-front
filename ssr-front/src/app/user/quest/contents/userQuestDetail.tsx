@@ -50,6 +50,7 @@ export default function UserQuestDetail() {
       if (userQuest && userQuest.length > 1) {
         setIndices(userQuest.map((_, index) => index));
       }
+      setCheckedQuest([]);
     };
 
     if (session && session.accessToken && session.provider) {
@@ -73,6 +74,10 @@ export default function UserQuestDetail() {
       router,
       session
     );
+
+    if (userQuest && userQuest.length > 1) {
+      setIndices(userQuest.map((_, index) => index));
+    }
   };
 
   // delete
@@ -90,6 +95,10 @@ export default function UserQuestDetail() {
       router,
       session
     );
+    setCheckedQuest([]);
+    if (userQuest && userQuest.length > 1) {
+      setIndices(userQuest.map((_, index) => index));
+    }
   };
 
   // update
@@ -107,6 +116,10 @@ export default function UserQuestDetail() {
       router,
       session
     );
+    setCheckedQuest([]);
+    if (userQuest && userQuest.length > 1) {
+      setIndices(userQuest.map((_, index) => index));
+    }
   };
 
   const checkedBox = (quest_id: string) => {
@@ -164,15 +177,22 @@ export default function UserQuestDetail() {
             >
               전체 선택
             </Checkbox>
-            <Button onClick={() => deleteUserQuest(checkedQuest)}>삭제</Button>
+            <Button
+              onClick={() => deleteUserQuest(checkedQuest)}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+            >
+              삭제
+            </Button>
           </Box>
           {userQuest.map((npc) => (
             <AccordionItem key={npc.npc_id}>
               <AccordionButton
-                bg={ALL_COLOR.HIDE_BLUE}
+                bg={ALL_COLOR.LIGHT_GRAY}
                 color={ALL_COLOR.WHITE}
-                _expanded={{ bg: ALL_COLOR.HIDE_RED, color: ALL_COLOR.WHITE }}
                 borderRadius={"lg"}
+                _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+                mb={2}
               >
                 <Box
                   display={"flex"}
