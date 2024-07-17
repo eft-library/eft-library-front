@@ -699,7 +699,8 @@ export interface UserQuestDetail {
 export interface UserQuestList {
   userQuest: UserQuest;
   successQuest: Function;
-  deleteQuest: Function;
+  checkedQuest: string[];
+  checkedBox: Function;
 }
 
 export interface UserQuestSelector {

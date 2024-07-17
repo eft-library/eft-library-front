@@ -8,6 +8,8 @@ import {
   AccordionButton,
   AccordionIcon,
   Text,
+  Checkbox,
+  Button,
 } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
@@ -21,10 +23,18 @@ import { fetchUserData } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 export default function UserQuestDetail() {
+  const [checkedQuest, setCheckedQuest] = useState([]);
   const router = useRouter();
   const [indices, setIndices] = useState([0]);
   const [userQuest, setUserQuest] = useState<UserQuest[]>();
   const { data: session } = useSession();
+
+  const makeOnlyQuestIds = () => {
+    let onlyQuestIds = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    return onlyQuestIds.filter((questId) => questId !== null);
+  };
 
   // get
   useEffect(() => {
@@ -49,9 +59,7 @@ export default function UserQuestDetail() {
 
   // success
   const successUserQuest = async (quest_id, next) => {
-    const onlyQuestIdList = userQuest.flatMap((npc) =>
-      npc.quest_info.map((quest) => quest.quest_id)
-    );
+    const onlyQuestIdList = makeOnlyQuestIds();
     const newQuestList = [
       ...onlyQuestIdList.filter((quest) => quest !== quest_id),
       ...next.map((quest) => quest.id),
@@ -69,9 +77,7 @@ export default function UserQuestDetail() {
 
   // delete
   const deleteUserQuest = async (deleteList) => {
-    const onlyQuestIdList = userQuest.flatMap((npc) =>
-      npc.quest_info.map((quest) => quest.quest_id)
-    );
+    const onlyQuestIdList = makeOnlyQuestIds();
     const newQuestList = onlyQuestIdList.filter(
       (quest_id) => !deleteList.includes(quest_id)
     );
@@ -88,14 +94,11 @@ export default function UserQuestDetail() {
 
   // update
   const updateUserQuest = async (selectedList) => {
-    const onlyQuestIdList = userQuest.flatMap((npc) =>
-      npc.quest_info.map((quest) => quest.quest_id)
-    );
+    const onlyQuestIdList = makeOnlyQuestIds();
     const onlySelectQuestIdList = selectedList.flatMap((quest) => quest.id);
     const newQuestList = [
       ...new Set([...onlyQuestIdList, ...onlySelectQuestIdList]),
     ];
-
     await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
@@ -106,15 +109,63 @@ export default function UserQuestDetail() {
     );
   };
 
+  const checkedBox = (quest_id: string) => {
+    if (checkedQuest.includes(quest_id)) {
+      const filterData = checkedQuest.filter((id) => id !== quest_id);
+      setCheckedQuest(filterData);
+    } else {
+      setCheckedQuest([...checkedQuest, quest_id]);
+    }
+  };
+
+  const allCheck = () => {
+    const onlyQuestIdList = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    if (checkedQuest.length === onlyQuestIdList.length) {
+      setCheckedQuest([]);
+    } else {
+      setCheckedQuest(onlyQuestIdList);
+    }
+  };
+
+  const checkAllQuest = () => {
+    const onlyQuestIdList = userQuest.flatMap((npc) =>
+      npc.quest_info.map((quest) => quest.quest_id)
+    );
+    return checkedQuest.length === onlyQuestIdList.length;
+  };
+
   if (!userQuest) return null;
-  console.log(userQuest);
+
   return (
     <Box w={"95%"} h="100%">
       <UserQuestSelector updateQuest={updateUserQuest} />
-      {userQuest.length < 0 ? (
+      {userQuest.length < 0 || !userQuest[0].npc_id ? (
         <Text>퀘스트 추가 Please~~~</Text>
       ) : (
         <Accordion allowMultiple defaultIndex={indices}>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            mb={2}
+          >
+            <Checkbox
+              borderColor={ALL_COLOR.WHITE}
+              sx={{
+                "input + span": {
+                  width: "25px", // 체크박스 크기 조절
+                  height: "25px", // 체크박스 크기 조절
+                },
+              }}
+              isChecked={checkAllQuest()}
+              onChange={() => allCheck()}
+            >
+              전체 선택
+            </Checkbox>
+            <Button onClick={() => deleteUserQuest(checkedQuest)}>삭제</Button>
+          </Box>
           {userQuest.map((npc) => (
             <AccordionItem key={npc.npc_id}>
               <AccordionButton
@@ -142,8 +193,9 @@ export default function UserQuestDetail() {
               </AccordionButton>
               <UserQuestList
                 successQuest={successUserQuest}
-                deleteQuest={deleteUserQuest}
                 userQuest={npc}
+                checkedQuest={checkedQuest}
+                checkedBox={checkedBox}
               />
             </AccordionItem>
           ))}

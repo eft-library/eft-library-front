@@ -1,7 +1,6 @@
 "use client";
 
 import type { UserQuestList } from "@/types/types";
-import { useState } from "react";
 import {
   Box,
   AccordionPanel,
@@ -17,27 +16,9 @@ import Link from "next/link";
 export default function UserQuestList({
   userQuest,
   successQuest,
-  deleteQuest,
+  checkedQuest,
+  checkedBox,
 }: UserQuestList) {
-  const [checkedQuest, setCheckedQuest] = useState([]);
-
-  const checkedBox = (quest_id: string) => {
-    if (checkedQuest.includes(quest_id)) {
-      const filterData = checkedQuest.filter((id) => id !== quest_id);
-      setCheckedQuest(filterData);
-    } else {
-      setCheckedQuest([...checkedQuest, quest_id]);
-    }
-  };
-
-  const allCheck = () => {
-    if (checkedQuest.length === userQuest.quest_info.length) {
-      setCheckedQuest([]);
-    } else {
-      const allQuestIds = userQuest.quest_info.map((quest) => quest.quest_id);
-      setCheckedQuest(allQuestIds);
-    }
-  };
   const getTitle = (item) => {
     // 첫 번째 부분 추출
     let firstPart = item.quest_name_kr
@@ -70,27 +51,6 @@ export default function UserQuestList({
 
   return (
     <AccordionPanel p={1} mt={3}>
-      <Box
-        display={"flex"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        mb={2}
-      >
-        <Checkbox
-          borderColor={ALL_COLOR.WHITE}
-          sx={{
-            "input + span": {
-              width: "25px", // 체크박스 크기 조절
-              height: "25px", // 체크박스 크기 조절
-            },
-          }}
-          isChecked={checkedQuest.length === userQuest.quest_info.length}
-          onChange={() => allCheck()}
-        >
-          전체 선택
-        </Checkbox>
-        <Button onClick={() => deleteQuest(checkedQuest)}>삭제</Button>
-      </Box>
       {userQuest.quest_info.map((quest) => (
         <GridContents
           key={quest.quest_id}
