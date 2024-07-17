@@ -1,5 +1,4 @@
-import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 export const fetchDataWithNone = async (url: string, setData: Function) => {
   try {
@@ -24,11 +23,10 @@ export const fetchUserData = async (
   url: string,
   method: string,
   body: any,
-  setData: Function
+  setData: Function,
+  router: any,
+  session: any
 ) => {
-  const router = useRouter();
-  const { data: session } = useSession();
-
   try {
     const res = await fetch(url, {
       method: method,

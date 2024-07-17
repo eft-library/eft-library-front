@@ -18,8 +18,10 @@ import { useSession } from "next-auth/react";
 import UserQuestSelector from "./userQuestSelector";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function UserQuestDetail() {
+  const router = useRouter();
   const [indices, setIndices] = useState([0]);
   const [userQuest, setUserQuest] = useState<UserQuest[]>();
   const { data: session } = useSession();
@@ -31,9 +33,13 @@ export default function UserQuestDetail() {
         USER_API_ENDPOINTS.GET_USER_QUEST,
         "POST",
         { provider: session.provider },
-        setUserQuest
+        setUserQuest,
+        router,
+        session
       );
-      setIndices(userQuest.map((_, index) => index));
+      if (userQuest && userQuest.length > 1) {
+        setIndices(userQuest.map((_, index) => index));
+      }
     };
 
     if (session && session.accessToken && session.provider) {
@@ -55,7 +61,9 @@ export default function UserQuestDetail() {
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest
+      setUserQuest,
+      router,
+      session
     );
   };
 
@@ -72,7 +80,9 @@ export default function UserQuestDetail() {
       USER_API_ENDPOINTS.DELETE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest
+      setUserQuest,
+      router,
+      session
     );
   };
 
@@ -90,16 +100,18 @@ export default function UserQuestDetail() {
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest
+      setUserQuest,
+      router,
+      session
     );
   };
 
   if (!userQuest) return null;
-
+  console.log(userQuest);
   return (
     <Box w={"95%"} h="100%">
       <UserQuestSelector updateQuest={updateUserQuest} />
-      {!userQuest[0].npc_id ? (
+      {userQuest.length < 0 ? (
         <Text>퀘스트 추가 Please~~~</Text>
       ) : (
         <Accordion allowMultiple defaultIndex={indices}>
