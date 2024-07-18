@@ -9,7 +9,7 @@ import "@/assets/quest.css";
 export default function UserQuest() {
   return (
     <PageParent>
-      <SubHeader title="사용자 퀘스트" />
+      <SubHeader title="퀘스트 플래너" />
       <UserQuestDetail />
     </PageParent>
   );
