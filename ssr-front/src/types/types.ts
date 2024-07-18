@@ -513,16 +513,18 @@ export interface Quest extends strID, CommonData {
 }
 
 export interface RelatedQuests {
-  item_name: string;
+  item_name_en: string;
+  item_name_kr: string;
   quest_id: string;
-  quest_name: string;
+  quest_name_en: string;
+  quest_name_kr: string;
   in_raid: boolean | null;
   type: string;
   item_id: string;
   desc_text: string[] | null;
   count: number;
   item_image: string;
-  item_link;
+  item_link: string;
 }
 
 export interface QuestContents {

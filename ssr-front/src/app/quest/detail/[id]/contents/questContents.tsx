@@ -99,7 +99,7 @@ export default function QuestContents({ quest }: QuestContents) {
                     />
                   </Box>
                   <Link href={`${item.item_link}${item.item_id}`}>
-                    <GridCenterText isHover>{item.item_name}</GridCenterText>
+                    <GridCenterText isHover>{item.item_name_kr}</GridCenterText>
                   </Link>
                   <GridCenterText>{item.count}</GridCenterText>
                   <GridCenterText>
