@@ -522,6 +522,7 @@ export interface RelatedQuests {
   desc_text: string[] | null;
   count: number;
   item_image: string;
+  item_link;
 }
 
 export interface QuestContents {

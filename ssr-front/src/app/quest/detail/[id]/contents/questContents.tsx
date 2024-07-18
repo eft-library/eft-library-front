@@ -13,6 +13,7 @@ import GridContents from "@/components/gridContents/gridContents";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
+import Link from "next/link";
 
 export default function QuestContents({ quest }: QuestContents) {
   const [column, setColumn] = useState<Column>();
@@ -66,7 +67,6 @@ export default function QuestContents({ quest }: QuestContents) {
             <Text fontWeight={800} mb={4}>
               관련 퀘스트 아이템
             </Text>
-
             <Box
               display={"flex"}
               flexDirection={"column"}
@@ -98,7 +98,9 @@ export default function QuestContents({ quest }: QuestContents) {
                       thumbnail={item.item_image}
                     />
                   </Box>
-                  <GridCenterText>{item.item_name}</GridCenterText>
+                  <Link href={`${item.item_link}${item.item_id}`}>
+                    <GridCenterText isHover>{item.item_name}</GridCenterText>
+                  </Link>
                   <GridCenterText>{item.count}</GridCenterText>
                   <GridCenterText>
                     {item.type !== "KEY" && (
