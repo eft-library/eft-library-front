@@ -41,7 +41,7 @@ export const useScrollMove = (
             block: "center", // "start", "center", "end", "nearest"
           });
         }
-      }, 500);
+      }, 1000);
     }
   }, [id, data]);
 };
