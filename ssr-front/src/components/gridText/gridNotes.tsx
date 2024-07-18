@@ -13,7 +13,11 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
 
   const returnText = (note: JsonArrayText) => {
     if (isKey) {
-      return note.name_kr;
+      return (
+        <Box display={"flex"} _hover={{ color: ALL_COLOR.BEIGE }}>
+          <Text fontWeight={600}>{getTitle(note.name_kr)}</Text>
+        </Box>
+      );
     } else {
       return note.in_raid ? (
         <Box display={"flex"} _hover={{ color: ALL_COLOR.BEIGE }}>
@@ -26,7 +30,7 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
         </Box>
       ) : (
         <Box _hover={{ color: ALL_COLOR.BEIGE }} display={"flex"}>
-          <Text fontWeight={600}>{note.name_kr}</Text>
+          <Text fontWeight={600}>{getTitle(note.name_kr)}</Text>
           <Text fontWeight={600}>&nbsp;({note.count}개 필요)</Text>
         </Box>
       );
