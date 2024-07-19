@@ -6,7 +6,8 @@ import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import ImageZoom from "@/components/imageZoom/imageZoom";
-import { Box, Link } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 
@@ -76,7 +77,7 @@ export default function BossLoot({ lootList, column, title }) {
                     />
                   </Box>
                   <GridCenterText isHover>
-                    <Link href={loot.link + loot.item_id}>
+                    <Link href={loot.link + loot.item_id} scroll={false}>
                       {loot.item_name}
                     </Link>
                   </GridCenterText>

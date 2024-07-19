@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, GridItem, Box, Text, Image } from "@chakra-ui/react";
+import { Grid, Box, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";

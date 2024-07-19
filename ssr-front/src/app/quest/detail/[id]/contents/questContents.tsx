@@ -98,7 +98,10 @@ export default function QuestContents({ quest }: QuestContents) {
                       thumbnail={item.item_image}
                     />
                   </Box>
-                  <Link href={`${item.item_link}${item.item_id}`}>
+                  <Link
+                    href={`${item.item_link}${item.item_id}`}
+                    scroll={false}
+                  >
                     <GridCenterText isHover>{item.item_name_kr}</GridCenterText>
                   </Link>
                   <GridCenterText>{item.count}</GridCenterText>
