@@ -9,7 +9,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import KeyDetail from "./keyDetail";
+import KeyGetData from "./keyGetData";
 
 export default function KeyMain() {
   const { keyCategory, setKeyCategory } = useAppStore((state) => state);
@@ -38,7 +38,7 @@ export default function KeyMain() {
         selectorId="value"
         itemDesc="desc_kr"
       />
-      <KeyDetail category={keyCategory} />
+      <KeyGetData category={keyCategory} />
     </PageParent>
   );
 }

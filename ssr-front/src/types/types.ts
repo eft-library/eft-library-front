@@ -569,7 +569,12 @@ export interface Key extends NameImage, strID {
   related_quests: JsonArrayText[];
 }
 
-export interface KeyDetail extends Category {}
+export interface KeyDetail extends KeyGetData {
+  keyList: Key[];
+  column: Column;
+}
+
+export interface KeyGetData extends Category {}
 
 export interface Provisions extends CommonData, strID, Category {
   short_name: string;

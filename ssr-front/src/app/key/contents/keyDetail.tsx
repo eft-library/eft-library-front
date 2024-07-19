@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import API_ENDPOINTS from "@/config/endPoints";
-import type { Key, Column, KeyDetail } from "@/types/types";
+import type { KeyDetail } from "@/types/types";
 import { Box } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
@@ -13,30 +9,17 @@ import GridArrayText from "@/components/gridText/gridArrayText";
 import GridNotes from "@/components/gridText/gridNotes";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function KeyDetail({ category }: KeyDetail) {
+export default function KeyDetail({ category, keyList, column }: KeyDetail) {
   const param = useSearchParams();
-  const [keyList, setKeyList] = useState<Key[]>();
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.key}`,
-      setColumn
-    );
-    fetchDataWithNone(API_ENDPOINTS.GET_ALL_KEY, setKeyList);
-  }, []);
 
   useScrollMove(param.get("id"), keyList, "KEY");
 
   const checkViewKey = (mapValue: Array<string>, keyCategory: string) => {
     return keyCategory === "ALL" || mapValue.includes(keyCategory);
   };
-
-  if (!column || !keyList) return <WeaponSkeleton />;
 
   return (
     <Box
