@@ -9,7 +9,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
-import LootDetail from "./lootDetail";
+import LootGetData from "./lootGetData";
 
 export default function LootMain() {
   const { lootCategory, setLootCategory } = useAppStore((state) => state);
@@ -38,7 +38,7 @@ export default function LootMain() {
         selectorId="value"
         itemDesc="desc_kr"
       />
-      <LootDetail category={lootCategory} />
+      <LootGetData category={lootCategory} />
     </PageParent>
   );
 }

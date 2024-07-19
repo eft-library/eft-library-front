@@ -464,7 +464,12 @@ export interface Ammo extends strID, Category {
   image: string;
 }
 
-export interface LootDetail extends Category {}
+export interface LootGetData extends Category {}
+
+export interface LootDetail extends LootGetData {
+  column: Column;
+  lootList: Loot[];
+}
 
 export interface Loot extends strID, Category {
   name_en: string;
@@ -575,6 +580,11 @@ export interface KeyDetail extends KeyGetData {
 }
 
 export interface KeyGetData extends Category {}
+
+export interface ProvisionsDetail {
+  provisionList: Provisions[];
+  column: Column;
+}
 
 export interface Provisions extends CommonData, strID, Category {
   short_name: string;

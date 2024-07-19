@@ -1,7 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
-import ProvisionsDetail from "./contents/provisionsDetail";
+import ProvisionsGetData from "./contents/provisionsGetData";
 
 export const metadata = {
   title: "식량 | EFT Library",
@@ -30,7 +30,7 @@ export default function Provisions() {
     <PageParent>
       <SubHeader title="식량" />
       <Box mb={10} />
-      <ProvisionsDetail />
+      <ProvisionsGetData />
     </PageParent>
   );
 }

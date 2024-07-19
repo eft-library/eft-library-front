@@ -4,31 +4,19 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
 import { Box, GridItem } from "@chakra-ui/react";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import API_ENDPOINTS from "@/config/endPoints";
-import type { Provisions, Column } from "@/types/types";
-import React, { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
+import type { ProvisionsDetail } from "@/types/types";
 import ImageZoom from "@/components/imageZoom/imageZoom";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import EffectText from "./effectText";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSearchParams } from "next/navigation";
 import GridNotes from "@/components/gridText/gridNotes";
 import { useScrollMove } from "@/hooks/useScrollMove";
 
-export default function ProvisionsDetail() {
+export default function ProvisionsDetail({
+  provisionList,
+  column,
+}: ProvisionsDetail) {
   const param = useSearchParams();
-  const [provisionList, setProvisionList] = useState<Provisions[]>();
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.provisions}`,
-      setColumn
-    );
-    fetchDataWithNone(API_ENDPOINTS.GET_ALL_PROVISIONS, setProvisionList);
-  }, []);
 
   useScrollMove(param.get("id"), provisionList);
 
@@ -69,8 +57,6 @@ export default function ProvisionsDetail() {
       }
     }
   };
-
-  if (!column || !provisionList) return <WeaponSkeleton />;
 
   return (
     <>
