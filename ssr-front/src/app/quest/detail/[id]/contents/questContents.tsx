@@ -102,15 +102,25 @@ export default function QuestContents({ quest }: QuestContents) {
                     <GridCenterText isHover>{item.item_name_kr}</GridCenterText>
                   </Link>
                   <GridCenterText>{item.count}</GridCenterText>
-                  <GridCenterText>
+                  <Box
+                    w={"100%"}
+                    h={"100%"}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    flexDirection={"column"}
+                  >
                     {item.type !== "KEY" && (
                       <Text
                         color={item.in_raid ? ALL_COLOR.RED : ALL_COLOR.YELLOW}
+                        _hover={{ color: ALL_COLOR.BEIGE }}
+                        textAlign="center"
+                        fontWeight={600}
                       >
                         {item.in_raid ? "Y" : "N"}
                       </Text>
                     )}
-                  </GridCenterText>
+                  </Box>
                   <GridItem
                     colSpan={2}
                     display={"flex"}

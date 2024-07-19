@@ -42,7 +42,7 @@ export const useScrollMove = (
           });
         }
       };
-
+      console.log("hi");
       setTimeout(scrollToElement, 1000);
     }
   }, [
