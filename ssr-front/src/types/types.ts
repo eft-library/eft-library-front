@@ -504,6 +504,13 @@ export interface FaceCoverList {
   no_class_face_cover: Headwear[];
 }
 
+export interface Event {
+  event_text_en: string[];
+  event_text_kr: string[];
+  event_title_en: string[];
+  event_id: string;
+}
+
 export interface Quest extends strID, CommonData {
   npc_value: string;
   title_kr: string;
@@ -515,6 +522,8 @@ export interface Quest extends strID, CommonData {
   requires: JsonArrayText[];
   next: JsonArrayText[];
   sub: RelatedQuests[];
+  event_sub: Event[];
+  update_time: string;
 }
 
 export interface RelatedQuests {

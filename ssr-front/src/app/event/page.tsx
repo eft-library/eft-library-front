@@ -1,7 +1,10 @@
-import WeaponMain from "./contents/weaponMain";
+import SubHeader from "@/components/subHeader/subHeader";
+import PageParent from "@/components/pageParent/pageParent";
+import { Box } from "@chakra-ui/react";
+import EventDetail from "./contents/eventDetail";
 
 export const metadata = {
-  title: "무기 | EFT Library",
+  title: "이벤트 | EFT Library",
   description: "EFT Library",
   keywords: [
     "타르코프",
@@ -29,12 +32,18 @@ export const metadata = {
   openGraph: {
     siteName: "Escape From Tarkov Library",
     title: "EFT Library",
-    description: "EFT Library 무기",
+    description: "EFT Library 이벤트",
     images: "/og.png",
-    url: "https://eftlibrary.com/weapon",
+    url: "https://eftlibrary.com/event",
   },
 };
 
-export default function Weapon() {
-  return <WeaponMain />;
+export default function Event() {
+  return (
+    <PageParent>
+      <SubHeader title="이벤트" />
+      <Box mb={10} />
+      <EventDetail />
+    </PageParent>
+  );
 }
