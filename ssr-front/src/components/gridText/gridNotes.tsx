@@ -4,24 +4,30 @@ import Link from "next/link";
 import type { GridNotes, JsonArrayText } from "@/types/types";
 
 export default function GridNotes({ notes, isKey = false }: GridNotes) {
-  const getTitle = (title: string) => {
+  const getTitle = (title: string, quest_id: string) => {
     // 첫 번째 부분 추출
     let firstPart = title.substring(0, title.indexOf("(")).trim();
 
-    return <Text fontWeight={600}>{firstPart}</Text>;
+    return (
+      <Link href={`/quest/detail/${quest_id}`} key={quest_id}>
+        <Text
+          fontWeight={600}
+          color={ALL_COLOR.FOOTER_YELLO}
+          _hover={{ color: ALL_COLOR.QUEST_YELLO }}
+        >
+          {firstPart}
+        </Text>
+      </Link>
+    );
   };
 
   const returnText = (note: JsonArrayText) => {
     if (isKey) {
-      return (
-        <Box display={"flex"} _hover={{ color: ALL_COLOR.BEIGE }}>
-          <Text fontWeight={600}>{getTitle(note.name_kr)}</Text>
-        </Box>
-      );
+      return <Box display={"flex"}>{getTitle(note.name_kr, note.id)}</Box>;
     } else {
       return note.in_raid ? (
-        <Box display={"flex"} _hover={{ color: ALL_COLOR.BEIGE }}>
-          {getTitle(note.name_kr)}
+        <Box display={"flex"}>
+          {getTitle(note.name_kr, note.id)}
           <Text fontWeight={600}>&nbsp;(</Text>
           <Text fontWeight={600} color={ALL_COLOR.LIGHT_RED}>
             인레이드&nbsp;
@@ -29,8 +35,8 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
           <Text fontWeight={600}>{note.count}개 필요)</Text>
         </Box>
       ) : (
-        <Box _hover={{ color: ALL_COLOR.BEIGE }} display={"flex"}>
-          <Text fontWeight={600}>{getTitle(note.name_kr)}</Text>
+        <Box display={"flex"}>
+          {getTitle(note.name_kr, note.id)}
           <Text fontWeight={600}>&nbsp;({note.count}개 필요)</Text>
         </Box>
       );
@@ -49,9 +55,7 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
             퀘스트
           </Text>
           {notes.map((quest) => (
-            <Link href={`/quest/detail/${quest.id}`} key={quest.id}>
-              <Box>{returnText(quest)}</Box>
-            </Link>
+            <Box key={quest.id}>{returnText(quest)}</Box>
           ))}
         </>
       ) : (

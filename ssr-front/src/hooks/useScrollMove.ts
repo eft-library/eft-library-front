@@ -42,6 +42,15 @@ export const useScrollMove = (
           });
         }
       }, 1000);
+      setTimeout(() => {
+        const targetElement = document.getElementById(id);
+        if (id && targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center", // "start", "center", "end", "nearest"
+          });
+        }
+      }, 1000);
     }
   }, [id, data]);
 };
