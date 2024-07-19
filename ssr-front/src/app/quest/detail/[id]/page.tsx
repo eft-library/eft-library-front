@@ -1,61 +1,36 @@
-"use client";
-
-import { Box, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
+import QuestDetailMain from "./contents/questDetailMain";
+import { Metadata, ResolvingMetadata } from "next";
+import { formatImage } from "@/lib/formatImage";
 import API_ENDPOINTS from "@/config/endPoints";
-import QuestInfo from "./contents/questInfo";
-import QuestContents from "./contents/questContents";
-import "@/assets/quest.css";
-import type { Quest } from "@/types/types";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // params에서 id 추출
+  const id = params.id;
+
+  // fetch data
+  const product = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`).then((res) =>
+    res.json()
+  );
+
+  const res = product.data;
+
+  return {
+    title: `${res.title_kr} | EFT Library`,
+    description: "EFT Library",
+    openGraph: {
+      images: [formatImage(res.image)],
+    },
+  };
+}
 
 export default function QuestDetail() {
-  const param = useParams<{ id: string }>();
-  const [questDetail, setQuestDetail] = useState<Quest>();
-  useEffect(() => {
-    fetchDataWithNone(`${API_ENDPOINTS.GET_QUEST}/${param.id}`, setQuestDetail);
-  }, [param]);
-
-  return (
-    <Box
-      className="Main"
-      bgSize="cover"
-      bg={ALL_COLOR.BLACK}
-      bgPosition="center"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      paddingTop="80px"
-      paddingBottom="20px"
-      width="100%"
-      height="auto"
-    >
-      <Flex
-        className="Container"
-        flex="1"
-        flexDirection="column"
-        width="60%"
-        height="100vh"
-        justifyContent="center"
-        border="1px"
-        borderColor={ALL_COLOR.LIGHT_GRAY}
-        borderRadius={"lg"}
-        paddingBottom={"20px"}
-      >
-        <Flex
-          alignItems={"center"}
-          justifyContent={"center"}
-          flexDirection="column"
-          mb={"40px"}
-          mt={"40px"}
-        >
-          <QuestInfo quest={questDetail} />
-          <QuestContents quest={questDetail} />
-        </Flex>
-      </Flex>
-    </Box>
-  );
+  return <QuestDetailMain />;
 }

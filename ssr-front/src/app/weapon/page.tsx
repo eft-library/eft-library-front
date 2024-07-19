@@ -1,44 +1,27 @@
-"use client";
+import WeaponMain from "./contents/weaponMain";
 
-import SubHeader from "@/components/subHeader/subHeader";
-import PageParent from "@/components/pageParent/pageParent";
-import { useAppStore } from "@/store/provider";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import API_ENDPOINTS from "@/config/endPoints";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import WeaponDetail from "./contents/weaponDetail";
-import type { Column } from "@/types/types";
+export const metadata = {
+  title: "무기 | EFT Library",
+  description: "EFT Library",
+  keywords: [
+    "tarkov",
+    "타르코프 퀘스트 공략",
+    "타르코프 지도",
+    "타르코프",
+    "타르코프 정보",
+    "타르코프 퀘스트",
+    "타르코프 공략",
+    "타르코프 하이드아웃 정보",
+  ],
+  openGraph: {
+    siteName: "Escape From Tarkov Library",
+    title: "EFT Library",
+    description: "EFT Library 무기",
+    images: "/og.png",
+    url: "https://eftlibrary.com/weapon",
+  },
+};
 
 export default function Weapon() {
-  const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.weaponType}`,
-      setColumn
-    );
-  }, []);
-
-  const onClickCategory = (category: string) => {
-    setWeaponCategory(category);
-  };
-
-  if (!column) return null;
-
-  return (
-    <PageParent>
-      <SubHeader title="무기" />
-      <ContentsSelector
-        onClickEvent={onClickCategory}
-        itemList={column.json_value}
-        currentId={weaponCategory}
-        selectorId="value"
-        itemDesc="desc_kr"
-      />
-      <WeaponDetail category={weaponCategory} />
-    </PageParent>
-  );
+  return <WeaponMain />;
 }

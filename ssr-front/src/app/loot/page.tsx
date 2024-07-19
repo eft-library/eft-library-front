@@ -1,44 +1,27 @@
-"use client";
+import LootMain from "./contents/lootMain";
 
-import SubHeader from "@/components/subHeader/subHeader";
-import PageParent from "@/components/pageParent/pageParent";
-import { useAppStore } from "@/store/provider";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import API_ENDPOINTS from "@/config/endPoints";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import type { Column } from "@/types/types";
-import LootDetail from "./contents/lootDetail";
+export const metadata = {
+  title: "전리품 | EFT Library",
+  description: "EFT Library",
+  keywords: [
+    "tarkov",
+    "타르코프 퀘스트 공략",
+    "타르코프 지도",
+    "타르코프",
+    "타르코프 정보",
+    "타르코프 퀘스트",
+    "타르코프 공략",
+    "타르코프 하이드아웃 정보",
+  ],
+  openGraph: {
+    siteName: "Escape From Tarkov Library",
+    title: "EFT Library",
+    description: "EFT Library 전리품",
+    images: "/og.png",
+    url: "https://eftlibrary.com/loot",
+  },
+};
 
 export default function Loot() {
-  const { lootCategory, setLootCategory } = useAppStore((state) => state);
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.lootType}`,
-      setColumn
-    );
-  }, []);
-
-  const onClickCategory = (category: string) => {
-    setLootCategory(category);
-  };
-
-  if (!column) return null;
-
-  return (
-    <PageParent>
-      <SubHeader title="전리품" />
-      <ContentsSelector
-        onClickEvent={onClickCategory}
-        itemList={column.json_value}
-        currentId={lootCategory}
-        selectorId="value"
-        itemDesc="desc_kr"
-      />
-      <LootDetail category={lootCategory} />
-    </PageParent>
-  );
+  return <LootMain />;
 }

@@ -1,45 +1,27 @@
-"use client";
+import HideoutMain from "./contents/hideoutMain";
 
-import SubHeader from "@/components/subHeader/subHeader";
-import PageParent from "@/components/pageParent/pageParent";
-import { useAppStore } from "@/store/provider";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import API_ENDPOINTS from "@/config/endPoints";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import type { Column } from "@/types/types";
-import HideoutDetail from "./contents/hideoutDetail";
+export const metadata = {
+  title: "은신처 | EFT Library",
+  description: "EFT Library",
+  keywords: [
+    "tarkov",
+    "타르코프 퀘스트 공략",
+    "타르코프 지도",
+    "타르코프",
+    "타르코프 정보",
+    "타르코프 퀘스트",
+    "타르코프 공략",
+    "타르코프 하이드아웃 정보",
+  ],
+  openGraph: {
+    siteName: "Escape From Tarkov Library",
+    title: "EFT Library",
+    description: "EFT Library 은신처",
+    images: "/og.png",
+    url: "https://eftlibrary.com/hideout",
+  },
+};
 
 export default function Hideout() {
-  const { hideoutCategory, setHideoutCategory } = useAppStore((state) => state);
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.hideoutType}`,
-      setColumn
-    );
-  }, []);
-
-  const onClickCategory = (category: string) => {
-    setHideoutCategory(category);
-  };
-
-  if (!column) return null;
-
-  return (
-    <PageParent>
-      <SubHeader title="은신처" />
-      <ContentsSelector
-        onClickEvent={onClickCategory}
-        itemList={column.json_value}
-        currentId={hideoutCategory}
-        selectorId="value"
-        itemDesc="desc_kr"
-        isImage
-      />
-      <HideoutDetail category={hideoutCategory} />
-    </PageParent>
-  );
+  return <HideoutMain />;
 }

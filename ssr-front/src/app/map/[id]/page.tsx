@@ -1,63 +1,36 @@
-"use client";
-
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import PageParent from "@/components/pageParent/pageParent";
-import LinkSelector from "@/components/linkSelector/linkSelector";
+import MapMain from "./contents/mapMain";
+import { Metadata, ResolvingMetadata } from "next";
+import { formatImage } from "@/lib/formatImage";
 import API_ENDPOINTS from "@/config/endPoints";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import type { Column, Map } from "@/types/types";
-import ThreeViewDetail from "./contents/threeViewDetail";
-import JPGSkeleton from "./skeleton/jpgSkeleton";
-import ThreeSkeleton from "./skeleton/threeSkeleton";
-import ItemSelectorSkeleton from "./skeleton/itemSelectorSkeleton";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // params에서 id 추출
+  const id = params.id;
+
+  // fetch data
+  const product = await fetch(`${API_ENDPOINTS.GET_MAP}/${id}`).then((res) =>
+    res.json()
+  );
+
+  const res = product.data;
+
+  return {
+    title: `대화형 지도 : ${res.name_kr} | EFT Library`,
+    description: "EFT Library",
+    openGraph: {
+      images: [formatImage(res.mot_image)],
+    },
+  };
+}
 
 export default function Map() {
-  const [mapData, setMapData] = useState<Map>();
-  const param = useParams();
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.map}`,
-      setColumn
-    );
-  }, []);
-
-  useEffect(() => {
-    fetchDataWithNone(`${API_ENDPOINTS.GET_MAP}/${param.id}`, setMapData);
-  }, [param.id]);
-
-  const onClickMap = (value: Map) => {
-    setMapData(value);
-  };
-
-  const sortList = (columnList: Column) => {
-    const result = columnList.json_value.sort((a, b) => {
-      return a.order - b.order;
-    });
-    return result;
-  };
-
-  if (!column || !mapData)
-    return (
-      <PageParent>
-        <ItemSelectorSkeleton />
-        <JPGSkeleton />
-        <ThreeSkeleton />
-      </PageParent>
-    );
-
-  return (
-    <PageParent>
-      <LinkSelector
-        itemList={sortList(column)}
-        itemDesc="name_kr"
-        itemLink="link"
-        mt={3}
-      />
-      <ThreeViewDetail mapData={mapData} onClickMap={onClickMap} />
-    </PageParent>
-  );
+  return <MapMain />;
 }

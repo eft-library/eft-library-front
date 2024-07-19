@@ -32,7 +32,6 @@ export default function ThreeView({ map, viewItemList }) {
     animate();
 
     return () => {
-      console.log(controlsRef);
       controlsRef.current.removeEventListener("change", updateZoomLevel);
     };
   }, [updateZoomLevel]);

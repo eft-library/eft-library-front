@@ -1,55 +1,36 @@
-"use client";
-
-import PageParent from "@/components/pageParent/pageParent";
-import SubHeader from "@/components/subHeader/subHeader";
-import LinkSelector from "@/components/linkSelector/linkSelector";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
+import MapOfTarkovMain from "./contents/mapOfTarkovMain";
+import { Metadata, ResolvingMetadata } from "next";
+import { formatImage } from "@/lib/formatImage";
 import API_ENDPOINTS from "@/config/endPoints";
-import { COLUMN_KEY } from "@/util/consts/columnConsts";
-import MapOfTarkovContents from "./contents/mapOfTarkovContents";
-import type { Column, MapOfTarkov } from "@/types/types";
-import ContentsSkeleton from "../skeleton/contentsSkeleton";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // params에서 id 추출
+  const id = params.id;
+
+  // fetch data
+  const product = await fetch(`${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${id}`).then(
+    (res) => res.json()
+  );
+
+  const res = product.data.map_info;
+
+  return {
+    title: `타르코프 지도 : ${res.name_kr} | EFT Library`,
+    description: "EFT Library",
+    openGraph: {
+      images: [formatImage(res.mot_image)],
+    },
+  };
+}
 
 export default function MapOfTarkov() {
-  const param = useParams<{ id: string }>();
-  const [mapOfTarkov, setMapOfTarkov] = useState<MapOfTarkov>();
-  const [column, setColumn] = useState<Column>();
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.mapOfTarkov}`,
-      setColumn
-    );
-  }, []);
-
-  useEffect(() => {
-    fetchDataWithNone(
-      `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${param.id}`,
-      setMapOfTarkov
-    );
-  }, [param.id]);
-
-  const sortList = () => {
-    const result = column.json_value.sort((a, b) => {
-      return a.order - b.order;
-    });
-    return result;
-  };
-
-  if (!column || !mapOfTarkov) return <ContentsSkeleton />;
-
-  return (
-    <PageParent>
-      <SubHeader title="지도" />
-      <LinkSelector
-        itemList={sortList()}
-        itemDesc="name_kr"
-        itemLink="link"
-        mt={6}
-      />
-      <MapOfTarkovContents mapOfTarkov={mapOfTarkov} />
-    </PageParent>
-  );
+  return <MapOfTarkovMain />;
 }

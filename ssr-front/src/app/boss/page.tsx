@@ -1,43 +1,27 @@
-"use client";
+import BossMain from "./contents/bossMain";
 
-import SubHeader from "@/components/subHeader/subHeader";
-import ContentsSelector from "@/components/contentsSelector/contentsSelector";
-import PageParent from "@/components/pageParent/pageParent";
-import { useAppStore } from "@/store/provider";
-import { useEffect, useState } from "react";
-import { fetchDataWithNone } from "@/lib/api";
-import { Box } from "@chakra-ui/react";
-import BossContents from "./contents/bossContents";
-import BossDetail from "./contents/bossDetail";
-import API_ENDPOINTS from "@/config/endPoints";
-import type { Boss } from "@/types/types";
+export const metadata = {
+  title: "보스 | EFT Library",
+  description: "EFT Library",
+  keywords: [
+    "tarkov",
+    "타르코프 퀘스트 공략",
+    "타르코프 지도",
+    "타르코프",
+    "타르코프 정보",
+    "타르코프 퀘스트",
+    "타르코프 공략",
+    "타르코프 하이드아웃 정보",
+  ],
+  openGraph: {
+    siteName: "Escape From Tarkov Library",
+    title: "EFT Library",
+    description: "EFT Library 보스",
+    images: "/og.png",
+    url: "https://eftlibrary.com/boss",
+  },
+};
 
 export default function Boss() {
-  const [boss, setBoss] = useState<Boss[]>([]);
-  const { bossId, setBossId } = useAppStore((state) => state);
-
-  useEffect(() => {
-    fetchDataWithNone(API_ENDPOINTS.GET_ALL_BOSS, setBoss);
-  }, []);
-
-  const onClickBoss = (bossValue: string) => {
-    setBossId(bossValue);
-  };
-
-  return (
-    <PageParent>
-      <SubHeader title="보스" />
-      <ContentsSelector
-        onClickEvent={onClickBoss}
-        itemList={boss}
-        currentId={bossId}
-        selectorId={"id"}
-        itemDesc="name_kr"
-      />
-      <Box w={"95%"}>
-        <BossDetail bossList={boss} bossId={bossId} />
-      </Box>
-      <BossContents bossList={boss} bossId={bossId} />
-    </PageParent>
-  );
+  return <BossMain />;
 }

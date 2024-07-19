@@ -17,7 +17,6 @@ export default function ItemBox({
 
   const meshscale = () => {
     const scale = zoomLevel;
-    console.log(scale);
     if (scale <= 100) {
       return 3;
     } else if (scale > 100 && scale <= 120) {
