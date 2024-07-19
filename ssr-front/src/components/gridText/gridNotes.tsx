@@ -12,7 +12,7 @@ export default function GridNotes({ notes, isKey = false }: GridNotes) {
       <Link href={`/quest/detail/${quest_id}`} key={quest_id}>
         <Text
           fontWeight={600}
-          color={ALL_COLOR.FOOTER_YELLO}
+          color={ALL_COLOR.WHITE}
           _hover={{ color: ALL_COLOR.QUEST_YELLO }}
         >
           {firstPart}
