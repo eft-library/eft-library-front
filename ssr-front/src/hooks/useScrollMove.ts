@@ -33,24 +33,26 @@ export const useScrollMove = (
     }
 
     if (typeof window !== "undefined" && data) {
-      setTimeout(() => {
+      const scrollToElement = () => {
         const targetElement = document.getElementById(id);
         if (id && targetElement) {
           targetElement.scrollIntoView({
             behavior: "smooth",
-            block: "center", // "start", "center", "end", "nearest"
+            block: "center",
           });
         }
-      }, 1000);
-      setTimeout(() => {
-        const targetElement = document.getElementById(id);
-        if (id && targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "center", // "start", "center", "end", "nearest"
-          });
-        }
-      }, 1000);
+      };
+
+      requestAnimationFrame(scrollToElement);
     }
-  }, [id, data]);
+  }, [
+    id,
+    data,
+    reset,
+    setKeyCategory,
+    setMedicalCategory,
+    setWeaponCategory,
+    setAmmoCategory,
+    setLootCategory,
+  ]);
 };
