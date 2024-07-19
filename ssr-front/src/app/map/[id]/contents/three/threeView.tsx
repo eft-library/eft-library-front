@@ -45,8 +45,7 @@ export default function ThreeView({ map, viewItemList }) {
     >
       <MapControls
         zoomSpeed={2.0}
-        enableDamping
-        dampingFactor={0.1}
+        enableDamping={false}
         enableZoom={true}
         ref={controlsRef}
       />
