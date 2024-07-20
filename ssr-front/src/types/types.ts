@@ -505,10 +505,12 @@ export interface FaceCoverList {
 }
 
 export interface Event {
+  name_en: string[];
+  name_kr: string[];
   event_text_en: string[];
   event_text_kr: string[];
-  event_title_en: string[];
-  event_id: string;
+  id: string;
+  update_time: string;
 }
 
 export interface Quest extends strID, CommonData {
@@ -522,7 +524,6 @@ export interface Quest extends strID, CommonData {
   requires: JsonArrayText[];
   next: JsonArrayText[];
   sub: RelatedQuests[];
-  event_sub: Event[];
   update_time: string;
 }
 
