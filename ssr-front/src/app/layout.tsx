@@ -7,6 +7,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
+import AdSense from "@/components/adsense/adSense";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -62,6 +63,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />
+      </head>
       <body suppressHydrationWarning>
         <AuthContext>
           <ChakraProvider>
