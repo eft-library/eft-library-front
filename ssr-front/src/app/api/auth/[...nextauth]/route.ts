@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
-import Naver from "next-auth/providers/naver";
+// import Naver from "next-auth/providers/naver";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 
 async function refreshAccessToken(token: JWT) {
@@ -63,10 +63,10 @@ const handler = NextAuth({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_ID || "",
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET || "",
     }),
-    Naver({
-      clientId: process.env.NEXT_PUBLIC_NAVER_ID || "",
-      clientSecret: process.env.NEXT_PUBLIC_NAVER_SECRET || "",
-    }),
+    // Naver({
+    //   clientId: process.env.NEXT_PUBLIC_NAVER_ID || "",
+    //   clientSecret: process.env.NEXT_PUBLIC_NAVER_SECRET || "",
+    // }),
   ],
   session: {
     maxAge: 2 * 60 * 60, // 1일 (단위: 초)
