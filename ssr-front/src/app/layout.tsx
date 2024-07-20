@@ -9,6 +9,7 @@ import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
 import AdBanner from "@/components/adsense/adBanner";
 import AdSense from "@/components/adsense/adSense";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         <AuthContext>
           <ChakraProvider>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
