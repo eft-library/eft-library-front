@@ -10,6 +10,7 @@ import QuestContents from "./questContents";
 import "@/assets/quest.css";
 import type { Quest } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import PageParent from "@/components/pageParent/pageParent";
 
 export default function QuestDetailMain() {
   const param = useParams<{ id: string }>();
@@ -19,43 +20,9 @@ export default function QuestDetailMain() {
   }, [param]);
 
   return (
-    <Box
-      className="Main"
-      bgSize="cover"
-      bg={ALL_COLOR.BLACK}
-      bgPosition="center"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      paddingTop="80px"
-      paddingBottom="20px"
-      width="100%"
-      height="auto"
-    >
-      <Flex
-        className="Container"
-        flex="1"
-        flexDirection="column"
-        width="60%"
-        height="100vh"
-        justifyContent="center"
-        border="1px"
-        borderColor={ALL_COLOR.LIGHT_GRAY}
-        borderRadius={"lg"}
-        paddingBottom={"20px"}
-      >
-        <Flex
-          alignItems={"center"}
-          justifyContent={"center"}
-          flexDirection="column"
-          mb={"40px"}
-          mt={"40px"}
-        >
-          <QuestInfo quest={questDetail} />
-          <QuestContents quest={questDetail} />
-        </Flex>
-      </Flex>
-    </Box>
+    <PageParent>
+      <QuestInfo quest={questDetail} />
+      <QuestContents quest={questDetail} />
+    </PageParent>
   );
 }
