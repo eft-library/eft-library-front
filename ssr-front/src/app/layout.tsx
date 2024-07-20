@@ -7,6 +7,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
+import AdBanner from "@/components/adsense/adBanner";
 import AdSense from "@/components/adsense/adSense";
 
 export const metadata: Metadata = {
@@ -63,10 +64,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />
-      </head>
       <body suppressHydrationWarning>
+        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />
         <AuthContext>
           <ChakraProvider>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -74,6 +73,11 @@ export default function RootLayout({
             <Suspense>
               <AppStoreProvider>
                 <Header />
+                {/* <AdBanner
+                  dataAdFormat="auto"
+                  dataFullWidthResponsive={true}
+                  dataAdSlot="4284247248"
+                /> */}
                 {children}
               </AppStoreProvider>
             </Suspense>
