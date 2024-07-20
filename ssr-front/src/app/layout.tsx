@@ -7,7 +7,6 @@ import { ColorModeScript } from "@chakra-ui/react";
 import theme from "@/config/theme";
 import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
-import AdBanner from "@/components/adsense/adBanner";
 import AdSense from "@/components/adsense/adSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -75,11 +74,6 @@ export default function RootLayout({
             <Suspense>
               <AppStoreProvider>
                 <Header />
-                {/* <AdBanner
-                  dataAdFormat="auto"
-                  dataFullWidthResponsive={true}
-                  dataAdSlot="4284247248"
-                /> */}
                 {children}
               </AppStoreProvider>
             </Suspense>

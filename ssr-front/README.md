@@ -5,6 +5,7 @@
 3. 게시판 back 먼저 만들어 놓자 - 탭 분류(공략, 팁, 자유, 신고), 추천, 비추 - 댓글에도 추천 비추
 4. 공지 사항
 5. 패치 노트
+6. https://velog.io/@uuuuooii/Next.js-RSS-feed-%EC%A0%81%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-Google-Discover-%ED%8C%94%EB%A1%9C%EC%9A%B0-%EA%B8%B0%EB%8A%A5 -rss
 
 ## 다른 남은거
 
