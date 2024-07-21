@@ -54,7 +54,7 @@ export default function KeyDetail({ category, keyList, column }: KeyDetail) {
             <GridCenterText>{item.name} </GridCenterText>
             <GridArrayText arrayText={item.use_map_kr} />
             <GridCenterText>{item.uses}</GridCenterText>
-            <GridNotes isKey notes={item.related_quests} />
+            <GridNotes isKey questsNotes={item.related_quests} />
           </GridContents>
         ) : null
       )}

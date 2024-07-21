@@ -272,7 +272,8 @@ export interface GridContents extends strID {
 }
 
 export interface GridNotes {
-  notes: JsonArrayText;
+  questsNotes: JsonArrayText;
+  hideoutNotes?: JsonArrayText;
   isKey?: boolean;
 }
 
@@ -476,6 +477,7 @@ export interface Loot extends strID, Category {
   name_kr: string;
   image: string;
   related_quests: JsonArrayText[];
+  related_hideout: JsonArrayText[];
 }
 
 export interface RigList {
