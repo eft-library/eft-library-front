@@ -1,6 +1,7 @@
 import PageParent from "@/components/pageParent/pageParent";
 import SubHeader from "@/components/subHeader/subHeader";
 import ProfileDetail from "./contents/profileDetail";
+import { Box } from "@chakra-ui/react";
 
 export const metadata = {
   title: "내 정보 | EFT Library",
@@ -41,6 +42,7 @@ export default function UserProfile() {
   return (
     <PageParent>
       <SubHeader title="마이 페이지" />
+      <Box mb={10} />
       <ProfileDetail />
     </PageParent>
   );
