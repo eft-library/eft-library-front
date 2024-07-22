@@ -1,3 +1,7 @@
+import PageParent from "@/components/pageParent/pageParent";
+import SubHeader from "@/components/subHeader/subHeader";
+import ProfileDetail from "./contents/profileDetail";
+
 export const metadata = {
   title: "내 정보 | EFT Library",
   description: "EFT Library",
@@ -26,11 +30,18 @@ export const metadata = {
   ],
   openGraph: {
     siteName: "Escape From Tarkov Library",
-    title: "EFT Library",
+    title: "EFT Library 내 정보",
     description: "EFT Library 내 정보",
     images: "/og.png",
     url: "https://eftlibrary.com/user/profile",
   },
 };
 
-export default function UserProfile() {}
+export default function UserProfile() {
+  return (
+    <PageParent>
+      <SubHeader title="마이 페이지" />
+      <ProfileDetail />
+    </PageParent>
+  );
+}

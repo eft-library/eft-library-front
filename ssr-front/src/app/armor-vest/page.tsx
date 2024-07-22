@@ -31,7 +31,7 @@ export const metadata = {
   ],
   openGraph: {
     siteName: "Escape From Tarkov Library",
-    title: "EFT Library",
+    title: "EFT Library 방탄 조끼",
     description: "EFT Library 방탄 조끼",
     images: "/og.png",
     url: "https://eftlibrary.com/armor-vest",

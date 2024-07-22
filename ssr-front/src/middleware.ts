@@ -15,5 +15,5 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
 }
 
 export const config = {
-  matcher: ["/user/quest"],
+  matcher: ["/user/quest", "/user/profile"],
 };

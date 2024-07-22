@@ -1,6 +1,6 @@
 "use client";
 
-import { VStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
+import { VStack, HStack, Button, Grid, GridItem, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -113,12 +113,19 @@ export default function Header() {
               )}
             </Button>
           ))}
-        {session && (
-          <Button>
-            <Link href={"/user/quest"}>내 퀘스트</Link>
-          </Button>
-        )}
-        {/* <Login /> */}
+        <HStack ml={2}>
+          {session && (
+            <>
+              <Button>
+                <Link href={"/user/quest"}>내 퀘스트</Link>
+              </Button>
+              <Button>
+                <Link href={"/user/profile"}>마이 페이지</Link>
+              </Button>
+            </>
+          )}
+          <Login />
+        </HStack>
       </GridItem>
     </Grid>
   );

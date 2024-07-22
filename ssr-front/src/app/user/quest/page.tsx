@@ -32,7 +32,7 @@ export const metadata = {
   ],
   openGraph: {
     siteName: "Escape From Tarkov Library",
-    title: "EFT Library",
+    title: "EFT Library 퀘스트 플래너",
     description: "EFT Library 퀘스트 플래너",
     images: "/og.png",
     url: "https://eftlibrary.com/user/quest",

@@ -24,7 +24,7 @@ export async function generateMetadata(
 
   return {
     title: `타르코프 지도 : ${res.name_kr} | EFT Library`,
-    description: "EFT Library",
+    description: "EFT Library 타르코프 지도",
     openGraph: {
       images: [formatImage(res.mot_image)],
     },
