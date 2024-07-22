@@ -2,12 +2,15 @@ import { GridItem, Text, Box } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import Link from "next/link";
 import type { GridNotes, JsonArrayText } from "@/types/types";
+import { useAppStore } from "@/store/provider";
 
 export default function GridNotes({
   questsNotes,
   hideoutNotes = [],
   isKey = false,
 }: GridNotes) {
+  const { setHideoutCategory } = useAppStore((state) => state);
+
   const getQuestTitle = (title: string, quest_id: string) => {
     // 첫 번째 부분 추출
     let firstPart = title.substring(0, title.indexOf("(")).trim();
@@ -74,9 +77,13 @@ export default function GridNotes({
           >
             은신처
           </Text>
-          {hideoutNotes.map((hideout) => (
-            <Box key={hideout.item_id} display={"flex"}>
-              <Link href={`/hideout?id=${hideout.level_id}`}>
+          {hideoutNotes.map((hideout, index) => (
+            <Box key={index} display={"flex"}>
+              <Link
+                href={`/hideout?id=${hideout.level_id}`}
+                scroll={false}
+                onClick={() => setHideoutCategory(hideout.master_id)}
+              >
                 <Text
                   fontWeight={600}
                   color={ALL_COLOR.YELLOW}

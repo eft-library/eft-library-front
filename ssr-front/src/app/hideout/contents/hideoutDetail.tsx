@@ -11,11 +11,14 @@ import GridTitle from "@/components/gridTitle/gridTitle";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
+import { useScrollMove } from "@/hooks/useScrollMove";
 import Require from "./require";
+import { useSearchParams } from "next/navigation";
 import Bonus from "./bonus";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function HideoutDetail({ category }: HideoutDetail) {
+  const param = useSearchParams();
   const [hideoutList, setHideoutList] = useState<Hideout[]>(null);
   const [column, setColumn] = useState<Column>();
 
@@ -39,6 +42,8 @@ export default function HideoutDetail({ category }: HideoutDetail) {
     return hours + " 시간 ";
   };
 
+  useScrollMove(param.get("id"), hideoutList, "HIDEOUT");
+
   if (!hideoutList || !column) return <WeaponSkeleton />;
 
   return (
@@ -60,53 +65,62 @@ export default function HideoutDetail({ category }: HideoutDetail) {
         checkViewHideout(hideout.master_id)
           ? hideout.data.map((info) => (
               <React.Fragment key={info.level_id}>
-                <Box display={"flex"} w={"95%"} mb={2} mt={2}>
-                  <Text
-                    fontWeight={600}
-                    color={ALL_COLOR.WHITE}
-                    textShadow={ALL_COLOR.YELLOW_SHADOW}
-                    fontSize={"large"}
-                  >
-                    {hideout.master_name_kr} {info.level_info[0].level}
-                  </Text>
-                </Box>
-                <GridContents
-                  columnDesign={[2, null, 5]}
+                <Box
                   id={info.level_id}
-                  isHideout
+                  display="flex"
+                  justifyContent="center"
+                  alignItems={"center"}
+                  width={"100%"}
+                  flexDirection={"column"}
                 >
-                  <GridItem
-                    display={"flex"}
-                    flexDirection={"column"}
-                    justifyContent={"center"}
-                    colSpan={2}
+                  <Box display={"flex"} w={"95%"} mb={2} mt={2}>
+                    <Text
+                      fontWeight={600}
+                      color={ALL_COLOR.WHITE}
+                      textShadow={ALL_COLOR.YELLOW_SHADOW}
+                      fontSize={"large"}
+                    >
+                      {hideout.master_name_kr} {info.level_info[0].level}
+                    </Text>
+                  </Box>
+                  <GridContents
+                    columnDesign={[2, null, 5]}
+                    id={info.level_id}
+                    isHideout
                   >
-                    <Require items={info.item_require} type="item" />
-                    <Require items={info.skill_require} type="skill" />
-                    <Require items={info.trader_require} type="trader" />
-                    <Require items={info.station_require} type="station" />
-                  </GridItem>
-                  <GridItem
-                    display={"flex"}
-                    flexDirection={"column"}
-                    justifyContent={"center"}
-                    colSpan={2}
-                  >
-                    <Bonus bonuses={info.bonus} />
-                    {info.crafts.length > 0 && (
-                      <>
-                        {info.crafts.map((craft, index) => (
-                          <Text fontWeight={600} key={index}>
-                            {craft.name_kr} 제작
-                          </Text>
-                        ))}
-                      </>
-                    )}
-                  </GridItem>
-                  <GridCenterText>
-                    {changeTime(info.level_info[0].construction_time)}
-                  </GridCenterText>
-                </GridContents>
+                    <GridItem
+                      display={"flex"}
+                      flexDirection={"column"}
+                      justifyContent={"center"}
+                      colSpan={2}
+                    >
+                      <Require items={info.item_require} type="item" />
+                      <Require items={info.skill_require} type="skill" />
+                      <Require items={info.trader_require} type="trader" />
+                      <Require items={info.station_require} type="station" />
+                    </GridItem>
+                    <GridItem
+                      display={"flex"}
+                      flexDirection={"column"}
+                      justifyContent={"center"}
+                      colSpan={2}
+                    >
+                      <Bonus bonuses={info.bonus} />
+                      {info.crafts.length > 0 && (
+                        <>
+                          {info.crafts.map((craft, index) => (
+                            <Text fontWeight={600} key={index}>
+                              {craft.name_kr} 제작
+                            </Text>
+                          ))}
+                        </>
+                      )}
+                    </GridItem>
+                    <GridCenterText>
+                      {changeTime(info.level_info[0].construction_time)}
+                    </GridCenterText>
+                  </GridContents>
+                </Box>
               </React.Fragment>
             ))
           : null
