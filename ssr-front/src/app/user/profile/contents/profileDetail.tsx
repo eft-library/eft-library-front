@@ -8,8 +8,37 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useRouter } from "next/navigation";
+import type { UserInfo } from "@/types/types";
+import { fetchUserData } from "@/lib/api";
+import { formatISODate } from "@/lib/formatISODate";
 
 export default function ProfileDetail() {
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  // get
+  useEffect(() => {
+    const getUserQuest = async () => {
+      await fetchUserData(
+        USER_API_ENDPOINTS.GET_USER_INFO,
+        "POST",
+        { provider: session.provider },
+        setUserInfo,
+        router,
+        session
+      );
+    };
+
+    if (session && session.accessToken && session.provider) {
+      getUserQuest();
+    }
+  }, [session]);
+
+  if (!userInfo) return null;
+
+  console.log(userInfo);
+
   return (
     <Box w="95%" h="100%">
       <Box
@@ -19,7 +48,7 @@ export default function ProfileDetail() {
         alignItems="center"
       >
         <Box w="100%">
-          <Text fontWeight={600} p={2}>
+          <Text fontWeight={800} p={2}>
             기본 정보
           </Text>
           <Box
@@ -29,7 +58,59 @@ export default function ProfileDetail() {
             borderColor={ALL_COLOR.WHITE}
             p={4}
             h="28vh"
-          />
+          >
+            <Box
+              w={"100%"}
+              h={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+            >
+              <Box
+                w={"50%"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <ImageZoom
+                  originalImg={formatImage(userInfo.image)}
+                  thumbnail={formatImage(userInfo.image)}
+                />
+              </Box>
+              <Box
+                w={"50%"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"space-between"}
+              >
+                <Box display={"flex"}>
+                  <Text fontWeight={600}>이메일 :&nbsp;</Text>
+                  <Text fontWeight={600}>{userInfo.email}</Text>
+                </Box>
+
+                <Box display={"flex"}>
+                  <Text fontWeight={600}>닉네임 :&nbsp;</Text>
+                  <Text fontWeight={600}>{userInfo.nick_name}</Text>
+                </Box>
+
+                <Box display={"flex"}>
+                  <Text fontWeight={600}>회원가입 날짜 :&nbsp;</Text>
+                  <Text fontWeight={600}>
+                    {formatISODate(userInfo.create_time)}
+                  </Text>
+                </Box>
+
+                <Box display={"flex"}>
+                  <Text fontWeight={600}>등급 :&nbsp;</Text>
+                  <Text fontWeight={600}>{userInfo.grade}</Text>
+                </Box>
+
+                <Box display={"flex"}>
+                  <Text fontWeight={600}>포인트 :&nbsp;</Text>
+                  <Text fontWeight={600}>{userInfo.point}</Text>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
 
         <Box
@@ -48,7 +129,7 @@ export default function ProfileDetail() {
               flexDirection="column"
             >
               <Box w="100%">
-                <Text fontWeight={600} p={2}>
+                <Text fontWeight={800} p={2}>
                   {title}
                 </Text>
               </Box>

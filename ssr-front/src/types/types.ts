@@ -736,3 +736,17 @@ export interface UserQuestList {
 export interface UserQuestSelector {
   updateQuest: Function;
 }
+
+export interface UserInfo extends strID {
+  name: string;
+  email: string;
+  image: string;
+  nick_name: string;
+  point: number;
+  is_ban: boolean;
+  is_delete: boolean;
+  grade: string;
+  create_time: string;
+  update_time: string;
+  delete_time: string;
+}
