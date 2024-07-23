@@ -12,3 +12,7 @@
 5. 공지 사항
 6. 패치 노트
 7. https://spacejelly.dev/posts/how-to-add-a-sitemap-rss-feed-in-next-js-app-router - 커뮤니티 rss
+
+# dev 수정 사항
+
+1. sitemap 주석 처리
