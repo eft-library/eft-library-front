@@ -39,11 +39,11 @@ async function refreshAccessToken(token: JWT) {
     if (!response.ok) {
       throw refreshedTokens;
     }
+
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      provider: refreshedTokens.provider,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
     };
   } catch (error) {
@@ -61,6 +61,7 @@ const handler = NextAuth({
     Google({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_ID || "",
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET || "",
+      authorization: process.env.NEXT_PUBLIC_GOOGLE_AUTHORIZATION || "",
     }),
     // Naver({
     //   clientId: process.env.NEXT_PUBLIC_NAVER_ID || "",
@@ -106,6 +107,7 @@ const handler = NextAuth({
     },
     async jwt({ token, account, user }) {
       if (account && user) {
+        console.log(account);
         token.accessToken = account.access_token;
         token.accessTokenExpires = account.expires_at * 1000;
         token.refreshToken = account.refresh_token;
