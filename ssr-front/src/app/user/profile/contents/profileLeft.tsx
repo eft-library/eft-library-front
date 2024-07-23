@@ -41,7 +41,7 @@ export default function ProfileLeft({
           display="flex"
           alignItems="center"
           justifyContent="center"
-          backgroundColor="rgba(0, 0, 0, 0.6)"
+          backgroundColor={ALL_COLOR.ICON_SAHDOW}
           opacity="0"
           _hover={{ opacity: 1 }}
           transition="opacity 0.3s ease-in-out"

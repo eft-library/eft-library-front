@@ -44,6 +44,7 @@ export const ALL_COLOR = {
   RED_SHADOW: "0px 1px 1px rgb(255, 78, 78)",
   ORANGE_SHADOW: "0px 1px 1px rgb(255, 177, 105)",
   LIGHT_YELLOW_SHADOW: "0px 1px 1px rgb(255, 245, 0)",
+  ICON_SAHDOW: "rgba(0, 0, 0, 0.6)",
 
   // HIDEOUT
   HIDE_RED: "#ff7676",
