@@ -34,8 +34,35 @@ export default function ProfileDetail() {
     }
   }, [session]);
 
-  const onChangeNickName = (nickName: string) => {
-    alert(nickName);
+  const onChangeNickName = async (nickName: string) => {
+    try {
+      const res = await fetch(USER_API_ENDPOINTS.CHANGE_USER_NICKNAME, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider: session.provider,
+          nickname: nickName,
+        }),
+      });
+
+      const response = await res.json();
+
+      if (response.status === 200) {
+        setUserInfo(response.data);
+        alert("변경이 완료 되었습니다.");
+      } else if (response.status === 409) {
+        alert("중복 닉네임");
+        location.reload();
+      } else if (response.status === 403) {
+        alert("최근 변경 기간이 30일이 지나지 않음");
+        location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onChangeIcon = () => {

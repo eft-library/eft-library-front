@@ -107,7 +107,6 @@ const handler = NextAuth({
     },
     async jwt({ token, account, user }) {
       if (account && user) {
-        console.log(account);
         token.accessToken = account.access_token;
         token.accessTokenExpires = account.expires_at * 1000;
         token.refreshToken = account.refresh_token;

@@ -38,12 +38,17 @@ export const fetchUserData = async (
     });
 
     const response = await res.json();
-    if (response.msg !== "OK") {
+
+    if (response.status === 200) {
+      setData(response.data);
+    } else if (response.status === 409) {
+      alert("중복 닉네임");
+    } else if (response.status === 403) {
+      alert("최근 변경 기간이 30일이 지나지 않음");
+    } else {
       alert("로그인 다시");
       signOut();
       router.push("/");
-    } else if (response.status === 200) {
-      setData(response.data);
     }
   } catch (error) {
     console.log(error);
