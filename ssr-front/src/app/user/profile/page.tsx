@@ -42,7 +42,6 @@ export default function UserProfile() {
   return (
     <PageParent>
       <SubHeader title="마이 페이지" />
-      <Box mb={10} />
       <ProfileDetail />
     </PageParent>
   );
