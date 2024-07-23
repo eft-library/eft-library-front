@@ -750,3 +750,16 @@ export interface UserInfo extends strID {
   update_time: string;
   delete_time: string;
 }
+
+export interface Profile {
+  userInfo: UserInfo;
+}
+
+export interface ProfileRight extends Profile {
+  changeNickName: Function;
+}
+
+export interface ProfileLeft extends Profile {
+  changeIcon: Function;
+  iconList: JsonArrayText[];
+}

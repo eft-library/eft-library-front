@@ -39,7 +39,6 @@ async function refreshAccessToken(token: JWT) {
     if (!response.ok) {
       throw refreshedTokens;
     }
-
     return {
       ...token,
       accessToken: refreshedTokens.access_token,

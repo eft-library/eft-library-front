@@ -1,22 +1,61 @@
-import { Box, Image, SimpleGrid, Text, GridItem } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  SimpleGrid,
+  Text,
+  GridItem,
+  Button,
+} from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatImage } from "@/lib/formatImage";
+import type { ProfileLeft } from "@/types/types";
 
-export default function ProfileLeft({ userInfo }) {
+export default function ProfileLeft({
+  userInfo,
+  iconList,
+  changeIcon,
+}: ProfileLeft) {
   return (
     <SimpleGrid columns={2} spacing={6}>
       <Box
+        position="relative"
         display="flex"
         alignItems="center"
         justifyContent="center"
         cursor="pointer"
+        borderRadius={"lg"}
       >
         <Image
           src={formatImage(userInfo.image)}
-          w="80px"
+          w="100px"
           alt="icon"
           fallbackSrc="/loading.gif"
+          borderRadius={"lg"}
         />
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          backgroundColor="rgba(0, 0, 0, 0.6)"
+          opacity="0"
+          _hover={{ opacity: 1 }}
+          transition="opacity 0.3s ease-in-out"
+        >
+          <Button
+            p={2}
+            color={ALL_COLOR.WHITE}
+            bg={ALL_COLOR.BLACK}
+            _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+            onClick={() => changeIcon()}
+          >
+            변경
+          </Button>
+        </Box>
       </Box>
       <Box
         display="flex"

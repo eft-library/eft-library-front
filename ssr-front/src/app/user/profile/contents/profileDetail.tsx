@@ -34,6 +34,14 @@ export default function ProfileDetail() {
     }
   }, [session]);
 
+  const onChangeNickName = (nickName: string) => {
+    alert(nickName);
+  };
+
+  const onChangeIcon = () => {
+    alert("icon 수정");
+  };
+
   if (!userInfo) return null;
 
   return (
@@ -52,8 +60,15 @@ export default function ProfileDetail() {
               display={"flex"}
               justifyContent={"space-evenly"}
             >
-              <ProfileLeft userInfo={userInfo} />
-              <ProfileRight userInfo={userInfo} />
+              <ProfileLeft
+                userInfo={userInfo}
+                iconList={[]}
+                changeIcon={onChangeIcon}
+              />
+              <ProfileRight
+                userInfo={userInfo}
+                changeNickName={onChangeNickName}
+              />
             </Box>
           </Box>
         </Box>

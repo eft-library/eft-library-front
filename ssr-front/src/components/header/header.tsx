@@ -116,12 +116,12 @@ export default function Header() {
         <HStack ml={2}>
           {session && (
             <>
-              <Button>
-                <Link href={"/user/quest"}>내 퀘스트</Link>
-              </Button>
-              <Button>
-                <Link href={"/user/profile"}>마이 페이지</Link>
-              </Button>
+              <Link href={"/user/quest"}>
+                <Button>내 퀘스트</Button>
+              </Link>
+              <Link href={"/user/profile"}>
+                <Button>마이 페이지</Button>
+              </Link>
             </>
           )}
           <Login />
