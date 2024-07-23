@@ -15,4 +15,4 @@
 
 # dev 수정 사항
 
-1. sitemap 주석 처리
+1. sitemap 파일 삭제
