@@ -23,8 +23,6 @@ export const fetchUserData = async (
   url: string,
   method: string,
   body: any,
-  setData: Function,
-  router: any,
   session: any
 ) => {
   try {
@@ -39,17 +37,7 @@ export const fetchUserData = async (
 
     const response = await res.json();
 
-    if (response.status === 200) {
-      setData(response.data);
-    } else if (response.status === 409) {
-      alert("중복 닉네임");
-    } else if (response.status === 403) {
-      alert("최근 변경 기간이 30일이 지나지 않음");
-    } else {
-      alert("로그인 다시");
-      signOut();
-      router.push("/");
-    }
+    return response;
   } catch (error) {
     console.log(error);
   }

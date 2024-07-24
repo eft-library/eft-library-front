@@ -16,7 +16,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import UserQuestList from "./userQuestList";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import UserQuestSelector from "./userQuestSelector";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
@@ -39,18 +39,14 @@ export default function UserQuestDetail() {
   // get
   useEffect(() => {
     const getUserQuest = async () => {
-      await fetchUserData(
+      const response = await fetchUserData(
         USER_API_ENDPOINTS.GET_USER_QUEST,
         "POST",
         { provider: session.provider },
-        setUserQuest,
-        router,
         session
       );
-      if (userQuest && userQuest.length > 1) {
-        setIndices(userQuest.map((_, index) => index));
-      }
-      setCheckedQuest([]);
+
+      checkResponse(response);
     };
 
     if (session && session.accessToken && session.provider) {
@@ -66,18 +62,14 @@ export default function UserQuestDetail() {
       ...next.map((quest) => quest.id),
     ];
 
-    await fetchUserData(
+    const response = await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest,
-      router,
       session
     );
 
-    if (userQuest && userQuest.length > 1) {
-      setIndices(userQuest.map((_, index) => index));
-    }
+    checkResponse(response);
   };
 
   // delete
@@ -87,18 +79,14 @@ export default function UserQuestDetail() {
       (quest_id) => !deleteList.includes(quest_id)
     );
 
-    await fetchUserData(
+    const response = await fetchUserData(
       USER_API_ENDPOINTS.DELETE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest,
-      router,
       session
     );
-    setCheckedQuest([]);
-    if (userQuest && userQuest.length > 1) {
-      setIndices(userQuest.map((_, index) => index));
-    }
+
+    checkResponse(response);
   };
 
   // update
@@ -108,17 +96,27 @@ export default function UserQuestDetail() {
     const newQuestList = [
       ...new Set([...onlyQuestIdList, ...onlySelectQuestIdList]),
     ];
-    await fetchUserData(
+    const response = await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
       { provider: session.provider, userQuestList: newQuestList },
-      setUserQuest,
-      router,
       session
     );
-    setCheckedQuest([]);
-    if (userQuest && userQuest.length > 1) {
-      setIndices(userQuest.map((_, index) => index));
+
+    checkResponse(response);
+  };
+
+  const checkResponse = (response: any) => {
+    if (response.status === 200) {
+      setUserQuest(response.data);
+      if (response.data.length > 0) {
+        setIndices(response.data.map((_, index) => index));
+      }
+      setCheckedQuest([]);
+    } else {
+      alert("로그인 다시");
+      signOut();
+      router.push("/");
     }
   };
 

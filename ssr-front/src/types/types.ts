@@ -741,6 +741,7 @@ export interface UserInfo extends strID {
   name: string;
   email: string;
   image: string;
+  image_list: string[];
   nick_name: string;
   point: number;
   is_ban: boolean;
@@ -748,6 +749,7 @@ export interface UserInfo extends strID {
   grade: string;
   create_time: string;
   update_time: string;
+  ban_end_time: string;
   delete_time: string;
 }
 
@@ -761,5 +763,4 @@ export interface ProfileRight extends Profile {
 
 export interface ProfileLeft extends Profile {
   changeIcon: Function;
-  iconList: JsonArrayText[];
 }
