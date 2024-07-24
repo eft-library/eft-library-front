@@ -1,8 +1,8 @@
 import MedicalMain from "./contents/medicalMain";
 
 export const metadata = {
-  title: "의료품 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 의료품",
+  description: "타르코프 의료품, tarkov medical",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

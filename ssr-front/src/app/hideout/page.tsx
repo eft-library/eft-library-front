@@ -1,8 +1,8 @@
 import HideoutMain from "./contents/hideoutMain";
 
 export const metadata = {
-  title: "은신처 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 은신처",
+  description: "타르코프 은신처, 타르코프 하이드아웃, tarkov hideout",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

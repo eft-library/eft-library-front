@@ -1,8 +1,8 @@
 import AmmoMain from "./contents/ammoMain";
 
 export const metadata = {
-  title: "탄약 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 탄약",
+  description: "타르코프 탄약 및 총알, tarkov ammo",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

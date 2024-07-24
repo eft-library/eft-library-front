@@ -1,8 +1,8 @@
 import BossMain from "./contents/bossMain";
 
 export const metadata = {
-  title: "보스 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 보스",
+  description: "타르코프 보스, tarkov boss",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

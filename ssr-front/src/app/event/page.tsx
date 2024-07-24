@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import EventDetail from "./contents/eventDetail";
 
 export const metadata = {
-  title: "이벤트 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 이벤트",
+  description: "타르코프 이벤트, tarkov event",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

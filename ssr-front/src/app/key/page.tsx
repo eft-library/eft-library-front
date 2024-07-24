@@ -1,8 +1,8 @@
 import KeyMain from "./contents/keyMain";
 
 export const metadata = {
-  title: "열쇠 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 열쇠",
+  description: "타르코프 열쇠, tarkov key",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

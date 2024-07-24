@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import BackpackDetail from "./contents/backpackDetail";
 
 export const metadata = {
-  title: "가방 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 가방",
+  description: "타르코프 가방, tarkov backpack",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

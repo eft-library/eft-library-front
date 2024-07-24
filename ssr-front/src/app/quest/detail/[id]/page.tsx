@@ -23,8 +23,8 @@ export async function generateMetadata(
   const res = product.data;
 
   return {
-    title: `퀘스트 상세 : ${res.title_kr} | EFT Library`,
-    description: "EFT Library 퀘스트 상세",
+    title: `${res.title_kr}`,
+    description: `${res.name_kr} ${res.title_kr}`,
     openGraph: {
       images: [formatImage(res.image)],
     },

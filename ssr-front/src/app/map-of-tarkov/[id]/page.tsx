@@ -23,8 +23,8 @@ export async function generateMetadata(
   const res = product.data.map_info;
 
   return {
-    title: `타르코프 지도 : ${res.name_kr} | EFT Library`,
-    description: "EFT Library 타르코프 지도",
+    title: `타르코프 지도 ${res.name_kr}`,
+    description: "타르코프 지도",
     openGraph: {
       images: [formatImage(res.mot_image)],
     },

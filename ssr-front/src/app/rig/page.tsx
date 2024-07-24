@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import RigDetail from "./contents/rigDetail";
 
 export const metadata = {
-  title: "전술 조끼 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 전술 조끼",
+  description: "타르코프 전술 조기, tarkov rig, tarkov rigs",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

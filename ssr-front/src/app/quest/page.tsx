@@ -6,8 +6,8 @@ import Contents from "./content/contents";
 import "@/assets/quest.css";
 
 export const metadata = {
-  title: "퀘스트 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 퀘스트",
+  description: "타르코프 퀘스트, tarkov quest",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

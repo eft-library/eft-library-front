@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import ContainerDetail from "./contents/containerDetail";
 
 export const metadata = {
-  title: "컨테이너 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 컨테이너",
+  description: "타르코프 컨테이너, tarkov container",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

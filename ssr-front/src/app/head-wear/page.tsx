@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import HeadWearDetail from "./contents/headwearDetail";
 
 export const metadata = {
-  title: "방탄모 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 방탄모",
+  description: "타르코프 방탄모, tarkov headwear, tarkov helmet",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

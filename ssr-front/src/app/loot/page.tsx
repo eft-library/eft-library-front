@@ -1,8 +1,8 @@
 import LootMain from "./contents/lootMain";
 
 export const metadata = {
-  title: "전리품 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 전리품",
+  description: "타르코프 전리품, tarkov loot",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

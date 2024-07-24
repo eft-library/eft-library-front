@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import ArmorVestDetail from "./contents/armorVestDetail";
 
 export const metadata = {
-  title: "방탄 조끼 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 방탄 조끼",
+  description: "타르코프 방탄 조끼 , tarkov armor vest",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

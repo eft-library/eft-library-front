@@ -4,8 +4,8 @@ import { Box } from "@chakra-ui/react";
 import FaceCoverDetail from "./contents/faceCoverDetail";
 
 export const metadata = {
-  title: "얼굴 커버 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 얼굴 커버",
+  description: "타르코프 얼굴 커버, tarkov face cover",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",

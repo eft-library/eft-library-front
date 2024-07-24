@@ -1,8 +1,8 @@
 import WeaponMain from "./contents/weaponMain";
 
 export const metadata = {
-  title: "무기 | EFT Library",
-  description: "EFT Library",
+  title: "타르코프 무기",
+  description: "타르코프 무기, 타르코프 총, tarkov weapon, tarkov gun",
   keywords: [
     "타르코프",
     "타르코프 퀘스트 공략",
