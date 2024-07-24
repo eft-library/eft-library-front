@@ -124,6 +124,10 @@ export const ALL_COLOR = {
   STATIONARY_TWO: "#ce9a4e",
   STATIONARY_THREE: "#ce9800",
   STATIONARY_FOUR: "#563c29",
+  ETC_TWO: "#9a0400",
+  ETC_THREE: "#1500ec",
+  ETC_FOUR: "#ffec00",
+  FOOD_TWO: "#7f7f7f",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;
