@@ -53,7 +53,6 @@ export default function ProfileDetail() {
       if (response.status === 200) {
         setUserInfo(response.data);
         alert("변경이 완료 되었습니다.");
-        location.reload();
       } else if (response.status === 409) {
         alert("중복 닉네임");
         location.reload();

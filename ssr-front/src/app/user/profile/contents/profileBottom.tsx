@@ -1,7 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { ArrowRightIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/navigation";
 
 export default function ProfileBottom() {
+  const router = useRouter();
+
   return (
     <Box
       w="100%"
@@ -18,10 +22,16 @@ export default function ProfileBottom() {
           alignItems="center"
           flexDirection="column"
         >
-          <Box w="100%">
+          <Box
+            w="100%"
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             <Text fontWeight={800} p={2}>
               {title}
             </Text>
+            <ArrowRightIcon cursor={"pointer"} />
           </Box>
           <Box
             w="100%"
