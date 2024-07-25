@@ -9,23 +9,22 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import "@/assets/quest.css";
 import { formatISODate } from "@/lib/formatISODate";
 import Pagination from "@/components/pagination/pagination";
-import { useAppStore } from "@/store/provider";
+import { useSearchParams } from "next/navigation";
 
 export default function PatchNotesDetail() {
-  const { patchNotesNum, setPatchNotesNum } = useAppStore((state) => state);
+  const param = useSearchParams();
   const [patchNotesInfo, setPatchNotesInfo] = useState<PatchNotesInfo>();
 
   const getPatchNotesPage = (page: number) => {
-    setPatchNotesNum(page);
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_PATCH_NOTES}?page=${page}&page_size=10`,
+      `${API_ENDPOINTS.GET_PATCH_NOTES}?page=${page}&page_size=5`,
       setPatchNotesInfo
     );
   };
 
   useEffect(() => {
-    getPatchNotesPage(patchNotesNum);
-  }, []);
+    getPatchNotesPage(Number(param.get("id")));
+  }, [param]);
 
   if (!patchNotesInfo) return null;
 
@@ -67,8 +66,8 @@ export default function PatchNotesDetail() {
       ))}
       <Pagination
         total={patchNotesInfo.max_pages}
-        onPageChange={getPatchNotesPage}
-        currentPage={patchNotesNum}
+        routeLink={"/patch-notes?id="}
+        currentPage={Number(param.get("id"))}
       />
     </Box>
   );

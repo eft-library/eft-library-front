@@ -797,6 +797,6 @@ export interface ArmBand extends strID {
 
 export interface Pagination {
   total: number;
-  onPageChange: Function;
+  routeLink: string;
   currentPage: number;
 }
