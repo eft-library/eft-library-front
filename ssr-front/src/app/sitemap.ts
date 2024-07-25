@@ -8,8 +8,6 @@ export default async function sitemap() {
     return {
       url: post,
       lastModified: new Date().toISOString().split("T")[0],
-      priority: 0.7,
-      changeFrequency: "daily",
     };
   });
 
@@ -17,8 +15,6 @@ export default async function sitemap() {
     {
       url: "https://eftlibrary.com",
       lastModified: new Date().toISOString().split("T")[0],
-      priority: 1,
-      changeFrequency: "yearly",
     },
     ...posts,
   ];
