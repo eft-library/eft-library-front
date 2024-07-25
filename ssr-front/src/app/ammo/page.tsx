@@ -33,6 +33,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/ammo",
   },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function Ammo() {

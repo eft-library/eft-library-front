@@ -36,6 +36,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/headset",
   },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function Headset() {
