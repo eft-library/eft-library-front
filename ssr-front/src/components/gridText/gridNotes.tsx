@@ -8,6 +8,7 @@ export default function GridNotes({
   questsNotes,
   hideoutNotes = [],
   isKey = false,
+  isGlass = false,
 }: GridNotes) {
   const { setHideoutCategory } = useAppStore((state) => state);
 
@@ -55,7 +56,7 @@ export default function GridNotes({
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}
-      colSpan={2}
+      colSpan={isGlass ? 1 : 2}
       p={2}
     >
       {questsNotes.length > 0 && (

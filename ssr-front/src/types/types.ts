@@ -275,6 +275,7 @@ export interface GridNotes {
   questsNotes: JsonArrayText;
   hideoutNotes?: JsonArrayText;
   isKey?: boolean;
+  isGlass?: boolean;
 }
 
 export interface GridCenterText {
