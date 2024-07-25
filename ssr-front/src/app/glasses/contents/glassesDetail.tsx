@@ -85,14 +85,13 @@ export default function GlassesDetail() {
       ))}
       <Box mb={20} />
       <GridTitle
-        isNote
-        columnDesign={[2, null, 5]}
+        columnDesign={[2, null, 4]}
         column={noClassColumn(column.value_kr)}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
       {glassesList.no_class_glasses.map((item) => (
-        <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
+        <GridContents columnDesign={[2, null, 4]} key={item.id} id={item.id}>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <ImageZoom originalImg={item.image} thumbnail={item.image} />
           </Box>
@@ -100,7 +99,7 @@ export default function GlassesDetail() {
           <GridCenterText>
             {floatToPercent(item.blindness_protection)} %
           </GridCenterText>
-          <GridNotes questsNotes={item.related_quests} />
+          <GridNotes questsNotes={item.related_quests} isGlass />
         </GridContents>
       ))}
     </>
