@@ -18,6 +18,7 @@ const API_ENDPOINTS = {
   GET_COLUMN: baseUrl + "/api/table_column/info",
   GET_ITEM_FILTER: baseUrl + "/api/item_filter/all",
   GET_ALL_HEADSET: baseUrl + "/api/item/headset",
+  GET_ALL_ARM_BAND: baseUrl + "/api/item/arm_band",
   GET_ALL_HEAD_WEAR: baseUrl + "/api/item/headwear",
   GET_ALL_FACE_COVER: baseUrl + "/api/item/face_cover",
   GET_ALL_ARMOR_VEST: baseUrl + "/api/item/armor_vest",

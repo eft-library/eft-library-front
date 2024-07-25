@@ -764,3 +764,10 @@ export interface ProfileRight extends Profile {
 export interface ProfileLeft extends Profile {
   changeIcon: Function;
 }
+
+export interface ArmBand extends strID {
+  name: string;
+  short_name: string;
+  weight: string;
+  image: string;
+}

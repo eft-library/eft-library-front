@@ -13,6 +13,7 @@ export const COLUMN_KEY = {
   gun: "GUN_CATEGORY_INFO",
   footer: "FOOTER_COLUMN",
   headset: "HEAD_PHONE_COLUMN",
+  arm_band: "ARM_BAND_COLUMN",
   headwear: "HEAD_WEAR_COLUMN",
   faceCover: "FACE_COVER_COLUMN",
   armorVest: "ARMOR_VEST_COLUMN",
