@@ -1,6 +1,6 @@
 "use client";
 
-import type { Quest, Event } from "@/types/types";
+import type { EventInfo } from "@/types/types";
 import React, { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -8,19 +8,30 @@ import { Box, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import "@/assets/quest.css";
 import { formatISODate } from "@/lib/formatISODate";
+import Pagination from "@/components/pagination/pagination";
+import { useAppStore } from "@/store/provider";
 
 export default function EventDetail() {
-  const [eventList, setEventList] = useState<Event[]>();
+  const { eventNum, setEventNum } = useAppStore((state) => state);
+  const [eventInfo, setEventInfo] = useState<EventInfo>();
+
+  const getEventPage = (page: number) => {
+    setEventNum(page);
+    fetchDataWithNone(
+      `${API_ENDPOINTS.GET_EVENT}?page=${page}&page_size=2`,
+      setEventInfo
+    );
+  };
 
   useEffect(() => {
-    fetchDataWithNone(`${API_ENDPOINTS.GET_ALL_EVENT}`, setEventList);
+    getEventPage(eventNum);
   }, []);
 
-  if (!eventList) return null;
+  if (!eventInfo) return null;
 
   return (
     <Box w={"95%"}>
-      {eventList.map((event) => (
+      {eventInfo.data.map((event) => (
         <Box
           borderRadius={"lg"}
           key={event.id}
@@ -54,6 +65,11 @@ export default function EventDetail() {
           </Box>
         </Box>
       ))}
+      <Pagination
+        total={eventInfo.max_pages}
+        onPageChange={getEventPage}
+        currentPage={eventNum}
+      />
     </Box>
   );
 }

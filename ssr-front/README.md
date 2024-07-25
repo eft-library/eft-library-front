@@ -6,12 +6,10 @@
    - 사용자 밴 절차 => 밴 당하면 커뮤니티와 댓글 작성 불가
    - 사용자 등급 계산 프로세스 => 포인트가 바뀔 때마다 등급도 바뀌게 적용
 
-2. 개발 서버 구축하기
-3. 로그인 콜백 구현 - 네이버, 카카오, 구글 연동 - 댓글 및 글 작성 가능, 악질 유저 차단 기능(댓글 및 글 작성 불가), 사용자 등급
-4. 게시판 back 먼저 만들어 놓자 - 탭 분류(공략, 팁, 자유, 신고), 추천, 비추 - 댓글에도 추천 비추
-5. 공지 사항
-6. 패치 노트
-7. https://spacejelly.dev/posts/how-to-add-a-sitemap-rss-feed-in-next-js-app-router - 커뮤니티 rss
+2. 게시판 back 먼저 만들어 놓자 - 탭 분류(공략, 팁, 자유, 신고), 추천, 비추 - 댓글에도 추천 비추
+3. 공지 사항
+4. 패치 노트, 이벤트 페이지
+5. https://spacejelly.dev/posts/how-to-add-a-sitemap-rss-feed-in-next-js-app-router - 커뮤니티 rss
 
 # dev 수정 사항
 

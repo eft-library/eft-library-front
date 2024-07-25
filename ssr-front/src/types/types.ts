@@ -506,6 +506,13 @@ export interface FaceCoverList {
   no_class_face_cover: Headwear[];
 }
 
+export interface EventInfo {
+  data: Event[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
+}
+
 export interface Event {
   name_en: string[];
   name_kr: string[];

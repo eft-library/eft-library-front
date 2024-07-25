@@ -1,5 +1,3 @@
-import { signOut } from "next-auth/react";
-
 export const fetchDataWithNone = async (url: string, setData: Function) => {
   try {
     const response = await fetch(`${url}`, {
