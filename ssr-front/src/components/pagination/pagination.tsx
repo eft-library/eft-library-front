@@ -3,8 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Box } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { Pagination } from "@/types/types";
 
-export default function Pagination({ total, onPageChange, currentPage }) {
+export default function Pagination({
+  total,
+  onPageChange,
+  currentPage,
+}: Pagination) {
   const [visiblePages, setVisiblePages] = useState([]);
 
   useEffect(() => {

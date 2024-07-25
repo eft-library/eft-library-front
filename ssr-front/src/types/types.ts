@@ -522,6 +522,22 @@ export interface Event {
   update_time: string;
 }
 
+export interface PatchNotesInfo {
+  data: PatchNotes[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
+}
+
+export interface PatchNotes {
+  name_en: string[];
+  name_kr: string[];
+  patch_notes_en: string[];
+  patch_notes_kr: string[];
+  id: string;
+  update_time: string;
+}
+
 export interface Quest extends strID, CommonData {
   npc_value: string;
   title_kr: string;
@@ -777,4 +793,10 @@ export interface ArmBand extends strID {
   short_name: string;
   weight: string;
   image: string;
+}
+
+export interface Pagination {
+  total: number;
+  onPageChange: Function;
+  currentPage: number;
 }

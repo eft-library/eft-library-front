@@ -33,6 +33,7 @@ const API_ENDPOINTS = {
   GET_ALL_HIDEOUT: baseUrl + "/api/hideout/all",
   GET_SUB_FILTER: baseUrl + "/api/item_filter/sub_info",
   GET_EVENT: baseUrl + "/api/event/board",
+  GET_PATCH_NOTES: baseUrl + "/api/patch_notes/board",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
 };
 
