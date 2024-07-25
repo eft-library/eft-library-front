@@ -1,6 +1,6 @@
 "use client";
 
-import type { EventInfo } from "@/types/types";
+import type { PatchNotesInfo } from "@/types/types";
 import React, { useState, useEffect } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -11,30 +11,30 @@ import { formatISODate } from "@/lib/formatISODate";
 import Pagination from "@/components/pagination/pagination";
 import { useAppStore } from "@/store/provider";
 
-export default function EventDetail() {
-  const { eventNum, setEventNum } = useAppStore((state) => state);
-  const [eventInfo, setEventInfo] = useState<EventInfo>();
+export default function PatchNotesDetail() {
+  const { patchNotesNum, setPatchNotesNum } = useAppStore((state) => state);
+  const [patchNotesInfo, setPatchNotesInfo] = useState<PatchNotesInfo>();
 
-  const getEventPage = (page: number) => {
-    setEventNum(page);
+  const getPatchNotesPage = (page: number) => {
+    setPatchNotesNum(page);
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_EVENT}?page=${page}&page_size=10`,
-      setEventInfo
+      `${API_ENDPOINTS.GET_PATCH_NOTES}?page=${page}&page_size=10`,
+      setPatchNotesInfo
     );
   };
 
   useEffect(() => {
-    getEventPage(eventNum);
+    getPatchNotesPage(patchNotesNum);
   }, []);
 
-  if (!eventInfo) return null;
+  if (!patchNotesInfo) return null;
 
   return (
     <Box w={"95%"}>
-      {eventInfo.data.map((event) => (
+      {patchNotesInfo.data.map((notes) => (
         <Box
           borderRadius={"lg"}
-          key={event.id}
+          key={notes.id}
           display={"flex"}
           flexDirection={"column"}
           border={"1px solid"}
@@ -48,11 +48,11 @@ export default function EventDetail() {
             justifyContent={"center"}
           >
             <Text fontWeight={800}>
-              {event.name_kr}&nbsp;({formatISODate(event.update_time)})
+              {notes.name_kr}&nbsp;({formatISODate(notes.update_time)})
             </Text>
           </Box>
           <Box p={2}>
-            {event.event_text_kr.map((guide, index) => (
+            {notes.patch_notes_kr.map((guide, index) => (
               <Text
                 key={index}
                 mb={1}
@@ -66,9 +66,9 @@ export default function EventDetail() {
         </Box>
       ))}
       <Pagination
-        total={eventInfo.max_pages}
-        onPageChange={getEventPage}
-        currentPage={eventNum}
+        total={patchNotesInfo.max_pages}
+        onPageChange={getPatchNotesPage}
+        currentPage={patchNotesNum}
       />
     </Box>
   );
