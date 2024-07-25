@@ -13,6 +13,7 @@ export type AppStateType = {
   ammoCategory: string;
   lootCategory: string;
   hideoutCategory: string;
+  eventNum: number;
 };
 
 export type AppActionsType = {
@@ -25,6 +26,7 @@ export type AppActionsType = {
   setAmmoCategory: (value: string) => void;
   setLootCategory: (value: string) => void;
   setHideoutCategory: (value: string) => void;
+  setEventNum: (value: number) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -39,6 +41,7 @@ export const defaultInitState: AppStateType = {
   lootCategory: "ALL",
   hideoutCategory: "5d388e97081959000a123acf",
   itemFilter: [],
+  eventNum: 1,
 };
 
 export const createAppStore = (initState: AppStateType = defaultInitState) => {
@@ -60,6 +63,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
             setLootCategory: (value: string) => set({ lootCategory: value }),
             setHideoutCategory: (value: string) =>
               set({ hideoutCategory: value }),
+            setEventNum: (value: number) => set({ eventNum: value }),
           } satisfies AppStoreType),
         {
           name: "app-store",
