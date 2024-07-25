@@ -800,3 +800,15 @@ export interface Pagination {
   routeLink: string;
   currentPage: number;
 }
+
+export interface Glasses extends NameImage, strID {
+  durability: number;
+  blindness_protection: number;
+  class_value: number;
+  related_quests: JsonArrayText[];
+}
+
+export interface GlassesList {
+  class_glasses: Glasses[];
+  no_class_glasses: Glasses[];
+}

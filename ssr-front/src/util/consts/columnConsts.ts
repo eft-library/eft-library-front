@@ -18,6 +18,7 @@ export const COLUMN_KEY = {
   faceCover: "FACE_COVER_COLUMN",
   armorVest: "ARMOR_VEST_COLUMN",
   rig: "RIG_COLUMN",
+  glasses: "GLASSES_COLUMN",
   quest: "QUEST_COLUMN",
   backpack: "BACKPACK_COLUMN",
   container: "CONTAINER_COLUMN",
