@@ -61,11 +61,12 @@ export default function UserQuestDetail() {
       ...onlyQuestIdList.filter((quest) => quest !== quest_id),
       ...next.map((quest) => quest.id),
     ];
+    const uniqueQuestList = [...new Set(newQuestList)];
 
     const response = await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
-      { provider: session.provider, userQuestList: newQuestList },
+      { provider: session.provider, userQuestList: uniqueQuestList },
       session
     );
 

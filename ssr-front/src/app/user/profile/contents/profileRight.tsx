@@ -15,7 +15,7 @@ export default function ProfileRight({
 
   return (
     <Box
-      w="70%"
+      w="65%"
       display="flex"
       flexDirection="column"
       alignItems="center"

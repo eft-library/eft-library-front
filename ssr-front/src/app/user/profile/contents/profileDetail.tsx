@@ -102,7 +102,7 @@ export default function ProfileDetail() {
               w={"100%"}
               h={"100%"}
               display={"flex"}
-              justifyContent={"space-evenly"}
+              justifyContent={"space-between"}
             >
               <ProfileLeft userInfo={userInfo} changeIcon={onChangeIcon} />
               <ProfileRight
