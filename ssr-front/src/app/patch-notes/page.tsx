@@ -36,6 +36,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/patch-notes",
   },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function PatchNotes() {

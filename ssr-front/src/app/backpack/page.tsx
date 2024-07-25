@@ -36,6 +36,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/backpack",
   },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function Backpack() {

@@ -36,6 +36,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/armor-vest",
   },
+  alternates: {
+    canonical: "./",
+  },
 };
 
 export default function ArmorVest() {
