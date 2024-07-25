@@ -4,13 +4,15 @@ import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Box } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { Pagination } from "@/types/types";
+import { useRouter } from "next/navigation";
 
 export default function Pagination({
   total,
-  onPageChange,
+  routeLink,
   currentPage,
 }: Pagination) {
   const [visiblePages, setVisiblePages] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     // 페이지 그룹 초기화
@@ -52,11 +54,10 @@ export default function Pagination({
   const handlePageChange = (page) => {
     if (page === currentPage) return; // 현재 페이지와 동일한 페이지 클릭 시 무시
 
-    // 페이지 변경 시 onPageChange 호출
-    onPageChange(page);
-
     // 클릭한 페이지를 기준으로 페이지 그룹 업데이트
     updateVisiblePages(page);
+
+    router.push(routeLink + page);
   };
 
   const handleFirstPage = () => {

@@ -9,14 +9,13 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import "@/assets/quest.css";
 import { formatISODate } from "@/lib/formatISODate";
 import Pagination from "@/components/pagination/pagination";
-import { useAppStore } from "@/store/provider";
+import { useSearchParams } from "next/navigation";
 
 export default function EventDetail() {
-  const { eventNum, setEventNum } = useAppStore((state) => state);
+  const param = useSearchParams();
   const [eventInfo, setEventInfo] = useState<EventInfo>();
 
   const getEventPage = (page: number) => {
-    setEventNum(page);
     fetchDataWithNone(
       `${API_ENDPOINTS.GET_EVENT}?page=${page}&page_size=10`,
       setEventInfo
@@ -24,7 +23,7 @@ export default function EventDetail() {
   };
 
   useEffect(() => {
-    getEventPage(eventNum);
+    getEventPage(Number(param.get("id")));
   }, []);
 
   if (!eventInfo) return null;
@@ -67,8 +66,8 @@ export default function EventDetail() {
       ))}
       <Pagination
         total={eventInfo.max_pages}
-        onPageChange={getEventPage}
-        currentPage={eventNum}
+        routeLink={"/event?id="}
+        currentPage={Number(param.get("id"))}
       />
     </Box>
   );
