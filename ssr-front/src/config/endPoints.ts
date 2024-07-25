@@ -23,6 +23,7 @@ const API_ENDPOINTS = {
   GET_ALL_FACE_COVER: baseUrl + "/api/item/face_cover",
   GET_ALL_ARMOR_VEST: baseUrl + "/api/item/armor_vest",
   GET_ALL_RIG: baseUrl + "/api/item/rig",
+  GET_ALL_GLASSES: baseUrl + "/api/item/glasses",
   GET_ALL_BACKPACK: baseUrl + "/api/item/backpack",
   GET_ALL_CONTAINER: baseUrl + "/api/item/container",
   GET_ALL_KEY: baseUrl + "/api/item/key",
