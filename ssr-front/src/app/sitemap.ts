@@ -11,11 +11,5 @@ export default async function sitemap() {
     };
   });
 
-  return [
-    {
-      url: "https://eftlibrary.com",
-      lastModified: new Date().toISOString().split("T")[0],
-    },
-    ...posts,
-  ];
+  return [...posts];
 }
