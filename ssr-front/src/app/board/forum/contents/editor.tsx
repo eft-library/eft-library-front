@@ -45,7 +45,7 @@ export default function Editor() {
       toolbar: [
         [{ header: "1" }, { header: "2" }, { font: [] }],
         [{ size: [] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
+        ["bold", "italic", "underline", "strike"],
         [
           { list: "ordered" },
           { list: "bullet" },
@@ -53,7 +53,6 @@ export default function Editor() {
           { indent: "+1" },
         ],
         ["link", "image", "video"],
-        ["clean"],
       ],
       imageActions: {},
       imageFormats: {},
@@ -124,6 +123,9 @@ export default function Editor() {
         modules={modules}
         formats={formats}
         theme="snow"
+        style={{
+          color: "#fff",
+        }}
       />
     </Box>
   );

@@ -1,8 +1,87 @@
 .ql-editor {
   min-height: 60vh; /* 에디터 높이 조정 */
   max-height: 100vh;
+  border-radius: 0px 0px 15px 15px;
 }
 .ql-editor img {
   display: block;
   margin: 0 auto;
+}
+
+.ql-toolbar {
+  border-radius: 15px 15psx 0px 0px;
+}
+
+.ql-container.ql-snow {
+  border-radius: 8px;
+  border-width: 0px 1px 1px 1px;
+}
+
+.ql-toolbar.ql-snow {
+  border-radius: 8px;
+  border-width: 1px 1px 1px 1px;
+}
+
+.ql-fill {
+  color: #fff !important;
+}
+
+.ql-toolbar .ql-stroke {
+  fill: none;
+  stroke: #fff;
+}
+
+.ql-toolbar .ql-fill {
+  fill: #fff;
+  stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+  color: #fff;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+  fill: none;
+  stroke: #ffd700 !important;
+}
+
+.ql-active .ql-stroke {
+  fill: none;
+  stroke: #ffd700 !important;
+}
+
+button:hover .ql-fill,
+.ql-picker-label:hover .ql-fill {
+  fill: #ffd700 !important;
+  stroke: none;
+}
+
+.ql-active .ql-fill {
+  fill: #ffd700 !important;
+  stroke: none;
+}
+.ql-toolbar .ql-formats button,
+.ql-toolbar .ql-formats .ql-picker-label,
+.ql-toolbar .ql-formats .ql-picker-item {
+  color: white !important; /* 버튼 텍스트 색상 흰색으로 변경 */
+}
+
+.ql-toolbar .ql-formats button:hover,
+.ql-toolbar .ql-formats .ql-picker-label:hover,
+.ql-toolbar .ql-formats .ql-picker-item:hover {
+  color: #ffd700 !important; /* 버튼 텍스트 색상 흰색으로 유지 */
+}
+
+.ql-toolbar .ql-formats .ql-picker-options {
+  background-color: black; /* 드롭다운 배경 색상 변경 */
+}
+
+/* 추가된 버튼 선택자 */
+.ql-toolbar .ql-formats button.ql-bold::before,
+.ql-toolbar .ql-formats button.ql-italic::before,
+.ql-toolbar .ql-formats button.ql-underline::before,
+.ql-toolbar .ql-formats button.ql-link::before,
+.ql-toolbar .ql-formats button.ql-image::before {
+  color: white !important; /* 아이콘 텍스트 색상 흰색으로 변경 */
 }
