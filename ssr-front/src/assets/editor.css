@@ -14,12 +14,12 @@
 
 .ql-container.ql-snow {
   border-radius: 8px;
-  border-width: 0px 1px 1px 1px;
+  border-width: 2px 2px 2px 2px;
 }
 
 .ql-toolbar.ql-snow {
   border-radius: 8px;
-  border-width: 1px 1px 1px 1px;
+  border-width: 2px 2px 2px 2px;
 }
 
 .ql-fill {
