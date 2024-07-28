@@ -37,7 +37,7 @@ export default function GridImageText({ jsonList }: GridImageText) {
                 isMax={false}
               />
             )}
-            <GridCenterText mt={2} mb={jsonList.length === index + 1 ? 0 : 10}>
+            <GridCenterText mt={2} mb={jsonList.length === index + 1 ? 0 : 4}>
               {formatTextWithLineBreaks(item.desc)}
             </GridCenterText>
           </Box>
