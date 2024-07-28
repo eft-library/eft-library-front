@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { forwardRef, useMemo, useState } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 import type { ReactQuillProps } from "react-quill";
 import ReactQuill from "react-quill";
 import { ImageActions } from "@xeger/quill-image-actions";
@@ -23,17 +23,15 @@ const QuillWrapper = dynamic(
     ReactQuill.Quill.register("modules/imageFormats", ImageFormats);
     ReactQuill.Quill.register("modules/imageDropAndPaste", ImageDropAndPaste);
 
-    // forwardRef를 사용하여 ref를 전달
-    return forwardRef<ReactQuill, ReactQuillProps>((props, ref) => (
-      <ReactQuill ref={ref} {...props} />
-    ));
+    return function comp({ forwardedRef, ...props }: any) {
+      return <ReactQuill ref={forwardedRef} {...props} />;
+    };
   },
-  {
-    ssr: false,
-  }
-) as typeof ReactQuill;
+  { ssr: false }
+);
 
 export default function Editor() {
+  const quillRef = useRef<any>();
   const [editorContent, setEditorContent] = useState<string>("");
 
   const handleChange = (content: string) => {
@@ -45,7 +43,7 @@ export default function Editor() {
       toolbar: [
         [{ header: "1" }, { header: "2" }, { font: [] }],
         [{ size: [] }],
-        ["bold", "italic", "underline", "strike"],
+        ["bold", "italic", "underline", "strike", "blockquote"],
         [
           { list: "ordered" },
           { list: "bullet" },
@@ -53,6 +51,7 @@ export default function Editor() {
           { indent: "+1" },
         ],
         ["link", "image", "video"],
+        ["clean"],
       ],
       imageActions: {},
       imageFormats: {},
@@ -77,11 +76,11 @@ export default function Editor() {
             }
 
             const data = await response.json();
-            const quill = this.quill; // Ensure `this.quill` is accessible
+            const quill = quillRef.current?.getEditor();
             const index = (quill.getSelection() || {}).index;
             const insertionIndex =
               index === undefined || index < 0 ? quill.getLength() : index;
-            quill.insertEmbed(insertionIndex, "image", data.image_url, "user");
+            quill.insertEmbed(insertionIndex, "image", data.data, "user");
           } catch (error) {
             console.error("Error uploading image:", error);
             return dataUrl;
@@ -118,15 +117,14 @@ export default function Editor() {
   return (
     <Box w={"95%"}>
       <QuillWrapper
+        forwardedRef={quillRef}
         value={editorContent}
         onChange={handleChange}
         modules={modules}
         formats={formats}
         theme="snow"
-        style={{
-          color: "#fff",
-        }}
       />
+      {JSON.stringify(editorContent)}
     </Box>
   );
 }
