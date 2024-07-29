@@ -813,3 +813,13 @@ export interface GlassesList {
   class_glasses: Glasses[];
   no_class_glasses: Glasses[];
 }
+
+interface SubContents {
+  title: string;
+  type: string;
+}
+
+export interface EditorSub {
+  subContents: SubContents;
+  setSubData: Function;
+}

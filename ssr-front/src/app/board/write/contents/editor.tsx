@@ -2,11 +2,13 @@
 
 import "react-quill/dist/quill.snow.css";
 import { useMemo, useRef, useState } from "react";
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Input, useDisclosure, Select } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import "@/assets/editor.css";
 import { VideoDialog } from "./videoDiaglog";
 import QuillWrapper from "./quillWrapper";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
+import SubContents from "./subContents";
 
 export default function Editor() {
   const quillRef = useRef<any>();
@@ -15,9 +17,36 @@ export default function Editor() {
   const [insertPosition, setInsertPosition] = useState<number | null>(null); // 커서 위치 저장
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<any>();
+  const [subContents, setSubContents] = useState({
+    title: "",
+    type: "",
+  });
+  const setSubData = (e, val) => {
+    if (val === "title") {
+      setSubContents((prev) => {
+        return {
+          ...prev,
+          title: e.target.value,
+        };
+      });
+    } else {
+      setSubContents((prev) => {
+        return {
+          ...prev,
+          type: e.target.value,
+        };
+      });
+    }
+  };
 
   const handleChange = (content: string) => {
     setEditorContent(content);
+  };
+
+  const submitPosts = () => {
+    if (subContents.title.length < 1 || subContents.type.length < 1) {
+      alert("제목 또는 분류를 선택해주세요");
+    }
   };
 
   // 비디오 삽입 핸들러
@@ -142,7 +171,9 @@ export default function Editor() {
   ];
 
   return (
-    <Box w={"95%"}>
+    <Box w={"95%"} display={"flex"} flexDirection={"column"}>
+      <SubContents subContents={subContents} setSubData={setSubData} />
+
       <QuillWrapper
         forwardedRef={quillRef}
         value={editorContent}
@@ -151,7 +182,21 @@ export default function Editor() {
         formats={formats}
         theme="snow"
       />
-      <Button onClick={() => console.log(editorContent)}>Save</Button>
+
+      {/* 버튼을 오른쪽 끝으로 정렬 */}
+      <Box display={"flex"} justifyContent={"flex-end"} mt={6}>
+        <Button
+          borderRadius={"lg"}
+          p={4}
+          color={ALL_COLOR.WHITE}
+          bg={ALL_COLOR.BLACK}
+          border={"1px solid"}
+          _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+          onClick={submitPosts}
+        >
+          저장
+        </Button>
+      </Box>
 
       <VideoDialog
         isOpen={isOpen}
