@@ -20,6 +20,19 @@ export default function BossLoot({ lootList, column, title }) {
     }
   }, [lootList]);
 
+  const updateSelector = (colList) => {
+    const map = new Map();
+
+    colList.forEach((item) => {
+      const key = `${item.item_type}|${item.item_type_kr}|${item.item_type_en}`;
+      if (!map.has(key)) {
+        map.set(key, item);
+      }
+    });
+
+    return Array.from(map.values());
+  };
+
   const clickBossLoot = (id: string) => {
     setLootId(id);
   };
@@ -38,7 +51,7 @@ export default function BossLoot({ lootList, column, title }) {
           >
             <ContentsSelector
               onClickEvent={clickBossLoot}
-              itemList={lootList}
+              itemList={updateSelector(lootList)}
               currentId={lootId}
               selectorId="item_type"
               itemDesc="item_type_kr"
@@ -59,30 +72,33 @@ export default function BossLoot({ lootList, column, title }) {
                 shadowColor={ALL_COLOR.YELLOW_SHADOW}
                 titleWidth="100%"
               />
-              {lootList.map((loot) => (
-                <GridContents
-                  columnDesign={[2, null, 2]}
-                  contentsWidth="100%"
-                  id={loot.item_id}
-                  key={loot.item_id}
-                >
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <ImageZoom
-                      originalImg={loot.item_image}
-                      thumbnail={loot.item_image}
-                    />
-                  </Box>
-                  <GridCenterText isHover>
-                    <Link href={loot.link + loot.item_id} scroll={false}>
-                      {loot.item_name}
-                    </Link>
-                  </GridCenterText>
-                </GridContents>
-              ))}
+              {lootList.map(
+                (loot) =>
+                  lootId === loot.item_type && (
+                    <GridContents
+                      columnDesign={[2, null, 2]}
+                      contentsWidth="100%"
+                      id={loot.item_id}
+                      key={loot.item_id}
+                    >
+                      <Box
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        <ImageZoom
+                          originalImg={loot.item_image}
+                          thumbnail={loot.item_image}
+                        />
+                      </Box>
+                      <GridCenterText isHover>
+                        <Link href={loot.link + loot.item_id} scroll={false}>
+                          {loot.item_name}
+                        </Link>
+                      </GridCenterText>
+                    </GridContents>
+                  )
+              )}
             </Box>
           </Box>
         </DividerContents>

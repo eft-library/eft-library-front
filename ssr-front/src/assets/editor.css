@@ -85,3 +85,7 @@ button:hover .ql-fill,
 .ql-toolbar .ql-formats button.ql-image::before {
   color: white !important; /* 아이콘 텍스트 색상 흰색으로 변경 */
 }
+input::placeholder {
+  color: #ffffff; /* placeholder 색상 */
+  opacity: 0.5;
+}
