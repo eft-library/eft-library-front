@@ -5,9 +5,10 @@ import DividerContents from "@/components/dividerContents/dividerContents";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { formatImage } from "@/lib/formatImage";
 import { Box } from "@chakra-ui/react";
+import type { BossHealth } from "@/types/types";
 import { useEffect, useState } from "react";
 
-export default function BossHealth({ healthList }) {
+export default function BossHealth({ healthList }: BossHealth) {
   const [healthId, setHealthId] = useState<string>();
 
   const clickHealth = (health: string) => {
@@ -37,7 +38,7 @@ export default function BossHealth({ healthList }) {
               onClickEvent={clickHealth}
               itemList={healthList}
               currentId={healthId}
-              selectorId="name_kr"
+              selectorId="id"
               itemDesc="name_kr"
               isEng
             />
@@ -49,12 +50,12 @@ export default function BossHealth({ healthList }) {
             >
               {healthList.map(
                 (health) =>
-                  health.name_kr === healthId && (
+                  health.id === healthId && (
                     <ImageZoom
                       key={health.name_en}
                       isBoss
-                      originalImg={formatImage(health.image)}
-                      thumbnail={formatImage(health.image)}
+                      originalImg={formatImage(health.health_image)}
+                      thumbnail={formatImage(health.health_image)}
                     />
                   )
               )}

@@ -54,11 +54,56 @@ export interface BossDetail {
   bossId: string | true;
 }
 
+export interface BossLootInfo {
+  item_id: string;
+  boss_id: string;
+  item_type: string;
+  item_type_en: string;
+  item_type_kr: string;
+  item_name_en: string;
+  item_name_kr: string;
+  item_image: string;
+  link: string;
+}
+
+export interface BossLoot extends BossLootInfo {
+  boss_name_en: string;
+  boss_name_kr: string;
+}
+
+export interface BossLootDetail {
+  title: string;
+  column: Column;
+  lootList: BossLoot[];
+}
+
+export interface FollowersLoot extends BossLootInfo {
+  follower_name_en: string;
+  follower_name_kr: string;
+  follower_id: string;
+}
+
+export interface Followers extends strID {
+  name_kr: string;
+  name_en: string;
+  boss_id: string;
+  health_image: string;
+  loot: FollowersLoot[];
+}
+
+export interface FollowersDetail {
+  column: Column;
+  followersList: Followers[];
+}
+
 export interface BossInfo extends strID {
   location_guide: string;
-  followers_health: JsonArrayText[];
-  boss_loot_list: JsonArrayText[];
-  followers_loot_list: JsonArrayText[];
+  sub: BossLoot[];
+  sub_followers: Followers[];
+}
+
+export interface BossHealth {
+  healthList: Followers[];
 }
 
 interface CommonData {
