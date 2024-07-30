@@ -63,7 +63,6 @@ export default function Editor() {
           title: subContents.title,
           contents: editorContent,
           type: subContents.type,
-          thumbnail: "",
         },
         session
       );
@@ -237,6 +236,7 @@ export default function Editor() {
         setVideoUrl={setVideoUrl}
         insertVideo={insertVideo}
       />
+      <div dangerouslySetInnerHTML={{ __html: editorContent }} />
     </Box>
   );
 }
