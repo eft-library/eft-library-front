@@ -19,3 +19,23 @@ export const MAIN_IMAGE_SLIDER_OPTION = {
   autoplaySpeed: 3000,
   draggable: false,
 } as const;
+
+export const QUILL_FORMATS = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "video",
+  "float",
+  "height",
+  "width",
+];

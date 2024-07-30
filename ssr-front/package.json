@@ -21,6 +21,7 @@
     "@types/three": "^0.165.0",
     "@xeger/quill-image-actions": "^0.7.2",
     "@xeger/quill-image-formats": "^0.7.2",
+    "browser-image-compression": "^2.0.2",
     "downshift": "^9.0.6",
     "framer-motion": "^11.2.10",
     "next": "14.2.3",
