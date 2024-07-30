@@ -23,10 +23,10 @@ export default function SubContents({ subContents, setSubData }: EditorSub) {
             bg={ALL_COLOR.BLACK}
             borderColor={ALL_COLOR.WHITE}
           >
-            <option value={"forum"}>자유게시판</option>
-            <option value={"tip"}>팁</option>
-            <option value={"incident"}>사건/사고</option>
-            <option value={"humor"}>유머</option>
+            <option value={"Forum"}>자유게시판</option>
+            <option value={"Tip"}>팁</option>
+            <option value={"Incident"}>사건/사고</option>
+            <option value={"Humor"}>유머</option>
           </Select>
         </Box>
       </Box>

@@ -7,25 +7,25 @@ import USER_API_ENDPOINTS from "@/config/userEndPoints";
 async function refreshAccessToken(token: JWT) {
   try {
     let url = "";
-    if (token.provider === "naver") {
-      url =
-        process.env.NEXT_PUBLIC_NAVER_REFRESH +
-        new URLSearchParams({
-          client_id: process.env.NEXT_PUBLIC_NAVER_ID,
-          client_secret: process.env.NEXT_PUBLIC_NAVER_SECRET,
-          grant_type: "refresh_token",
-          refresh_token: token.refreshToken,
-        });
-    } else {
-      url =
-        process.env.NEXT_PUBLIC_GOOGLE_REFRESH +
-        new URLSearchParams({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_ID,
-          client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET,
-          grant_type: "refresh_token",
-          refresh_token: token.refreshToken,
-        });
-    }
+    // if (token.provider === "naver") {
+    //   url =
+    //     process.env.NEXT_PUBLIC_NAVER_REFRESH +
+    //     new URLSearchParams({
+    //       client_id: process.env.NEXT_PUBLIC_NAVER_ID,
+    //       client_secret: process.env.NEXT_PUBLIC_NAVER_SECRET,
+    //       grant_type: "refresh_token",
+    //       refresh_token: token.refreshToken,
+    //     });
+    // } else {
+    url =
+      process.env.NEXT_PUBLIC_GOOGLE_REFRESH +
+      new URLSearchParams({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_ID,
+        client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET,
+        grant_type: "refresh_token",
+        refresh_token: token.refreshToken,
+      });
+    // }
 
     const response = await fetch(url, {
       headers: {
@@ -110,7 +110,6 @@ const handler = NextAuth({
         token.accessToken = account.access_token;
         token.accessTokenExpires = account.expires_at * 1000;
         token.refreshToken = account.refresh_token;
-        token.provider = account.provider;
         return token;
       }
 

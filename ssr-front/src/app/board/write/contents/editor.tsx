@@ -2,13 +2,17 @@
 
 import "react-quill/dist/quill.snow.css";
 import { useMemo, useRef, useState } from "react";
-import { Box, Button, Input, useDisclosure, Select } from "@chakra-ui/react";
+import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import "@/assets/editor.css";
 import { VideoDialog } from "./videoDiaglog";
+import { fetchUserData } from "@/lib/api";
 import QuillWrapper from "./quillWrapper";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import SubContents from "./subContents";
+import USER_API_ENDPOINTS from "@/config/userEndPoints";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Editor() {
   const quillRef = useRef<any>();
@@ -17,10 +21,13 @@ export default function Editor() {
   const [insertPosition, setInsertPosition] = useState<number | null>(null); // 커서 위치 저장
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<any>();
+  const router = useRouter();
   const [subContents, setSubContents] = useState({
     title: "",
     type: "",
   });
+  const { data: session } = useSession();
+
   const setSubData = (e, val) => {
     if (val === "title") {
       setSubContents((prev) => {
@@ -43,9 +50,32 @@ export default function Editor() {
     setEditorContent(content);
   };
 
-  const submitPosts = () => {
-    if (subContents.title.length < 1 || subContents.type.length < 1) {
-      alert("제목 또는 분류를 선택해주세요");
+  const submitPosts = async () => {
+    try {
+      if (subContents.title.length < 1 || subContents.type.length < 1) {
+        alert("제목 또는 분류를 선택해주세요");
+      }
+
+      const response = await fetchUserData(
+        USER_API_ENDPOINTS.ADD_POST,
+        "POST",
+        {
+          title: subContents.title,
+          contents: editorContent,
+          type: subContents.type,
+        },
+        session
+      );
+
+      if (response.status === 200) {
+        alert("글이 정상적으로 등록 되었습니다.");
+        router.push("/board");
+      } else {
+        alert("잠시후 다시 시도해주세요");
+        router.push("/board/write");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -206,6 +236,7 @@ export default function Editor() {
         setVideoUrl={setVideoUrl}
         insertVideo={insertVideo}
       />
+      <div dangerouslySetInnerHTML={{ __html: editorContent }} />
     </Box>
   );
 }

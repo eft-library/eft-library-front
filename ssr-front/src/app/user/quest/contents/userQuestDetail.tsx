@@ -42,14 +42,14 @@ export default function UserQuestDetail() {
       const response = await fetchUserData(
         USER_API_ENDPOINTS.GET_USER_QUEST,
         "POST",
-        { provider: session.provider },
+        {},
         session
       );
 
       checkResponse(response);
     };
 
-    if (session && session.accessToken && session.provider) {
+    if (session && session.accessToken) {
       getUserQuest();
     }
   }, [session]);
@@ -66,7 +66,7 @@ export default function UserQuestDetail() {
     const response = await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
-      { provider: session.provider, userQuestList: uniqueQuestList },
+      { userQuestList: uniqueQuestList },
       session
     );
 
@@ -83,7 +83,7 @@ export default function UserQuestDetail() {
     const response = await fetchUserData(
       USER_API_ENDPOINTS.DELETE_USER_QUEST,
       "POST",
-      { provider: session.provider, userQuestList: newQuestList },
+      { userQuestList: newQuestList },
       session
     );
 
@@ -100,7 +100,7 @@ export default function UserQuestDetail() {
     const response = await fetchUserData(
       USER_API_ENDPOINTS.UPDATE_USER_QUEST,
       "POST",
-      { provider: session.provider, userQuestList: newQuestList },
+      { userQuestList: newQuestList },
       session
     );
 

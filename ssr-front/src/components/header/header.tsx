@@ -124,7 +124,7 @@ export default function Header() {
               </Link>
             </>
           )}
-          {/* <Login /> */}
+          <Login />
         </HStack>
       </GridItem>
     </Grid>

@@ -8,6 +8,7 @@ const USER_API_ENDPOINTS = {
   GET_USER_QUEST: baseUrl + "/api/user/quest",
   DELETE_USER_QUEST: baseUrl + "/api/user/quest/delete",
   UPDATE_USER_QUEST: baseUrl + "/api/user/quest/update",
+  ADD_POST: baseUrl + "/api/board/add",
 };
 
 export default USER_API_ENDPOINTS;
