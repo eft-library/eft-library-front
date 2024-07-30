@@ -22,14 +22,14 @@ export default function ProfileDetail() {
       const response = await fetchUserData(
         USER_API_ENDPOINTS.GET_USER_INFO,
         "POST",
-        { provider: session.provider },
+        {},
         session
       );
 
       checkResponse(response);
     };
 
-    if (session && session.accessToken && session.provider) {
+    if (session && session.accessToken) {
       getUserInfo();
     }
   }, [session]);
@@ -44,7 +44,6 @@ export default function ProfileDetail() {
         USER_API_ENDPOINTS.CHANGE_USER_NICKNAME,
         "POST",
         {
-          provider: session.provider,
           nickname: nickName,
         },
         session
@@ -69,7 +68,7 @@ export default function ProfileDetail() {
     const response = await fetchUserData(
       USER_API_ENDPOINTS.CHANGE_USER_ICON,
       "POST",
-      { provider: session.provider, icon: newIcon },
+      { icon: newIcon },
       session
     );
     checkResponse(response);
