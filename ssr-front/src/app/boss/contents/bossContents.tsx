@@ -11,6 +11,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import BossLoot from "./bossLoot";
 import BossHealth from "./bossHealth";
+import FollowersLoot from "./followersLoot";
 
 export default function BossContents({ bossList, bossId }: BossContents) {
   let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId);
@@ -38,17 +39,9 @@ export default function BossContents({ bossList, bossId }: BossContents) {
           />
         </Box>
       </DividerContents>
-      <BossHealth healthList={bossInfo.followers_health} />
-      <BossLoot
-        lootList={bossInfo.boss_loot_list}
-        column={column}
-        title={"전리품"}
-      />
-      <BossLoot
-        lootList={bossInfo.followers_loot_list}
-        column={column}
-        title={"추종자 전리품"}
-      />
+      <BossHealth healthList={bossInfo.sub_followers} />
+      <BossLoot lootList={bossInfo.sub} column={column} title={"전리품"} />
+      <FollowersLoot followersList={bossInfo.sub_followers} column={column} />
     </Box>
   );
 }

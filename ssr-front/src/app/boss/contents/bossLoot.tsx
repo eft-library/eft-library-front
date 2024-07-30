@@ -9,9 +9,10 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import { Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import type { BossLootDetail } from "@/types/types";
 import { useEffect, useState } from "react";
 
-export default function BossLoot({ lootList, column, title }) {
+export default function BossLoot({ lootList, column, title }: BossLootDetail) {
   const [lootId, setLootId] = useState<string>();
 
   useEffect(() => {
@@ -93,7 +94,7 @@ export default function BossLoot({ lootList, column, title }) {
                       </Box>
                       <GridCenterText isHover>
                         <Link href={loot.link + loot.item_id} scroll={false}>
-                          {loot.item_name}
+                          {loot.item_name_kr}
                         </Link>
                       </GridCenterText>
                     </GridContents>
