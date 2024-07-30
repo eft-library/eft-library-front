@@ -17,6 +17,7 @@ import { QuillToolbar } from "./quill/quickToolbar";
 import { ImageHandler } from "./quill/imageHandler";
 import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
 import { insertVideo, videoHandler } from "./quill/videoUtils";
+import LoadingSpinner from "./quill/loadingSpinner";
 
 export default function Editor() {
   const quillRef = useRef<any>();
@@ -31,6 +32,7 @@ export default function Editor() {
     type: "",
   });
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
 
   const setSubData = (e, val) => {
     if (val === "title") {
@@ -98,7 +100,8 @@ export default function Editor() {
       imageFormats: {},
       imageDropAndPaste: ImageHandler({
         quillRef,
-        API_ENDPOINTS: API_ENDPOINTS.UPLOAD_BOARD_IMAGE,
+        api: API_ENDPOINTS.UPLOAD_BOARD_IMAGE,
+        setLoading: setLoading,
       }),
       clipboard: {
         matchVisual: false,
@@ -130,7 +133,7 @@ export default function Editor() {
         setVideoUrl={setVideoUrl}
         insertVideo={handleInsertVideo}
       />
-      <div dangerouslySetInnerHTML={{ __html: editorContent }} />
+      {loading && <LoadingSpinner />}
     </Box>
   );
 }

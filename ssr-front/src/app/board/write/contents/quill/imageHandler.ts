@@ -1,16 +1,16 @@
 import imageCompression from "browser-image-compression";
 
-export const ImageHandler = ({ quillRef, API_ENDPOINTS }) => ({
+export const ImageHandler = ({ quillRef, api, setLoading }) => ({
   handler: async (dataUrl, type, imageData) => {
     const file = imageData.toFile();
     const options = {
-      maxSizeMB: 1,
+      maxSizeMB: 20,
       maxWidthOrHeight: 1920,
       useWebWorker: true,
       fileType: "image/jpeg",
     };
-
     try {
+      setLoading(true);
       const compressedFile = await imageCompression(file, options);
       const blob = new Blob([compressedFile], { type: "image/jpeg" });
       const jpegFile = new File([blob], "compressed-image.jpg", {
@@ -19,8 +19,7 @@ export const ImageHandler = ({ quillRef, API_ENDPOINTS }) => ({
 
       const formData = new FormData();
       formData.append("file", jpegFile);
-
-      const response = await fetch(API_ENDPOINTS, {
+      const response = await fetch(api, {
         method: "POST",
         body: formData,
       });
@@ -36,6 +35,8 @@ export const ImageHandler = ({ quillRef, API_ENDPOINTS }) => ({
     } catch (error) {
       console.error("Error uploading image:", error);
       return dataUrl;
+    } finally {
+      setLoading(false);
     }
   },
 });
