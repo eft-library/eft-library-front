@@ -93,7 +93,7 @@ export interface Followers extends strID {
 
 export interface FollowersDetail {
   column: Column;
-  followersList: Followers[];
+  follower: Followers;
 }
 
 export interface BossInfo extends strID {

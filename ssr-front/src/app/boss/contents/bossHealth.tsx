@@ -17,7 +17,7 @@ export default function BossHealth({ healthList }: BossHealth) {
 
   useEffect(() => {
     if (healthList.length > 0) {
-      setHealthId(healthList[0].name_kr);
+      setHealthId(healthList[0].id);
     }
   }, [healthList]);
 

@@ -12,17 +12,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
 import type { FollowersDetail, FollowersLoot } from "@/types/types";
 
-export default function FollowersLoot({
-  followersList,
-  column,
-}: FollowersDetail) {
-  const [followerId, setFollowerId] = useState<string>();
+export default function FollowersLoot({ follower, column }: FollowersDetail) {
+  const [lootType, setLootType] = useState<string>();
 
   useEffect(() => {
-    if (followersList.length > 0 && followersList[0].loot.length > 0) {
-      setFollowerId(followersList[0].loot[0].item_type);
+    if (follower && follower.loot.length > 0) {
+      setLootType(follower.loot[0].item_type);
     }
-  }, [followersList]);
+  }, [follower]);
 
   const updateSelector = (colList: FollowersLoot[]) => {
     const map = new Map();
@@ -37,78 +34,80 @@ export default function FollowersLoot({
     return Array.from(map.values());
   };
 
-  const clickFollowerLoot = (id: string) => {
-    setFollowerId(id);
+  const clickFollowerLoot = (type: string) => {
+    setLootType(type);
   };
 
   return (
     <>
-      {followersList.length > 0 &&
-        followersList.map((follower) => (
-          <DividerContents headText={`${follower.name_kr} 전리품`}>
+      {follower.loot.length > 0 && (
+        <DividerContents
+          headText={`${follower.name_kr} 전리품`}
+          key={follower.id}
+        >
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+            w={"100%"}
+            h={"100%"}
+            mt={-6}
+          >
+            <ContentsSelector
+              onClickEvent={clickFollowerLoot}
+              itemList={updateSelector(follower.loot)}
+              currentId={lootType}
+              selectorId="item_type"
+              itemDesc="item_type_kr"
+              isEng
+            />
             <Box
+              mt={-6}
               display={"flex"}
+              flexDirection={"column"}
               alignItems={"center"}
               justifyContent={"center"}
-              flexDirection={"column"}
               w={"100%"}
-              h={"100%"}
-              mt={-6}
             >
-              <ContentsSelector
-                onClickEvent={clickFollowerLoot}
-                itemList={updateSelector(follower.loot)}
-                currentId={followerId}
-                selectorId="item_type"
-                itemDesc="item_type_kr"
-                isEng
+              <GridTitle
+                columnDesign={[2, null, 2]}
+                column={column.value_kr}
+                isShadow
+                shadowColor={ALL_COLOR.YELLOW_SHADOW}
+                titleWidth="100%"
               />
-              <Box
-                mt={-6}
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                w={"100%"}
-              >
-                <GridTitle
-                  columnDesign={[2, null, 2]}
-                  column={column.value_kr}
-                  isShadow
-                  shadowColor={ALL_COLOR.YELLOW_SHADOW}
-                  titleWidth="100%"
-                />
-                {follower.loot.map(
-                  (loot) =>
-                    followerId === loot.item_type && (
-                      <GridContents
-                        columnDesign={[2, null, 2]}
-                        contentsWidth="100%"
-                        id={loot.item_id}
-                        key={loot.item_id}
+              {follower.loot.map(
+                (loot) =>
+                  lootType === loot.item_type && (
+                    <GridContents
+                      columnDesign={[2, null, 2]}
+                      contentsWidth="100%"
+                      id={loot.item_id}
+                      key={loot.item_id}
+                    >
+                      <Box
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
                       >
-                        <Box
-                          display={"flex"}
-                          alignItems={"center"}
-                          justifyContent={"center"}
-                        >
-                          <ImageZoom
-                            originalImg={loot.item_image}
-                            thumbnail={loot.item_image}
-                          />
-                        </Box>
-                        <GridCenterText isHover>
-                          <Link href={loot.link + loot.item_id} scroll={false}>
-                            {loot.item_name_kr}
-                          </Link>
-                        </GridCenterText>
-                      </GridContents>
-                    )
-                )}
-              </Box>
+                        <ImageZoom
+                          originalImg={loot.item_image}
+                          thumbnail={loot.item_image}
+                        />
+                      </Box>
+                      <GridCenterText isHover>
+                        <Link href={loot.link + loot.item_id} scroll={false}>
+                          {loot.item_name_kr}
+                        </Link>
+                      </GridCenterText>
+                    </GridContents>
+                  )
+              )}
             </Box>
-          </DividerContents>
-        ))}
+          </Box>
+        </DividerContents>
+      )}
     </>
   );
 }
