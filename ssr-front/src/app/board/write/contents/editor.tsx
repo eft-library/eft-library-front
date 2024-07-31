@@ -74,8 +74,9 @@ export default function Editor() {
       );
 
       if (response.status === 200) {
+        const data = response.data;
         alert("글이 정상적으로 등록 되었습니다.");
-        router.push("/board");
+        router.push(`/board/${data.type}?id=${1}`);
       } else {
         alert("잠시후 다시 시도해주세요");
         router.push("/board/write");

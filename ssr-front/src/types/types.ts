@@ -874,3 +874,25 @@ export interface BoardType extends strID {
   name_kr: string;
   value: string;
 }
+
+export interface PostData extends strID {
+  title: string;
+  contents: string;
+  thumbnail: string | null;
+  writer: string;
+  like_count: number;
+  dislike_count: number;
+  view_count: number;
+  type: string;
+  create_time: string;
+  update_time: string | null;
+  image: string;
+  nick_name: string;
+}
+
+export interface PostInfo {
+  data: PostData[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
+}

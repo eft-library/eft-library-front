@@ -17,6 +17,25 @@ export const fetchDataWithNone = async (url: string, setData: Function) => {
   }
 };
 
+export const fetchDataWithReturn = async (url: string) => {
+  try {
+    const response = await fetch(`${url}`, {
+      next: { revalidate: 60000 },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result: any = await response.json();
+
+    return result.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
+  }
+};
+
 export const fetchUserData = async (
   url: string,
   method: string,

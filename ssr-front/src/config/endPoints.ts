@@ -38,6 +38,7 @@ const API_ENDPOINTS = {
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
   GET_BOARD_TYPE: baseUrl + "/api/board/all/categories",
+  GET_BOARD: baseUrl + "/api/board/all",
 };
 
 export default API_ENDPOINTS;

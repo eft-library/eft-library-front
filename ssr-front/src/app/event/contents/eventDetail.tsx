@@ -24,7 +24,7 @@ export default function EventDetail() {
 
   useEffect(() => {
     getEventPage(Number(param.get("id")));
-  }, []);
+  }, [param]);
 
   if (!eventInfo) return null;
 
