@@ -1,7 +1,6 @@
 import PageParent from "@/components/pageParent/pageParent";
 import SubHeader from "@/components/subHeader/subHeader";
 import ProfileDetail from "./contents/profileDetail";
-import { Box } from "@chakra-ui/react";
 
 export const metadata = {
   title: "내 정보 | EFT Library",

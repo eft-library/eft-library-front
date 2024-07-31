@@ -37,6 +37,7 @@ const API_ENDPOINTS = {
   GET_PATCH_NOTES: baseUrl + "/api/patch_notes/board",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
+  GET_BOARD_TYPE: baseUrl + "/api/board/all/categories",
 };
 
 export default API_ENDPOINTS;

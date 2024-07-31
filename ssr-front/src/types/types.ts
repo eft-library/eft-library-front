@@ -868,3 +868,9 @@ export interface EditorSub {
   subContents: SubContents;
   setSubData: Function;
 }
+
+export interface BoardType extends strID {
+  name_en: string;
+  name_kr: string;
+  value: string;
+}
