@@ -1,4 +1,4 @@
-export default function Humor() {
+export default function PVE() {
   return (
     <>
       <></>

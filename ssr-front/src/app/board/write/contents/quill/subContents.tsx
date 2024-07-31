@@ -30,6 +30,7 @@ export default function SubContents({ subContents, setSubData }: EditorSub) {
             placeholder="게시글 제목"
             bg={ALL_COLOR.BLACK}
             borderColor={ALL_COLOR.WHITE}
+            fontWeight={600}
             value={subContents.title}
             onChange={(e) => setSubData(e, "title")}
           />
@@ -37,6 +38,7 @@ export default function SubContents({ subContents, setSubData }: EditorSub) {
         <Box w={"40%"} ml={10}>
           <Select
             placeholder="게시글 분류"
+            fontWeight={600}
             value={subContents.type}
             onChange={(e) => setSubData(e, "type")}
             bg={ALL_COLOR.BLACK}
@@ -50,9 +52,9 @@ export default function SubContents({ subContents, setSubData }: EditorSub) {
           </Select>
         </Box>
       </Box>
-      <Box borderRadius={"lg"} w={"100%"}>
+      <Box borderRadius={"lg"} w={"100%"} bg={ALL_COLOR.LIGHT_GRAY}>
         {column.value_kr.map((col, index) => (
-          <Text key={index} bg={ALL_COLOR.LIGHT_GRAY} p={2}>
+          <Text key={index} p={2} fontWeight={600}>
             {col}
           </Text>
         ))}

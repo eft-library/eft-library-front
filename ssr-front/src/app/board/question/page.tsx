@@ -1,4 +1,4 @@
-export default function Incident() {
+export default function Question() {
   return (
     <>
       <></>
