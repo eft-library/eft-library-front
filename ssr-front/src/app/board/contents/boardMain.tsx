@@ -32,7 +32,7 @@ export default function BoardMain() {
   return (
     <Box w={"100%"}>
       {postInfo.data.map((post) => (
-        <Box w={"90%"} key={post.id}>
+        <Box w={"90%"} key={post.id} border={"1px solid"}>
           <Text>{post.title}</Text>
           <Text>{TYPE_MAPPINGS[post.type] || "자유"}</Text>
           <Text>{post.nick_name}</Text>
@@ -50,12 +50,14 @@ export default function BoardMain() {
               alt={post.thumbnail}
             />
           )}
+          <Text>{post.like_count}</Text>
+          <Text>{post.view_count}</Text>
           <Text>{timeAgo(post.create_time)}</Text>
         </Box>
       ))}
       <Pagination
         total={postInfo.max_pages}
-        routeLink={"/post?id="}
+        routeLink={"/board?id="}
         currentPage={Number(param.get("id"))}
       />
     </Box>
