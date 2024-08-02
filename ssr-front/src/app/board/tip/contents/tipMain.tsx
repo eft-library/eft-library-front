@@ -12,13 +12,13 @@ import Pagination from "@/components/pagination/pagination";
 import BoardSearch from "@/components/board/boardSearch";
 import BoardContainer from "@/components/board/boardContainer";
 
-export default function BoardMain() {
+export default function TipMain() {
   const param = useSearchParams();
   const [postInfo, setPostInfo] = useState<PostInfo>();
-  const siteParam = "";
+  const siteParam = "tip";
   const getBoardPage = async (page: number) => {
     const result = await fetchDataWithReturn(
-      `${API_ENDPOINTS.GET_BOARD}?page=${page}&page_size=10`
+      `${API_ENDPOINTS.GET_BOARD_BY_TYPE}/${siteParam}?page=${page}&page_size=10`
     );
     setPostInfo(result);
   };
@@ -42,7 +42,7 @@ export default function BoardMain() {
           </VStack>
           <Pagination
             total={postInfo.max_pages}
-            routeLink={`/board?id=`}
+            routeLink={`/board/${siteParam}?id=`}
             currentPage={Number(param.get("id"))}
           />
         </Box>
