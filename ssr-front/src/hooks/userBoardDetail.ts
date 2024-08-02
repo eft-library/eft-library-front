@@ -21,5 +21,6 @@ export default function useBoardDetail(siteParam: string) {
 
   return {
     postInfo,
+    getBoardPage,
   };
 }

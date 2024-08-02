@@ -9,6 +9,8 @@ const USER_API_ENDPOINTS = {
   DELETE_USER_QUEST: baseUrl + "/api/user/quest/delete",
   UPDATE_USER_QUEST: baseUrl + "/api/user/quest/update",
   ADD_POST: baseUrl + "/api/board/add",
+  CHANGE_LIKE: baseUrl + "/api/board/like",
+  IS_LIKE_POST: baseUrl + "/api/board/user/like",
 };
 
 export default USER_API_ENDPOINTS;

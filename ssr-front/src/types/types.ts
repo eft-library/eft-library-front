@@ -904,3 +904,7 @@ export interface PostInfo {
   max_pages: number;
   current_page: number;
 }
+
+export interface BoardDetail extends BoardPost {
+  onClickLike: Function;
+}

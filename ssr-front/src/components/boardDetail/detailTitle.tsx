@@ -1,3 +1,5 @@
+"use client";
+
 import type { BoardPost } from "@/types/types";
 import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { timeAgo } from "@/lib/formatISODate";
@@ -11,7 +13,7 @@ export default function DetailTitle({ post }: BoardPost) {
       <Heading as="h2" size="lg" mb={3}>
         {post.title}
       </Heading>
-      <Flex fontSize="0.9em" color={ALL_COLOR.DARK_GRAY}>
+      <Flex fontSize="0.9em" color={ALL_COLOR.WHITE}>
         <Text>{post.type}</Text>
         <Text mx={2}>|</Text>
         <Text>{timeAgo(post.create_time)}</Text>
