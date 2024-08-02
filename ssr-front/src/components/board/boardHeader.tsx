@@ -31,6 +31,11 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
     >
       <Flex mb={2}>
         <Flex>
+          <Link href={`/board?id=1`}>
+            <Box mx={2} _hover={{ color: ALL_COLOR.BEIGE }}>
+              <Text fontWeight={600}>전체</Text>
+            </Box>
+          </Link>
           {typeList.map((type) => (
             <Link key={type.id} href={`/board/${type.value}?id=1`}>
               <Box mx={2} _hover={{ color: ALL_COLOR.BEIGE }}>
