@@ -875,6 +875,14 @@ export interface BoardType extends strID {
   value: string;
 }
 
+export interface BoardHeader {
+  siteParam: string;
+}
+
+export interface BoardPost {
+  post: PostData;
+}
+
 export interface PostData extends strID {
   title: string;
   contents: string;

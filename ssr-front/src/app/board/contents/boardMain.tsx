@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { fetchDataWithReturn } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { Box, Text, Image } from "@chakra-ui/react";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { timeAgo } from "@/lib/formatISODate";
 import Pagination from "@/components/pagination/pagination";
 import { useSearchParams } from "next/navigation";
