@@ -47,14 +47,24 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
       </Flex>
       <Flex justify="space-between" mt={2}>
         <Flex>
-          <Link href={`/board/${siteParam}?id=1`}>
+          <Link
+            href={
+              siteParam === "board" ? `/board?id=1` : `/board/${siteParam}?id=1`
+            }
+          >
             <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
               <MdStickyNote2 />
               &nbsp;
               <Text fontWeight={600}>최신글</Text>
             </Flex>
           </Link>
-          <Link href={`/board/${siteParam}/issue?id=1`}>
+          <Link
+            href={
+              siteParam === "board"
+                ? `/board/issue?id=1`
+                : `/board/${siteParam}/issue?id=1`
+            }
+          >
             <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
               <MdOutlineStar />
               &nbsp;
