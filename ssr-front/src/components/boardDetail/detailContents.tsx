@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
+import ImgWithZoom from "./imgWithZoom";
 
 export default function DetailContents({
   post,
@@ -68,10 +69,11 @@ export default function DetailContents({
 
   return (
     <Box position="relative" pb={10}>
-      <Text
+      <ImgWithZoom content={post.contents} />
+      {/* <Text
         className="view-editor"
         dangerouslySetInnerHTML={{ __html: post.contents }}
-      />
+      /> */}
       <Flex position="absolute" bottom={2} right={2} align="center">
         <Button
           mr={2}
