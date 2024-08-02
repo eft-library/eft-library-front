@@ -10,7 +10,11 @@ import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
 
-export default function DetailContents({ post, onClickLike }: BoardDetail) {
+export default function DetailContents({
+  post,
+  onClickLike,
+  boardType,
+}: BoardDetail) {
   // 1: like, 2: dislike, 3: none
   const [isLike, setIsLike] = useState<number>(3);
   const { data: session } = useSession();
@@ -24,7 +28,7 @@ export default function DetailContents({ post, onClickLike }: BoardDetail) {
           {
             id: post.id,
             type: "like",
-            board_type: "forum",
+            board_type: boardType,
           },
           session
         );

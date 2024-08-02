@@ -907,4 +907,5 @@ export interface PostInfo {
 
 export interface BoardDetail extends BoardPost {
   onClickLike: Function;
+  boardType: string;
 }

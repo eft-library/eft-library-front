@@ -51,8 +51,11 @@ export default function ForumDetail() {
 
       <Box border="1px solid white" p={5} borderRadius="10px">
         <DetailTitle post={postInfo} />
-        <DetailContents post={postInfo} onClickLike={onClickLike} />
-
+        <DetailContents
+          post={postInfo}
+          onClickLike={onClickLike}
+          boardType={siteParam}
+        />
         <Box mt={5}>
           <Heading as="h3" size="md" mb={3}>
             댓글
