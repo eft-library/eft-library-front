@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSession } from "next-auth/react";
 import { MdOutlineStar, MdStickyNote2 } from "react-icons/md";
+import { FaPencil } from "react-icons/fa6";
 
 export default function BoardHeader({ siteParam }: BoardHeader) {
   const { data: session } = useSession();
@@ -59,6 +60,8 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
         {session && (
           <Link href={"/board/write"}>
             <Flex mx={2} align="center">
+              <FaPencil />
+              &nbsp;
               <Text fontWeight={600}>글쓰기</Text>
             </Flex>
           </Link>

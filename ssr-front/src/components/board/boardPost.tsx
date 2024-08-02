@@ -13,7 +13,8 @@ export default function BoardPost({ post }: BoardPost) {
       <Link href={`/board/${post.type}/detail/${post.id}`}>
         <Flex
           width="100%"
-          borderBottom="1px solid gray"
+          borderBottom="1px solid"
+          borderColor={ALL_COLOR.DARK_GRAY}
           display={"flex"}
           pb={5}
           pt={5}

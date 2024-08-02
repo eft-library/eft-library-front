@@ -19,25 +19,23 @@ export default function BoardMain() {
 
   return (
     <BoardContainer>
-      <Box width="1300px" mx="auto">
-        <BoardHeader siteParam={siteParam} />
-        <Box border="1px solid white" p={5} borderRadius="10px">
-          <VStack spacing={5}>
-            {postInfo.data.map((post) => (
-              <BoardPost key={post.id} post={post} />
-            ))}
-            <BoardSearch
-              searchInfo={searchInfo}
-              setSearchData={setSearchData}
-              getFilterPage={getFilterPage}
-            />
-          </VStack>
-          <Pagination
-            total={postInfo.max_pages}
-            routeLink={`/board?id=`}
-            currentPage={Number(param.get("id"))}
+      <BoardHeader siteParam={siteParam} />
+      <Box border="1px solid white" p={5} borderRadius="10px">
+        <VStack spacing={5}>
+          {postInfo.data.map((post) => (
+            <BoardPost key={post.id} post={post} />
+          ))}
+          <BoardSearch
+            searchInfo={searchInfo}
+            setSearchData={setSearchData}
+            getFilterPage={getFilterPage}
           />
-        </Box>
+        </VStack>
+        <Pagination
+          total={postInfo.max_pages}
+          routeLink={`/board?id=`}
+          currentPage={Number(param.get("id"))}
+        />
       </Box>
     </BoardContainer>
   );

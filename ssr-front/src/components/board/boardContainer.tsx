@@ -6,21 +6,18 @@ export default function BoardContainer({ children }: PageParent) {
   return (
     <Box
       w={"100%"}
-      bg={ALL_COLOR.BLACK}
+      bg={ALL_COLOR.BACKGROUND}
       pb={20}
       paddingTop="80px"
       paddingBottom="20px"
     >
-      <Box
-        bg="black"
-        color="white"
-        fontFamily="Arial, sans-serif"
-        fontWeight="bold"
-      >
+      <Box bg={ALL_COLOR.BACKGROUND} color={ALL_COLOR.WHITE} fontWeight="600">
         <Box textAlign="center" my={5}>
           <Heading size="2xl">타르코프 커뮤니티</Heading>
         </Box>
-        {children}
+        <Box width="1300px" mx="auto">
+          {children}
+        </Box>
       </Box>
     </Box>
   );

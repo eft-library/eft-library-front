@@ -27,7 +27,7 @@ export default function BoardSearch({
         <option value="nickname">닉네임</option>
       </Select>
       <Input
-        placeholder="검색..."
+        placeholder="검색어를 입력해주세요"
         width="300px"
         fontWeight={600}
         value={searchInfo.word}
