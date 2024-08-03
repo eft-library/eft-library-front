@@ -34,8 +34,6 @@ export default function ImgWithZoom({ content }) {
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Image Preview</ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
             <Image
               src={selectedImage}

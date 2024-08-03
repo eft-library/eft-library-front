@@ -70,10 +70,6 @@ export default function DetailContents({
   return (
     <Box position="relative" pb={10}>
       <ImgWithZoom content={post.contents} />
-      {/* <Text
-        className="view-editor"
-        dangerouslySetInnerHTML={{ __html: post.contents }}
-      /> */}
       <Flex position="absolute" bottom={2} right={2} align="center">
         <Button
           mr={2}
