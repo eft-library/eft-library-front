@@ -154,7 +154,9 @@ export default function UserQuestDetail() {
     <Box w={"95%"} h="100%">
       <UserQuestSelector updateQuest={updateUserQuest} />
       {userQuest.length < 0 || !userQuest[0].npc_id ? (
-        <Text>퀘스트 추가 Please~~~</Text>
+        <Text fontWeight={600}>
+          퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.
+        </Text>
       ) : (
         <Accordion allowMultiple defaultIndex={indices}>
           <Box
