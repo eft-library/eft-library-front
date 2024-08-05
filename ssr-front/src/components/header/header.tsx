@@ -79,7 +79,7 @@ export default function Header() {
           <TopNaviLogo />
         </Link>
       </GridItem>
-      {/* <GridItem
+      <GridItem
         colStart={3}
         colEnd={6}
         h="14"
@@ -111,7 +111,7 @@ export default function Header() {
             )
           )
         )}
-        {!session && (
+        {/* {!session && (
           <Button
             variant="solid"
             fontWeight="bold"
@@ -126,8 +126,8 @@ export default function Header() {
           >
             로그인
           </Button>
-        )}
-      </GridItem> */}
+        )} */}
+      </GridItem>
     </Grid>
   );
 }
