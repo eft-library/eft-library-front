@@ -810,6 +810,14 @@ export interface Header {
   grade: string;
   user: UserInfo;
   icon_list: string[];
+  ban: UserBan;
+}
+
+export interface UserBan {
+  user_email: string;
+  ban_reasn: string;
+  ban_start_time: null | string;
+  ban_end_time: null | string;
 }
 
 export interface UserInfo extends strID {
