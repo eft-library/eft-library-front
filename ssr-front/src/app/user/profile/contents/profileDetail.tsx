@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useRouter } from "next/navigation";
-import type { UserInfo } from "@/types/types";
+import type { Header } from "@/types/types";
 import { fetchUserData } from "@/lib/api";
 import ProfileRight from "./profileRight";
 import ProfileLeft from "./profileLeft";
 import ProfileBottom from "./profileBottom";
 
 export default function ProfileDetail() {
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [userInfo, setUserInfo] = useState<Header>();
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -103,9 +103,10 @@ export default function ProfileDetail() {
               display={"flex"}
               justifyContent={"space-between"}
             >
-              <ProfileLeft userInfo={userInfo} changeIcon={onChangeIcon} />
+              <ProfileLeft userInfo={userInfo.user} changeIcon={onChangeIcon} />
               <ProfileRight
-                userInfo={userInfo}
+                userInfo={userInfo.user}
+                grade={userInfo.grade}
                 changeNickName={onChangeNickName}
               />
             </Box>

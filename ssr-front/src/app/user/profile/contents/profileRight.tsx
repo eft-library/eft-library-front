@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function ProfileRight({
   userInfo,
   changeNickName,
+  grade,
 }: ProfileRight) {
   const [nickName, setNickName] = useState<string>(userInfo.nick_name);
 
@@ -67,7 +68,7 @@ export default function ProfileRight({
             userInfo.update_time ? formatISODate(userInfo.update_time) : "없음"
           }
         />
-        <InfoBox desc="등급" value={userInfo.grade} />
+        <InfoBox desc="등급" value={grade} />
         <InfoBox desc="포인트" value={userInfo.point} />
         <InfoBox
           desc="회원가입 날짜"

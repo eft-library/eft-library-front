@@ -11,13 +11,13 @@ import API_ENDPOINTS from "@/config/endPoints";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useAppStore } from "@/store/provider";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import type { Menu, UserInfo } from "@/types/types";
+import type { Menu, Header } from "@/types/types";
 import MenuButton from "./menuButton";
 import UserMenuButton from "./userMenuButton";
 
 export default function Header() {
   const { setNpcId } = useAppStore((state) => state);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [userInfo, setUserInfo] = useState<Header>();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[] | null>(null);
   const { data: session } = useSession();
@@ -103,7 +103,7 @@ export default function Header() {
               <UserMenuButton
                 key={main.value}
                 main={main}
-                userInfo={userInfo}
+                userInfo={userInfo.user}
                 selectedMenu={selectedMenu}
                 changeMenu={changeMenu}
                 setQuest={setQuest}
@@ -111,7 +111,7 @@ export default function Header() {
             )
           )
         )}
-        {/* {!session && (
+        {!session && (
           <Button
             variant="solid"
             fontWeight="bold"
@@ -126,7 +126,7 @@ export default function Header() {
           >
             로그인
           </Button>
-        )} */}
+        )}
       </GridItem>
     </Grid>
   );

@@ -806,6 +806,11 @@ export interface UserQuestSelector {
   updateQuest: Function;
 }
 
+export interface Header {
+  grade: string;
+  user: UserInfo;
+}
+
 export interface UserInfo extends strID {
   name: string;
   email: string;
@@ -824,6 +829,7 @@ export interface UserInfo extends strID {
 
 export interface Profile {
   userInfo: UserInfo;
+  grade?: string;
 }
 
 export interface ProfileRight extends Profile {
