@@ -809,13 +809,13 @@ export interface UserQuestSelector {
 export interface Header {
   grade: string;
   user: UserInfo;
+  icon_list: string[];
 }
 
 export interface UserInfo extends strID {
   name: string;
   email: string;
-  image: string;
-  image_list: string[];
+  icon: string;
   nick_name: string;
   point: number;
   is_ban: boolean;
@@ -830,6 +830,7 @@ export interface UserInfo extends strID {
 export interface Profile {
   userInfo: UserInfo;
   grade?: string;
+  icon_list?: string[];
 }
 
 export interface ProfileRight extends Profile {

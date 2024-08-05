@@ -17,7 +17,11 @@ import { formatImage } from "@/lib/formatImage";
 import type { ProfileLeft } from "@/types/types";
 import { useState } from "react";
 
-export default function ProfileLeft({ userInfo, changeIcon }: ProfileLeft) {
+export default function ProfileLeft({
+  userInfo,
+  changeIcon,
+  icon_list,
+}: ProfileLeft) {
   const [selectIcon, setSelectIcon] = useState<string>();
 
   const onClickIcon = (icon: string) => {
@@ -34,13 +38,15 @@ export default function ProfileLeft({ userInfo, changeIcon }: ProfileLeft) {
         cursor="pointer"
         borderRadius={"lg"}
       >
-        <Image
-          src={formatImage(userInfo.image)}
-          w="100px"
-          alt="icon"
-          fallbackSrc="/loading.gif"
-          borderRadius={"lg"}
-        />
+        {userInfo.icon && (
+          <Image
+            src={formatImage(userInfo.icon)}
+            w="100px"
+            alt="icon"
+            fallbackSrc="/loading.gif"
+            borderRadius={"lg"}
+          />
+        )}
         <Box
           position="absolute"
           top="0"
@@ -80,7 +86,7 @@ export default function ProfileLeft({ userInfo, changeIcon }: ProfileLeft) {
               />
               <PopoverBody>
                 <SimpleGrid columns={4} spacing={6}>
-                  {userInfo.image_list.map((icon, index) => (
+                  {icon_list.map((icon, index) => (
                     <Box
                       key={index}
                       onClick={() => onClickIcon(icon)}

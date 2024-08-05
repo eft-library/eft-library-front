@@ -103,7 +103,11 @@ export default function ProfileDetail() {
               display={"flex"}
               justifyContent={"space-between"}
             >
-              <ProfileLeft userInfo={userInfo.user} changeIcon={onChangeIcon} />
+              <ProfileLeft
+                userInfo={userInfo.user}
+                changeIcon={onChangeIcon}
+                icon_list={userInfo.icon_list}
+              />
               <ProfileRight
                 userInfo={userInfo.user}
                 grade={userInfo.grade}
