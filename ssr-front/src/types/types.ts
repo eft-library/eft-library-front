@@ -825,20 +825,23 @@ export interface UserInfo extends strID {
   email: string;
   icon: string;
   nick_name: string;
+  is_admin: boolean;
+  attendance_count: number;
+  attendance_time: string;
   point: number;
-  is_ban: boolean;
-  is_delete: boolean;
-  grade: string;
   create_time: string;
   update_time: string;
-  ban_end_time: string;
-  delete_time: string;
 }
 
 export interface Profile {
   userInfo: UserInfo;
   grade?: string;
   icon_list?: string[];
+  is_delete?: boolean;
+}
+
+export interface ProfileExit {
+  userExit: Function;
 }
 
 export interface ProfileRight extends Profile {

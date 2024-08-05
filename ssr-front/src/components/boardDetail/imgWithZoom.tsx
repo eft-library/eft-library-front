@@ -3,11 +3,10 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
   Image,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -25,12 +24,11 @@ export default function ImgWithZoom({ content }) {
 
   return (
     <>
-      <div
+      <Box
         className="view-editor"
         dangerouslySetInnerHTML={{ __html: content }}
         onClick={handleImageClick}
       />
-
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>

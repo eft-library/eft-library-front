@@ -53,9 +53,10 @@ export default function ProfileRight({
             <Button
               onClick={() => changeNickName(nickName)}
               p={1}
-              fontWeight={500}
+              fontWeight={600}
               border={"1px solid"}
               borderRadius={"lg"}
+              _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
               ml={2}
             >
               수정

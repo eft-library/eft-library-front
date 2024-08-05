@@ -10,6 +10,7 @@ import { fetchUserData } from "@/lib/api";
 import ProfileRight from "./profileRight";
 import ProfileLeft from "./profileLeft";
 import ProfileBottom from "./profileBottom";
+import ProfileExit from "./profileExit";
 
 export default function ProfileDetail() {
   const [userInfo, setUserInfo] = useState<Header>();
@@ -57,6 +58,32 @@ export default function ProfileDetail() {
         location.reload();
       } else if (response.status === 403) {
         alert("최근 변경 기간이 30일이 지나지 않음");
+        location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const userExit = async (nickName: string) => {
+    try {
+      if (nickName !== userInfo.user.nick_name) {
+        return alert("닉네임이 다릅니다.");
+      }
+
+      const response = await fetchUserData(
+        USER_API_ENDPOINTS.DELETE_USER,
+        "POST",
+        {},
+        session
+      );
+
+      if (response.status === 200 && response.data) {
+        alert("회원 탈퇴가 완료 되었습니다. 그동안 감사했습니다.");
+        // onClose();
+        signOut();
+      } else {
+        alert("잠시후 다시 시도해주세요");
         location.reload();
       }
     } catch (error) {
@@ -119,6 +146,7 @@ export default function ProfileDetail() {
         </Box>
       </Box>
       <ProfileBottom />
+      <ProfileExit userExit={userExit} />
     </Box>
   );
 }

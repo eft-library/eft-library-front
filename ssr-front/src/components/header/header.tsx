@@ -55,7 +55,7 @@ export default function Header() {
   };
 
   if (!headerData) return <HeaderSkeleton />;
-  if (session && !userInfo) return <HeaderSkeleton />;
+  // if (session && !userInfo) return <HeaderSkeleton />;
 
   return (
     <Grid

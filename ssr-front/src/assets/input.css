@@ -1,3 +1,4 @@
 input::placeholder {
   color: #ffffff; /* placeholder 색상 */
+  opacity: 0.7;
 }
