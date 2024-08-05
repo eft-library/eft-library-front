@@ -36,7 +36,7 @@ export const formatISOTime = (isoDateString: string) => {
   return dateTime;
 };
 
-export const timeAgo = (dateString) => {
+export const timeAgo = (dateString: string) => {
   const date = new Date(dateString);
   return formatDistanceToNow(date, { addSuffix: true, locale: ko }); // 한국어 locale 지원
 };

@@ -106,6 +106,7 @@ export default function ProfileDetail() {
               <ProfileLeft
                 userInfo={userInfo.user}
                 changeIcon={onChangeIcon}
+                grade={userInfo.grade}
                 icon_list={userInfo.icon_list}
               />
               <ProfileRight

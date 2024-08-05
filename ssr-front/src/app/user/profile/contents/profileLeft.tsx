@@ -21,6 +21,7 @@ export default function ProfileLeft({
   userInfo,
   changeIcon,
   icon_list,
+  grade,
 }: ProfileLeft) {
   const [selectIcon, setSelectIcon] = useState<string>();
 
@@ -139,7 +140,7 @@ export default function ProfileLeft({
         <Text fontWeight={800} mb={2}>
           {userInfo.nick_name}
         </Text>
-        <Text fontWeight={600}>{userInfo.grade}</Text>
+        <Text fontWeight={600}>{grade}</Text>
       </Box>
       <GridItem colSpan={2}>
         <Box
@@ -151,7 +152,7 @@ export default function ProfileLeft({
         >
           <Text fontWeight={600}>EFT Library를 이용해주셔서 감사합니다.</Text>
           <Text fontWeight={600}>
-            {userInfo.nick_name}님은 {userInfo.grade} 등급 입니다.
+            {userInfo.nick_name}님은 {grade} 등급 입니다.
           </Text>
           <Text fontWeight={600}>
             게시글과 댓글을 작성하시면 포인트를 획득하여,
