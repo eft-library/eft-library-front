@@ -47,7 +47,7 @@ export default function PvpDetailMain() {
 
   return (
     <BoardContainer>
-      <BoardHeader siteParam="forum" />
+      <BoardHeader siteParam={siteParam} />
 
       <Box border="1px solid white" p={5} borderRadius="10px">
         <DetailTitle post={postInfo} />

@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { subHours, formatDistanceToNow, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
 
 export const formatISODate = (isoDateString: string) => {
@@ -37,6 +37,9 @@ export const formatISOTime = (isoDateString: string) => {
 };
 
 export const timeAgo = (dateString: string) => {
-  const date = new Date(dateString);
-  return formatDistanceToNow(date, { addSuffix: true, locale: ko }); // 한국어 locale 지원
+  // 서버에서 받은 시간이 한국 시간보다 9시간 늦다고 가정
+  const utcDate = parseISO(dateString); // 문자열을 Date 객체로 변환
+  const correctedDate = subHours(utcDate, 9); // 9시간 보정
+
+  return formatDistanceToNow(correctedDate, { addSuffix: true, locale: ko });
 };

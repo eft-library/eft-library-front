@@ -36,21 +36,25 @@ export default function BoardPost({ post }: BoardPost) {
               |
               <Image
                 w={"34px"}
-                src={formatImage(post.image)}
+                src={formatImage(post.icon)}
                 fallbackSrc="/loading.gif"
-                alt={post.image}
+                alt={post.icon}
                 ml={2}
               />
               <Box as="span" mx={2}>
                 {post.nick_name}
               </Box>
               |
-              <Box as="span" display="flex" alignItems="center" mx={2}>
-                <MdOutlineThumbUp />
-                &nbsp;
-                {post.like_count}
-              </Box>
-              |
+              {post.type !== "notice" && (
+                <>
+                  <Box as="span" display="flex" alignItems="center" mx={2}>
+                    <MdOutlineThumbUp />
+                    &nbsp;
+                    {post.like_count}
+                  </Box>
+                  |
+                </>
+              )}
               <Box as="span" display="flex" alignItems="center" mx={2}>
                 <FaEye />
                 &nbsp;

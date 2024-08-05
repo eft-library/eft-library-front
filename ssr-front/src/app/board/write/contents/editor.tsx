@@ -1,7 +1,7 @@
 "use client";
 
 import "react-quill/dist/quill.snow.css";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import "@/assets/editor.css";
@@ -10,7 +10,7 @@ import { fetchUserData } from "@/lib/api";
 import QuillWrapper from "./quill/quillWrapper";
 import SubContents from "./quill/subContents";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/app/board/write/contents/quill/submitButton";
 import { QuillToolbar } from "./quill/quickToolbar";
@@ -18,8 +18,10 @@ import { ImageHandler } from "./quill/imageHandler";
 import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
 import { insertVideo, videoHandler } from "./quill/videoUtils";
 import LoadingSpinner from "./quill/loadingSpinner";
+import { Header } from "@/types/types";
 
 export default function Editor() {
+  const [userInfo, setUserInfo] = useState<Header>();
   const quillRef = useRef<any>();
   const [editorContent, setEditorContent] = useState<string>("");
   const [videoUrl, setVideoUrl] = useState<string>("");
@@ -33,6 +35,29 @@ export default function Editor() {
   });
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const response = await fetchUserData(
+        USER_API_ENDPOINTS.GET_USER_INFO,
+        "POST",
+        {},
+        session
+      );
+
+      if (response.status === 200) {
+        setUserInfo(response.data);
+      } else {
+        alert("로그인 다시");
+        signOut();
+        router.push("/");
+      }
+    };
+
+    if (session && session.accessToken) {
+      getUserInfo();
+    }
+  }, [session]);
 
   const setSubData = (e, val) => {
     if (val === "title") {
@@ -111,9 +136,15 @@ export default function Editor() {
     []
   );
 
+  if (!userInfo) return null;
+
   return (
     <Box w={"95%"} display={"flex"} flexDirection={"column"}>
-      <SubContents subContents={subContents} setSubData={setSubData} />
+      <SubContents
+        subContents={subContents}
+        setSubData={setSubData}
+        userInfo={userInfo}
+      />
 
       <QuillWrapper
         forwardedRef={quillRef}

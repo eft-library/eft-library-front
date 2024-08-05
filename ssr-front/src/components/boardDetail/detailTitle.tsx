@@ -21,9 +21,9 @@ export default function DetailTitle({ post }: BoardPost) {
         <Flex align="center">
           <Image
             w={"24px"}
-            src={formatImage(post.image)}
+            src={formatImage(post.icon)}
             fallbackSrc="/loading.gif"
-            alt={post.image}
+            alt={post.icon}
             ml={2}
           />
           &nbsp;<Text>{post.nick_name}</Text>

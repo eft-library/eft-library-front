@@ -8,7 +8,11 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 
-export default function SubContents({ subContents, setSubData }: EditorSub) {
+export default function SubContents({
+  subContents,
+  setSubData,
+  userInfo,
+}: EditorSub) {
   const [typeList, setTypeList] = useState<BoardType[]>();
   const [column, setColumn] = useState<Column>();
 
@@ -44,6 +48,7 @@ export default function SubContents({ subContents, setSubData }: EditorSub) {
             bg={ALL_COLOR.BLACK}
             borderColor={ALL_COLOR.WHITE}
           >
+            {userInfo.user.is_admin && <option value="notice">공지사항</option>}
             {typeList.map((boardType) => (
               <option key={boardType.id} value={boardType.value}>
                 {boardType.name_kr}

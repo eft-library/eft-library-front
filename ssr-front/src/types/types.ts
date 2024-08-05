@@ -885,6 +885,7 @@ interface SubContents {
 export interface EditorSub {
   subContents: SubContents;
   setSubData: Function;
+  userInfo: Header;
 }
 
 export interface BoardType extends strID {
@@ -912,7 +913,7 @@ export interface PostData extends strID {
   type: string;
   create_time: string;
   update_time: string | null;
-  image: string;
+  icon: string;
   nick_name: string;
 }
 
