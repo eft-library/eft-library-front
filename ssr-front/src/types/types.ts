@@ -911,6 +911,7 @@ export interface PostData extends strID {
   dislike_count: number;
   view_count: number;
   type: string;
+  type_kr: string;
   create_time: string;
   update_time: string | null;
   icon: string;

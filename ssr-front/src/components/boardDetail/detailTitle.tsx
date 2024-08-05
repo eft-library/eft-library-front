@@ -14,7 +14,7 @@ export default function DetailTitle({ post }: BoardPost) {
         {post.title}
       </Heading>
       <Flex fontSize="0.9em" color={ALL_COLOR.WHITE}>
-        <Text>{post.type}</Text>
+        <Text>{post.type_kr}</Text>
         <Text mx={2}>|</Text>
         <Text>{timeAgo(post.create_time)}</Text>
         <Text mx={2}>|</Text>

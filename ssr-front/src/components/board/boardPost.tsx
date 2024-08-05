@@ -27,7 +27,7 @@ export default function BoardPost({ post }: BoardPost) {
             </Heading>
             <Text fontSize="sm" display="flex" alignItems="center">
               <Box as="span" mr={2}>
-                {post.type}
+                {post.type_kr}
               </Box>
               |
               <Box as="span" mx={2}>
