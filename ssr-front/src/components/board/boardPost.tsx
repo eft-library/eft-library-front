@@ -25,7 +25,12 @@ export default function BoardPost({ post }: BoardPost) {
             <Heading size="md" mb={2}>
               {post.title}
             </Heading>
-            <Text fontSize="sm" display="flex" alignItems="center">
+            <Text
+              fontSize="sm"
+              display="flex"
+              alignItems="center"
+              fontWeight={600}
+            >
               <Box as="span" mr={2}>
                 {post.type_kr}
               </Box>

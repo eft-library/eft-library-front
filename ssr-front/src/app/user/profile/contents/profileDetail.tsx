@@ -145,7 +145,7 @@ export default function ProfileDetail() {
           </Box>
         </Box>
       </Box>
-      <ProfileBottom />
+      <ProfileBottom user_posts={userInfo.user_posts} />
       <ProfileExit userExit={userExit} />
     </Box>
   );

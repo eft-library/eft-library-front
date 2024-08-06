@@ -809,6 +809,7 @@ export interface Header {
   user: UserInfo;
   icon_list: string[];
   ban: UserBan;
+  user_posts: PostData[];
 }
 
 export interface UserBan {
@@ -832,10 +833,11 @@ export interface UserInfo extends strID {
 }
 
 export interface Profile {
-  userInfo: UserInfo;
+  userInfo?: UserInfo;
   grade?: string;
   icon_list?: string[];
   is_delete?: boolean;
+  user_posts?: PostData[];
 }
 
 export interface ProfileExit {
@@ -849,6 +851,8 @@ export interface ProfileRight extends Profile {
 export interface ProfileLeft extends Profile {
   changeIcon: Function;
 }
+
+export interface ProfileBotton extends Profile {}
 
 export interface ArmBand extends strID {
   name: string;
