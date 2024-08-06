@@ -520,8 +520,8 @@ export interface Loot extends strID, Category {
   name_en: string;
   name_kr: string;
   image: string;
-  related_quests: JsonArrayText[];
-  related_hideout: JsonArrayText[];
+  quest_notes: JsonArrayText[];
+  hideout_notes: JsonArrayText[];
 }
 
 export interface RigList {
@@ -650,7 +650,7 @@ export interface Key extends NameImage, strID {
   use_map_en: string[];
   use_map_kr: string[];
   map_value: string[];
-  related_quests: JsonArrayText[];
+  notes: JsonArrayText[];
 }
 
 export interface KeyDetail extends KeyGetData {
@@ -670,7 +670,7 @@ export interface Provisions extends CommonData, strID, Category {
   energy: number;
   hydration: number;
   stim_effects: JsonArrayText[];
-  related_quests: JsonArrayText[];
+  notes: JsonArrayText[];
 }
 
 export interface ImageZoom {
@@ -867,7 +867,7 @@ export interface Glasses extends NameImage, strID {
   durability: number;
   blindness_protection: number;
   class_value: number;
-  related_quests: JsonArrayText[];
+  notes: JsonArrayText[];
 }
 
 export interface GlassesList {

@@ -52,8 +52,8 @@ export default function LootDetail({ category, lootList, column }: LootDetail) {
             </Box>
             <GridCenterText>{item.name_kr} </GridCenterText>
             <GridNotes
-              questsNotes={item.related_quests}
-              hideoutNotes={item.related_hideout}
+              questsNotes={item.quest_notes}
+              hideoutNotes={item.hideout_notes}
             />
           </GridContents>
         ) : null

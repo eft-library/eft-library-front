@@ -99,7 +99,7 @@ export default function GlassesDetail() {
           <GridCenterText>
             {floatToPercent(item.blindness_protection)} %
           </GridCenterText>
-          <GridNotes questsNotes={item.related_quests} isGlass />
+          <GridNotes questsNotes={item.notes} isGlass />
         </GridContents>
       ))}
     </>
