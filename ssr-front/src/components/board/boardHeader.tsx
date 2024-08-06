@@ -48,8 +48,14 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
     if (filterType) {
       return filterType.name_kr;
     } else {
-      ("");
+      return "";
     }
+  };
+
+  const checkColor = (typeValue: string) => {
+    return siteParam === typeValue
+      ? ALL_COLOR.BOARD_HEADER_ORANGE
+      : ALL_COLOR.WHITE;
   };
 
   if (!typeList) return null;
@@ -65,13 +71,21 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
       <Flex mb={2}>
         <Flex>
           <Link href={`/board?id=1`}>
-            <Box mx={2} _hover={{ color: ALL_COLOR.BEIGE }}>
+            <Box
+              mx={2}
+              _hover={{ color: ALL_COLOR.BEIGE }}
+              color={checkColor("board")}
+            >
               <Text fontWeight={600}>전체</Text>
             </Box>
           </Link>
           {typeList.map((type) => (
             <Link key={type.id} href={`/board/${type.value}?id=1`}>
-              <Box mx={2} _hover={{ color: ALL_COLOR.BEIGE }}>
+              <Box
+                mx={2}
+                _hover={{ color: ALL_COLOR.BEIGE }}
+                color={checkColor(type.value)}
+              >
                 <Text fontWeight={600}>{type.name_kr}</Text>
               </Box>
             </Link>

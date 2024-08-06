@@ -33,6 +33,7 @@ export const ALL_COLOR = {
   MAIN_YELLO: "#FFE1B5",
   HILIGHT_GRAY: "#616161",
   FOOTER_YELLO: "#FFC368",
+  BOARD_HEADER_ORANGE: "#FFB245",
 
   // Shadow
   WHITE_SHADOW: "0px 2px 4px rgba(0, 0, 0, 0.1)",
