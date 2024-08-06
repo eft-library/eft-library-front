@@ -8,7 +8,8 @@ import type { BoardType, BoardHeader } from "@/types/types";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSession } from "next-auth/react";
-import { MdOutlineStar, MdStickyNote2 } from "react-icons/md";
+import { MdStickyNote2 } from "react-icons/md";
+import { PiStarFill } from "react-icons/pi";
 import { FaPencil } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 
@@ -89,7 +90,7 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
             </Link>
             <Link href={checkIssue()}>
               <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
-                <MdOutlineStar />
+                <PiStarFill />
                 &nbsp;
                 <Text fontWeight={600}>{returnTypeKr()} 인기글</Text>
               </Flex>

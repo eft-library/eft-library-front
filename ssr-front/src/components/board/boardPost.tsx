@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { FaEye } from "react-icons/fa6";
+import { PiStarFill } from "react-icons/pi";
 
 export default function BoardPost({ post }: BoardPost) {
   return (
@@ -22,7 +23,12 @@ export default function BoardPost({ post }: BoardPost) {
           _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
         >
           <Box flex="1">
-            <Heading size="md" mb={2}>
+            <Heading size="md" mb={2} display="flex" alignItems="center">
+              {post.like_count > 10 && post.like_count < 30 && (
+                <PiStarFill color={ALL_COLOR.WHITE} />
+              )}
+              {post.like_count > 30 && <PiStarFill color={ALL_COLOR.YELLOW} />}
+              &nbsp;
               {post.title}
             </Heading>
             <Text
