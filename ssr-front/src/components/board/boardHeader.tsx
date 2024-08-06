@@ -10,14 +10,46 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useSession } from "next-auth/react";
 import { MdOutlineStar, MdStickyNote2 } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 
 export default function BoardHeader({ siteParam }: BoardHeader) {
   const { data: session } = useSession();
+  const pathname = usePathname();
   const [typeList, setTypeList] = useState<BoardType[]>();
 
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_BOARD_TYPE, setTypeList);
   }, []);
+
+  const checkRecent = () => {
+    if (pathname === "/board" || pathname === `/board/issue`) {
+      return `/board?id=1`;
+    } else {
+      return `/board/${siteParam}?id=1`;
+    }
+  };
+
+  const checkIssue = () => {
+    if (pathname === "/board") {
+      return `/board/issue?id=1`;
+    } else if (pathname === `/board/issue`) {
+      return `/board/issue?id=1`;
+    } else {
+      return `/board/${siteParam}/issue?id=1`;
+    }
+  };
+
+  const returnTypeKr = () => {
+    const filterType = typeList.find(
+      (boardType) => boardType.value === siteParam
+    );
+
+    if (filterType) {
+      return filterType.name_kr;
+    } else {
+      ("");
+    }
+  };
 
   if (!typeList) return null;
 
@@ -45,43 +77,35 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
           ))}
         </Flex>
       </Flex>
-      <Flex justify="space-between" mt={2}>
-        <Flex>
-          <Link
-            href={
-              siteParam === "board" ? `/board?id=1` : `/board/${siteParam}?id=1`
-            }
-          >
-            <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
-              <MdStickyNote2 />
-              &nbsp;
-              <Text fontWeight={600}>최신글</Text>
-            </Flex>
-          </Link>
-          <Link
-            href={
-              siteParam === "board"
-                ? `/board/issue?id=1`
-                : `/board/${siteParam}/issue?id=1`
-            }
-          >
-            <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
-              <MdOutlineStar />
-              &nbsp;
-              <Text fontWeight={600}>인기글</Text>
-            </Flex>
-          </Link>
+      {siteParam !== "notice" && (
+        <Flex justify="space-between" mt={2}>
+          <Flex>
+            <Link href={checkRecent()}>
+              <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
+                <MdStickyNote2 />
+                &nbsp;
+                <Text fontWeight={600}>{returnTypeKr()} 최신글</Text>
+              </Flex>
+            </Link>
+            <Link href={checkIssue()}>
+              <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
+                <MdOutlineStar />
+                &nbsp;
+                <Text fontWeight={600}>{returnTypeKr()} 인기글</Text>
+              </Flex>
+            </Link>
+          </Flex>
+          {session && (
+            <Link href={"/board/write"}>
+              <Flex mx={2} align="center">
+                <FaPencil />
+                &nbsp;
+                <Text fontWeight={600}>글쓰기</Text>
+              </Flex>
+            </Link>
+          )}
         </Flex>
-        {session && (
-          <Link href={"/board/write"}>
-            <Flex mx={2} align="center">
-              <FaPencil />
-              &nbsp;
-              <Text fontWeight={600}>글쓰기</Text>
-            </Flex>
-          </Link>
-        )}
-      </Flex>
+      )}
     </Flex>
   );
 }

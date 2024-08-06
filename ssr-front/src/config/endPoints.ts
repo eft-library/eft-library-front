@@ -40,6 +40,8 @@ const API_ENDPOINTS = {
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
   GET_BOARD_TYPE: baseUrl + "/api/board/all/categories",
   GET_BOARD: baseUrl + "/api/board/all",
+  GET_ISSUE: baseUrl + "/api/board/issue",
+  GET_ISSUE_BY_TYPE: baseUrl + "/api/board",
   GET_BOARD_BY_TYPE: baseUrl + "/api/board",
 };
 

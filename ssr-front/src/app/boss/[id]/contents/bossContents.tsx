@@ -2,7 +2,7 @@
 
 import { Box, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
-import type { BossContents, BossInfo, Column } from "@/types/types";
+import type { BossContents, Column } from "@/types/types";
 import ContentsSkeleton from "./skeleton/contentsSkeleton";
 import React, { useEffect } from "react";
 import { useState } from "react";

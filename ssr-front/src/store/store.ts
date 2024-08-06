@@ -4,7 +4,6 @@ import { persist, devtools } from "zustand/middleware";
 import type { Item } from "@/types/types";
 
 export type AppStateType = {
-  bossId: string;
   weaponCategory: string;
   keyCategory: string;
   npcId: string;
@@ -18,7 +17,6 @@ export type AppStateType = {
 };
 
 export type AppActionsType = {
-  setBossId: (value: string) => void;
   setWeaponCategory: (value: string) => void;
   setKeyCategory: (value: string) => void;
   setNpcId: (value: string) => void;
@@ -34,7 +32,6 @@ export type AppActionsType = {
 export type AppStoreType = AppStateType & AppActionsType;
 
 export const defaultInitState: AppStateType = {
-  bossId: "RESHALA",
   weaponCategory: "ALL",
   keyCategory: "CUSTOMS",
   npcId: "PRAPOR",
@@ -54,7 +51,6 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
         (set) =>
           ({
             ...initState,
-            setBossId: (value: string) => set({ bossId: value }),
             setWeaponCategory: (value: string) =>
               set({ weaponCategory: value }),
             setKeyCategory: (value: string) => set({ keyCategory: value }),
