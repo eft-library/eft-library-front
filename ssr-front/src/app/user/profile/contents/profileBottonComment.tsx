@@ -30,7 +30,7 @@ export default function ProfileBottomComment({ user_posts }: ProfileBotton) {
         h="40vh"
       >
         {user_posts.map((post) => (
-          <Box w={"100%"}>
+          <Box w={"100%"} key={post.id}>
             <Link href={`/board/${post.type}/detail/${post.id}`}>
               <Flex
                 width="100%"

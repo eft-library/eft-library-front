@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
@@ -11,6 +11,8 @@ import ProfileRight from "./profileRight";
 import ProfileLeft from "./profileLeft";
 import ProfileBottom from "./profileBottom";
 import ProfileExit from "./profileExit";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
+import ProfileBan from "./profileBan";
 
 export default function ProfileDetail() {
   const [userInfo, setUserInfo] = useState<Header>();
@@ -145,6 +147,7 @@ export default function ProfileDetail() {
           </Box>
         </Box>
       </Box>
+      {userInfo.ban.ban_end_time && <ProfileBan ban={userInfo.ban} />}
       <ProfileBottom user_posts={userInfo.user_posts} />
       <ProfileExit userExit={userExit} />
     </Box>

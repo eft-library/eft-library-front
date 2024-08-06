@@ -814,9 +814,13 @@ export interface Header {
 
 export interface UserBan {
   user_email: string;
-  ban_reasn: string;
+  ban_reason: string;
   ban_start_time: null | string;
   ban_end_time: null | string;
+}
+
+export interface ProfileBan {
+  ban: UserBan;
 }
 
 export interface UserInfo extends strID {
