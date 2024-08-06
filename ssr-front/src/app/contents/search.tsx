@@ -12,9 +12,7 @@ import { useAppStore } from "@/store/provider";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function Search() {
-  const { setBossId, setHideoutCategory, setNpcId } = useAppStore(
-    (state) => state
-  );
+  const { setHideoutCategory, setNpcId } = useAppStore((state) => state);
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState([]);
@@ -39,8 +37,6 @@ export default function Search() {
     // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함
     if (item.type === "TRADER") {
       setNpcId(item.page_value);
-    } else if (item.type === "BOSS") {
-      setBossId(item.page_value);
     } else if (item.type === "HIDEOUT") {
       setHideoutCategory(item.page_value);
     }
