@@ -2,14 +2,10 @@ import MapMain from "./contents/mapMain";
 import { Metadata, ResolvingMetadata } from "next";
 import { formatImage } from "@/lib/formatImage";
 import API_ENDPOINTS from "@/config/endPoints";
-
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+import type { MetaProps } from "@/types/types";
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params, searchParams }: MetaProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // params에서 id 추출
@@ -24,9 +20,13 @@ export async function generateMetadata(
 
   return {
     title: `타르코프 ${res.name_kr}`,
-    description: "타르코프 지도",
+    description: "타르코프 지도, tarkov map",
     openGraph: {
+      title: "EFT Library 지도",
+      description: "EFT Library 지도",
       images: [formatImage(res.mot_image)],
+      url: `https://eftlibrary.com/map/${id}`,
+      siteName: "Escape From Tarkov Library",
     },
   };
 }

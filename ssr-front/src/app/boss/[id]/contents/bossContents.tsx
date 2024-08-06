@@ -12,8 +12,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import BossHealth from "./bossHealth";
 import FollowersLoot from "./followersLoot";
 
-export default function BossContents({ bossList, bossId }: BossContents) {
-  let bossInfo: BossInfo = bossList.find((boss) => boss.id == bossId);
+export default function BossContents({ boss }: BossContents) {
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function BossContents({ bossList, bossId }: BossContents) {
     );
   }, []);
 
-  if (!bossInfo) return <ContentsSkeleton />;
+  if (!column) return <ContentsSkeleton />;
 
   return (
     <Box w={"95%"}>
@@ -33,13 +32,13 @@ export default function BossContents({ bossList, bossId }: BossContents) {
             mb={1}
             fontWeight={600}
             dangerouslySetInnerHTML={{
-              __html: `${bossInfo.location_guide}`,
+              __html: `${boss.location_guide}`,
             }}
           />
         </Box>
       </DividerContents>
-      <BossHealth healthList={bossInfo.sub_followers} />
-      {bossInfo.sub_followers.map((followers) => (
+      <BossHealth healthList={boss.sub_followers} />
+      {boss.sub_followers.map((followers) => (
         <FollowersLoot
           follower={followers}
           column={column}

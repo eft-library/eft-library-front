@@ -1,4 +1,4 @@
-import QuestDetailMain from "./contents/questDetailMain";
+import BossMain from "./contents/bossMain";
 import { Metadata, ResolvingMetadata } from "next";
 import { formatImage } from "@/lib/formatImage";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -12,25 +12,25 @@ export async function generateMetadata(
   const id = params.id;
 
   // fetch data
-  const product = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`).then((res) =>
+  const product = await fetch(`${API_ENDPOINTS.GET_BOSS}/${id}`).then((res) =>
     res.json()
   );
 
   const res = product.data;
 
   return {
-    title: `${res.title_kr}`,
-    description: `${res.name_kr} ${res.title_kr}`,
+    title: `타르코프 ${res.name_kr}`,
+    description: "타르코프 보스, tarkov boss",
     openGraph: {
-      title: "EFT Library 퀘스트",
-      description: "EFT Library 퀘스트",
       images: [formatImage(res.image)],
-      url: `https://eftlibrary.com/detail/${id}`,
+      title: "EFT Library 보스",
+      description: "EFT Library 보스",
+      url: "https://eftlibrary.com/boss",
       siteName: "Escape From Tarkov Library",
     },
   };
 }
 
-export default function QuestDetail() {
-  return <QuestDetailMain />;
+export default function Boss() {
+  return <BossMain />;
 }

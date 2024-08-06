@@ -45,13 +45,11 @@ export interface NewsText {
 }
 
 export interface BossContents {
-  bossList: BossInfo[];
-  bossId: string;
+  boss: BossInfo;
 }
 
 export interface BossDetail {
-  bossList: Boss[];
-  bossId: string | true;
+  boss: Boss;
 }
 
 export interface BossLootInfo {
@@ -929,3 +927,8 @@ export interface BoardDetail extends BoardPost {
   onClickLike: Function;
   boardType: string;
 }
+
+export type MetaProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};

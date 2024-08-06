@@ -12,6 +12,7 @@ const API_ENDPOINTS = {
   GET_QUEST: baseUrl + "/api/quest/detail",
   GET_ALL_WEAPON: baseUrl + "/api/weapon/all",
   GET_ALL_BOSS: baseUrl + "/api/boss/all",
+  GET_BOSS: baseUrl + "/api/boss/info",
   GET_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/detail",
   GET_SEARCH: baseUrl + "/api/search/info",
   GET_ALL_COLUMN: baseUrl + "/api/table_column/all",
