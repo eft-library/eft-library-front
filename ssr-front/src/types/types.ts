@@ -49,7 +49,7 @@ export interface BossContents {
 }
 
 export interface BossDetail {
-  boss: Boss;
+  children: ReactNode;
 }
 
 export interface BossLootInfo {

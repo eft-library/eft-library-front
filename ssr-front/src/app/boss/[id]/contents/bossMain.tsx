@@ -14,6 +14,7 @@ import { useParams } from "next/navigation";
 import ContentsSkeleton from "./skeleton/contentsSkeleton";
 import DetailSkeleton from "./skeleton/detailSkeleton";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
+import BossBox from "./bossBox";
 
 export default function BossMain() {
   const [boss, setBoss] = useState<Boss>();
@@ -59,7 +60,9 @@ export default function BossMain() {
       />
       <Box mb={10} />
       <Box w={"95%"}>
-        <BossDetail boss={boss} />
+        <BossDetail>
+          <BossBox boss={boss} />
+        </BossDetail>
       </Box>
       <BossContents boss={boss} />
     </PageParent>

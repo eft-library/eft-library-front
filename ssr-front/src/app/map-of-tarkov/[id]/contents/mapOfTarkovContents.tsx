@@ -5,6 +5,7 @@ import ImageSlider from "@/components/imageSlider/imageSlider";
 import BossDetail from "@/app/boss/[id]/contents/bossDetail";
 import { MOT_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";
 import type { MapOfTarkovContents, SubMap } from "@/types/types";
+import BossBox from "@/app/boss/[id]/contents/bossBox";
 
 export default function MapOfTarkovContents({
   mapOfTarkov,
@@ -32,7 +33,11 @@ export default function MapOfTarkovContents({
       </DividerContents>
       {mapOfTarkov.boss_list.length > 0 && (
         <DividerContents headText="보스">
-          <BossDetail bossList={mapOfTarkov.boss_list} bossId={true} />
+          <BossDetail>
+            {mapOfTarkov.boss_list.map((boss) => (
+              <BossBox boss={boss} key={boss.id} />
+            ))}
+          </BossDetail>
         </DividerContents>
       )}
       <MapOfTarkovExtraction extractionList={mapOfTarkov.extraction_info} />

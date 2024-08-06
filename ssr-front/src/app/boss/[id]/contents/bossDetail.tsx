@@ -1,9 +1,6 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
-import GridCenterText from "@/components/gridText/gridCenterText";
-import GridArrayText from "@/components/gridText/gridArrayText";
-import GridJsonText from "@/components/gridText/gridJsonText";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -11,11 +8,9 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, BossDetail } from "@/types/types";
 import DetailSkeleton from "./skeleton/detailSkeleton";
 import GridTitle from "@/components/gridTitle/gridTitle";
-import ImageZoom from "@/components/imageZoom/imageZoom";
-import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function BossDetail({ boss }: BossDetail) {
+export default function BossDetail({ children }: BossDetail) {
   const [column, setColumn] = useState<Column>();
 
   useEffect(() => {
@@ -42,31 +37,7 @@ export default function BossDetail({ boss }: BossDetail) {
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
         titleWidth="100%"
       />
-      <GridContents
-        columnDesign={[2, null, 7]}
-        contentsWidth="100%"
-        id={boss.id}
-        key={boss.id}
-      >
-        <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-          <ImageZoom originalImg={boss.image} thumbnail={boss.image} />
-        </Box>
-        <GridCenterText>{boss.name_kr}</GridCenterText>
-        <GridCenterText>{boss.faction}</GridCenterText>
-        <GridJsonText
-          jsonArrayText={boss.location_spawn_chance_kr}
-          jatType={"location"}
-          isDivider
-        />
-        <GridJsonText
-          jsonArrayText={boss.location_spawn_chance_kr}
-          jatType={"chance"}
-          isDivider
-          word="%"
-        />
-        <GridCenterText>{boss.health_total}</GridCenterText>
-        <GridArrayText arrayText={boss.followers_kr} />
-      </GridContents>
+      {children}
     </Box>
   );
 }
