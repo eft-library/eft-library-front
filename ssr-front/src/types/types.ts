@@ -804,47 +804,25 @@ export interface UserQuestSelector {
   updateQuest: Function;
 }
 
-export interface Header {
-  grade: string;
-  user: UserInfo;
-  icon_list: string[];
-  ban: UserBan;
-  user_posts: PostData[];
-  user_post_statistics: UserPostStatistics;
-}
-
 export interface UserPostStatistics {
   user_email: string;
   post_count: number;
   comment_count: number;
 }
 
-export interface UserBan {
+export interface Ban {
   user_email: string;
-  ban_reason: string;
-  ban_start_time: null | string;
-  ban_end_time: null | string;
+  ban_reason: string | null;
+  ban_start_time: string | null;
+  ban_end_time: string | null;
 }
 
 export interface ProfileBan {
-  ban: UserBan;
-}
-
-export interface UserInfo extends strID {
-  name: string;
-  email: string;
-  icon: string;
-  nick_name: string;
-  is_admin: boolean;
-  attendance_count: number;
-  attendance_time: string;
-  point: number;
-  create_time: string;
-  update_time: string;
+  ban: Ban;
 }
 
 export interface Profile {
-  userInfo?: UserInfo;
+  userInfo?: User;
   grade?: string;
   icon_list?: string[];
   is_delete?: boolean;
@@ -899,7 +877,7 @@ interface SubContents {
 export interface EditorSub {
   subContents: SubContents;
   setSubData: Function;
-  userInfo: Header;
+  userInfo: UserProfile;
 }
 
 export interface BoardType extends strID {
@@ -914,21 +892,6 @@ export interface BoardHeader {
 
 export interface BoardPost {
   post: PostData;
-}
-
-export interface PostData extends strID {
-  title: string;
-  contents: string;
-  thumbnail: string | null;
-  writer: string;
-  like_count: number;
-  view_count: number;
-  type: string;
-  type_kr: string;
-  create_time: string;
-  update_time: string | null;
-  icon: string;
-  nick_name: string;
 }
 
 export interface PostInfo {
@@ -947,3 +910,54 @@ export type MetaProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export interface User extends strID {
+  icon: string;
+  name: string;
+  point: number;
+  is_admin: boolean;
+  create_time: string;
+  update_time: string | null;
+  email: string;
+  nick_name: string;
+  grade: number;
+  attendance_count: number;
+  attendance_time: string;
+}
+
+export interface UserInfo extends strID {
+  name: string;
+  email: string;
+  icon: string;
+  nick_name: string;
+  is_admin: boolean;
+  attendance_count: number;
+  attendance_time: string;
+  point: number;
+  create_time: string;
+  update_time: string;
+}
+
+export interface PostData extends strID {
+  title: string;
+  contents: string;
+  thumbnail: string | null;
+  writer: string;
+  like_count: number;
+  view_count: number;
+  type: string;
+  type_kr: string;
+  create_time: string;
+  update_time: string | null;
+  icon: string;
+  nick_name: string;
+}
+
+export interface UserProfile {
+  user: User;
+  grade: string;
+  icon_list: string[];
+  ban: Ban;
+  user_posts: PostData[];
+  user_post_statistics: UserPostStatistics;
+}

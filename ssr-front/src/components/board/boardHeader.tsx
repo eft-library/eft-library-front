@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 import type { BoardType, BoardHeader } from "@/types/types";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { useSession } from "next-auth/react";
 import { MdStickyNote2 } from "react-icons/md";
 import { PiStarFill } from "react-icons/pi";
 import { FaPencil } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import { useAppStore } from "@/store/provider";
 
 export default function BoardHeader({ siteParam }: BoardHeader) {
-  const { data: session } = useSession();
+  const { user } = useAppStore((state) => state);
   const pathname = usePathname();
   const [typeList, setTypeList] = useState<BoardType[]>();
 
@@ -110,7 +110,7 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
               </Flex>
             </Link>
           </Flex>
-          {session && (
+          {user && (
             <Link href={"/board/write"}>
               <Flex mx={2} align="center">
                 <FaPencil />

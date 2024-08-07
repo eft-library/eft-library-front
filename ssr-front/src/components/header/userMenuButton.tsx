@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppStore } from "@/store/provider";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Button, VStack } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
@@ -12,6 +13,13 @@ export default function UserMenuButton({
   changeMenu,
   setQuest,
 }) {
+  const { setUser } = useAppStore((state) => state);
+
+  const logOut = () => {
+    setUser(null);
+    signOut();
+  };
+
   return (
     <Button
       onMouseEnter={() => changeMenu(main.value)}
@@ -40,7 +48,7 @@ export default function UserMenuButton({
         >
           <Box
             p={2}
-            onClick={() => signOut()}
+            onClick={logOut}
             _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
             borderRadius="lg"
           >

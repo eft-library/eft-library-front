@@ -10,7 +10,6 @@ import { useState } from "react";
 export default function ProfileRight({
   userInfo,
   changeNickName,
-  grade,
 }: ProfileRight) {
   const [nickName, setNickName] = useState<string>(userInfo.nick_name);
 

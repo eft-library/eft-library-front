@@ -1,40 +1,21 @@
 "use client";
 
-import { Box, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useRouter } from "next/navigation";
-import type { Header } from "@/types/types";
 import { fetchUserData } from "@/lib/api";
 import ProfileRight from "./profileRight";
 import ProfileLeft from "./profileLeft";
 import ProfileBottom from "./profileBottom";
 import ProfileExit from "./profileExit";
 import ProfileBan from "./profileBan";
+import { useAppStore } from "@/store/provider";
 
 export default function ProfileDetail() {
-  const [userInfo, setUserInfo] = useState<Header>();
+  const { user, setUser } = useAppStore((state) => state);
   const router = useRouter();
   const { data: session } = useSession();
-
-  // get
-  useEffect(() => {
-    const getUserInfo = async () => {
-      const response = await fetchUserData(
-        USER_API_ENDPOINTS.GET_USER_INFO,
-        "POST",
-        {},
-        session
-      );
-
-      checkResponse(response);
-    };
-
-    if (session && session.accessToken) {
-      getUserInfo();
-    }
-  }, [session]);
 
   const onChangeNickName = async (nickName: string) => {
     try {
@@ -52,7 +33,7 @@ export default function ProfileDetail() {
       );
 
       if (response.status === 200) {
-        setUserInfo(response.data);
+        setUser(response.data);
         alert("변경이 완료 되었습니다.");
       } else if (response.status === 409) {
         alert("중복 닉네임");
@@ -68,7 +49,7 @@ export default function ProfileDetail() {
 
   const userExit = async (nickName: string) => {
     try {
-      if (nickName !== userInfo.user.nick_name) {
+      if (nickName !== user.user.nick_name) {
         return alert("닉네임이 다릅니다.");
       }
 
@@ -105,7 +86,7 @@ export default function ProfileDetail() {
 
   const checkResponse = (response: any) => {
     if (response.status === 200) {
-      setUserInfo(response.data);
+      setUser(response.data);
     } else {
       alert("로그인 다시");
       signOut();
@@ -113,7 +94,7 @@ export default function ProfileDetail() {
     }
   };
 
-  if (!userInfo) return null;
+  if (!user) return null;
 
   return (
     <Box w="95%" h="100%">
@@ -132,22 +113,21 @@ export default function ProfileDetail() {
               justifyContent={"space-between"}
             >
               <ProfileLeft
-                userInfo={userInfo.user}
+                userInfo={user.user}
                 changeIcon={onChangeIcon}
-                grade={userInfo.grade}
-                icon_list={userInfo.icon_list}
+                grade={user.grade}
+                icon_list={user.icon_list}
               />
               <ProfileRight
-                userInfo={userInfo.user}
-                grade={userInfo.grade}
+                userInfo={user.user}
                 changeNickName={onChangeNickName}
               />
             </Box>
           </Box>
         </Box>
       </Box>
-      {userInfo.ban.ban_end_time && <ProfileBan ban={userInfo.ban} />}
-      <ProfileBottom user_posts={userInfo.user_posts} />
+      {user.ban.ban_end_time && <ProfileBan ban={user.ban} />}
+      <ProfileBottom user_posts={user.user_posts} />
       <ProfileExit userExit={userExit} />
     </Box>
   );

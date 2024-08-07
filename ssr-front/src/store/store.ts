@@ -1,7 +1,7 @@
 // store.ts
 import { createStore } from "zustand";
 import { persist, devtools } from "zustand/middleware";
-import type { Item } from "@/types/types";
+import type { Item, UserProfile } from "@/types/types";
 
 export type AppStateType = {
   weaponCategory: string;
@@ -14,6 +14,7 @@ export type AppStateType = {
   hideoutCategory: string;
   eventNum: number;
   patchNotesNum: number;
+  user: UserProfile;
 };
 
 export type AppActionsType = {
@@ -27,6 +28,7 @@ export type AppActionsType = {
   setHideoutCategory: (value: string) => void;
   setEventNum: (value: number) => void;
   setPatchNotesNum: (value: number) => void;
+  setUser: (value: UserProfile) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -42,6 +44,7 @@ export const defaultInitState: AppStateType = {
   itemFilter: [],
   eventNum: 1,
   patchNotesNum: 1,
+  user: null,
 };
 
 export const createAppStore = (initState: AppStateType = defaultInitState) => {
@@ -64,6 +67,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
               set({ hideoutCategory: value }),
             setEventNum: (value: number) => set({ eventNum: value }),
             setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
+            setUser: (value: UserProfile) => set({ user: value }),
           } satisfies AppStoreType),
         {
           name: "app-store",

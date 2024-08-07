@@ -3,7 +3,7 @@
 import { Button, Grid, GridItem } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import { fetchDataWithNone, fetchUserData } from "@/lib/api";
@@ -11,13 +11,12 @@ import API_ENDPOINTS from "@/config/endPoints";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useAppStore } from "@/store/provider";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import type { Menu, Header } from "@/types/types";
+import type { Menu } from "@/types/types";
 import MenuButton from "./menuButton";
 import UserMenuButton from "./userMenuButton";
 
 export default function Header() {
-  const { setNpcId } = useAppStore((state) => state);
-  const [userInfo, setUserInfo] = useState<Header>();
+  const { user, setNpcId, setUser } = useAppStore((state) => state);
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[] | null>(null);
   const { data: session } = useSession();
@@ -35,7 +34,7 @@ export default function Header() {
         session
       );
       if (response.status === 200) {
-        setUserInfo(response.data);
+        setUser(response.data);
       }
     };
 
@@ -55,7 +54,7 @@ export default function Header() {
   };
 
   if (!headerData) return <HeaderSkeleton />;
-  if (session && !userInfo) return <HeaderSkeleton />;
+  if (session && !user) return <HeaderSkeleton />;
 
   return (
     <Grid
@@ -99,11 +98,11 @@ export default function Header() {
             />
           ) : (
             session &&
-            userInfo && (
+            user && (
               <UserMenuButton
                 key={main.value}
                 main={main}
-                userInfo={userInfo.user}
+                userInfo={user.user}
                 selectedMenu={selectedMenu}
                 changeMenu={changeMenu}
                 setQuest={setQuest}
