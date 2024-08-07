@@ -914,7 +914,6 @@ export interface PostData extends strID {
   thumbnail: string | null;
   writer: string;
   like_count: number;
-  dislike_count: number;
   view_count: number;
   type: string;
   type_kr: string;

@@ -73,7 +73,6 @@ export default function DetailContents({
       {post.type !== "notice" && (
         <Flex position="absolute" bottom={2} right={2} align="center">
           <Button
-            mr={2}
             w={"80px"}
             border={"1px solid"}
             borderColor={ALL_COLOR.WHITE}
@@ -82,9 +81,21 @@ export default function DetailContents({
             onClick={() => onClickLike(post.id, "like")}
           >
             <MdOutlineThumbUp />
-            &nbsp;
-            {post.like_count}
           </Button>
+          <Box w={"80px"} mr={2} ml={2}>
+            <Text
+              h={"40px"}
+              fontWeight={600}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+              borderRadius={"lg"}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              {post.like_count}
+            </Text>
+          </Box>
           <Button
             w={"80px"}
             border={"1px solid"}
