@@ -62,26 +62,28 @@ export default function Editor() {
     try {
       if (subContents.title.length < 1 || subContents.type.length < 1) {
         alert("제목 또는 분류를 선택해주세요");
-      }
-
-      const response = await fetchUserData(
-        USER_API_ENDPOINTS.ADD_POST,
-        "POST",
-        {
-          title: subContents.title,
-          contents: editorContent,
-          type: subContents.type,
-        },
-        session
-      );
-
-      if (response.status === 200) {
-        const data = response.data;
-        alert("글이 정상적으로 등록 되었습니다.");
-        router.push(`/board/${data.type}?id=${1}`);
+      } else if (user.ban.ban_end_time !== null) {
+        alert("제재 중인 사용자입니다.");
       } else {
-        alert("잠시후 다시 시도해주세요");
-        router.push("/board/write");
+        const response = await fetchUserData(
+          USER_API_ENDPOINTS.ADD_POST,
+          "POST",
+          {
+            title: subContents.title,
+            contents: editorContent,
+            type: subContents.type,
+          },
+          session
+        );
+
+        if (response.status === 200) {
+          const data = response.data;
+          alert("글이 정상적으로 등록 되었습니다.");
+          router.push(`/board/${data.type}?id=${1}`);
+        } else {
+          alert("잠시후 다시 시도해주세요");
+          router.push("/board/write");
+        }
       }
     } catch (error) {
       console.log(error);

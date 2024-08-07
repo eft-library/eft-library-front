@@ -110,7 +110,7 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
               </Flex>
             </Link>
           </Flex>
-          {user && (
+          {user && user.ban.ban_end_time === null && (
             <Link href={"/board/write"}>
               <Flex mx={2} align="center">
                 <FaPencil />
