@@ -11,7 +11,6 @@ import ProfileRight from "./profileRight";
 import ProfileLeft from "./profileLeft";
 import ProfileBottom from "./profileBottom";
 import ProfileExit from "./profileExit";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ProfileBan from "./profileBan";
 
 export default function ProfileDetail() {
