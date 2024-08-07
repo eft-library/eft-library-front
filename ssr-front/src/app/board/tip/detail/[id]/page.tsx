@@ -1,5 +1,5 @@
-import TipDetailMain from "../contents/tipDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <TipDetailMain />;
+export default function TipDetail() {
+  return <DetailMain siteParam="tip" />;
 }

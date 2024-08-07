@@ -1,5 +1,5 @@
-import PvpDetailMain from "../contents/pvpDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <PvpDetailMain />;
+export default function PVPDetail() {
+  return <DetailMain siteParam="pvp" />;
 }

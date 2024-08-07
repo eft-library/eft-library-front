@@ -1,5 +1,5 @@
-import QuestionDetailMain from "../contents/questionDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <QuestionDetailMain />;
+export default function QuestionDetail() {
+  return <DetailMain siteParam="question" />;
 }

@@ -1,5 +1,5 @@
-import NoticeDetailMain from "../contents/noticeDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <NoticeDetailMain />;
+export default function NoticeDetail() {
+  return <DetailMain siteParam="notice" />;
 }

@@ -1,5 +1,5 @@
-import PveDetailMain from "../contents/pveDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <PveDetailMain />;
+export default function PveDetail() {
+  return <DetailMain siteParam="pve" />;
 }

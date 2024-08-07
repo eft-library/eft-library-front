@@ -1,5 +1,5 @@
-import ForumDetailMain from "../contents/forumDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
 export default function ForumDetail() {
-  return <ForumDetailMain />;
+  return <DetailMain siteParam="forum" />;
 }

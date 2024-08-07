@@ -1,5 +1,5 @@
-import ArenaDetailMain from "../contents/arenaDetailMain";
+import DetailMain from "@/components/boardDetail/detailMain";
 
-export default function ForumDetail() {
-  return <ArenaDetailMain />;
+export default function ArenaDetail() {
+  return <DetailMain siteParam="arena" />;
 }
