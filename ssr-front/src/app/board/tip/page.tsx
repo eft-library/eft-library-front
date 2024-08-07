@@ -1,5 +1,5 @@
-import TipMain from "./contents/tipMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function Tip() {
-  return <TipMain />;
+  return <BoardMain siteParam="tip" />;
 }

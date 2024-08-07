@@ -1,5 +1,5 @@
-import IssueMain from "./contents/issueMain";
+import BoardMain from "@/components/board/boardMain";
 
-export default function Issue() {
-  return <IssueMain />;
+export default function PVPIssue() {
+  return <BoardMain siteParam="pvp" />;
 }

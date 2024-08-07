@@ -1,5 +1,5 @@
-import ArenaMain from "./contents/arenaMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function Arena() {
-  return <ArenaMain />;
+  return <BoardMain siteParam="arena" />;
 }

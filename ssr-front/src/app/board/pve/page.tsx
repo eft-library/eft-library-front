@@ -1,5 +1,5 @@
-import PVEMain from "./contents/pveMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function PVE() {
-  return <PVEMain />;
+  return <BoardMain siteParam="pve" />;
 }

@@ -47,13 +47,17 @@ export default function BoardPost({ post }: BoardPost) {
               |
               <Image
                 w={"34px"}
-                src={formatImage(post.icon)}
+                src={
+                  post.icon
+                    ? formatImage(post.icon)
+                    : formatImage("/tkl_user/icon/newbie.gif")
+                }
                 fallbackSrc="/loading.gif"
                 alt={post.icon}
                 ml={2}
               />
               <Box as="span" mx={2}>
-                {post.nick_name}
+                {post.nick_name || "탈퇴한 사용자"}
               </Box>
               |
               {post.type !== "notice" && (

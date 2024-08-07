@@ -1,5 +1,5 @@
-import QuestionMain from "./contents/questionMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function Question() {
-  return <QuestionMain />;
+  return <BoardMain siteParam="question" />;
 }

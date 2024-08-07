@@ -1,5 +1,5 @@
-import ForumMain from "./contents/forumMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function Forum() {
-  return <ForumMain />;
+  return <BoardMain siteParam="forum" />;
 }

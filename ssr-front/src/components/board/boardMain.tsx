@@ -8,10 +8,10 @@ import Pagination from "@/components/pagination/pagination";
 import BoardSearch from "@/components/board/boardSearch";
 import BoardContainer from "@/components/board/boardContainer";
 import useBoardSearch from "@/hooks/useBoardSearch";
+import type { BoardMain } from "@/types/types";
 
-export default function PVPMain() {
+export default function BoardMain({ siteParam }: BoardMain) {
   const param = useSearchParams();
-  const siteParam = "pvp";
   const { searchInfo, postInfo, setSearchData, getFilterPage } =
     useBoardSearch(siteParam);
 
@@ -33,7 +33,9 @@ export default function PVPMain() {
         </VStack>
         <Pagination
           total={postInfo.max_pages}
-          routeLink={`/board/${siteParam}?id=`}
+          routeLink={
+            siteParam === "board" ? "/board?id=" : `/board/${siteParam}?id=`
+          }
           currentPage={Number(param.get("id"))}
         />
       </Box>

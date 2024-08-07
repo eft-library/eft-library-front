@@ -26,7 +26,7 @@ export default function DetailTitle({ post }: BoardPost) {
             alt={post.icon}
             ml={2}
           />
-          &nbsp;<Text>{post.nick_name}</Text>
+          &nbsp;<Text>{post.nick_name || "탈퇴한 사용자"}</Text>
         </Flex>
         <Text mx={2}>|</Text>
         <Flex align="center">

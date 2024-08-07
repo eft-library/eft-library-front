@@ -886,6 +886,8 @@ export interface BoardType extends strID {
   value: string;
 }
 
+export interface BoardMain extends BoardHeader {}
+
 export interface BoardHeader {
   siteParam: string;
 }

@@ -1,5 +1,5 @@
-import PVPMain from "./contents/pvpMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function PVP() {
-  return <PVPMain />;
+  return <BoardMain siteParam="pvp" />;
 }

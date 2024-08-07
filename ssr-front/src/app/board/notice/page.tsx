@@ -1,5 +1,5 @@
-import NoticeMain from "./contents/noticeMain";
+import BoardMain from "@/components/board/boardMain";
 
 export default function Notice() {
-  return <NoticeMain />;
+  return <BoardMain siteParam="notice" />;
 }
