@@ -69,7 +69,7 @@ export default function ProfileRight({
             userInfo.update_time ? formatISODate(userInfo.update_time) : "없음"
           }
         />
-        <InfoBox desc="등급" value={grade} />
+        <InfoBox desc="출석일" value={`${userInfo.attendance_count} 일`} />
         <InfoBox desc="포인트" value={userInfo.point} />
         <InfoBox
           desc="회원가입 날짜"
