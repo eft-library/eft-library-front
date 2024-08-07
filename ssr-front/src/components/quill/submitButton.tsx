@@ -1,9 +1,13 @@
 import { Box, Button } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function SubmitButton({ onClick }) {
+export default function SubmitButton({ onClick, type }) {
   return (
-    <Box display={"flex"} justifyContent={"flex-end"} mt={6}>
+    <Box
+      display={"flex"}
+      justifyContent={type === "post" ? "flex-end" : "flex-start"}
+      mt={6}
+    >
       <Button
         borderRadius={"lg"}
         p={4}

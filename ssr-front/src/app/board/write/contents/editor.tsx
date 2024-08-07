@@ -5,19 +5,19 @@ import { useMemo, useRef, useState } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import "@/assets/editor.css";
-import { VideoDialog } from "./quill/videoDiaglog";
+import { VideoDialog } from "@/components/quill/videoDiaglog";
 import { fetchUserData } from "@/lib/api";
-import QuillWrapper from "./quill/quillWrapper";
-import SubContents from "./quill/subContents";
+import QuillWrapper from "@/components/quill/quillWrapper";
+import SubContents from "@/components/quill/subContents";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import SubmitButton from "@/app/board/write/contents/quill/submitButton";
-import { QuillToolbar } from "./quill/quickToolbar";
-import { ImageHandler } from "./quill/imageHandler";
+import SubmitButton from "@/components/quill/submitButton";
+import { QuillToolbar } from "@/components/quill/quickToolbar";
+import { ImageHandler } from "@/components/quill/imageHandler";
 import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
-import { insertVideo, videoHandler } from "./quill/videoUtils";
-import LoadingSpinner from "./quill/loadingSpinner";
+import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
+import LoadingSpinner from "@/components/quill/loadingSpinner";
 import { useAppStore } from "@/store/provider";
 
 export default function Editor() {
@@ -124,7 +124,6 @@ export default function Editor() {
         setSubData={setSubData}
         userInfo={user}
       />
-
       <QuillWrapper
         forwardedRef={quillRef}
         value={editorContent}
@@ -133,9 +132,7 @@ export default function Editor() {
         formats={QUILL_FORMATS}
         theme="snow"
       />
-
-      <SubmitButton onClick={submitPosts} />
-
+      <SubmitButton onClick={submitPosts} type={"post"} />
       <VideoDialog
         isOpen={isOpen}
         onClose={onClose}

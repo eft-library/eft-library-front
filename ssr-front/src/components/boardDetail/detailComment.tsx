@@ -1,3 +1,4 @@
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { Box, Heading, Flex, Text, Textarea, Button } from "@chakra-ui/react";
 
 export default function DetailComment() {
@@ -23,7 +24,7 @@ export default function DetailComment() {
       <Box mt={5} py={3}>
         <Textarea
           placeholder="댓글을 입력하세요..."
-          bg="#444"
+          bg={ALL_COLOR.LIGHT_GRAY}
           color="white"
           borderRadius="5px"
           resize="none"
