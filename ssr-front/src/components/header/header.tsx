@@ -3,7 +3,7 @@
 import { Button, Grid, GridItem } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import HeaderSkeleton from "./headerSkeleton";
 import { fetchDataWithNone, fetchUserData } from "@/lib/api";
@@ -55,7 +55,7 @@ export default function Header() {
   };
 
   if (!headerData) return <HeaderSkeleton />;
-  if (session && !userInfo) return <HeaderSkeleton />;
+  // if (session && !userInfo) return <HeaderSkeleton />;
 
   return (
     <Grid
@@ -128,6 +128,7 @@ export default function Header() {
           </Button>
         )}
       </GridItem>
+      {/* <Button onClick={() => signOut()}>asdasd</Button> */}
     </Grid>
   );
 }

@@ -810,6 +810,13 @@ export interface Header {
   icon_list: string[];
   ban: UserBan;
   user_posts: PostData[];
+  user_post_statistics: UserPostStatistics;
+}
+
+export interface UserPostStatistics {
+  user_email: string;
+  post_count: number;
+  comment_count: number;
 }
 
 export interface UserBan {
@@ -842,6 +849,7 @@ export interface Profile {
   icon_list?: string[];
   is_delete?: boolean;
   user_posts?: PostData[];
+  user_post_statistics?: UserPostStatistics;
 }
 
 export interface ProfileExit {
