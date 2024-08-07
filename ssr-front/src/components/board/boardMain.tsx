@@ -3,7 +3,7 @@
 import { Box, VStack } from "@chakra-ui/react";
 import BoardHeader from "@/components/board/boardHeader";
 import BoardPost from "@/components/board/boardPost";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Pagination from "@/components/pagination/pagination";
 import BoardSearch from "@/components/board/boardSearch";
 import BoardContainer from "@/components/board/boardContainer";
@@ -12,10 +12,23 @@ import type { BoardMain } from "@/types/types";
 
 export default function BoardMain({ siteParam }: BoardMain) {
   const param = useSearchParams();
+  const pathname = usePathname();
   const { searchInfo, postInfo, setSearchData, getFilterPage } =
     useBoardSearch(siteParam);
 
   if (!postInfo) return null;
+
+  const makeRouteLink = () => {
+    if (pathname === "/board") {
+      return "/board?id=";
+    } else if (pathname === "/board/issue") {
+      return "/board/issue?id=";
+    } else if (pathname.includes("issue")) {
+      return `/board/${siteParam}/issue?id=`;
+    } else {
+      return `/board/${siteParam}?id=`;
+    }
+  };
 
   return (
     <BoardContainer>
@@ -33,9 +46,7 @@ export default function BoardMain({ siteParam }: BoardMain) {
         </VStack>
         <Pagination
           total={postInfo.max_pages}
-          routeLink={
-            siteParam === "board" ? "/board?id=" : `/board/${siteParam}?id=`
-          }
+          routeLink={makeRouteLink()}
           currentPage={Number(param.get("id"))}
         />
       </Box>
