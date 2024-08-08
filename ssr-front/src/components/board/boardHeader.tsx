@@ -12,8 +12,10 @@ import { PiStarFill } from "react-icons/pi";
 import { FaPencil } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/store/provider";
+import { useSession } from "next-auth/react";
 
 export default function BoardHeader({ siteParam }: BoardHeader) {
+  const { data: session } = useSession();
   const { user } = useAppStore((state) => state);
   const pathname = usePathname();
   const [typeList, setTypeList] = useState<BoardType[]>();
@@ -110,7 +112,7 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
               </Flex>
             </Link>
           </Flex>
-          {user && user.ban.ban_end_time === null && (
+          {user && user.ban.ban_end_time === null && session && (
             <Link href={"/board/write"}>
               <Flex mx={2} align="center">
                 <FaPencil />
