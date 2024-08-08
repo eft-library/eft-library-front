@@ -912,6 +912,11 @@ export interface DetailAction {
   post: PostData;
 }
 
+export interface DetailReport extends DetailAction {
+  isOpen: boolean;
+  onClose: any;
+}
+
 export type MetaProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
