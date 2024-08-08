@@ -8,7 +8,7 @@
 
 .ql-editor {
   min-height: 20vh; /* 에디터 높이 조정 */
-  max-height: 100vh;
+  max-height: 40vh;
   border-radius: 0px 0px 15px 15px;
 }
 .ql-editor img {

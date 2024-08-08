@@ -132,7 +132,7 @@ export default function Editor() {
         formats={QUILL_FORMATS}
         theme="snow"
       />
-      <SubmitButton onClick={submitPosts} type={"post"} />
+      <SubmitButton onClick={submitPosts} />
       <VideoDialog
         isOpen={isOpen}
         onClose={onClose}

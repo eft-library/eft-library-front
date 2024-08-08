@@ -6,25 +6,28 @@ import BoardContainer from "@/components/board/boardContainer";
 import DetailTitle from "@/components/boardDetail/detailTitle";
 import useBoardDetail from "@/hooks/userBoardDetail";
 import DetailContents from "@/components/boardDetail/detailContents";
-import { fetchUserData } from "@/lib/api";
+import { fetchDataWithReturn, fetchUserData } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import DetailComment from "./comment/detailComment";
-import type { BoardMain } from "@/types/types";
+import type { BoardMain, CommentInfo } from "@/types/types";
 import QuillWrapper from "@/components/quill/quillWrapper";
 import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
 import LoadingSpinner from "@/components/quill/loadingSpinner";
-import { useMemo, useRef, useState } from "react";
-import SubmitButton from "@/components/quill/submitButton";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { QuillToolbar } from "@/components/quill/quickToolbar";
 import { ImageHandler } from "@/components/quill/imageHandler";
 import "react-quill/dist/quill.snow.css";
+import CommentPagination from "../pagination/commentPagination";
 import "@/assets/commentEditor.css";
 import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { VideoDialog } from "@/components/quill/videoDiaglog";
+import { useAppStore } from "@/store/provider";
+import CommentSubmit from "./comment/commentSubmit";
 
 export default function DetailMain({ siteParam }: BoardMain) {
+  const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
   const quillRef = useRef<any>();
   const { postInfo, getBoardPage } = useBoardDetail(siteParam);
@@ -34,6 +37,20 @@ export default function DetailMain({ siteParam }: BoardMain) {
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<any>();
+  const [comments, setComments] = useState<CommentInfo>();
+
+  const getCommentsByBoardID = async (page: number) => {
+    const result = await fetchDataWithReturn(
+      `${API_ENDPOINTS.GET_COMMENTS_BY_BOARD_ID}?page=${page}&page_size=10&board_id=${postInfo.id}`
+    );
+    setComments(result);
+  };
+
+  useEffect(() => {
+    if (postInfo && postInfo.id) {
+      getCommentsByBoardID(1);
+    }
+  }, [postInfo]);
 
   const onClickLike = async (boardId: string, type: string) => {
     try {
@@ -92,7 +109,40 @@ export default function DetailMain({ siteParam }: BoardMain) {
     []
   );
 
-  if (!postInfo) return null;
+  const submitComment = async (parent_email, contents, depth, parent_id) => {
+    try {
+      if (user.ban.ban_end_time !== null) {
+        alert("제재 중인 사용자입니다.");
+      } else {
+        const response = await fetchUserData(
+          USER_API_ENDPOINTS.ADD_COMMENT,
+          "POST",
+          {
+            contents: contents,
+            board_type: postInfo.type,
+            parent_id: parent_id,
+            board_id: postInfo.id,
+            parent_depth: depth,
+            parent_user_email: parent_email,
+          },
+          session
+        );
+
+        if (response.status === 200) {
+          alert("글이 정상적으로 등록 되었습니다.");
+          setEditorContent("");
+          getCommentsByBoardID(comments.max_pages);
+          // 댓글 새로 불러오는 통신 필요
+        } else {
+          alert("잠시후 다시 시도해주세요");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!postInfo || !comments) return null;
 
   return (
     <BoardContainer>
@@ -104,7 +154,14 @@ export default function DetailMain({ siteParam }: BoardMain) {
           onClickLike={onClickLike}
           boardType={siteParam}
         />
-        {siteParam !== "notice" && <DetailComment />}
+        {siteParam !== "notice" &&
+          comments.data.map((comment) => (
+            <DetailComment
+              key={comment.id}
+              comment={comment}
+              submitComment={submitComment}
+            />
+          ))}
         <Box w={"100%"} display={"flex"} flexDirection={"column"} mt={10}>
           <QuillWrapper
             forwardedRef={quillRef}
@@ -114,9 +171,12 @@ export default function DetailMain({ siteParam }: BoardMain) {
             formats={QUILL_FORMATS}
             theme="snow"
           />
-          <SubmitButton
-            onClick={() => console.log(editorContent)}
-            type={"comment"}
+          <CommentSubmit
+            onClick={submitComment}
+            parent_email={""}
+            contents={editorContent}
+            depth={1}
+            parent_id={""}
           />
           <VideoDialog
             isOpen={isOpen}
@@ -127,6 +187,11 @@ export default function DetailMain({ siteParam }: BoardMain) {
             insertVideo={handleInsertVideo}
           />
         </Box>
+        <CommentPagination
+          total={comments.max_pages}
+          onPageChange={getCommentsByBoardID}
+          currentPage={comments.current_page}
+        />
         {loading && <LoadingSpinner />}
       </Box>
     </BoardContainer>

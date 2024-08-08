@@ -43,6 +43,7 @@ const API_ENDPOINTS = {
   GET_ISSUE: baseUrl + "/api/board/issue",
   GET_ISSUE_BY_TYPE: baseUrl + "/api/board",
   GET_BOARD_BY_TYPE: baseUrl + "/api/board",
+  GET_COMMENTS_BY_BOARD_ID: baseUrl + "/api/comment/all",
 };
 
 export default API_ENDPOINTS;

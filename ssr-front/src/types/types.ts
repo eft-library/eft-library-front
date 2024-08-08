@@ -857,6 +857,12 @@ export interface Pagination {
   currentPage: number;
 }
 
+export interface CommentPagination {
+  total: number;
+  onPageChange: Function;
+  currentPage: number;
+}
+
 export interface Glasses extends NameImage, strID {
   durability: number;
   blindness_protection: number;
@@ -887,6 +893,38 @@ export interface BoardType extends strID {
 }
 
 export interface BoardMain extends BoardHeader {}
+
+export interface CommentInfo {
+  data: Comment[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
+}
+
+export interface DetailComment {
+  comment: Comment;
+  submitComment: Function;
+}
+
+export interface Comment extends strID {
+  board_id: string;
+  user_email: string;
+  board_type: string;
+  parent_id: string | null;
+  contents: string;
+  depth: number;
+  create_time: string;
+  update_time: string | null;
+  is_delete_by_admin: boolean;
+  is_delete_by_user: boolean;
+  like_count: number;
+  dislike_count: number;
+  root_id: string;
+  path: string[];
+  icon: string;
+  nick_name: string;
+  root_create_time: string;
+}
 
 export interface BoardHeader {
   siteParam: string;
