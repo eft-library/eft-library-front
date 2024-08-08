@@ -6,7 +6,7 @@ export default function SubmitButton({ onClick, type }) {
     <Box
       display={"flex"}
       justifyContent={type === "post" ? "flex-end" : "flex-start"}
-      mt={6}
+      mt={2}
     >
       <Button
         borderRadius={"lg"}
@@ -17,7 +17,7 @@ export default function SubmitButton({ onClick, type }) {
         _hover={{ bg: ALL_COLOR.DARK_GRAY }}
         onClick={onClick}
       >
-        저장
+        등록
       </Button>
     </Box>
   );

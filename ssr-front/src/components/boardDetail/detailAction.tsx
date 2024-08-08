@@ -59,22 +59,6 @@ export default function DetailAction({ post }: DetailAction) {
   return (
     <>
       <HStack cursor="pointer" mt={4} justify="flex-end">
-        {checkDelete() && (
-          <Box as="span" display="flex" alignItems="center">
-            <Button
-              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-              border={"1px solid"}
-              borderColor={ALL_COLOR.WHITE}
-              w={"80px"}
-              bg={ALL_COLOR.BLACK}
-              onClick={onDeleteOpen}
-            >
-              <FaRegTrashAlt />
-              &nbsp;
-              <Text fontWeight={600}>삭제</Text>
-            </Button>
-          </Box>
-        )}
         <Box as="span" display="flex" alignItems="center">
           <Button
             _hover={{ bg: ALL_COLOR.DARK_GRAY }}
@@ -89,20 +73,38 @@ export default function DetailAction({ post }: DetailAction) {
             <Text fontWeight={600}>공유</Text>
           </Button>
         </Box>
-        <Box as="span" display="flex" alignItems="center">
-          <Button
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-            border={"1px solid"}
-            borderColor={ALL_COLOR.WHITE}
-            w={"80px"}
-            bg={ALL_COLOR.BLACK}
-            onClick={openReport}
-          >
-            <MdOutlineReport />
-            &nbsp;
-            <Text fontWeight={600}>신고</Text>
-          </Button>
-        </Box>
+        {checkDelete() && (
+          <Box as="span" display="flex" alignItems="center">
+            <Button
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+              bg={ALL_COLOR.BLACK}
+              w={"80px"}
+              onClick={onDeleteOpen}
+            >
+              <FaRegTrashAlt />
+              &nbsp;
+              <Text fontWeight={600}>삭제</Text>
+            </Button>
+          </Box>
+        )}
+        {session && user && (
+          <Box as="span" display="flex" alignItems="center">
+            <Button
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+              w={"80px"}
+              bg={ALL_COLOR.BLACK}
+              onClick={openReport}
+            >
+              <MdOutlineReport />
+              &nbsp;
+              <Text fontWeight={600}>신고</Text>
+            </Button>
+          </Box>
+        )}
       </HStack>
       <DetailReport isOpen={isReportOpen} onClose={onReportClose} post={post} />
       <DetailDelete isOpen={isDeleteOpen} onClose={onDeleteClose} post={post} />
