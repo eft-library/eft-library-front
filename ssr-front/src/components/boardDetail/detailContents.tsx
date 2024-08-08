@@ -1,12 +1,8 @@
 "use client";
 
 import type { BoardDetail } from "@/types/types";
-import { Box, Text, Flex, Button, HStack } from "@chakra-ui/react";
-import {
-  MdOutlineThumbUp,
-  MdOutlineThumbDown,
-  MdOutlineReport,
-} from "react-icons/md";
+import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { MdOutlineThumbUp, MdOutlineThumbDown } from "react-icons/md";
 import "@/assets/editor.css";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useEffect, useState } from "react";
@@ -14,10 +10,7 @@ import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
 import ImgWithZoom from "./imgWithZoom";
-import { useAppStore } from "@/store/provider";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { FaShareFromSquare } from "react-icons/fa6";
-import { usePathname } from "next/navigation";
+import DetailAction from "./detailAction";
 
 export default function DetailContents({
   post,
@@ -26,8 +19,6 @@ export default function DetailContents({
 }: BoardDetail) {
   // 1: like, 2: dislike, 3: none
   const [isLike, setIsLike] = useState<number>(3);
-  const pathname = usePathname();
-  const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -56,17 +47,6 @@ export default function DetailContents({
       isLikePost();
     }
   }, [post]);
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(
-        `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`
-      );
-      alert("클립 보드에 복사 되었습니다.");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const checkUserLike = (type: string) => {
     if (!session) return "";
@@ -129,50 +109,7 @@ export default function DetailContents({
           </Button>
         </Flex>
       )}
-      <HStack cursor="pointer" mt={4} justify="flex-end">
-        {session && user && user.user.email === post.writer && (
-          <Box as="span" display="flex" alignItems="center">
-            <Button
-              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-              border={"1px solid"}
-              borderColor={ALL_COLOR.WHITE}
-              w={"80px"}
-              bg={ALL_COLOR.BLACK}
-            >
-              <FaRegTrashAlt />
-              &nbsp;
-              <Text fontWeight={600}>삭제</Text>
-            </Button>
-          </Box>
-        )}
-        <Box as="span" display="flex" alignItems="center">
-          <Button
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-            border={"1px solid"}
-            borderColor={ALL_COLOR.WHITE}
-            w={"80px"}
-            bg={ALL_COLOR.BLACK}
-            onClick={() => copyToClipboard()}
-          >
-            <FaShareFromSquare />
-            &nbsp;
-            <Text fontWeight={600}>공유</Text>
-          </Button>
-        </Box>
-        <Box as="span" display="flex" alignItems="center">
-          <Button
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-            border={"1px solid"}
-            borderColor={ALL_COLOR.WHITE}
-            w={"80px"}
-            bg={ALL_COLOR.BLACK}
-          >
-            <MdOutlineReport />
-            &nbsp;
-            <Text fontWeight={600}>신고</Text>
-          </Button>
-        </Box>
-      </HStack>
+      <DetailAction post={post} />
     </Box>
   );
 }

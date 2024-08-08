@@ -908,6 +908,10 @@ export interface BoardDetail extends BoardPost {
   boardType: string;
 }
 
+export interface DetailAction {
+  post: PostData;
+}
+
 export type MetaProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };

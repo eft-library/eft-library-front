@@ -13,6 +13,7 @@ const USER_API_ENDPOINTS = {
   CHANGE_LIKE: baseUrl + "/api/board/like",
   IS_LIKE_POST: baseUrl + "/api/board/user/like",
   GET_USER_POST: baseUrl + "/api/board/user/write",
+  REPORT_POST: baseUrl + "/api/board/report",
 };
 
 export default USER_API_ENDPOINTS;
