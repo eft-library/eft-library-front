@@ -122,7 +122,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
             board_type: postInfo.type,
             parent_id: parent_id,
             board_id: postInfo.id,
-            parent_depth: depth,
+            depth: depth,
             parent_user_email: parent_email,
           },
           session
