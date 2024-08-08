@@ -1,4 +1,5 @@
 "use client";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import {
   Modal,
   ModalOverlay,
@@ -31,13 +32,12 @@ export default function ImgWithZoom({ content }) {
       />
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={ALL_COLOR.EDITOR_IMAGE_SHADOW} maxW="60vw" w="60vw">
           <ModalBody>
             <Image
               src={selectedImage}
+              w={"100%"}
               alt="Selected Image"
-              maxW="100%"
-              maxH="80vh"
               objectFit="contain"
             />
           </ModalBody>
