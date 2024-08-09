@@ -907,6 +907,19 @@ export interface DetailComment {
   submitComment: Function;
 }
 
+export interface CommentHeader {
+  icon: string | null;
+  nickName: string | null;
+  createTime: string;
+}
+
+export interface CommentAction {
+  comment: Comment;
+  onLike: Function;
+  onDislike: Function;
+  onReport: Function;
+}
+
 export interface Comment extends strID {
   board_id: string;
   user_email: string;
