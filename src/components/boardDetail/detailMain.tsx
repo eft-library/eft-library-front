@@ -24,10 +24,22 @@ export default function DetailMain({ siteParam }: BoardMain) {
   const [comments, setComments] = useState<CommentInfo>();
 
   const getCommentsByBoardID = async (page: number) => {
-    const result = await fetchDataWithReturn(
-      `${API_ENDPOINTS.GET_COMMENTS_BY_BOARD_ID}?page=${page}&page_size=10&board_id=${postInfo.id}`
+    const res = await fetch(
+      `${API_ENDPOINTS.GET_COMMENTS_BY_BOARD_ID}?page=${page}&page_size=10&board_id=${postInfo.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization:
+            session && session.accessToken
+              ? `Bearer ${session.accessToken}`
+              : "Bearer ",
+          "Content-Type": "application/json",
+        },
+      }
     );
-    setComments(result);
+
+    const response = await res.json();
+    setComments(response.data);
   };
 
   useEffect(() => {

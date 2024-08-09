@@ -21,7 +21,7 @@ export default function CommentAction({
     if (!session || !user) {
       alert("로그인한 사용자만 가능합니다.");
     } else if (comment.is_delete_by_admin || comment.is_delete_by_user) {
-      alert("삭제된 글은 추천할 수 없습니다.");
+      alert("삭제된 글은 추천이나 비추천을할 수 없습니다.");
     } else {
       await onLike(comment.id, type);
     }
@@ -43,6 +43,7 @@ export default function CommentAction({
       >
         <Text
           fontWeight={600}
+          color={comment.is_liked_by_user && ALL_COLOR.YELLOW}
           _hover={{ color: ALL_COLOR.DARK_GRAY }}
           display={"flex"}
           alignItems={"center"}
@@ -60,6 +61,7 @@ export default function CommentAction({
       >
         <Text
           fontWeight={600}
+          color={comment.is_disliked_by_user && ALL_COLOR.YELLOW}
           _hover={{ color: ALL_COLOR.DARK_GRAY }}
           display={"flex"}
           alignItems={"center"}

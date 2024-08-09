@@ -939,6 +939,8 @@ export interface Comment extends strID {
   icon: string;
   nick_name: string;
   root_create_time: string;
+  is_liked_by_user: boolean;
+  is_disliked_by_user: boolean;
 }
 
 export interface BoardHeader {
