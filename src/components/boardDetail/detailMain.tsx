@@ -132,6 +132,32 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
+  const onClickLikeOrDis = async (commentId: string, type: string) => {
+    try {
+      if (!session) {
+        alert("로그인 후 사용가능합니다.");
+      }
+
+      const response = await fetchUserData(
+        USER_API_ENDPOINTS.LIKE_OR_DIS_COMMENT,
+        "POST",
+        {
+          id: commentId,
+          type: type,
+        },
+        session
+      );
+
+      if (response.status === 200) {
+        getCommentsByBoardID(comments.current_page);
+      } else {
+        alert("잠시후 다시 시도해주세요");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!postInfo || !comments) return null;
 
   return (
@@ -148,6 +174,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
           comments.data.map((comment) => (
             <DetailComment
               key={comment.id}
+              onClickLikeOrDis={onClickLikeOrDis}
               comment={comment}
               onClickDelete={onClickDelete}
               submitComment={submitComment}

@@ -12,29 +12,18 @@ import type { CommentAction } from "@/types/types";
 export default function CommentAction({
   comment,
   onLike,
-  onDislike,
   onReport,
 }: CommentAction) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
 
-  const onClickLike = async () => {
+  const onClickLikeOrDis = async (type: string) => {
     if (!session || !user) {
       alert("로그인한 사용자만 가능합니다.");
     } else if (comment.is_delete_by_admin || comment.is_delete_by_user) {
       alert("삭제된 글은 추천할 수 없습니다.");
     } else {
-      await onLike();
-    }
-  };
-
-  const onClickDisLike = async () => {
-    if (!session || !user) {
-      alert("로그인한 사용자만 가능합니다.");
-    } else if (comment.is_delete_by_admin || comment.is_delete_by_user) {
-      alert("삭제된 글은 비추천할 수 없습니다.");
-    } else {
-      await onDislike();
+      await onLike(comment.id, type);
     }
   };
 
@@ -50,7 +39,7 @@ export default function CommentAction({
         bg={"none"}
         w={"60px"}
         cursor={"pointer"}
-        onClick={onClickLike}
+        onClick={() => onClickLikeOrDis("like")}
       >
         <Text
           fontWeight={600}
@@ -67,7 +56,7 @@ export default function CommentAction({
         bg={"none"}
         w={"60px"}
         cursor={"pointer"}
-        onClick={onClickDisLike}
+        onClick={() => onClickLikeOrDis("dislike")}
       >
         <Text
           fontWeight={600}

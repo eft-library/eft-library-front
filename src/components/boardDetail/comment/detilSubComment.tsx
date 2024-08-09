@@ -17,6 +17,7 @@ export default function DetailSubComment({
   comment,
   submitComment,
   onClickDelete,
+  onClickLikeOrDis,
 }: DetailComment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useAppStore((state) => state);
@@ -59,8 +60,7 @@ export default function DetailSubComment({
         <HStack position="absolute" top={4} right={2} spacing={1}>
           <CommentAction
             comment={comment}
-            onLike={() => alert("좋아요")}
-            onDislike={() => alert("싫어요")}
+            onLike={onClickLikeOrDis}
             onReport={() => alert("신고")}
           />
         </HStack>

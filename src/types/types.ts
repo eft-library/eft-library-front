@@ -905,6 +905,7 @@ export interface DetailComment {
   comment: Comment;
   onClickDelete: Function;
   submitComment: Function;
+  onClickLikeOrDis: Function;
 }
 
 export interface CommentHeader {
@@ -916,7 +917,6 @@ export interface CommentHeader {
 export interface CommentAction {
   comment: Comment;
   onLike: Function;
-  onDislike: Function;
   onReport: Function;
 }
 
