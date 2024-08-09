@@ -903,6 +903,7 @@ export interface CommentInfo {
 
 export interface DetailComment {
   comment: Comment;
+  onClickDelete: Function;
   submitComment: Function;
 }
 
@@ -954,6 +955,13 @@ export interface DetailAction {
 export interface DetailReport extends DetailAction {
   isOpen: boolean;
   onClose: any;
+}
+
+export interface CommentDetele {
+  comment: Comment;
+  isOpen: boolean;
+  onClose: any;
+  commentDelete: Function;
 }
 
 export type MetaProps = {
@@ -1012,8 +1020,10 @@ export interface UserProfile {
   user_post_statistics: UserPostStatistics;
 }
 
-export interface CommentQuill extends DetailComment {
+export interface CommentQuill {
   depth: number;
+  submitComment: Function;
+  comment: Comment;
   setWriteComment?: Function;
 }
 

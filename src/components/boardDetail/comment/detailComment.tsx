@@ -5,13 +5,22 @@ import DetailMainComment from "./detailMainComment";
 export default function DetailComment({
   comment,
   submitComment,
+  onClickDelete,
 }: DetailComment) {
   return (
     <>
       {comment.depth === 1 ? (
-        <DetailMainComment comment={comment} submitComment={submitComment} />
+        <DetailMainComment
+          comment={comment}
+          submitComment={submitComment}
+          onClickDelete={onClickDelete}
+        />
       ) : (
-        <DetailSubComment comment={comment} submitComment={submitComment} />
+        <DetailSubComment
+          comment={comment}
+          submitComment={submitComment}
+          onClickDelete={onClickDelete}
+        />
       )}
     </>
   );

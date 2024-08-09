@@ -64,7 +64,12 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
-  const submitComment = async (parent_email, contents, depth, parent_id) => {
+  const submitComment = async (
+    parent_email: string,
+    contents: string,
+    depth: number,
+    parent_id: string
+  ) => {
     try {
       if (user.ban.ban_end_time !== null) {
         alert("제재 중인 사용자입니다.");
@@ -104,6 +109,29 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
+  const onClickDelete = async (commentId: string, deleteByUser: boolean) => {
+    try {
+      const response = await fetchUserData(
+        USER_API_ENDPOINTS.DELETE_COMMENT,
+        "POST",
+        {
+          comment_id: commentId,
+          delete_by_user: deleteByUser,
+        },
+        session
+      );
+
+      if (response.status === 200) {
+        alert("댓글이 삭제 되었습니다.");
+        getCommentsByBoardID(comments.current_page);
+      } else {
+        alert("잠시후 다시 시도해주세요");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!postInfo || !comments) return null;
 
   return (
@@ -121,6 +149,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
             <DetailComment
               key={comment.id}
               comment={comment}
+              onClickDelete={onClickDelete}
               submitComment={submitComment}
             />
           ))}

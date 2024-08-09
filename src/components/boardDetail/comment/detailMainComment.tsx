@@ -1,7 +1,14 @@
 "use client";
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { Box, Text, VStack, HStack, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  VStack,
+  HStack,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { MdOutlineThumbDown, MdOutlineThumbUp } from "react-icons/md";
 import { MdOutlineReport } from "react-icons/md";
 import type { DetailComment } from "@/types/types";
@@ -11,11 +18,18 @@ import { useState } from "react";
 import CommentQuill from "./commentQuill";
 import ImgWithZoom from "../imgWithZoom";
 import "@/assets/commentEditor.css";
+import { useAppStore } from "@/store/provider";
+import { useSession } from "next-auth/react";
+import CommentDelete from "./commentDelete";
 
 export default function DetailMainComment({
   comment,
   submitComment,
+  onClickDelete,
 }: DetailComment) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useAppStore((state) => state);
+  const { data: session } = useSession();
   const [writeComment, setWriteComment] = useState(false);
 
   return (
@@ -99,22 +113,25 @@ export default function DetailMainComment({
         </Box>
       </HStack>
       <HStack justify="flex-end" spacing={1} mt={2}>
-        <Box
-          display="flex"
-          alignItems="center"
-          bg={"none"}
-          w={"40px"}
-          cursor={"pointer"}
-        >
-          <Text
-            fontWeight={600}
-            _hover={{ color: ALL_COLOR.DARK_GRAY }}
-            display={"flex"}
-            alignItems={"center"}
+        {session && user && user.user.email === comment.user_email && (
+          <Box
+            display="flex"
+            alignItems="center"
+            bg={"none"}
+            w={"40px"}
+            cursor={"pointer"}
+            onClick={onOpen}
           >
-            삭제
-          </Text>
-        </Box>
+            <Text
+              fontWeight={600}
+              _hover={{ color: ALL_COLOR.DARK_GRAY }}
+              display={"flex"}
+              alignItems={"center"}
+            >
+              삭제
+            </Text>
+          </Box>
+        )}
         <Box
           display="flex"
           alignItems="center"
@@ -142,6 +159,12 @@ export default function DetailMainComment({
           depth={2}
         />
       )}
+      <CommentDelete
+        onClose={onClose}
+        isOpen={isOpen}
+        comment={comment}
+        commentDelete={onClickDelete}
+      />
     </Box>
   );
 }

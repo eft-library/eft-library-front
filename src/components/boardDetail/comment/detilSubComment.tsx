@@ -2,18 +2,32 @@ import { formatImage } from "@/lib/formatImage";
 import { timeAgo } from "@/lib/formatISODate";
 import { DetailComment } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { Box, HStack, VStack, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  VStack,
+  Text,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { IoArrowRedo } from "react-icons/io5";
 import { useState } from "react";
 import "@/assets/commentEditor.css";
 import "react-quill/dist/quill.snow.css";
 import CommentQuill from "./commentQuill";
 import ImgWithZoom from "../imgWithZoom";
+import { useAppStore } from "@/store/provider";
+import { useSession } from "next-auth/react";
+import CommentDelete from "./commentDelete";
 
 export default function DetailSubComment({
   comment,
   submitComment,
+  onClickDelete,
 }: DetailComment) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useAppStore((state) => state);
+  const { data: session } = useSession();
   const [writeComment, setWriteComment] = useState(false);
 
   return (
@@ -54,22 +68,25 @@ export default function DetailSubComment({
           </Box>
         </VStack>
         <HStack justify="flex-end" spacing={1} mt={2}>
-          <Box
-            display="flex"
-            alignItems="center"
-            bg={"none"}
-            w={"40px"}
-            cursor={"pointer"}
-          >
-            <Text
-              fontWeight={600}
-              _hover={{ color: ALL_COLOR.DARK_GRAY }}
-              display={"flex"}
-              alignItems={"center"}
+          {session && user && user.user.email === comment.user_email && (
+            <Box
+              display="flex"
+              alignItems="center"
+              bg={"none"}
+              w={"40px"}
+              cursor={"pointer"}
             >
-              삭제
-            </Text>
-          </Box>
+              <Text
+                fontWeight={600}
+                _hover={{ color: ALL_COLOR.DARK_GRAY }}
+                display={"flex"}
+                alignItems={"center"}
+                onClick={onOpen}
+              >
+                삭제
+              </Text>
+            </Box>
+          )}
           <Box
             display="flex"
             alignItems="center"
@@ -97,6 +114,12 @@ export default function DetailSubComment({
             depth={comment.depth + 1}
           />
         )}
+        <CommentDelete
+          onClose={onClose}
+          isOpen={isOpen}
+          comment={comment}
+          commentDelete={onClickDelete}
+        />
       </Box>
     </VStack>
   );
