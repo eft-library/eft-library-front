@@ -1,12 +1,12 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import BoardHeader from "@/components/board/boardHeader";
 import BoardContainer from "@/components/board/boardContainer";
 import DetailTitle from "@/components/boardDetail/detailTitle";
 import useBoardDetail from "@/hooks/userBoardDetail";
 import DetailContents from "@/components/boardDetail/detailContents";
-import { fetchDataWithReturn, fetchUserData } from "@/lib/api";
+import { fetchUserData } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import DetailComment from "./comment/detailComment";
@@ -172,6 +172,12 @@ export default function DetailMain({ siteParam }: BoardMain) {
 
   if (!postInfo || !comments) return null;
 
+  const checkUser = () => {
+    if (!session || !user) return false;
+
+    return true;
+  };
+
   return (
     <BoardContainer>
       <BoardHeader siteParam={siteParam} />
@@ -192,13 +198,20 @@ export default function DetailMain({ siteParam }: BoardMain) {
               submitComment={submitComment}
             />
           ))}
-        {session && user && (
-          <CommentQuill
-            depth={1}
-            comment={null}
-            submitComment={submitComment}
-          />
-        )}
+        {checkUser() &&
+          (user.ban.ban_end_time ? (
+            <Box w={"100%"} mt={10}>
+              <Text textAlign={"center"}>
+                밴 당한 사용자는 댓글 작성이 제한 됩니다.
+              </Text>
+            </Box>
+          ) : (
+            <CommentQuill
+              depth={1}
+              comment={null}
+              submitComment={submitComment}
+            />
+          ))}
         <CommentPagination
           total={comments.max_pages}
           onPageChange={getCommentsByBoardID}

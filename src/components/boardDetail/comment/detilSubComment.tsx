@@ -102,14 +102,21 @@ export default function DetailSubComment({
             </Box>
           </HStack>
         )}
-        {writeComment && (
-          <CommentQuill
-            submitComment={submitComment}
-            setWriteComment={setWriteComment}
-            comment={comment}
-            depth={comment.depth + 1}
-          />
-        )}
+        {writeComment &&
+          (user.ban.ban_end_time ? (
+            <Box w={"100%"} mt={10}>
+              <Text textAlign={"center"}>
+                밴 당한 사용자는 댓글 작성이 제한 됩니다.
+              </Text>
+            </Box>
+          ) : (
+            <CommentQuill
+              submitComment={submitComment}
+              setWriteComment={setWriteComment}
+              comment={comment}
+              depth={2}
+            />
+          ))}
         <CommentDelete
           onClose={onClose}
           isOpen={isOpen}
