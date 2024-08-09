@@ -911,6 +911,7 @@ export interface Comment extends strID {
   user_email: string;
   board_type: string;
   parent_id: string | null;
+  parent_nick_name: string | null;
   contents: string;
   depth: number;
   create_time: string;
@@ -1009,4 +1010,19 @@ export interface UserProfile {
   ban: Ban;
   user_posts: PostData[];
   user_post_statistics: UserPostStatistics;
+}
+
+export interface CommentQuill extends DetailComment {
+  depth: number;
+  setWriteComment?: Function;
+}
+
+export interface CommentSubmit {
+  onClick: Function;
+  parent_email: string;
+  contents: string;
+  depth: number;
+  parent_id: string;
+  setEditorContent: Function;
+  setWriteComment: Function;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import BoardHeader from "@/components/board/boardHeader";
 import BoardContainer from "@/components/board/boardContainer";
 import DetailTitle from "@/components/boardDetail/detailTitle";
@@ -11,32 +11,16 @@ import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import DetailComment from "./comment/detailComment";
 import type { BoardMain, CommentInfo } from "@/types/types";
-import QuillWrapper from "@/components/quill/quillWrapper";
-import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
-import LoadingSpinner from "@/components/quill/loadingSpinner";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { QuillToolbar } from "@/components/quill/quickToolbar";
-import { ImageHandler } from "@/components/quill/imageHandler";
-import "react-quill/dist/quill.snow.css";
+import { useEffect, useState } from "react";
 import CommentPagination from "../pagination/commentPagination";
-import "@/assets/commentEditor.css";
-import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
 import API_ENDPOINTS from "@/config/endPoints";
-import { VideoDialog } from "@/components/quill/videoDiaglog";
 import { useAppStore } from "@/store/provider";
-import CommentSubmit from "./comment/commentSubmit";
+import CommentQuill from "./comment/commentQuill";
 
 export default function DetailMain({ siteParam }: BoardMain) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
-  const quillRef = useRef<any>();
   const { postInfo, getBoardPage } = useBoardDetail(siteParam);
-  const [editorContent, setEditorContent] = useState<string>("");
-  const [videoUrl, setVideoUrl] = useState<string>("");
-  const [insertPosition, setInsertPosition] = useState<number | null>(null); // 커서 위치 저장
-  const [loading, setLoading] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef<any>();
   const [comments, setComments] = useState<CommentInfo>();
 
   const getCommentsByBoardID = async (page: number) => {
@@ -80,35 +64,6 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
-  const handleInsertVideo = () => {
-    insertVideo(quillRef, videoUrl, insertPosition, setVideoUrl, onClose);
-  };
-
-  const handleVideoHandler = () => {
-    videoHandler(quillRef, setInsertPosition, onOpen);
-  };
-
-  const handleChange = (content: string) => {
-    setEditorContent(content);
-  };
-
-  const modules = useMemo(
-    () => ({
-      toolbar: QuillToolbar({ onVideoHandler: handleVideoHandler }),
-      imageActions: {},
-      imageFormats: {},
-      imageDropAndPaste: ImageHandler({
-        quillRef,
-        api: API_ENDPOINTS.UPLOAD_BOARD_IMAGE,
-        setLoading: setLoading,
-      }),
-      clipboard: {
-        matchVisual: false,
-      },
-    }),
-    []
-  );
-
   const submitComment = async (parent_email, contents, depth, parent_id) => {
     try {
       if (user.ban.ban_end_time !== null) {
@@ -130,8 +85,15 @@ export default function DetailMain({ siteParam }: BoardMain) {
 
         if (response.status === 200) {
           alert("글이 정상적으로 등록 되었습니다.");
-          setEditorContent("");
-          getCommentsByBoardID(comments.max_pages);
+          // 새로운 댓글의 경우
+          if (depth == 1) {
+            getCommentsByBoardID(comments.max_pages);
+          }
+          // 대댓일 경우
+          else {
+            getCommentsByBoardID(comments.current_page);
+          }
+
           // 댓글 새로 불러오는 통신 필요
         } else {
           alert("잠시후 다시 시도해주세요");
@@ -162,37 +124,18 @@ export default function DetailMain({ siteParam }: BoardMain) {
               submitComment={submitComment}
             />
           ))}
-        <Box w={"100%"} display={"flex"} flexDirection={"column"} mt={10}>
-          <QuillWrapper
-            forwardedRef={quillRef}
-            value={editorContent}
-            onChange={handleChange}
-            modules={modules}
-            formats={QUILL_FORMATS}
-            theme="snow"
-          />
-          <CommentSubmit
-            onClick={submitComment}
-            parent_email={""}
-            contents={editorContent}
+        {session && user && (
+          <CommentQuill
             depth={1}
-            parent_id={""}
+            comment={null}
+            submitComment={submitComment}
           />
-          <VideoDialog
-            isOpen={isOpen}
-            onClose={onClose}
-            cancelRef={cancelRef}
-            videoUrl={videoUrl}
-            setVideoUrl={setVideoUrl}
-            insertVideo={handleInsertVideo}
-          />
-        </Box>
+        )}
         <CommentPagination
           total={comments.max_pages}
           onPageChange={getCommentsByBoardID}
           currentPage={comments.current_page}
         />
-        {loading && <LoadingSpinner />}
       </Box>
     </BoardContainer>
   );

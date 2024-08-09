@@ -1,5 +1,6 @@
 .view-editor {
   border-radius: 0px 0px 15px 15px;
+  width: 100%;
 }
 .view-editor img {
   display: block;

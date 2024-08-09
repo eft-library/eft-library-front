@@ -2,75 +2,19 @@ import { formatImage } from "@/lib/formatImage";
 import { timeAgo } from "@/lib/formatISODate";
 import { DetailComment } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import {
-  Box,
-  HStack,
-  VStack,
-  Text,
-  Image,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, HStack, VStack, Text, Image } from "@chakra-ui/react";
 import { IoArrowRedo } from "react-icons/io5";
-import USER_API_ENDPOINTS from "@/config/userEndPoints";
-import { useState, useMemo, useRef } from "react";
-import QuillWrapper from "@/components/quill/quillWrapper";
-import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
+import { useState } from "react";
 import "@/assets/commentEditor.css";
-import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
-import API_ENDPOINTS from "@/config/endPoints";
-import { VideoDialog } from "@/components/quill/videoDiaglog";
-import { useAppStore } from "@/store/provider";
-import CommentSubmit from "./commentSubmit";
-import { QuillToolbar } from "@/components/quill/quickToolbar";
-import { ImageHandler } from "@/components/quill/imageHandler";
 import "react-quill/dist/quill.snow.css";
-import { fetchDataWithReturn, fetchUserData } from "@/lib/api";
-import { useSession } from "next-auth/react";
-import LoadingSpinner from "@/components/quill/loadingSpinner";
+import CommentQuill from "./commentQuill";
+import ImgWithZoom from "../imgWithZoom";
 
 export default function DetailSubComment({
   comment,
   submitComment,
 }: DetailComment) {
   const [writeComment, setWriteComment] = useState(false);
-  const { user } = useAppStore((state) => state);
-  const { data: session } = useSession();
-  const quillRef = useRef<any>();
-  const [editorContent, setEditorContent] = useState<string>("");
-  const [videoUrl, setVideoUrl] = useState<string>("");
-  const [insertPosition, setInsertPosition] = useState<number | null>(null); // 커서 위치 저장
-  const [loading, setLoading] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef<any>();
-
-  const handleInsertVideo = () => {
-    insertVideo(quillRef, videoUrl, insertPosition, setVideoUrl, onClose);
-  };
-
-  const handleVideoHandler = () => {
-    videoHandler(quillRef, setInsertPosition, onOpen);
-  };
-
-  const handleChange = (content: string) => {
-    setEditorContent(content);
-  };
-
-  const modules = useMemo(
-    () => ({
-      toolbar: QuillToolbar({ onVideoHandler: handleVideoHandler }),
-      imageActions: {},
-      imageFormats: {},
-      imageDropAndPaste: ImageHandler({
-        quillRef,
-        api: API_ENDPOINTS.UPLOAD_BOARD_IMAGE,
-        setLoading: setLoading,
-      }),
-      clipboard: {
-        matchVisual: false,
-      },
-    }),
-    []
-  );
 
   return (
     <VStack
@@ -102,12 +46,12 @@ export default function DetailSubComment({
               {timeAgo(comment.create_time)}
             </Text>
           </HStack>
-          <Text ml={6}>
+          <Box ml={6} w={"100%"}>
             <Text as="span" color={ALL_COLOR.YELLOW} fontWeight={600}>
-              @{comment.nick_name}
+              @{comment.parent_nick_name}
             </Text>
-            &nbsp;&nbsp;내용
-          </Text>
+            <ImgWithZoom content={comment.contents} />
+          </Box>
         </VStack>
         <HStack justify="flex-end" spacing={1} mt={2}>
           <Box
@@ -145,34 +89,15 @@ export default function DetailSubComment({
           </Box>
         </HStack>
         {writeComment && (
-          <Box w={"100%"} display={"flex"} flexDirection={"column"} mt={10}>
-            <QuillWrapper
-              forwardedRef={quillRef}
-              value={editorContent}
-              onChange={handleChange}
-              modules={modules}
-              formats={QUILL_FORMATS}
-              theme="snow"
-            />
-            <CommentSubmit
-              onClick={submitComment}
-              contents={editorContent}
-              parent_email={comment.user_email}
-              depth={comment.depth + 1}
-              parent_id={comment.id}
-            />
-            <VideoDialog
-              isOpen={isOpen}
-              onClose={onClose}
-              cancelRef={cancelRef}
-              videoUrl={videoUrl}
-              setVideoUrl={setVideoUrl}
-              insertVideo={handleInsertVideo}
-            />
-          </Box>
+          // 대댓의 대댓이라 1씩 증가
+          <CommentQuill
+            submitComment={submitComment}
+            setWriteComment={setWriteComment}
+            comment={comment}
+            depth={comment.depth + 1}
+          />
         )}
       </Box>
-      {loading && <LoadingSpinner />}
     </VStack>
   );
 }
