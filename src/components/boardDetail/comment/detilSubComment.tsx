@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import CommentDelete from "./commentDelete";
 import CommentAction from "./commentAction";
 import CommentHeader from "./commentHeader";
+import CommentReport from "./commentReport";
 
 export default function DetailSubComment({
   comment,
@@ -19,6 +20,11 @@ export default function DetailSubComment({
   onClickDelete,
   onClickLikeOrDis,
 }: DetailComment) {
+  const {
+    isOpen: isReportOpen,
+    onOpen: onReportOpen,
+    onClose: onReportClose,
+  } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
@@ -61,7 +67,7 @@ export default function DetailSubComment({
           <CommentAction
             comment={comment}
             onLike={onClickLikeOrDis}
-            onReport={() => alert("신고")}
+            onOpen={onReportOpen}
           />
         </HStack>
         {checkDelete() && (
@@ -122,6 +128,11 @@ export default function DetailSubComment({
           isOpen={isOpen}
           comment={comment}
           commentDelete={onClickDelete}
+        />
+        <CommentReport
+          comment={comment}
+          isOpen={isReportOpen}
+          onClose={onReportClose}
         />
       </Box>
     </VStack>

@@ -917,7 +917,7 @@ export interface CommentHeader {
 export interface CommentAction {
   comment: Comment;
   onLike: Function;
-  onReport: Function;
+  onOpen: Function;
 }
 
 export interface Comment extends strID {
@@ -965,6 +965,12 @@ export interface BoardDetail extends BoardPost {
 
 export interface DetailAction {
   post: PostData;
+}
+
+export interface CommentReport {
+  comment: Comment;
+  isOpen: boolean;
+  onClose: any;
 }
 
 export interface DetailReport extends DetailAction {

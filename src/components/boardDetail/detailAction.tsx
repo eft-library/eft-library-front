@@ -89,7 +89,7 @@ export default function DetailAction({ post }: DetailAction) {
             </Button>
           </Box>
         )}
-        {session && user && (
+        {session && user && !user.user.is_admin && (
           <Box as="span" display="flex" alignItems="center">
             <Button
               _hover={{ bg: ALL_COLOR.DARK_GRAY }}

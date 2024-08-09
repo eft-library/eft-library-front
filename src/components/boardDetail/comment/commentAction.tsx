@@ -8,11 +8,12 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import { useSession } from "next-auth/react";
 import type { CommentAction } from "@/types/types";
+import { HiDotsVertical } from "react-icons/hi";
 
 export default function CommentAction({
   comment,
   onLike,
-  onReport,
+  onOpen,
 }: CommentAction) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
@@ -27,8 +28,14 @@ export default function CommentAction({
     }
   };
 
-  const onClickReport = async () => {
-    await onReport();
+  const checkReport = () => {
+    return (
+      session &&
+      user &&
+      !user.user.is_admin &&
+      !comment.is_delete_by_admin &&
+      !comment.is_delete_by_user
+    );
   };
 
   return (
@@ -69,14 +76,14 @@ export default function CommentAction({
           <MdOutlineThumbDown /> &nbsp;&nbsp;{comment.dislike_count}
         </Text>
       </Box>
-      {session && user && (
+      {checkReport() && (
         <Box
           display="flex"
           alignItems="center"
           bg={"none"}
           w={"60px"}
           cursor={"pointer"}
-          onClick={onClickReport}
+          onClick={() => onOpen()}
         >
           <Text
             fontWeight={600}
@@ -85,6 +92,24 @@ export default function CommentAction({
             alignItems={"center"}
           >
             <MdOutlineReport /> &nbsp;&nbsp;신고
+          </Text>
+        </Box>
+      )}
+      {session && user && user.user.is_admin && (
+        <Box
+          display="flex"
+          alignItems="center"
+          bg={"none"}
+          w={"10px"}
+          cursor={"pointer"}
+        >
+          <Text
+            fontWeight={600}
+            _hover={{ color: ALL_COLOR.DARK_GRAY }}
+            display={"flex"}
+            alignItems={"center"}
+          >
+            <HiDotsVertical />
           </Text>
         </Box>
       )}

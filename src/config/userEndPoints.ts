@@ -18,6 +18,7 @@ const USER_API_ENDPOINTS = {
   GET_USER_POST: baseUrl + "/api/board/user/write",
   REPORT_POST: baseUrl + "/api/board/report",
   DELETE_POST: baseUrl + "/api/board/delete",
+  REPORT_COMMENT: baseUrl + "/api/comment/report",
 };
 
 export default USER_API_ENDPOINTS;
