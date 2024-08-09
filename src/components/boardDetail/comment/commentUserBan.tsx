@@ -1,7 +1,5 @@
 "use client";
 
-import USER_API_ENDPOINTS from "@/config/userEndPoints";
-import { fetchUserData } from "@/lib/api";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import {
   Box,
@@ -14,47 +12,55 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import type { CommentBan } from "@/types/types";
+import USER_API_ENDPOINTS from "@/config/userEndPoints";
+import { fetchUserData } from "@/lib/api";
 import { useSession } from "next-auth/react";
-import type { CommentReport } from "@/types/types";
+import { useState } from "react";
 
-export default function CommentReport({
+export default function CommentUserBan({
+  comment,
   isOpen,
   onClose,
-  comment,
-}: CommentReport) {
-  const { data: session } = useSession();
+}: CommentBan) {
   const [reason, setReason] = useState("");
-  const [selectReason, setSelectReason] = useState("");
+  const [banTime, setBanTime] = useState("");
+  const { data: session } = useSession();
 
-  const reportPost = async () => {
-    if (selectReason.length < 1) {
-      alert("사유를 선택해주세요");
-    } else if (selectReason === "other" && reason.length < 1) {
-      alert("사유를 입력해주세요");
+  const onClickBan = async () => {
+    if (reason.length < 1) {
+      alert("제재 사유를 작성해주세요");
+    } else if (banTime.length < 1) {
+      alert("제재 기간을 선택해주세요");
     } else {
+      let finalBanTime = 0;
+
+      if (banTime !== "always") {
+        finalBanTime = Number(banTime);
+      } else {
+        finalBanTime = 999999;
+      }
+
       try {
-        let finalReason = "";
-        if (selectReason !== "other") {
-          finalReason = selectReason;
-        } else {
-          finalReason = reason;
-        }
         const response = await fetchUserData(
-          USER_API_ENDPOINTS.REPORT_COMMENT,
+          USER_API_ENDPOINTS.BAN_USER,
           "POST",
-          { comment_id: comment.id, reason: finalReason },
+          {
+            user_email: comment.user_email,
+            ban_reason: reason,
+            ban_time: finalBanTime,
+          },
           session
         );
         if (response.status === 200) {
-          alert("해당 게시글이 신고되었습니다.");
+          alert("해당 사용자를 제재하였습니다");
           onClose();
         } else {
           alert("잠시후 다시 시도해주세요");
           onClose();
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
   };
@@ -69,32 +75,29 @@ export default function CommentReport({
           borderRadius={"lg"}
         >
           <Text fontWeight={600} mb={4} mt={4}>
-            신고 사유를 선택하거나 입력해주세요
+            해당 사용자를 제재 하시겠습니까?
           </Text>
           <Select
             border={"1px solid"}
             borderColor={ALL_COLOR.WHITE}
             placeholder="신고 사유를 선택하세요"
-            onChange={(e) => setSelectReason(e.target.value)}
-            value={selectReason}
+            onChange={(e) => setBanTime(e.target.value)}
+            value={banTime}
           >
-            <option value="스팸">스팸</option>
-            <option value="혐오/폭력">혐오/폭력</option>
-            <option value="괴롭힘">괴롭힘</option>
-            <option value="허위 정보">허위 정보</option>
-            <option value="other">기타</option>
+            <option value="1">1일</option>
+            <option value="7">7일</option>
+            <option value="30">30일</option>
+            <option value="always">영구정지</option>
           </Select>
-          {selectReason === "other" && (
-            <Input
-              placeholder="신고 사유"
-              bg={ALL_COLOR.BLACK}
-              borderColor={ALL_COLOR.WHITE}
-              fontWeight={600}
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              mt={"20px"}
-            />
-          )}
+          <Input
+            placeholder="제재 사유"
+            bg={ALL_COLOR.BLACK}
+            borderColor={ALL_COLOR.WHITE}
+            fontWeight={600}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            mt={"20px"}
+          />
           <Box
             w={"100%"}
             display={"flex"}
@@ -109,9 +112,9 @@ export default function CommentReport({
               _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
               mb={4}
               mr={4}
-              onClick={() => reportPost()}
+              onClick={onClickBan}
             >
-              신고
+              밴
             </Button>
             <Button
               fontWeight={600}

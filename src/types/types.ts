@@ -987,6 +987,12 @@ export interface CommentDetele {
   isUser: boolean;
 }
 
+export interface CommentBan {
+  comment: Comment;
+  isOpen: boolean;
+  onClose: any;
+}
+
 export interface CommentAdmin {
   comment: Comment;
   onClickDelete: Function;

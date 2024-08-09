@@ -9,6 +9,8 @@ import { useAppStore } from "@/store/provider";
 import { useSession } from "next-auth/react";
 import type { CommentAction } from "@/types/types";
 import CommentAdmin from "./commentAdmin";
+import USER_API_ENDPOINTS from "@/config/userEndPoints";
+import { fetchUserData } from "@/lib/api";
 
 export default function CommentAction({
   comment,
