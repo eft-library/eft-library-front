@@ -38,6 +38,12 @@ export default function DetailSubComment({
     }
   };
 
+  const checkReply = () => {
+    if (!session || !user) return false;
+    if (comment.is_delete_by_admin || comment.is_delete_by_user) return false;
+    return true;
+  };
+
   return (
     <VStack
       align="start"
@@ -66,12 +72,13 @@ export default function DetailSubComment({
         <HStack position="absolute" top={4} right={2} spacing={1}>
           <CommentAction
             comment={comment}
+            onClickDelete={onClickDelete}
             onLike={onClickLikeOrDis}
             onOpen={onReportOpen}
           />
         </HStack>
-        {checkDelete() && (
-          <HStack justify="flex-end" spacing={1} mt={2}>
+        <HStack justify="flex-end" spacing={1} mt={2}>
+          {checkDelete() && (
             <Box
               display="flex"
               alignItems="center"
@@ -89,6 +96,8 @@ export default function DetailSubComment({
                 삭제
               </Text>
             </Box>
+          )}
+          {checkReply() && (
             <Box
               display="flex"
               alignItems="center"
@@ -106,8 +115,8 @@ export default function DetailSubComment({
                 답글
               </Text>
             </Box>
-          </HStack>
-        )}
+          )}
+        </HStack>
         {writeComment &&
           (user.ban.ban_end_time ? (
             <Box w={"100%"} mt={10}>
@@ -128,6 +137,7 @@ export default function DetailSubComment({
           isOpen={isOpen}
           comment={comment}
           commentDelete={onClickDelete}
+          isUser={true}
         />
         <CommentReport
           comment={comment}

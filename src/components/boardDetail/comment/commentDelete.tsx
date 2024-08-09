@@ -17,9 +17,10 @@ export default function CommentDelete({
   isOpen,
   onClose,
   commentDelete,
+  isUser,
 }: CommentDetele) {
   const onClickDelete = async () => {
-    await commentDelete(comment.id, true);
+    await commentDelete(comment.id, isUser);
     onClose();
   };
 
@@ -33,7 +34,7 @@ export default function CommentDelete({
           borderRadius={"lg"}
         >
           <Text fontWeight={600} mb={4} mt={4}>
-            해당 게시글을 삭제 하시겠습니까?
+            해당 댓글을 삭제 하시겠습니까?
           </Text>
           <Box
             w={"100%"}

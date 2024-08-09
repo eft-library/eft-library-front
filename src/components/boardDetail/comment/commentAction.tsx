@@ -8,12 +8,13 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { useAppStore } from "@/store/provider";
 import { useSession } from "next-auth/react";
 import type { CommentAction } from "@/types/types";
-import { HiDotsVertical } from "react-icons/hi";
+import CommentAdmin from "./commentAdmin";
 
 export default function CommentAction({
   comment,
   onLike,
   onOpen,
+  onClickDelete,
 }: CommentAction) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
@@ -96,22 +97,7 @@ export default function CommentAction({
         </Box>
       )}
       {session && user && user.user.is_admin && (
-        <Box
-          display="flex"
-          alignItems="center"
-          bg={"none"}
-          w={"10px"}
-          cursor={"pointer"}
-        >
-          <Text
-            fontWeight={600}
-            _hover={{ color: ALL_COLOR.DARK_GRAY }}
-            display={"flex"}
-            alignItems={"center"}
-          >
-            <HiDotsVertical />
-          </Text>
-        </Box>
+        <CommentAdmin comment={comment} onClickDelete={onClickDelete} />
       )}
     </HStack>
   );

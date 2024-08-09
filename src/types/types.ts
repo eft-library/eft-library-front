@@ -918,6 +918,7 @@ export interface CommentAction {
   comment: Comment;
   onLike: Function;
   onOpen: Function;
+  onClickDelete: Function;
 }
 
 export interface Comment extends strID {
@@ -983,6 +984,12 @@ export interface CommentDetele {
   isOpen: boolean;
   onClose: any;
   commentDelete: Function;
+  isUser: boolean;
+}
+
+export interface CommentAdmin {
+  comment: Comment;
+  onClickDelete: Function;
 }
 
 export type MetaProps = {
