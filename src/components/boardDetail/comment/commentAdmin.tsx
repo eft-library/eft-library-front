@@ -50,10 +50,18 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
         <PopoverCloseButton />
         <PopoverHeader textAlign={"center"}>관리</PopoverHeader>
         <PopoverBody>
+          <Text
+            fontWeight={600}
+            _hover={{ color: ALL_COLOR.DARK_GRAY }}
+            cursor={"pointer"}
+            mb={2}
+          >
+            사용자 정보
+          </Text>
           {!comment.is_delete_by_admin && !comment.is_delete_by_user && (
             <Text
               fontWeight={600}
-              mb={4}
+              mb={2}
               _hover={{ color: ALL_COLOR.DARK_GRAY }}
               cursor={"pointer"}
               onClick={onOpen}
@@ -61,14 +69,14 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
               댓글 삭제
             </Text>
           )}
-          <Text
+          {!comment.ban_end_time && <Text
             fontWeight={600}
             _hover={{ color: ALL_COLOR.DARK_GRAY }}
             cursor={"pointer"}
             onClick={onBanOpen}
           >
             사용자 밴
-          </Text>
+          </Text>}
         </PopoverBody>
       </PopoverContent>
 

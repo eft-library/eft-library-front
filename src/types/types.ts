@@ -921,9 +921,8 @@ export interface CommentAction {
   onClickDelete: Function;
 }
 
-export interface Comment extends strID {
+export interface Comment extends strID, Ban {
   board_id: string;
-  user_email: string;
   board_type: string;
   parent_id: string | null;
   parent_nick_name: string | null;
