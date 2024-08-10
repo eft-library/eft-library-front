@@ -81,6 +81,21 @@ export default function DetailAction({ post }: DetailAction) {
               borderColor={ALL_COLOR.WHITE}
               bg={ALL_COLOR.BLACK}
               w={"80px"}
+            >
+              <FaRegTrashAlt />
+              &nbsp;
+              <Text fontWeight={600}>수정</Text>
+            </Button>
+          </Box>
+        )}
+        {checkDelete() && (
+          <Box as="span" display="flex" alignItems="center">
+            <Button
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+              bg={ALL_COLOR.BLACK}
+              w={"80px"}
               onClick={onDeleteOpen}
             >
               <FaRegTrashAlt />

@@ -91,6 +91,24 @@ export default function DetailSubComment({
                 _hover={{ color: ALL_COLOR.DARK_GRAY }}
                 display={"flex"}
                 alignItems={"center"}
+              >
+                수정
+              </Text>
+            </Box>
+          )}
+          {checkDelete() && (
+            <Box
+              display="flex"
+              alignItems="center"
+              bg={"none"}
+              w={"40px"}
+              cursor={"pointer"}
+            >
+              <Text
+                fontWeight={600}
+                _hover={{ color: ALL_COLOR.DARK_GRAY }}
+                display={"flex"}
+                alignItems={"center"}
                 onClick={onOpen}
               >
                 삭제

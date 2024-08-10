@@ -17,6 +17,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import CommentDelete from "./commentDelete";
 import type { CommentAdmin } from "@/types/types";
 import CommentUserBan from "./commentUserBan";
+import Link from "next/link";
 
 export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,14 +51,16 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
         <PopoverCloseButton />
         <PopoverHeader textAlign={"center"}>관리</PopoverHeader>
         <PopoverBody>
-          <Text
-            fontWeight={600}
-            _hover={{ color: ALL_COLOR.DARK_GRAY }}
-            cursor={"pointer"}
-            mb={2}
-          >
-            사용자 정보
-          </Text>
+          <Link href={"/"}>
+            <Text
+              fontWeight={600}
+              _hover={{ color: ALL_COLOR.DARK_GRAY }}
+              cursor={"pointer"}
+              mb={2}
+            >
+              사용자 정보
+            </Text>
+          </Link>
           {!comment.is_delete_by_admin && !comment.is_delete_by_user && (
             <Text
               fontWeight={600}
@@ -69,14 +72,16 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
               댓글 삭제
             </Text>
           )}
-          {!comment.ban_end_time && <Text
-            fontWeight={600}
-            _hover={{ color: ALL_COLOR.DARK_GRAY }}
-            cursor={"pointer"}
-            onClick={onBanOpen}
-          >
-            사용자 밴
-          </Text>}
+          {!comment.ban_end_time && (
+            <Text
+              fontWeight={600}
+              _hover={{ color: ALL_COLOR.DARK_GRAY }}
+              cursor={"pointer"}
+              onClick={onBanOpen}
+            >
+              사용자 밴
+            </Text>
+          )}
         </PopoverBody>
       </PopoverContent>
 
