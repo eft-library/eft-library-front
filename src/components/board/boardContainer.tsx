@@ -13,9 +13,11 @@ export default function BoardContainer({ children }: PageParent) {
     >
       <Box bg={ALL_COLOR.BACKGROUND} color={ALL_COLOR.WHITE} fontWeight="600">
         <Box textAlign="center" my={5}>
-          <Heading size="2xl">타르코프 커뮤니티</Heading>
+          <Heading as="h1" size="xl">
+            타르코프 커뮤니티
+          </Heading>
         </Box>
-        <Box width="1300px" mx="auto">
+        <Box width="60%" mx="auto">
           {children}
         </Box>
       </Box>

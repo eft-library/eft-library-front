@@ -34,6 +34,7 @@ export const ALL_COLOR = {
   HILIGHT_GRAY: "#616161",
   FOOTER_YELLO: "#FFC368",
   BOARD_HEADER_ORANGE: "#FFB245",
+  PROFILE_BAN: "#891E1E",
 
   // Shadow
   WHITE_SHADOW: "0px 2px 4px rgba(0, 0, 0, 0.1)",

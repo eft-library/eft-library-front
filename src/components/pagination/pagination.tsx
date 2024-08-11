@@ -77,42 +77,48 @@ export default function Pagination({
       mt={10}
     >
       <ButtonGroup mb={4}>
-        <Button
-          onClick={handleFirstPage}
-          outline={"1px solid"}
-          outlineColor={ALL_COLOR.WHITE}
-          isDisabled={currentPage === 1}
-          bg={ALL_COLOR.BLACK}
-          color={ALL_COLOR.WHITE}
-          _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-        >
-          {"<<"}
-        </Button>
-        {visiblePages.map((page) => (
-          <Button
-            key={page}
-            outline={"1px solid"}
-            outlineColor={ALL_COLOR.WHITE}
-            onClick={() => handlePageChange(page)}
-            isDisabled={page > total}
-            bg={page === currentPage ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BLACK}
-            color={ALL_COLOR.WHITE}
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-          >
-            {page}
-          </Button>
-        ))}
-        <Button
-          onClick={handleLastPage}
-          outline={"1px solid"}
-          outlineColor={ALL_COLOR.WHITE}
-          isDisabled={currentPage === total}
-          bg={ALL_COLOR.BLACK}
-          color={ALL_COLOR.WHITE}
-          _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-        >
-          {">>"}
-        </Button>
+        {visiblePages.length > 0 && (
+          <>
+            <Button
+              onClick={handleFirstPage}
+              outline={"1px solid"}
+              outlineColor={ALL_COLOR.WHITE}
+              isDisabled={currentPage === 1}
+              bg={ALL_COLOR.BLACK}
+              color={ALL_COLOR.WHITE}
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+            >
+              {"<<"}
+            </Button>
+            {visiblePages.map((page) => (
+              <Button
+                key={page}
+                outline={"1px solid"}
+                outlineColor={ALL_COLOR.WHITE}
+                onClick={() => handlePageChange(page)}
+                isDisabled={page > total}
+                bg={
+                  page === currentPage ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BLACK
+                }
+                color={ALL_COLOR.WHITE}
+                _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button
+              onClick={handleLastPage}
+              outline={"1px solid"}
+              outlineColor={ALL_COLOR.WHITE}
+              isDisabled={currentPage === total}
+              bg={ALL_COLOR.BLACK}
+              color={ALL_COLOR.WHITE}
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+            >
+              {">>"}
+            </Button>
+          </>
+        )}
       </ButtonGroup>
     </Box>
   );
