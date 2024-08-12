@@ -835,6 +835,7 @@ export interface Profile {
   icon_list?: string[];
   is_delete?: boolean;
   user_posts?: PostData[];
+  user_comments?: Comment[];
   user_post_statistics?: UserPostStatistics;
 }
 
@@ -1076,6 +1077,7 @@ export interface UserProfile {
   ban: Ban;
   user_posts: PostData[];
   user_post_statistics: UserPostStatistics;
+  user_comments: Comment[];
 }
 
 export interface CommentQuill {

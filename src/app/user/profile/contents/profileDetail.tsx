@@ -127,7 +127,10 @@ export default function ProfileDetail() {
         </Box>
       </Box>
       {user.ban.ban_end_time && <ProfileBan ban={user.ban} />}
-      <ProfileBottom user_posts={user.user_posts} />
+      <ProfileBottom
+        user_posts={user.user_posts}
+        user_comments={user.user_comments}
+      />
       <ProfileExit userExit={userExit} />
     </Box>
   );

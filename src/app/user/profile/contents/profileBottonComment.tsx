@@ -4,10 +4,10 @@ import { ArrowRightIcon } from "@chakra-ui/icons";
 import type { ProfileBotton } from "@/types/types";
 import Link from "next/link";
 import { timeAgo } from "@/lib/formatISODate";
-import { MdOutlineThumbUp } from "react-icons/md";
-import { FaEye } from "react-icons/fa6";
+import { MdOutlineThumbDown, MdOutlineThumbUp } from "react-icons/md";
+import { getFirstParagraph } from "@/lib/quillFunc";
 
-export default function ProfileBottomComment({ user_posts }: ProfileBotton) {
+export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
   return (
     <Box w="45%" display="flex" alignItems="center" flexDirection="column">
       <Box
@@ -29,9 +29,11 @@ export default function ProfileBottomComment({ user_posts }: ProfileBotton) {
         p={4}
         h="40vh"
       >
-        {user_posts.map((post) => (
-          <Box w={"100%"} key={post.id}>
-            <Link href={`/board/${post.type}/detail/${post.id}`}>
+        {user_comments.map((comment) => (
+          <Box w={"100%"} key={comment.id}>
+            <Link
+              href={`/board/${comment.board_type}/detail/${comment.board_id}`}
+            >
               <Flex
                 width="100%"
                 borderBottom="1px solid"
@@ -47,33 +49,34 @@ export default function ProfileBottomComment({ user_posts }: ProfileBotton) {
                   justifyContent={"space-between"}
                   w={"100%"}
                 >
-                  <Heading size="md" mb={2}>
-                    {post.title}
-                  </Heading>
+                  <Heading
+                    size="md"
+                    mb={2}
+                    dangerouslySetInnerHTML={{
+                      __html: getFirstParagraph(comment.contents),
+                    }}
+                    isTruncated
+                  />
                   <Text
                     fontSize="sm"
                     display="flex"
                     alignItems="center"
                     fontWeight={600}
                   >
-                    <Box as="span" mr={2}>
-                      {post.type_kr}
-                    </Box>
-                    |
                     <Box as="span" mx={2}>
-                      {timeAgo(post.create_time)}
+                      {timeAgo(comment.create_time)}
                     </Box>
                     |
                     <Box as="span" display="flex" alignItems="center" mx={2}>
                       <MdOutlineThumbUp />
                       &nbsp;
-                      {post.like_count}
+                      {comment.like_count}
                     </Box>
                     |
                     <Box as="span" display="flex" alignItems="center" mx={2}>
-                      <FaEye />
+                      <MdOutlineThumbDown />
                       &nbsp;
-                      {post.view_count}
+                      {comment.dislike_count}
                     </Box>
                   </Text>
                 </Box>

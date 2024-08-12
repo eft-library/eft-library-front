@@ -3,7 +3,10 @@ import type { ProfileBotton } from "@/types/types";
 import ProfileBottomPost from "./profileBottonPost";
 import ProfileBottomComment from "./profileBottonComment";
 
-export default function ProfileBottom({ user_posts }: ProfileBotton) {
+export default function ProfileBottom({
+  user_posts,
+  user_comments,
+}: ProfileBotton) {
   return (
     <Box
       w="100%"
@@ -13,7 +16,7 @@ export default function ProfileBottom({ user_posts }: ProfileBotton) {
       justifyContent="space-between"
     >
       <ProfileBottomPost user_posts={user_posts} />
-      <ProfileBottomComment user_posts={user_posts} />
+      <ProfileBottomComment user_comments={user_comments} />
     </Box>
   );
 }
