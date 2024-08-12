@@ -72,26 +72,22 @@ export default function DetailSubComment({
             </Text>
             {isRewrite ? (
               <VStack align="start" spacing={2}>
-                <CommentHeader
-                  icon={comment.icon}
-                  nickName={comment.nick_name}
-                  createTime={comment.create_time}
-                />
                 <CommentRewrite
                   comment={comment}
                   getComment={getComment}
                   currentComment={currentComment}
                   setIsRewrite={setIsRewrite}
-                  editorWidth="100%"
+                  editorWidth="95%"
                 />
               </VStack>
             ) : (
-              <VStack align="start" spacing={2} maxH={"60vh"} overflow={"auto"}>
-                <CommentHeader
-                  icon={comment.icon}
-                  nickName={comment.nick_name}
-                  createTime={comment.create_time}
-                />
+              <VStack
+                align="start"
+                spacing={2}
+                maxH={"60vh"}
+                overflow={"auto"}
+                maxW={"98%"}
+              >
                 <ImgWithZoom content={comment.contents} />
               </VStack>
             )}

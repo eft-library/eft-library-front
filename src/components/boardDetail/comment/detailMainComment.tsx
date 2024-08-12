@@ -54,31 +54,38 @@ export default function DetailMainComment({
       position="relative"
       mt={10}
     >
-      {isRewrite ? (
-        <VStack align="start" spacing={2}>
+      <VStack align="start" spacing={2}>
+        <HStack>
           <CommentHeader
             icon={comment.icon}
             nickName={comment.nick_name}
             createTime={comment.create_time}
           />
-          <CommentRewrite
-            comment={comment}
-            getComment={getComment}
-            currentComment={currentComment}
-            setIsRewrite={setIsRewrite}
-            editorWidth="100%"
-          />
-        </VStack>
-      ) : (
-        <VStack align="start" spacing={2} maxH={"60vh"} overflow={"auto"}>
-          <CommentHeader
-            icon={comment.icon}
-            nickName={comment.nick_name}
-            createTime={comment.create_time}
-          />
-          <ImgWithZoom content={comment.contents} />
-        </VStack>
-      )}
+        </HStack>
+        <Box w={"100%"}>
+          {isRewrite ? (
+            <VStack align="start" spacing={2}>
+              <CommentRewrite
+                comment={comment}
+                getComment={getComment}
+                currentComment={currentComment}
+                setIsRewrite={setIsRewrite}
+                editorWidth="95%"
+              />
+            </VStack>
+          ) : (
+            <VStack
+              align="start"
+              spacing={2}
+              maxH={"60vh"}
+              overflow={"auto"}
+              maxW={"98%"}
+            >
+              <ImgWithZoom content={comment.contents} />
+            </VStack>
+          )}
+        </Box>
+      </VStack>
       <HStack position="absolute" top={4} right={2} spacing={1}>
         <CommentAction
           comment={comment}
