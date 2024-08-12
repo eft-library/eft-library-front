@@ -49,7 +49,7 @@ export default function SubContents({
             borderColor={ALL_COLOR.WHITE}
           >
             {typeList.map((boardType) => {
-              if (boardType.value === "notice" && !userInfo.user.is_admin) {
+              if (!userInfo.user.is_admin) {
                 return null;
               }
               return (

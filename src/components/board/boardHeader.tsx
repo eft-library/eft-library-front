@@ -94,35 +94,33 @@ export default function BoardHeader({ siteParam }: BoardHeader) {
           ))}
         </Flex>
       </Flex>
-      {siteParam !== "notice" && (
-        <Flex justify="space-between" mt={2}>
-          <Flex>
-            <Link href={checkRecent()}>
-              <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
-                <MdStickyNote2 />
-                &nbsp;
-                <Text fontWeight={600}>{returnTypeKr()} 최신글</Text>
-              </Flex>
-            </Link>
-            <Link href={checkIssue()}>
-              <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
-                <PiStarFill />
-                &nbsp;
-                <Text fontWeight={600}>{returnTypeKr()} 인기글</Text>
-              </Flex>
-            </Link>
-          </Flex>
-          {user && user.ban.ban_end_time === null && session && (
-            <Link href={"/board/write"}>
-              <Flex mx={2} align="center">
-                <FaPencil />
-                &nbsp;
-                <Text fontWeight={600}>글쓰기</Text>
-              </Flex>
-            </Link>
-          )}
+      <Flex justify="space-between" mt={2}>
+        <Flex>
+          <Link href={checkRecent()}>
+            <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
+              <MdStickyNote2 />
+              &nbsp;
+              <Text fontWeight={600}>{returnTypeKr()} 최신글</Text>
+            </Flex>
+          </Link>
+          <Link href={checkIssue()}>
+            <Flex mx={2} align="center" _hover={{ color: ALL_COLOR.BEIGE }}>
+              <PiStarFill />
+              &nbsp;
+              <Text fontWeight={600}>{returnTypeKr()} 인기글</Text>
+            </Flex>
+          </Link>
         </Flex>
-      )}
+        {user && user.ban.ban_end_time === null && session && (
+          <Link href={"/board/write"}>
+            <Flex mx={2} align="center">
+              <FaPencil />
+              &nbsp;
+              <Text fontWeight={600}>글쓰기</Text>
+            </Flex>
+          </Link>
+        )}
+      </Flex>
     </Flex>
   );
 }

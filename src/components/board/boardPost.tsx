@@ -60,16 +60,12 @@ export default function BoardPost({ post }: BoardPost) {
                 {post.nick_name || "탈퇴한 사용자"}
               </Box>
               |
-              {post.type !== "notice" && (
-                <>
-                  <Box as="span" display="flex" alignItems="center" mx={2}>
-                    <MdOutlineThumbUp />
-                    &nbsp;
-                    {post.like_count}
-                  </Box>
-                  |
-                </>
-              )}
+              <Box as="span" display="flex" alignItems="center" mx={2}>
+                <MdOutlineThumbUp />
+                &nbsp;
+                {post.like_count}
+              </Box>
+              |
               <Box as="span" display="flex" alignItems="center" mx={2}>
                 <FaEye />
                 &nbsp;

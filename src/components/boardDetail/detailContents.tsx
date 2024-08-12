@@ -71,44 +71,42 @@ export default function DetailContents({
   return (
     <Box position="relative" color="white">
       <ImgWithZoom content={post.contents} />
-      {post.type !== "notice" && (
-        <Flex justify="center" mt={8}>
-          <Button
-            w={"80px"}
+      <Flex justify="center" mt={8}>
+        <Button
+          w={"80px"}
+          border={"1px solid"}
+          borderColor={ALL_COLOR.WHITE}
+          bg={checkUserLike("like")}
+          _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+          onClick={() => onClickLike(post.id, "like")}
+        >
+          <MdOutlineThumbUp />
+        </Button>
+        <Box w={"80px"} mx={2}>
+          <Text
+            h={"40px"}
+            fontWeight={600}
             border={"1px solid"}
             borderColor={ALL_COLOR.WHITE}
-            bg={checkUserLike("like")}
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-            onClick={() => onClickLike(post.id, "like")}
+            borderRadius={"lg"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
           >
-            <MdOutlineThumbUp />
-          </Button>
-          <Box w={"80px"} mx={2}>
-            <Text
-              h={"40px"}
-              fontWeight={600}
-              border={"1px solid"}
-              borderColor={ALL_COLOR.WHITE}
-              borderRadius={"lg"}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              {post.like_count}
-            </Text>
-          </Box>
-          <Button
-            w={"80px"}
-            border={"1px solid"}
-            borderColor={ALL_COLOR.WHITE}
-            bg={checkUserLike("dislike")}
-            _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-            onClick={() => onClickLike(post.id, "dislike")}
-          >
-            <MdOutlineThumbDown />
-          </Button>
-        </Flex>
-      )}
+            {post.like_count}
+          </Text>
+        </Box>
+        <Button
+          w={"80px"}
+          border={"1px solid"}
+          borderColor={ALL_COLOR.WHITE}
+          bg={checkUserLike("dislike")}
+          _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+          onClick={() => onClickLike(post.id, "dislike")}
+        >
+          <MdOutlineThumbDown />
+        </Button>
+      </Flex>
       <DetailAction post={post} />
     </Box>
   );

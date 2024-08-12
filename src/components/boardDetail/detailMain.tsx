@@ -188,16 +188,15 @@ export default function DetailMain({ siteParam }: BoardMain) {
           onClickLike={onClickLike}
           boardType={siteParam}
         />
-        {siteParam !== "notice" &&
-          comments.data.map((comment) => (
-            <DetailComment
-              key={comment.id}
-              onClickLikeOrDis={onClickLikeOrDis}
-              comment={comment}
-              onClickDelete={onClickDelete}
-              submitComment={submitComment}
-            />
-          ))}
+        {comments.data.map((comment) => (
+          <DetailComment
+            key={comment.id}
+            onClickLikeOrDis={onClickLikeOrDis}
+            comment={comment}
+            onClickDelete={onClickDelete}
+            submitComment={submitComment}
+          />
+        ))}
         {checkUser() &&
           (user.ban.ban_end_time ? (
             <Box w={"100%"} mt={10}>

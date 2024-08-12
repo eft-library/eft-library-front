@@ -26,7 +26,6 @@ export default function useBoardSearch(siteParam: string) {
       "/board/question",
       "/board/pvp",
       "/board/pve",
-      "/board/notice",
     ];
 
     if (basePathToApiMap[path]) {
