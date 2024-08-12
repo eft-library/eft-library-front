@@ -566,45 +566,46 @@ export interface Event {
   update_time: string;
 }
 
-export interface PatchNotesInfo {
-  data: PatchNotes[];
+export interface InformationInfoDetail {
+  information: InformationInfo;
+  information_group: InformationInfo[];
+}
+
+export interface InfortmaionContent {
+  information: InformationInfo;
+}
+
+export interface Information {
+  information: InformationInfo;
+  information_group: InformationInfo[];
+  link: string;
+  detail_link: string;
+}
+
+export interface InformationBottom {
+  detail_link: string;
+  information_group: InformationInfo[];
+}
+
+export interface InformationMain {
+  information: InformationData;
+  pageId: number;
+  link: string;
+  detail_link: string;
+}
+
+export interface InformationData {
+  data: InformationInfo[];
   total_count: number;
   max_pages: number;
   current_page: number;
 }
 
-export interface NoticeInfo {
-  data: Notice[];
-  total_count: number;
-  max_pages: number;
-  current_page: number;
-}
-
-export interface NoticeDetail {
-  notice: Notice;
-  notice_group: Notice[];
-}
-
-export interface PatchNotesDetail {
-  patch_notes: PatchNotes;
-  patch_notes_group: PatchNotes[];
-}
-
-export interface Notice {
+export interface InformationInfo extends strID {
   name_en: string[];
   name_kr: string[];
-  notice_en: string[];
-  notice_kr: string[];
-  id: string;
-  update_time: string;
-}
-
-export interface PatchNotes {
-  name_en: string[];
-  name_kr: string[];
-  patch_notes_en: string[];
-  patch_notes_kr: string[];
-  id: string;
+  notes_en: string[];
+  notes_kr: string[];
   update_time: string;
 }
 

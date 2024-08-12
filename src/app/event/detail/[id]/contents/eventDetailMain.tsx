@@ -7,24 +7,24 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Information from "@/components/information/information";
 
-export default function NoticeDetailMain() {
+export default function EventDetailMain() {
   const param = useParams<{ id: string }>();
-  const [noticeDetail, setNoticeDetail] = useState<InformationInfoDetail>();
+  const [eventDetail, setEventDetail] = useState<InformationInfoDetail>();
   useEffect(() => {
     fetchDataWithNone(
-      `${API_ENDPOINTS.GET_NOTICE_BY_ID}/${param.id}`,
-      setNoticeDetail
+      `${API_ENDPOINTS.GET_EVENT_BY_ID}/${param.id}`,
+      setEventDetail
     );
   }, [param]);
 
-  if (!noticeDetail) return null;
+  if (!eventDetail) return null;
 
   return (
     <Information
-      information={noticeDetail.information}
-      information_group={noticeDetail.information_group}
-      link="/notice?id=1"
-      detail_link="/notice/detail"
+      information={eventDetail.information}
+      information_group={eventDetail.information_group}
+      link="/event?id=1"
+      detail_link="/event/detail"
     />
   );
 }

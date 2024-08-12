@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from "next";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { MetaProps } from "@/types/types";
-import PatchNotesDetailMain from "./contents/patchNotesDetailMain";
+import EventDetailMain from "./contents/eventDetailMain";
 
 export async function generateMetadata(
   { params, searchParams }: MetaProps,
@@ -11,24 +11,23 @@ export async function generateMetadata(
   const id = params.id;
 
   // fetch data
-  const product = await fetch(
-    `${API_ENDPOINTS.GET_PATCH_NOTES_BY_ID}/${id}`
-  ).then((res) => res.json());
+  const product = await fetch(`${API_ENDPOINTS.GET_EVENT_BY_ID}/${id}`).then(
+    (res) => res.json()
+  );
 
   const res = product.data;
-
   return {
     title: `${res.information.name_kr}`,
     description: `${res.information_group.name_kr}`,
     openGraph: {
-      title: "EFT Library 패치노트",
-      description: "EFT Library 패치노트",
-      url: `https://eftlibrary.com/patch-notes/detail/${id}`,
+      title: "EFT Library 이벤트",
+      description: "EFT Library 이벤트",
+      url: `https://eftlibrary.com/event/detail/${id}`,
       siteName: "Escape From Tarkov Library",
     },
   };
 }
 
-export default function PatchNotesDetail() {
-  return <PatchNotesDetailMain />;
+export default function EventDetail() {
+  return <EventDetailMain />;
 }
