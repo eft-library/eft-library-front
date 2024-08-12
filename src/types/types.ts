@@ -550,24 +550,7 @@ export interface FaceCoverList {
   no_class_face_cover: Headwear[];
 }
 
-export interface EventInfo {
-  data: Event[];
-  total_count: number;
-  max_pages: number;
-  current_page: number;
-}
-
-export interface Event {
-  name_en: string[];
-  name_kr: string[];
-  event_text_en: string[];
-  event_text_kr: string[];
-  id: string;
-  update_time: string;
-}
-
-export interface InformationInfoDetail {
-  information: InformationInfo;
+export interface InformationInfoDetail extends InfortmaionContent {
   information_group: InformationInfo[];
 }
 
@@ -575,9 +558,7 @@ export interface InfortmaionContent {
   information: InformationInfo;
 }
 
-export interface Information {
-  information: InformationInfo;
-  information_group: InformationInfo[];
+export interface Information extends InformationInfoDetail {
   link: string;
   detail_link: string;
 }
