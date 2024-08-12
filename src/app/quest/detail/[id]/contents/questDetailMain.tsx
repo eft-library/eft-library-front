@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -9,7 +8,6 @@ import QuestInfo from "./questInfo";
 import QuestContents from "./questContents";
 import "@/assets/quest.css";
 import type { Quest } from "@/types/types";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import PageParent from "@/components/pageParent/pageParent";
 
 export default function QuestDetailMain() {

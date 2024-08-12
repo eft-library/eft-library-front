@@ -36,6 +36,8 @@ const API_ENDPOINTS = {
   GET_SUB_FILTER: baseUrl + "/api/item_filter/sub_info",
   GET_EVENT: baseUrl + "/api/event/board",
   GET_PATCH_NOTES: baseUrl + "/api/patch_notes/board",
+  GET_NOTICE: baseUrl + "/api/notice/board",
+  GET_NOTICE_BY_ID: baseUrl + "/api/notice/detail",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
   GET_BOARD_TYPE: baseUrl + "/api/board/all/categories",

@@ -25,7 +25,7 @@ export async function generateMetadata(
       title: "EFT Library 퀘스트",
       description: "EFT Library 퀘스트",
       images: [formatImage(res.image)],
-      url: `https://eftlibrary.com/detail/${id}`,
+      url: `https://eftlibrary.com/quest/detail/${id}`,
       siteName: "Escape From Tarkov Library",
     },
   };

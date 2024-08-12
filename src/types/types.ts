@@ -573,6 +573,27 @@ export interface PatchNotesInfo {
   current_page: number;
 }
 
+export interface NoticeInfo {
+  data: Notice[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
+}
+
+export interface NoticeDetail {
+  notice: Notice;
+  notice_group: Notice[];
+}
+
+export interface Notice {
+  name_en: string[];
+  name_kr: string[];
+  notice_en: string[];
+  notice_kr: string[];
+  id: string;
+  update_time: string;
+}
+
 export interface PatchNotes {
   name_en: string[];
   name_kr: string[];
