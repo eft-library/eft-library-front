@@ -7,6 +7,8 @@ export default function DetailComment({
   submitComment,
   onClickDelete,
   onClickLikeOrDis,
+  currentComment,
+  getComment,
 }: DetailComment) {
   return (
     <>
@@ -15,12 +17,16 @@ export default function DetailComment({
           comment={comment}
           onClickLikeOrDis={onClickLikeOrDis}
           submitComment={submitComment}
+          getComment={getComment}
+          currentComment={currentComment}
           onClickDelete={onClickDelete}
         />
       ) : (
         <DetailSubComment
           comment={comment}
           onClickLikeOrDis={onClickLikeOrDis}
+          getComment={getComment}
+          currentComment={currentComment}
           submitComment={submitComment}
           onClickDelete={onClickDelete}
         />

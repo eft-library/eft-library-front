@@ -191,6 +191,8 @@ export default function DetailMain({ siteParam }: BoardMain) {
         {comments.data.map((comment) => (
           <DetailComment
             key={comment.id}
+            getComment={getCommentsByBoardID}
+            currentComment={comments.current_page}
             onClickLikeOrDis={onClickLikeOrDis}
             comment={comment}
             onClickDelete={onClickDelete}

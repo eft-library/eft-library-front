@@ -11,26 +11,25 @@ import { QuillToolbar } from "@/components/quill/quickToolbar";
 import { ImageHandler } from "@/components/quill/imageHandler";
 import "react-quill/dist/quill.snow.css";
 import LoadingSpinner from "@/components/quill/loadingSpinner";
-import { Box, Button, Input, useDisclosure } from "@chakra-ui/react";
-import type { DetailRewrite } from "@/types/types";
-import ImgWithZoom from "./imgWithZoom";
-import useBoardDetail from "@/hooks/userBoardDetail";
+import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import type { CommentRewrite } from "@/types/types";
+import ImgWithZoom from "../imgWithZoom";
 import { fetchUserData } from "@/lib/api";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { useSession } from "next-auth/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
-export default function DetailRewrite({
-  post,
-  setIsWrite,
-  boardType,
-}: DetailRewrite) {
+export default function CommentRewrite({
+  comment,
+  setIsRewrite,
+  editorWidth,
+  getComment,
+  currentComment,
+}: CommentRewrite) {
   const { data: session } = useSession();
-  const { getBoardPage } = useBoardDetail(boardType);
   const [preview, setPreview] = useState(false);
   const quillRef = useRef<any>();
-  const [editorContent, setEditorContent] = useState<string>(post.contents);
-  const [title, setTitle] = useState(post.title);
+  const [editorContent, setEditorContent] = useState<string>(comment.contents);
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [insertPosition, setInsertPosition] = useState<number | null>(null); // 커서 위치 저장
   const [loading, setLoading] = useState(false);
@@ -66,24 +65,22 @@ export default function DetailRewrite({
     []
   );
 
-  const updatePost = async () => {
+  const updateComment = async () => {
     try {
       const response = await fetchUserData(
-        USER_API_ENDPOINTS.UPDATE_POST,
+        USER_API_ENDPOINTS.UPDATE_COMMENT,
         "POST",
         {
-          id: post.id,
-          title: title,
+          id: comment.id,
           contents: editorContent,
-          type: boardType,
         },
         session
       );
 
       if (response.status === 200) {
-        await getBoardPage();
+        await getComment(currentComment);
         alert("수정되었습니다.");
-        setIsWrite(false);
+        setIsRewrite(false);
         setPreview(false);
       } else {
         alert("잠시후 다시 시도해주세요");
@@ -99,17 +96,7 @@ export default function DetailRewrite({
         <ImgWithZoom content={editorContent} />
       ) : (
         <>
-          <Box flex={"1"} mt={10}>
-            <Input
-              placeholder="게시글 제목"
-              bg={ALL_COLOR.BLACK}
-              borderColor={ALL_COLOR.WHITE}
-              fontWeight={600}
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-            />
-          </Box>
-          <Box w={"100%"} display={"flex"} flexDirection={"column"} mt={4}>
+          <Box w={editorWidth} display={"flex"} flexDirection={"column"} mt={4}>
             <QuillWrapper
               forwardedRef={quillRef}
               value={editorContent}
@@ -133,8 +120,10 @@ export default function DetailRewrite({
       <Box
         display={"flex"}
         mt={4}
+        mb={10}
         justifyContent={"flex-end"}
         alignItems={"center"}
+        w={editorWidth}
       >
         {preview ? (
           <Button
@@ -165,7 +154,7 @@ export default function DetailRewrite({
           bg={ALL_COLOR.BLACK}
           _hover={{ bg: ALL_COLOR.DARK_GRAY }}
           mr={2}
-          onClick={updatePost}
+          onClick={updateComment}
         >
           저장
         </Button>
@@ -174,7 +163,7 @@ export default function DetailRewrite({
           borderColor={ALL_COLOR.WHITE}
           bg={ALL_COLOR.BLACK}
           _hover={{ bg: ALL_COLOR.DARK_GRAY }}
-          onClick={() => setIsWrite(false)}
+          onClick={() => setIsRewrite(false)}
         >
           취소
         </Button>

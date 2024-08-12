@@ -11,12 +11,15 @@ import CommentDelete from "./commentDelete";
 import CommentAction from "./commentAction";
 import CommentHeader from "./commentHeader";
 import CommentReport from "./commentReport";
+import CommentRewrite from "./commentRewrite";
 
 export default function DetailMainComment({
   comment,
   submitComment,
   onClickDelete,
   onClickLikeOrDis,
+  getComment,
+  currentComment,
 }: DetailComment) {
   const {
     isOpen: isReportOpen,
@@ -27,6 +30,7 @@ export default function DetailMainComment({
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
   const [writeComment, setWriteComment] = useState(false);
+  const [isRewrite, setIsRewrite] = useState(false);
 
   const checkDelete = () => {
     if (!session || !user) return false;
@@ -56,7 +60,17 @@ export default function DetailMainComment({
           nickName={comment.nick_name}
           createTime={comment.create_time}
         />
-        <ImgWithZoom content={comment.contents} />
+        {isRewrite ? (
+          <CommentRewrite
+            comment={comment}
+            getComment={getComment}
+            currentComment={currentComment}
+            setIsRewrite={setIsRewrite}
+            editorWidth="100%"
+          />
+        ) : (
+          <ImgWithZoom content={comment.contents} />
+        )}
       </VStack>
       <HStack position="absolute" top={4} right={2} spacing={1}>
         <CommentAction
@@ -79,6 +93,7 @@ export default function DetailMainComment({
               fontWeight={600}
               _hover={{ color: ALL_COLOR.DARK_GRAY }}
               display={"flex"}
+              onClick={() => setIsRewrite(true)}
               alignItems={"center"}
             >
               수정

@@ -11,6 +11,7 @@ const USER_API_ENDPOINTS = {
   UPDATE_USER_QUEST: baseUrl + "/api/user/quest/update",
   ADD_POST: baseUrl + "/api/board/add",
   UPDATE_POST: baseUrl + "/api/board/update",
+  UPDATE_COMMENT: baseUrl + "/api/comment/update",
   ADD_COMMENT: baseUrl + "/api/comment/add",
   DELETE_COMMENT: baseUrl + "/api/comment/delete",
   LIKE_OR_DIS_COMMENT: baseUrl + "/api/comment/like_or_dis",

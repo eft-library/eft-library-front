@@ -914,6 +914,8 @@ export interface DetailComment {
   onClickDelete: Function;
   submitComment: Function;
   onClickLikeOrDis: Function;
+  currentComment: number;
+  getComment: Function;
 }
 
 export interface CommentHeader {
@@ -980,6 +982,14 @@ export interface DetailRewrite {
   post: PostData;
   setIsWrite: Function;
   boardType: string;
+}
+
+export interface CommentRewrite {
+  comment: Comment;
+  setIsRewrite: Function;
+  editorWidth: string;
+  getComment: Function;
+  currentComment: number;
 }
 
 export interface CommentReport {

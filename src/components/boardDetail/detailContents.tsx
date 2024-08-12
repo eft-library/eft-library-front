@@ -69,7 +69,7 @@ export default function DetailContents({
     const colors = likeColors[type];
     return colors ? colors[isLike] || colors.default : "";
   };
-  // 여기서 수정 누르면 수정하게 하자
+
   return (
     <Box position="relative" color="white">
       {isWrite ? (
