@@ -585,6 +585,11 @@ export interface NoticeDetail {
   notice_group: Notice[];
 }
 
+export interface PatchNotesDetail {
+  patch_notes: PatchNotes;
+  patch_notes_group: PatchNotes[];
+}
+
 export interface Notice {
   name_en: string[];
   name_kr: string[];

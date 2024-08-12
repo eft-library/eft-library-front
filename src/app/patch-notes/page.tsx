@@ -11,7 +11,7 @@ export const metadata = {
     title: "EFT Library 패치노트",
     description: "EFT Library 패치노트",
     images: "/og.png",
-    url: "https://eftlibrary.com/patch-notes",
+    url: "https://eftlibrary.com/patch-notes?id=1",
   },
 };
 

@@ -11,7 +11,7 @@ export const metadata = {
     title: "EFT Library 공지",
     description: "EFT Library 공지",
     images: "/og.png",
-    url: "https://eftlibrary.com/notice",
+    url: "https://eftlibrary.com/notice?id=1",
   },
 };
 

@@ -1,4 +1,4 @@
-import { NoticeDetail } from "@/types/types";
+import { PatchNotesDetail } from "@/types/types";
 import PageParent from "@/components/pageParent/pageParent";
 import SubHeader from "@/components/subHeader/subHeader";
 import { Box, Button, Text } from "@chakra-ui/react";
@@ -6,10 +6,13 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { formatISODate } from "@/lib/formatISODate";
 import Link from "next/link";
 
-export default function NoticeContents({ notice, notice_group }: NoticeDetail) {
+export default function PatchNotesContents({
+  patch_notes,
+  patch_notes_group,
+}: PatchNotesDetail) {
   return (
     <PageParent>
-      <SubHeader title="공지" />
+      <SubHeader title="패치노트" />
       <Box mb={10} />
       <Box w={"95%"}>
         <Box
@@ -27,12 +30,12 @@ export default function NoticeContents({ notice, notice_group }: NoticeDetail) {
             justifyContent={"center"}
           >
             <Text fontWeight={800} fontSize={"xl"}>
-              {notice.name_kr}&nbsp;(
-              {formatISODate(notice.update_time)})
+              {patch_notes.name_kr}&nbsp;(
+              {formatISODate(patch_notes.update_time)})
             </Text>
           </Box>
           <Box p={2}>
-            {notice.notice_kr.map((guide, index) => (
+            {patch_notes.patch_notes_kr.map((guide, index) => (
               <Text
                 key={index}
                 mb={2}
@@ -45,7 +48,7 @@ export default function NoticeContents({ notice, notice_group }: NoticeDetail) {
           </Box>
         </Box>
         <Box display={"flex"} justifyContent={"flex-end"} mb={10}>
-          <Link href={"/notice?id=1"}>
+          <Link href={"/patch-notes?id=1"}>
             <Button
               fontWeight={600}
               bg={ALL_COLOR.BLACK}
@@ -58,8 +61,8 @@ export default function NoticeContents({ notice, notice_group }: NoticeDetail) {
           </Link>
         </Box>
 
-        {notice_group.map((notice) => (
-          <Link href={`/notice/detail/${notice.id}`} key={notice.id}>
+        {patch_notes_group.map((notes) => (
+          <Link href={`/patch-notes/detail/${notes.id}`} key={notes.id}>
             <Box
               borderRadius={"lg"}
               display={"flex"}
@@ -77,11 +80,9 @@ export default function NoticeContents({ notice, notice_group }: NoticeDetail) {
                 alignItems={"center"}
               >
                 <Text fontWeight={800} fontSize={"xl"}>
-                  {notice.name_kr}
+                  {notes.name_kr}
                 </Text>
-                <Text fontWeight={600}>
-                  {formatISODate(notice.update_time)}
-                </Text>
+                <Text fontWeight={600}>{formatISODate(notes.update_time)}</Text>
               </Box>
             </Box>
           </Link>

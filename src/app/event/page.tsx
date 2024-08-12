@@ -11,7 +11,7 @@ export const metadata = {
     title: "EFT Library 이벤트",
     description: "EFT Library 이벤트",
     images: "/og.png",
-    url: "https://eftlibrary.com/event",
+    url: "https://eftlibrary.com/event?id=1",
   },
 };
 
