@@ -48,16 +48,11 @@ export default function SubContents({
             bg={ALL_COLOR.BLACK}
             borderColor={ALL_COLOR.WHITE}
           >
-            {typeList.map((boardType) => {
-              if (!userInfo.user.is_admin) {
-                return null;
-              }
-              return (
-                <option key={boardType.id} value={boardType.value}>
-                  {boardType.name_kr}
-                </option>
-              );
-            })}
+            {typeList.map((boardType) => (
+              <option key={boardType.id} value={boardType.value}>
+                {boardType.name_kr}
+              </option>
+            ))}
           </Select>
         </Box>
       </Box>
