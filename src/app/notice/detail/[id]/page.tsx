@@ -20,8 +20,8 @@ export async function generateMetadata(
     title: `${res.information.name_kr}`,
     description: `${res.information_group.name_kr}`,
     openGraph: {
-      title: "EFT Library 공지",
-      description: "EFT Library 공지",
+      title: "EFT Library 공지사항",
+      description: "EFT Library 공지사항",
       url: `https://eftlibrary.com/notice/detail/${id}`,
       siteName: "Escape From Tarkov Library",
     },

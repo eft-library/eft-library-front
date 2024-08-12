@@ -4,12 +4,12 @@ import { Box } from "@chakra-ui/react";
 import NoticeDetail from "./contents/noticeDetail";
 
 export const metadata = {
-  title: "타르코프 커뮤니티 공지",
-  description: "타르코프 커뮤니티 공지",
+  title: "타르코프 커뮤니티 공지사항",
+  description: "타르코프 커뮤니티 공지사항",
   openGraph: {
     siteName: "Escape From Tarkov Library",
-    title: "EFT Library 공지",
-    description: "EFT Library 공지",
+    title: "EFT Library 공지사항",
+    description: "EFT Library 공지사항",
     images: "/og.png",
     url: "https://eftlibrary.com/notice?id=1",
   },
@@ -18,7 +18,7 @@ export const metadata = {
 export default function Notice() {
   return (
     <PageParent>
-      <SubHeader title="공지" />
+      <SubHeader title="공지사항" />
       <Box mb={10} />
       <NoticeDetail />
     </PageParent>

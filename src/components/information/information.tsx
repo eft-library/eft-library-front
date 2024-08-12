@@ -14,7 +14,7 @@ export default function Information({
 }: Information) {
   return (
     <PageParent>
-      <SubHeader title="공지" />
+      <SubHeader title="공지사항" />
       <Box mb={10} />
       <Box w={"95%"}>
         <InformationContent information={information} />
