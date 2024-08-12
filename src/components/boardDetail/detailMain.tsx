@@ -16,6 +16,7 @@ import CommentPagination from "../pagination/commentPagination";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import CommentQuill from "./comment/commentQuill";
+import DetailSkeleton from "./detailSkeleton";
 
 export default function DetailMain({ siteParam }: BoardMain) {
   const { user } = useAppStore((state) => state);
@@ -170,7 +171,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
-  if (!postInfo || !comments) return null;
+  if (!postInfo || !comments) return <DetailSkeleton />;
 
   const checkUser = () => {
     if (!session || !user) return false;

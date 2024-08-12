@@ -9,6 +9,7 @@ import BoardSearch from "@/components/board/boardSearch";
 import BoardContainer from "@/components/board/boardContainer";
 import useBoardSearch from "@/hooks/useBoardSearch";
 import type { BoardMain } from "@/types/types";
+import BoardSkeleton from "./boardSkeleton";
 
 export default function BoardMain({ siteParam }: BoardMain) {
   const param = useSearchParams();
@@ -16,7 +17,7 @@ export default function BoardMain({ siteParam }: BoardMain) {
   const { searchInfo, postInfo, setSearchData, getFilterPage } =
     useBoardSearch(siteParam);
 
-  if (!postInfo) return null;
+  if (!postInfo) return <BoardSkeleton />;
 
   const makeRouteLink = () => {
     if (pathname === "/board") {
