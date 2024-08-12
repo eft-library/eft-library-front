@@ -13,7 +13,7 @@ import "@/assets/input.css";
 import DetailReport from "./detailReport";
 import DetailDelete from "./detailDelete";
 
-export default function DetailAction({ post }: DetailAction) {
+export default function DetailAction({ post, setIsWrite }: DetailAction) {
   const {
     isOpen: isReportOpen,
     onOpen: onReportOpen,
@@ -81,6 +81,7 @@ export default function DetailAction({ post }: DetailAction) {
               borderColor={ALL_COLOR.WHITE}
               bg={ALL_COLOR.BLACK}
               w={"80px"}
+              onClick={() => setIsWrite(true)}
             >
               <FaRegTrashAlt />
               &nbsp;

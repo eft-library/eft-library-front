@@ -11,6 +11,7 @@ import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
 import ImgWithZoom from "./imgWithZoom";
 import DetailAction from "./detailAction";
+import DetailRewrite from "./detailRewrite";
 
 export default function DetailContents({
   post,
@@ -20,6 +21,7 @@ export default function DetailContents({
   // 1: like, 2: dislike, 3: none
   const [isLike, setIsLike] = useState<number>(3);
   const { data: session } = useSession();
+  const [isWrite, setIsWrite] = useState(false);
 
   useEffect(() => {
     const isLikePost = async () => {
@@ -67,10 +69,18 @@ export default function DetailContents({
     const colors = likeColors[type];
     return colors ? colors[isLike] || colors.default : "";
   };
-
+  // 여기서 수정 누르면 수정하게 하자
   return (
     <Box position="relative" color="white">
-      <ImgWithZoom content={post.contents} />
+      {isWrite ? (
+        <DetailRewrite
+          setIsWrite={setIsWrite}
+          post={post}
+          boardType={boardType}
+        />
+      ) : (
+        <ImgWithZoom content={post.contents} />
+      )}
       <Flex justify="center" mt={8}>
         <Button
           w={"80px"}
@@ -107,7 +117,7 @@ export default function DetailContents({
           <MdOutlineThumbDown />
         </Button>
       </Flex>
-      <DetailAction post={post} />
+      <DetailAction post={post} setIsWrite={setIsWrite} />
     </Box>
   );
 }

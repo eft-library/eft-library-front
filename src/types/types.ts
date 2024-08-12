@@ -973,6 +973,13 @@ export interface BoardDetail extends BoardPost {
 
 export interface DetailAction {
   post: PostData;
+  setIsWrite?: Function;
+}
+
+export interface DetailRewrite {
+  post: PostData;
+  setIsWrite: Function;
+  boardType: string;
 }
 
 export interface CommentReport {
