@@ -54,13 +54,13 @@ export default function DetailMainComment({
       position="relative"
       mt={10}
     >
-      <VStack align="start" spacing={2}>
-        <CommentHeader
-          icon={comment.icon}
-          nickName={comment.nick_name}
-          createTime={comment.create_time}
-        />
-        {isRewrite ? (
+      {isRewrite ? (
+        <VStack align="start" spacing={2}>
+          <CommentHeader
+            icon={comment.icon}
+            nickName={comment.nick_name}
+            createTime={comment.create_time}
+          />
           <CommentRewrite
             comment={comment}
             getComment={getComment}
@@ -68,10 +68,17 @@ export default function DetailMainComment({
             setIsRewrite={setIsRewrite}
             editorWidth="100%"
           />
-        ) : (
+        </VStack>
+      ) : (
+        <VStack align="start" spacing={2} maxH={"60vh"} overflow={"auto"}>
+          <CommentHeader
+            icon={comment.icon}
+            nickName={comment.nick_name}
+            createTime={comment.create_time}
+          />
           <ImgWithZoom content={comment.contents} />
-        )}
-      </VStack>
+        </VStack>
+      )}
       <HStack position="absolute" top={4} right={2} spacing={1}>
         <CommentAction
           comment={comment}

@@ -71,15 +71,29 @@ export default function DetailSubComment({
               @{comment.parent_nick_name}
             </Text>
             {isRewrite ? (
-              <CommentRewrite
-                comment={comment}
-                getComment={getComment}
-                currentComment={currentComment}
-                setIsRewrite={setIsRewrite}
-                editorWidth="95%"
-              />
+              <VStack align="start" spacing={2}>
+                <CommentHeader
+                  icon={comment.icon}
+                  nickName={comment.nick_name}
+                  createTime={comment.create_time}
+                />
+                <CommentRewrite
+                  comment={comment}
+                  getComment={getComment}
+                  currentComment={currentComment}
+                  setIsRewrite={setIsRewrite}
+                  editorWidth="100%"
+                />
+              </VStack>
             ) : (
-              <ImgWithZoom content={comment.contents} />
+              <VStack align="start" spacing={2} maxH={"60vh"} overflow={"auto"}>
+                <CommentHeader
+                  icon={comment.icon}
+                  nickName={comment.nick_name}
+                  createTime={comment.create_time}
+                />
+                <ImgWithZoom content={comment.contents} />
+              </VStack>
             )}
           </Box>
         </VStack>
