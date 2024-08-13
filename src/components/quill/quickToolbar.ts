@@ -15,3 +15,10 @@ export const QuillToolbar = ({ onVideoHandler }) => ({
     video: onVideoHandler,
   },
 });
+
+export const CommentToolbar = ({ onVideoHandler }) => ({
+  container: [["link", "video"]],
+  handlers: {
+    video: onVideoHandler,
+  },
+});

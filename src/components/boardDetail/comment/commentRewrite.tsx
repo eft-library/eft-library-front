@@ -4,10 +4,10 @@ import { useState, useMemo, useRef } from "react";
 import QuillWrapper from "@/components/quill/quillWrapper";
 import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
 import "@/assets/commentEditor.css";
-import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
+import { COMMENT_FORMAT } from "@/util/consts/libraryConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { VideoDialog } from "@/components/quill/videoDiaglog";
-import { QuillToolbar } from "@/components/quill/quickToolbar";
+import { CommentToolbar } from "@/components/quill/quickToolbar";
 import { ImageHandler } from "@/components/quill/imageHandler";
 import "react-quill/dist/quill.snow.css";
 import LoadingSpinner from "@/components/quill/loadingSpinner";
@@ -50,7 +50,7 @@ export default function CommentRewrite({
 
   const modules = useMemo(
     () => ({
-      toolbar: QuillToolbar({ onVideoHandler: handleVideoHandler }),
+      toolbar: CommentToolbar({ onVideoHandler: handleVideoHandler }),
       imageActions: {},
       imageFormats: {},
       imageDropAndPaste: ImageHandler({
@@ -102,7 +102,7 @@ export default function CommentRewrite({
               value={editorContent}
               onChange={handleChange}
               modules={modules}
-              formats={QUILL_FORMATS}
+              formats={COMMENT_FORMAT}
               theme="snow"
             />
             <VideoDialog
