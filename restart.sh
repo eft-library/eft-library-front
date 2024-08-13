@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# .next 디렉토리와 빌드를 삭제
+rm -rf .next/
+
+# 애플리케이션 빌드
+npm run build
+
 # 포트 번호를 첫 번째 인수로 받아옴
 port=4000
 
