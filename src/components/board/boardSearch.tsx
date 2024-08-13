@@ -22,8 +22,8 @@ export default function BoardSearch({
         borderColor={ALL_COLOR.WHITE}
       >
         <option value="title">제목</option>
-        <option value="title_content">제목+내용</option>
-        <option value="content">내용</option>
+        <option value="contents_title">제목+내용</option>
+        <option value="contents">내용</option>
         <option value="nickname">닉네임</option>
       </Select>
       <Input
