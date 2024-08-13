@@ -71,7 +71,12 @@ export default function DetailContents({
   };
 
   return (
-    <Box position="relative" color="white">
+    <Box
+      position="relative"
+      color="white"
+      display={"flex"}
+      flexDirection={"column"}
+    >
       {isWrite ? (
         <DetailRewrite
           setIsWrite={setIsWrite}
