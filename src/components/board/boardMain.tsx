@@ -20,15 +20,10 @@ export default function BoardMain({ siteParam }: BoardMain) {
   if (!postInfo) return <BoardSkeleton />;
 
   const makeRouteLink = () => {
-    if (pathname === "/board") {
-      return "/board?id=";
-    } else if (pathname === "/board/issue") {
-      return "/board/issue?id=";
-    } else if (pathname.includes("issue")) {
-      return `/board/${siteParam}/issue?id=`;
-    } else {
-      return `/board/${siteParam}?id=`;
+    if (param.get("word") && param.get("filter")) {
+      return `${pathname}?filter=${searchInfo.filter}&word=${searchInfo.word}&id=`;
     }
+    return `${pathname}/?id=`;
   };
 
   return (

@@ -9,6 +9,12 @@ export default function BoardSearch({
   setSearchData,
   getFilterPage,
 }) {
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      getFilterPage();
+    }
+  };
+
   return (
     <Flex justifyContent="center" alignItems="center" mt={5}>
       <Select
@@ -35,6 +41,7 @@ export default function BoardSearch({
         mr={2}
         border={"1px solid"}
         borderRadius={"lg"}
+        onKeyDown={handleKeyDown}
       />
       <Button
         color={ALL_COLOR.WHITE}
