@@ -39,3 +39,6 @@ export const QUILL_FORMATS = [
   "height",
   "width",
 ];
+
+export const MAX_UUID_COUNT = 100000;
+export const LOCAL_STORAGE_KEY = "board_id_list";

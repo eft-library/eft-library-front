@@ -17,12 +17,16 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import CommentQuill from "./comment/commentQuill";
 import DetailSkeleton from "./detailSkeleton";
+import useViewCount from "@/hooks/useViewCount";
 
 export default function DetailMain({ siteParam }: BoardMain) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
   const { postInfo, getBoardPage } = useBoardDetail(siteParam);
   const [comments, setComments] = useState<CommentInfo>();
+
+  // 조회수
+  useViewCount(postInfo?.id, postInfo?.type);
 
   const getCommentsByBoardID = async (page: number) => {
     const res = await fetch(
