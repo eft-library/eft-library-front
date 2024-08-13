@@ -1096,3 +1096,9 @@ export interface CommentSubmit {
   setEditorContent: Function;
   setWriteComment: Function;
 }
+
+export interface Popup extends strID {
+  is_use: boolean;
+  contents: string;
+  create_time: string;
+}
