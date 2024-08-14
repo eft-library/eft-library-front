@@ -29,7 +29,6 @@ export default function useViewCount(boardId: string, boardType: string) {
     };
 
     if (boardId && session) {
-      console.log("asdas");
       // 로컬 스토리지에서 UUID 목록 가져오기
       const storedUuids =
         JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
