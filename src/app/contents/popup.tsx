@@ -35,7 +35,7 @@ export default function Popup() {
       top="28"
       left="translateX(-50%)"
       p={8}
-      bg={ALL_COLOR.BLACK}
+      bg={ALL_COLOR.BACKGROUND}
       border={"1px solid"}
       borderColor={ALL_COLOR.WHITE}
       color="white"
