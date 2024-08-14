@@ -17,12 +17,14 @@ import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import { fetchUserData } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useAppStore } from "@/store/provider";
 
 export default function CommentUserBan({
   comment,
   isOpen,
   onClose,
 }: CommentBan) {
+  const { user } = useAppStore((state) => state);
   const [reason, setReason] = useState("");
   const [banTime, setBanTime] = useState("");
   const { data: session } = useSession();
@@ -47,6 +49,7 @@ export default function CommentUserBan({
           "POST",
           {
             user_email: comment.user_email,
+            admin_email: user.user.email,
             ban_reason: reason,
             ban_time: finalBanTime,
           },
