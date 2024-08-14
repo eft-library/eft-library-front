@@ -84,6 +84,7 @@ export default function DetailUserBan({ post, isOpen, onClose }: PostBan) {
             value={banTime}
           >
             <option value="1">1일</option>
+            <option value="3">3일</option>
             <option value="7">7일</option>
             <option value="30">30일</option>
             <option value="always">영구정지</option>
