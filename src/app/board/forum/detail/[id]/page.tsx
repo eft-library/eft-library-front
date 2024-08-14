@@ -22,9 +22,9 @@ export async function generateMetadata(
     title: `${res.title}`,
     description: `${res.title}`,
     openGraph: {
-      images: res.image ? formatImage(res.image) : "/og.png",
-      title: `EFT Library ${res.title}`,
-      description: `EFT Library ${res.title}`,
+      images: res.thumbnail ? formatImage(res.thumbnail) : "/og.png",
+      title: `${res.title}`,
+      description: `${res.title}`,
       url: `https://eftlibrary.com/board/forum/detail/${id}`,
       siteName: "Escape From Tarkov Library",
     },

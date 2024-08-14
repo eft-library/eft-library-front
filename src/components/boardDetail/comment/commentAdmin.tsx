@@ -79,7 +79,7 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
               cursor={"pointer"}
               onClick={onBanOpen}
             >
-              사용자 밴
+              사용자 제재
             </Text>
           )}
         </PopoverBody>
