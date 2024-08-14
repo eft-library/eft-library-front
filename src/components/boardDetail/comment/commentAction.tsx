@@ -9,8 +9,6 @@ import { useAppStore } from "@/store/provider";
 import { useSession } from "next-auth/react";
 import type { CommentAction } from "@/types/types";
 import CommentAdmin from "./commentAdmin";
-import USER_API_ENDPOINTS from "@/config/userEndPoints";
-import { fetchUserData } from "@/lib/api";
 
 export default function CommentAction({
   comment,
@@ -26,6 +24,8 @@ export default function CommentAction({
       alert("로그인한 사용자만 가능합니다.");
     } else if (comment.is_delete_by_admin || comment.is_delete_by_user) {
       alert("삭제된 글은 추천이나 비추천을할 수 없습니다.");
+    } else if (comment.user_email === user.user.email) {
+      alert("본인이 작성한 글은 추천이나 비추천이 불가능 합니다.");
     } else {
       await onLike(comment.id, type);
     }

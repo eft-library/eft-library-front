@@ -57,24 +57,26 @@ export default function DetailMain({ siteParam }: BoardMain) {
     try {
       if (!session) {
         alert("로그인 후 사용가능합니다.");
-      }
-
-      const response = await fetchUserData(
-        USER_API_ENDPOINTS.CHANGE_LIKE,
-        "POST",
-        {
-          id: boardId,
-          type: type,
-          board_type: siteParam,
-        },
-        session
-      );
-
-      if (response.status === 200) {
-        getBoardPage();
+      } else if (postInfo.writer === user.user.email) {
+        alert("본인이 작성한 글은 추천이나 비추천이 불가능 합니다.");
       } else {
-        alert("잠시후 다시 시도해주세요");
-        getBoardPage();
+        const response = await fetchUserData(
+          USER_API_ENDPOINTS.CHANGE_LIKE,
+          "POST",
+          {
+            id: boardId,
+            type: type,
+            board_type: siteParam,
+          },
+          session
+        );
+
+        if (response.status === 200) {
+          getBoardPage();
+        } else {
+          alert("잠시후 다시 시도해주세요");
+          getBoardPage();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -153,22 +155,22 @@ export default function DetailMain({ siteParam }: BoardMain) {
     try {
       if (!session) {
         alert("로그인 후 사용가능합니다.");
-      }
-
-      const response = await fetchUserData(
-        USER_API_ENDPOINTS.LIKE_OR_DIS_COMMENT,
-        "POST",
-        {
-          id: commentId,
-          type: type,
-        },
-        session
-      );
-
-      if (response.status === 200) {
-        getCommentsByBoardID(comments.current_page);
       } else {
-        alert("잠시후 다시 시도해주세요");
+        const response = await fetchUserData(
+          USER_API_ENDPOINTS.LIKE_OR_DIS_COMMENT,
+          "POST",
+          {
+            id: commentId,
+            type: type,
+          },
+          session
+        );
+
+        if (response.status === 200) {
+          getCommentsByBoardID(comments.current_page);
+        } else {
+          alert("잠시후 다시 시도해주세요");
+        }
       }
     } catch (error) {
       console.log(error);
