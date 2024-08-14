@@ -1018,6 +1018,12 @@ export interface CommentBan {
   onClose: any;
 }
 
+export interface PostBan {
+  post: PostData;
+  isOpen: boolean;
+  onClose: any;
+}
+
 export interface CommentAdmin {
   comment: Comment;
   onClickDelete: Function;

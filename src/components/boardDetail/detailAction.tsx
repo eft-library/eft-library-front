@@ -5,13 +5,14 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { HStack, useDisclosure, Box, Text, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaBan } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { MdOutlineReport } from "react-icons/md";
 import type { DetailAction } from "@/types/types";
 import "@/assets/input.css";
 import DetailReport from "./detailReport";
 import DetailDelete from "./detailDelete";
+import DetailUserBan from "./detailUserBan";
 
 export default function DetailAction({ post, setIsWrite }: DetailAction) {
   const {
@@ -23,6 +24,11 @@ export default function DetailAction({ post, setIsWrite }: DetailAction) {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
+  } = useDisclosure();
+  const {
+    isOpen: isBanOpen,
+    onOpen: onBanOpen,
+    onClose: onBanClose,
   } = useDisclosure();
   const pathname = usePathname();
   const { user } = useAppStore((state) => state);
@@ -105,6 +111,22 @@ export default function DetailAction({ post, setIsWrite }: DetailAction) {
             </Button>
           </Box>
         )}
+        {checkDelete() && (
+          <Box as="span" display="flex" alignItems="center">
+            <Button
+              _hover={{ bg: ALL_COLOR.DARK_GRAY }}
+              border={"1px solid"}
+              borderColor={ALL_COLOR.WHITE}
+              bg={ALL_COLOR.BLACK}
+              w={"80px"}
+              onClick={onBanOpen}
+            >
+              <FaBan />
+              &nbsp;
+              <Text fontWeight={600}>제재</Text>
+            </Button>
+          </Box>
+        )}
         {session && user && !user.user.is_admin && (
           <Box as="span" display="flex" alignItems="center">
             <Button
@@ -124,6 +146,7 @@ export default function DetailAction({ post, setIsWrite }: DetailAction) {
       </HStack>
       <DetailReport isOpen={isReportOpen} onClose={onReportClose} post={post} />
       <DetailDelete isOpen={isDeleteOpen} onClose={onDeleteClose} post={post} />
+      <DetailUserBan isOpen={isBanOpen} onClose={onBanClose} post={post} />
     </>
   );
 }
