@@ -1,6 +1,5 @@
 import DetailMain from "@/components/boardDetail/detailMain";
 import { Metadata, ResolvingMetadata } from "next";
-import { formatImage } from "@/lib/formatImage";
 import type { MetaProps } from "@/types/types";
 import API_ENDPOINTS from "@/config/endPoints";
 
@@ -22,7 +21,7 @@ export async function generateMetadata(
     title: `${res.title}`,
     description: `${res.title}`,
     openGraph: {
-      images: res.thumbnail ? formatImage(res.thumbnail) : "/og.png",
+      images: res.thumbnail ? res.thumbnail : "/og.png",
       title: `${res.title}`,
       description: `${res.title}`,
       url: `https://eftlibrary.com/board/forum/detail/${id}`,
