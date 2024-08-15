@@ -46,7 +46,7 @@ export default function Footer() {
                 fontWeight={"bold"}
                 _hover={{ color: ALL_COLOR.MAIN_YELLO }}
               >
-                <Link href="/privacy" target="_blank">
+                <Link href="/privacy-policy" target="_blank">
                   개인정보처리방침 (Privacy Policy),&nbsp;
                 </Link>
               </Text>
