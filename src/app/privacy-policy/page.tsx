@@ -11,11 +11,11 @@ export const metadata = {
     title: "EFT Library 개인정보처리방침",
     description: "EFT Library 개인정보처리방침",
     images: "/og.png",
-    url: "https://eftlibrary.com/privacy",
+    url: "https://eftlibrary.com/privacy-policy",
   },
 };
 
-export default function Privacy() {
+export default function PrivacyPolicy() {
   return (
     <PageParent>
       <SubHeader title="개인정보처리방침" />
