@@ -1,7 +1,6 @@
 export const QuillToolbar = ({ onVideoHandler }) => ({
   container: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
     ["bold", "italic", "underline", "strike"],
     [
       { list: "ordered" },

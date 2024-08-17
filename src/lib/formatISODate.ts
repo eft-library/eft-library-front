@@ -41,5 +41,5 @@ export const timeAgo = (dateString: string) => {
   const utcDate = parseISO(dateString); // 문자열을 Date 객체로 변환
   const correctedDate = subHours(utcDate, 9); // 9시간 보정
 
-  return formatDistanceToNow(correctedDate, { addSuffix: true, locale: ko });
+  return formatDistanceToNow(utcDate, { addSuffix: true, locale: ko });
 };
