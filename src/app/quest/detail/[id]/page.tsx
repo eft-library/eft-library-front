@@ -22,8 +22,8 @@ export async function generateMetadata(
     title: `${res.title_kr}`,
     description: `${res.name_kr} ${res.title_kr}`,
     openGraph: {
-      title: `타르코프 ${res.name_kr}`,
-      description: `타르코프 ${res.name_kr}`,
+      title: `타르코프 ${res.title_kr}`,
+      description: `타르코프 ${res.title_kr}`,
       images: [formatImage(res.image)],
       url: `https://eftlibrary.com/quest/detail/${id}`,
       siteName: "Escape From Tarkov Library",
