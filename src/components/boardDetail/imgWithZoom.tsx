@@ -32,7 +32,11 @@ export default function ImgWithZoom({ content }) {
       />
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent bg={ALL_COLOR.EDITOR_IMAGE_SHADOW} maxW="60vw" w="60vw">
+        <ModalContent
+          bg={ALL_COLOR.EDITOR_IMAGE_SHADOW}
+          maxW="80vw"
+          minW="20vw"
+        >
           <ModalBody>
             <Image
               src={selectedImage}
