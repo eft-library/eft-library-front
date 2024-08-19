@@ -1,28 +1,34 @@
-.view-editor {
-  border-radius: 0px 0px 15px 15px;
-}
-.view-editor img {
-  display: block;
-  margin: 0 auto;
-  cursor: pointer;
+/*글 쓰기*/
+.write-quill-editor .ql-container {
+  min-height: 60vh;
 }
 
-.view-editor a {
+/*글 수정*/
+.detail-rewrite-quill-editor .ql-container {
+  min-height: 100vh;
+}
+
+/*댓글 작성 및 수정*/
+.comment-quill-editor .ql-container {
+  min-height: 20vh;
+}
+
+.ql-editor a {
   color: #ffd700; /* 원하는 색상으로 변경 */
   text-decoration: none; /* 밑줄 제거 */
 }
-
-.view-editor a:hover {
+.ql-editor a:hover {
   color: #efbe85; /* 마우스를 올렸을 때 색상 변경 */
 }
+
 .ql-editor {
-  min-height: 60vh; /* 에디터 높이 조정 */
-  max-height: 100vh;
   border-radius: 0px 0px 15px 15px;
 }
+
 .ql-editor img {
   display: block;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .ql-toolbar {

@@ -3,7 +3,7 @@ import { Box, VStack, HStack, useDisclosure, Text } from "@chakra-ui/react";
 import { IoArrowRedo } from "react-icons/io5";
 import type { DetailComment } from "@/types/types";
 import { useState } from "react";
-import "@/assets/commentEditor.css";
+import "@/assets/editor.css";
 import "react-quill/dist/quill.snow.css";
 import CommentQuill from "./commentQuill";
 import ImgWithZoom from "../imgWithZoom";
@@ -81,13 +81,7 @@ export default function DetailSubComment({
                 />
               </VStack>
             ) : (
-              <VStack
-                align="start"
-                spacing={2}
-                maxH={"60vh"}
-                overflow={"auto"}
-                maxW={"98%"}
-              >
+              <VStack align="start" spacing={2}>
                 <ImgWithZoom content={comment.contents} />
               </VStack>
             )}

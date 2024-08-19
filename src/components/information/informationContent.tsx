@@ -31,7 +31,6 @@ export default function InformationContent({
           <Text
             key={index}
             mb={2}
-            fontWeight={600}
             dangerouslySetInnerHTML={{
               __html: `${guide}`,
             }}

@@ -38,7 +38,6 @@ export default function InformationMain({
             </Box>
             <Box mt={2} p={4}>
               <Text
-                fontWeight={800}
                 isTruncated
                 dangerouslySetInnerHTML={{ __html: notes.notes_kr[0] }}
               />

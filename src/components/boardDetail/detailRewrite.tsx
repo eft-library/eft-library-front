@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef } from "react";
 import QuillWrapper from "@/components/quill/quillWrapper";
 import { insertVideo, videoHandler } from "@/components/quill/videoUtils";
-import "@/assets/commentEditor.css";
+import "@/assets/editor.css";
 import { QUILL_FORMATS } from "@/util/consts/libraryConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { VideoDialog } from "@/components/quill/videoDiaglog";
@@ -117,6 +117,7 @@ export default function DetailRewrite({
               modules={modules}
               formats={QUILL_FORMATS}
               theme="snow"
+              className="detail-rewrite-quill-editor"
             />
             <VideoDialog
               isOpen={isOpen}

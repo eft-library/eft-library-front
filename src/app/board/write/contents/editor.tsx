@@ -131,6 +131,7 @@ export default function Editor() {
         modules={modules}
         formats={QUILL_FORMATS}
         theme="snow"
+        className="write-quill-editor" // 사용자 정의 클래스 추가
       />
       <SubmitButton onClick={submitPosts} />
       <VideoDialog

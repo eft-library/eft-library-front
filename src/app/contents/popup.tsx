@@ -52,7 +52,6 @@ export default function Popup() {
       <Box flex="1">
         <Text
           mb={4}
-          fontWeight={600}
           dangerouslySetInnerHTML={{
             __html: `${popupInfo.contents}`,
           }}

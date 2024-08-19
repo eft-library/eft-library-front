@@ -34,10 +34,8 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.objectives_kr.map((objectives) => (
             <Text
               key={objectives}
-              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
-              fontSize="lg"
               dangerouslySetInnerHTML={{
                 __html: `*&nbsp;&nbsp;${objectives}`,
               }}
@@ -50,10 +48,8 @@ export default function QuestContents({ quest }: QuestContents) {
           {quest.rewards_kr.map((rewards) => (
             <Text
               key={rewards}
-              color={ALL_COLOR.WHITE}
               mt={1}
               fontWeight={700}
-              fontSize="lg"
               dangerouslySetInnerHTML={{
                 __html: `*&nbsp;&nbsp;${rewards}`,
               }}
@@ -157,8 +153,6 @@ export default function QuestContents({ quest }: QuestContents) {
               <Text
                 color={ALL_COLOR.WHITE}
                 mt={1}
-                fontWeight={700}
-                fontSize="lg"
                 dangerouslySetInnerHTML={{
                   __html: `${quest.guide}`,
                 }}

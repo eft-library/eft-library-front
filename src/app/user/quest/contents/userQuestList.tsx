@@ -105,7 +105,6 @@ export default function UserQuestList({
                 <Text
                   key={index}
                   mb={1}
-                  fontWeight={600}
                   dangerouslySetInnerHTML={{
                     __html: `*&nbsp;&nbsp;${objective}`,
                   }}

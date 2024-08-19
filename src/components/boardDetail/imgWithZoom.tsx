@@ -7,7 +7,7 @@ import {
   ModalBody,
   Image,
   useDisclosure,
-  Box,
+  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -25,8 +25,8 @@ export default function ImgWithZoom({ content }) {
 
   return (
     <>
-      <Box
-        className="view-editor"
+      <Text
+        className="ql-editor"
         dangerouslySetInnerHTML={{ __html: content }}
         onClick={handleImageClick}
       />

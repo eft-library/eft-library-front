@@ -30,7 +30,6 @@ export default function BossContents({ boss }: BossContents) {
         <Box>
           <Text
             mb={1}
-            fontWeight={600}
             dangerouslySetInnerHTML={{
               __html: `${boss.location_guide}`,
             }}

@@ -4,7 +4,7 @@ import type { DetailComment } from "@/types/types";
 import { useState } from "react";
 import CommentQuill from "./commentQuill";
 import ImgWithZoom from "../imgWithZoom";
-import "@/assets/commentEditor.css";
+import "@/assets/editor.css";
 import { useAppStore } from "@/store/provider";
 import { useSession } from "next-auth/react";
 import CommentDelete from "./commentDelete";
@@ -74,13 +74,7 @@ export default function DetailMainComment({
               />
             </VStack>
           ) : (
-            <VStack
-              align="start"
-              spacing={2}
-              maxH={"60vh"}
-              overflow={"auto"}
-              maxW={"98%"}
-            >
+            <VStack align="start" spacing={2}>
               <ImgWithZoom content={comment.contents} />
             </VStack>
           )}
