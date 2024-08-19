@@ -14,6 +14,8 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Link from "next/link";
+import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
+import "@/assets/editor.css";
 
 export default function QuestContents({ quest }: QuestContents) {
   const [column, setColumn] = useState<Column>();
@@ -148,17 +150,7 @@ export default function QuestContents({ quest }: QuestContents) {
               </Box>
             </>
           )}
-          {quest.guide && (
-            <Box>
-              <Text
-                color={ALL_COLOR.WHITE}
-                mt={1}
-                dangerouslySetInnerHTML={{
-                  __html: `${quest.guide}`,
-                }}
-              />
-            </Box>
-          )}
+          <ImgWithZoom content={quest.guide} />
         </DividerContents>
       )}
     </Box>

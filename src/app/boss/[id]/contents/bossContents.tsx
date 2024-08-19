@@ -11,6 +11,8 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import BossHealth from "./bossHealth";
 import FollowersLoot from "./followersLoot";
+import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
+import "@/assets/editor.css";
 
 export default function BossContents({ boss }: BossContents) {
   const [column, setColumn] = useState<Column>();
@@ -27,14 +29,7 @@ export default function BossContents({ boss }: BossContents) {
   return (
     <Box w={"95%"}>
       <DividerContents headText="위치">
-        <Box>
-          <Text
-            mb={1}
-            dangerouslySetInnerHTML={{
-              __html: `${boss.location_guide}`,
-            }}
-          />
-        </Box>
+        <ImgWithZoom content={boss.location_guide} />
       </DividerContents>
       <BossHealth healthList={boss.sub_followers} />
       {boss.sub_followers.map((followers) => (
