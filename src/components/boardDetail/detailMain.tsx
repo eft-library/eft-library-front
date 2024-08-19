@@ -10,7 +10,7 @@ import { fetchUserData } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
 import DetailComment from "./comment/detailComment";
-import type { BoardMain, CommentInfo } from "@/types/types";
+import type { BoardMain, CommentInfo, IssueCommentInfo } from "@/types/types";
 import { useEffect, useState } from "react";
 import CommentPagination from "../pagination/commentPagination";
 import API_ENDPOINTS from "@/config/endPoints";
@@ -18,12 +18,16 @@ import { useAppStore } from "@/store/provider";
 import CommentQuill from "./comment/commentQuill";
 import DetailSkeleton from "./detailSkeleton";
 import useViewCount from "@/hooks/useViewCount";
+import DetailIssueComment from "./comment/detailIssueComment";
+import React from "react";
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function DetailMain({ siteParam }: BoardMain) {
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
   const { postInfo, getBoardPage } = useBoardDetail(siteParam);
   const [comments, setComments] = useState<CommentInfo>();
+  const [issueComments, setIssueComments] = useState<IssueCommentInfo>();
 
   // 조회수
   useViewCount(postInfo?.id, postInfo?.type);
@@ -47,9 +51,29 @@ export default function DetailMain({ siteParam }: BoardMain) {
     setComments(response.data);
   };
 
+  const getIssueCommentsByBoardID = async () => {
+    const res = await fetch(
+      `${API_ENDPOINTS.GET_ISSUE_COMMENT_BY_ID}?board_id=${postInfo.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization:
+            session && session.accessToken
+              ? `Bearer ${session.accessToken}`
+              : "Bearer ",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const response = await res.json();
+    setIssueComments(response.data);
+  };
+
   useEffect(() => {
     if (postInfo && postInfo.id) {
       getCommentsByBoardID(1);
+      getIssueCommentsByBoardID();
     }
   }, [postInfo]);
 
@@ -177,7 +201,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   };
 
-  if (!postInfo || !comments) return <DetailSkeleton />;
+  if (!postInfo || !comments || !issueComments) return <DetailSkeleton />;
 
   const checkUser = () => {
     if (!session || !user) return false;
@@ -195,6 +219,22 @@ export default function DetailMain({ siteParam }: BoardMain) {
           onClickLike={onClickLike}
           boardType={siteParam}
         />
+        {issueComments.data.length > 0 && (
+          <Text fontSize={"xl"} fontWeight={800} color={ALL_COLOR.YELLOW}>
+            인기 댓글
+          </Text>
+        )}
+        {issueComments.data.map((issue) => (
+          <React.Fragment key={issue.id}>
+            <DetailIssueComment
+              key={issue.id}
+              getComment={getCommentsByBoardID}
+              onClickLikeOrDis={onClickLikeOrDis}
+              comment={issue}
+              onClickDelete={onClickDelete}
+            />
+          </React.Fragment>
+        ))}
         {comments.data.map((comment) => (
           <DetailComment
             key={comment.id}

@@ -910,6 +910,10 @@ export interface CommentInfo {
   current_page: number;
 }
 
+export interface IssueCommentInfo {
+  data: Comment[];
+}
+
 export interface DetailComment {
   comment: Comment;
   onClickDelete: Function;

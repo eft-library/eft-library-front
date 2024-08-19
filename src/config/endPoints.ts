@@ -31,6 +31,8 @@ const API_ENDPOINTS = {
   GET_EVENT: baseUrl + "/api/event/board",
   GET_EVENT_BY_ID: baseUrl + "/api/event/detail",
   GET_ITEM_FILTER: baseUrl + "/api/item_filter/all",
+  GET_ISSUE_COMMENT_BY_ID: baseUrl + "/api/comment/issue_comment",
+  GET_ISSUE_COMMENT_PAGE: baseUrl + "/api/comment/issue_comment_page",
   GET_MAP: baseUrl + "/api/map/info",
   GET_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/detail",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
