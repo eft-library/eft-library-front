@@ -1074,6 +1074,7 @@ export interface PostData extends strID {
   update_time: string | null;
   icon: string;
   nick_name: string;
+  comment_cnt: number;
 }
 
 export interface UserProfile {
