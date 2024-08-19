@@ -49,30 +49,27 @@ export const defaultInitState: AppStateType = {
 
 export const createAppStore = (initState: AppStateType = defaultInitState) => {
   return createStore<AppStoreType>()(
-    devtools(
-      persist(
-        (set) =>
-          ({
-            ...initState,
-            setWeaponCategory: (value: string) =>
-              set({ weaponCategory: value }),
-            setKeyCategory: (value: string) => set({ keyCategory: value }),
-            setNpcId: (value: string) => set({ npcId: value }),
-            setItemFilter: (value: any[]) => set({ itemFilter: value }),
-            setMedicalCategory: (value: string) =>
-              set({ medicalCategory: value }),
-            setAmmoCategory: (value: string) => set({ ammoCategory: value }),
-            setLootCategory: (value: string) => set({ lootCategory: value }),
-            setHideoutCategory: (value: string) =>
-              set({ hideoutCategory: value }),
-            setEventNum: (value: number) => set({ eventNum: value }),
-            setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
-            setUser: (value: UserProfile) => set({ user: value }),
-          } satisfies AppStoreType),
-        {
-          name: "app-store",
-        }
-      )
+    persist(
+      (set) =>
+        ({
+          ...initState,
+          setWeaponCategory: (value: string) => set({ weaponCategory: value }),
+          setKeyCategory: (value: string) => set({ keyCategory: value }),
+          setNpcId: (value: string) => set({ npcId: value }),
+          setItemFilter: (value: any[]) => set({ itemFilter: value }),
+          setMedicalCategory: (value: string) =>
+            set({ medicalCategory: value }),
+          setAmmoCategory: (value: string) => set({ ammoCategory: value }),
+          setLootCategory: (value: string) => set({ lootCategory: value }),
+          setHideoutCategory: (value: string) =>
+            set({ hideoutCategory: value }),
+          setEventNum: (value: number) => set({ eventNum: value }),
+          setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
+          setUser: (value: UserProfile) => set({ user: value }),
+        } satisfies AppStoreType),
+      {
+        name: "app-store",
+      }
     )
   );
 };
