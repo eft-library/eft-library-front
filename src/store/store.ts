@@ -1,6 +1,6 @@
 // store.ts
 import { createStore } from "zustand";
-import { persist, devtools } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import type { Item, UserProfile } from "@/types/types";
 
 export type AppStateType = {
@@ -15,6 +15,7 @@ export type AppStateType = {
   eventNum: number;
   patchNotesNum: number;
   user: UserProfile;
+  searchUser: string;
 };
 
 export type AppActionsType = {
@@ -29,6 +30,7 @@ export type AppActionsType = {
   setEventNum: (value: number) => void;
   setPatchNotesNum: (value: number) => void;
   setUser: (value: UserProfile) => void;
+  setSearchUser: (value: string) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -45,6 +47,7 @@ export const defaultInitState: AppStateType = {
   eventNum: 1,
   patchNotesNum: 1,
   user: null,
+  searchUser: "",
 };
 
 export const createAppStore = (initState: AppStateType = defaultInitState) => {
@@ -66,6 +69,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
           setEventNum: (value: number) => set({ eventNum: value }),
           setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
           setUser: (value: UserProfile) => set({ user: value }),
+          setSearchUser: (value: string) => set({ searchUser: value }),
         } satisfies AppStoreType),
       {
         name: "app-store",
