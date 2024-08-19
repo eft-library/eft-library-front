@@ -77,6 +77,45 @@ export default function DetailMain({ siteParam }: BoardMain) {
     }
   }, [postInfo]);
 
+  const getCommentsPageByBoardID = async (commentId: string) => {
+    const res = await fetch(
+      `${API_ENDPOINTS.GET_ISSUE_COMMENT_PAGE}?board_id=${postInfo.id}&comment_id=${commentId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization:
+            session && session.accessToken
+              ? `Bearer ${session.accessToken}`
+              : "Bearer ",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const response = await res.json();
+    setComments(response.data);
+
+    issueCommentScroll(commentId);
+  };
+
+  const issueCommentScroll = (commentId: string) => {
+    if (typeof window !== "undefined" && comments) {
+      const scrollToElement = () => {
+        const targetElement = document.getElementById(commentId);
+        if (commentId && targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      };
+
+      requestAnimationFrame(() => {
+        setTimeout(scrollToElement, 1000);
+      });
+    }
+  };
+
   const onClickLike = async (boardId: string, type: string) => {
     try {
       if (!session) {
@@ -228,7 +267,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
           <React.Fragment key={issue.id}>
             <DetailIssueComment
               key={issue.id}
-              getComment={getCommentsByBoardID}
+              getComment={getCommentsPageByBoardID}
               onClickLikeOrDis={onClickLikeOrDis}
               comment={issue}
               onClickDelete={onClickDelete}

@@ -914,6 +914,13 @@ export interface IssueCommentInfo {
   data: Comment[];
 }
 
+export interface DetailIssue {
+  comment: Comment;
+  onClickDelete: Function;
+  onClickLikeOrDis: Function;
+  getComment: Function;
+}
+
 export interface DetailComment {
   comment: Comment;
   onClickDelete: Function;

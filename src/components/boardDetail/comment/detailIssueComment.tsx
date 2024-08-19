@@ -12,13 +12,14 @@ import CommentDelete from "./commentDelete";
 import CommentAction from "./commentAction";
 import CommentHeader from "./commentHeader";
 import CommentReport from "./commentReport";
+import type { DetailIssue } from "@/types/types";
 
 export default function DetailIssueComment({
   comment,
   getComment,
   onClickDelete,
   onClickLikeOrDis,
-}) {
+}: DetailIssue) {
   const {
     isOpen: isReportOpen,
     onOpen: onReportOpen,
@@ -76,6 +77,23 @@ export default function DetailIssueComment({
           />
         </HStack>
         <HStack justify="flex-end" spacing={1} mt={2}>
+          <Box
+            display="flex"
+            alignItems="center"
+            bg={"none"}
+            w={"40px"}
+            cursor={"pointer"}
+          >
+            <Text
+              fontWeight={600}
+              _hover={{ color: ALL_COLOR.DARK_GRAY }}
+              display={"flex"}
+              alignItems={"center"}
+              onClick={() => getComment(comment.id)}
+            >
+              이동
+            </Text>
+          </Box>
           {checkDelete() && (
             <Box
               display="flex"

@@ -55,6 +55,7 @@ export default function DetailSubComment({
       borderLeft="2px"
       borderColor={ALL_COLOR.GRAY}
       mt={4}
+      id={comment.id}
     >
       <Box py={2} position="relative" w={"100%"}>
         <VStack align="start" spacing={2}>

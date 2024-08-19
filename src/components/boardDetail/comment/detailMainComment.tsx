@@ -53,6 +53,7 @@ export default function DetailMainComment({
       py={2}
       position="relative"
       mt={10}
+      id={comment.id}
     >
       <VStack align="start" spacing={2}>
         <HStack>
