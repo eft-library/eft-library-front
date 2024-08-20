@@ -1163,3 +1163,7 @@ export interface CommentWithTitle extends Comment {
 export interface UserCommentAll {
   comments: CommentWithTitle[];
 }
+
+export interface UserMainSubComment {
+  comment: CommentWithTitle;
+}
