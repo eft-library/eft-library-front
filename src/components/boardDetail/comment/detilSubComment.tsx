@@ -65,6 +65,7 @@ export default function DetailSubComment({
               icon={comment.icon}
               nickName={comment.nick_name}
               createTime={comment.create_time}
+              email={comment.user_email}
             />
           </HStack>
           <Box ml={6} w={"100%"}>

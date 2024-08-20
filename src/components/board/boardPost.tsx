@@ -29,7 +29,7 @@ export default function BoardPost({ post }: BoardPost) {
               )}
               {post.like_count > 30 && <PiStarFill color={ALL_COLOR.YELLOW} />}
               &nbsp;
-              {post.title}&nbsp;{" "}
+              {post.title}&nbsp;
               <Text color={ALL_COLOR.YELLOW}>({post.comment_cnt})</Text>
             </Heading>
 

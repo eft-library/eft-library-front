@@ -934,6 +934,7 @@ export interface CommentHeader {
   icon: string | null;
   nickName: string | null;
   createTime: string;
+  email: string | null;
 }
 
 export interface CommentAction {

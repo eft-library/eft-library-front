@@ -18,9 +18,14 @@ import CommentDelete from "./commentDelete";
 import type { CommentAdmin } from "@/types/types";
 import CommentUserBan from "./commentUserBan";
 import Link from "next/link";
+import { useAppStore } from "@/store/provider";
 
 export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
+  const { setSearchUser } = useAppStore((state) => state);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const onClickUserProfile = () => {
+    setSearchUser(comment.user_email);
+  };
   const {
     isOpen: isBanOpen,
     onOpen: onBanOpen,
@@ -51,7 +56,7 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
         <PopoverCloseButton />
         <PopoverHeader textAlign={"center"}>관리</PopoverHeader>
         <PopoverBody>
-          <Link href={"/"}>
+          <Link onClick={onClickUserProfile} href={"/user/post?id=1"}>
             <Text
               fontWeight={600}
               _hover={{ color: ALL_COLOR.DARK_GRAY }}

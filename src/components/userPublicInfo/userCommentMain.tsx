@@ -27,6 +27,7 @@ export default function UserCommentMain({ comment }: UserMainSubComment) {
             icon={comment.icon}
             nickName={comment.nick_name}
             createTime={comment.create_time}
+            email={comment.user_email}
           />
         </HStack>
         <Box w={"100%"}>
