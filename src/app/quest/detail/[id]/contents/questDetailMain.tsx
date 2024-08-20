@@ -7,6 +7,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import QuestInfo from "./questInfo";
 import QuestContents from "./questContents";
 import "@/assets/quest.css";
+import "@/assets/editor.css";
 import type { Quest } from "@/types/types";
 import PageParent from "@/components/pageParent/pageParent";
 

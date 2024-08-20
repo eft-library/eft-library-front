@@ -15,7 +15,6 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Link from "next/link";
 import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
-import "@/assets/editor.css";
 
 export default function QuestContents({ quest }: QuestContents) {
   const [column, setColumn] = useState<Column>();
@@ -150,7 +149,9 @@ export default function QuestContents({ quest }: QuestContents) {
               </Box>
             </>
           )}
-          <ImgWithZoom content={quest.guide} />
+          <Box fontWeight={600}>
+            <ImgWithZoom content={quest.guide} />
+          </Box>
         </DividerContents>
       )}
     </Box>
