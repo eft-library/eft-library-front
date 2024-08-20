@@ -24,8 +24,9 @@ export default function PatchNotesDetailMain() {
     <Information
       information={patchNotesDetail.information}
       information_group={patchNotesDetail.information_group}
-      link="/pathc-notes?id=1"
-      detail_link="/pathc-notes/detail"
+      link="/patch-notes?id=1"
+      detail_link="/patch-notes/detail"
+      subTitle="패치노트"
     />
   );
 }

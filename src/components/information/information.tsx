@@ -11,10 +11,11 @@ export default function Information({
   information_group,
   link,
   detail_link,
+  subTitle,
 }: Information) {
   return (
     <PageParent>
-      <SubHeader title="공지사항" />
+      <SubHeader title={subTitle} />
       <Box mb={10} />
       <Box w={"95%"}>
         <InformationContent information={information} />

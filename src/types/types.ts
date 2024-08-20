@@ -561,6 +561,7 @@ export interface InfortmaionContent {
 export interface Information extends InformationInfoDetail {
   link: string;
   detail_link: string;
+  subTitle: string;
 }
 
 export interface InformationBottom {

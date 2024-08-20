@@ -25,6 +25,7 @@ export default function EventDetailMain() {
       information_group={eventDetail.information_group}
       link="/event?id=1"
       detail_link="/event/detail"
+      subTitle={"이벤트"}
     />
   );
 }

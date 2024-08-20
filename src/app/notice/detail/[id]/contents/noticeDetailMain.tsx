@@ -25,6 +25,7 @@ export default function NoticeDetailMain() {
       information_group={noticeDetail.information_group}
       link="/notice?id=1"
       detail_link="/notice/detail"
+      subTitle="공지사항"
     />
   );
 }

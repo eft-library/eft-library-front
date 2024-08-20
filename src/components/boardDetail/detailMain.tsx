@@ -71,10 +71,10 @@ export default function DetailMain({ siteParam }: BoardMain) {
   };
 
   useEffect(() => {
-    console.log(document.referrer);
     if (postInfo && postInfo.id) {
-      getCommentsByBoardID(1);
       getIssueCommentsByBoardID();
+      // 여기에서 조건 걸어서 user/comment에서 온거면 page 얻는거로 해야 함 보낼때 commentId를 같이 보내야 하는데 store 써야 하나
+      getCommentsByBoardID(1);
     }
   }, [postInfo]);
 
