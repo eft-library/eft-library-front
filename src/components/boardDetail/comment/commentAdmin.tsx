@@ -56,8 +56,9 @@ export default function CommentAdmin({ comment, onClickDelete }: CommentAdmin) {
         <PopoverCloseButton />
         <PopoverHeader textAlign={"center"}>관리</PopoverHeader>
         <PopoverBody>
-          <Link onClick={onClickUserProfile} href={"/user/post?id=1"}>
+          <Link href={"/user/post?id=1"}>
             <Text
+              onClick={onClickUserProfile}
               fontWeight={600}
               _hover={{ color: ALL_COLOR.DARK_GRAY }}
               cursor={"pointer"}

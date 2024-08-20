@@ -1,7 +1,6 @@
 import {
   HStack,
   Image,
-  Link,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -16,6 +15,7 @@ import { timeAgo } from "@/lib/formatISODate";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import type { CommentHeader } from "@/types/types";
 import { useAppStore } from "@/store/provider";
+import { useRouter } from "next/navigation";
 
 export default function CommentHeader({
   icon,
@@ -23,9 +23,11 @@ export default function CommentHeader({
   createTime,
   email,
 }: CommentHeader) {
+  const router = useRouter();
   const { setSearchUser } = useAppStore((state) => state);
   const onClickUserProfile = () => {
     setSearchUser(email);
+    router.push("/user/post?id=1");
   };
   return (
     <HStack>
@@ -54,16 +56,15 @@ export default function CommentHeader({
             <PopoverCloseButton />
             <PopoverHeader textAlign={"center"}>정보</PopoverHeader>
             <PopoverBody>
-              <Link onClick={onClickUserProfile} href={"/user/post?id=1"}>
-                <Text
-                  fontWeight={600}
-                  _hover={{ color: ALL_COLOR.DARK_GRAY }}
-                  cursor={"pointer"}
-                  mb={2}
-                >
-                  사용자 정보
-                </Text>
-              </Link>
+              <Text
+                fontWeight={600}
+                onClick={onClickUserProfile}
+                _hover={{ color: ALL_COLOR.DARK_GRAY }}
+                cursor={"pointer"}
+                mb={2}
+              >
+                사용자 정보
+              </Text>
             </PopoverBody>
           </PopoverContent>
         </Popover>

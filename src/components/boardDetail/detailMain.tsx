@@ -71,6 +71,7 @@ export default function DetailMain({ siteParam }: BoardMain) {
   };
 
   useEffect(() => {
+    console.log(document.referrer);
     if (postInfo && postInfo.id) {
       getCommentsByBoardID(1);
       getIssueCommentsByBoardID();

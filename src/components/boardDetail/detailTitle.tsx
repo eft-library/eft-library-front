@@ -62,8 +62,9 @@ export default function DetailTitle({ post }: BoardPost) {
                 <PopoverCloseButton />
                 <PopoverHeader textAlign={"center"}>정보</PopoverHeader>
                 <PopoverBody>
-                  <Link onClick={onClickUserProfile} href={"/user/post?id=1"}>
+                  <Link href={"/user/post?id=1"}>
                     <Text
+                      onClick={onClickUserProfile}
                       fontWeight={600}
                       _hover={{ color: ALL_COLOR.DARK_GRAY }}
                       cursor={"pointer"}
