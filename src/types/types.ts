@@ -1120,3 +1120,28 @@ export interface Popup extends strID {
   contents: string;
   create_time: string;
 }
+
+export interface ShortUserInfo {
+  icon: string;
+  nick_name: string;
+  value: string;
+  post_count: number;
+  comment_count: number;
+  ban_reason: null | string;
+  ban_end_time: null | string;
+  attendance_count: number;
+}
+
+export interface UserPost {
+  posts: PostData[];
+  user_info: ShortUserInfo;
+}
+
+export interface UserComment {
+  comments: Comment[];
+  user_info: ShortUserInfo;
+}
+
+export interface UserPublicInfo {
+  user: ShortUserInfo;
+}

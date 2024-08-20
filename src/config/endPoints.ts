@@ -50,6 +50,8 @@ const API_ENDPOINTS = {
   GET_SUB_MAP: baseUrl + "/api/map/sub",
   GET_WEAPON: baseUrl + "/api/weapon/info",
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
+  GET_USER_POST_DETAIL: baseUrl + "/api/user/post_detail",
+  GET_USER_COMMENT_DETAIL: baseUrl + "/api/user/comment_detail",
 };
 
 export default API_ENDPOINTS;

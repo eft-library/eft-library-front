@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { ArrowRightIcon } from "@chakra-ui/icons";
@@ -6,8 +8,13 @@ import Link from "next/link";
 import { timeAgo } from "@/lib/formatISODate";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { FaEye } from "react-icons/fa6";
+import { useAppStore } from "@/store/provider";
 
 export default function ProfileBottomPost({ user_posts }: ProfileBotton) {
+  const { setSearchUser, user } = useAppStore((state) => state);
+  const linkPost = () => {
+    setSearchUser(user.user.email);
+  };
   return (
     <Box w="45%" display="flex" alignItems="center" flexDirection="column">
       <Box
@@ -19,7 +26,12 @@ export default function ProfileBottomPost({ user_posts }: ProfileBotton) {
         <Text fontWeight={800} p={2}>
           내 게시글
         </Text>
-        <ArrowRightIcon cursor={"pointer"} />
+        <Link onClick={linkPost} href={"/user/post"}>
+          <ArrowRightIcon
+            cursor={"pointer"}
+            _hover={{ color: ALL_COLOR.YELLOW }}
+          />
+        </Link>
       </Box>
       <Box
         w="100%"

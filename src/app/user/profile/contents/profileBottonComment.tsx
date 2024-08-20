@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import { ArrowRightIcon } from "@chakra-ui/icons";
@@ -6,8 +8,14 @@ import Link from "next/link";
 import { timeAgo } from "@/lib/formatISODate";
 import { MdOutlineThumbDown, MdOutlineThumbUp } from "react-icons/md";
 import { getFirstParagraph } from "@/lib/quillFunc";
+import { useAppStore } from "@/store/provider";
 
 export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
+  const { setSearchUser, user } = useAppStore((state) => state);
+  const linkComment = () => {
+    setSearchUser(user.user.email);
+  };
+
   return (
     <Box w="45%" display="flex" alignItems="center" flexDirection="column">
       <Box
@@ -17,9 +25,14 @@ export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
         alignItems={"center"}
       >
         <Text fontWeight={800} p={2}>
-          내 댓글 개발중
+          내 댓글
         </Text>
-        <ArrowRightIcon cursor={"pointer"} />
+        <Link onClick={linkComment} href={"/user/comment"}>
+          <ArrowRightIcon
+            cursor={"pointer"}
+            _hover={{ color: ALL_COLOR.YELLOW }}
+          />
+        </Link>
       </Box>
       <Box
         w="100%"
