@@ -4,20 +4,20 @@ import UserPublicInfo from "@/components/userPublicInfo/userPublicInfo";
 import { useEffect, useState } from "react";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
-import type { UserPost } from "@/types/types";
+import type { UserComment } from "@/types/types";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/pagination/pagination";
-import UserPostAll from "@/components/userPublicInfo/userPostAll";
+import UserCommentAll from "@/components/userPublicInfo/userCommentAll";
 
-export default function UserPostDetail() {
+export default function UserCommentDetail() {
   const param = useSearchParams();
   const { searchUser } = useAppStore((state) => state);
-  const [info, setInfo] = useState<UserPost>();
+  const [info, setInfo] = useState<UserComment>();
 
-  const getUserPostInfo = async (page: number) => {
+  const getUserCommentInfo = async (page: number) => {
     try {
       const res = await fetch(
-        `${API_ENDPOINTS.GET_USER_POST_DETAIL}?page=${page}&page_size=10`,
+        `${API_ENDPOINTS.GET_USER_COMMENT_DETAIL}?page=${page}&page_size=10`,
         {
           method: "POST",
           headers: {
@@ -42,7 +42,7 @@ export default function UserPostDetail() {
 
   useEffect(() => {
     if (searchUser.length > 0) {
-      getUserPostInfo(Number(param.get("id")));
+      getUserCommentInfo(Number(param.get("id")));
     }
   }, [searchUser, param]);
 
@@ -51,10 +51,10 @@ export default function UserPostDetail() {
   return (
     <>
       <UserPublicInfo user={info.user_info} />
-      <UserPostAll posts={info.data} />
+      <UserCommentAll comments={info.data} />
       <Pagination
         total={info.max_pages}
-        routeLink={"/user/post?id="}
+        routeLink={"/user/comment?id="}
         currentPage={Number(param.get("id"))}
       />
     </>

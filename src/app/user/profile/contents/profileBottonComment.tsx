@@ -27,7 +27,7 @@ export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
         <Text fontWeight={800} p={2}>
           내 댓글
         </Text>
-        <Link onClick={linkComment} href={"/user/comment"}>
+        <Link onClick={linkComment} href={"/user/comment?id=1"}>
           <ArrowRightIcon
             cursor={"pointer"}
             _hover={{ color: ALL_COLOR.YELLOW }}

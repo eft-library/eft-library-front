@@ -1133,15 +1133,33 @@ export interface ShortUserInfo {
 }
 
 export interface UserPost {
-  posts: PostData[];
+  data: PostData[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
   user_info: ShortUserInfo;
 }
 
 export interface UserComment {
-  comments: Comment[];
+  data: CommentWithTitle[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
   user_info: ShortUserInfo;
 }
 
 export interface UserPublicInfo {
   user: ShortUserInfo;
+}
+
+export interface UserPostAll {
+  posts: PostData[];
+}
+
+export interface CommentWithTitle extends Comment {
+  title: string;
+}
+
+export interface UserCommentAll {
+  comments: CommentWithTitle[];
 }

@@ -26,7 +26,7 @@ export default function ProfileBottomPost({ user_posts }: ProfileBotton) {
         <Text fontWeight={800} p={2}>
           내 게시글
         </Text>
-        <Link onClick={linkPost} href={"/user/post"}>
+        <Link onClick={linkPost} href={"/user/post?id=1"}>
           <ArrowRightIcon
             cursor={"pointer"}
             _hover={{ color: ALL_COLOR.YELLOW }}
