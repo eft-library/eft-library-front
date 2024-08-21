@@ -28,7 +28,7 @@ export async function GET() {
       feed.item({
         title: post.title,
         description: post.contents,
-        url: `https://eftlibrary.com/board/${post.type}/${post.id}`,
+        url: `https://eftlibrary.com/board/${post.type}/detail/${post.id}`,
         date: post.create_time,
       });
     });
