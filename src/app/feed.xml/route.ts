@@ -3,10 +3,10 @@ import API_ENDPOINTS from "@/config/endPoints";
 
 async function getFeedData() {
   const response = await fetch(
-    `${API_ENDPOINTS.GET_BOARD_BY_TYPE}?page=1&page_size=99999999&type=board&issue=false&word=null&search_type=null`
+    `${API_ENDPOINTS.GET_BOARD_BY_TYPE}/posts?page=1&page_size=99999999&type=board&issue=false&word=null&search_type=null`
   );
   const res = await response.json();
-  return res.data;
+  return res.data.data;
 }
 
 export async function GET() {
@@ -23,7 +23,7 @@ export async function GET() {
   });
 
   const allPosts = await getFeedData();
-
+  console.log(allPosts);
   if (allPosts) {
     allPosts.map((post: any) => {
       feed.item({
