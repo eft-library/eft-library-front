@@ -112,6 +112,7 @@ export default function Contents() {
                         <Text
                           key={oIndex}
                           mb={1}
+                          p={4}
                           dangerouslySetInnerHTML={{
                             __html: `*&nbsp;&nbsp;${obj}`,
                           }}
@@ -133,6 +134,7 @@ export default function Contents() {
                         <Text
                           key={rIndex}
                           mb={1}
+                          p={4}
                           dangerouslySetInnerHTML={{
                             __html: `*&nbsp;&nbsp;${rewards}`,
                           }}

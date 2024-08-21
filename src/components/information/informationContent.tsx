@@ -28,6 +28,7 @@ export default function InformationContent({
       </Box>
       <Box p={4} mt={10}>
         <Text
+          p={4}
           mb={2}
           dangerouslySetInnerHTML={{
             __html: `${information.notes_kr}`,
