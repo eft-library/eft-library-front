@@ -586,8 +586,8 @@ export interface InformationData {
 export interface InformationInfo extends strID {
   name_en: string[];
   name_kr: string[];
-  notes_en: string[];
-  notes_kr: string[];
+  notes_en: string;
+  notes_kr: string;
   update_time: string;
 }
 

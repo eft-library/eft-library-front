@@ -4,6 +4,7 @@ import Link from "next/link";
 import Pagination from "../pagination/pagination";
 import { formatISODate } from "@/lib/formatISODate";
 import type { InformationMain } from "@/types/types";
+import { getFirstParagraph } from "@/lib/quillFunc";
 
 export default function InformationMain({
   information,
@@ -39,7 +40,9 @@ export default function InformationMain({
             <Box mt={2} p={4}>
               <Text
                 isTruncated
-                dangerouslySetInnerHTML={{ __html: notes.notes_kr[0] }}
+                dangerouslySetInnerHTML={{
+                  __html: getFirstParagraph(notes.notes_kr),
+                }}
               />
             </Box>
           </Box>

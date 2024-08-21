@@ -48,6 +48,9 @@ export default function SubContents({
             bg={ALL_COLOR.BLACK}
             borderColor={ALL_COLOR.WHITE}
           >
+            {userInfo.user.is_admin && (
+              <option value={"trash"}>운영자용</option>
+            )}
             {typeList.map((boardType) => (
               <option key={boardType.id} value={boardType.value}>
                 {boardType.name_kr}

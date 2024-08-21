@@ -26,16 +26,13 @@ export default function InformationContent({
           {formatISODate(information.update_time)})
         </Text>
       </Box>
-      <Box p={2}>
-        {information.notes_kr.map((guide, index) => (
-          <Text
-            key={index}
-            mb={2}
-            dangerouslySetInnerHTML={{
-              __html: `${guide}`,
-            }}
-          />
-        ))}
+      <Box p={4} mt={10}>
+        <Text
+          mb={2}
+          dangerouslySetInnerHTML={{
+            __html: `${information.notes_kr}`,
+          }}
+        />
       </Box>
     </Box>
   );
