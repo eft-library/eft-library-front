@@ -23,7 +23,6 @@ export async function GET() {
   });
 
   const allPosts = await getFeedData();
-  console.log(allPosts);
   if (allPosts) {
     allPosts.map((post: any) => {
       feed.item({
