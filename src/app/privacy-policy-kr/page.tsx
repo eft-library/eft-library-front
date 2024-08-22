@@ -11,7 +11,7 @@ export const metadata = {
     title: "EFT Library 개인정보처리방침",
     description: "EFT Library 개인정보처리방침",
     images: "/og.png",
-    url: "https://eftlibrary.com/privacy-policy",
+    url: "https://eftlibrary.com/privacy-policy-kr",
   },
 };
 
