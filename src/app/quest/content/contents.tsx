@@ -36,6 +36,7 @@ export default function Contents() {
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_QUEST, setQuest);
   }, []);
+
   const getTitle = (item) => {
     // 첫 번째 부분 추출
     let firstPart = item.title_kr
@@ -52,14 +53,17 @@ export default function Contents() {
         borderRight="1px solid white"
         color={ALL_COLOR.ORANGE}
         textAlign={"center"}
-        cursor={"pointer"}
         _hover={{ color: ALL_COLOR.BEIGE }}
         paddingX={2}
         paddingY={2}
       >
-        <Link href={`/quest/detail/${item.id}`}>{firstPart}</Link>
-        <br />
-        <Link href={`/quest/detail/${item.id}`}>{secondPart}</Link>
+        <Link href={`/quest/detail/${item.id}`}>
+          <Text _hover={{ color: ALL_COLOR.BEIGE }} color={ALL_COLOR.ORANGE}>
+            {firstPart}
+            <br />
+            {secondPart}
+          </Text>
+        </Link>
       </Td>
     );
   };
@@ -112,7 +116,6 @@ export default function Contents() {
                         <Text
                           key={oIndex}
                           mb={1}
-                          p={4}
                           dangerouslySetInnerHTML={{
                             __html: `*&nbsp;&nbsp;${obj}`,
                           }}
@@ -134,7 +137,6 @@ export default function Contents() {
                         <Text
                           key={rIndex}
                           mb={1}
-                          p={4}
                           dangerouslySetInnerHTML={{
                             __html: `*&nbsp;&nbsp;${rewards}`,
                           }}
