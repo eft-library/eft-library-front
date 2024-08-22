@@ -9,7 +9,12 @@ import Link from "next/link";
 export default function UserCommentMain({ comment }: UserMainSubComment) {
   return (
     <Box w={"95%"}>
-      <Link href={`/board/${comment.board_type}/detail/${comment.board_id}`}>
+      <Link
+        href={{
+          pathname: `/board/${comment.board_type}/detail/${comment.board_id}`,
+          query: { commentId: comment.id },
+        }}
+      >
         <Box
           borderBottom="1px"
           borderColor={ALL_COLOR.GRAY}

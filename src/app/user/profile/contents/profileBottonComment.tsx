@@ -46,7 +46,10 @@ export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
         {user_comments.map((comment) => (
           <Box w={"100%"} key={comment.id}>
             <Link
-              href={`/board/${comment.board_type}/detail/${comment.board_id}`}
+              href={{
+                pathname: `/board/${comment.board_type}/detail/${comment.board_id}`,
+                query: { commentId: comment.id },
+              }}
             >
               <Flex
                 width="100%"

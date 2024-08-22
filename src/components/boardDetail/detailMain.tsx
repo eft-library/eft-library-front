@@ -21,10 +21,13 @@ import useViewCount from "@/hooks/useViewCount";
 import DetailIssueComment from "./comment/detailIssueComment";
 import React from "react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { useSearchParams } from "next/navigation";
 
 export default function DetailMain({ siteParam }: BoardMain) {
+  const searchParams = useSearchParams();
   const { user } = useAppStore((state) => state);
   const { data: session } = useSession();
+  const myCommentId = searchParams.get("commentId");
   const { postInfo, getBoardPage } = useBoardDetail(siteParam);
   const [comments, setComments] = useState<CommentInfo>();
   const [issueComments, setIssueComments] = useState<IssueCommentInfo>();
@@ -73,10 +76,14 @@ export default function DetailMain({ siteParam }: BoardMain) {
   useEffect(() => {
     if (postInfo && postInfo.id) {
       getIssueCommentsByBoardID();
-      // 여기에서 조건 걸어서 user/comment에서 온거면 page 얻는거로 해야 함 보낼때 commentId를 같이 보내야 하는데 store 써야 하나
-      getCommentsByBoardID(1);
+
+      if (myCommentId) {
+        getCommentsPageByBoardID(myCommentId);
+      } else {
+        getCommentsByBoardID(1);
+      }
     }
-  }, [postInfo]);
+  }, [postInfo, myCommentId]);
 
   const getCommentsPageByBoardID = async (commentId: string) => {
     const res = await fetch(
@@ -95,12 +102,11 @@ export default function DetailMain({ siteParam }: BoardMain) {
 
     const response = await res.json();
     setComments(response.data);
-
     issueCommentScroll(commentId);
   };
 
   const issueCommentScroll = (commentId: string) => {
-    if (typeof window !== "undefined" && comments) {
+    if (typeof window !== "undefined") {
       const scrollToElement = () => {
         const targetElement = document.getElementById(commentId);
         if (commentId && targetElement) {
