@@ -57,9 +57,13 @@ export default function Contents() {
         paddingX={2}
         paddingY={2}
       >
-        <Link href={`/quest/detail/${item.id}`}>{firstPart}</Link>
-        <br />
-        <Link href={`/quest/detail/${item.id}`}>{secondPart}</Link>
+        <Link href={`/quest/detail/${item.id}`}>
+          <Text _hover={{ color: ALL_COLOR.BEIGE }} color={ALL_COLOR.ORANGE}>
+            {firstPart}
+            <br />
+            {secondPart}
+          </Text>
+        </Link>
       </Td>
     );
   };
