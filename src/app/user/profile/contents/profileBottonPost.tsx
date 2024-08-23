@@ -60,7 +60,7 @@ export default function ProfileBottomPost({ user_posts }: ProfileBotton) {
                   justifyContent={"space-between"}
                   w={"100%"}
                 >
-                  <Heading size="md" mb={2} display="flex" alignItems="center">
+                  <Heading size="sm" mb={2} display="flex" alignItems="center">
                     &nbsp;
                     {post.title}&nbsp;
                     <Text color={ALL_COLOR.YELLOW}>({post.comment_cnt})</Text>

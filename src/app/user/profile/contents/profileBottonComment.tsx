@@ -67,7 +67,7 @@ export default function ProfileBottomComment({ user_comments }: ProfileBotton) {
                   w={"100%"}
                 >
                   <Heading
-                    size="md"
+                    size="sm"
                     mb={2}
                     dangerouslySetInnerHTML={{
                       __html: getFirstParagraph(comment.contents),
