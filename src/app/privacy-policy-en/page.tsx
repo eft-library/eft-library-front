@@ -1,7 +1,7 @@
 import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
-import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { Box, Heading, Text, Highlight } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 export const metadata = {
   title: "Privacy Policy | EFT Library",
@@ -19,266 +19,235 @@ export default function PrivacyPolicy() {
   return (
     <PageParent>
       <SubHeader title="Privacy Policy" />
-      <Box mb={10} />
-      <Box p={5} w={"100%"}>
-        <Text mb={3} fontWeight={600}>
-          ‘TKL’ highly values the privacy of its customers and is committed to
-          protecting their personal information to prevent any harm caused by
-          data breaches. In line with this commitment, we comply with the
-          relevant laws, including the
-          <Highlight
-            query="Act on Promotion of Information and Communications Network Utilization and Information Protection"
-            styles={{ color: ALL_COLOR.RED, fontWeight: "bold" }}
-          >
-            Act on Promotion of Information and Communications Network
-            Utilization and Information Protection
-          </Highlight>
-          and the
-          <Highlight
-            query="Personal Information Protection Act"
-            styles={{ color: ALL_COLOR.RED, fontWeight: "bold" }}
-          >
-            Personal Information Protection Act
-          </Highlight>
-          . This Privacy Policy outlines how we use, manage, and protect your
-          personal information.
+      <Box padding="4">
+        <Text>
+          <strong>‘EFT Library’</strong> places great importance on the
+          protection of customer personal information and complies with the
+          relevant laws and regulations that information and communications
+          service providers must adhere to, such as the Act on Promotion of
+          Information and Communications Network Utilization and Information
+          Protection and the Personal Information Protection Act. Based on this,
+          we have established the following privacy policy to inform you of how
+          your personal information is used and what measures are being taken to
+          protect it.
+        </Text>
+        <Text mt={4}>
+          This privacy policy may change according to changes in laws or
+          guidelines, or changes in our policy. Members are encouraged to check
+          our site regularly for updates.
         </Text>
 
-        <Text mb={3} fontWeight={600}>
-          Our Privacy Policy may change due to legal updates or changes in our
-          policies. We recommend that you regularly check our website for any
-          updates.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
+        <Heading as="h2" size="md" mt={6}>
           General Provisions
         </Heading>
-        <Text mb={3} fontWeight={600}>
-          'TKL' (hereinafter referred to as "the Company") places great
-          importance on the protection of users' personal information. The
-          Company strives to protect the personal information that users provide
-          online while using our services. We comply with the
-          <Highlight
-            query="Act on Promotion of Information and Communications Network Utilization and Information Protection"
-            styles={{ color: ALL_COLOR.RED, fontWeight: "bold" }}
-          >
-            Act on Promotion of Information and Communications Network
-            Utilization and Information Protection
-          </Highlight>
-          and other relevant regulations.
+        <Text mt={2}>
+          <strong>‘EFT Library’</strong> (hereinafter referred to as "the
+          Company") places great importance on the protection of the personal
+          information of users and makes every effort to ensure that personal
+          information provided online is protected while users use the company's
+          services. The company complies with the personal information
+          protection regulations and guidelines of relevant laws, such as the
+          Act on Promotion of Information and Communications Network Utilization
+          and Information Protection.
         </Text>
 
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          1. Consent to Collection of Personal Information
+        <Heading as="h2" size="md" mt={6}>
+          1. Description of App Functions
         </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company provides a procedure where users can click "Agree" or
-          "Cancel" on the Privacy Policy or Terms of Service. By clicking
-          "Agree," users are deemed to have consented to the collection of
-          personal information.
+        <Text mt={2}>
+          <strong>EFT Library</strong> is a site that provides guide information
+          for the Escape from Tarkov game. Users can enjoy the game more
+          effectively through various guides, weapon and equipment information,
+          and community forums. The personal information collected on the site
+          is used only for providing these services and enhancing the user
+          experience.
         </Text>
 
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          2. Personal Information Collected and Purpose of Collection/Use
+        <Heading as="h2" size="md" mt={6}>
+          2. Hosting on a Verified Domain
         </Heading>
-        <Text mb={3} fontWeight={600}>
+        <Text mt={2}>
+          The <strong>EFT Library</strong> website is hosted on a verified
+          domain,{" "}
+          <Link href="https://www.eftlibrary.com">
+            <strong>www.eftlibrary.com</strong>
+          </Link>
+          , owned by the company, and is not hosted on a third-party platform.
+          This ensures that users can utilize the service in a trustworthy
+          environment.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          3. Consistent Privacy Policy Link
+        </Heading>
+        <Text mt={2}>
+          The privacy policy link accessed from the personal information
+          provision consent screen is consistent with the link on this page,
+          ensuring that users can always view the correct privacy policy.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          4. Accessible Without Login
+        </Heading>
+        <Text mt={2}>
+          This privacy policy is publicly accessible to all users of{" "}
+          <strong>EFT Library</strong> without requiring a login. Users can
+          check this page to view the privacy policy at any time.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          5. Consent to the Collection of Personal Information
+        </Heading>
+        <Text mt={2}>
+          The company provides a procedure where users can click the "Agree" or
+          "Cancel" button for the contents of the company's privacy policy or
+          terms of use. If the "Agree" button is clicked, it is considered that
+          the user agrees to the collection of personal information.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          6. Items of Personal Information Collected and Purpose of Collection
+          and Use
+        </Heading>
+        <Text mt={2}>
           ① "Personal information" refers to information about a living
-          individual that can identify that person based on the information,
-          including name and date of birth. This includes information that, when
-          combined with other data, can easily identify a person.
+          individual that can identify a specific individual by the name, date
+          of birth, etc., included in the information.
         </Text>
-        <Text mb={3} fontWeight={600}>
-          ② The personal information we collect from individual members and the
-          purposes for its collection and use are as follows:
+        <Text mt={2}>
+          ② The items of personal information collected from individual members
+          and the purposes for collection and use are as follows:
         </Text>
-        <Text mb={3} fontWeight={600}>
-          [Mandatory Information]
+        <Text mt={2} pl={4}>
+          <strong>Required items:</strong> ID (email account), authentication
+          value - to prevent unauthorized use and misuse by malicious users,
+          cookie information, member number, etc., necessary for service
+          provision.
+        </Text>
+        <Text mt={2} pl={4}>
+          <strong>Optional items:</strong> Address, verification procedures for
+          membership services, IP address.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          7. Methods of Collecting Personal Information
+        </Heading>
+        <Text mt={2}>
+          The company collects essential information online when users sign up
+          for membership services and may request additional information (such
+          as a phone number) that can be selectively entered as needed.
+          Additional personal information may be requested for statistical
+          analysis and prize delivery during surveys or events within the
+          shopping mall.
+        </Text>
+
+        <Heading as="h2" size="md" mt={6}>
+          8. Retention and Use Period of Personal Information
+        </Heading>
+        <Text mt={2}>
+          The company continuously retains and uses the personal information of
+          users while they are members of the company to provide services.
+          However, if a user requests withdrawal or the purpose of collection is
+          achieved, the company will promptly destroy the personal information.
+        </Text>
+        <Text mt={2}>
+          In accordance with the law, the company retains member information for
+          a certain period if it is required by law, or if necessary for
+          litigation or dispute resolution:
+        </Text>
+        <Text mt={2} pl={4}>
+          - If necessary for retention according to the Commercial Act or other
+          laws
           <br />
-          <Highlight
-            query="Username (email address), authentication value: Prevention of unauthorized use by problematic members, cookie information collected through automated data collection devices, member number: Service provision"
-            styles={{ color: ALL_COLOR.RED, fontWeight: "bold" }}
-          >
-            Username (email address), authentication value: Prevention of
-            unauthorized use by problematic members, cookie information
-            collected through automated data collection devices, member number:
-            Service provision
-          </Highlight>
+          - If necessary for retention in anticipation of litigation or disputes
+          <br />- If separate consent has been obtained from the transaction
+          counterpart
         </Text>
-        <Text mb={3} fontWeight={600}>
-          [Optional Information]
+
+        <Heading as="h2" size="md" mt={6}>
+          9. Procedure and Method of Destroying Personal Information
+        </Heading>
+        <Text mt={2}>
+          The company promptly destroys personal information after the purpose
+          of collection and use is achieved. The procedure and method of
+          destruction are as follows:
+        </Text>
+        <Text mt={2} pl={4}>
+          <strong>Destruction procedure:</strong> Information entered by users
+          is transferred to a separate database after the purpose is achieved
+          and stored for a certain period before being destroyed.
           <br />
-          <Highlight
-            query="Address and identity verification procedures for membership services, IP Address"
-            styles={{ color: ALL_COLOR.RED, fontWeight: "bold" }}
-          >
-            Address and identity verification procedures for membership
-            services, IP Address
-          </Highlight>
+          <strong>Destruction method:</strong> Electronic files are deleted
+          using a technical method that makes recovery impossible, and personal
+          information printed on paper is shredded or incinerated.
         </Text>
 
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          3. Methods of Collecting Personal Information
+        <Heading as="h2" size="md" mt={6}>
+          10. User and Legal Representative Rights and How to Exercise Them
         </Heading>
-        <Text mb={3} fontWeight={600}>
-          ① The Company collects essential information online when users sign up
-          for membership services. Mandatory information includes password,
-          email address, etc. Optional information, such as phone number, may
-          also be collected to provide high-quality services. Additionally,
-          personal information may be requested for statistical analysis or
-          prize delivery during surveys or events on our shopping mall.
+        <Text mt={2}>
+          Users and legal representatives can view or modify their personal
+          information at any time and request account cancellation. After
+          identity verification, requests are promptly processed via written
+          request, phone, or email.
         </Text>
-        <Text mb={3} fontWeight={600}>
-          ② Sensitive personal information (e.g., race, ethnicity, ideology,
-          religion, birthplace, political affiliation, and criminal records)
-          that could infringe on basic human rights is not collected. If such
-          information must be collected, prior consent from users will be
-          obtained. The information collected will not be used for purposes
-          other than those stated or disclosed to users.
+        <Text mt={2}>
+          In the case of children under the age of 14, legal representatives
+          have the right to view or modify the child's personal information and
+          to withdraw consent to the collection and use of the child's personal
+          information.
         </Text>
 
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          4. Retention and Use Period of Personal Information
+        <Heading as="h2" size="md" mt={6}>
+          11. Installation, Operation, and Rejection of Automatic Personal
+          Information Collection Devices
         </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company retains and uses users' personal information for the
-          duration of the service provision period. However, if a user requests
-          withdrawal or deletion, or if the purpose of collection is achieved,
-          the information will be immediately destroyed.
+        <Text mt={2}>
+          The company uses cookies to frequently store and retrieve user
+          information. The purpose of using cookies is to provide customized
+          services by identifying the usage patterns of visited services and
+          websites.
         </Text>
-        <Text mb={3} fontWeight={600}>
-          Additionally, information may be retained for a specified period
-          according to relevant laws in the following cases:
+        <Text mt={2}>
+          Users have the option to allow or reject the installation of cookies
+          through their web browser settings.
         </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ When retention is necessary under commercial or other relevant laws.
+
+        <Heading as="h2" size="md" mt={6}>
+          12. Technical and Managerial Measures for Personal Information
+          Protection
+        </Heading>
+        <Text mt={2}>
+          The company implements the following technical and managerial measures
+          to protect users' personal information:
+        </Text>
+        <Text mt={2} pl={4}>
+          <strong>Password encryption:</strong> Passwords are encrypted and
+          stored.
           <br />
-          ▶ When retention is necessary for litigation or dispute resolution.
-          <br />▶ When separate consent has been obtained from the transaction
-          counterpart.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          5. Procedure and Method for Destroying Personal Information
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company will promptly destroy users' personal information once the
-          purpose of collection and use has been achieved. The destruction
-          process and methods are as follows:
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Destruction Procedure
+          <strong>Measures against hacking:</strong> Security systems are in
+          place to prevent hacking and viruses.
           <br />
-          Information entered by the user for membership, etc., will be moved to
-          a separate database (in the case of paper, a separate file cabinet)
-          after the purpose is achieved. The information will then be stored for
-          a certain period according to internal policies and other relevant
-          laws before being destroyed. Personal information moved to the
-          database will not be used for other purposes unless required by law.
+          <strong>
+            Minimization and education of personal information handlers:
+          </strong>{" "}
+          The company provides training for personal information handlers.
         </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Destruction Method
+
+        <Heading as="h2" size="md" mt={6}>
+          13. Contact Information of the Personal Information Protection Officer
+          and Staff
+        </Heading>
+        <Text mt={2}>
+          The company has designated relevant departments and responsible
+          persons for the protection of personal information and provides the
+          following contact information for inquiries or complaints:
+        </Text>
+        <Text mt={2} pl={4}>
+          <strong>Personal Information Protection Officer</strong>:<br />
+          Name: Huijae Mun
           <br />
-          Electronic files will be deleted using technical methods that prevent
-          recovery. Personal information printed on paper will be shredded or
-          incinerated.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          6. Users' and Legal Guardians' Rights and How to Exercise Them
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          Users and legal guardians can view or edit their registered personal
-          information or request membership cancellation at any time.
-          Verification of identity will be required to process such requests.
-          The Company will promptly take action upon receiving a request via
-          written communication, phone, or email.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          For children under the age of 14, legal guardians have the right to
-          view, edit, or withdraw consent for the collection and use of their
-          child's personal information.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          Deleted or withdrawn personal information will be processed as
-          outlined in the "Retention and Use Period of Personal Information"
-          section and will not be used or accessed for other purposes.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          7. Installation, Operation, and Rejection of Automatic Data Collection
-          Devices
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company uses "cookies" to store and retrieve user information.
-          Cookies are small text files sent to the user's browser by the web
-          server and stored on the user's hard disk. Cookies are used to provide
-          users with more personalized services by identifying user visit
-          patterns, service usage, and preferences.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          Users have the option to accept or reject cookie installation. Users
-          can configure their web browser settings to allow all cookies, receive
-          confirmation each time a cookie is stored, or reject all cookies.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Cookie settings
-          <br />- Internet Explorer: Tools {">"} Internet Options {">"} Privacy{" "}
-          {">"} Advanced
-          <br />- Chrome: Settings {">"} Show Advanced Settings {">"} Privacy{" "}
-          {">"} Content Settings
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          Rejecting cookies may limit the use of certain services or features
-          provided by the Company.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          8. Protection Measures for Personal Information
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company implements the following technical, administrative, and
-          physical measures to ensure the security of personal information:
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Technical Measures: Using secure networks and systems, encryption of
-          critical data, installing and regularly updating anti-virus software.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Administrative Measures: Limiting access to personal information to
-          authorized personnel, conducting regular training on personal
-          information protection.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Physical Measures: Storing personal information in secure locations,
-          using access control systems.
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          9. Personal Information Protection Officer
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          The Company has designated a Personal Information Protection Officer
-          to handle inquiries, complaints, and damage relief regarding the
-          processing of personal information.
-        </Text>
-        <Text mb={3} fontWeight={600}>
-          ▶ Personal Information Protection Officer:
-          <br />
-          Name: HuiJae Mun
-          <br />
-          Contact: tarkovlibrary@gmail.com
-        </Text>
-
-        <Heading as="h2" size="lg" mt={10} mb={3}>
-          10. Changes to the Privacy Policy
-        </Heading>
-        <Text mb={3} fontWeight={600}>
-          This Privacy Policy may be revised periodically due to changes in
-          laws, regulations, or the Company's internal policies. Any changes
-          will be announced on the website 7 days prior to the effective date.
-        </Text>
-        <Text mt={10} mb={3} fontWeight={600}>
-          This policy is effective from [2024.08.21].
+          Email: tarkovlibrary@gmail.com
         </Text>
       </Box>
     </PageParent>
