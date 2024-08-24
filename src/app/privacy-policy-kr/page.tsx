@@ -63,8 +63,8 @@ export default function PrivacyPolicy() {
         </Heading>
         <Text mt={2}>
           <strong>EFT Library</strong>의 홈페이지는{" "}
-          <Link href="https://www.eftlibrary.com">
-            <strong>www.eftlibrary.com</strong>
+          <Link href="https://eftlibrary.com">
+            <strong>eftlibrary.com</strong>
           </Link>{" "}
           이라는 회사 소유의 검증된 도메인에 호스팅되어 있으며, 제3자 플랫폼에서
           호스팅되지 않습니다. 이를 통해 사용자는 신뢰할 수 있는 환경에서

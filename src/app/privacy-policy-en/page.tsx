@@ -69,8 +69,8 @@ export default function PrivacyPolicy() {
         <Text mt={2}>
           The <strong>EFT Library</strong> website is hosted on a verified
           domain,{" "}
-          <Link href="https://www.eftlibrary.com">
-            <strong>www.eftlibrary.com</strong>
+          <Link href="https://eftlibrary.com" isExternal>
+            <strong>eftlibrary.com</strong>
           </Link>
           , owned by the company, and is not hosted on a third-party platform.
           This ensures that users can utilize the service in a trustworthy
