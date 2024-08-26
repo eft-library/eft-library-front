@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, VStack, Text } from "@chakra-ui/react";
 import BoardHeader from "@/components/board/boardHeader";
 import BoardPost from "@/components/board/boardPost";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -31,9 +31,13 @@ export default function BoardMain({ siteParam }: BoardMain) {
       <BoardHeader siteParam={siteParam} />
       <Box border="1px solid white" p={5} borderRadius="10px">
         <VStack spacing={5}>
-          {postInfo.data.map((post) => (
-            <BoardPost key={post.id} post={post} />
-          ))}
+          {postInfo.data.length > 0 ? (
+            postInfo.data.map((post) => <BoardPost key={post.id} post={post} />)
+          ) : (
+            <Text fontWeight={800} p={40}>
+              게시글이 없습니다.
+            </Text>
+          )}
           <BoardSearch
             searchInfo={searchInfo}
             setSearchData={setSearchData}
