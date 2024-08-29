@@ -62,10 +62,10 @@ export default function PrivacyPolicy() {
           2. 소유한 검증된 도메인에서 호스팅
         </Heading>
         <Text mt={2}>
-          <strong>EFT Library</strong>의 홈페이지는{" "}
+          <strong>EFT Library</strong>의 홈페이지는
           <Link href="https://eftlibrary.com">
             <strong>eftlibrary.com</strong>
-          </Link>{" "}
+          </Link>
           이라는 회사 소유의 검증된 도메인에 호스팅되어 있으며, 제3자 플랫폼에서
           호스팅되지 않습니다. 이를 통해 사용자는 신뢰할 수 있는 환경에서
           서비스를 이용할 수 있습니다.

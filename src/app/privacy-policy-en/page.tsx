@@ -68,7 +68,7 @@ export default function PrivacyPolicy() {
         </Heading>
         <Text mt={2}>
           The <strong>EFT Library</strong> website is hosted on a verified
-          domain,{" "}
+          domain,
           <Link href="https://eftlibrary.com">
             <strong>eftlibrary.com</strong>
           </Link>
@@ -90,7 +90,7 @@ export default function PrivacyPolicy() {
           4. Accessible Without Login
         </Heading>
         <Text mt={2}>
-          This privacy policy is publicly accessible to all users of{" "}
+          This privacy policy is publicly accessible to all users of
           <strong>EFT Library</strong> without requiring a login. Users can
           check this page to view the privacy policy at any time.
         </Text>
@@ -230,7 +230,7 @@ export default function PrivacyPolicy() {
           <br />
           <strong>
             Minimization and education of personal information handlers:
-          </strong>{" "}
+          </strong>
           The company provides training for personal information handlers.
         </Text>
 
