@@ -1,20 +1,14 @@
 import { MAX_UUID_COUNT, LOCAL_STORAGE_KEY } from "@/util/consts/libraryConsts";
 import { useEffect } from "react";
 import USER_API_ENDPOINTS from "@/config/userEndPoints";
-import { useSession } from "next-auth/react";
 
 export default function useViewCount(boardId: string, boardType: string) {
-  const { data: session } = useSession();
   useEffect(() => {
     const addBoardViewCount = async () => {
       try {
         const res = await fetch(`${USER_API_ENDPOINTS.ADD_BOARD_VIEW_COUNT}`, {
           method: "POST",
           headers: {
-            Authorization:
-              session && session.accessToken
-                ? `Bearer ${session.accessToken}`
-                : "Bearer ",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -28,7 +22,7 @@ export default function useViewCount(boardId: string, boardType: string) {
       }
     };
 
-    if (boardId && session) {
+    if (boardId) {
       // 로컬 스토리지에서 UUID 목록 가져오기
       const storedUuids =
         JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
