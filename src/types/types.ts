@@ -597,6 +597,9 @@ export interface Quest extends strID, CommonData {
   title_en: string;
   required_kappa: boolean;
   objectives_kr: string[];
+  objectives_en: string[];
+  requirements_en: string[];
+  requirements_kr: string[];
   rewards_kr: string[];
   guide: string;
   requires: JsonArrayText[];

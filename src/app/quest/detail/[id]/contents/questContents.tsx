@@ -30,6 +30,22 @@ export default function QuestContents({ quest }: QuestContents) {
 
   return (
     <Box w={"95%"}>
+      {quest.requirements_kr && (
+        <DividerContents headText="요구사항">
+          <Box>
+            {quest.requirements_kr.map((requirements) => (
+              <Text
+                key={requirements}
+                mt={1}
+                fontWeight={700}
+                dangerouslySetInnerHTML={{
+                  __html: `*&nbsp;&nbsp;${requirements}`,
+                }}
+              />
+            ))}
+          </Box>
+        </DividerContents>
+      )}
       <DividerContents headText="목표">
         <Box>
           {quest.objectives_kr.map((objectives) => (
