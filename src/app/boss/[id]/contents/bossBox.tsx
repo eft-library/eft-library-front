@@ -4,6 +4,7 @@ import GridCenterText from "@/components/gridText/gridCenterText";
 import GridJsonText from "@/components/gridText/gridJsonText";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { Box } from "@chakra-ui/react";
+import { formatImage } from "@/lib/formatImage";
 
 export default function BossBox({ boss }) {
   return (
@@ -14,7 +15,10 @@ export default function BossBox({ boss }) {
       key={boss.id}
     >
       <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-        <ImageZoom originalImg={boss.image} thumbnail={boss.image} />
+        <ImageZoom
+          originalImg={formatImage(boss.image)}
+          thumbnail={formatImage(boss.image)}
+        />
       </Box>
       <GridCenterText>{boss.name_kr}</GridCenterText>
       <GridCenterText>{boss.faction}</GridCenterText>
