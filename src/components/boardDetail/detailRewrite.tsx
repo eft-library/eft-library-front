@@ -85,6 +85,7 @@ export default function DetailRewrite({
         alert("수정되었습니다.");
         setIsWrite(false);
         setPreview(false);
+        location.reload();
       } else {
         alert("잠시후 다시 시도해주세요");
       }
