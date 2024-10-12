@@ -47,7 +47,7 @@ export default function ImageSlider({
                     w={size.width}
                     h={size.height}
                     cursor={"pointer"}
-                    alt="image"
+                    alt={map.id}
                     src={formatImage(map[imagePath])}
                     boxSize="100%"
                   />

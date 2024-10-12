@@ -6,6 +6,7 @@ import { formatImage } from "@/lib/formatImage";
 import type { ImageZoom } from "@/types/types";
 import { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/react";
+import { extractFileName } from "@/lib/extractFileName";
 
 export default function ImageZoom({
   originalImg,
@@ -59,7 +60,7 @@ export default function ImageZoom({
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
-            alt="image"
+            alt={extractFileName(originalImg)}
           />
         )}
       </Item>
@@ -83,7 +84,7 @@ export default function ImageZoom({
             borderRadius={isQuest ? "lg" : ""}
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
-            alt="image"
+            alt={extractFileName(originalImg)}
           />
         )}
       </Item>

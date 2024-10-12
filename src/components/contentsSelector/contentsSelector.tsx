@@ -82,7 +82,7 @@ export default function ContentsSelector({
               p={2}
             >
               {isImage ? (
-                <Image src={item["image"]} />
+                <Image src={item["image"]} alt={item["desc_en"]} />
               ) : (
                 <Text
                   color={ALL_COLOR.WHITE}
