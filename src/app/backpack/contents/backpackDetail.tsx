@@ -28,11 +28,15 @@ export default function BackpackDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_BACKPACK, setBackpackList);
   }, []);
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
-  //   }
-  // }, []);
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.adsbygoogle && document.querySelectorAll('.adsbygoogle').length > 0) {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error("AdSense error: ", e);
+            }
+        }
+    }, [])
 
   useScrollMove(param.get("id"), backpackList);
 
