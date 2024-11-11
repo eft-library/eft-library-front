@@ -68,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />
+        {/*<AdSense pId={process.env.NEXT_PUBLIC_ADSENSE} />*/}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         <AuthContext>
           <ChakraProvider>

@@ -28,31 +28,45 @@ export default function BackpackDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_BACKPACK, setBackpackList);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, []);
+
   useScrollMove(param.get("id"), backpackList);
 
   if (!backpackList || !column) return <WeaponSkeleton />;
 
   return (
-    <>
-      <GridTitle
-        columnDesign={[2, null, 5]}
-        column={column.value_kr}
-        isShadow
-        shadowColor={ALL_COLOR.YELLOW_SHADOW}
-      />
-      {backpackList.map((item) => (
-        <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
-          <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <ImageZoom originalImg={item.image} thumbnail={item.image} />
-          </Box>
-          <GridCenterText>{item.name}</GridCenterText>
-          <GridCenterText>{item.capacity} </GridCenterText>
-          <GridCenterText>
-            {item.grids[0].width} x {item.grids[0].height}
-          </GridCenterText>
-          <GridCenterText>{item.weight} kg</GridCenterText>
-        </GridContents>
-      ))}
-    </>
+      <>
+          <ins
+              className="adsbygoogle"
+              style={{display: 'block'}}
+              data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
+              data-ad-slot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+          ></ins>
+          <GridTitle
+              columnDesign={[2, null, 5]}
+              column={column.value_kr}
+              isShadow
+              shadowColor={ALL_COLOR.YELLOW_SHADOW}
+          />
+          {backpackList.map((item) => (
+              <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
+                  <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+                      <ImageZoom originalImg={item.image} thumbnail={item.image}/>
+                  </Box>
+                  <GridCenterText>{item.name}</GridCenterText>
+                  <GridCenterText>{item.capacity} </GridCenterText>
+                  <GridCenterText>
+                      {item.grids[0].width} x {item.grids[0].height}
+                  </GridCenterText>
+                  <GridCenterText>{item.weight} kg</GridCenterText>
+              </GridContents>
+          ))}
+      </>
   );
 }
