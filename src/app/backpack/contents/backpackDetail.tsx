@@ -14,6 +14,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import VerticalAdsense from "@/components/adsense/verticalAdsense";
 
 export default function BackpackDetail() {
   const param = useSearchParams();
@@ -28,30 +29,13 @@ export default function BackpackDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_BACKPACK, setBackpackList);
   }, []);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined' && window.adsbygoogle && document.querySelectorAll('.adsbygoogle').length > 0) {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.error("AdSense error: ", e);
-            }
-        }
-    }, [])
-
   useScrollMove(param.get("id"), backpackList);
 
   if (!backpackList || !column) return <WeaponSkeleton />;
 
   return (
       <>
-          <ins
-              className="adsbygoogle"
-              style={{display: 'block' , width:'100%', height:'100px', marginBottom: '20px'}}
-              data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
-              data-ad-slot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT}
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-          ></ins>
+          <VerticalAdsense />
           <GridTitle
               columnDesign={[2, null, 5]}
               column={column.value_kr}
