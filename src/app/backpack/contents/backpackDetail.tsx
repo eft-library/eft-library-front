@@ -42,7 +42,7 @@ export default function BackpackDetail() {
       <>
           <ins
               className="adsbygoogle"
-              style={{display: 'block'}}
+              style={{display: 'block' , width:'100%', height:'100px', marginBottom: '20px'}}
               data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
               data-ad-slot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT}
               data-ad-format="auto"
