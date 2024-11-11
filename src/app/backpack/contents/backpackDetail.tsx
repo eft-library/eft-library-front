@@ -28,11 +28,11 @@ export default function BackpackDetail() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_BACKPACK, setBackpackList);
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
+  //   }
+  // }, []);
 
   useScrollMove(param.get("id"), backpackList);
 
