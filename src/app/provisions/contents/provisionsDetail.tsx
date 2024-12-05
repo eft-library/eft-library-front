@@ -75,7 +75,11 @@ export default function ProvisionsDetail({
           isHideout
         >
           <Box display="flex" alignItems="center" justifyContent="center">
-            <ImageZoom originalImg={item.image} thumbnail={item.image} />
+            <ImageZoom
+              originalImg={item.image}
+              thumbnail={item.image}
+              name={item.name_kr}
+            />
           </Box>
           <GridCenterText>{item.name_kr} </GridCenterText>
           <GridCenterText otherColor={checkPlus(item.energy)}>

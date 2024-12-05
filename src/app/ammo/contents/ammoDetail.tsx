@@ -137,7 +137,11 @@ export default function AmmoDetail({ category }: AmmoDetail) {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <ImageZoom originalImg={item.image} thumbnail={item.image} />
+              <ImageZoom
+                originalImg={item.image}
+                thumbnail={item.image}
+                name={item.name}
+              />
             </Box>
             <GridCenterText>{item.name} </GridCenterText>
             <GridCenterText>{item.damage} </GridCenterText>

@@ -60,6 +60,7 @@ export default function WeaponStationary({
               <ImageZoom
                 originalImg={item.image}
                 thumbnail={item.image}
+                name={item.short_name}
                 needFormat
               />
             </Box>

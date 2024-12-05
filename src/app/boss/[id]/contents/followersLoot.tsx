@@ -94,6 +94,7 @@ export default function FollowersLoot({ follower, column }: FollowersDetail) {
                         <ImageZoom
                           originalImg={loot.item_image}
                           thumbnail={loot.item_image}
+                          name={loot.item_name_kr}
                         />
                       </Box>
                       <GridCenterText isHover>

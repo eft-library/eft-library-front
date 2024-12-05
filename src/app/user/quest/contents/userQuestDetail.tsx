@@ -205,6 +205,7 @@ export default function UserQuestDetail() {
                     isQuest
                     originalImg={formatImage(npc.npc_image)}
                     thumbnail={formatImage(npc.npc_image)}
+                    name={npc.npc_name_kr}
                   />
                 </Box>
                 <Box as="span" flex={1} textAlign={"left"} fontWeight={800}>

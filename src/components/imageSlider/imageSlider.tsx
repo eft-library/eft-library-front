@@ -39,6 +39,7 @@ export default function ImageSlider({
                   isMax={false}
                   isLoop
                   originalImg={map[imagePath]}
+                  name={map.id}
                   thumbnail={map[imagePath]}
                 />
               ) : (

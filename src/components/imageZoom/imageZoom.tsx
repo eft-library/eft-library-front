@@ -11,6 +11,7 @@ import { extractFileName } from "@/lib/extractFileName";
 export default function ImageZoom({
   originalImg,
   thumbnail,
+  name,
   needFormat = false,
   isMax = true,
   isLoop = false,
@@ -60,7 +61,7 @@ export default function ImageZoom({
             fallbackSrc="/loading.gif"
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
-            alt={extractFileName(originalImg)}
+            alt={name}
           />
         )}
       </Item>
@@ -84,7 +85,7 @@ export default function ImageZoom({
             borderRadius={isQuest ? "lg" : ""}
             cursor={"pointer"}
             src={needFormat ? formatImage(originalImg) : originalImg}
-            alt={extractFileName(originalImg)}
+            alt={name}
           />
         )}
       </Item>

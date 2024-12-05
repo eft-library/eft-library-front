@@ -41,7 +41,7 @@ export default function ImgWithZoom({ content }) {
             <Image
               src={selectedImage}
               w={"100%"}
-              alt="Selected Image"
+              alt={selectedImage}
               objectFit="contain"
             />
           </ModalBody>

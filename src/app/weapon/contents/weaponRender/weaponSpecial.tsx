@@ -56,7 +56,11 @@ export default function WeaponSpecial({
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <ImageZoom originalImg={item.image} thumbnail={item.image} />
+              <ImageZoom
+                originalImg={item.image}
+                thumbnail={item.image}
+                name={item.short_name}
+              />
             </Box>
             <GridCenterText>{item.short_name}</GridCenterText>
           </GridContents>

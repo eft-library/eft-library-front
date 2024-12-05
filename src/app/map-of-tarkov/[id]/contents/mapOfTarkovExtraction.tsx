@@ -63,6 +63,7 @@ export default function MapOfTarkovExtraction({
                 thumbnail={extraction.image_thumbnail}
                 needFormat
                 isMax={false}
+                name={extraction.name}
               />
             </GridItem>
             <GridCenterText>{extraction.name}</GridCenterText>

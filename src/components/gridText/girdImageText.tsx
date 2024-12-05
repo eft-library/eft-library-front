@@ -35,6 +35,7 @@ export default function GridImageText({ jsonList }: GridImageText) {
                 thumbnail={item.thumbnail}
                 needFormat
                 isMax={false}
+                name={item.image}
               />
             )}
             <GridCenterText mt={2} mb={jsonList.length === index + 1 ? 0 : 4}>

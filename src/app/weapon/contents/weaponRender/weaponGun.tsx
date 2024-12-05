@@ -73,7 +73,11 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                <ImageZoom originalImg={item.image} thumbnail={item.image} />
+                <ImageZoom
+                  originalImg={item.image}
+                  thumbnail={item.image}
+                  name={item.short_name}
+                />
               </Box>
             </GridItem>
             <GridCenterText>{item.short_name}</GridCenterText>

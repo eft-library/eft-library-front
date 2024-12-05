@@ -61,7 +61,11 @@ export default function MedicalStimulant({ medicalList }: MedicalList) {
               id={item.id}
             >
               <Box display="flex" alignItems="center" justifyContent="center">
-                <ImageZoom originalImg={item.image} thumbnail={item.image} />
+                <ImageZoom
+                  originalImg={item.image}
+                  thumbnail={item.image}
+                  name={item.name_kr}
+                />
               </Box>
               <GridCenterText>{item.name_kr}</GridCenterText>
               <GridItem

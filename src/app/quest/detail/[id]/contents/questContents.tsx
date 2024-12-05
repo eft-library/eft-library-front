@@ -110,6 +110,7 @@ export default function QuestContents({ quest }: QuestContents) {
                       <ImageZoom
                         originalImg={item.item_image}
                         thumbnail={item.item_image}
+                        name={item.item_name_kr}
                       />
                     </Box>
                     <Link

@@ -18,6 +18,7 @@ export default function BossBox({ boss }) {
         <ImageZoom
           originalImg={formatImage(boss.image)}
           thumbnail={formatImage(boss.image)}
+          name={boss.name_kr}
         />
       </Box>
       <GridCenterText>{boss.name_kr}</GridCenterText>

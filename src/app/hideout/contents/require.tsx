@@ -33,6 +33,7 @@ export default function Require({ items, type }: RequireList) {
                   thumbnail={
                     type === "skill" ? formatImage(item.image) : item.image
                   }
+                  name={item.name_kr}
                   isHideout
                 />
               </Box>

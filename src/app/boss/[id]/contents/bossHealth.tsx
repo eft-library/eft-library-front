@@ -56,6 +56,7 @@ export default function BossHealth({ healthList }: BossHealth) {
                       isBoss
                       originalImg={formatImage(health.health_image)}
                       thumbnail={formatImage(health.health_image)}
+                      name={health.name_kr}
                     />
                   )
               )}

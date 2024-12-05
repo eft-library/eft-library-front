@@ -686,6 +686,7 @@ export interface Provisions extends CommonData, strID, Category {
 }
 
 export interface ImageZoom {
+  name: string;
   originalImg: string;
   thumbnail: string;
   needFormat?: boolean;
