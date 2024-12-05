@@ -130,18 +130,14 @@ export default function QuestContents({ quest }: QuestContents) {
                       alignItems="center"
                       flexDirection={"column"}
                     >
-                      {item.type !== "KEY" && (
-                        <Text
-                          color={
-                            item.in_raid ? ALL_COLOR.RED : ALL_COLOR.YELLOW
-                          }
-                          _hover={{ color: ALL_COLOR.BEIGE }}
-                          textAlign="center"
-                          fontWeight={600}
-                        >
-                          {item.in_raid ? "Y" : "N"}
-                        </Text>
-                      )}
+                      <Text
+                        color={item.in_raid ? ALL_COLOR.RED : ALL_COLOR.YELLOW}
+                        _hover={{ color: ALL_COLOR.BEIGE }}
+                        textAlign="center"
+                        fontWeight={600}
+                      >
+                        {item.in_raid ? "Y" : "N"}
+                      </Text>
                     </Box>
                     <GridItem
                       colSpan={2}
