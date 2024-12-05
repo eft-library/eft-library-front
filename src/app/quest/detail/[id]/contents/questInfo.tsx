@@ -2,11 +2,17 @@ import { Box, Text, Flex } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import type { QuestInfo } from "@/types/types";
 import InfoSkeleton from "../../skeleton/infoSkeleton";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function QuestInfo({ quest }: QuestInfo) {
   if (!quest) return <InfoSkeleton />;
+  const router = useRouter();
+
+  const onClickNPC = () => {
+    router.push("/quest");
+  };
 
   const getTitle = (title: string) => {
     // 첫 번째 부분 추출
@@ -57,6 +63,9 @@ export default function QuestInfo({ quest }: QuestInfo) {
         outline={"4px solid"}
         outlineColor={ALL_COLOR.WHITE}
         borderRadius={"lg"}
+        _hover={{ outlineColor: ALL_COLOR.LIGHT_GRAY }}
+        style={{ cursor: "pointer" }}
+        onClick={onClickNPC}
       />
       {getTitle(quest.title_kr)}
       <Text
