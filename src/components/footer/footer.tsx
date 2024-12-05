@@ -6,7 +6,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { FooterColumn } from "@/types/types";
-import { ColorMode } from "@/hooks/useColorTheme";
 import FooterSkeleton from "./footerSkeleton";
 import { FooterSVG } from "../viewSVG/dynamicSVG";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
@@ -46,7 +45,10 @@ export default function Footer() {
                 fontWeight={"bold"}
                 _hover={{ color: ALL_COLOR.MAIN_YELLO }}
               >
-                <Link href="https://eftlibrary.com/privacy-policy-kr" target="_blank">
+                <Link
+                  href="https://eftlibrary.com/privacy-policy-kr"
+                  target="_blank"
+                >
                   개인정보처리방침&nbsp;
                 </Link>
               </Text>
@@ -55,7 +57,10 @@ export default function Footer() {
                 fontWeight={"bold"}
                 _hover={{ color: ALL_COLOR.MAIN_YELLO }}
               >
-                <Link href="https://eftlibrary.com/privacy-policy-en" target="_blank">
+                <Link
+                  href="https://eftlibrary.com/privacy-policy-en"
+                  target="_blank"
+                >
                   (Privacy Policy), &nbsp;
                 </Link>
               </Text>
@@ -134,35 +139,30 @@ export default function Footer() {
               Team TKL - HJ, SY, JY
             </Text>
             <Box display={"flex"}>
-              {column.json_value.icon.map((item, index) => (
-                <Box
-                  ml={index === 0 ? "" : 4}
-                  key={item.name}
-                  cursor={"pointer"}
-                  onClick={() => window.open(item.link, "_blank")}
-                >
-                  <FooterSVG svgValue={item.name} />
-                  <Text
-                    color={ALL_COLOR.WHITE}
-                    fontWeight={"bold"}
-                    textAlign={"center"}
+              {column.json_value.icon.map((item, index) => {
+                if (item.name === "JY") return null;
+
+                return (
+                  <Box
+                    ml={index === 0 ? "" : 4}
+                    key={item.name}
+                    cursor={"pointer"}
+                    onClick={() => window.open(item.link, "_blank")}
                   >
-                    {item.name}
-                  </Text>
-                </Box>
-              ))}
+                    <FooterSVG svgValue={item.name} />
+                    <Text
+                      color={ALL_COLOR.WHITE}
+                      fontWeight={"bold"}
+                      textAlign={"center"}
+                    >
+                      {item.name}
+                    </Text>
+                  </Box>
+                );
+              })}
             </Box>
           </Flex>
         </GridItem>
-        {/* <GridItem
-          colStart={3}
-          colEnd={6}
-          h="14"
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <ColorMode />
-        </GridItem> */}
       </Grid>
     </Box>
   );
