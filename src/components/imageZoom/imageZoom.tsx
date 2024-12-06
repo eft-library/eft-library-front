@@ -6,7 +6,6 @@ import { formatImage } from "@/lib/formatImage";
 import type { ImageZoom } from "@/types/types";
 import { useEffect, useState } from "react";
 import { Image } from "@chakra-ui/react";
-import { extractFileName } from "@/lib/extractFileName";
 
 export default function ImageZoom({
   originalImg,
