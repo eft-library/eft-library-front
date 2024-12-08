@@ -51,6 +51,11 @@ export const metadata: Metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com",
   },
+  twitter: {
+    title: "EFT Library",
+    description: "Tarkov 공략 페이지 입니다.",
+    images: "/og.png",
+  },
   robots: {
     index: true,
     follow: true,

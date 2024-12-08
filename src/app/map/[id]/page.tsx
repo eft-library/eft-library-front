@@ -22,8 +22,8 @@ export async function generateMetadata(
     title: `타르코프 ${res.name_kr}`,
     description: "타르코프 지도, tarkov map",
     openGraph: {
-      title: "EFT Library 지도",
-      description: "EFT Library 지도",
+      title: `타르코프 ${res.name_kr}`,
+      description: `타르코프 ${res.name_kr}`,
       images: [formatImage(res.mot_image)],
       url: `https://eftlibrary.com/map/${id}`,
       siteName: "Escape From Tarkov Library",
