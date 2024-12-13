@@ -16,6 +16,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function MapOfTarkovExtraction({
   extractionList,
+  headerText,
 }: MapOfTarkovExtraction) {
   const [column, setColumn] = useState<Column>();
 
@@ -29,7 +30,7 @@ export default function MapOfTarkovExtraction({
   if (!column) return null;
 
   return (
-    <DividerContents headText="탈출구">
+    <DividerContents headText={headerText}>
       <Box
         display="flex"
         justifyContent="center"

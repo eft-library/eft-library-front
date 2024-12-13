@@ -270,6 +270,7 @@ export interface MapOfTarkov {
   boss_list: Boss[];
   map_info: Map;
   extraction_info: Extraction[];
+  transits_info: Extraction[];
 }
 
 export interface MapOfTarkovContents {
@@ -638,6 +639,7 @@ export interface ThreeView {
 
 export interface MapOfTarkovExtraction {
   extractionList: Extraction[];
+  headerText: string;
 }
 
 export interface ColladaData {

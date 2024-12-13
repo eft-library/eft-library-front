@@ -40,7 +40,18 @@ export default function MapOfTarkovContents({
           </BossDetail>
         </DividerContents>
       )}
-      <MapOfTarkovExtraction extractionList={mapOfTarkov.extraction_info} />
+      {mapOfTarkov.extraction_info.length > 0 && (
+        <MapOfTarkovExtraction
+          extractionList={mapOfTarkov.extraction_info}
+          headerText="탈출구"
+        />
+      )}
+      {mapOfTarkov.transits_info.length > 0 && (
+        <MapOfTarkovExtraction
+          extractionList={mapOfTarkov.transits_info}
+          headerText="Transits"
+        />
+      )}
     </Box>
   );
 }
