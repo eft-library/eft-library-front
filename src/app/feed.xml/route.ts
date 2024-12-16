@@ -2,9 +2,7 @@ import RSS from "rss";
 import API_ENDPOINTS from "@/config/endPoints";
 
 async function getFeedData() {
-  const response = await fetch(
-    `${API_ENDPOINTS.GET_BOARD_BY_TYPE}/posts?page=1&page_size=99999999&type=board&issue=false&word=null&search_type=null`
-  );
+  const response = await fetch(`${API_ENDPOINTS.GET_ALL_QUEST}`);
   const res = await response.json();
   return res.data.data;
 }
@@ -22,14 +20,14 @@ export async function GET() {
     ttl: 60,
   });
 
-  const allPosts = await getFeedData();
-  if (allPosts) {
-    allPosts.map((post: any) => {
+  const allQuests = await getFeedData();
+  if (allQuests) {
+    allQuests.map((quest: any) => {
       feed.item({
-        title: post.title,
-        description: post.contents,
-        url: `https://eftlibrary.com/board/${post.type}/detail/${post.id}`,
-        date: post.create_time,
+        title: quest.title_kr,
+        description: quest.guide,
+        url: `https://eftlibrary.com/quest/detail/${quest.id}`,
+        date: quest.update_time,
       });
     });
   }
