@@ -22,7 +22,7 @@ export async function GET() {
 
   const allQuests = await getFeedData();
   if (allQuests) {
-    allQuests.map((quest: any) => {
+    allQuests.data.map((quest: any) => {
       feed.item({
         title: quest.title_kr,
         description: quest.guide,
