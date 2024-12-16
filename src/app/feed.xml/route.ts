@@ -4,7 +4,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 async function getFeedData() {
   const response = await fetch(`${API_ENDPOINTS.GET_ALL_QUEST}`);
   const res = await response.json();
-  return res.data.data;
+  return res.data;
 }
 
 export async function GET() {
@@ -22,7 +22,7 @@ export async function GET() {
 
   const allQuests = await getFeedData();
   if (allQuests) {
-    allQuests.data.map((quest: any) => {
+    allQuests.map((quest: any) => {
       feed.item({
         title: quest.title_kr,
         description: quest.guide,
