@@ -5,6 +5,7 @@ import InfoSkeleton from "../../skeleton/infoSkeleton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import React from "react";
 
 export default function QuestInfo({ quest }: QuestInfo) {
   if (!quest) return <InfoSkeleton />;
@@ -94,21 +95,8 @@ export default function QuestInfo({ quest }: QuestInfo) {
           >
             이전
           </Text>
-          {quest.requires && quest.requires.length > 0 ? (
-            quest.requires.map((item) => (
-              <Text
-                key={item.id}
-                color={ALL_COLOR.WHITE}
-                fontWeight={"700"}
-                textAlign={"center"}
-                cursor={"pointer"}
-                _hover={{ color: ALL_COLOR.YELLOW }}
-                mb={1}
-              >
-                <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
-              </Text>
-            ))
-          ) : (
+
+          {!quest.requires || quest.requires.length <= 0 ? (
             <Text
               color={ALL_COLOR.WHITE}
               fontWeight={"700"}
@@ -116,6 +104,50 @@ export default function QuestInfo({ quest }: QuestInfo) {
             >
               -
             </Text>
+          ) : (
+            quest.requires.map((item, index) => {
+              const others = quest.requires.filter((i) => i.is_other);
+              const isLastOther =
+                item.is_other && others.indexOf(item) === others.length - 1;
+
+              return (
+                <React.Fragment key={item.id}>
+                  {item.is_other === false ? (
+                    <Text
+                      color={ALL_COLOR.WHITE}
+                      fontWeight={"700"}
+                      textAlign={"center"}
+                      cursor={"pointer"}
+                      _hover={{ color: ALL_COLOR.YELLOW }}
+                      mb={1}
+                    >
+                      <Link href={`/quest/detail/${item.id}`}>
+                        {item.name_kr}
+                      </Link>
+                    </Text>
+                  ) : (
+                    <>
+                      <Text
+                        color={ALL_COLOR.WHITE}
+                        fontWeight={"700"}
+                        textAlign={"center"}
+                        cursor={"pointer"}
+                        _hover={{ color: ALL_COLOR.ORANGE }}
+                      >
+                        <Link href={`/quest/detail/${item.id}`}>
+                          {item.name_kr}
+                        </Link>
+                      </Text>
+                      {!isLastOther && (
+                        <Text fontWeight={"700"} textAlign={"center"}>
+                          or
+                        </Text>
+                      )}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })
           )}
         </Box>
         <Box display={"flex"} flexDirection={"column"} w={"50%"}>
@@ -127,21 +159,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
           >
             다음
           </Text>
-          {quest.next && quest.next.length > 0 ? (
-            quest.next.map((item) => (
-              <Text
-                key={item.id}
-                color={ALL_COLOR.WHITE}
-                fontWeight={"700"}
-                textAlign={"center"}
-                cursor={"pointer"}
-                _hover={{ color: ALL_COLOR.YELLOW }}
-                mb={1}
-              >
-                <Link href={`/quest/detail/${item.id}`}>{item.name_kr}</Link>
-              </Text>
-            ))
-          ) : (
+          {!quest.next || quest.next.length <= 0 ? (
             <Text
               color={ALL_COLOR.WHITE}
               fontWeight={"700"}
@@ -149,6 +167,51 @@ export default function QuestInfo({ quest }: QuestInfo) {
             >
               -
             </Text>
+          ) : (
+            quest.next.map((item, index) => {
+              const isLastOther =
+                item.is_other &&
+                quest.next.filter((i) => i.is_other).length - 1 ===
+                  quest.next.filter((i) => i.is_other).indexOf(item);
+
+              return (
+                <React.Fragment key={item.id}>
+                  {item.is_other === false ? (
+                    <Text
+                      color={ALL_COLOR.WHITE}
+                      fontWeight={"700"}
+                      textAlign={"center"}
+                      cursor={"pointer"}
+                      _hover={{ color: ALL_COLOR.YELLOW }}
+                      mb={1}
+                    >
+                      <Link href={`/quest/detail/${item.id}`}>
+                        {item.name_kr}
+                      </Link>
+                    </Text>
+                  ) : (
+                    <>
+                      <Text
+                        color={ALL_COLOR.WHITE}
+                        fontWeight={"700"}
+                        textAlign={"center"}
+                        cursor={"pointer"}
+                        _hover={{ color: ALL_COLOR.ORANGE }}
+                      >
+                        <Link href={`/quest/detail/${item.id}`}>
+                          {item.name_kr}
+                        </Link>
+                      </Text>
+                      {!isLastOther && (
+                        <Text fontWeight={"700"} textAlign={"center"}>
+                          or
+                        </Text>
+                      )}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })
           )}
         </Box>
       </Flex>
