@@ -38,6 +38,14 @@ export interface News {
   event_link: string;
   youtube_id: string;
   next_update: string[];
+  user_function: NewsUserFunction[];
+}
+
+export interface NewsUserFunction {
+  link: string;
+  name_en: string;
+  name_kr: string;
+  use_yn: boolean;
 }
 
 export interface NewsText {

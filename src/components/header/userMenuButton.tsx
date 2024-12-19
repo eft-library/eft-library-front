@@ -159,6 +159,7 @@ export default function UserMenuButton({
             sub.value === "USER_DELETE" ? (
               <Box
                 p={2}
+                key={sub.value}
                 onClick={onOpen}
                 _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
                 borderRadius="lg"

@@ -31,7 +31,6 @@ export default function News() {
       justifyContent={"space-between"}
     >
       <NewsText news={news} />
-      <YoutubeNews youtubeId={news.youtube_id} />
     </Box>
   );
 }
