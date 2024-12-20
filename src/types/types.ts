@@ -794,7 +794,13 @@ interface UserQuestInfo {
   quest_name_kr: string;
   objectives_en: string[];
   objectives_kr: string[];
+  requirements_en: string[];
+  requirements_kr: string[];
   next: UserNextQuest[];
+}
+
+export interface UserQuestPopOver {
+  quest: UserQuestInfo;
 }
 
 interface UserNextQuest {

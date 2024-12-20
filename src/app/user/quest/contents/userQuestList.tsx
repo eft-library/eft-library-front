@@ -12,6 +12,7 @@ import {
 import GridContents from "@/components/gridContents/gridContents";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import Link from "next/link";
+import UserQuestPopOver from "./userQuestPopOver";
 
 export default function UserQuestList({
   userQuest,
@@ -55,7 +56,7 @@ export default function UserQuestList({
         <GridContents
           key={quest.quest_id}
           id={quest.quest_id}
-          columnDesign={[2, null, 11]}
+          columnDesign={[2, null, 12]}
           contentsWidth="100%"
         >
           <GridItem
@@ -76,6 +77,17 @@ export default function UserQuestList({
               isChecked={checkedQuest.includes(quest.quest_id)}
               onChange={() => checkedBox(quest.quest_id)}
             />
+          </GridItem>
+          <GridItem
+            p={2}
+            display={"flex"}
+            alignItems={"center"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+          >
+            {quest.requirements_kr && quest.requirements_kr.length > 0 && (
+              <UserQuestPopOver quest={quest} />
+            )}
           </GridItem>
           <GridItem
             p={2}
@@ -105,6 +117,7 @@ export default function UserQuestList({
                 <Text
                   key={index}
                   mb={1}
+                  fontWeight={600}
                   dangerouslySetInnerHTML={{
                     __html: `*&nbsp;&nbsp;${objective}`,
                   }}
