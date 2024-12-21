@@ -13,6 +13,7 @@ export default function AdBanner({
   dataAdFormat,
   dataFullWidthResponsive,
 }: AdBannerTypes) {
+
   useEffect(() => {
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
@@ -22,6 +23,7 @@ export default function AdBanner({
       console.log(e);
     }
   }, []);
+
   return (
     <ins
       className="adsbygoogle"

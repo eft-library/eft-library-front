@@ -12,7 +12,7 @@ export default function WeaponSkeleton() {
       <SimpleGrid
         columns={[2, null, 9]}
         spacing={2}
-        width={"95%"}
+        width={"100%"}
         outline={"2px solid"}
         borderRadius={"lg"}
         p={2}
@@ -27,7 +27,7 @@ export default function WeaponSkeleton() {
       <SimpleGrid
         columns={[2, null, 9]}
         spacing={2}
-        width={"95%"}
+        width={"100%"}
         outline={"2px solid"}
         outlineColor="gray.200"
         borderRadius={"lg"}

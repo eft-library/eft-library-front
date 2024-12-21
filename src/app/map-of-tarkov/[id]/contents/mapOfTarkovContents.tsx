@@ -18,7 +18,7 @@ export default function MapOfTarkovContents({
   };
 
   return (
-    <Box w={"95%"} mt={10}>
+    <Box w={"100%"} mt={10}>
       <DividerContents
         headText={sortSubList(mapOfTarkov.map_info.sub)[0].name_kr}
       >

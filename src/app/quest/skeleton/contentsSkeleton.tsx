@@ -16,7 +16,7 @@ export default function ContentsSkeleton() {
       display={"flex"}
       alignItems={"center"}
       justifyContent={"center"}
-      width={"95%"}
+      width={"100%"}
     >
       <TableContainer border="1px solid" borderColor="white">
         <Table variant="simple" size={"lg"}>

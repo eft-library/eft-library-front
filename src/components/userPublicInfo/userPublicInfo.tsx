@@ -92,7 +92,7 @@ export default function UserPublicInfo({ user }: UserPublicInfo) {
       <Box
         display={"flex"}
         alignItems={"center"}
-        w={"95%"}
+        w={"100%"}
         mt={10}
         justifyContent={"flex-start"}
       >
@@ -122,7 +122,7 @@ export default function UserPublicInfo({ user }: UserPublicInfo) {
           </Text>
         </Link>
       </Box>
-      <Box w={"95%"}>
+      <Box w={"100%"}>
         <Divider borderColor={ALL_COLOR.WHITE} borderWidth={1} mt={4} />
       </Box>
     </>

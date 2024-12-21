@@ -75,7 +75,7 @@ export default function Contents() {
       display={"flex"}
       alignItems={"center"}
       justifyContent={"center"}
-      width={"95%"}
+      width={"100%"}
     >
       <TableContainer border="1px solid" borderColor={ALL_COLOR.WHITE}>
         <Table variant="simple" size={"lg"}>

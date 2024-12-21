@@ -7,7 +7,7 @@ export default function GridContents({
   children,
   columnDesign,
   id,
-  contentsWidth = "95%",
+  contentsWidth = "100%",
   isHideout = false,
   padding = 0,
 }: GridContents) {

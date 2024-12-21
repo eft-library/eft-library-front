@@ -118,7 +118,7 @@ export default function Editor() {
   if (!user) return null;
 
   return (
-    <Box w={"95%"} display={"flex"} flexDirection={"column"}>
+    <Box w={"100%"} display={"flex"} flexDirection={"column"}>
       <SubContents
         subContents={subContents}
         setSubData={setSubData}

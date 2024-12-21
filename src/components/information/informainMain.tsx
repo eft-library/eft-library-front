@@ -13,7 +13,7 @@ export default function InformationMain({
   detail_link,
 }: InformationMain) {
   return (
-    <Box w={"95%"}>
+    <Box w={"100%"}>
       {information.data.map((notes) => (
         <Link href={`${detail_link}/${notes.id}`} key={notes.id}>
           <Box

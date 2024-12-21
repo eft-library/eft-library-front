@@ -83,7 +83,7 @@ export default function DetailSubComment({
                   getComment={getComment}
                   currentComment={currentComment}
                   setIsRewrite={setIsRewrite}
-                  editorWidth="95%"
+                  editorWidth="100%"
                 />
               </VStack>
             ) : (

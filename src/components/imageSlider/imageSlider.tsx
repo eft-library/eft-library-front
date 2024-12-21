@@ -28,7 +28,7 @@ export default function ImageSlider({
       mb={"40px"}
       mt={"40px"}
     >
-      <Box w={"95%"} h={"30%"}>
+      <Box w={"85%"} h={"20%"}>
         <Gallery>
           <Slider {...sliderOption}>
             {mapList.map((map) =>

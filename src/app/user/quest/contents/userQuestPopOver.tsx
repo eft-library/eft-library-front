@@ -32,7 +32,7 @@ export default function UserQuestPopOver({ quest }: UserQuestPopOver) {
           onMouseEnter={() => changePopoverState(true)}
           onMouseLeave={() => changePopoverState(false)}
         >
-          <PiWarningCircleBold color="yellow" size={40} />
+          <PiWarningCircleBold color="yellow" size={30} />
         </div>
       </PopoverTrigger>
       <PopoverContent

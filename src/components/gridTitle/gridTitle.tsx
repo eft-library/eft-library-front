@@ -11,7 +11,7 @@ export default function GridTitle({
   isAmmo = false,
   isExtraction = false,
   isHideout = false,
-  titleWidth = "95%",
+  titleWidth = "100%",
   isNote = false,
   isQuest = false,
 }: GridTitle) {

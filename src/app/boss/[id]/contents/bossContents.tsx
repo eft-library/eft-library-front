@@ -27,7 +27,7 @@ export default function BossContents({ boss }: BossContents) {
   if (!column) return <ContentsSkeleton />;
 
   return (
-    <Box w={"95%"}>
+    <Box w={"100%"}>
       <DividerContents headText="위치">
         <ImgWithZoom content={boss.location_guide} />
       </DividerContents>

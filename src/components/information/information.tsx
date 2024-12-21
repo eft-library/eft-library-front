@@ -17,7 +17,7 @@ export default function Information({
     <PageParent>
       <SubHeader title={subTitle} />
       <Box mb={10} />
-      <Box w={"95%"}>
+      <Box w={"100%"}>
         <InformationContent information={information} />
         <InformationButton link={link} />
         <InformationBottom

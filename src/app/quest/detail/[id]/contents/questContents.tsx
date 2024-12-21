@@ -29,7 +29,7 @@ export default function QuestContents({ quest }: QuestContents) {
   if (!quest || !column) return <ContentsSkeleton />;
 
   return (
-    <Box w={"95%"}>
+    <Box w={"100%"}>
       {quest.requirements_kr && (
         <DividerContents headText="요구사항">
           <Box>

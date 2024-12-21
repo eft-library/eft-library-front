@@ -73,7 +73,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
                   width={"100%"}
                   flexDirection={"column"}
                 >
-                  <Box display={"flex"} w={"95%"} mb={2} mt={2}>
+                  <Box display={"flex"} w={"100%"} mb={2} mt={2}>
                     <Text
                       fontWeight={600}
                       color={ALL_COLOR.WHITE}

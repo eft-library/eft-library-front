@@ -59,7 +59,7 @@ export default function BossMain() {
         mt={6}
       />
       <Box mb={10} />
-      <Box w={"95%"}>
+      <Box w={"100%"}>
         <BossDetail>
           <BossBox boss={boss} />
         </BossDetail>

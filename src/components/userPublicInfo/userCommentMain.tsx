@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function UserCommentMain({ comment }: UserMainSubComment) {
   return (
-    <Box w={"95%"}>
+    <Box w={"100%"}>
       <Link
         href={{
           pathname: `/board/${comment.board_type}/detail/${comment.board_id}`,

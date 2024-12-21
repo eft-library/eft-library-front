@@ -97,7 +97,7 @@ export default function ProfileDetail() {
   if (!user) return null;
 
   return (
-    <Box w="95%" h="100%">
+    <Box w="100%" h="100%">
       <Box
         display="flex"
         flexDirection="column"
