@@ -61,7 +61,7 @@ export default function Header() {
       templateColumns="repeat(3, 1fr)"
       position="fixed"
       width="100%"
-      zIndex={10}
+      zIndex={11}
       bg="transparent"
       backdropFilter="blur(8px)"
       backdropContrast="60%"

@@ -387,6 +387,7 @@ export interface ImageSlider {
 
 export interface PageParent {
   children: ReactNode;
+  leftAdUse?: boolean
 }
 
 export interface OrbitControl {

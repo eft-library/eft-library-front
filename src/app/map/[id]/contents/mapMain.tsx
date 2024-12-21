@@ -50,7 +50,7 @@ export default function MapMain() {
     );
 
   return (
-    <PageParent>
+    <PageParent leftAdUse={false}>
       <LinkSelector
         itemList={sortList(column)}
         itemDesc="name_kr"
