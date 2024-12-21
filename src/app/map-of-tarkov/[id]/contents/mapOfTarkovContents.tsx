@@ -20,7 +20,7 @@ export default function MapOfTarkovContents({
   return (
     <Box w={"100%"} mt={10}>
       <DividerContents
-        headText={sortSubList(mapOfTarkov.map_info.sub)[0].name_kr}
+        headText={mapOfTarkov.map_info.name_kr}
       >
         <Box display={"flex"} alignItems={"center"}>
           <ImageSlider
