@@ -12,6 +12,7 @@ import ThreeViewDetail from "./threeViewDetail";
 import JPGSkeleton from "../skeleton/jpgSkeleton";
 import ThreeSkeleton from "../skeleton/threeSkeleton";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
+import SubHeader from "@/components/subHeader/subHeader";
 
 export default function MapMain() {
   const [mapData, setMapData] = useState<Map>();
@@ -51,6 +52,7 @@ export default function MapMain() {
 
   return (
     <PageParent leftAdUse={false}>
+      <SubHeader title="대화형 지도" />
       <LinkSelector
         itemList={sortList(column)}
         itemDesc="name_kr"

@@ -42,7 +42,7 @@ export default function MapOfTarkovMain() {
 
   return (
     <PageParent>
-      <SubHeader title="지도" />
+      <SubHeader title="타르코프 지도" />
       <LinkSelector
         itemList={sortList()}
         itemDesc="name_kr"
