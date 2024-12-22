@@ -10,42 +10,47 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
       bgSize="cover"
       bg={ALL_COLOR.BACKGROUND}
       display="flex"
-      alignItems="center"
+      alignItems="center" // 콘텐츠의 상단 정렬 유지
       justifyContent="center"
       width="100%"
       minHeight="100vh"
     >
-      {leftAdUse && (
-        <Box
-          style={{
-            display: "block",
-            position: "fixed",
-            top: "50%",
-            left: "10px",
-            transform: "translateY(-50%)",
-            padding: "10px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            width: "10%",
-            zIndex: 1000,
-          }}
-        >
+      {/* 왼쪽 사이드 박스 */}
+      <Box
+        className="SideBox"
+        display={{ base: "none", xl: "block" }} // xl 이상에서만 보이도록 설정
+        position="fixed"
+        top="50%"
+        left="10"
+        transform="translateY(-50%)"
+        padding="10px"
+        borderRadius="md"
+        boxShadow="lg"
+        width="10%"
+        textAlign="center"
+        zIndex="1000"
+        height={"auto"}
+      >
+        {leftAdUse ? (
           <AdBanner
-            dataAdFormat="auto"
+            dataAdFormat={"auto"}
             dataFullWidthResponsive={true}
             dataAdSlot="8601640289"
           />
-        </Box>
-      )}
+        ) : (
+          <></>
+        )}
+      </Box>
 
+      {/* 중앙 콘텐츠 */}
       <Flex
         className="Container"
         flex="1"
         flexDirection="column"
-        maxWidth="1200px"
+        maxWidth="1300px"
         minWidth="300px"
         paddingTop="60px"
-        marginX="10%"
+        marginX="10%" // 중앙 콘텐츠 양쪽에 여백 추가
         bg={ALL_COLOR.BACKGROUND}
         borderRadius="lg"
         justifyContent="center"
@@ -53,19 +58,21 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         {children}
       </Flex>
 
+      {/* 오른쪽 사이드 박스 */}
       <Box
-        style={{
-          display: "block",
-          position: "fixed",
-          top: "50%",
-          right: "10px",
-          transform: "translateY(-50%)",
-          padding: "10px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          width: "10%",
-          zIndex: 10,
-        }}
+        className="SideBox"
+        display={{ base: "none", xl: "block" }} // xl 이상에서만 보이도록 설정
+        position="fixed"
+        top="50%"
+        right="10"
+        transform="translateY(-50%)"
+        padding="10px"
+        borderRadius="md"
+        boxShadow="lg"
+        width="10%"
+        textAlign="center"
+        zIndex="10"
+        height={"auto"}
       >
         <AdBanner
           dataAdFormat={"auto"}
