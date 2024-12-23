@@ -187,7 +187,7 @@ export default function UserQuestDetail() {
             </Button>
           </Box>
           {userQuest.map((npc) => (
-            <AccordionItem key={npc.npc_id}>
+            <AccordionItem key={npc.npc_id} borderBottom={0}>
               <AccordionButton
                 bg={ALL_COLOR.LIGHT_GRAY}
                 color={ALL_COLOR.WHITE}

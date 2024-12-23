@@ -25,7 +25,6 @@ export default function Footer() {
 
   return (
     <Box
-      className="Main"
       bgSize="cover"
       bg={ALL_COLOR.BACKGROUND}
       bgPosition="center"
@@ -35,8 +34,9 @@ export default function Footer() {
       justifyContent="center"
       width="100%"
       height="auto"
+      paddingTop={10}
     >
-      <Grid templateColumns="repeat(4, 1fr)" width={"60%"} height={"300px"}>
+      <Grid templateColumns="repeat(4, 1fr)" width={"52%"} height={"300px"}>
         <GridItem colSpan={3} h="14">
           <Flex direction="column" justifyContent="center">
             <Box display={"flex"} m={1}>
