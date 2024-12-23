@@ -26,14 +26,14 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         padding="10px"
         borderRadius="md"
         boxShadow="lg"
-        width="10%"
+        width="12%"
         textAlign="center"
         zIndex="1000"
         height={"auto"}
       >
         {leftAdUse ? (
           <AdBanner
-            dataAdFormat={"auto"}
+            dataAdFormat={"fluid"}
             dataFullWidthResponsive={true}
             dataAdSlot="8601640289"
           />
@@ -69,13 +69,13 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         padding="10px"
         borderRadius="md"
         boxShadow="lg"
-        width="10%"
+        width="12%"
         textAlign="center"
         zIndex="10"
         height={"auto"}
       >
         <AdBanner
-          dataAdFormat={"auto"}
+          dataAdFormat={"fluid"}
           dataFullWidthResponsive={true}
           dataAdSlot="8601640289"
         />
