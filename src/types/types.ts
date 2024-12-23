@@ -267,6 +267,7 @@ export interface ContentsSelector {
   isAmmo?: boolean;
   skeletonCount?: number;
   columnKey?: string;
+  isUseColumnKey?: boolean;
 }
 
 export interface LinkSelector {

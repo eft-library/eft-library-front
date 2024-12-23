@@ -38,6 +38,7 @@ export default function BossHealth({ healthList }: BossHealth) {
               onClickEvent={clickHealth}
               itemList={healthList}
               currentId={healthId}
+              isUseColumnKey={false}
               selectorId="id"
               itemDesc="name_kr"
               isEng

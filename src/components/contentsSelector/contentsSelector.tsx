@@ -14,6 +14,7 @@ export default function ContentsSelector({
   isImage = false,
   skeletonCount = 10,
   columnKey = "json_value",
+  isUseColumnKey = true,
 }: ContentsSelector) {
   const checkFontSize = (index: number) => {
     if (isAmmo) {
@@ -72,7 +73,46 @@ export default function ContentsSelector({
                   <Skeleton height={checkBoxHeight()} width={checkBoxWidth()} />
                 </Flex>
               ))
-          : itemList[columnKey].map((item, index) => (
+          : isUseColumnKey
+          ? itemList[columnKey].map((item, index) => (
+              <Flex
+                flexDirection={"column"}
+                key={index}
+                onClick={() => onClickEvent(item[selectorId])}
+              >
+                <Box
+                  cursor={"pointer"}
+                  w={checkBoxWidth()}
+                  h={checkBoxHeight()}
+                  color={ALL_COLOR.WHITE}
+                  outline={"1px solid"}
+                  outlineColor={item.color ? item.color : ALL_COLOR.WHITE}
+                  borderRadius={"lg"}
+                  _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+                  bg={
+                    currentId === item[selectorId] ? ALL_COLOR.LIGHT_GRAY : ""
+                  }
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  p={2}
+                >
+                  {isImage ? (
+                    <Image src={item["image"]} alt={item["desc_en"]} />
+                  ) : (
+                    <Text
+                      color={ALL_COLOR.WHITE}
+                      fontSize={checkFontSize(index)}
+                      fontWeight={700}
+                      textAlign="center"
+                    >
+                      {item[itemDesc]}
+                    </Text>
+                  )}
+                </Box>
+              </Flex>
+            ))
+          : itemList.map((item, index) => (
               <Flex
                 flexDirection={"column"}
                 key={index}

@@ -59,6 +59,7 @@ export default function FollowersLoot({ follower, column }: FollowersDetail) {
               itemList={updateSelector(follower.loot)}
               currentId={lootType}
               selectorId="item_type"
+              isUseColumnKey={false}
               itemDesc="item_type_kr"
               isEng
             />
