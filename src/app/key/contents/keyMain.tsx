@@ -11,6 +11,7 @@ import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import KeyGetData from "./keyGetData";
 import AdBanner from "@/components/adsense/adBanner";
+import { Box } from "@chakra-ui/react";
 
 export default function KeyMain() {
   const { keyCategory, setKeyCategory } = useAppStore((state) => state);
