@@ -1,4 +1,4 @@
-import { SimpleGrid, Text, GridItem } from "@chakra-ui/react";
+import { SimpleGrid, Text, GridItem, Skeleton } from "@chakra-ui/react";
 import type { GridTitle } from "@/types/types";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
@@ -14,6 +14,7 @@ export default function GridTitle({
   titleWidth = "100%",
   isNote = false,
   isQuest = false,
+  columnKey = "value_kr",
 }: GridTitle) {
   const checkColSpan = (index: number) => {
     if (isNote) {
@@ -58,19 +59,27 @@ export default function GridTitle({
       p={2}
       mb={6}
     >
-      {column.map((item, index) => (
-        <GridItem key={item} colSpan={checkColSpan(index)}>
-          <Text
-            flexGrow={1}
-            color={ALL_COLOR.WHITE}
-            textAlign={"center"}
-            fontWeight={700}
-            textShadow={isShadow ? shadowColor : ""}
-          >
-            {item}
-          </Text>
-        </GridItem>
-      ))}
+      {column && column[columnKey]
+        ? column[columnKey].map((item, index) => (
+            <GridItem key={item} colSpan={checkColSpan(index)}>
+              <Text
+                flexGrow={1}
+                color={ALL_COLOR.WHITE}
+                textAlign={"center"}
+                fontWeight={700}
+                textShadow={isShadow ? shadowColor : ""}
+              >
+                {item}
+              </Text>
+            </GridItem>
+          ))
+        : Array(columnDesign[2])
+            .fill(null)
+            .map((_, index) => (
+              <GridItem key={index} colSpan={checkColSpan(index)}>
+                <Skeleton height="20px" />
+              </GridItem>
+            ))}
     </SimpleGrid>
   );
 }

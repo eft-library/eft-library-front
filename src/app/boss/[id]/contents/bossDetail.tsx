@@ -20,8 +20,6 @@ export default function BossDetail({ children }: BossDetail) {
     );
   }, []);
 
-  if (!column) return <DetailSkeleton />;
-
   return (
     <Box
       display="flex"
@@ -32,7 +30,7 @@ export default function BossDetail({ children }: BossDetail) {
     >
       <GridTitle
         columnDesign={[2, null, 7]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
         titleWidth="100%"

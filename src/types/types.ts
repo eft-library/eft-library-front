@@ -355,7 +355,8 @@ export interface GridJsonText {
 
 export interface GridTitle {
   columnDesign: Array<number | null>;
-  column: string[];
+  columnKey?: string;
+  column: Column;
   isShadow: boolean;
   shadowColor: string;
   isWeapon?: boolean;
@@ -387,7 +388,7 @@ export interface ImageSlider {
 
 export interface PageParent {
   children: ReactNode;
-  leftAdUse?: boolean
+  leftAdUse?: boolean;
 }
 
 export interface OrbitControl {

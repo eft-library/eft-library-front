@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchDataWithNone } from "@/lib/api";
 import ImageZoom from "@/components/imageZoom/imageZoom";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
@@ -30,13 +29,13 @@ export default function ArmBandDetail() {
 
   useScrollMove(param.get("id"), armBandList);
 
-  if (!column || !armBandList) return <WeaponSkeleton />;
+  if (!armBandList) return null;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

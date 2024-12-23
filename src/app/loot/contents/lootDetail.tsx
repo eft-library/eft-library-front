@@ -30,7 +30,7 @@ export default function LootDetail({ category, lootList, column }: LootDetail) {
     >
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={column.value_kr}
+        column={column}
         isShadow
         isNote
         shadowColor={ALL_COLOR.YELLOW_SHADOW}

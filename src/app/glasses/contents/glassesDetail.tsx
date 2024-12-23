@@ -31,25 +31,17 @@ export default function GlassesDetail() {
 
   useScrollMove(param.get("id"), glassesList);
 
-  const classColumn = (column: string[]) => {
-    return column.filter(
-      (item) =>
-        item === "사진" ||
-        item === "이름" ||
-        item === "보호 등급" ||
-        item === "내구성" ||
-        item === "실명 보호"
-    );
-  };
+  const filterColumnValues = (
+    column: Column,
+    filterValues: string[]
+  ): Column => {
+    const filteredValueKr =
+      column.value_kr?.filter((item) => filterValues.includes(item)) || [];
 
-  const noClassColumn = (column: string[]) => {
-    return column.filter(
-      (item) =>
-        item === "사진" ||
-        item === "이름" ||
-        item === "실명 보호" ||
-        item === "노트"
-    );
+    return {
+      ...column,
+      value_kr: filteredValueKr,
+    };
   };
 
   const floatToPercent = (value: number) => {
@@ -60,13 +52,19 @@ export default function GlassesDetail() {
     }
   };
 
-  if (!column || !glassesList) return <WeaponSkeleton />;
+  if (!glassesList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={classColumn(column.value_kr)}
+        column={filterColumnValues(column, [
+          "사진",
+          "이름",
+          "보호 등급",
+          "내구성",
+          "실명 보호",
+        ])}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
@@ -90,7 +88,12 @@ export default function GlassesDetail() {
       <Box mb={20} />
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={noClassColumn(column.value_kr)}
+        column={filterColumnValues(column, [
+          "사진",
+          "이름",
+          "실명 보호",
+          "노트",
+        ])}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

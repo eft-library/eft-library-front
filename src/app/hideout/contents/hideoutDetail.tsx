@@ -44,7 +44,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
 
   useScrollMove(param.get("id"), hideoutList, "HIDEOUT");
 
-  if (!hideoutList || !column) return <WeaponSkeleton />;
+  if (!hideoutList) return <WeaponSkeleton />;
 
   return (
     <Box
@@ -56,7 +56,7 @@ export default function HideoutDetail({ category }: HideoutDetail) {
     >
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={column.value_kr}
+        column={column}
         isShadow
         isHideout
         shadowColor={ALL_COLOR.YELLOW_SHADOW}

@@ -26,13 +26,11 @@ export default function WeaponKnife({ knifeList }: WeaponKnife) {
 
   useScrollMove(param.get("id"), knifeList, "WEAPON");
 
-  if (!column) return <WeaponSkeleton />;
-
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

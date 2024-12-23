@@ -72,7 +72,7 @@ export default function FollowersLoot({ follower, column }: FollowersDetail) {
             >
               <GridTitle
                 columnDesign={[2, null, 2]}
-                column={column.value_kr}
+                column={column}
                 isShadow
                 shadowColor={ALL_COLOR.YELLOW_SHADOW}
                 titleWidth="100%"

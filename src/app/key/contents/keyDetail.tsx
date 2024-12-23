@@ -31,7 +31,7 @@ export default function KeyDetail({ category, keyList, column }: KeyDetail) {
     >
       <GridTitle
         columnDesign={[2, null, 6]}
-        column={column.value_kr}
+        column={column}
         isShadow
         isNote
         shadowColor={ALL_COLOR.YELLOW_SHADOW}

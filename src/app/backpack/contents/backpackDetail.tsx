@@ -30,13 +30,13 @@ export default function BackpackDetail() {
 
   useScrollMove(param.get("id"), backpackList);
 
-  if (!backpackList || !column) return <WeaponSkeleton />;
+  if (!backpackList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

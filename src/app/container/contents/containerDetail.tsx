@@ -30,13 +30,13 @@ export default function ContainerDetail() {
 
   useScrollMove(param.get("id"), containerList);
 
-  if (!containerList || !column) return <WeaponSkeleton />;
+  if (!containerList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

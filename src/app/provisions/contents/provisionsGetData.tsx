@@ -20,7 +20,7 @@ export default function ProvisionsGetData() {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_PROVISIONS, setProvisionList);
   }, []);
 
-  if (!column || !provisionList) return <WeaponSkeleton />;
+  if (!provisionList) return <WeaponSkeleton />;
 
   return <ProvisionsDetail provisionList={provisionList} column={column} />;
 }

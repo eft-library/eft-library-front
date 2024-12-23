@@ -25,8 +25,6 @@ export default function BossContents({ boss }: BossContents) {
     );
   }, []);
 
-  if (!column) return <ContentsSkeleton />;
-
   return (
     <Box w={"100%"}>
       <AdBanner

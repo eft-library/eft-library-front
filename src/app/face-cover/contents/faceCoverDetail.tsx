@@ -15,6 +15,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import { filterColumnValues } from "@/lib/columnFilter";
 
 export default function FaceCoverDetail() {
   const param = useSearchParams();
@@ -31,17 +32,13 @@ export default function FaceCoverDetail() {
 
   useScrollMove(param.get("id"), faceCoverList);
 
-  const noClassColumn = (column: string[]) => {
-    return column.filter((item) => item === "사진" || item === "이름");
-  };
-
-  if (!column || !faceCoverList) return <WeaponSkeleton />;
+  if (!faceCoverList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 7]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
@@ -65,7 +62,7 @@ export default function FaceCoverDetail() {
       <Box mb={20} />
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={noClassColumn(column.value_kr)}
+        column={filterColumnValues(column, ["사진", "이름"])}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

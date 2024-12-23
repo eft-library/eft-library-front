@@ -27,7 +27,7 @@ export default function QuestContents({ quest }: QuestContents) {
     );
   }, []);
 
-  if (!quest || !column) return <ContentsSkeleton />;
+  if (!quest) return <ContentsSkeleton />;
 
   return (
     <Box w={"100%"}>
@@ -95,7 +95,7 @@ export default function QuestContents({ quest }: QuestContents) {
               >
                 <GridTitle
                   columnDesign={[2, null, 6]}
-                  column={column.value_kr}
+                  column={column}
                   isShadow
                   shadowColor={ALL_COLOR.YELLOW_SHADOW}
                   isQuest

@@ -31,8 +31,6 @@ export default function WeaponSpecial({
 
   useScrollMove(param.get("id"), specialList, "WEAPON");
 
-  if (!column) return <WeaponSkeleton />;
-
   // 무기 렌더링 조건 함수
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory === "Special weapons";
@@ -44,7 +42,7 @@ export default function WeaponSpecial({
     <>
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

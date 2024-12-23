@@ -112,7 +112,7 @@ export default function AmmoDetail({ category }: AmmoDetail) {
     }
   };
 
-  if (!ammoList || !column) return <WeaponSkeleton />;
+  if (!ammoList) return <WeaponSkeleton />;
 
   return (
     <Box
@@ -124,7 +124,7 @@ export default function AmmoDetail({ category }: AmmoDetail) {
     >
       <GridTitle
         columnDesign={[2, null, 11]}
-        column={column.value_kr}
+        column={column}
         isShadow
         isAmmo
         shadowColor={checkTitleColor(category)}

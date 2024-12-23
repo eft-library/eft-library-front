@@ -30,13 +30,13 @@ export default function HeadsetDetail() {
 
   useScrollMove(param.get("id"), headsetList);
 
-  if (!column || !headsetList) return <WeaponSkeleton />;
+  if (!headsetList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 2]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

@@ -9,7 +9,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponThrowable, Column } from "@/types/types";
-import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
@@ -29,13 +28,11 @@ export default function WeaponThrowable({ throwableList }: WeaponThrowable) {
 
   useScrollMove(param.get("id"), throwableList, "WEAPON");
 
-  if (!column) return <WeaponSkeleton />;
-
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 5]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

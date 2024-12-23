@@ -31,13 +31,13 @@ export default function ArmorVestDetail() {
 
   useScrollMove(param.get("id"), armorVestList);
 
-  if (!armorVestList || !column) return <WeaponSkeleton />;
+  if (!armorVestList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 6]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

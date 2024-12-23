@@ -42,13 +42,11 @@ export default function MedicalStimulant({ medicalList }: MedicalList) {
     return effects;
   };
 
-  if (!column) return <WeaponSkeleton />;
-
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

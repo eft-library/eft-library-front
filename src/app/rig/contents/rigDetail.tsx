@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
+import { filterColumnValues } from "@/lib/columnFilter";
 
 export default function RigDetail() {
   const param = useSearchParams();
@@ -31,20 +32,13 @@ export default function RigDetail() {
 
   useScrollMove(param.get("id"), rigList);
 
-  const noClassColumn = (column: string[]) => {
-    return column.filter(
-      (item) =>
-        item === "사진" || item === "이름" || item === "슬롯" || item === "무게"
-    );
-  };
-
-  if (!column || !rigList) return <WeaponSkeleton />;
+  if (!rigList) return <WeaponSkeleton />;
 
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 7]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
@@ -68,7 +62,7 @@ export default function RigDetail() {
       <Box mb={20} />
       <GridTitle
         columnDesign={[2, null, 4]}
-        column={noClassColumn(column.value_kr)}
+        column={filterColumnValues(column, ["사진", "이름", "슬롯", "무게"])}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

@@ -28,13 +28,11 @@ export default function MedicalDrug({ medicalList }: MedicalList) {
 
   useScrollMove(param.get("id"), medicalList, "MEDICAL");
 
-  if (!column) return <WeaponSkeleton />;
-
   return (
     <>
       <GridTitle
         columnDesign={[2, null, 6]}
-        column={column.value_kr}
+        column={column}
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />

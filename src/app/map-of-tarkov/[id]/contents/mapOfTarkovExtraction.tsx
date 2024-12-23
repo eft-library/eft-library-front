@@ -27,8 +27,6 @@ export default function MapOfTarkovExtraction({
     );
   }, []);
 
-  if (!column) return null;
-
   return (
     <DividerContents headText={headerText}>
       <Box
@@ -40,7 +38,7 @@ export default function MapOfTarkovExtraction({
       >
         <GridTitle
           columnDesign={[2, null, 10]}
-          column={column.value_kr}
+          column={column}
           isShadow
           shadowColor={ALL_COLOR.YELLOW_SHADOW}
           titleWidth="100%"
