@@ -23,15 +23,11 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         top="50%"
         left="10"
         transform="translateY(-50%)"
-        padding="10px"
-        borderRadius="md"
-        boxShadow="lg"
         minW={"10%"}
         maxW={"14%"}
-        textAlign="center"
-        zIndex="1000"
-        bg={ALL_COLOR.BACKGROUND}
-        height={"auto"}
+        minH={"100px"}
+        maxH={"600px"}
+        zIndex="10"
       >
         {leftAdUse ? (
           <AdBanner
@@ -68,15 +64,11 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         top="50%"
         right="10"
         transform="translateY(-50%)"
-        padding="10px"
-        borderRadius="md"
-        boxShadow="lg"
         minW={"10%"}
         maxW={"14%"}
-        textAlign="center"
+        minH={"100px"}
+        maxH={"600px"}
         zIndex="10"
-        height={"auto"}
-        bg={ALL_COLOR.BACKGROUND}
       >
         <AdBanner
           dataAdFormat={"vertical"}

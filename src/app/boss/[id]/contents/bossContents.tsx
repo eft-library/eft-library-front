@@ -13,6 +13,7 @@ import BossHealth from "./bossHealth";
 import FollowersLoot from "./followersLoot";
 import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
 import "@/assets/editor.css";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function BossContents({ boss }: BossContents) {
   const [column, setColumn] = useState<Column>();
@@ -28,6 +29,11 @@ export default function BossContents({ boss }: BossContents) {
 
   return (
     <Box w={"100%"}>
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <DividerContents headText="위치">
         <ImgWithZoom content={boss.location_guide} />
       </DividerContents>

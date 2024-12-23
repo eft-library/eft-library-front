@@ -3,6 +3,7 @@ import SubHeader from "@/components/subHeader/subHeader";
 import UserQuestDetail from "./contents/userQuestDetail";
 import type { UserQuest } from "@/types/types";
 import "@/assets/quest.css";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "퀘스트 플래너 | EFT Library",
@@ -43,6 +44,11 @@ export default function UserQuest() {
   return (
     <PageParent>
       <SubHeader title="퀘스트 플래너" />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <UserQuestDetail />
     </PageParent>
   );

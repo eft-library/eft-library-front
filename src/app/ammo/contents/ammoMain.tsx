@@ -10,6 +10,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import AmmoDetail from "./ammoDetail";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function AmmoMain() {
   const { ammoCategory, setAmmoCategory } = useAppStore((state) => state);
@@ -31,6 +32,11 @@ export default function AmmoMain() {
   return (
     <PageParent>
       <SubHeader title="탄약" />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}

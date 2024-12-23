@@ -10,6 +10,7 @@ import ThreeSkeleton from "../skeleton/threeSkeleton";
 import ItemSelectorSkeleton from "../skeleton/itemSelectorSkeleton";
 import PageParent from "@/components/pageParent/pageParent";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
@@ -46,6 +47,12 @@ export default function ThreeViewDetail({ mapData, onClickMap }: MapDetail) {
           2D MAP
         </Text>
         <JPGView map={mapData} viewItemList={viewItemList} />
+        <br />
+        <AdBanner
+          dataAdFormat={"fluid"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+        />
         <br />
         <Text as={"b"} color={ALL_COLOR.WHITE}>
           3D MAP

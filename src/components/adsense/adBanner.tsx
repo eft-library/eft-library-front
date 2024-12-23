@@ -1,13 +1,11 @@
 "use client";
 
-import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React, { useEffect } from "react";
 
 type AdBannerTypes = {
   dataAdSlot: string;
   dataAdFormat: string;
   dataFullWidthResponsive: boolean;
-  isHorizontal?: boolean;
 };
 
 export default function AdBanner({

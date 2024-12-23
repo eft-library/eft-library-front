@@ -11,6 +11,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import MapOfTarkovContents from "./mapOfTarkovContents";
 import type { Column, MapOfTarkov } from "@/types/types";
 import ContentsSkeleton from "../../skeleton/contentsSkeleton";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function MapOfTarkovMain() {
   const param = useParams<{ id: string }>();
@@ -48,6 +49,11 @@ export default function MapOfTarkovMain() {
         itemDesc="name_kr"
         itemLink="link"
         mt={6}
+      />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
       />
       <MapOfTarkovContents mapOfTarkov={mapOfTarkov} />
     </PageParent>

@@ -15,6 +15,7 @@ import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Link from "next/link";
 import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function QuestContents({ quest }: QuestContents) {
   const [column, setColumn] = useState<Column>();
@@ -74,6 +75,11 @@ export default function QuestContents({ quest }: QuestContents) {
           ))}
         </Box>
       </DividerContents>
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       {((quest.sub && quest.sub.length > 0) || quest.guide) && (
         <DividerContents headText="가이드">
           {quest.sub && quest.sub.length > 0 && (

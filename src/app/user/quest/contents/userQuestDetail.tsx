@@ -151,7 +151,7 @@ export default function UserQuestDetail() {
   if (!userQuest) return null;
 
   return (
-    <Box w={"100%"} h="100%">
+    <Box w={"100%"} h="100%" mt={10}>
       <UserQuestSelector updateQuest={updateUserQuest} />
       {userQuest.length < 0 || !userQuest[0].npc_id ? (
         <Text fontWeight={600}>
