@@ -33,7 +33,7 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
       >
         {leftAdUse ? (
           <AdBanner
-            dataAdFormat={"fluid"}
+            dataAdFormat={"auto"}
             dataFullWidthResponsive={true}
             dataAdSlot="8601640289"
           />
@@ -75,7 +75,7 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         height={"auto"}
       >
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="8601640289"
         />
