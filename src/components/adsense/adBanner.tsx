@@ -2,6 +2,7 @@
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React, { useEffect } from "react";
+import "@/assets/ad.css";
 
 type AdBannerTypes = {
   dataAdSlot: string;
@@ -14,7 +15,6 @@ export default function AdBanner({
   dataAdSlot,
   dataAdFormat,
   dataFullWidthResponsive,
-  isHorizontal = false,
 }: AdBannerTypes) {
   useEffect(() => {
     try {

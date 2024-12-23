@@ -1,0 +1,7 @@
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+
+#google-center-div {
+  background-color: black !important; /* 배경색을 black으로 설정 */
+}
