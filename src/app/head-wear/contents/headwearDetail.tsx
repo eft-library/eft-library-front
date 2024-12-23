@@ -46,7 +46,7 @@ export default function HeadWearDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 7]}
-                id={`armband-null-${index}`}
+                id={`class-headwear-null-${index}`}
               >
                 <Box
                   display={"flex"}
@@ -118,7 +118,7 @@ export default function HeadWearDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 2]}
-                id={`armband-null-${index}`}
+                id={`no-class-headwear-null-${index}`}
               >
                 <Box
                   display={"flex"}

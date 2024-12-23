@@ -45,7 +45,7 @@ export default function ArmorVestDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 6]}
-                id={`armband-null-${index}`}
+                id={`armor-vest-null-${index}`}
               >
                 <Box
                   display={"flex"}

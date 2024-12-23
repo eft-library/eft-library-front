@@ -43,7 +43,7 @@ export default function HeadsetDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 2]}
-                id={`armband-null-${index}`}
+                id={`headset-null-${index}`}
               >
                 <Box
                   display={"flex"}

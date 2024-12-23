@@ -44,7 +44,7 @@ export default function ContainerDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 4]}
-                id={`armband-null-${index}`}
+                id={`container-null-${index}`}
               >
                 <Box
                   display={"flex"}

@@ -43,7 +43,7 @@ export default function KeyDetail({ category, keyList, column }: KeyDetail) {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 6]}
-                id={`armband-null-${index}`}
+                id={`key-null-${index}`}
               >
                 <Box
                   display={"flex"}

@@ -46,7 +46,7 @@ export default function FaceCoverDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 7]}
-                id={`armband-null-${index}`}
+                id={`class-face-cover-null-${index}`}
               >
                 <Box
                   display={"flex"}
@@ -115,7 +115,7 @@ export default function FaceCoverDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 2]}
-                id={`armband-null-${index}`}
+                id={`no-class-face-cover-null-${index}`}
               >
                 <Box
                   display={"flex"}

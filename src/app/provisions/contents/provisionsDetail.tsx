@@ -74,7 +74,7 @@ export default function ProvisionsDetail({
               <GridContents
                 key={index}
                 columnDesign={[2, null, 7]}
-                id={`armband-null-${index}`}
+                id={`provisions-null-${index}`}
               >
                 <Box
                   display={"flex"}

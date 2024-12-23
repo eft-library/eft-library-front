@@ -60,7 +60,7 @@ export default function GlassesDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 5]}
-                id={`armband-null-${index}`}
+                id={`class-glasses-null-${index}`}
               >
                 <Box
                   display={"flex"}
@@ -128,7 +128,7 @@ export default function GlassesDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 4]}
-                id={`armband-null-${index}`}
+                id={`no-class-glasses-null-${index}`}
               >
                 <Box
                   display={"flex"}

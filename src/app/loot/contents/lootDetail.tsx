@@ -42,7 +42,7 @@ export default function LootDetail({ category, lootList, column }: LootDetail) {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 4]}
-                id={`armband-null-${index}`}
+                id={`loot-null-${index}`}
               >
                 <Box
                   display={"flex"}

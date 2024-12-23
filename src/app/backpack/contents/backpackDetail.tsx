@@ -44,7 +44,7 @@ export default function BackpackDetail() {
               <GridContents
                 key={index}
                 columnDesign={[2, null, 5]}
-                id={`armband-null-${index}`}
+                id={`backpack-null-${index}`}
               >
                 <Box
                   display={"flex"}
