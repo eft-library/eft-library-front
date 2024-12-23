@@ -30,6 +30,7 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         maxW={"14%"}
         textAlign="center"
         zIndex="1000"
+        bg={ALL_COLOR.BACKGROUND}
         height={"auto"}
       >
         {leftAdUse ? (
@@ -75,6 +76,7 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
         textAlign="center"
         zIndex="10"
         height={"auto"}
+        bg={ALL_COLOR.BACKGROUND}
       >
         <AdBanner
           dataAdFormat={"vertical"}

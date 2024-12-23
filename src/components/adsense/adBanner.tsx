@@ -2,7 +2,6 @@
 
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React, { useEffect } from "react";
-import "@/assets/ad.css";
 
 type AdBannerTypes = {
   dataAdSlot: string;
@@ -31,7 +30,6 @@ export default function AdBanner({
       className="adsbygoogle"
       style={{
         display: "flex",
-        backgroundColor: ALL_COLOR.BACKGROUND,
         justifyContent: "center",
       }}
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
