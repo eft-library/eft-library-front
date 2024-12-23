@@ -9,7 +9,6 @@ import AuthContext from "@/context/AuthContext";
 import { Suspense } from "react";
 import AdSense from "@/components/adsense/adSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import "../../public/googleAds.css";
 
 export const metadata: Metadata = {
   title: "EFT Library",

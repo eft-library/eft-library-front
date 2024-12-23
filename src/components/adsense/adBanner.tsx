@@ -27,18 +27,21 @@ export default function AdBanner({
   }, []);
 
   return (
-    <ins
-      className="adsbygoogle"
+    <div
       style={{
         display: "flex",
         backgroundColor: ALL_COLOR.BACKGROUND,
         justifyContent: "center",
       }}
-      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
-      data-ad-slot={dataAdSlot}
-      data-ad-format={dataAdFormat}
-      data-ad-layout="in-article"
-      data-full-width-resposive={dataFullWidthResponsive.toString()}
-    ></ins>
+    >
+      <ins
+        className="adsbygoogle"
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
+        data-ad-slot={dataAdSlot}
+        data-ad-format={dataAdFormat}
+        data-ad-layout="in-article"
+        data-full-width-resposive={dataFullWidthResponsive.toString()}
+      ></ins>
+    </div>
   );
 }
