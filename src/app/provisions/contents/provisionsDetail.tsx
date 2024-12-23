@@ -3,7 +3,7 @@
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box, GridItem } from "@chakra-ui/react";
+import { Box, GridItem, Skeleton } from "@chakra-ui/react";
 import type { ProvisionsDetail } from "@/types/types";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import EffectText from "./effectText";
@@ -67,43 +67,79 @@ export default function ProvisionsDetail({
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
         isNote
       />
-      {provisionList.map((item) => (
-        <GridContents
-          columnDesign={[2, null, 7]}
-          key={item.id}
-          id={item.id}
-          isHideout
-        >
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <ImageZoom
-              originalImg={item.image}
-              thumbnail={item.image}
-              name={item.name_kr}
-            />
-          </Box>
-          <GridCenterText>{item.name_kr} </GridCenterText>
-          <GridCenterText otherColor={checkPlus(item.energy)}>
-            {addPlusMinus(item.energy)}
-          </GridCenterText>
-          <GridCenterText otherColor={checkPlus(item.hydration)}>
-            {addPlusMinus(item.hydration)}
-          </GridCenterText>
-          <GridItem
-            display="flex"
-            justifyContent="center"
-            flexDirection="column"
-          >
-            {item.stim_effects.length > 0 ? (
-              filterStimEffects(item.stim_effects).map((text) => (
-                <EffectText key={text.krSkill} text={text} />
-              ))
-            ) : (
-              <GridCenterText>-</GridCenterText>
-            )}
-          </GridItem>
-          <GridNotes questsNotes={item.notes} />
-        </GridContents>
-      ))}
+      {!provisionList
+        ? Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 7]}
+                id={`armband-null-${index}`}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : provisionList.map((item) => (
+            <GridContents
+              columnDesign={[2, null, 7]}
+              key={item.id}
+              id={item.id}
+              isHideout
+            >
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <ImageZoom
+                  originalImg={item.image}
+                  thumbnail={item.image}
+                  name={item.name_kr}
+                />
+              </Box>
+              <GridCenterText>{item.name_kr} </GridCenterText>
+              <GridCenterText otherColor={checkPlus(item.energy)}>
+                {addPlusMinus(item.energy)}
+              </GridCenterText>
+              <GridCenterText otherColor={checkPlus(item.hydration)}>
+                {addPlusMinus(item.hydration)}
+              </GridCenterText>
+              <GridItem
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+              >
+                {item.stim_effects.length > 0 ? (
+                  filterStimEffects(item.stim_effects).map((text) => (
+                    <EffectText key={text.krSkill} text={text} />
+                  ))
+                ) : (
+                  <GridCenterText>-</GridCenterText>
+                )}
+              </GridItem>
+              <GridNotes questsNotes={item.notes} />
+            </GridContents>
+          ))}
     </>
   );
 }

@@ -5,7 +5,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import type { Provisions, Column } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import ProvisionsDetail from "./provisionsDetail";
 
 export default function ProvisionsGetData() {
@@ -19,8 +18,6 @@ export default function ProvisionsGetData() {
     );
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_PROVISIONS, setProvisionList);
   }, []);
-
-  if (!provisionList) return <WeaponSkeleton />;
 
   return <ProvisionsDetail provisionList={provisionList} column={column} />;
 }

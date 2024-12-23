@@ -1,7 +1,7 @@
 "use client";
 
 import type { KeyDetail } from "@/types/types";
-import { Box } from "@chakra-ui/react";
+import { Box, Skeleton } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
@@ -36,32 +36,65 @@ export default function KeyDetail({ category, keyList, column }: KeyDetail) {
         isNote
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
-      {keyList.map((item) =>
-        checkViewKey(item.map_value, category) ? (
-          <GridContents
-            columnDesign={[2, null, 6]}
-            key={item.id}
-            id={item.id}
-            isHideout
-          >
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              <ImageZoom
-                originalImg={item.image}
-                thumbnail={item.image}
-                name={item.name}
-              />
-            </Box>
-            <GridCenterText>{item.name} </GridCenterText>
-            <GridArrayText arrayText={item.use_map_kr} />
-            <GridCenterText>{item.uses}</GridCenterText>
-            <GridNotes isKey questsNotes={item.notes} />
-          </GridContents>
-        ) : null
-      )}
+      {!keyList
+        ? Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 6]}
+                id={`armband-null-${index}`}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : keyList.map((item) =>
+            checkViewKey(item.map_value, category) ? (
+              <GridContents
+                columnDesign={[2, null, 6]}
+                key={item.id}
+                id={item.id}
+                isHideout
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ImageZoom
+                    originalImg={item.image}
+                    thumbnail={item.image}
+                    name={item.name}
+                  />
+                </Box>
+                <GridCenterText>{item.name} </GridCenterText>
+                <GridArrayText arrayText={item.use_map_kr} />
+                <GridCenterText>{item.uses}</GridCenterText>
+                <GridNotes isKey questsNotes={item.notes} />
+              </GridContents>
+            ) : null
+          )}
     </Box>
   );
 }
