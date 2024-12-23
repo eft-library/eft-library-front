@@ -7,12 +7,14 @@ type AdBannerTypes = {
   dataAdSlot: string;
   dataAdFormat: string;
   dataFullWidthResponsive: boolean;
+  isHorizontal?: boolean;
 };
 
 export default function AdBanner({
   dataAdSlot,
   dataAdFormat,
   dataFullWidthResponsive,
+  isHorizontal = false,
 }: AdBannerTypes) {
   useEffect(() => {
     try {
@@ -27,7 +29,11 @@ export default function AdBanner({
   return (
     <ins
       className="adsbygoogle"
-      style={{ display: "block", backgroundColor: ALL_COLOR.BACKGROUND }}
+      style={{
+        display: "flex",
+        backgroundColor: ALL_COLOR.BACKGROUND,
+        justifyContent: "center",
+      }}
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
