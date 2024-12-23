@@ -10,6 +10,8 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import HideoutDetail from "./hideoutDetail";
+import AdBanner from "@/components/adsense/adBanner";
+import { Box } from "@chakra-ui/react";
 
 export default function HideoutMain() {
   const { hideoutCategory, setHideoutCategory } = useAppStore((state) => state);
@@ -31,6 +33,12 @@ export default function HideoutMain() {
   return (
     <PageParent>
       <SubHeader title="은신처" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}

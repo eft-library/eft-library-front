@@ -11,6 +11,7 @@ import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import AmmoDetail from "./ammoDetail";
 import AdBanner from "@/components/adsense/adBanner";
+import { Box } from "@chakra-ui/react";
 
 export default function AmmoMain() {
   const { ammoCategory, setAmmoCategory } = useAppStore((state) => state);
@@ -32,6 +33,7 @@ export default function AmmoMain() {
   return (
     <PageParent>
       <SubHeader title="탄약" />
+      <Box mb={10} />
       <AdBanner
         dataAdFormat={"fluid"}
         dataFullWidthResponsive={true}

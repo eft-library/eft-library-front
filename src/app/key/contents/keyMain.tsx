@@ -10,6 +10,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import KeyGetData from "./keyGetData";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function KeyMain() {
   const { keyCategory, setKeyCategory } = useAppStore((state) => state);
@@ -31,6 +32,12 @@ export default function KeyMain() {
   return (
     <PageParent>
       <SubHeader title="열쇠" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}

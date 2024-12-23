@@ -2,6 +2,7 @@ import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
 import ContainerDetail from "./contents/containerDetail";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "타르코프 컨테이너",
@@ -19,6 +20,12 @@ export default function Container() {
   return (
     <PageParent>
       <SubHeader title="컨테이너" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <Box mb={10} />
       <ContainerDetail />
     </PageParent>

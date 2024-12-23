@@ -10,6 +10,8 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import WeaponDetail from "./weaponDetail";
 import type { Column } from "@/types/types";
+import AdBanner from "@/components/adsense/adBanner";
+import { Box } from "@chakra-ui/react";
 
 export default function WeaponMain() {
   const { weaponCategory, setWeaponCategory } = useAppStore((state) => state);
@@ -31,6 +33,12 @@ export default function WeaponMain() {
   return (
     <PageParent>
       <SubHeader title="무기" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}

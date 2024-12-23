@@ -10,6 +10,8 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import ContentsSelector from "@/components/contentsSelector/contentsSelector";
 import type { Column } from "@/types/types";
 import LootGetData from "./lootGetData";
+import AdBanner from "@/components/adsense/adBanner";
+import { Box } from "@chakra-ui/react";
 
 export default function LootMain() {
   const { lootCategory, setLootCategory } = useAppStore((state) => state);
@@ -31,6 +33,12 @@ export default function LootMain() {
   return (
     <PageParent>
       <SubHeader title="전리품" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <ContentsSelector
         onClickEvent={onClickCategory}
         itemList={column.json_value}

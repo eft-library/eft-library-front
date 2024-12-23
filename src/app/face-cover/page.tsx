@@ -2,6 +2,7 @@ import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
 import FaceCoverDetail from "./contents/faceCoverDetail";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "타르코프 얼굴 커버",
@@ -19,6 +20,12 @@ export default function FaceCover() {
   return (
     <PageParent>
       <SubHeader title="얼굴 커버" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <Box mb={10} />
       <FaceCoverDetail />
     </PageParent>

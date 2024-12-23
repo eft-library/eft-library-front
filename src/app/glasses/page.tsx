@@ -2,6 +2,7 @@ import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
 import GlassesDetail from "./contents/glassesDetail";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "타르코프 안경",
@@ -19,6 +20,12 @@ export default function Glasses() {
   return (
     <PageParent>
       <SubHeader title="안경" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <Box mb={10} />
       <GlassesDetail />
     </PageParent>

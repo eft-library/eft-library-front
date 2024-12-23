@@ -2,6 +2,7 @@ import SubHeader from "@/components/subHeader/subHeader";
 import PageParent from "@/components/pageParent/pageParent";
 import { Box } from "@chakra-ui/react";
 import BackpackDetail from "./contents/backpackDetail";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "타르코프 가방",
@@ -19,6 +20,12 @@ export default function Backpack() {
   return (
     <PageParent>
       <SubHeader title="가방" />
+      <Box mb={10} />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <Box mb={10} />
       <BackpackDetail />
     </PageParent>
