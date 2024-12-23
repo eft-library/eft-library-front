@@ -30,6 +30,7 @@ export default function AdBanner({
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
+      data-ad-layout="auto"
       data-full-width-resposive={dataFullWidthResponsive.toString()}
     ></ins>
   );
