@@ -6,9 +6,7 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
 import type { News } from "@/types/types";
-import NewsSkeleton from "../skeleton/newsSkeleton";
 import NewsText from "./newsText";
-import YoutubeNews from "./youtube";
 
 export default function News() {
   const [news, setNews] = useState<News>(null);
@@ -16,8 +14,6 @@ export default function News() {
   useEffect(() => {
     fetchDataWithNone(API_ENDPOINTS.GET_NEWS, setNews);
   }, []);
-
-  if (!news) return <NewsSkeleton />;
 
   return (
     <Box

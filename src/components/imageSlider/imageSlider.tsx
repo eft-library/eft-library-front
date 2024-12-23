@@ -1,7 +1,7 @@
 "use client";
 
 import Slider from "react-slick";
-import { Image, Box } from "@chakra-ui/react";
+import { Image, Box, Skeleton } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { formatImage } from "@/lib/formatImage";
@@ -29,34 +29,38 @@ export default function ImageSlider({
       mt={"40px"}
     >
       <Box w={"85%"} h={"20%"}>
-        <Gallery>
-          <Slider {...sliderOption}>
-            {mapList.map((map) =>
-              useZoom ? (
-                <ImageZoom
-                  key={map.id}
-                  needFormat
-                  isMax={false}
-                  isLoop
-                  originalImg={map[imagePath]}
-                  name={map.id}
-                  thumbnail={map[imagePath]}
-                />
-              ) : (
-                <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
-                  <Image
-                    w={size.width}
-                    h={size.height}
-                    cursor={"pointer"}
-                    alt={map.id}
-                    src={formatImage(map[imagePath])}
-                    boxSize="100%"
+        {!mapList ? (
+          <Skeleton height={"200px"} width={"100%"} />
+        ) : (
+          <Gallery>
+            <Slider {...sliderOption}>
+              {mapList.map((map) =>
+                useZoom ? (
+                  <ImageZoom
+                    key={map.id}
+                    needFormat
+                    isMax={false}
+                    isLoop
+                    originalImg={map[imagePath]}
+                    name={map.id}
+                    thumbnail={map[imagePath]}
                   />
-                </Link>
-              )
-            )}
-          </Slider>
-        </Gallery>
+                ) : (
+                  <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
+                    <Image
+                      w={size.width}
+                      h={size.height}
+                      cursor={"pointer"}
+                      alt={map.id}
+                      src={formatImage(map[imagePath])}
+                      boxSize="100%"
+                    />
+                  </Link>
+                )
+              )}
+            </Slider>
+          </Gallery>
+        )}
       </Box>
     </Box>
   );

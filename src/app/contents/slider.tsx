@@ -6,7 +6,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import type { SubMenu } from "@/types/types";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
-import SliderSkeleton from "./skeleton/sliderSkeleton";
 
 export default function Slider() {
   const [slider, setSlider] = useState<SubMenu[]>();
@@ -14,8 +13,6 @@ export default function Slider() {
   useEffect(() => {
     fetchDataWithNone(`${API_ENDPOINTS.GET_ALL_MAP}`, setSlider);
   }, []);
-
-  if (!slider) return <SliderSkeleton />;
 
   return (
     <ImageSlider

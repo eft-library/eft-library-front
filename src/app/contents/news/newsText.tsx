@@ -8,6 +8,7 @@ import {
   ModalBody,
   useDisclosure,
   Button,
+  Skeleton,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
@@ -41,23 +42,29 @@ export default function NewsText({ news }: NewsText) {
         </Box>
 
         <Box display={"flex"} flexDirection={"column"}>
-          {news.user_function.map((func) =>
-            func.use_yn ? (
-              <Text
-                fontWeight={600}
-                color={ALL_COLOR.MAIN_YELLO}
-                onClick={() => onClickUserFunction(func.link)}
-                cursor={"pointer"}
-                _hover={{ color: ALL_COLOR.LIGHT_RED }}
-                key={func.name_en}
-              >
-                - {func.name_kr}
-              </Text>
-            ) : (
-              <Text fontWeight={600} key={func.name_en}>
-                - {func.name_kr}
-              </Text>
+          {news && news.user_function ? (
+            news.user_function.map((func) =>
+              func.use_yn ? (
+                <Text
+                  fontWeight={600}
+                  color={ALL_COLOR.MAIN_YELLO}
+                  onClick={() => onClickUserFunction(func.link)}
+                  cursor={"pointer"}
+                  _hover={{ color: ALL_COLOR.LIGHT_RED }}
+                  key={func.name_en}
+                >
+                  - {func.name_kr}
+                </Text>
+              ) : (
+                <Text fontWeight={600} key={func.name_en}>
+                  - {func.name_kr}
+                </Text>
+              )
             )
+          ) : (
+            <Text fontWeight={600}>
+              - <Skeleton height="20px" width="120px" />
+            </Text>
           )}
         </Box>
       </Box>
@@ -66,18 +73,31 @@ export default function NewsText({ news }: NewsText) {
           <MdOutlineFileDownload />
           &nbsp;<Text fontWeight={600}>현재 게임 버전</Text>
         </Box>
-        <Text fontWeight={600}>- {news.game_version}</Text>
+        <Text fontWeight={600}>
+          -{" "}
+          {news && news.game_version ? (
+            news.game_version
+          ) : (
+            <Skeleton height="20px" width="120px" />
+          )}
+        </Text>
       </Box>
       <Box fontSize="18px" w="100%" mt={4} ml={6}>
         <Box display={"flex"} alignItems={"center"} mb={1}>
           <PiCalendarCheckLight />
           &nbsp;<Text fontWeight={600}>업데이트 예정</Text>
         </Box>
-        {news.next_update.map((patch) => (
-          <Text fontWeight={600} key={patch}>
-            - {patch}
+        {news && news.next_update ? (
+          news.next_update.map((patch) => (
+            <Text fontWeight={600} key={patch}>
+              - {patch}
+            </Text>
+          ))
+        ) : (
+          <Text fontWeight={600}>
+            - <Skeleton height="20px" width="120px" />
           </Text>
-        ))}
+        )}
       </Box>
       <Box fontSize="18px" w="100%" ml={6} mb={4} mt={6}>
         <Box display={"flex"} alignItems={"center"} mb={1}>
@@ -90,7 +110,11 @@ export default function NewsText({ news }: NewsText) {
           color={ALL_COLOR.MAIN_YELLO}
           _hover={{ color: ALL_COLOR.LIGHT_RED }}
         >
-          <Link href={news.event_link}>- 이벤트</Link>
+          {news && news.event_link ? (
+            <Link href={news.event_link}>- 이벤트</Link>
+          ) : (
+            <Skeleton height="20px" width="120px" />
+          )}
         </Text>
         <Text
           fontWeight={600}
@@ -98,7 +122,11 @@ export default function NewsText({ news }: NewsText) {
           cursor={"pointer"}
           _hover={{ color: ALL_COLOR.LIGHT_RED }}
         >
-          <Link href={news.patch_link}>- 패치노트</Link>
+          {news && news.patch_link ? (
+            <Link href={news.patch_link}>- 패치노트</Link>
+          ) : (
+            <Skeleton height="20px" width="120px" />
+          )}
         </Text>
       </Box>
       <Box fontSize="18px" w="100%" ml={6} mb={4} mt={6}>
@@ -106,7 +134,11 @@ export default function NewsText({ news }: NewsText) {
           <MdOutlineFileDownload />
           &nbsp;<Text fontWeight={600}>아레나 버전</Text>
         </Box>
-        <Text fontWeight={600}>- {news.arena_version}</Text>
+        {news && news.arena_version ? (
+          <Text fontWeight={600}>- {news.arena_version}</Text>
+        ) : (
+          <Skeleton height="20px" width="120px" />
+        )}
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
