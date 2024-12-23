@@ -1,13 +1,12 @@
 "use client";
 
-import { Box, SimpleGrid, Text, Flex } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text, Flex, Skeleton } from "@chakra-ui/react";
 import { formatImage } from "@/lib/formatImage";
 import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useAppStore } from "@/store/provider";
 import type { NPC } from "@/types/types";
-import NPCSkeleton from "../skeleton/npcSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 
 export default function NPC() {
@@ -28,38 +27,47 @@ export default function NPC() {
     e.target.style.opacity = "1"; // 이미지 불투명도 원래대로
   };
 
-  if (!npc) return <NPCSkeleton />;
-
   return (
     <Box display="flex" justifyContent="center" alignItems={"center"} mb={10}>
       <SimpleGrid columns={[2, null, 5]} spacing={12}>
-        {npc.map((npcItem) => (
-          <Flex key={npcItem.id} flexDirection={"column"}>
-            <Box
-              cursor={"pointer"}
-              w="120px"
-              h="120px"
-              onClick={() => setNpcId(npcItem.id)}
-              color={ALL_COLOR.WHITE}
-              backgroundImage={`url(${formatImage(npcItem.image)})`}
-              outline={npcId === npcItem.id ? "4px solid" : "1px solid"}
-              outlineColor={
-                npcId === npcItem.id ? ALL_COLOR.DARK_YELLOW : ALL_COLOR.WHITE
-              }
-              borderRadius={"lg"}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleHoverExit}
-            />
-            <Text
-              color={ALL_COLOR.WHITE}
-              textAlign={"center"}
-              mt={"2"}
-              fontWeight={600}
-            >
-              {npcItem.name_kr}
-            </Text>
-          </Flex>
-        ))}
+        {!npc
+          ? Array(10)
+              .fill(null)
+              .map((_, index) => (
+                <Flex key={`npc-null-${index}`} flexDirection={"column"}>
+                  <Skeleton height="120px" width="120px" />
+                  <Skeleton height="20px" width="120px" mt={2} />
+                </Flex>
+              ))
+          : npc.map((npcItem) => (
+              <Flex key={npcItem.id} flexDirection={"column"}>
+                <Box
+                  cursor={"pointer"}
+                  w="120px"
+                  h="120px"
+                  onClick={() => setNpcId(npcItem.id)}
+                  color={ALL_COLOR.WHITE}
+                  backgroundImage={`url(${formatImage(npcItem.image)})`}
+                  outline={npcId === npcItem.id ? "4px solid" : "1px solid"}
+                  outlineColor={
+                    npcId === npcItem.id
+                      ? ALL_COLOR.DARK_YELLOW
+                      : ALL_COLOR.WHITE
+                  }
+                  borderRadius={"lg"}
+                  onMouseEnter={handleHover}
+                  onMouseLeave={handleHoverExit}
+                />
+                <Text
+                  color={ALL_COLOR.WHITE}
+                  textAlign={"center"}
+                  mt={"2"}
+                  fontWeight={600}
+                >
+                  {npcItem.name_kr}
+                </Text>
+              </Flex>
+            ))}
       </SimpleGrid>
     </Box>
   );

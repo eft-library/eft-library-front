@@ -37,6 +37,8 @@ export default function WeaponGun({ gunList, category }: WeaponGun) {
   };
   // 무기 문자열 자르기
   const sliceDefaultAmmo = (defaultAmmo: string) => {
+    if (!defaultAmmo) return "";
+
     const pattern = "mm";
     const handGunPattern = "ACP";
 
