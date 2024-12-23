@@ -28,8 +28,6 @@ export default function HideoutMain() {
     setHideoutCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="은신처" />
@@ -41,7 +39,8 @@ export default function HideoutMain() {
       />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        itemList={column}
+        skeletonCount={24}
         currentId={hideoutCategory}
         selectorId="value"
         itemDesc="desc_kr"

@@ -28,8 +28,6 @@ export default function LootMain() {
     setLootCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="전리품" />
@@ -41,7 +39,8 @@ export default function LootMain() {
       />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        skeletonCount={14}
+        itemList={column}
         currentId={lootCategory}
         selectorId="value"
         itemDesc="desc_kr"

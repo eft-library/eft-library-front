@@ -8,7 +8,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponGun, Column } from "@/types/types";
-import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import ImageZoom from "@/components/imageZoom/imageZoom";

@@ -8,7 +8,7 @@ import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, MedicalList } from "@/types/types";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
-import { Box, GridItem } from "@chakra-ui/react";
+import { Box, GridItem, Skeleton } from "@chakra-ui/react";
 import React from "react";
 import StimulantText from "./stimulantText";
 import { useSearchParams } from "next/navigation";
@@ -50,61 +50,92 @@ export default function MedicalStimulant({ medicalList }: MedicalList) {
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
-      {medicalList.map(
-        (item) =>
-          item.category === "Stimulant" && (
-            <GridContents
-              columnDesign={[2, null, 4]}
-              key={item.id}
-              id={item.id}
-            >
-              <Box display="flex" alignItems="center" justifyContent="center">
-                <ImageZoom
-                  originalImg={item.image}
-                  thumbnail={item.image}
-                  name={item.name_kr}
-                />
-              </Box>
-              <GridCenterText>{item.name_kr}</GridCenterText>
-              <GridItem
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
+      {!medicalList
+        ? Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 4]}
+                id={`medical-stimlant-${index}`}
               >
-                {item.buff.length > 0 ? (
-                  filterStimEffects(item.buff).map((buff) => (
-                    <StimulantText
-                      key={buff.krSkill}
-                      effect={buff}
-                      itemID={item.id}
-                      type="buff"
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : medicalList.map(
+            (item) =>
+              item.category === "Stimulant" && (
+                <GridContents
+                  columnDesign={[2, null, 4]}
+                  key={item.id}
+                  id={item.id}
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <ImageZoom
+                      originalImg={item.image}
+                      thumbnail={item.image}
+                      name={item.name_kr}
                     />
-                  ))
-                ) : (
-                  <GridCenterText>-</GridCenterText>
-                )}
-              </GridItem>
-              <GridItem
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
-              >
-                {item.debuff.length > 0 ? (
-                  filterStimEffects(item.debuff).map((debuff) => (
-                    <StimulantText
-                      key={debuff.krSkill}
-                      effect={debuff}
-                      itemID={item.id}
-                      type="debuff"
-                    />
-                  ))
-                ) : (
-                  <GridCenterText>-</GridCenterText>
-                )}
-              </GridItem>
-            </GridContents>
-          )
-      )}
+                  </Box>
+                  <GridCenterText>{item.name_kr}</GridCenterText>
+                  <GridItem
+                    display="flex"
+                    justifyContent="center"
+                    flexDirection="column"
+                  >
+                    {item.buff.length > 0 ? (
+                      filterStimEffects(item.buff).map((buff) => (
+                        <StimulantText
+                          key={buff.krSkill}
+                          effect={buff}
+                          itemID={item.id}
+                          type="buff"
+                        />
+                      ))
+                    ) : (
+                      <GridCenterText>-</GridCenterText>
+                    )}
+                  </GridItem>
+                  <GridItem
+                    display="flex"
+                    justifyContent="center"
+                    flexDirection="column"
+                  >
+                    {item.debuff.length > 0 ? (
+                      filterStimEffects(item.debuff).map((debuff) => (
+                        <StimulantText
+                          key={debuff.krSkill}
+                          effect={debuff}
+                          itemID={item.id}
+                          type="debuff"
+                        />
+                      ))
+                    ) : (
+                      <GridCenterText>-</GridCenterText>
+                    )}
+                  </GridItem>
+                </GridContents>
+              )
+          )}
     </>
   );
 }

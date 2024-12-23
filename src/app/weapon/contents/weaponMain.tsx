@@ -28,8 +28,6 @@ export default function WeaponMain() {
     setWeaponCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="무기" />
@@ -40,8 +38,9 @@ export default function WeaponMain() {
         dataAdSlot="2690838054"
       />
       <ContentsSelector
+        skeletonCount={14}
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        itemList={column}
         currentId={weaponCategory}
         selectorId="value"
         itemDesc="desc_kr"

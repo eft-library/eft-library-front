@@ -257,7 +257,7 @@ export interface Boss extends BossInfo, CommonData {
 
 export interface ContentsSelector {
   onClickEvent: Function;
-  itemList: Item[] | Boss[] | JsonValue[] | JsonArrayText[];
+  itemList: JsonArrayText;
   currentId: string;
   selectorId: string;
   itemDesc: string;
@@ -265,6 +265,8 @@ export interface ContentsSelector {
   isEng?: boolean;
   isImage?: boolean;
   isAmmo?: boolean;
+  skeletonCount?: number;
+  columnKey?: string;
 }
 
 export interface LinkSelector {

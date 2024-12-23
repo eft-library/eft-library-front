@@ -25,10 +25,10 @@ export default function WeaponDetail({ category }: WeaponDetail) {
   }, []);
 
   const checkGunInclude = (columnList: Column) => {
+    if (!columnList) return false;
+
     return columnList.value_kr.includes(category);
   };
-
-  if (!column) return null;
 
   return (
     <Box

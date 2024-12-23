@@ -28,8 +28,6 @@ export default function KeyMain() {
     setKeyCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="열쇠" />
@@ -41,9 +39,10 @@ export default function KeyMain() {
       />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        itemList={column}
         currentId={keyCategory}
         selectorId="value"
+        skeletonCount={12}
         itemDesc="desc_kr"
       />
       <KeyGetData category={keyCategory} />

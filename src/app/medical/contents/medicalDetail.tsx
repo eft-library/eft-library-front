@@ -17,8 +17,6 @@ export default function MedicalDetail({ category }: MedicalDetail) {
     fetchDataWithNone(API_ENDPOINTS.GET_ALL_MEDICAL, setMedical);
   }, []);
 
-  if (!medical) return null;
-
   return (
     <Box
       display="flex"

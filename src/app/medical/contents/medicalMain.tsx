@@ -28,8 +28,6 @@ export default function MedicalMain() {
     setMedicalCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="의료품" />
@@ -41,7 +39,8 @@ export default function MedicalMain() {
       />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        skeletonCount={5}
+        itemList={column}
         currentId={medicalCategory}
         selectorId="value"
         itemDesc="desc_kr"

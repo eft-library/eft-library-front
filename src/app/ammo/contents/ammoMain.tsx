@@ -28,8 +28,6 @@ export default function AmmoMain() {
     setAmmoCategory(category);
   };
 
-  if (!column) return null;
-
   return (
     <PageParent>
       <SubHeader title="탄약" />
@@ -41,7 +39,7 @@ export default function AmmoMain() {
       />
       <ContentsSelector
         onClickEvent={onClickCategory}
-        itemList={column.json_value}
+        itemList={column}
         currentId={ammoCategory}
         selectorId="value"
         isSpace={false}
