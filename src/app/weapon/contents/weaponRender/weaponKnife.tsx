@@ -7,7 +7,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { WeaponKnife, Column } from "@/types/types";
-import WeaponSkeleton from "../skeleton/weaponSkeleton";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";

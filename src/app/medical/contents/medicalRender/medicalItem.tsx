@@ -8,7 +8,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, MedicalList } from "@/types/types";
 import ImageZoom from "@/components/imageZoom/imageZoom";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Box, Skeleton } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/hooks/useScrollMove";

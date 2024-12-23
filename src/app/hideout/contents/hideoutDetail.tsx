@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { HideoutDetail, Hideout, Column } from "@/types/types";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import GridContents from "@/components/gridContents/gridContents";

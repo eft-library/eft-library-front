@@ -7,7 +7,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, MedicalList } from "@/types/types";
 import ImageZoom from "@/components/imageZoom/imageZoom";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { Box, GridItem, Skeleton } from "@chakra-ui/react";
 import React from "react";
 import StimulantText from "./stimulantText";
