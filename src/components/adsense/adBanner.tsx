@@ -13,7 +13,6 @@ export default function AdBanner({
   dataAdFormat,
   dataFullWidthResponsive,
 }: AdBannerTypes) {
-
   useEffect(() => {
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
@@ -31,7 +30,7 @@ export default function AdBanner({
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
-      data-full-width-resposiver={dataFullWidthResponsive.toString()}
+      data-full-width-resposive={dataFullWidthResponsive.toString()}
     ></ins>
   );
 }
