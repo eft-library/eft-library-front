@@ -11,7 +11,7 @@ export default function PageParent({ children, leftAdUse = true }: PageParent) {
       bg={ALL_COLOR.BACKGROUND}
       display="flex"
       alignItems="center" // 콘텐츠의 상단 정렬 유지
-      justifyContent="space-between"
+      justifyContent="center"
       width="100%"
       minHeight="100vh"
     >

@@ -76,6 +76,7 @@ export default function Contents() {
       alignItems={"center"}
       justifyContent={"center"}
       width={"100%"}
+      marginTop={10}
     >
       <TableContainer border="1px solid" borderColor={ALL_COLOR.WHITE}>
         <Table variant="simple" size={"lg"}>
