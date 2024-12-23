@@ -62,7 +62,7 @@ export default function QuestContents({ quest }: QuestContents) {
         </Box>
       </DividerContents>
       <DividerContents headText="보상">
-        <Box>
+        <Box mb={10}>
           {quest.rewards_kr.map((rewards) => (
             <Text
               key={rewards}

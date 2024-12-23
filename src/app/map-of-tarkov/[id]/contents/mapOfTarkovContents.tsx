@@ -6,6 +6,7 @@ import BossDetail from "@/app/boss/[id]/contents/bossDetail";
 import { MOT_IMAGE_SLIDER_OPTION } from "@/util/consts/libraryConsts";
 import type { MapOfTarkovContents, SubMap } from "@/types/types";
 import BossBox from "@/app/boss/[id]/contents/bossBox";
+import AdBanner from "@/components/adsense/adBanner";
 
 export default function MapOfTarkovContents({
   mapOfTarkov,
@@ -19,9 +20,7 @@ export default function MapOfTarkovContents({
 
   return (
     <Box w={"100%"} mt={10}>
-      <DividerContents
-        headText={mapOfTarkov.map_info.name_kr}
-      >
+      <DividerContents headText={mapOfTarkov.map_info.name_kr}>
         <Box display={"flex"} alignItems={"center"}>
           <ImageSlider
             mapList={sortSubList(mapOfTarkov.map_info.sub)}
@@ -31,6 +30,12 @@ export default function MapOfTarkovContents({
           />
         </Box>
       </DividerContents>
+
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       {mapOfTarkov.boss_list.length > 0 && (
         <DividerContents headText="보스">
           <BossDetail>
