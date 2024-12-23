@@ -4,6 +4,7 @@ import { Flex } from "@chakra-ui/react";
 import NPC from "./content/npc";
 import Contents from "./content/contents";
 import "@/assets/quest.css";
+import AdBanner from "@/components/adsense/adBanner";
 
 export const metadata = {
   title: "타르코프 퀘스트",
@@ -29,6 +30,11 @@ export default function Quest() {
         <SubHeader title="퀘스트" />
       </Flex>
       <NPC />
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
       <Contents />
     </PageParent>
   );

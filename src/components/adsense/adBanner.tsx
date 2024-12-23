@@ -1,5 +1,6 @@
 "use client";
 
+import { ALL_COLOR } from "@/util/consts/colorConsts";
 import React, { useEffect } from "react";
 
 type AdBannerTypes = {
@@ -26,7 +27,7 @@ export default function AdBanner({
   return (
     <ins
       className="adsbygoogle"
-      style={{ display: "block" }}
+      style={{ display: "block", backgroundColor: ALL_COLOR.BACKGROUND }}
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
