@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, GridItem } from "@chakra-ui/react";
+import { Box, GridItem, Skeleton } from "@chakra-ui/react";
 import GridContents from "@/components/gridContents/gridContents";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
@@ -10,7 +10,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import ImageZoom from "@/components/imageZoom/imageZoom";
 import { useSearchParams } from "next/navigation";
-import WeaponSkeleton from "@/app/weapon/contents/skeleton/weaponSkeleton";
 import { useScrollMove } from "@/hooks/useScrollMove";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import EfficiencyBox from "./efficiencyBox";
@@ -112,8 +111,6 @@ export default function AmmoDetail({ category }: AmmoDetail) {
     }
   };
 
-  if (!ammoList) return <WeaponSkeleton />;
-
   return (
     <Box
       display="flex"
@@ -129,57 +126,116 @@ export default function AmmoDetail({ category }: AmmoDetail) {
         isAmmo
         shadowColor={checkTitleColor(category)}
       />
-      {ammoList.map((item) =>
-        checkViewAmmo(item.category) ? (
-          <GridContents columnDesign={[2, null, 11]} key={item.id} id={item.id}>
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              <ImageZoom
-                originalImg={item.image}
-                thumbnail={item.image}
-                name={item.name}
-              />
-            </Box>
-            <GridCenterText>{item.name} </GridCenterText>
-            <GridCenterText>{item.damage} </GridCenterText>
-            <GridCenterText>{item.penetration_power} </GridCenterText>
-            <GridCenterText>{item.armor_damage} %</GridCenterText>
-            <GridCenterText
-              otherColor={checkColor(floatToPercent(item.accuracy_modifier))}
-            >
-              {addPlusMinus(floatToPercent(item.accuracy_modifier))} %
-            </GridCenterText>
-            <GridCenterText
-              otherColor={recoilColor(floatToPercent(item.recoil_modifier))}
-            >
-              {addPlusMinus(floatToPercent(item.recoil_modifier))}
-            </GridCenterText>
-            <GridCenterText
-              otherColor={checkColor(floatToPercent(item.light_bleed_modifier))}
-            >
-              {addPlusMinus(floatToPercent(item.light_bleed_modifier))} %
-            </GridCenterText>
-            <GridCenterText
-              otherColor={checkColor(floatToPercent(item.heavy_bleed_modifier))}
-            >
-              {addPlusMinus(floatToPercent(item.heavy_bleed_modifier))} %
-            </GridCenterText>
-            <GridItem
-              colSpan={2}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              {item.efficiency.map((efficiency, index) => (
-                <EfficiencyBox key={index} value={efficiency} />
-              ))}
-            </GridItem>
-          </GridContents>
-        ) : null
-      )}
+      {!ammoList
+        ? Array(20)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 11]}
+                id={`ammo-null-${index}`}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="60px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="100px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : ammoList.map((item) =>
+            checkViewAmmo(item.category) ? (
+              <GridContents
+                columnDesign={[2, null, 11]}
+                key={item.id}
+                id={item.id}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ImageZoom
+                    originalImg={item.image}
+                    thumbnail={item.image}
+                    name={item.name}
+                  />
+                </Box>
+                <GridCenterText>{item.name} </GridCenterText>
+                <GridCenterText>{item.damage} </GridCenterText>
+                <GridCenterText>{item.penetration_power} </GridCenterText>
+                <GridCenterText>{item.armor_damage} %</GridCenterText>
+                <GridCenterText
+                  otherColor={checkColor(
+                    floatToPercent(item.accuracy_modifier)
+                  )}
+                >
+                  {addPlusMinus(floatToPercent(item.accuracy_modifier))} %
+                </GridCenterText>
+                <GridCenterText
+                  otherColor={recoilColor(floatToPercent(item.recoil_modifier))}
+                >
+                  {addPlusMinus(floatToPercent(item.recoil_modifier))}
+                </GridCenterText>
+                <GridCenterText
+                  otherColor={checkColor(
+                    floatToPercent(item.light_bleed_modifier)
+                  )}
+                >
+                  {addPlusMinus(floatToPercent(item.light_bleed_modifier))} %
+                </GridCenterText>
+                <GridCenterText
+                  otherColor={checkColor(
+                    floatToPercent(item.heavy_bleed_modifier)
+                  )}
+                >
+                  {addPlusMinus(floatToPercent(item.heavy_bleed_modifier))} %
+                </GridCenterText>
+                <GridItem
+                  colSpan={2}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  {item.efficiency.map((efficiency, index) => (
+                    <EfficiencyBox key={index} value={efficiency} />
+                  ))}
+                </GridItem>
+              </GridContents>
+            ) : null
+          )}
     </Box>
   );
 }

@@ -4,7 +4,7 @@ import type { Column, ArmBand } from "@/types/types";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridContents from "@/components/gridContents/gridContents";
-import { Box } from "@chakra-ui/react";
+import { Box, Skeleton } from "@chakra-ui/react";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import API_ENDPOINTS from "@/config/endPoints";
 import { useEffect, useState } from "react";
@@ -29,8 +29,6 @@ export default function ArmBandDetail() {
 
   useScrollMove(param.get("id"), armBandList);
 
-  if (!armBandList) return null;
-
   return (
     <>
       <GridTitle
@@ -39,18 +37,47 @@ export default function ArmBandDetail() {
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
-      {armBandList.map((item) => (
-        <GridContents columnDesign={[2, null, 2]} key={item.id} id={item.id}>
-          <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <ImageZoom
-              originalImg={item.image}
-              thumbnail={item.image}
-              name={item.name}
-            />
-          </Box>
-          <GridCenterText>{item.name}</GridCenterText>
-        </GridContents>
-      ))}
+      {!armBandList
+        ? Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 2]}
+                id={`armband-null-${index}`}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : armBandList.map((item) => (
+            <GridContents
+              columnDesign={[2, null, 2]}
+              key={item.id}
+              id={item.id}
+            >
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <ImageZoom
+                  originalImg={item.image}
+                  thumbnail={item.image}
+                  name={item.name}
+                />
+              </Box>
+              <GridCenterText>{item.name}</GridCenterText>
+            </GridContents>
+          ))}
     </>
   );
 }
