@@ -18,11 +18,16 @@ export default function AdBanner({
 }: AdBannerTypes) {
   useEffect(() => {
     try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
-        {}
-      );
+      // 광고를 로드한 후
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+      // 광고 로드 후 #google-center-div의 배경색을 변경
+      const adContainer = document.getElementById("google-center-div");
+      if (adContainer) {
+        adContainer.style.backgroundColor = ALL_COLOR.BACKGROUND; // 배경색을 black으로 설정
+      }
     } catch (e) {
-      console.log(e);
+      console.error("Google AdSense 광고 로드 오류:", e);
     }
   }, []);
 
