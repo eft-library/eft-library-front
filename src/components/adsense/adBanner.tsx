@@ -29,6 +29,7 @@ export default function AdBanner({
       style={{
         display: "flex",
         justifyContent: "center",
+        background: "transparent",
       }}
       data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
       data-ad-slot={dataAdSlot}
