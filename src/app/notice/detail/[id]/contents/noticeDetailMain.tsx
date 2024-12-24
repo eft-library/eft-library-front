@@ -6,6 +6,9 @@ import { InformationInfoDetail } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Information from "@/components/information/information";
+import PageParent from "@/components/pageParent/pageParent";
+import SubHeader from "@/components/subHeader/subHeader";
+import { Box, Skeleton } from "@chakra-ui/react";
 
 export default function NoticeDetailMain() {
   const param = useParams<{ id: string }>();
@@ -17,7 +20,16 @@ export default function NoticeDetailMain() {
     );
   }, [param]);
 
-  if (!noticeDetail) return null;
+  if (!noticeDetail)
+    return (
+      <PageParent>
+        <SubHeader title="공지사항" />
+        <Box mb={10} />
+        <Box w={"100%"}>
+          <Skeleton w={"100%"} h="1200px" />
+        </Box>
+      </PageParent>
+    );
 
   return (
     <Information

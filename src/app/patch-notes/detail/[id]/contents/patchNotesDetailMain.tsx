@@ -6,6 +6,9 @@ import { fetchDataWithNone } from "@/lib/api";
 import { InformationInfoDetail } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import PageParent from "@/components/pageParent/pageParent";
+import SubHeader from "@/components/subHeader/subHeader";
+import { Box, Skeleton } from "@chakra-ui/react";
 
 export default function PatchNotesDetailMain() {
   const param = useParams<{ id: string }>();
@@ -18,7 +21,16 @@ export default function PatchNotesDetailMain() {
     );
   }, [param]);
 
-  if (!patchNotesDetail) return null;
+  if (!patchNotesDetail)
+    return (
+      <PageParent>
+        <SubHeader title="패치노트" />
+        <Box mb={10} />
+        <Box w={"100%"}>
+          <Skeleton w={"100%"} h="1200px" />
+        </Box>
+      </PageParent>
+    );
 
   return (
     <Information
