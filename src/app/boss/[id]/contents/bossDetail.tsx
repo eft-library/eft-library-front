@@ -6,7 +6,6 @@ import { fetchDataWithNone } from "@/lib/api";
 import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import type { Column, BossDetail } from "@/types/types";
-import DetailSkeleton from "./skeleton/detailSkeleton";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 

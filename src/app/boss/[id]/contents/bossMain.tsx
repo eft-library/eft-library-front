@@ -11,8 +11,6 @@ import BossDetail from "./bossDetail";
 import API_ENDPOINTS from "@/config/endPoints";
 import type { Boss, Column } from "@/types/types";
 import { useParams } from "next/navigation";
-import ContentsSkeleton from "./skeleton/contentsSkeleton";
-import DetailSkeleton from "./skeleton/detailSkeleton";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import BossBox from "./bossBox";
 
@@ -33,21 +31,12 @@ export default function BossMain() {
   }, [param.id]);
 
   const sortList = () => {
+    if (!column) return null;
     const result = column.json_value.sort((a, b) => {
       return a.order - b.order;
     });
     return result;
   };
-
-  if (!boss || !column) {
-    return (
-      <PageParent>
-        <SubHeader title="보스" />
-        <DetailSkeleton />
-        <ContentsSkeleton />
-      </PageParent>
-    );
-  }
 
   return (
     <PageParent>

@@ -1,9 +1,8 @@
 "use client";
 
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Skeleton, Text } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import type { BossContents, Column } from "@/types/types";
-import ContentsSkeleton from "./skeleton/contentsSkeleton";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { fetchDataWithNone } from "@/lib/api";
@@ -33,16 +32,30 @@ export default function BossContents({ boss }: BossContents) {
         dataAdSlot="2690838054"
       />
       <DividerContents headText="위치">
-        <ImgWithZoom content={boss.location_guide} />
+        {!boss ? (
+          <Skeleton height="120px" width="100%" />
+        ) : (
+          <ImgWithZoom content={boss.location_guide} />
+        )}
       </DividerContents>
-      <BossHealth healthList={boss.sub_followers} />
-      {boss.sub_followers.map((followers) => (
-        <FollowersLoot
-          follower={followers}
-          column={column}
-          key={followers.id}
-        />
-      ))}
+      {!boss ? (
+        <>
+          <Skeleton height="400px" width="100%" />
+          <br />
+          <Skeleton height="400px" width="100%" />
+        </>
+      ) : (
+        <>
+          <BossHealth healthList={boss.sub_followers} />
+          {boss.sub_followers.map((followers) => (
+            <FollowersLoot
+              follower={followers}
+              column={column}
+              key={followers.id}
+            />
+          ))}
+        </>
+      )}
     </Box>
   );
 }
