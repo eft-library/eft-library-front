@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Skeleton } from "@chakra-ui/react";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import GridTitle from "@/components/gridTitle/gridTitle";
 import GridContents from "@/components/gridContents/gridContents";
@@ -46,39 +46,73 @@ export default function WeaponStationary({
         isShadow
         shadowColor={ALL_COLOR.YELLOW_SHADOW}
       />
-      {stationaryList.map((item) =>
-        shouldRenderWeapon(item.category) ? (
-          <GridContents columnDesign={[2, null, 5]} key={item.id} id={item.id}>
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-            >
-              <ImageZoom
-                originalImg={item.image}
-                thumbnail={item.image}
-                name={item.short_name}
-                needFormat
-              />
-            </Box>
-            <GridCenterText>{item.short_name}</GridCenterText>
-            <GridCenterText>{item.carliber}</GridCenterText>
-            <Box
-              w={"100%"}
-              h={"100%"}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection={"column"}
-            >
-              {item.modes_kr.map((mode) => (
-                <GridCenterText key={mode}>{mode}</GridCenterText>
-              ))}
-            </Box>
-            <GridCenterText>{item.fire_rate}</GridCenterText>
-          </GridContents>
-        ) : null
-      )}
+      {stationaryList.length < 1
+        ? Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <GridContents
+                key={index}
+                columnDesign={[2, null, 5]}
+                id={`armband-null-${index}`}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Skeleton height="110px" width="110px" />
+                </Box>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+                <GridCenterText>
+                  <Skeleton height="20px" width="120px" />
+                </GridCenterText>
+              </GridContents>
+            ))
+        : stationaryList.map((item) =>
+            shouldRenderWeapon(item.category) ? (
+              <GridContents
+                columnDesign={[2, null, 5]}
+                key={item.id}
+                id={item.id}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ImageZoom
+                    originalImg={item.image}
+                    thumbnail={item.image}
+                    name={item.short_name}
+                    needFormat
+                  />
+                </Box>
+                <GridCenterText>{item.short_name}</GridCenterText>
+                <GridCenterText>{item.carliber}</GridCenterText>
+                <Box
+                  w={"100%"}
+                  h={"100%"}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection={"column"}
+                >
+                  {item.modes_kr.map((mode) => (
+                    <GridCenterText key={mode}>{mode}</GridCenterText>
+                  ))}
+                </Box>
+                <GridCenterText>{item.fire_rate}</GridCenterText>
+              </GridContents>
+            ) : null
+          )}
     </>
   );
 }
