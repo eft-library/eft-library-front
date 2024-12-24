@@ -23,8 +23,6 @@ export default function EventDetail() {
     getPatchNotesPage(Number(param.get("id")));
   }, [param]);
 
-  if (!eventInfo) return null;
-
   return (
     <InformationMain
       information={eventInfo}

@@ -23,8 +23,6 @@ export default function PatchNotesDetail() {
     getPatchNotesPage(Number(param.get("id")));
   }, [param]);
 
-  if (!patchNotesInfo) return null;
-
   return (
     <InformationMain
       information={patchNotesInfo}
