@@ -10,7 +10,6 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import MapOfTarkovContents from "./mapOfTarkovContents";
 import type { Column, MapOfTarkov } from "@/types/types";
-import ContentsSkeleton from "../../skeleton/contentsSkeleton";
 
 export default function MapOfTarkovMain() {
   const param = useParams<{ id: string }>();
@@ -32,13 +31,13 @@ export default function MapOfTarkovMain() {
   }, [param.id]);
 
   const sortList = () => {
+    if (!column) return null;
+
     const result = column.json_value.sort((a, b) => {
       return a.order - b.order;
     });
     return result;
   };
-
-  if (!column || !mapOfTarkov) return <ContentsSkeleton />;
 
   return (
     <PageParent>

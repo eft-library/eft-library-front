@@ -22,7 +22,7 @@ export default function LinkSelector({
       borderRadius={"lg"}
     >
       {!itemList
-        ? Array(10)
+        ? Array(8)
             .fill(null)
             .map((_, index) => (
               <Skeleton
