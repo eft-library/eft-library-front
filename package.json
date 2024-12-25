@@ -23,6 +23,7 @@
     "@types/three": "^0.165.0",
     "@xeger/quill-image-actions": "^0.7.2",
     "@xeger/quill-image-formats": "^0.7.2",
+    "@xyflow/react": "^12.3.6",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^3.6.0",
     "downshift": "^9.0.6",
