@@ -24,6 +24,10 @@ export const getLayoutedElements = (
 
   const newNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
+    if (node.type === "input") {
+      nodeWithPosition.x = 0; // 고정된 Y 위치
+    }
+
     const newNode = {
       ...node,
       targetPosition: isHorizontal ? "left" : "top",
