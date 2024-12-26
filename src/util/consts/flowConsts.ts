@@ -1,0 +1,8 @@
+import { ALL_COLOR } from "./colorConsts";
+
+export const nodePosition = { x: 0, y: 0 };
+export const edgeType = "smoothstep";
+export const edgeStyle = {
+  strokeWidth: 2,
+  stroke: ALL_COLOR.CASH_REGISTER_THREE,
+};
