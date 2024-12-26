@@ -38,6 +38,7 @@ export default function UserQuestDetail() {
 
   // get
   useEffect(() => {
+    console.log(session);
     const getUserQuest = async () => {
       const response = await fetchUserData(
         USER_API_ENDPOINTS.GET_USER_QUEST,

@@ -52,6 +52,7 @@ const API_ENDPOINTS = {
   UPLOAD_BOARD_IMAGE: baseUrl + "/api/board/upload_image",
   GET_USER_POST_DETAIL: baseUrl + "/api/user/post_detail",
   GET_USER_COMMENT_DETAIL: baseUrl + "/api/user/comment_detail",
+  GET_QUEST_LOADMAP: baseUrl + "/api/roadmap/get_quest",
 };
 
 export default API_ENDPOINTS;

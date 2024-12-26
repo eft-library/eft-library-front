@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, ButtonGroup } from "@chakra-ui/react";
+import { Button, ButtonGroup } from "@chakra-ui/react";
 import {
   Background,
   ReactFlow,
@@ -13,7 +13,9 @@ import {
 import dagre from "@dagrejs/dagre";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import API_ENDPOINTS from "@/config/endPoints";
 
 const position = { x: 0, y: 0 };
 const edgeType = "smoothstep";
@@ -87,6 +89,31 @@ const initialEdges = [
 ];
 
 export default function RoadMapDetail() {
+  const { data: session } = useSession();
+
+  const getAllQuest = async (email) => {
+    try {
+      const res = await fetch(API_ENDPOINTS.GET_QUEST_LOADMAP, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_email: email }),
+      });
+
+      const response = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllQuest("");
+    if (session && session.accessToken) {
+      getAllQuest(session.email);
+    }
+  }, [session]);
+
   const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
   const nodeWidth = 172;
