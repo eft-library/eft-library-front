@@ -14,6 +14,33 @@ export default function RoadMapNode(props) {
     console.log(data);
   }, []);
 
+  const getTitle = () => {
+    // 첫 번째 부분 추출
+    let firstPart = props.data.title_kr
+      .substring(0, props.data.title_kr.indexOf("("))
+      .trim();
+
+    // 두 번째 부분 추출
+    let secondPart = props.data.title_kr
+      .substring(props.data.title_kr.indexOf("("))
+      .trim();
+
+    return (
+      <Text
+        textAlign={"center"}
+        fontWeight={600}
+        cursor={"pointer"}
+        color={ALL_COLOR.WHITE}
+        _hover={{ color: ALL_COLOR.YELLOW }}
+        onClick={() => onClickTitle(props.data)}
+      >
+        {firstPart}
+        <br />
+        {secondPart}
+      </Text>
+    );
+  };
+
   return (
     <Box
       border={"1px solid"}
@@ -38,17 +65,7 @@ export default function RoadMapNode(props) {
         justifyContent={"center"}
         w={"100%"}
       >
-        <Text
-          textAlign={"center"}
-          fontWeight={600}
-          cursor={"pointer"}
-          color={ALL_COLOR.WHITE}
-          _hover={{ color: ALL_COLOR.YELLOW }}
-          onClick={() => onClickTitle(props.data)}
-        >
-          {props.data.title_kr}
-          <br />({props.data.title_en})
-        </Text>
+        {getTitle()}
       </Box>
 
       {["top", "bottom"].includes(props.sourcePosition) ? (

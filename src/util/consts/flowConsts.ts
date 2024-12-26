@@ -6,3 +6,5 @@ export const edgeStyle = {
   strokeWidth: 2,
   stroke: ALL_COLOR.CASH_REGISTER_THREE,
 };
+export const nodeWidth = 172;
+export const nodeHeight = 36;

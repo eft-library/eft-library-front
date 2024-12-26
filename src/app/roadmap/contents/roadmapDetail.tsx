@@ -20,132 +20,18 @@ import { useSession } from "next-auth/react";
 import API_ENDPOINTS from "@/config/endPoints";
 import RoadMapNode from "./roadmapNode";
 import { nodePosition, edgeType, edgeStyle } from "@/util/consts/flowConsts";
+import { getLayoutedElements } from "@/lib/getLayoutedElements";
 
 export default function RoadMapDetail() {
   const [userQuest, setUserQuest] = useState([]);
-  const [allQuest, setAllQuest] = useState({});
-
-  const initialNodes = [
-    {
-      id: "1",
-      type: "questNode",
-      data: { title_en: "input", title_kr: "input", id: "1" },
-      nodePosition,
-    },
-    {
-      id: "2",
-      type: "questNode",
-      data: { title_en: "node 2", title_kr: "2", id: "2" },
-      nodePosition,
-    },
-    {
-      id: "2a",
-      type: "questNode",
-      data: { title_en: "node 2a", title_kr: "2a", id: "3" },
-      nodePosition,
-    },
-    {
-      id: "2b",
-      type: "questNode",
-      data: { title_en: "node 2b", title_kr: "2b", id: "4" },
-      nodePosition,
-    },
-    {
-      id: "2c",
-      type: "questNode",
-      data: { title_en: "node 2c", title_kr: "2c", id: "5" },
-      nodePosition,
-    },
-    {
-      id: "2d",
-      type: "questNode",
-      data: { title_en: "node 2d", title_kr: "2d", id: "6" },
-      nodePosition,
-    },
-    {
-      id: "3",
-      type: "questNode",
-      data: { title_en: "node 3", title_kr: "3", id: "7" },
-      nodePosition,
-    },
-  ];
-
-  const initialEdges = [
-    {
-      id: "e12",
-      source: "1",
-      target: "2",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e13",
-      source: "1",
-      target: "3",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e22a",
-      source: "2",
-      target: "2a",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e22b",
-      source: "2",
-      target: "2b",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e22c",
-      source: "2",
-      target: "2c",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e2c2d",
-      source: "2c",
-      target: "2d",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e45",
-      source: "4",
-      target: "5",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e56",
-      source: "5",
-      target: "6",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-    {
-      id: "e57",
-      source: "5",
-      target: "7",
-      type: edgeType,
-      animated: true,
-      style: edgeStyle,
-    },
-  ];
+  const [allQuest, setAllQuest] = useState([]);
+  const [afterNode, setAfterNode] = useState([]);
+  const [afterEdge, setAfterEdge] = useState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(afterNode);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(afterEdge);
 
   const nodeTypes = { questNode: RoadMapNode };
+  const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
   const { data: session } = useSession();
 
@@ -177,50 +63,104 @@ export default function RoadMapDetail() {
     }
   }, [session]);
 
-  const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
-  const nodeWidth = 172;
-  const nodeHeight = 36;
-
-  const getLayoutedElements = (nodes, edges, direction = "TB") => {
-    const isHorizontal = direction === "LR";
-    dagreGraph.setGraph({ rankdir: direction, ranksep: 100, nodesep: 80 });
-
-    nodes.forEach((node) => {
-      dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-    });
-
-    edges.forEach((edge) => {
-      dagreGraph.setEdge(edge.source, edge.target);
-    });
-
-    dagre.layout(dagreGraph);
-
-    const newNodes = nodes.map((node) => {
-      const nodeWithPosition = dagreGraph.node(node.id);
-      const newNode = {
-        ...node,
-        targetPosition: isHorizontal ? "left" : "top",
-        sourcePosition: isHorizontal ? "right" : "bottom",
-        position: {
-          x: nodeWithPosition.x - nodeWidth / 2,
-          y: nodeWithPosition.y - nodeHeight / 2,
+  const processNode = () => {
+    const initialNodes = allQuest.flatMap((npc) => {
+      // 각 NPC마다 시작 노드를 먼저 추가
+      const npcNode = {
+        id: npc.id, // NPC 고유 ID
+        type: "input",
+        data: {
+          title_en: npc.name_en,
+          title_kr: npc.name_kr,
+          id: npc.id,
+          type: "npc",
+          label: npc.name_kr,
         },
+        nodePosition,
       };
 
-      return newNode;
+      // 그 후 퀘스트 노드를 추가
+      const questNodes = npc.all_quest.map((quest) => ({
+        id: quest.id,
+        type: "questNode",
+        data: {
+          title_en: quest.title_en,
+          title_kr: quest.title_kr,
+          id: quest.id,
+          type: "quest",
+        },
+        nodePosition,
+      }));
+      // NPC 노드와 퀘스트 노드를 결합하여 반환
+      return [npcNode, ...questNodes];
     });
 
-    return { nodes: newNodes, edges };
+    return initialNodes;
   };
 
-  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-    initialNodes,
-    initialEdges
-  );
+  const processEdge = () => {
+    let edges = [];
+    allQuest.forEach((npc) => {
+      const firstQuest = npc.all_quest[0];
+      edges.push({
+        id: `npc-to-${firstQuest.id}`,
+        source: npc.id,
+        target: firstQuest.id,
+        type: edgeType,
+        animated: true,
+        style: edgeStyle,
+      });
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+      npc.all_quest.forEach((quest) => {
+        if (!quest.requires || quest.requires.length < 1) {
+          edges.push({
+            id: `npc-to-${quest.id}`,
+            source: npc.id,
+            target: quest.id,
+            type: edgeType,
+            animated: true,
+            style: edgeStyle,
+          });
+        }
+
+        if (quest.next && quest.next.length > 0) {
+          quest.next.forEach((nextQuest) => {
+            // 엣지 생성: source는 현재 퀘스트 id, target은 next 퀘스트 id
+            const edge = {
+              id: `e${quest.id}-${nextQuest.id}`, // 엣지 고유 id 생성
+              source: quest.id, // 현재 퀘스트 id
+              target: nextQuest.id, // next 퀘스트 id
+              type: edgeType,
+              animated: true,
+              style: edgeStyle,
+            };
+            edges.push(edge);
+          });
+        }
+      });
+    });
+    return edges;
+  };
+
+  useEffect(() => {
+    const allNodeList = processNode();
+    const allEdgeList = processEdge();
+    if (allNodeList.length > 0) {
+      getLayoutedElements(
+        dagreGraph,
+        dagre,
+        allNodeList,
+        allEdgeList,
+        setAfterNode,
+        setAfterEdge
+      );
+    }
+  }, [allQuest]);
+
+  useEffect(() => {
+    setNodes(afterNode); // 노드 상태를 업데이트
+    setEdges(afterEdge); // 엣지 상태를 업데이트
+  }, [afterNode, afterEdge, setNodes, setEdges]);
 
   const onConnect = useCallback(
     (params) =>
@@ -235,11 +175,17 @@ export default function RoadMapDetail() {
 
   const onLayout = useCallback(
     (direction) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges, direction);
-
-      setNodes([...layoutedNodes]);
-      setEdges([...layoutedEdges]);
+      getLayoutedElements(
+        dagreGraph,
+        dagre,
+        afterNode,
+        afterEdge,
+        setAfterNode,
+        setAfterEdge,
+        direction
+      );
+      setNodes([...afterNode]); // 노드 상태를 업데이트
+      setEdges([...afterEdge]); // 엣지 상태를 업데이트
     },
     [nodes, edges]
   );
@@ -248,6 +194,8 @@ export default function RoadMapDetail() {
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      minZoom={0.05}
+      maxZoom={5}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
