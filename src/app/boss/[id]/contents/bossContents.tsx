@@ -10,7 +10,7 @@ import API_ENDPOINTS from "@/config/endPoints";
 import { COLUMN_KEY } from "@/util/consts/columnConsts";
 import BossHealth from "./bossHealth";
 import FollowersLoot from "./followersLoot";
-import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
+import ImgWithZoom from "@/components/imageZoom/imgWithZoom";
 import "@/assets/editor.css";
 import AdBanner from "@/components/adsense/adBanner";
 

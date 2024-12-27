@@ -13,7 +13,7 @@ import ImageZoom from "@/components/imageZoom/imageZoom";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import GridCenterText from "@/components/gridText/gridCenterText";
 import Link from "next/link";
-import ImgWithZoom from "@/components/boardDetail/imgWithZoom";
+import ImgWithZoom from "@/components/imageZoom/imgWithZoom";
 import AdBanner from "@/components/adsense/adBanner";
 
 export default function QuestContents({ quest }: QuestContents) {

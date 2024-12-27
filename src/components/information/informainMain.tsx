@@ -4,7 +4,7 @@ import Link from "next/link";
 import Pagination from "../pagination/pagination";
 import { formatISODate } from "@/lib/formatISODate";
 import type { InformationMain } from "@/types/types";
-import { getFirstParagraph } from "@/lib/quillFunc";
+import { getFirstParagraph } from "@/lib/getFirstParagraph";
 
 export default function InformationMain({
   information,
