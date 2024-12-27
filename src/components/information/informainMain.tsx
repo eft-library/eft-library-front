@@ -7,7 +7,6 @@ import Pagination from "../pagination/pagination";
 import { formatISODate } from "@/lib/formatISODate";
 import type { InformationMain } from "@/types/types";
 import { getFirstParagraph } from "@/lib/getFirstParagraph";
-import { usePathname } from "next/navigation";
 import InformationTab from "./informaitonTab";
 
 export default function InformationMain({

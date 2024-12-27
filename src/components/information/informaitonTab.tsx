@@ -16,27 +16,25 @@ export default function InformationTab() {
         display={"flex"}
         justifyContent={"space-evenly"}
         alignItems={"center"}
-        borderRadius={"500"}
-        border={"1px solid white"}
         mb={10}
       >
         <Box
           w={"30%"}
           bg={
-            pathname === "/notice" ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BACKGROUND
+            pathname === "/event" ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BACKGROUND
           }
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
           border={"1px solid white"}
-          cursor={"pointer"}
           _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-          h={"80%"}
-          onClick={() => router.push("/notice?id=1")}
+          display={"flex"}
+          h={"50%"}
+          justifyContent={"center"}
+          cursor={"pointer"}
+          alignItems={"center"}
           borderRadius={"500"}
+          onClick={() => router.push("/event?id=1")}
         >
           <Text fontWeight={600} fontSize={"lg"}>
-            공지사항
+            이벤트
           </Text>
         </Box>
         <Box
@@ -51,7 +49,7 @@ export default function InformationTab() {
           cursor={"pointer"}
           _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
           justifyContent={"center"}
-          h={"80%"}
+          h={"50%"}
           alignItems={"center"}
           borderRadius={"500"}
           onClick={() => router.push("/patch-notes?id=1")}
@@ -63,20 +61,20 @@ export default function InformationTab() {
         <Box
           w={"30%"}
           bg={
-            pathname === "/event" ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BACKGROUND
+            pathname === "/notice" ? ALL_COLOR.LIGHT_GRAY : ALL_COLOR.BACKGROUND
           }
-          border={"1px solid white"}
-          _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
           display={"flex"}
-          h={"80%"}
           justifyContent={"center"}
-          cursor={"pointer"}
           alignItems={"center"}
+          border={"1px solid white"}
+          cursor={"pointer"}
+          _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+          h={"50%"}
+          onClick={() => router.push("/notice?id=1")}
           borderRadius={"500"}
-          onClick={() => router.push("/event?id=1")}
         >
           <Text fontWeight={600} fontSize={"lg"}>
-            이벤트
+            공지사항
           </Text>
         </Box>
       </Box>
