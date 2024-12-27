@@ -16,9 +16,7 @@ export default function RoadMap() {
         dataAdSlot="2690838054"
       />
       <Box mb={10} />
-      <Box w={"100%"} h={"80vh"} border={"1px solid white"}>
-        <RoadMapDetail />
-      </Box>
+      <RoadMapDetail />
     </PageParent>
   );
 }

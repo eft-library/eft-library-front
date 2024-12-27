@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Button, ButtonGroup, Box } from "@chakra-ui/react";
 import {
   Background,
   ReactFlow,
@@ -21,12 +21,14 @@ import API_ENDPOINTS from "@/config/endPoints";
 import RoadMapNode from "./roadmapNode";
 import { nodePosition, edgeType, edgeStyle } from "@/util/consts/flowConsts";
 import { getLayoutedElements } from "@/lib/getLayoutedElements";
+import RoadmapTab from "./roadmapTab";
 
 export default function RoadMapDetail() {
   const [userQuest, setUserQuest] = useState([]);
   const [allQuest, setAllQuest] = useState([]);
   const [afterNode, setAfterNode] = useState([]);
   const [afterEdge, setAfterEdge] = useState([]);
+  const [tabState, setTabState] = useState<string>("all");
   const [nodes, setNodes, onNodesChange] = useNodesState(afterNode);
   const [edges, setEdges, onEdgesChange] = useEdgesState(afterEdge);
 
@@ -65,6 +67,10 @@ export default function RoadMapDetail() {
 
   const processNode = () => {
     const initialNodes = allQuest.flatMap((npc) => {
+      if (tabState !== "all" && npc.id !== tabState) {
+        return []; // `tabState`와 일치하지 않으면 아무것도 추가하지 않음
+      }
+
       // 각 NPC마다 시작 노드를 먼저 추가
       const npcNode = {
         id: npc.id, // NPC 고유 ID
@@ -101,9 +107,13 @@ export default function RoadMapDetail() {
   const processEdge = () => {
     let edges = [];
     allQuest.forEach((npc) => {
+      if (tabState !== "all" && npc.id !== tabState) {
+        return []; // `tabState`와 일치하지 않으면 아무것도 추가하지 않음
+      }
+
       const firstQuest = npc.all_quest[0];
       edges.push({
-        id: `npc-to-${firstQuest.id}`,
+        id: `npc-to-${firstQuest.id}-f`,
         source: npc.id,
         target: firstQuest.id,
         type: edgeType,
@@ -155,7 +165,7 @@ export default function RoadMapDetail() {
         setAfterEdge
       );
     }
-  }, [allQuest]);
+  }, [allQuest, tabState]);
 
   useEffect(() => {
     setNodes(afterNode); // 노드 상태를 업데이트
@@ -191,58 +201,76 @@ export default function RoadMapDetail() {
   );
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      minZoom={0.05}
-      maxZoom={5}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      connectionLineType={ConnectionLineType.SmoothStep}
-      fitView
-      colorMode="dark"
-    >
-      <Controls />
-      <MiniMap />
-      <Panel position="top-right">
-        <ButtonGroup>
-          <Button
-            fontWeight={600}
-            color={ALL_COLOR.WHITE}
-            bg={ALL_COLOR.BLACK}
-            border={"1px solid"}
-            borderRadius={"lg"}
-            _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-            onClick={() => onLayout("TB")}
-          >
-            Vertical
-          </Button>
-          <Button
-            fontWeight={600}
-            color={ALL_COLOR.WHITE}
-            bg={ALL_COLOR.BLACK}
-            border={"1px solid"}
-            borderRadius={"lg"}
-            _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-            onClick={() => onLayout("LR")}
-          >
-            Horizontal
-          </Button>
-          <Button
-            fontWeight={600}
-            color={ALL_COLOR.WHITE}
-            bg={ALL_COLOR.BLACK}
-            border={"1px solid"}
-            borderRadius={"lg"}
-            _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
-          >
-            저장
-          </Button>
-        </ButtonGroup>
-      </Panel>
-      <Background />
-    </ReactFlow>
+    <>
+      <RoadmapTab
+        npcList={allQuest.map((npc) => ({
+          id: npc.id,
+          name_kr: npc.name_kr,
+          name_en: npc.name_en,
+        }))}
+        setTabState={setTabState}
+      />
+      <Box
+        w={"100%"}
+        h={"80vh"}
+        borderLeft={"1px solid white"}
+        borderRight={"1px solid white"}
+        borderBottom={"1px solid white"}
+      >
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          minZoom={0.05}
+          maxZoom={5}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          connectionLineType={ConnectionLineType.SmoothStep}
+          fitView
+          colorMode="dark"
+        >
+          <Controls />
+          <MiniMap />
+          <Panel position="top-right">
+            <ButtonGroup>
+              <Button
+                fontWeight={600}
+                color={ALL_COLOR.WHITE}
+                bg={ALL_COLOR.BLACK}
+                border={"1px solid"}
+                borderRadius={"lg"}
+                _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+                onClick={() => onLayout("TB")}
+              >
+                Vertical
+              </Button>
+              <Button
+                fontWeight={600}
+                color={ALL_COLOR.WHITE}
+                bg={ALL_COLOR.BLACK}
+                border={"1px solid"}
+                borderRadius={"lg"}
+                _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+                onClick={() => onLayout("LR")}
+              >
+                Horizontal
+              </Button>
+              <Button
+                fontWeight={600}
+                color={ALL_COLOR.WHITE}
+                bg={ALL_COLOR.BLACK}
+                border={"1px solid"}
+                borderRadius={"lg"}
+                _hover={{ bg: ALL_COLOR.LIGHT_GRAY }}
+              >
+                저장
+              </Button>
+            </ButtonGroup>
+          </Panel>
+          <Background />
+        </ReactFlow>
+      </Box>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Skeleton } from "@chakra-ui/react";
 import DividerContents from "@/components/dividerContents/dividerContents";
 import type { BossContents, Column } from "@/types/types";
 import React, { useEffect } from "react";
