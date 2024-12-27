@@ -11,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import 'react-quill/dist/quill.snow.css';
 
 export default function ImgWithZoom({ content }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
