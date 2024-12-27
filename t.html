@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <style>
+      .card {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px 0;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .card-header h2 {
+        font-size: 18px;
+        color: #333;
+      }
+
+      .card-header .date {
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .content {
+        font-size: 14px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <h2>게시글 제목</h2>
+        <span class="date">2024. 12. 27</span>
+      </div>
+      <p class="content">
+        게시글 미리보기 내용입니다. 더 자세한 내용을 확인하세요.
+      </p>
+    </div>
+  </body>
+</html>

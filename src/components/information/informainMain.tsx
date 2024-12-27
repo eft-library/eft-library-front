@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Skeleton, Text } from "@chakra-ui/react";
 import { ALL_COLOR } from "@/util/consts/colorConsts";
 import Link from "next/link";
@@ -5,6 +7,8 @@ import Pagination from "../pagination/pagination";
 import { formatISODate } from "@/lib/formatISODate";
 import type { InformationMain } from "@/types/types";
 import { getFirstParagraph } from "@/lib/getFirstParagraph";
+import { usePathname } from "next/navigation";
+import InformationTab from "./informaitonTab";
 
 export default function InformationMain({
   information,
@@ -14,6 +18,7 @@ export default function InformationMain({
 }: InformationMain) {
   return (
     <Box w={"100%"}>
+      <InformationTab />
       {!information
         ? Array(5)
             .fill(null)
@@ -34,6 +39,7 @@ export default function InformationMain({
                 border={"1px solid"}
                 borderColor={ALL_COLOR.WHITE}
                 mb={4}
+                w={"100%"}
                 _hover={{ color: ALL_COLOR.DARK_GRAY }}
               >
                 <Box
