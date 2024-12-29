@@ -151,7 +151,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
                         _hover={{ color: ALL_COLOR.YELLOW }}
                         mb={1}
                       >
-                        <Link href={`/quest/detail/${item.id}`}>
+                        <Link href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </Link>
                       </Text>
@@ -164,7 +164,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
                           cursor={"pointer"}
                           _hover={{ color: ALL_COLOR.ORANGE }}
                         >
-                          <Link href={`/quest/detail/${item.id}`}>
+                          <Link href={`/quest/detail/${item.url_mapping}`}>
                             {item.name_kr}
                           </Link>
                         </Text>
@@ -236,7 +236,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
                         _hover={{ color: ALL_COLOR.YELLOW }}
                         mb={1}
                       >
-                        <Link href={`/quest/detail/${item.id}`}>
+                        <Link href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </Link>
                       </Text>
@@ -249,7 +249,7 @@ export default function QuestInfo({ quest }: QuestInfo) {
                           cursor={"pointer"}
                           _hover={{ color: ALL_COLOR.ORANGE }}
                         >
-                          <Link href={`/quest/detail/${item.id}`}>
+                          <Link href={`/quest/detail/${item.url_mapping}`}>
                             {item.name_kr}
                           </Link>
                         </Text>

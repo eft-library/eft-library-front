@@ -139,7 +139,7 @@ export default function JPGView({ map, viewItemList }: JPGView) {
                       popoverItem.quest_info.length > 0 ? (
                         popoverItem.quest_info.map((quest) => (
                           <Link
-                            href={`/quest/detail/${quest.id}`}
+                            href={`/quest/detail/${quest.url_mapping}`}
                             target="_blank"
                             key={quest.id}
                           >

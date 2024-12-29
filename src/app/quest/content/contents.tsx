@@ -57,7 +57,7 @@ export default function Contents() {
         paddingX={2}
         paddingY={2}
       >
-        <Link href={`/quest/detail/${item.id}`}>
+        <Link href={`/quest/detail/${item.url_mapping}`}>
           <Text _hover={{ color: ALL_COLOR.BEIGE }} color={ALL_COLOR.ORANGE}>
             {firstPart}
             <br />

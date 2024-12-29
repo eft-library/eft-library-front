@@ -809,6 +809,7 @@ export interface UserQuestPopOver {
 }
 
 interface UserNextQuest {
+  url_mapping: string;
   id: string;
   name: string;
   name_kr: string;

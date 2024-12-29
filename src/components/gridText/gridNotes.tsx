@@ -12,12 +12,12 @@ export default function GridNotes({
 }: GridNotes) {
   const { setHideoutCategory } = useAppStore((state) => state);
 
-  const getQuestTitle = (title: string, quest_id: string) => {
+  const getQuestTitle = (title: string, url_mapping: string) => {
     // 첫 번째 부분 추출
     let firstPart = title.substring(0, title.indexOf("(")).trim();
 
     return (
-      <Link href={`/quest/detail/${quest_id}`} key={quest_id}>
+      <Link href={`/quest/detail/${url_mapping}`} key={url_mapping}>
         <Text
           fontWeight={600}
           color={ALL_COLOR.YELLOW}
@@ -31,11 +31,15 @@ export default function GridNotes({
 
   const returnQuestText = (note: JsonArrayText) => {
     if (isKey) {
-      return <Box display={"flex"}>{getQuestTitle(note.name_kr, note.id)}</Box>;
+      return (
+        <Box display={"flex"}>
+          {getQuestTitle(note.name_kr, note.url_mapping)}
+        </Box>
+      );
     } else {
       return note.in_raid ? (
         <Box display={"flex"}>
-          {getQuestTitle(note.name_kr, note.id)}
+          {getQuestTitle(note.name_kr, note.url_mapping)}
           <Text fontWeight={600}>&nbsp;(</Text>
           <Text fontWeight={600} color={ALL_COLOR.LIGHT_RED}>
             인레이드&nbsp;
@@ -44,7 +48,7 @@ export default function GridNotes({
         </Box>
       ) : (
         <Box display={"flex"}>
-          {getQuestTitle(note.name_kr, note.id)}
+          {getQuestTitle(note.name_kr, note.url_mapping)}
           <Text fontWeight={600}>&nbsp;({note.count}개 필요)</Text>
         </Box>
       );
@@ -65,7 +69,7 @@ export default function GridNotes({
             퀘스트
           </Text>
           {questsNotes.map((quest) => (
-            <Box key={quest.id}>{returnQuestText(quest)}</Box>
+            <Box key={quest.url_mapping}>{returnQuestText(quest)}</Box>
           ))}
         </>
       )}
