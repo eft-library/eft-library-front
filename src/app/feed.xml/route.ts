@@ -26,7 +26,7 @@ export async function GET() {
       feed.item({
         title: quest.title_kr,
         description: quest.guide,
-        url: `https://eftlibrary.com/quest/detail/${quest.id}`,
+        url: `https://eftlibrary.com/quest/detail/${quest.url_mapping}`,
         date: quest.update_time,
       });
     });
