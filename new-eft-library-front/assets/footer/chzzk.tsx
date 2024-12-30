@@ -1,4 +1,4 @@
-import type { Size } from "@/types/types";
+import type { Size } from "../assetTypes";
 
 export default function Chzzk({ width, height }: Size) {
   return (

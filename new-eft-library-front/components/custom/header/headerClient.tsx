@@ -1,0 +1,86 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import DeafultMenu from "./defaultMenu";
+import Link from "next/link";
+import { useAppStore } from "@/store/provider";
+import { useSession, signIn } from "next-auth/react";
+import TopNaviLogo from "@/assets/navi/topNaviLogo";
+import UserMenu from "./userMenu";
+
+interface MenuData {
+  en_name: string;
+  link: string;
+  order: number;
+  value: string;
+  kr_name: string;
+  image: string | null;
+}
+
+interface SubMenu extends MenuData {
+  parent_value: string;
+}
+
+interface Menu extends MenuData {
+  sub_menus: SubMenu[];
+}
+
+export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
+  const { setNpcId } = useAppStore((state) => state);
+  const { data: session } = useSession();
+  const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+
+  const setQuest = (parent: string, value: string) => {
+    if (parent === "QUEST") {
+      setNpcId(value);
+    }
+  };
+
+  const onChangeMenu = (menu: string | null) => {
+    setSelectedMenu(menu);
+  };
+
+  return (
+    <div className="fixed w-full z-10 bg-transparent backdrop-blur-md backdrop-contrast-60">
+      <div className="grid grid-cols-3 h-14">
+        <div />
+        <div className="flex justify-center items-center">
+          <Link href="/" aria-label="EFT Library">
+            <TopNaviLogo />
+          </Link>
+        </div>
+        <div className="flex justify-center items-center">
+          {headerData.map((main) =>
+            main.value !== "USER" ? (
+              <DeafultMenu
+                key={main.value}
+                menuData={main}
+                selectedMenu={selectedMenu}
+                setSelectedMenu={onChangeMenu}
+                setQuest={setQuest}
+              />
+            ) : (
+              session && (
+                <UserMenu
+                  key={main.value}
+                  menuData={main}
+                  selectedMenu={selectedMenu}
+                  setSelectedMenu={onChangeMenu}
+                />
+              )
+            )
+          )}
+          {!session && (
+            <Button
+              className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-lightGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
+              onClick={() => signIn()}
+            >
+              로그인
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

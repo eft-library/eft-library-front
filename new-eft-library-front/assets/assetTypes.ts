@@ -7,3 +7,8 @@ interface Coordinate {
   y: number;
   scale: number;
 }
+
+export interface Size {
+  width: number;
+  height: number;
+}
