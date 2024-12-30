@@ -1,0 +1,26 @@
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import type { JPG } from "@/types/types";
+
+export default function MarkedRoom({ x, y, scale }: JPG) {
+  return (
+    <>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
+        <path
+          className="cls-1"
+          fill={ALL_COLOR.WHITE}
+          d="M13,0l-.89,1.82L9,8.23l-7,1L0,9.55,1.43,11,6.5,16,5.3,23,5,25l1.78-.94L13,20.73l6.26,3.33L21,25l-.34-2L19.5,16l5.07-5L26,9.55l-2-.29-7-1L13.89,1.82,13,0Z"
+        />
+      </g>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
+        <path
+          className="cls-2"
+          fill={ALL_COLOR.MARKED_ROOM_TWO}
+          d="M13,2,9.6,8.91,2,10,7.5,15.4,6.2,23,13,19.41,19.8,23l-1.3-7.6L24,10,16.4,8.91,13,2Z"
+        />
+      </g>
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
+        <path d="M13,4.27l2.5,5.08.23.48.52.07,5.61.82-4.06,4-.37.36.08.52,1,5.6-5-2.64L13,18.28l-.47.25-5,2.64,1-5.6.08-.52-.37-.36-4.06-4L9.75,9.9l.52-.07.23-.48L13,4.27M13,2,9.6,8.91,2,10,7.5,15.4,6.2,23,13,19.41,19.8,23l-1.3-7.6L24,10,16.4,8.91,13,2Z" />
+      </g>
+    </>
+  );
+}
