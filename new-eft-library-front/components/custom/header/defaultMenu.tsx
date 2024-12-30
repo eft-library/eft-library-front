@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface MenuData {
   en_name: string;
@@ -22,7 +22,7 @@ interface Menu extends MenuData {
 
 interface MenuButton {
   menuData: Menu;
-  selectedMenu: string;
+  selectedMenu: string | null;
   setSelectedMenu: (menu: string | null) => void;
   setQuest: (parent: string, value: string) => void;
 }
@@ -37,23 +37,15 @@ export default function DeafultMenu({
     <div
       className="relative group"
       onMouseEnter={() => setSelectedMenu(menuData.value)}
-      onMouseLeave={() => setSelectedMenu(null)}
     >
-      <button
-        className={cn(
-          "px-4 py-2 font-bold text-white bg-transparent",
-          "hover:bg-gray-200 focus:outline-none",
-          "backdrop-blur-md backdrop-contrast-60"
-        )}
-      >
+      <Button className="cursor-default px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-lightGray focus:outline-none backdrop-blur-md backdrop-contrast-60">
         {menuData.kr_name}
-      </button>
+      </Button>
       {selectedMenu === menuData.value && (
         <div
-          className={cn(
-            "absolute top-12 left-0 z-10 flex flex-col",
-            "p-4 bg-gray-800 rounded-lg shadow-lg"
-          )}
+          className="absolute top-12 left-[-30px] z-40 flex flex-col font-semibold justify-center items-center p-4 bg-mapBlack rounded-lg shadow-lg min-w-[140px]"
+          onMouseEnter={() => setSelectedMenu(menuData.value)}
+          onMouseLeave={() => setSelectedMenu(null)}
         >
           {menuData.sub_menus.map((sub) => (
             <Link
@@ -61,12 +53,7 @@ export default function DeafultMenu({
               href={sub.link}
               onClick={() => setQuest(sub.parent_value, sub.value)}
             >
-              <div
-                className={cn(
-                  "px-2 py-1 text-white rounded-lg cursor-pointer",
-                  "hover:bg-gray-300 hover:text-black"
-                )}
-              >
+              <div className="flex px-2 py-2 text-white rounded-lg cursor-pointer min-w-[100px] justify-center items-center hover:bg-lightGray">
                 {sub.kr_name}
               </div>
             </Link>

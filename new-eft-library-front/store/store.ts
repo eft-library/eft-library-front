@@ -2,83 +2,6 @@
 import { createStore } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface User {
-  id: string;
-  icon: string;
-  name: string;
-  point: number;
-  is_admin: boolean;
-  create_time: string;
-  update_time: string | null;
-  email: string;
-  nick_name: string;
-  grade: number;
-  attendance_count: number;
-  attendance_time: string;
-}
-
-interface Comment extends Ban {
-  id: string;
-  board_id: string;
-  board_type: string;
-  parent_id: string | null;
-  parent_nick_name: string | null;
-  contents: string;
-  depth: number;
-  create_time: string;
-  update_time: string | null;
-  is_delete_by_admin: boolean;
-  is_delete_by_user: boolean;
-  like_count: number;
-  dislike_count: number;
-  root_id: string;
-  path: string[];
-  icon: string;
-  nick_name: string;
-  root_create_time: string;
-  is_liked_by_user: boolean;
-  is_disliked_by_user: boolean;
-}
-
-interface PostData {
-  id: string;
-  title: string;
-  contents: string;
-  thumbnail: string | null;
-  writer: string;
-  like_count: number;
-  view_count: number;
-  type: string;
-  type_kr: string;
-  create_time: string;
-  update_time: string | null;
-  icon: string;
-  nick_name: string;
-  comment_cnt: number;
-}
-
-interface Ban {
-  user_email: string;
-  ban_reason: string | null;
-  ban_start_time: string | null;
-  ban_end_time: string | null;
-}
-
-interface UserPostStatistics {
-  user_email: string;
-  post_count: number;
-  comment_count: number;
-}
-
-interface UserProfile {
-  user: User;
-  grade: string;
-  icon_list: string[];
-  ban: Ban;
-  user_posts: PostData[];
-  user_post_statistics: UserPostStatistics;
-  user_comments: Comment[];
-}
 interface SubItem {
   value: string;
   kr: string;
@@ -102,9 +25,8 @@ export type AppStateType = {
   lootCategory: string;
   hideoutCategory: string;
   eventNum: number;
+  noticeNum: number;
   patchNotesNum: number;
-  user: UserProfile | null;
-  searchUser: string;
 };
 
 export type AppActionsType = {
@@ -117,9 +39,8 @@ export type AppActionsType = {
   setLootCategory: (value: string) => void;
   setHideoutCategory: (value: string) => void;
   setEventNum: (value: number) => void;
+  setNoticeNum: (value: number) => void;
   setPatchNotesNum: (value: number) => void;
-  setUser: (value: UserProfile) => void;
-  setSearchUser: (value: string) => void;
 };
 
 export type AppStoreType = AppStateType & AppActionsType;
@@ -133,10 +54,9 @@ export const defaultInitState: AppStateType = {
   lootCategory: "ALL",
   hideoutCategory: "5d388e97081959000a123acf",
   itemFilter: [],
+  noticeNum: 1,
   eventNum: 1,
   patchNotesNum: 1,
-  user: null,
-  searchUser: "",
 };
 
 export const createAppStore = (initState: AppStateType = defaultInitState) => {
@@ -157,8 +77,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
             set({ hideoutCategory: value }),
           setEventNum: (value: number) => set({ eventNum: value }),
           setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
-          setUser: (value: UserProfile) => set({ user: value }),
-          setSearchUser: (value: string) => set({ searchUser: value }),
+          setNoticeNum: (value: number) => set({ noticeNum: value }),
         } satisfies AppStoreType),
       {
         name: "app-store",

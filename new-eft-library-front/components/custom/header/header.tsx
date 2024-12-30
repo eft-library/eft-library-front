@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useAppStore } from "@/store/provider";
 import { useSession, signIn } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
+import UserMenu from "./userMenu";
+import { useIsMounted } from "@/lib/hooks/useIsMounted";
 
 interface MenuData {
   en_name: string;
@@ -28,65 +30,35 @@ interface Menu extends MenuData {
 }
 
 export default function Header() {
-  const { user, setNpcId, setUser } = useAppStore((state) => state);
+  const { setNpcId } = useAppStore((state) => state);
   const { data: session } = useSession();
-  const [selectedMenu, setSelectedMenu] = useState<string>("");
+  const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
   const [headerData, setHeaderData] = useState<Menu[] | null>(null);
+  const isMounted = useIsMounted();
 
   const setQuest = (parent: string, value: string) => {
     if (parent === "QUEST") {
       setNpcId(value);
     }
   };
-  const fetchHeaderData = async (isMounted: boolean) => {
-    try {
-      const data = await requestData(API_ENDPOINTS.GET_NAVI_MENU);
 
-      if (isMounted) {
-        if (!data || data.status !== 200) {
-          console.error(
-            "Failed to fetch header data:",
-            data?.msg || "Unknown error"
-          );
-        } else {
-          setHeaderData(data.data);
-        }
-      }
-    } catch (error) {
-      console.error("Error while fetching header data:", error);
-    }
+  const onChangeMenu = (menu: string | null) => {
+    setSelectedMenu(menu);
   };
-
   useEffect(() => {
-    let isMounted = true; // 컴포넌트 마운트 상태 확인 변수
-
-    fetchHeaderData(isMounted);
-
-    // 클린업 함수 => 메모리 누수 방지
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const getUserInfo = async (isMounted: boolean) => {
+    const fetchHeaderData = async () => {
       try {
-        const data = await requestUserData(
-          USER_API_ENDPOINTS.GET_USER_INFO,
-          {},
-          session
-        );
+        const data = await requestData(API_ENDPOINTS.GET_NAVI_MENU);
 
-        if (isMounted) {
+        if (isMounted()) {
+          // isMounted가 true일 때만 상태 업데이트
           if (!data || data.status !== 200) {
             console.error(
-              "Failed to fetch user data:",
+              "Failed to fetch header data:",
               data?.msg || "Unknown error"
             );
           } else {
-            setUser(data.data);
+            setHeaderData(data.data);
           }
         }
       } catch (error) {
@@ -94,23 +66,45 @@ export default function Header() {
       }
     };
 
-    if (session && session.accessToken) {
-      getUserInfo(isMounted);
-    }
+    fetchHeaderData();
+  }, [isMounted]);
 
-    // 클린업 함수 => 메모리 누수 방지
-    return () => {
-      isMounted = false;
+  useEffect(() => {
+    if (!session?.accessToken) return; // 세션이 없으면 데이터 요청 안함
+
+    const getUserInfo = async () => {
+      try {
+        const data = await requestUserData(
+          USER_API_ENDPOINTS.GET_USER_INFO,
+          {},
+          session
+        );
+
+        if (isMounted()) {
+          // isMounted가 true일 때만 상태 업데이트
+          if (!data || data.status !== 200) {
+            console.error(
+              "Failed to fetch user data:",
+              data?.msg || "Unknown error"
+            );
+          } else {
+            // setUser(data.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error while fetching user data:", error);
+      }
     };
-  }, [session, setUser]);
+
+    getUserInfo();
+  }, [isMounted, session]);
 
   if (!headerData) return null;
-  if (session && !user) return null;
 
   return (
     <div className="fixed w-full z-10 bg-transparent backdrop-blur-md backdrop-contrast-60">
       <div className="grid grid-cols-3 h-14">
-        <div></div>
+        <div />
         <div className="flex justify-center items-center">
           <Link href="/" aria-label="EFT Library">
             <TopNaviLogo />
@@ -123,35 +117,23 @@ export default function Header() {
                 key={main.value}
                 menuData={main}
                 selectedMenu={selectedMenu}
-                setSelectedMenu={() => setSelectedMenu}
+                setSelectedMenu={onChangeMenu}
                 setQuest={setQuest}
               />
             ) : (
-              session &&
-              user && (
-                <DeafultMenu
+              session && (
+                <UserMenu
                   key={main.value}
                   menuData={main}
                   selectedMenu={selectedMenu}
-                  setSelectedMenu={() => setSelectedMenu}
-                  setQuest={setQuest}
+                  setSelectedMenu={onChangeMenu}
                 />
-                // <UserMenuButton
-                //   key={main.value}
-                //   main={main}
-                //   userInfo={user.user}
-                //   selectedMenu={selectedMenu}
-                //   changeMenu={changeMenu}
-                //   setQuest={setQuest}
-                // />
               )
             )
           )}
           {!session && (
             <Button
-              variant="ghost"
-              size="sm"
-              className="font-bold text-white hover:bg-light-gray p-4"
+              className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-lightGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
               onClick={() => signIn()}
             >
               로그인
