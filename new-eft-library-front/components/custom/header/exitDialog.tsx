@@ -66,7 +66,7 @@ export default function ExitDialog() {
             </span>
             <br />
             <br />
-            <span className="font-bold text-base text-yellow">
+            <span className="font-bold text-base text-yellow underline decoration-white">
               탈퇴 시점으로 30일간 회원정보는 복구 가능합니다.
             </span>
           </DialogDescription>
@@ -78,7 +78,7 @@ export default function ExitDialog() {
             </Label>
             <Input
               id="name"
-              className="col-span-3 text-base font-bold"
+              className="col-span-3 text-base font-bold border-white"
               value={email}
               placeholder="이메일"
               onChange={(e) => setEmail(e.currentTarget.value)}
