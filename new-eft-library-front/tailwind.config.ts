@@ -61,6 +61,7 @@ export default {
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
+        LightYellowShadow: "0px 1px 1px rgb(202, 238, 18, 0.7)",
       },
       borderRadius: {
         lg: "var(--radius)",

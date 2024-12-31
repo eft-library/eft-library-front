@@ -25,7 +25,7 @@ export default function DefaultAlert({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="sm:max-w-[600px] border-white bg-black">
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogTitle className="font-bold">{title}</AlertDialogTitle>
           <AlertDialogDescription className="font-bold text-base text-white">
             {description}
           </AlertDialogDescription>
