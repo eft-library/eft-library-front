@@ -57,6 +57,10 @@ export default {
         GoldenYellow: "#ffd700",
         SunsetYellow: "#FFC368",
         CreamYellow: "#FFE1B5",
+        SoftPink: "#ff7a7a",
+      },
+      boxShadow: {
+        BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
       },
       borderRadius: {
         lg: "var(--radius)",
