@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/themeProvider/themeProvider";
 import Header from "@/components/custom/header/header";
+import Footer from "@/components/custom/footer/footer";
 import AuthContext from "@/store/AuthContext";
 import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
@@ -30,6 +31,7 @@ export default function RootLayout({
               <AppStoreProvider>
                 <Header />
                 {children}
+                <Footer />
               </AppStoreProvider>
             </Suspense>
           </ThemeProvider>

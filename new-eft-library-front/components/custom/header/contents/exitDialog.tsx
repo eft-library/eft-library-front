@@ -53,7 +53,7 @@ export default function ExitDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="px-2 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-lightGray focus:outline-none backdrop-blur-md backdrop-contrast-60">
+        <Button className="px-2 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60">
           회원 탈퇴
         </Button>
       </DialogTrigger>
@@ -66,7 +66,7 @@ export default function ExitDialog() {
             </span>
             <br />
             <br />
-            <span className="font-bold text-base text-yellow underline decoration-white">
+            <span className="font-bold text-base text-GoldenYellow underline decoration-white">
               탈퇴 시점으로 30일간 회원정보는 복구 가능합니다.
             </span>
           </DialogDescription>

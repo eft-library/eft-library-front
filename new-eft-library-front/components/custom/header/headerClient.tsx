@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import DeafultMenu from "./defaultMenu";
+import DeafultMenu from "./contents/defaultMenu";
 import Link from "next/link";
 import { useAppStore } from "@/store/provider";
 import { useSession, signIn } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
-import UserMenu from "./userMenu";
+import UserMenu from "./contents/userMenu";
 
 interface MenuData {
   en_name: string;
@@ -73,7 +73,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
           )}
           {!session && (
             <Button
-              className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-lightGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
+              className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
               onClick={() => signIn()}
             >
               로그인
