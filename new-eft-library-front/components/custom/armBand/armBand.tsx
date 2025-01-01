@@ -1,19 +1,13 @@
-"use server";
+import GetArmBand from "@/components/custom/armBand/data/getArmBand";
+import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
+import GetColumn from "@/components/custom/getColumn/getColumn";
+import {COLUMN_KEY} from "@/lib/consts/columnConsts";
 
-import { requestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import ArmBandClient from "./armBandClient";
-
-export default async function ArmBand() {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_ARM_BAND);
-
-  if (!data || data.status !== 200) {
-    console.error(
-      "Failed to fetch arm band data:",
-      data?.msg || "Unknown error"
-    );
-    return null;
-  }
-
-  return <ArmBandClient armBandList={data.data} />;
+export default function ArmBand() {
+    return (
+        <ContentsWrapper>
+            <GetColumn columnDesign={2} columnKey={COLUMN_KEY.arm_band}/>
+            <GetArmBand />
+        </ContentsWrapper>
+    )
 }

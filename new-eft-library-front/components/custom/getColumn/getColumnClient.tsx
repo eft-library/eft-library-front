@@ -67,18 +67,17 @@ export default function GetColumnClient({
           index
         )} flex justify-center items-center`}
       >
-        <p
-          className={`flex-grow text-white text-center font-bold text-shadow-LightYellowShadow`}
+        <span
         >
           {item}
-        </p>
+        </span>
       </div>
     ));
   };
 
   return (
     <div
-      className={`grid grid-cols-${columnDesign} gap-2 w-full outline-2 outline-white rounded-lg bg-black shadow-text-shadow-LightYellowShadow sticky top-16 p-2 mb-6`}
+      className={`grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white`}
     >
       {renderItems()}
     </div>
