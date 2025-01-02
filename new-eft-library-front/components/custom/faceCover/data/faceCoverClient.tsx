@@ -4,48 +4,51 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 
-interface RigClient {
-  rig_data: RigData;
+interface FaceCoverClient {
+  face_cover_data: FaceCoverData;
   isClass: boolean;
 }
 
-interface RigData {
-  class_rig: DefenseData[];
-  no_class_rig: DefenseData[];
+interface FaceCoverData {
+  class_face_cover: DefenseData[];
+  no_class_face_cover: DefenseData[];
 }
 
 interface DefenseData {
   id: string;
   durability: number;
-  capacity: number;
   class_value: number;
   areas_kr: string[];
   weight: number;
   name: string;
   image: string;
+  ricochet_str_kr: string;
 }
 
-export default function RigClient({ rig_data, isClass }: RigClient) {
+export default function FaceCoverClient({
+  face_cover_data,
+  isClass,
+}: FaceCoverClient) {
   return (
     <div className="w-full">
       {isClass &&
-        rig_data.class_rig.map((rig) => (
+        face_cover_data.class_face_cover.map((faceCover) => (
           <div
             className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
-            key={rig.id}
+            key={faceCover.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>
-                <Item original={rig.image} width="400" height="380">
+                <Item original={faceCover.image} width="400" height="380">
                   {({ ref, open }) => (
                     <Image
                       ref={ref}
                       onClick={open}
-                      src={rig.image}
+                      src={faceCover.image}
                       height={0}
                       width={140}
                       style={{ width: "auto", height: "auto" }}
-                      alt={rig.name}
+                      alt={faceCover.name}
                       priority
                     />
                   )}
@@ -53,25 +56,17 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">{rig.name}</span>
-            </div>
-            <div className="flex justify-center items-center">
               <span className="text-center font-bold text-lg">
-                {rig.durability}
+                {faceCover.name}
               </span>
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-lg">
-                {rig.capacity}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
-                {rig.class_value}
+                {faceCover.class_value}
               </span>
             </div>
             <div className="flex flex-col justify-center items-center">
-              {rig.areas_kr.map((area, index) => (
+              {faceCover.areas_kr.map((area, index) => (
                 <span key={index} className="font-bold text-lg">
                   {area}
                 </span>
@@ -79,29 +74,39 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-lg">
-                {rig.weight} kg
+                {faceCover.durability}
+              </span>
+            </div>
+            <div className="flex justify-center items-center">
+              <span className="text-center font-bold text-lg">
+                {faceCover.ricochet_str_kr}
+              </span>
+            </div>
+            <div className="flex justify-center items-center">
+              <span className="text-center font-bold text-lg">
+                {faceCover.weight} kg
               </span>
             </div>
           </div>
         ))}
       {!isClass &&
-        rig_data.no_class_rig.map((rig) => (
+        face_cover_data.no_class_face_cover.map((faceCover) => (
           <div
-            className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
-            key={rig.id}
+            className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            key={faceCover.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>
-                <Item original={rig.image} width="400" height="380">
+                <Item original={faceCover.image} width="200" height="180">
                   {({ ref, open }) => (
                     <Image
                       ref={ref}
                       onClick={open}
-                      src={rig.image}
+                      src={faceCover.image}
                       height={0}
-                      width={140}
+                      width={120}
                       style={{ width: "auto", height: "auto" }}
-                      alt={rig.name}
+                      alt={faceCover.name}
                       priority
                     />
                   )}
@@ -109,16 +114,8 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">{rig.name}</span>
-            </div>
-            <div className="flex justify-center items-center">
               <span className="text-center font-bold text-lg">
-                {rig.capacity}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
-                {rig.weight} kg
+                {faceCover.name}
               </span>
             </div>
           </div>

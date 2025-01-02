@@ -59,7 +59,7 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
               {armorVest.class_value}
             </span>
           </div>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center items-center">
             {armorVest.areas_kr.map((area, index) => (
               <span key={index} className="font-bold text-lg">
                 {area}
