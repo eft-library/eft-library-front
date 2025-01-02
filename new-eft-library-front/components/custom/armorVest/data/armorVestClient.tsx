@@ -45,29 +45,29 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
             </Gallery>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {armorVest.name}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {armorVest.durability}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {armorVest.class_value}
             </span>
           </div>
           <div className="flex flex-col justify-center items-center">
             {armorVest.areas_kr.map((area, index) => (
-              <span key={index} className="font-bold text-lg">
+              <span key={index} className="font-bold text-sm">
                 {area}
               </span>
             ))}
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {armorVest.weight} kg
             </span>
           </div>

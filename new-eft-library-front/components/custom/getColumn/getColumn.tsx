@@ -90,12 +90,10 @@ export default async function GetColumn({
         <div
           key={val}
           className={cn(
-            `col-span-${checkColSpan(
-              index
-            )} flex justify-center items-center font-bold p-1 text-lg`
+            `col-span-${checkColSpan(index)} flex justify-center items-center`
           )}
         >
-          <span>{val}</span>
+          <span className="font-bold p-1 text-sm">{val}</span>
         </div>
       ))}
     </div>

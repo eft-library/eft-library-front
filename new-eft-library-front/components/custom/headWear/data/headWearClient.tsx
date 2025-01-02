@@ -57,34 +57,34 @@ export default function HeadWearClient({
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.name}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.class_value}
               </span>
             </div>
             <div className="flex flex-col justify-center items-center">
               {headWear.areas_kr.map((area, index) => (
-                <span key={index} className="font-bold text-lg">
+                <span key={index} className="font-bold text-sm">
                   {area}
                 </span>
               ))}
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.durability}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.ricochet_str_kr}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.weight} kg
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function HeadWearClient({
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {headWear.name}
               </span>
             </div>

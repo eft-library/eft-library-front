@@ -56,34 +56,34 @@ export default function FaceCoverClient({
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.name}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.class_value}
               </span>
             </div>
             <div className="flex flex-col justify-center items-center">
               {faceCover.areas_kr.map((area, index) => (
-                <span key={index} className="font-bold text-lg">
+                <span key={index} className="font-bold text-sm">
                   {area}
                 </span>
               ))}
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.durability}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.ricochet_str_kr}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.weight} kg
               </span>
             </div>
@@ -114,7 +114,7 @@ export default function FaceCoverClient({
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {faceCover.name}
               </span>
             </div>

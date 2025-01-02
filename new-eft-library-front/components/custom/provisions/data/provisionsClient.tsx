@@ -82,22 +82,22 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
+          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
         <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-lg">인레이드&nbsp;</span>
-        <span className="font-bold text-lg">{note.count}개 필요)</span>
+        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
+        <span className="font-bold text-sm">{note.count}개 필요)</span>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
+          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
-        <span className="font-bold text-lg">&nbsp;({note.count}개 필요)</span>
+        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
       </div>
     );
   };
@@ -128,13 +128,13 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
             </Gallery>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {provisions.name_kr}
             </span>
           </div>
           <div className="flex justify-center items-center">
             <span
-              className={`text-center font-bold text-lg ${checkPlus(
+              className={`text-center font-bold text-sm ${checkPlus(
                 provisions.energy
               )}`}
             >
@@ -143,7 +143,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           </div>
           <div className="flex justify-center items-center">
             <span
-              className={`text-center font-bold text-lg ${checkPlus(
+              className={`text-center font-bold text-sm ${checkPlus(
                 provisions.hydration
               )}`}
             >
@@ -161,19 +161,19 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
                 )
               )
             ) : (
-              <span className="font-bold text-lg">-</span>
+              <span className="font-bold text-sm">-</span>
             )}
           </div>
           <div className="flex items-center col-span-2">
             {provisions.notes.length > 0 ? (
               <div>
-                <span className="font-bold text-lg text-white">퀘스트</span>
+                <span className="font-bold text-sm text-white">퀘스트</span>
                 {provisions.notes.map((quest) => (
                   <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
                 ))}
               </div>
             ) : (
-              <span className="text-center font-bold text-lg">-</span>
+              <span className="text-center font-bold text-sm">-</span>
             )}
           </div>
         </div>

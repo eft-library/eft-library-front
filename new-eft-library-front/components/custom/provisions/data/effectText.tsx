@@ -46,18 +46,18 @@ export default function EffectText({ effect }: EffectText) {
   return (
     <div>
       {effect.delay && effect.duration ? (
-        <span className="text-lg font-bold text-PaleYellow">
+        <span className="text-sm font-bold text-PaleYellow">
           {effect.skillName === "Painkiller"
             ? `${effect.duration}초 지속`
             : `${effect.delay}초 지연 / ${effect.duration}초 지속`}
         </span>
       ) : null}
       <div className="flex">
-        <span className="font-bold text-lg">-&nbsp;</span>
-        <span className={`font-bold text-lg ${checkPlus(effect.krSkill)} `}>
+        <span className="font-bold text-sm">-&nbsp;</span>
+        <span className={`font-bold text-sm ${checkPlus(effect.krSkill)} `}>
           {fixStr(effect.krSkill)}&nbsp;
         </span>
-        <span className={`font-bold text-lg ${checkPlus(effect.value)}`}>
+        <span className={`font-bold text-sm ${checkPlus(effect.value)}`}>
           {effect.skillName === "Painkiller"
             ? ""
             : ` ${addPlusMinus(effect.value)}`}

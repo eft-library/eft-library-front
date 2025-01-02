@@ -43,7 +43,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
             </Gallery>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {armBand.name}
             </span>
           </div>

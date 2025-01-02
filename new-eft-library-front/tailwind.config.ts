@@ -63,6 +63,13 @@ export default {
         BrightCyan: "#00E0FF",
         Red: "#FF0000",
         PaleYellow: "#FDFFA7",
+        VividGreen: "#3DBA00",
+        ForestGreen: "#2E6D0F",
+        AmberGold: "#DE8E13",
+        WalnutBrown: "#694F27",
+        ChestnutBrown: "#86552D",
+        DeepBurgundy: "#831C16",
+        DarkMahogany: "#5B0803",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",

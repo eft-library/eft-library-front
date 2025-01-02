@@ -38,22 +38,22 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
+          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
         <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-lg">인레이드&nbsp;</span>
-        <span className="font-bold text-lg">{note.count}개 필요)</span>
+        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
+        <span className="font-bold text-sm">{note.count}개 필요)</span>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
+          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
-        <span className="font-bold text-lg">&nbsp;({note.count}개 필요)</span>
+        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
       </div>
     );
   };
@@ -93,22 +93,22 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {glasses.name}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {glasses.class_value}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {glasses.durability}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {floatToPercent(glasses.blindness_protection)} %
               </span>
             </div>
@@ -139,25 +139,25 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               </Gallery>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {glasses.name}
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-lg">
+              <span className="text-center font-bold text-sm">
                 {floatToPercent(glasses.blindness_protection)} %
               </span>
             </div>
             <div className="flex items-center">
               {glasses.notes.length > 0 ? (
                 <div>
-                  <span className="font-bold text-lg text-white">퀘스트</span>
+                  <span className="font-bold text-sm text-white">퀘스트</span>
                   {glasses.notes.map((quest) => (
                     <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
                   ))}
                 </div>
               ) : (
-                <span className="font-bold text-lg">-</span>
+                <span className="font-bold text-sm">-</span>
               )}
             </div>
           </div>

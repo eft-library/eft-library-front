@@ -49,17 +49,17 @@ export default function ContainerClient({ containerList }: ContainerList) {
             </Gallery>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {container.name_kr}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {container.capacity}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {container.grids[0].width} X {container.grids[0].height}
             </span>
           </div>

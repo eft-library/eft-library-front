@@ -47,22 +47,22 @@ export default function BackpackClient({ backpackList }: BackpackList) {
             </Gallery>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {backpack.name}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {backpack.capacity}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {backpack.grids[0].width} X {backpack.grids[0].height}
             </span>
           </div>
           <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-lg">
+            <span className="text-center font-bold text-sm">
               {backpack.weight} kg
             </span>
           </div>
