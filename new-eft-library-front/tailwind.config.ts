@@ -9,6 +9,7 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./@/**/*.{ts,tsx}",
   ],
+  safelist: [{ pattern: /^grid-cols-\d+$/ }, { pattern: /^col-span-\d+$/ }],
   theme: {
     extend: {
       colors: {
