@@ -3,7 +3,7 @@
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
-import KeySelectorClient from "./keSelectorClient";
+import KeySelectorClient from "./keySelectorClient";
 
 export default async function GetKeySelector() {
   const data = await requestData(

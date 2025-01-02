@@ -70,6 +70,9 @@ export default {
         ChestnutBrown: "#86552D",
         DeepBurgundy: "#831C16",
         DarkMahogany: "#5B0803",
+        LightOrange: "#ffa843",
+        SoftRed: "#ff7676",
+        SkyBlue: "#3586ff",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
