@@ -26,15 +26,17 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
         >
           <div className="flex justify-center items-center">
             <Gallery>
-              <Item original={armBand.image} width="200" height="140">
+              <Item original={armBand.image} width="200" height="180">
                 {({ ref, open }) => (
                   <Image
                     ref={ref}
                     onClick={open}
                     src={armBand.image}
+                    height={0}
                     width={110}
-                    height={80}
+                    style={{ width: "auto", height: "auto" }}
                     alt={armBand.name}
+                    priority
                   />
                 )}
               </Item>

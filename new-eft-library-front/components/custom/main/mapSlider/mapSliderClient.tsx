@@ -95,6 +95,7 @@ export default function MapSliderClient({ mapList }: MapSlider) {
                   alt={mapImg.name_en}
                   width={1100}
                   height={400}
+                  style={{ width: "auto", height: "auto" }}
                   priority
                 />
               </Link>

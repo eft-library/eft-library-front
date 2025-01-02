@@ -92,6 +92,7 @@ export default function FooterClient({ footerData }: FooterData) {
                 alt="ND"
                 width={142}
                 height={50}
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
           </div>
