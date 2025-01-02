@@ -3,6 +3,9 @@
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import MediKitClient from "./medikitClient";
+import DrugClient from "@/components/custom/medical/data/drugClient";
+import ItemClient from "@/components/custom/medical/data/itemClient";
+import StimulantClient from "@/components/custom/medical/data/stimulantClient";
 
 interface GetMedical {
   medicalType: string;
@@ -21,4 +24,10 @@ export default async function GetMedical({ medicalType }: GetMedical) {
 
   if (medicalType === "Medikit")
     return <MediKitClient medicalList={data.data} />;
+
+  if(medicalType === "Drug") return <DrugClient medicalList={data.data}/>
+
+  if(medicalType === "Medical item") return <ItemClient medicalList={data.data}/>
+
+  if(medicalType === "Stimulant") return <StimulantClient medicalList={data.data}/>
 }
