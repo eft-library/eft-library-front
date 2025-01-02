@@ -39,24 +39,24 @@ export default function GlassesClient({
 }: GlassesClient) {
   const returnQuestText = (note: QuestNotes) => {
     return note.in_raid ? (
-      <div className="flex justify-center items-center">
+      <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
           <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
         <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink">인레이드&nbsp;</span>
-        <span className="font-bold">{note.count}개 필요)</span>
+        <span className="font-bold text-SoftPink text-lg">인레이드&nbsp;</span>
+        <span className="font-bold text-lg">{note.count}개 필요)</span>
       </div>
     ) : (
-      <div className="flex justify-center items-center ">
+      <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
           <span className="font-bold text-lg text-GoldenYellow hover:text-LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
           </span>
         </Link>
-        <span className="font-bold">&nbsp;({note.count}개 필요)</span>
+        <span className="font-bold text-lg">&nbsp;({note.count}개 필요)</span>
       </div>
     );
   };
@@ -120,7 +120,7 @@ export default function GlassesClient({
       {!isClass &&
         glasses_data.no_class_glasses.map((glasses) => (
           <div
-            className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
             key={glasses.id}
           >
             <div className="flex justify-center items-center">
@@ -151,14 +151,16 @@ export default function GlassesClient({
                 {floatToPercent(glasses.blindness_protection)} %
               </span>
             </div>
-            <div className="flex justify-center items-center col-span-2">
-              {glasses.notes.length > 0 && (
+            <div className="flex items-center">
+              {glasses.notes.length > 0 ? (
                 <div>
                   <span className="font-bold text-lg text-white">퀘스트</span>
                   {glasses.notes.map((quest) => (
                     <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
                   ))}
                 </div>
+              ) : (
+                <span className="font-bold text-lg">-</span>
               )}
             </div>
           </div>

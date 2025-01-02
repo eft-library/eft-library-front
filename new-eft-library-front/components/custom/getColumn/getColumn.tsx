@@ -32,6 +32,7 @@ interface GetColumnProps {
   isHideout?: boolean;
   isNote?: boolean;
   isQuest?: boolean;
+  isProvision?: boolean;
 }
 
 export default async function GetColumn({
@@ -43,6 +44,7 @@ export default async function GetColumn({
   isHideout = false,
   isNote = false,
   isQuest = false,
+  isProvision = false,
 }: GetColumnProps) {
   // 데이터 요청
   const data = await requestData(`${API_ENDPOINTS.GET_COLUMN}/${columnKey}`);
@@ -62,6 +64,7 @@ export default async function GetColumn({
     isExtraction: (index: number) => ([0, 5, 6].includes(index) ? 2 : 1),
     isHideout: (index: number) => ([0, 1].includes(index) ? 2 : 1),
     isQuest: (index: number) => (index === 4 ? 2 : 1),
+    isProvision: (index: number) => (index === 4 || index === 5 ? 2 : 1),
     default: () => 1,
   };
 
@@ -72,6 +75,7 @@ export default async function GetColumn({
     if (isExtraction) return colSpanMapping.isExtraction(index);
     if (isHideout) return colSpanMapping.isHideout(index);
     if (isQuest) return colSpanMapping.isQuest(index);
+    if (isProvision) return colSpanMapping.isProvision(index);
     return colSpanMapping.default();
   };
 

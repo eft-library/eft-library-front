@@ -60,6 +60,9 @@ export default {
         CreamYellow: "#FFE1B5",
         LightYellow: "#ffe6a7",
         SoftPink: "#ff7a7a",
+        BrightCyan: "#00E0FF",
+        Red: "#FF0000",
+        PaleYellow: "#FDFFA7",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
