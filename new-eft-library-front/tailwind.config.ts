@@ -58,6 +58,7 @@ export default {
         GoldenYellow: "#ffd700",
         SunsetYellow: "#FFC368",
         CreamYellow: "#FFE1B5",
+        LightYellow: "#ffe6a7",
         SoftPink: "#ff7a7a",
       },
       boxShadow: {
