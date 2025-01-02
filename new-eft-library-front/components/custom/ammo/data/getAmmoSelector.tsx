@@ -11,7 +11,7 @@ export default async function GetAmmoSelector() {
   );
 
   if (!data || data.status !== 200) {
-    console.error("Failed to fetch armor data:", data?.msg || "Unknown error");
+    console.error("Failed to fetch ammo data:", data?.msg || "Unknown error");
     return null;
   }
 
