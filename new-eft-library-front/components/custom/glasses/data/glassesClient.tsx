@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface GlassesClient {
-  glasses_data: RigData;
+  glassesData: RigData;
   isClass: boolean;
 }
 
@@ -33,10 +33,7 @@ interface QuestNotes {
   url_mapping: string;
 }
 
-export default function GlassesClient({
-  glasses_data,
-  isClass,
-}: GlassesClient) {
+export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
   const returnQuestText = (note: QuestNotes) => {
     return note.in_raid ? (
       <div className="flex items-center">
@@ -72,7 +69,7 @@ export default function GlassesClient({
   return (
     <div className="w-full">
       {isClass &&
-        glasses_data.class_glasses.map((glasses) => (
+        glassesData.class_glasses.map((glasses) => (
           <div
             className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
             key={glasses.id}
@@ -118,7 +115,7 @@ export default function GlassesClient({
           </div>
         ))}
       {!isClass &&
-        glasses_data.no_class_glasses.map((glasses) => (
+        glassesData.no_class_glasses.map((glasses) => (
           <div
             className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
             key={glasses.id}

@@ -19,5 +19,5 @@ export default async function GetGlasses({ isClass = true }: GetGlasses) {
     return null;
   }
 
-  return <GlassesClient glasses_data={data.data} isClass={isClass} />;
+  return <GlassesClient glassesData={data.data} isClass={isClass} />;
 }
