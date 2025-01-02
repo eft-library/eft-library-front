@@ -33,7 +33,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
                     onClick={open}
                     src={armBand.image}
                     height={0}
-                    width={110}
+                    width={120}
                     style={{ width: "auto", height: "auto" }}
                     alt={armBand.name}
                     priority

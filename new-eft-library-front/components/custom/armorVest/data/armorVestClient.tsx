@@ -28,13 +28,13 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
         >
           <div className="flex justify-center items-center">
             <Gallery>
-              <Item original={armorVest.image} width="200" height="220">
+              <Item original={armorVest.image} width="300" height="420">
                 {({ ref, open }) => (
                   <Image
                     ref={ref}
                     onClick={open}
                     src={armorVest.image}
-                    width={110}
+                    width={140}
                     height={0}
                     priority
                     style={{ width: "auto", height: "auto" }}
