@@ -83,9 +83,11 @@ export  default function StimulantClient({medicalList}: StimulantClient) {
         return effects;
     };
 
+    if(medicalCategory !== "ALL" && medicalCategory !== "Stimulant") return null
+
     return <div className="w-full">
         {medicalList.map((stimulant) => checkViewStimulant(stimulant) && <div
-            className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
             key={stimulant.id}>
             <div className="flex justify-center items-center">
                 <Gallery>
@@ -110,6 +112,11 @@ export  default function StimulantClient({medicalList}: StimulantClient) {
                   {stimulant.name_kr}
                 </span>
             </div>
+            <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
+                </span>
+            </div>
             <div className="flex justify-center flex-col">
                 {stimulant.buff.length > 0 ? (filterStimEffects(stimulant.buff).map((buff) => <div key={buff.krSkill}>
                     {buff.delay != null && buff.duration != null &&
@@ -128,7 +135,8 @@ export  default function StimulantClient({medicalList}: StimulantClient) {
                 </div>)) : <span className={`text-center font-bold text-sm`}>-</span>}
             </div>
             <div className="flex justify-center flex-col">
-                {stimulant.buff.length > 0 ? (filterStimEffects(stimulant.debuff).map((debuff) => <div key={debuff.krSkill}>
+                {stimulant.buff.length > 0 ? (filterStimEffects(stimulant.debuff).map((debuff) => <div
+                    key={debuff.krSkill}>
                     {debuff.delay != null && debuff.duration != null &&
                         (<span
                             className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">{debuff.id === "5ed5166ad380ab312177c100" ? `25% 확률 / ${debuff.delay}초 지연 / ${debuff.duration}초 지속`
@@ -143,6 +151,16 @@ export  default function StimulantClient({medicalList}: StimulantClient) {
                             className="text-center font-bold text-sm text-Red">&nbsp;{addPlusMinus(debuff.value)}</span>
                     </div>
                 </div>)) : <span className={`text-center font-bold text-sm`}>-</span>}
+            </div>
+            <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
+                </span>
+            </div>
+            <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
+                </span>
             </div>
         </div>)}
     </div>

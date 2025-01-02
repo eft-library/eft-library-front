@@ -47,9 +47,11 @@ export default function ItemClient({medicalList}: ItemClient) {
         );
     };
 
+    if(medicalCategory !== "ALL" && medicalCategory !== "Medical item") return null
+
     return <div className="w-full">
         {medicalList.map((item) => checkViewItem(item) && (<div
-            className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
             key={item.id}>
             <div className="flex justify-center items-center">
                 <Gallery>
@@ -74,12 +76,22 @@ export default function ItemClient({medicalList}: ItemClient) {
                   {item.name_kr}
                 </span>
             </div>
+            <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
+                </span>
+            </div>
             <div className="flex flex-col justify-center items-center">
                 {item.cures_kr.map((cures, index) => (
                     <span key={`${index}-cures`} className="font-bold text-sm">
                   {cures}
                 </span>
                 ))}
+            </div>
+            <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
+                </span>
             </div>
             <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

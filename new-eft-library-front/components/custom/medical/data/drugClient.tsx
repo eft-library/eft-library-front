@@ -62,10 +62,12 @@ export default function DrugClient({medicalList}: DrugClient){
         );
     }
 
+    if(medicalCategory !== "ALL" && medicalCategory !== "Drug") return null
+
     return <div className="w-full">
         {medicalList.map((drug) => checkViewDrug(drug) && (
             <div
-                className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+                className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
                 key={drug.id}>
                 <div className="flex justify-center items-center">
                     <Gallery>
@@ -88,6 +90,11 @@ export default function DrugClient({medicalList}: DrugClient){
                 <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">
                   {drug.name_kr}
+                </span>
+                </div>
+                <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">
+                  -
                 </span>
                 </div>
                 <div className="flex flex-col justify-center items-center">
