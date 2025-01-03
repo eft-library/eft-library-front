@@ -33,10 +33,10 @@ export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
       {npcList.map((npc) => (
         <div className="flex flex-col items-center" key={npc.id}>
           <div
-            className={`cursor-pointer w-[120px] h-[120px] rounded-lg ${
+            className={`cursor-pointer w-[140px] h-[140px] rounded-lg ${
               npcId === npc.id
                 ? "outline outline-4 outline-[color:Goldenrod]"
-                : "outline outline-1 outline-[color:white]"
+                : "outline outline-2 outline-[color:white]"
             }`}
             style={{
               backgroundImage: `url(${formatImage(npc.image)})`,
