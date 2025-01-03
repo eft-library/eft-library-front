@@ -25,9 +25,11 @@ export default async function GetMedical({ medicalType }: GetMedical) {
   if (medicalType === "Medikit")
     return <MediKitClient medicalList={data.data} />;
 
-  if(medicalType === "Drug") return <DrugClient medicalList={data.data}/>
+  if (medicalType === "Drug") return <DrugClient medicalList={data.data} />;
 
-  if(medicalType === "Medical item") return <ItemClient medicalList={data.data}/>
+  if (medicalType === "Medical item")
+    return <ItemClient medicalList={data.data} />;
 
-  if(medicalType === "Stimulant") return <StimulantClient medicalList={data.data}/>
+  if (medicalType === "Stimulant")
+    return <StimulantClient medicalList={data.data} />;
 }

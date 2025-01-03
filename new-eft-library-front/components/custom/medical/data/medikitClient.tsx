@@ -4,8 +4,6 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import { useAppStore } from "@/store/provider";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import {COLUMN_KEY} from "@/lib/consts/columnConsts";
 
 interface MediKitClient {
   medicalList: MediKit[];
@@ -49,76 +47,72 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
     );
   };
 
-  if(medicalCategory !== "ALL" && medicalCategory !== "Medikit") return null
+  if (medicalCategory !== "ALL" && medicalCategory !== "Medikit") return null;
 
   return (
     <div className="w-full">
       {medicalList.map(
         (medikit) =>
           checkViewMedikit(medikit) && (
-                <div
-                    className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
-                    key={medikit.id}
-                >
-                  <div className="flex justify-center items-center">
-                    <Gallery>
-                      <Item original={medikit.image} width="200" height="180">
-                        {({ref, open}) => (
-                            <Image
-                                ref={ref}
-                                onClick={open}
-                                src={medikit.image}
-                                height={0}
-                                width={120}
-                                style={{width: "auto", height: "auto"}}
-                                alt={medikit.name_en}
-                                priority
-                            />
-                        )}
-                      </Item>
-                    </Gallery>
-                  </div>
-                  <div className="flex justify-center items-center">
+            <div
+              className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              key={medikit.id}
+            >
+              <div className="flex justify-center items-center">
+                <Gallery>
+                  <Item original={medikit.image} width="200" height="180">
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={medikit.image}
+                        height={0}
+                        width={120}
+                        style={{ width: "auto", height: "auto" }}
+                        alt={medikit.name_en}
+                        priority
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              </div>
+              <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">
                   {medikit.name_kr}
                 </span>
-                  </div>
-                  <div className="flex justify-center items-center">
+              </div>
+              <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">
                   {medikit.hitpoints}
                 </span>
-                  </div>
-                  <div className="flex flex-col justify-center items-center">
-                    {medikit.cures_kr && medikit.cures_kr.length > 0 ? (
-                        medikit.cures_kr.map((cures, index) => (
-                            <span
-                                key={`medikit-${index}`}
-                                className="font-bold text-sm"
-                            >
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                {medikit.cures_kr && medikit.cures_kr.length > 0 ? (
+                  medikit.cures_kr.map((cures, index) => (
+                    <span
+                      key={`medikit-${index}`}
+                      className="font-bold text-sm"
+                    >
                       {cures}
                     </span>
-                        ))
-                    ) : (
-                        <span className="font-bold text-sm">-</span>
-                    )}
-                  </div>
-                  <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  -
-                </span>
-                  </div>
-                  <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  -
-                </span>
-                  </div>
-                  <div className="flex justify-center items-center">
+                  ))
+                ) : (
+                  <span className="font-bold text-sm">-</span>
+                )}
+              </div>
+              <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">-</span>
+              </div>
+              <div className="flex justify-center items-center">
+                <span className="text-center font-bold text-sm">-</span>
+              </div>
+              <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">
                   {medikit.use_time} 초
                 </span>
-                  </div>
-                </div>
-            )
+              </div>
+            </div>
+          )
       )}
     </div>
   );

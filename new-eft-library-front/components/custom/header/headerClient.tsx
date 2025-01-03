@@ -42,7 +42,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
   };
 
   return (
-    <div className="fixed w-full z-10 bg-transparent backdrop-blur-md backdrop-contrast-60">
+    <div className="fixed w-full z-20 bg-transparent backdrop-blur-md backdrop-contrast-60">
       <div className="grid grid-cols-3 h-14">
         <div />
         <div className="flex justify-center items-center">
