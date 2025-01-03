@@ -74,8 +74,11 @@ export default {
         DeepBurgundy: "#831C16",
         DarkMahogany: "#5B0803",
         LightOrange: "#ffa843",
+        Orange: "#FFA34E",
+        Beige: "#EFBE85",
         SoftRed: "#ff7676",
         SkyBlue: "#3586ff",
+        Goldenrod: "#d2b82e",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
