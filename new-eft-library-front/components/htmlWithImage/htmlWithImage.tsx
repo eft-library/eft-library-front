@@ -36,7 +36,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImage) {
         onClick={handleImageClick}
       />
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[1600px] sm:min-h-[900px] border-white bg-black">
+        <DialogContent className="sm:max-w-[1600px] sm:min-h-[900px] border-white bg-Background">
           <DialogHeader>
             <DialogTitle />
             <DialogDescription>

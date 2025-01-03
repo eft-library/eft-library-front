@@ -85,8 +85,7 @@ export default function PaginationCustom({total, routeLink, currentPage}: Pagina
     }
 
     return <Pagination>
-        <PaginationContent>
-
+        <PaginationContent className={"flex gap-3"}>
             <PaginationItem>
                 <PaginationLink onClick={handleFirstPage} className={cn("border-[1px] border-white border-solid", currentPage === 1
                     ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
@@ -94,7 +93,6 @@ export default function PaginationCustom({total, routeLink, currentPage}: Pagina
                     <span className={"font-bold text-lg"}>{"<<"}</span>
                 </PaginationLink>
             </PaginationItem>
-
             <PaginationItem>
                 <PaginationLink onClick={handelPrevPage} className={cn("border-[1px] border-white border-solid", currentPage === 1
                     ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
@@ -102,25 +100,21 @@ export default function PaginationCustom({total, routeLink, currentPage}: Pagina
                     <span className={"font-bold text-lg"}>{"<"}</span>
                 </PaginationLink>
             </PaginationItem>
-
             {visiblePages.map((page) => (
                 <PaginationItem key={`pagination-${page}`} onClick={() => handlePageChange(page)}>
                     <PaginationLink className={"hover:bg-NeutralGray border-[1px] border-white border-solid flex items-center"} isActive={page === currentPage}><span className={"font-bold text-lg "}>{page}</span></PaginationLink>
                 </PaginationItem>
             ))}
-
             <PaginationItem>
                 <PaginationLink onClick={handelNextPage} className={cn("border-[1px] border-white border-solid", currentPage === total
                     ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
                     : "hover:bg-NeutralGray")}><span className={"font-bold text-lg"}>{">"}</span></PaginationLink>
             </PaginationItem>
-
             <PaginationItem>
                 <PaginationLink onClick={handleLastPage} className={cn("border-[1px] border-white border-solid", currentPage === total
                     ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
                     : "hover:bg-NeutralGray")}><span className={"font-bold text-lg"}>{">>"}</span></PaginationLink>
             </PaginationItem>
-
         </PaginationContent>
     </Pagination>
 }

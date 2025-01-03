@@ -82,7 +82,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                 <Search className="absolute top-1/2 right-2.5 -translate-y-1/2" />
                 {isOpen && (
                   <ScrollArea
-                    className="absolute left-0 bg-black shadow-BlackShadow rounded py-1 z-10 w-full max-h-[800px] overflow-auto"
+                    className="absolute left-0 bg-Background shadow-BlackShadow rounded py-1 z-10 w-full max-h-[800px] overflow-auto"
                     style={{ top: "calc(100% + 5px)" }}
                     onScroll={handleScroll}
                   >
@@ -105,7 +105,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                                 {
                                   "bg-NeutralGray": highlightedIndex === index,
                                 },
-                                { "bg-black": highlightedIndex !== index }
+                                { "bg-Background": highlightedIndex !== index }
                               ),
                             })}
                           >

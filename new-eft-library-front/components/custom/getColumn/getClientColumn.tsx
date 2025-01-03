@@ -17,7 +17,7 @@ export default function GetClientColumn({
   return (
     <div
       className={cn(
-        `grid grid-cols-${columnLength} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-black z-10`
+        `grid grid-cols-${columnLength} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-Background z-10`
       )}
     >
       {columnList.map((val, index) => (

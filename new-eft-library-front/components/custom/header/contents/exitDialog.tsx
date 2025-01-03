@@ -57,7 +57,7 @@ export default function ExitDialog() {
           회원 탈퇴
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] border-white bg-black">
+      <DialogContent className="sm:max-w-[600px] border-white bg-Background">
         <DialogHeader>
           <DialogTitle></DialogTitle>
           <DialogDescription>
@@ -89,14 +89,14 @@ export default function ExitDialog() {
           <Button
             onClick={() => userExit()}
             variant={"outline"}
-            className="text-base font-semibold text-white bg-black border-white"
+            className="text-base font-semibold text-white bg-Background border-white"
           >
             탈퇴
           </Button>
           <DialogClose asChild>
             <Button
               variant={"outline"}
-              className="text-base font-semibold text-white bg-black border-white"
+              className="text-base font-semibold text-white bg-Background border-white"
             >
               취소
             </Button>

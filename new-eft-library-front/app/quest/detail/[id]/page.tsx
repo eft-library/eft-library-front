@@ -1,4 +1,4 @@
-import QuestDetail from "@/components/custom/questDetail.tsx/questDetail";
+import QuestDetail from "@/components/custom/questDetail/questDetail";
 
 export default function QuestDetailPage() {
   return <QuestDetail />;

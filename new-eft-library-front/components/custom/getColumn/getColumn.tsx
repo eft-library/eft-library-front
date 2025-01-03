@@ -83,7 +83,7 @@ export default async function GetColumn({
   return (
     <div
       className={cn(
-        `grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-black z-10`
+        `grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-Background z-10`
       )}
     >
       {column.value_kr.map((val, index) => (

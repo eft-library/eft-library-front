@@ -79,7 +79,8 @@ export default {
         SoftRed: "#ff7676",
         SkyBlue: "#3586ff",
         Goldenrod: "#d2b82e",
-        MutedGray: "#B8B8B8"
+        MutedGray: "#B8B8B8",
+        Background: "#111111"
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
