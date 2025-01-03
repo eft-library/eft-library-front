@@ -73,16 +73,17 @@ export default function MapSlider({ mapInfo }: MapSlider) {
               height="900"
             >
               {({ ref, open }) => (
+                  <div
+                      ref={ref}
+                      onClick={open} className={"flex justify-center items-center cursor-pointer"}>
                 <Image
-                  ref={ref}
-                  onClick={open}
                   src={formatImage(map.mot_image)}
                   alt={map.name_en}
                   width={1100}
                   height={400}
                   style={{ width: "auto", height: "auto" }}
                   priority
-                />
+                /></div>
               )}
             </Item>
           ))}
