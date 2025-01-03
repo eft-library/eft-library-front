@@ -1,12 +1,12 @@
 "use client";
 
-import EventTab from "@/components/custom/event/data/eventTab";
+import PatchNotesTab from "@/components/custom/patchNotes/data/patchNotesTab";
 import Link from "next/link";
 import {formatISODate} from "@/lib/func/formatTime";
 import PaginationCustom from "@/components/custom/pagination/paginationCustom";
 import {useSearchParams} from "next/navigation";
 
-interface EventInfo {
+interface PatchNotesInfo {
     id: string;
     name_en: string[];
     name_kr: string[];
@@ -14,18 +14,18 @@ interface EventInfo {
     notes_kr: string;
     update_time: string;
 }
- interface EventData {
-    data: EventInfo[];
+interface PatchNotesData {
+    data: PatchNotesInfo[];
     total_count: number;
     max_pages: number;
     current_page: number;
 }
 
-interface  EventClient {
-    eventData: EventData
+interface PatchNotesClient {
+    patchNotesData: PatchNotesData
 }
 
-export default function EventClient({ eventData }:EventClient) {
+export default function PatchNotesClient({ patchNotesData }:PatchNotesClient) {
     const param = useSearchParams();
     const getFirstParagraph = (htmlString: string) => {
         // HTML 문자열을 DOM으로 파싱
@@ -41,10 +41,10 @@ export default function EventClient({ eventData }:EventClient) {
 
   return (
     <div className={"w-full flex flex-col justify-center items-center gap-4"}>
-      <EventTab />
-        {eventData.data.map((notes) => (
+      <PatchNotesTab />
+        {patchNotesData.data.map((notes) => (
             <div key={notes.id} className={"w-full"}>
-                <Link href={`/event/detail/${notes.id}`} >
+                <Link href={`/patch-notes/detail/${notes.id}`} >
                     <div className={"rounded-lg flex flex-col border-white border-solid border-2 mb-[4px] w-full hover:MutedGray"}>
                         <div className={"flex justify-between items-center"}>
                             <span className={"text-2xl font-bold text-white p-4"}>
@@ -65,8 +65,8 @@ export default function EventClient({ eventData }:EventClient) {
             </div>
         ))}
         <PaginationCustom
-            total={eventData.max_pages}
-            routeLink={"/event?id="}
+            total={patchNotesData.max_pages}
+            routeLink={"/patch-notes?id="}
             currentPage={Number(param.get("id"))}/>
     </div>
   );
