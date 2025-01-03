@@ -31,7 +31,7 @@ interface FooterData {
 export default function FooterClient({ footerData }: FooterData) {
   return (
     <div className="bg-cover bg-black bg-center flex flex-col items-center justify-center w-full h-auto pt-10">
-      <div className="grid grid-cols-4 gap-10">
+      <div className="grid grid-cols-4 gap-16">
         <div className="col-span-3">
           <div className="flex flex-col justify-center">
             <div className="flex m-1">
