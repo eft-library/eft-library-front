@@ -45,6 +45,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImage) {
                 alt={selectedImage}
                 fill
                 sizes="1200px"
+                priority
               />
             </DialogDescription>
           </DialogHeader>

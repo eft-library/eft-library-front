@@ -73,7 +73,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           {questInfo.requirements_kr.map((requirements, index) => (
             <div
               key={`${index}-requirements`}
-              className="font-bold text-lg text-white"
+              className="font-bold text-base text-white"
               dangerouslySetInnerHTML={{
                 __html: `*&nbsp;&nbsp;${requirements}`,
               }}
@@ -89,7 +89,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           {questInfo.objectives_kr.map((objectives, index) => (
             <div
               key={`${index}-objectives`}
-              className="font-bold text-lg text-white"
+              className="font-bold text-base text-white"
               dangerouslySetInnerHTML={{
                 __html: `*&nbsp;&nbsp;${objectives}`,
               }}
@@ -105,7 +105,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           {questInfo.rewards_kr.map((rewards, index) => (
             <div
               key={`${index}-rewards`}
-              className="font-bold text-lg text-white"
+              className="font-bold text-base text-white"
               dangerouslySetInnerHTML={{
                 __html: `*&nbsp;&nbsp;${rewards}`,
               }}
@@ -158,13 +158,13 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                         href={`${item.item_link}${item.item_id}`}
                         scroll={false}
                       >
-                        <span className="text-center font-bold text-lg hover:text-LightYellow">
+                        <span className="text-center font-bold text-base hover:text-LightYellow">
                           {item.item_name_kr}
                         </span>
                       </Link>
                     </div>
                     <div className="flex justify-center items-center">
-                      <span className="text-center font-bold text-lg">
+                      <span className="text-center font-bold text-base">
                         {item.count}
                       </span>
                     </div>
@@ -172,7 +172,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                       <span
                         className={`${
                           item.in_raid ? "text-GoldenYellow" : "text-Red"
-                        } text-lg flex justify-center items-center`}
+                        } text-base flex justify-center items-center`}
                       >
                         {item.in_raid ? "Y" : "N"}
                       </span>
@@ -184,7 +184,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                             key={`${index}-desc`}
                             className="flex justify-center items-center"
                           >
-                            <span className="text-center font-bold text-lg">
+                            <span className="text-center font-bold text-base">
                               {desc}
                             </span>
                           </div>
