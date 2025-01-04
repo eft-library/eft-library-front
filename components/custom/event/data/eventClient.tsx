@@ -1,5 +1,6 @@
 "use client";
 
+import EventTab from "@/components/custom/event/data/eventTab";
 import Link from "next/link";
 import { formatISODate } from "@/lib/func/formatTime";
 import PaginationCustom from "@/components/custom/pagination/paginationCustom";
@@ -40,6 +41,7 @@ export default function EventClient({ eventData }: EventClient) {
 
   return (
     <div className={"w-full flex flex-col justify-center items-center gap-4"}>
+      <EventTab />
       {eventData.data.map((notes) => (
         <div key={notes.id} className={"w-full"}>
           <Link href={`/event/detail/${notes.id}`}>

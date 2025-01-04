@@ -1,5 +1,6 @@
 "use client";
 
+import NoticeTab from "@/components/custom/notice/data/noticeTab";
 import Link from "next/link";
 import { formatISODate } from "@/lib/func/formatTime";
 import PaginationCustom from "@/components/custom/pagination/paginationCustom";
@@ -40,6 +41,7 @@ export default function NoticeClient({ noticeData }: NoticeClient) {
 
   return (
     <div className={"w-full flex flex-col justify-center items-center gap-4"}>
+      <NoticeTab />
       {noticeData.data.map((notes) => (
         <div key={notes.id} className={"w-full"}>
           <Link href={`/notice/detail/${notes.id}`}>

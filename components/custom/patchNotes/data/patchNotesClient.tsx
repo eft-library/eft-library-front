@@ -1,5 +1,6 @@
 "use client";
 
+import PatchNotesTab from "@/components/custom/patchNotes/data/patchNotesTab";
 import Link from "next/link";
 import { formatISODate } from "@/lib/func/formatTime";
 import PaginationCustom from "@/components/custom/pagination/paginationCustom";
@@ -40,6 +41,7 @@ export default function PatchNotesClient({ patchNotesData }: PatchNotesClient) {
 
   return (
     <div className={"w-full flex flex-col justify-center items-center gap-4"}>
+      <PatchNotesTab />
       {patchNotesData.data.map((notes) => (
         <div key={notes.id} className={"w-full"}>
           <Link href={`/patch-notes/detail/${notes.id}`}>
