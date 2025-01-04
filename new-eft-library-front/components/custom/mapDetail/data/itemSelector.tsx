@@ -37,20 +37,6 @@ export default function ItemSelector({
   const { itemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const toggleAccordion = () => {
-    if (isOpen) {
-      // 닫힐 때 애니메이션 완료 후 스타일 변경
-      setIsAnimating(true);
-      setTimeout(() => {
-        setIsOpen(false);
-        setIsAnimating(false);
-      }, 300); // TailwindCSS 애니메이션 지속 시간 (300ms와 동일)
-    } else {
-      setIsOpen(true);
-    }
-  };
 
   useEffect(() => {
     if (originItemList) {
@@ -82,17 +68,14 @@ export default function ItemSelector({
     <div className="relative">
       {/* Accordion Header - 고정된 위치 */}
       <div
-        className={`fixed left-4 overflow-hidden h-[75%] top-1/2 transform -translate-y-1/2 z-5 w-56 p-4 rounded-md transition-all duration-300 ease-in-out ${
+        className={`fixed left-4 overflow-auto h-[75%] top-1/2 transform -translate-y-1/2 z-5 w-56 p-4 rounded-md transition-all duration-300 ease-in-out ${
           isOpen ? "border border-white bg-black" : ""
         }`}
       >
         <div
           className={`flex flex-col p-2 justify-between items-center cursor-pointer ${
-            isOpen || isAnimating
-              ? "bg-black"
-              : "border border-white rounded-lg bg-black"
+            isOpen ? "bg-black" : "border border-white rounded-lg bg-black"
           }`}
-          onClick={toggleAccordion}
         >
           <div
             className={"w-full flex justify-between items-center"}
