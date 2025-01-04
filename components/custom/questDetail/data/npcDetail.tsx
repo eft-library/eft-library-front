@@ -86,7 +86,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           {questInfo.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
         </span>
       </div>
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full justify-between">
         <div className="flex flex-col w-[50%]">
           <span className="text-GoldenYellow font-bold font-lg text-center">
             이전
@@ -127,9 +127,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           )}
         </div>
         <div className="flex flex-col w-1/2">
-          <span className="text-yellow-400 font-bold text-center mb-2">
-            다음
-          </span>
+          <span className="text-yellow-400 font-bold text-center">다음</span>
           {!questInfo.next || questInfo.next.length <= 0 ? (
             <span className="text-white font-bold text-center">-</span>
           ) : (
