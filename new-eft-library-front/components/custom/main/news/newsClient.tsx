@@ -99,10 +99,10 @@ export default function NewsClient({ news }: NewsClient) {
 
           <div className="flex flex-col">
             <Link href={news.event_link}>
-              <span className="font-bold text-white">- 이벤트</span>
+              <span className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink">- 이벤트</span>
             </Link>
             <Link href={news.patch_link}>
-              <span className="font-bold text-white">- 패치노트</span>
+              <span className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink">- 패치노트</span>
             </Link>
           </div>
         </div>
