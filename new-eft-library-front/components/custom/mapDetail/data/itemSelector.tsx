@@ -59,7 +59,6 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
 
     if (!originalItem || !itemFilter) return null;
 
-
     return (
         <div className="relative">
             {/* Accordion Header - 고정된 위치 */}

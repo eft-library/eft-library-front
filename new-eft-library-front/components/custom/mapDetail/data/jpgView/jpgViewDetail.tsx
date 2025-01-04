@@ -10,6 +10,7 @@ import type {JPGView, JpgItemPath} from "@/components/custom/mapDetail/data/mapT
 import {ALL_COLOR} from "@/lib/consts/colorConsts";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
+
     const size = useWindowSize();
     const transformWrapperRef = useRef(null);
     const [scale, setScale] = useState(1);
@@ -17,7 +18,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
     const [popoverItem, setPopoverItem] = useState<JpgItemPath>(); // 팝오버에 표시될 아이템 정보 상태
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleItemClick = (item) => {
+    const handleItemClick = (item:JpgItemPath) => {
         setPopoverItem(item); // 아이템 클릭 시 팝오버 아이템 설정
         setIsOpen(true)
     };

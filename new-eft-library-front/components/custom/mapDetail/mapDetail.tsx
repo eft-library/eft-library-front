@@ -6,7 +6,9 @@ export default function MapDetail() {
     return (
         <ContentsWrapper>
             <div className="flex flex-col justify-between items-center gap-10 my-10">
-                <h1 className="text-white text-4xl font-bold text-center">대화형 지도</h1>
+                <div className={"flex flex-col justify-center items-center"}><h1 className="text-white text-4xl font-bold text-center">대화형 지도</h1>
+                <span className={"font-bold"}>(데이터 적재 진행중)</span>
+                </div>
                 <GetMapSelector/>
                 <GetMapDetail/>
             </div>

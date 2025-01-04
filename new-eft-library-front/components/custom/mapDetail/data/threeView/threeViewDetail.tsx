@@ -8,10 +8,9 @@ import { Canvas } from "@react-three/fiber";
 import Loader from "./loader";
 import ThreeModel from "./threeModel";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import dynamic from "next/dynamic";
 import type { ThreeviewDetail } from "@/components/custom/mapDetail/data/mapType";
 
-export default function ThreeviewDetail({ mapData, viewItemList }: ThreeviewDetail) {
+export default function ThreeViewDetail({ mapData, viewItemList }: ThreeviewDetail) {
     const [filterInfo, setFilterInfo] = useState(null);
     const controlsRef = useRef(null);
     const [zoomLevel, setZoomLevel] = useState(0);

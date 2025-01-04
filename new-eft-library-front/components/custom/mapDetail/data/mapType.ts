@@ -88,3 +88,7 @@ export interface JPGView {
 export interface MapDetailClient {
     mapInfo: MapData
 }
+export interface MapWrapper {
+    mapData: Map;
+    onClickMapAction: (val: MapData) => void
+}
