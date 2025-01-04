@@ -60,7 +60,7 @@ export default function PaginationCustom({
   useEffect(() => {
     // 페이지 그룹 초기화
     updateVisiblePages(currentPage);
-  }, [total, currentPage, updateVisiblePages]);
+  }, [total, currentPage]);
 
   const handlePageChange = (page: number) => {
     if (page === currentPage) return; // 현재 페이지와 동일한 페이지 클릭 시 무시
