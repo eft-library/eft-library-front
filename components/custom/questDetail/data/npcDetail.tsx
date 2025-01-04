@@ -2,6 +2,7 @@
 
 import { formatImage } from "@/lib/func/formatImage";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 interface Quest {
   id: string;
@@ -84,6 +85,86 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         <span className="text-white text-lg text-center font-bold">
           {questInfo.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
         </span>
+      </div>
+      <div className="flex w-full items-center justify-between">
+        <div className="flex flex-col w-[50%]">
+          <span className="text-GoldenYellow font-bold font-lg text-center">
+            이전
+          </span>
+          {!questInfo.requires || questInfo.requires.length <= 0 ? (
+            <span className="text-white font-bold text-center">-</span>
+          ) : (
+            questInfo.requires.map((item, index) => {
+              const others = questInfo.requires
+                ? questInfo.requires.filter((i) => i.is_other)
+                : [];
+              const isLastOther =
+                item.is_other && others.indexOf(item) === others.length - 1;
+
+              return (
+                <React.Fragment key={item.id}>
+                  {item.is_other === false ? (
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-yellow-400 mb-1">
+                      <a href={`/quest/detail/${item.url_mapping}`}>
+                        {item.name_kr}
+                      </a>
+                    </span>
+                  ) : (
+                    <>
+                      <span className="text-white font-bold text-center cursor-pointer hover:text-orange-400">
+                        <a href={`/quest/detail/${item.url_mapping}`}>
+                          {item.name_kr}
+                        </a>
+                      </span>
+                      {!isLastOther && (
+                        <span className="font-bold text-center">or</span>
+                      )}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })
+          )}
+        </div>
+        <div className="flex flex-col w-1/2">
+          <span className="text-yellow-400 font-bold text-center mb-2">
+            다음
+          </span>
+          {!questInfo.next || questInfo.next.length <= 0 ? (
+            <span className="text-white font-bold text-center">-</span>
+          ) : (
+            questInfo.next.map((item, index) => {
+              const isLastOther =
+                item.is_other &&
+                questInfo.next &&
+                questInfo.next.filter((i) => i.is_other).length - 1 ===
+                  questInfo.next.filter((i) => i.is_other).indexOf(item);
+
+              return (
+                <React.Fragment key={item.id}>
+                  {item.is_other === false ? (
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-yellow-400 mb-1">
+                      <a href={`/quest/detail/${item.url_mapping}`}>
+                        {item.name_kr}
+                      </a>
+                    </span>
+                  ) : (
+                    <>
+                      <span className="text-white font-bold text-center cursor-pointer hover:text-orange-400">
+                        <a href={`/quest/detail/${item.url_mapping}`}>
+                          {item.name_kr}
+                        </a>
+                      </span>
+                      {!isLastOther && (
+                        <span className="font-bold text-center">or</span>
+                      )}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );
