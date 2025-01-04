@@ -10,9 +10,12 @@ import type {
   UserQuest,
   UserClientQuest,
   FetchSchema,
+  Quest,
+  Require,
 } from "@/components/custom/userQuest/data/userQuestType";
 import Image from "next/image";
 import UserQuestList from "@/components/custom/userQuest/data/userQuestList";
+import UserQuestSelector from "./userQuestSelector";
 
 export default function UserQuestClient({ userQuestList }: UserClientQuest) {
   const [checkedQuest, setCheckedQuest] = useState<string[]>([]);
@@ -37,7 +40,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
     }
   };
   // success
-  const successUserQuest = async (quest_id: string, next: any) => {
+  const successUserQuest = async (quest_id: string, next: Require[]) => {
     const onlyQuestIdList = makeOnlyQuestIds();
     const newQuestList = [
       ...onlyQuestIdList.filter((quest) => quest !== quest_id),
@@ -55,7 +58,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
   };
 
   // delete
-  const deleteUserQuest = async (deleteList) => {
+  const deleteUserQuest = async (deleteList: string[]) => {
     const onlyQuestIdList = makeOnlyQuestIds();
     const newQuestList = onlyQuestIdList.filter(
       (quest_id) => !deleteList.includes(quest_id)
@@ -71,7 +74,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
   };
 
   // update
-  const updateUserQuest = async (selectedList) => {
+  const updateUserQuest = async (selectedList: Quest[]) => {
     const onlyQuestIdList = makeOnlyQuestIds();
     const onlySelectQuestIdList = selectedList.flatMap((quest) => quest.id);
     const newQuestList = [
@@ -123,6 +126,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
 
   return (
     <div className={"w-full h-full"}>
+      <UserQuestSelector updateQuest={updateUserQuest} />
       {userQuest.length < 0 || !userQuest[0].npc_id ? (
         <span className={"text-white font-bold text-lg"}>
           퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.
@@ -141,7 +145,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
               <span className="text-white font-bold text-lg">전체 선택</span>
             </div>
             <button
-              className="px-4 font-bold py-2 border bg-Background border-white text-white rounded-lg hover:bg-NeutralGray"
+              className="px-4 font-bold py-2 border-2 bg-Background border-white text-white rounded-lg hover:bg-DeepBurgundy"
               onClick={() => deleteUserQuest(checkedQuest)}
             >
               삭제
