@@ -3,7 +3,7 @@
 import {ItemSVG} from "@/components/custom/getIcon/getSVG";
 import { useState, useEffect } from "react";
 import { useAppStore } from "@/store/provider";
-import {Eye, EyeOff} from "lucide-react"
+import {Eye, EyeOff,ChevronDown, ChevronUp} from "lucide-react"
 
 interface ItemSelector {
     viewItemList: string[];
@@ -71,36 +71,34 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                     zIndex: 1000,
                 }}
             >
-                <div className={`flex p-4 justify-between items-center cursor-pointer ${isOpen ? '' : 'border border-white rounded-lg bg-black'}`} onClick={() => setIsOpen(!isOpen)}>
-                    <span className="font-bold text-white text-xl">Filter</span>
-                    <span className="text-white">{isOpen ? '-' : '+'}</span>
-                </div>
-            </div>
-
-            {/* Accordion Panel - 헤더 아래에 위치 */}
-            {isOpen && (
-                <div
-                    className="fixed left-4 top-[calc(50%+75px)] w-56 z-11 max-h-[75vh] overflow-y-auto p-4 rounded-md bg-gray-800"
-                    style={{ height: 'auto' }}
-                >
-                    {/* 전체 버튼 */}
-                    <div className="flex items-center cursor-pointer mb-4" onClick={() => onClickAllItemAction(checkAll())}>
-                        {checkAll() ? (
-                            <Eye className="mr-2 text-xl text-white" />
-                        ) : (
-                            <EyeOff className="mr-2 text-xl text-white opacity-50" />
-                        )}
-                        <span className={`font-bold text-white ${checkAll() ? 'opacity-50' : ''}`}>
+                <div className={`flex flex-col p-4 justify-between items-center cursor-pointer ${isOpen ? 'bg-black' : 'border border-white rounded-lg bg-black'}`}>
+                    <div className={"w-full flex justify-between items-center"}  onClick={() => setIsOpen(!isOpen)}>
+                        <span className="font-bold text-white text-xl">Filter</span>
+                        <span className="text-white">{isOpen ? <ChevronDown /> : <ChevronUp />}</span>
+                    </div>
+                    {isOpen && (
+                        <div
+                            className="w-full z-11 max-h-[75vh] rounded-md pt-4"
+                            style={{ height: 'auto' }}
+                        >
+                            {/* 전체 버튼 */}
+                            <div className="flex items-center cursor-pointer mb-4" onClick={() => onClickAllItemAction(checkAll())}>
+                                {checkAll() ? (
+                                    <Eye className="mr-2 text-xl text-white" />
+                                ) : (
+                                    <EyeOff className="mr-2 text-xl text-white opacity-50" />
+                                )}
+                                <span className={`font-bold text-white ${checkAll() ? '' : 'opacity-50'}`}>
                             전체
                         </span>
-                    </div>
+                            </div>
 
-                    {/* 아이템 목록 */}
-                    <div className="space-y-4">
-                        {itemFilter.map(
-                            (item) =>
-                                originalItem.includes(item.value) && (
-                                    <div key={item.value} className="space-y-2">
+                            {/* 아이템 목록 */}
+                            <div className="space-y-4">
+                                {itemFilter.map(
+                                    (item) =>
+                                        originalItem.includes(item.value) && (
+                                            <div key={item.value} className="space-y-1">
                                         <span
                                             className={`cursor-pointer ${viewItemList.includes(item.value) ? 'text-white' : 'text-white opacity-50'}`}
                                             onClick={() => onClickItemAction(item.value)}
@@ -108,34 +106,38 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                                             {item.kr}
                                         </span>
 
-                                        {/* 서브 아이템들 */}
-                                        {item.sub
-                                            .filter((childItem) =>
-                                                originItemList.some((org) => childItem.value === org.childValue)
-                                            )
-                                            .map((childItem) => (
-                                                <div key={childItem.value} className="flex items-center space-x-2">
-                                                    <ItemSVG
-                                                        scale={2}
-                                                        x={0}
-                                                        y={0}
-                                                        svgValue={childItem.value}
-                                                        isEnable={viewItemList.includes(childItem.value)}
-                                                    />
-                                                    <span
-                                                        onClick={() => onClickItemAction(childItem.value)}
-                                                        className={`pl-2 cursor-pointer ${viewItemList.includes(childItem.value) ? 'text-white' : 'text-white opacity-50'}`}
-                                                    >
+                                                {/* 서브 아이템들 */}
+                                                {item.sub
+                                                    .filter((childItem) =>
+                                                        originItemList.some((org) => childItem.value === org.childValue)
+                                                    )
+                                                    .map((childItem) => (
+                                                        <div key={childItem.value} className="flex items-center space-x-2">
+                                                            <ItemSVG
+                                                                scale={2}
+                                                                x={0}
+                                                                y={0}
+                                                                svgValue={childItem.value}
+                                                                isEnable={viewItemList.includes(childItem.value)}
+                                                            />
+                                                            <span
+                                                                onClick={() => onClickItemAction(childItem.value)}
+                                                                className={`pl-2 cursor-pointer ${viewItemList.includes(childItem.value) ? 'text-white' : 'text-white opacity-50'}`}
+                                                            >
                                                         {childItem.kr}
                                                     </span>
-                                                </div>
-                                            ))}
-                                    </div>
-                                )
-                        )}
-                    </div>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        )
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
+
+
         </div>
     );
 };
