@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppStore } from "@/store/provider";
-import {API_ENDPOINTS} from "@/lib/config/endpoint";
+import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import {
   extractValues,
   findObjectWithValue,
@@ -45,7 +45,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
 
   // itemFilter가 비어있을 때만 데이터를 가져옵니다.
   useEffect(() => {
-    const getItem = async() => {
+    const getItem = async () => {
       try {
         const response = await fetch(`${API_ENDPOINTS.GET_ITEM_FILTER}`, {
           next: { revalidate: 60000 },
@@ -62,10 +62,10 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
         console.error("Fetch error:", error);
         return [];
       }
-    }
+    };
 
     if (itemFilter.length === 0) {
-      getItem()
+      getItem();
     }
   }, [itemFilter, setItemFilter]);
 

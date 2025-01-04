@@ -11,7 +11,6 @@ interface SubItem {
   en: string;
 }
 
-
 /**
  * child 있는지 확인
  */

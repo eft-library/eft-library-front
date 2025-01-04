@@ -1,9 +1,12 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import * as THREE from "three";
-import {LineBasicMaterial} from "three";
-import {Collada, ColladaLoader,} from "three/examples/jsm/loaders/ColladaLoader.js";
-import {ALL_COLOR} from "@/lib/consts/colorConsts";
-import {formatImage} from "@/lib/func/formatImage";
+import { LineBasicMaterial } from "three";
+import {
+  Collada,
+  ColladaLoader,
+} from "three/examples/jsm/loaders/ColladaLoader.js";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { formatImage } from "@/lib/func/formatImage";
 
 interface ColladaData {
   colladaData: Collada;
