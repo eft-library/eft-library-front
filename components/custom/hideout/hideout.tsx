@@ -10,11 +10,13 @@ export default function Hideout() {
     <ContentsWrapper>
       <div className="flex flex-col justify-between items-center gap-10 my-10">
         <h1 className="text-white text-4xl font-bold text-center">은신처</h1>
-        <AdBanner
-          dataAdFormat={"fluid"}
-          dataFullWidthResponsive={true}
-          dataAdSlot="2690838054"
-        />
+        <div className="w-full">
+          <AdBanner
+            dataAdFormat={"fluid"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
         <GetHideoutSelector />
         <GetColumn columnKey={COLUMN_KEY.hideout} columnDesign={5} isHideout />
         <GetHideout />

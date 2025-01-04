@@ -9,11 +9,13 @@ export default function UserQuest() {
         <h1 className="text-white text-4xl font-bold text-center">
           퀘스트 플래너
         </h1>
-        <AdBanner
-          dataAdFormat={"fluid"}
-          dataFullWidthResponsive={true}
-          dataAdSlot="2690838054"
-        />
+        <div className="w-full">
+          <AdBanner
+            dataAdFormat={"fluid"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
         <GetUserQuest />
       </div>
     </ContentsWrapper>

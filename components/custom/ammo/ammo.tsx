@@ -10,11 +10,13 @@ export default function Ammo() {
     <ContentsWrapper>
       <div className="flex flex-col justify-between items-center gap-10 my-10">
         <h1 className="text-white text-4xl font-bold text-center">탄약</h1>
-        <AdBanner
-          dataAdFormat={"fluid"}
-          dataFullWidthResponsive={true}
-          dataAdSlot="2690838054"
-        />
+        <div className="w-full">
+          <AdBanner
+            dataAdFormat={"fluid"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
         <GetAmmoSelector />
         <GetColumn columnDesign={11} columnKey={COLUMN_KEY.ammo} isAmmo />
         <GetAmmo />
