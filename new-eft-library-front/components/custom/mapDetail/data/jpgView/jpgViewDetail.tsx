@@ -25,11 +25,11 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
     setIsOpen(true);
   };
 
-  const handleZoom = (e) => {
+  const handleZoom = (e: any) => {
     setScale(e.state.scale);
   };
 
-  const handleClick = (e) => {
+  const handleClick = (e: any) => {
     const svg = e.currentTarget;
     const svgRect = svg.getBoundingClientRect();
     const clientX = e.clientX;

@@ -1,19 +1,19 @@
 import Boss from "@/components/custom/boss/boss";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
+
+type paramsType = Promise<{ id: string }>;
 
 type MetaProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: paramsType;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: MetaProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: MetaProps): Promise<Metadata> {
   // params에서 id 추출
-  const id = params.id;
+  const id = (await params).id;
 
   // fetch data
   const product = await fetch(`${API_ENDPOINTS.GET_BOSS}/${id}`).then((res) =>

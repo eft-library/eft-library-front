@@ -10,7 +10,7 @@ export default function PrivacyPolicyEn() {
         </h1>
         <div className="p-4">
           <p>
-            <strong>‘EFT Library’</strong> places great importance on the
+            <strong>EFT Library</strong> places great importance on the
             protection of customer personal information and complies with the
             relevant laws and regulations that information and communications
             service providers must adhere to, such as the Act on Promotion of
@@ -28,11 +28,11 @@ export default function PrivacyPolicyEn() {
 
           <h2 className="mt-6 text-lg font-semibold">General Provisions</h2>
           <p className="mt-2">
-            <strong>‘EFT Library’</strong> (hereinafter referred to as "the
-            Company") places great importance on the protection of the personal
-            information of users and makes every effort to ensure that personal
-            information provided online is protected while users use the
-            company's services. The company complies with the personal
+            <strong>EFT Library</strong> (hereinafter referred to as &quot;the
+            Company&quot;) places great importance on the protection of the
+            personal information of users and makes every effort to ensure that
+            personal information provided online is protected while users use
+            the company&lsquo;s services. The company complies with the personal
             information protection regulations and guidelines of relevant laws,
             such as the Act on Promotion of Information and Communications
             Network Utilization and Information Protection.
@@ -86,10 +86,11 @@ export default function PrivacyPolicyEn() {
             5. Consent to the Collection of Personal Information
           </h2>
           <p className="mt-2">
-            The company provides a procedure where users can click the "Agree"
-            or "Cancel" button for the contents of the company's privacy policy
-            or terms of use. If the "Agree" button is clicked, it is considered
-            that the user agrees to the collection of personal information.
+            The company provides a procedure where users can click the
+            &quot;Agree&quot; or &quot;Cancel&quot; button for the contents of
+            the company&lsquo;s privacy policy or terms of use. If the
+            &quot;Agree&quot; button is clicked, it is considered that the user
+            agrees to the collection of personal information.
           </p>
 
           <h2 className="mt-6 text-lg font-semibold">
@@ -97,9 +98,9 @@ export default function PrivacyPolicyEn() {
             and Use
           </h2>
           <p className="mt-2">
-            ① "Personal information" refers to information about a living
-            individual that can identify a specific individual by the name, date
-            of birth, etc., included in the information.
+            ① &quot;Personal information&quot; refers to information about a
+            living individual that can identify a specific individual by the
+            name, date of birth, etc., included in the information.
           </p>
           <p className="mt-2">
             ② The items of personal information collected from individual
@@ -182,9 +183,9 @@ export default function PrivacyPolicyEn() {
           </p>
           <p className="mt-2">
             In the case of children under the age of 14, legal representatives
-            have the right to view or modify the child's personal information
-            and to withdraw consent to the collection and use of the child's
-            personal information.
+            have the right to view or modify the child&lsquo;s personal
+            information and to withdraw consent to the collection and use of the
+            child&lsquo;s personal information.
           </p>
 
           <h2 className="mt-6 text-lg font-semibold">
@@ -208,7 +209,7 @@ export default function PrivacyPolicyEn() {
           </h2>
           <p className="mt-2">
             The company implements the following technical and managerial
-            measures to protect users' personal information:
+            measures to protect users&lsquo; personal information:
           </p>
           <p className="mt-2 pl-4">
             <strong>Password encryption:</strong> Passwords are encrypted and

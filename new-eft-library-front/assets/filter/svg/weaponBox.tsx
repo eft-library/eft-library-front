@@ -1,5 +1,5 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import type { SVG } from "@/types/types";
+import type { SVG } from "@/assets/assetTypes";
 
 export default function WeaponBox({
   color,

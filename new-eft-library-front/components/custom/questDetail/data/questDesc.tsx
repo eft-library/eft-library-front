@@ -7,6 +7,7 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import Link from "next/link";
 import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
+import AdBanner from "../../adsense/adBanner";
 
 interface Quest {
   id: string;
@@ -113,6 +114,11 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           ))}
         </div>
       )}
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
 
       {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
         <div className="w-full flex flex-col gap-2">

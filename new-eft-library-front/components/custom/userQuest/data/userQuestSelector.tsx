@@ -11,7 +11,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
   const [searchList, setSearchList] = useState<Quest[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Quest[]>([]);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const getQuestList = async () => {
@@ -31,7 +31,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
   }, []);
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: any) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -48,7 +48,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
     };
   }, [isOpen]);
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: any) => {
     const list = event.target;
     if (list.scrollTop === 0) {
       list.scrollTop = 1;

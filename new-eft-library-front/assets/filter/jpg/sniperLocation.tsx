@@ -1,5 +1,5 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import type { JPG } from "@/types/types";
+import type { JPG } from "../../assetTypes";
 
 export default function SniperLocation({ x, y, scale }: JPG) {
   return (

@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
 import BossHealth from "./bossHealth";
 import FollowerLoot from "./followerLoot";
+import AdBanner from "../../adsense/adBanner";
 
 interface Boss {
   health_total: number;
@@ -163,6 +164,11 @@ export default function BossClient({ bossList }: BoosClient) {
                   ))}
                 </div>
               </div>
+              <AdBanner
+                dataAdFormat={"fluid"}
+                dataFullWidthResponsive={true}
+                dataAdSlot="2690838054"
+              />
               <div className="w-full flex flex-col gap-4">
                 <span className="font-bold text-3xl">위치</span>
                 <Separator className="bg-white" />

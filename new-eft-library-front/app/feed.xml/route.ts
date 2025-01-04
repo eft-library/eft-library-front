@@ -1,5 +1,6 @@
 import RSS from "rss";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import type { Quest } from "@/components/custom/userQuest/data/userQuestType";
 
 async function getFeedData() {
   const response = await fetch(`${API_ENDPOINTS.GET_ALL_QUEST}`);
@@ -22,7 +23,7 @@ export async function GET() {
 
   const allQuests = await getFeedData();
   if (allQuests) {
-    allQuests.map((quest: any) => {
+    allQuests.map((quest: Quest) => {
       feed.item({
         title: quest.title_kr,
         description: quest.guide,

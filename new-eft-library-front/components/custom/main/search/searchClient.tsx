@@ -5,7 +5,6 @@ import { useAppStore } from "@/store/provider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -84,6 +83,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                   <div
                     className="absolute left-0 bg-Background shadow-BlackShadow rounded py-1 z-10 w-full max-h-[400px] overflow-auto"
                     style={{ top: "calc(100% + 5px)" }} // 드롭다운 위치 고정
+                    onScroll={handleScroll}
                   >
                     {searchList
                       .filter(

@@ -2,12 +2,18 @@ import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper
 import GetColumn from "@/components/custom/getColumn/getColumn";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetBackpack from "./data/getBackpack";
+import AdBanner from "../adsense/adBanner";
 
 export default function Backpack() {
   return (
     <ContentsWrapper>
       <div className="flex flex-col justify-between items-center gap-10 my-10">
         <h1 className="text-white text-4xl font-bold text-center">배낭</h1>
+        <AdBanner
+          dataAdFormat={"fluid"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+        />
         <GetColumn columnDesign={5} columnKey={COLUMN_KEY.backpack} />
         <GetBackpack />
       </div>

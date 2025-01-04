@@ -24,11 +24,6 @@ export default function PaginationCustom({
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    // 페이지 그룹 초기화
-    updateVisiblePages(currentPage);
-  }, [total, currentPage]);
-
   const updateVisiblePages = (page: number) => {
     const totalPages = Math.min(total, 10); // 최대 10페이지
     const halfRange = Math.floor(totalPages / 2);
@@ -61,6 +56,11 @@ export default function PaginationCustom({
 
     setVisiblePages(newPages);
   };
+
+  useEffect(() => {
+    // 페이지 그룹 초기화
+    updateVisiblePages(currentPage);
+  }, [total, currentPage, updateVisiblePages]);
 
   const handlePageChange = (page: number) => {
     if (page === currentPage) return; // 현재 페이지와 동일한 페이지 클릭 시 무시

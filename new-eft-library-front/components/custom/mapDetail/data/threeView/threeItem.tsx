@@ -4,6 +4,7 @@ import { TextureLoader } from "three";
 import { useState, useEffect } from "react";
 import { formatImage } from "@/lib/func/formatImage";
 import { Vector3 } from "three";
+import * as THREE from "three";
 
 type Vector3Like = [
   width?: number,
@@ -37,6 +38,8 @@ export default function ItemBox({
 }: ThreeItemPath) {
   const checkItem = (value: string) => {
     const itemInfo = filterInfo.find((item) => item.value === value);
+    if (!itemInfo) return "";
+
     return itemInfo.image;
   };
 
@@ -56,7 +59,9 @@ export default function ItemBox({
   };
 
   const imageUrl = formatImage(checkItem(childValue));
-  const [texture, setTexture] = useState(null);
+
+  // Texture 상태에 대한 타입을 명시적으로 지정합니다.
+  const [texture, setTexture] = useState<THREE.Texture | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export default function ItemBox({
     loader.load(
       imageUrl,
       (loadedTexture) => {
-        setTexture(loadedTexture);
+        setTexture(loadedTexture); // texture 상태는 THREE.Texture | null로 설정되어 있어야 합니다.
         setLoading(false);
       },
       undefined,

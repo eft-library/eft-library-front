@@ -16,6 +16,7 @@ export default function Loader() {
             width={120}
             height={0}
             style={{ height: "auto", width: "auto" }}
+            unoptimized
           />
         </div>
         <p className="font-bold">{progress.toFixed(2)}% Loading...</p>

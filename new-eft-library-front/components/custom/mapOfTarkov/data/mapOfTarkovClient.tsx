@@ -7,6 +7,7 @@ import MapSlider from "./mapSlider";
 import BossRender from "./bossRender";
 import GetClientColumn from "../../getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
+import AdBanner from "../../adsense/adBanner";
 
 interface MapOfTarkovClient {
   mapOfTarkovList: MapOfTarkov[];
@@ -168,6 +169,11 @@ export default function MapOfTarkovClient({
           checkViewMapOfTarkov(mapOfTarkov.map_id) && (
             <div key={mapOfTarkov.map_id} className="flex flex-col gap-6">
               <MapSlider mapInfo={mapOfTarkov.map_info} />
+              <AdBanner
+                dataAdFormat={"fluid"}
+                dataFullWidthResponsive={true}
+                dataAdSlot="2690838054"
+              />
               <div className="w-full flex flex-col gap-4">
                 <span className="font-bold text-3xl">보스</span>
                 <Separator className="bg-white" />

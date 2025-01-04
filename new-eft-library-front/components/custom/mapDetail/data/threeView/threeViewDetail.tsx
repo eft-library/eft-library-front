@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, Suspense } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import type { MapControlsProps } from "@react-three/drei";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import Loader from "./loader";
@@ -15,7 +16,7 @@ export default function ThreeViewDetail({
   viewItemList,
 }: ThreeviewDetail) {
   const [filterInfo, setFilterInfo] = useState(null);
-  const controlsRef = useRef(null);
+  const controlsRef = useRef<MapControlsProps | null>(null);
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const updateZoomLevel = useCallback(() => {
