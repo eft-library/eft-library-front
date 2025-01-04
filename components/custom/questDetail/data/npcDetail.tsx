@@ -94,7 +94,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           {!questInfo.requires || questInfo.requires.length <= 0 ? (
             <span className="text-white font-bold text-center">-</span>
           ) : (
-            questInfo.requires.map((item, index) => {
+            questInfo.requires.map((item) => {
               const others = questInfo.requires
                 ? questInfo.requires.filter((i) => i.is_other)
                 : [];
@@ -133,7 +133,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           {!questInfo.next || questInfo.next.length <= 0 ? (
             <span className="text-white font-bold text-center">-</span>
           ) : (
-            questInfo.next.map((item, index) => {
+            questInfo.next.map((item) => {
               const isLastOther =
                 item.is_other &&
                 questInfo.next &&
