@@ -59,8 +59,8 @@ export const ItemSVG = ({ x, y, svgValue, isEnable }: DynamicSVG) => {
   if (!(svgValue in svgComponents)) {
     return null;
   }
-  const itemHeight = 25;
-  const itemWidth = 25;
+  const itemHeight = 30;
+  const itemWidth = 30;
   const Svg = svgComponents[svgValue as keyof typeof svgComponents];
 
   if (!Svg) {

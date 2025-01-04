@@ -63,14 +63,9 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
         <div className="relative">
             {/* Accordion Header - 고정된 위치 */}
             <div
-                className={`fixed left-4 top-1/2 transform -translate-y-1/2 z-5 w-56 p-4 rounded-md ${isOpen ? 'border border-white bg-black' : ''}`}
-                style={{
-                    height: '75%',
-                    overflowY: 'auto',
-                    zIndex: 1000,
-                }}
+                className={`fixed left-4 overflow-auto h-[75%] top-1/2 transform -translate-y-1/2 z-5 w-56 p-4 rounded-md ${isOpen ? 'border border-white bg-black' : ''}`}
             >
-                <div className={`flex flex-col p-4 justify-between items-center cursor-pointer ${isOpen ? 'bg-black' : 'border border-white rounded-lg bg-black'}`}>
+                <div className={`flex flex-col p-2 justify-between items-center cursor-pointer ${isOpen ? 'bg-black' : 'border border-white rounded-lg bg-black'}`}>
                     <div className={"w-full flex justify-between items-center"}  onClick={() => setIsOpen(!isOpen)}>
                         <span className="font-bold text-white text-xl">Filter</span>
                         <span className="text-white">{isOpen ? <ChevronDown /> : <ChevronUp />}</span>
@@ -87,7 +82,7 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                                 ) : (
                                     <EyeOff className="mr-2 text-xl text-white opacity-50" />
                                 )}
-                                <span className={`font-bold text-white ${checkAll() ? '' : 'opacity-50'}`}>
+                                <span className={`font-bold text-lg text-white ${checkAll() ? '' : 'opacity-50'}`}>
                             전체
                         </span>
                             </div>
@@ -99,7 +94,7 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                                         originalItem.includes(item.value) && (
                                             <div key={item.value} className="space-y-1">
                                         <span
-                                            className={`cursor-pointer ${viewItemList.includes(item.value) ? 'text-white' : 'text-white opacity-50'}`}
+                                            className={`cursor-pointer font-bold text-lg ${viewItemList.includes(item.value) ? 'text-white' : 'text-white opacity-50'}`}
                                             onClick={() => onClickItemAction(item.value)}
                                         >
                                             {item.kr}
@@ -111,17 +106,17 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                                                         originItemList.some((org) => childItem.value === org.childValue)
                                                     )
                                                     .map((childItem) => (
-                                                        <div key={childItem.value} className="flex items-center space-x-2">
+                                                        <div key={childItem.value} className="flex items-center space-x-2" onClick={() => onClickItemAction(childItem.value)}>
                                                             <ItemSVG
-                                                                scale={2}
+                                                                scale={4}
                                                                 x={0}
                                                                 y={0}
                                                                 svgValue={childItem.value}
                                                                 isEnable={viewItemList.includes(childItem.value)}
                                                             />
                                                             <span
-                                                                onClick={() => onClickItemAction(childItem.value)}
-                                                                className={`pl-2 cursor-pointer ${viewItemList.includes(childItem.value) ? 'text-white' : 'text-white opacity-50'}`}
+
+                                                                className={`cursor-pointer text-sm font-bold ${viewItemList.includes(childItem.value) ? 'text-white' : 'text-white opacity-50'}`}
                                                             >
                                                         {childItem.kr}
                                                     </span>
@@ -135,8 +130,6 @@ export default function ItemSelector({viewItemList,onClickItemAction,onClickAllI
                     )}
                 </div>
             </div>
-
-
         </div>
     );
 };
