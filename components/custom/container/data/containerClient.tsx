@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import { useSearchParams } from "next/navigation";
 
 interface ContainerList {
   containerList: Container[];
@@ -23,12 +25,19 @@ interface Size {
 }
 
 export default function ContainerClient({ containerList }: ContainerList) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, containerList);
+
   return (
     <div className="w-full">
       {containerList.map((container) => (
         <div
-          className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            container.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={container.id}
+          id={container.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

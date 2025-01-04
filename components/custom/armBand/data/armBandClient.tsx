@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import { useSearchParams } from "next/navigation";
 
 interface ArmBand {
   id: string;
@@ -17,12 +19,19 @@ interface ArmBandList {
 }
 
 export default function ArmBandClient({ armBandList }: ArmBandList) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, armBandList);
+
   return (
     <div className="w-full">
       {armBandList.map((armBand) => (
         <div
-          className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            armBand.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={armBand.id}
+          id={armBand.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

@@ -4,6 +4,8 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import Link from "next/link";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import { useSearchParams } from "next/navigation";
 
 interface GlassesClient {
   glassesData: RigData;
@@ -34,6 +36,10 @@ interface QuestNotes {
 }
 
 export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, glassesData);
+
   const returnQuestText = (note: QuestNotes) => {
     return note.in_raid ? (
       <div className="flex items-center">
@@ -71,8 +77,11 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
       {isClass &&
         glassesData.class_glasses.map((glasses) => (
           <div
-            className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              glasses.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={glasses.id}
+            id={glasses.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>
@@ -117,8 +126,11 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
       {!isClass &&
         glassesData.no_class_glasses.map((glasses) => (
           <div
-            className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              glasses.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={glasses.id}
+            id={glasses.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>

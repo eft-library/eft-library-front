@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface BackpackList {
   backpackList: Backpack[];
@@ -21,12 +23,19 @@ interface Size {
 }
 
 export default function BackpackClient({ backpackList }: BackpackList) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, backpackList);
+
   return (
     <div className="w-full">
       {backpackList.map((backpack) => (
         <div
-          className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            backpack.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={backpack.id}
+          id={backpack.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

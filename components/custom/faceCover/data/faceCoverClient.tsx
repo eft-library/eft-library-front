@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface FaceCoverClient {
   face_cover_data: FaceCoverData;
@@ -29,13 +31,20 @@ export default function FaceCoverClient({
   face_cover_data,
   isClass,
 }: FaceCoverClient) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, face_cover_data);
+
   return (
     <div className="w-full">
       {isClass &&
         face_cover_data.class_face_cover.map((faceCover) => (
           <div
-            className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              faceCover.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={faceCover.id}
+            id={faceCover.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>
@@ -92,8 +101,11 @@ export default function FaceCoverClient({
       {!isClass &&
         face_cover_data.no_class_face_cover.map((faceCover) => (
           <div
-            className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              faceCover.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={faceCover.id}
+            id={faceCover.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>

@@ -4,6 +4,8 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import { useAppStore } from "@/store/provider";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface DrugClient {
   medicalList: Drug[];
@@ -39,6 +41,9 @@ interface Effect {
 
 export default function DrugClient({ medicalList }: DrugClient) {
   const { medicalCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, medicalList, "MEDICAL");
 
   const checkViewDrug = (medi: Drug) => {
     return (
@@ -70,8 +75,11 @@ export default function DrugClient({ medicalList }: DrugClient) {
         (drug) =>
           checkViewDrug(drug) && (
             <div
-              className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                drug.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={drug.id}
+              id={drug.id}
             >
               <div className="flex justify-center items-center">
                 <Gallery>

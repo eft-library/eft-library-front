@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface DefenseData {
   id: string;
@@ -19,12 +21,19 @@ interface ArmorVestList {
 }
 
 export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, armorVestList);
+
   return (
     <div className="w-full">
       {armorVestList.map((armorVest) => (
         <div
-          className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            armorVest.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={armorVest.id}
+          id={armorVest.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

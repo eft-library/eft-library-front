@@ -5,6 +5,8 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import Efficiency from "./efficency";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface AmmoClient {
   ammoList: Ammo[];
@@ -28,6 +30,9 @@ interface Ammo {
 
 export default function AmmoClient({ ammoList }: AmmoClient) {
   const { ammoCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, ammoList, "AMMO");
 
   const addPlusMinus = (text: number | string) => {
     if (typeof text === "number") {
@@ -75,8 +80,11 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
         (ammo) =>
           checkViewAmmo(ammo.category) && (
             <div
-              className="w-full grid grid-cols-11 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                ammo.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-11 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={ammo.id}
+              id={ammo.id}
             >
               <div className="flex justify-center items-center">
                 <Gallery>

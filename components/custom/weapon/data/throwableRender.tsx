@@ -4,6 +4,8 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface Weapon {
   id: string;
@@ -27,6 +29,10 @@ interface ThrowableRender {
 }
 
 export default function ThrowableRender({ throwableList }: ThrowableRender) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, throwableList, "WEAPON");
+
   const throwableColumn = [
     { name: "사진", colSpan: 1 },
     { name: "이름", colSpan: 1 },
@@ -41,8 +47,11 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
       <GetClientColumn columnLength={5} columnList={throwableColumn} />
       {throwableList.map((throwable) => (
         <div
-          className="w-full grid grid-cols-5 gap-4 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            throwable.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={throwable.id}
+          id={throwable.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

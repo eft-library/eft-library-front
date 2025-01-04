@@ -5,6 +5,8 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface Weapon {
   id: string;
@@ -32,6 +34,9 @@ interface GunRender {
 
 export default function GunRender({ gunList }: GunRender) {
   const { weaponCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, gunList, "WEAPON");
 
   const gunColumn = [
     { name: "사진", colSpan: 2 },
@@ -78,8 +83,11 @@ export default function GunRender({ gunList }: GunRender) {
         (gun) =>
           shouldRenderWeapon(gun.category) && (
             <div
-              className="w-full grid grid-cols-9 gap-4 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                gun.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-9 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={gun.id}
+              id={gun.id}
             >
               <div className="flex justify-center items-center col-span-2">
                 <Gallery>

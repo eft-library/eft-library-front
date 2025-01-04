@@ -6,6 +6,8 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface Weapon {
   id: string;
@@ -33,6 +35,9 @@ interface StationaryRender {
 
 export default function StationaryRender({ stationaryList }: StationaryRender) {
   const { weaponCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, stationaryList, "WEAPON");
 
   const stationaryColumn = [
     { name: "사진", colSpan: 1 },
@@ -56,8 +61,11 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
         (stationary) =>
           shouldRenderWeapon(stationary.category) && (
             <div
-              className="w-full grid grid-cols-5 gap-4 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                stationary.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={stationary.id}
+              id={stationary.id}
             >
               <div className="flex justify-center items-center col-span-2">
                 <Gallery>

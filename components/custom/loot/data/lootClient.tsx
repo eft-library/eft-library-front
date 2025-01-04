@@ -5,6 +5,8 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppStore } from "@/store/provider";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface LootClient {
   lootList: Loot[];
@@ -40,6 +42,9 @@ interface QuestNotes {
 
 export default function LootClient({ lootList }: LootClient) {
   const { setHideoutCategory, lootCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, lootList, "LOOT");
 
   const returnQuestText = (note: QuestNotes) => {
     return note.in_raid ? (
@@ -94,8 +99,11 @@ export default function LootClient({ lootList }: LootClient) {
         (loot) =>
           checkViewLoot(loot.category) && (
             <div
-              className="w-full grid grid-cols-3 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                loot.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-3 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={loot.id}
+              id={loot.id}
             >
               <div className="flex justify-center items-center">
                 <Gallery>

@@ -5,6 +5,8 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface Weapon {
   id: string;
@@ -32,6 +34,9 @@ interface SpecialRender {
 
 export default function SpecialRender({ specialList }: SpecialRender) {
   const { weaponCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, specialList, "WEAPON");
 
   const specialColumn = [
     { name: "사진", colSpan: 1 },
@@ -51,8 +56,11 @@ export default function SpecialRender({ specialList }: SpecialRender) {
         (special) =>
           shouldRenderWeapon(special.category) && (
             <div
-              className="w-full grid grid-cols-2 gap-4 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                special.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={special.id}
+              id={special.id}
             >
               <div className="flex justify-center items-center">
                 <Gallery>

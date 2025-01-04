@@ -3,6 +3,8 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface RigClient {
   rig_data: RigData;
@@ -26,13 +28,20 @@ interface DefenseData {
 }
 
 export default function RigClient({ rig_data, isClass }: RigClient) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, rig_data);
+
   return (
     <div className="w-full">
       {isClass &&
         rig_data.class_rig.map((rig) => (
           <div
-            className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              rig.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={rig.id}
+            id={rig.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>
@@ -87,8 +96,11 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
       {!isClass &&
         rig_data.no_class_rig.map((rig) => (
           <div
-            className="w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+            className={`${
+              rig.id === pageId && "bg-NeutralGray"
+            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
             key={rig.id}
+            id={rig.id}
           >
             <div className="flex justify-center items-center">
               <Gallery>

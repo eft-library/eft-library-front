@@ -5,6 +5,8 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import EffectText from "./effectText";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface ProvisionsList {
   provisionsList: Provisions[];
@@ -41,6 +43,10 @@ interface QuestNotes {
 }
 
 export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, provisionsList);
+
   const checkPlus = (effect: number | string) => {
     if (typeof effect === "number") {
       if (effect == 0) {
@@ -106,8 +112,11 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
     <div className="w-full">
       {provisionsList.map((provisions) => (
         <div
-          className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className={`${
+            provisions.id === pageId && "bg-NeutralGray"
+          } w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
           key={provisions.id}
+          id={provisions.id}
         >
           <div className="flex justify-center items-center">
             <Gallery>

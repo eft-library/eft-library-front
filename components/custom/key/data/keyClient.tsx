@@ -5,6 +5,8 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useScrollMove } from "@/lib/hooks/useScrollMove";
 
 interface KeyClient {
   keyList: Key[];
@@ -32,10 +34,14 @@ interface QuestNotes {
 
 export default function KeyClient({ keyList }: KeyClient) {
   const { keyCategory } = useAppStore((state) => state);
+  const param = useSearchParams();
+  const pageId = param.get("id") || "";
+  useScrollMove(pageId, keyList, "KEY");
 
   const checkViewKey = (mapValue: Array<string>) => {
     return keyCategory === "ALL" || mapValue.includes(keyCategory);
   };
+
   const returnQuestText = (note: QuestNotes) => {
     return note.in_raid ? (
       <div className="flex items-center">
@@ -66,8 +72,11 @@ export default function KeyClient({ keyList }: KeyClient) {
         (key) =>
           checkViewKey(key.map_value) && (
             <div
-              className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+              className={`${
+                key.id === pageId && "bg-NeutralGray"
+              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
               key={key.id}
+              id={key.id}
             >
               <div className="flex justify-center items-center">
                 <Gallery>
