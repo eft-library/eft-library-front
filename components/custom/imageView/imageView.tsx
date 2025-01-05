@@ -25,7 +25,11 @@ export default function ImageView({
 }: ImageView) {
   return (
     <div
-      className={`flex justify-center items-center relative w-[${wrapWidth}px] h-[${wrapHeight}px] cursor-pointer`}
+      style={{
+        width: `${wrapWidth}px`,
+        height: `${wrapHeight}px`,
+      }}
+      className={`flex justify-center items-center relative cursor-pointer`}
     >
       <Gallery>
         <Item original={src} width={popWidth} height={popHeight}>
