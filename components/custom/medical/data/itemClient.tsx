@@ -68,22 +68,24 @@ export default function ItemClient({ medicalList }: ItemClient) {
               id={item.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item original={item.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={item.image}
-                        height={0}
-                        width={120}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={item.name_en}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                  <Gallery>
+                    <Item original={item.image} width="220" height="180">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={item.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={item.name_en}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

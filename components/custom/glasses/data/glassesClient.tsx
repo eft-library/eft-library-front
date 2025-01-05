@@ -84,22 +84,24 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
             id={glasses.id}
           >
             <div className="flex justify-center items-center">
-              <Gallery>
-                <Item original={glasses.image} width="400" height="380">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={glasses.image}
-                      height={0}
-                      width={140}
-                      style={{ width: "auto", height: "auto" }}
-                      alt={glasses.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
+              <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                <Gallery>
+                  <Item original={glasses.image} width="220" height="180">
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={glasses.image}
+                        fill
+                        sizes="240px"
+                        style={{ objectFit: "contain" }}
+                        alt={glasses.name}
+                        priority
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              </div>
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">
@@ -133,22 +135,24 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
             id={glasses.id}
           >
             <div className="flex justify-center items-center">
-              <Gallery>
-                <Item original={glasses.image} width="400" height="380">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={glasses.image}
-                      height={0}
-                      width={140}
-                      style={{ width: "auto", height: "auto" }}
-                      alt={glasses.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
+              <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                <Gallery>
+                  <Item original={glasses.image} width="300" height="200">
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={glasses.image}
+                        fill
+                        sizes="240px"
+                        style={{ objectFit: "contain" }}
+                        alt={glasses.name}
+                        priority
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              </div>
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">

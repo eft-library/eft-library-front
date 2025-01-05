@@ -63,7 +63,7 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
   return (
     <>
       {follower.loot.length > 0 && (
-        <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-4">
           <span className="font-bold text-3xl">{follower.name_kr} 전리품</span>
           <Separator className="bg-white" />
           <div className="flex justify-center w-full flex-wrap gap-4">
@@ -92,30 +92,28 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
                     className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 rounded-lg p-3"
                   >
                     <div className="flex justify-center items-center">
-                      <Gallery>
-                        <Item
-                          original={loot.item_image}
-                          width="460"
-                          height="380"
-                        >
-                          {({ ref, open }) => (
-                            <div
-                              ref={ref}
-                              onClick={open}
-                              className="relative w-[260px] h-[140px] cursor-pointer" // 부모 요소 크기 지정
-                            >
+                      <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                        <Gallery>
+                          <Item
+                            original={loot.item_image}
+                            width="320"
+                            height="180"
+                          >
+                            {({ ref, open }) => (
                               <Image
+                                ref={ref}
+                                onClick={open}
                                 src={loot.item_image}
                                 fill
-                                sizes="260px"
+                                sizes="240px"
                                 style={{ objectFit: "contain" }}
                                 alt={loot.item_name_en}
                                 priority
                               />
-                            </div>
-                          )}
-                        </Item>
-                      </Gallery>
+                            )}
+                          </Item>
+                        </Gallery>
+                      </div>
                     </div>
                     <div className="flex justify-center items-center">
                       <span className="text-center font-bold text-sm">

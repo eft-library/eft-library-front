@@ -67,7 +67,7 @@ export default function QuestClient({ questList }: QuestClient) {
   const getTitle = (item: Quest) => {
     return (
       <Link href={`/quest/detail/${item.url_mapping}`}>
-        <span className="text-base font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
+        <span className="text-sm font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
           {item.title_kr.substring(0, item.title_kr.indexOf("(")).trim()}
           <br />
           {item.title_kr.substring(item.title_kr.indexOf("(")).trim()}
@@ -81,7 +81,7 @@ export default function QuestClient({ questList }: QuestClient) {
       <Table className="border-2 border-white border-solid">
         <TableHeader>
           <TableRow>
-            <TableHead className="font-bold text-base text-white text-center">
+            <TableHead className="w-[280px] font-bold text-base text-white text-center">
               제목
             </TableHead>
             <TableHead className="font-bold text-base text-white text-center">
@@ -106,7 +106,7 @@ export default function QuestClient({ questList }: QuestClient) {
                     {quest.objectives_kr.map((obj, oIndex) => (
                       <div
                         key={`${oIndex}-objectives-${quest.id}`}
-                        className="font-bold text-lg"
+                        className="font-bold text-sm"
                         dangerouslySetInnerHTML={{
                           __html: `*&nbsp;&nbsp;${obj}`,
                         }}
@@ -117,7 +117,7 @@ export default function QuestClient({ questList }: QuestClient) {
                     {quest.rewards_kr.map((rewards, rIndex) => (
                       <div
                         key={`${rIndex}-rewards-${quest.id}`}
-                        className="font-bold text-lg"
+                        className="font-bold text-sm"
                         dangerouslySetInnerHTML={{
                           __html: `*&nbsp;&nbsp;${rewards}`,
                         }}

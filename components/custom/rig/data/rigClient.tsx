@@ -44,22 +44,24 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             id={rig.id}
           >
             <div className="flex justify-center items-center">
-              <Gallery>
-                <Item original={rig.image} width="400" height="380">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={rig.image}
-                      height={0}
-                      width={140}
-                      style={{ width: "auto", height: "auto" }}
-                      alt={rig.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
+              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+                <Gallery>
+                  <Item original={rig.image} width="380" height="400">
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={rig.image}
+                        fill
+                        sizes="240px"
+                        style={{ objectFit: "contain" }}
+                        alt={rig.name}
+                        priority
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              </div>
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">{rig.name}</span>
@@ -103,22 +105,24 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             id={rig.id}
           >
             <div className="flex justify-center items-center">
-              <Gallery>
-                <Item original={rig.image} width="400" height="380">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={rig.image}
-                      height={0}
-                      width={140}
-                      style={{ width: "auto", height: "auto" }}
-                      alt={rig.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
+              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+                <Gallery>
+                  <Item original={rig.image} width="380" height="400">
+                    {({ ref, open }) => (
+                      <Image
+                        ref={ref}
+                        onClick={open}
+                        src={rig.image}
+                        fill
+                        sizes="240px"
+                        style={{ objectFit: "contain" }}
+                        alt={rig.name}
+                        priority
+                      />
+                    )}
+                  </Item>
+                </Gallery>
+              </div>
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">{rig.name}</span>

@@ -79,22 +79,24 @@ export default function KeyClient({ keyList }: KeyClient) {
               id={key.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item original={key.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={key.image}
-                        height={0}
-                        width={120}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={key.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                  <Gallery>
+                    <Item original={key.image} width="220" height="180">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={key.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={key.name}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

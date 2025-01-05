@@ -40,22 +40,24 @@ export default function ContainerClient({ containerList }: ContainerList) {
           id={container.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={container.image} width={300} height={240}>
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={container.image}
-                    height={0}
-                    width={160}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={container.name_en}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[120px]">
+              <Gallery>
+                <Item original={container.image} width="260" height="200">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={container.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={container.name_en}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

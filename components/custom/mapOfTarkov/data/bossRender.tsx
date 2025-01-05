@@ -78,7 +78,7 @@ export default function BossRender({ bossInfo }: BoosClient) {
     <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
       <div className="flex justify-center items-center">
         <Gallery>
-          <Item original={formatImage(bossInfo.image)} width="200" height="180">
+          <Item original={formatImage(bossInfo.image)} width="180" height="180">
             {({ ref, open }) => (
               <div
                 ref={ref}
@@ -115,7 +115,7 @@ export default function BossRender({ bossInfo }: BoosClient) {
               {location.location}
             </span>
             {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
-              <Separator className="my-2 bg-white w-[60%]" />
+              <Separator className="my-[3px] bg-white w-[60%]" />
             )}
           </React.Fragment>
         ))}
@@ -127,7 +127,7 @@ export default function BossRender({ bossInfo }: BoosClient) {
               {spawn.chance} %
             </span>
             {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
-              <Separator className="my-2 bg-white w-[60%]" />
+              <Separator className="my-[3px] bg-white w-[60%]" />
             )}
           </React.Fragment>
         ))}

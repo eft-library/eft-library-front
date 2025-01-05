@@ -38,22 +38,24 @@ export default function BackpackClient({ backpackList }: BackpackList) {
           id={backpack.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={backpack.image} width="300" height="420">
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={backpack.image}
-                    height={0}
-                    width={160}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={backpack.name}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+              <Gallery>
+                <Item original={backpack.image} width="300" height="400">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={backpack.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={backpack.name}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

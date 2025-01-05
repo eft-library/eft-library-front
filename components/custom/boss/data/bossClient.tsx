@@ -102,7 +102,7 @@ export default function BossClient({ bossList }: BoosClient) {
                         <div
                           ref={ref}
                           onClick={open}
-                          className="relative w-[140px] h-[140px] cursor-pointer" // 부모 요소 크기 지정
+                          className="relative w-[120px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
                         >
                           <Image
                             src={formatImage(boss.image)}
@@ -134,7 +134,7 @@ export default function BossClient({ bossList }: BoosClient) {
                         {location.location}
                       </span>
                       {boss.location_spawn_chance_kr.length !== index + 1 && (
-                        <Separator className="my-2 bg-white w-[60%]" />
+                        <Separator className="my-[3px] bg-white w-[60%]" />
                       )}
                     </React.Fragment>
                   ))}
@@ -146,7 +146,7 @@ export default function BossClient({ bossList }: BoosClient) {
                         {spawn.chance} %
                       </span>
                       {boss.location_spawn_chance_kr.length !== index + 1 && (
-                        <Separator className="my-2 bg-white w-[60%]" />
+                        <Separator className="my-[3px] bg-white w-[60%]" />
                       )}
                     </React.Fragment>
                   ))}

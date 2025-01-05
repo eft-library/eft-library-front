@@ -106,22 +106,24 @@ export default function LootClient({ lootList }: LootClient) {
               id={loot.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item original={loot.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={loot.image}
-                        height={0}
-                        width={120}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={loot.name_en}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                  <Gallery>
+                    <Item original={loot.image} width="220" height="180">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={loot.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={loot.name_en}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

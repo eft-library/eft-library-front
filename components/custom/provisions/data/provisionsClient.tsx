@@ -119,22 +119,24 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           id={provisions.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={provisions.image} width="200" height="320">
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={provisions.image}
-                    height={0}
-                    width={120}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={provisions.short_name}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+              <Gallery>
+                <Item original={provisions.image} width="240" height="320">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={provisions.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={provisions.name_en}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

@@ -50,7 +50,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
               <div
                 ref={ref}
                 onClick={open}
-                className="relative w-[240px] h-[200px] cursor-pointer" // 부모 요소 크기 지정
+                className="relative w-[240px] h-[130px] cursor-pointer" // 부모 요소 크기 지정
               >
                 <Image
                   src={formatImage(extractionInfo.image)}
@@ -104,7 +104,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
                       <div
                         ref={ref}
                         onClick={open}
-                        className="relative w-[200px] h-[180px] cursor-pointer" // 부모 요소 크기 지정
+                        className="relative w-[200px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
                       >
                         <Image
                           src={formatImage(require.image)}
@@ -146,7 +146,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
                       <div
                         ref={ref}
                         onClick={open}
-                        className="relative w-[200px] h-[180px] cursor-pointer" // 부모 요소 크기 지정
+                        className="relative w-[200px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
                       >
                         <Image
                           src={formatImage(tip.image)}

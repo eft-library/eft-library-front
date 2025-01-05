@@ -32,22 +32,24 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
           id={headset.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={headset.image} width="300" height="260">
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={headset.image}
-                    height={0}
-                    width={160}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={headset.name}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+              <Gallery>
+                <Item original={headset.image} width="340" height="260">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={headset.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={headset.name}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-lg">

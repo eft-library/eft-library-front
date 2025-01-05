@@ -82,22 +82,24 @@ export default function DrugClient({ medicalList }: DrugClient) {
               id={drug.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item original={drug.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={drug.image}
-                        height={0}
-                        width={120}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={drug.name_en}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
+                  <Gallery>
+                    <Item original={drug.image} width="220" height="180">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={drug.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={drug.name_en}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

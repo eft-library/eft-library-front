@@ -51,7 +51,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
   return (
     <div>
       {subFollowers && (
-        <div className="flex flex-col justify-center items-center w-full gap-8">
+        <div className="flex flex-col justify-center items-center w-full gap-4">
           <div className="flex justify-center w-full flex-wrap gap-4">
             {subFollowers.map((follower) => (
               <div

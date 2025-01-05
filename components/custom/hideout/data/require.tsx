@@ -61,32 +61,34 @@ export default function Require({ items, type }: RequireList) {
               <div
                 className={"flex items-center justify-center cursor-pointer"}
               >
-                <Gallery>
-                  <Item
-                    original={
-                      type === "skill" ? formatImage(item.image) : item.image
-                    }
-                    width="400"
-                    height="380"
-                  >
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={
-                          type === "skill"
-                            ? formatImage(item.image || "")
-                            : item.image || ""
-                        }
-                        height={80}
-                        width={80}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={item.name_en || ""}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[120px] h-[60px]">
+                  <Gallery>
+                    <Item
+                      original={
+                        type === "skill" ? formatImage(item.image) : item.image
+                      }
+                      width="400"
+                      height="380"
+                    >
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={
+                            type === "skill"
+                              ? formatImage(item.image || "")
+                              : item.image || ""
+                          }
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={item.name_en || ""}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
             )}
             {(type === "trader" || type === "skill") && (
