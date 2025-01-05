@@ -68,27 +68,30 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
               id={stationary.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item
-                    original={formatImage(stationary.image)}
-                    width="200"
-                    height="180"
-                  >
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={formatImage(stationary.image)}
-                        height={0}
-                        width={180}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={stationary.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+                  <Gallery>
+                    <Item
+                      original={formatImage(stationary.image)}
+                      width="1200"
+                      height="800"
+                    >
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={formatImage(stationary.image)}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={stationary.name}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
+
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-base">
                   {stationary.short_name}

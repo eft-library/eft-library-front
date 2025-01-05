@@ -54,22 +54,24 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
           id={throwable.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={throwable.image} width="200" height="180">
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={throwable.image}
-                    height={0}
-                    width={120}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={throwable.name}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+              <Gallery>
+                <Item original={throwable.image} width="340" height="300">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={throwable.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={throwable.name}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-base">

@@ -51,22 +51,24 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
           id={knife.id}
         >
           <div className="flex justify-center items-center">
-            <Gallery>
-              <Item original={knife.image} width="200" height="180">
-                {({ ref, open }) => (
-                  <Image
-                    ref={ref}
-                    onClick={open}
-                    src={knife.image}
-                    height={0}
-                    width={120}
-                    style={{ width: "auto", height: "auto" }}
-                    alt={knife.name}
-                    priority
-                  />
-                )}
-              </Item>
-            </Gallery>
+            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+              <Gallery>
+                <Item original={knife.image} width="280" height="400">
+                  {({ ref, open }) => (
+                    <Image
+                      ref={ref}
+                      onClick={open}
+                      src={knife.image}
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: "contain" }}
+                      alt={knife.name}
+                      priority
+                    />
+                  )}
+                </Item>
+              </Gallery>
+            </div>
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-base">

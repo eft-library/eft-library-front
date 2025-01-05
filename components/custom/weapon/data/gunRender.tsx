@@ -90,22 +90,24 @@ export default function GunRender({ gunList }: GunRender) {
               id={gun.id}
             >
               <div className="flex justify-center items-center col-span-2">
-                <Gallery>
-                  <Item original={gun.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={gun.image}
-                        height={0}
-                        width={180}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={gun.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+                  <Gallery>
+                    <Item original={gun.image} width="540" height="200">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={gun.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={gun.name}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-base">

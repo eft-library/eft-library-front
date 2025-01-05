@@ -63,22 +63,24 @@ export default function SpecialRender({ specialList }: SpecialRender) {
               id={special.id}
             >
               <div className="flex justify-center items-center">
-                <Gallery>
-                  <Item original={special.image} width="200" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={special.image}
-                        height={0}
-                        width={180}
-                        style={{ width: "auto", height: "auto" }}
-                        alt={special.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
+                <div className="flex justify-center items-center relative w-[240px] h-[140px]">
+                  <Gallery>
+                    <Item original={special.image} width="340" height="420">
+                      {({ ref, open }) => (
+                        <Image
+                          ref={ref}
+                          onClick={open}
+                          src={special.image}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: "contain" }}
+                          alt={special.name}
+                          priority
+                        />
+                      )}
+                    </Item>
+                  </Gallery>
+                </div>
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-base">
