@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { formatISODate } from "@/lib/func/formatTime";
 import Link from "next/link";
+import AdBanner from "../../adsense/adBanner";
 
 interface InformationInfoDetail {
   information_group: InformationInfo[];
@@ -46,6 +47,11 @@ export default function PatchNotesDetailClient({
           />
         </div>
       </div>
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
 
       <div className={"flex justify-end"}>
         <Link href={"/patch-notes?id=1"}>

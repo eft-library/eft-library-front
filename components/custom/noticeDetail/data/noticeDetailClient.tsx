@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { formatISODate } from "@/lib/func/formatTime";
 import Link from "next/link";
+import AdBanner from "../../adsense/adBanner";
 
 interface InformationInfoDetail {
   information_group: InformationInfo[];
@@ -44,6 +45,11 @@ export default function NoticeDetailClient({ noticeInfo }: NoticeDetailClient) {
           />
         </div>
       </div>
+      <AdBanner
+        dataAdFormat={"fluid"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+      />
 
       <div className={"flex justify-end"}>
         <Link href={"/notice?id=1"}>
