@@ -85,8 +85,8 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               <ImageView
                 src={glasses.image}
                 alt={glasses.name}
-                popWidth={220}
-                popHeight={180}
+                popWidth={300}
+                popHeight={200}
                 wrapWidth={240}
                 wrapHeight={100}
                 size="240px"
@@ -127,8 +127,8 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               <ImageView
                 src={glasses.image}
                 alt={glasses.name}
-                popWidth={220}
-                popHeight={180}
+                popWidth={300}
+                popHeight={200}
                 wrapWidth={240}
                 wrapHeight={100}
                 size="240px"

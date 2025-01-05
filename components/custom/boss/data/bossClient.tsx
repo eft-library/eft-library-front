@@ -92,8 +92,8 @@ export default function BossClient({ bossList }: BoosClient) {
                 <ImageView
                   src={formatImage(boss.image)}
                   alt={boss.name_en}
-                  popWidth={120}
-                  popHeight={120}
+                  popWidth={180}
+                  popHeight={180}
                   wrapWidth={120}
                   wrapHeight={120}
                   size="120px"

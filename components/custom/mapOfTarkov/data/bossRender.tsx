@@ -77,8 +77,8 @@ export default function BossRender({ bossInfo }: BoosClient) {
       <ImageView
         src={formatImage(bossInfo.image)}
         alt={bossInfo.name_en}
-        popWidth={120}
-        popHeight={120}
+        popWidth={180}
+        popHeight={180}
         size="120px"
         wrapWidth={120}
         wrapHeight={120}
