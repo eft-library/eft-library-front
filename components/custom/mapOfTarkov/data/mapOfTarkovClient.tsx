@@ -162,6 +162,14 @@ export default function MapOfTarkovClient({
     return bossList;
   };
 
+  const sortExtractionList = (extractionList: Extraction[]) => {
+    const order = ["ALL", "PMC", "Scav"];
+    extractionList.sort((a, b) => {
+      return order.indexOf(a.faction) - order.indexOf(b.faction);
+    });
+    return extractionList;
+  };
+
   return (
     <div className="w-full">
       {mapOfTarkovList.map(
@@ -189,12 +197,14 @@ export default function MapOfTarkovClient({
                   columnList={extractionColumn}
                   columnLength={11}
                 />
-                {mapOfTarkov.extraction_info.map((extraction) => (
-                  <ExtractionRender
-                    key={extraction.id}
-                    extractionInfo={extraction}
-                  />
-                ))}
+                {sortExtractionList(mapOfTarkov.extraction_info).map(
+                  (extraction) => (
+                    <ExtractionRender
+                      key={extraction.id}
+                      extractionInfo={extraction}
+                    />
+                  )
+                )}
               </div>
               <div className="w-full flex flex-col gap-4">
                 <span className="font-bold text-3xl">Transits</span>
@@ -203,12 +213,14 @@ export default function MapOfTarkovClient({
                   columnList={extractionColumn}
                   columnLength={11}
                 />
-                {mapOfTarkov.transits_info.map((transits) => (
-                  <ExtractionRender
-                    key={transits.id}
-                    extractionInfo={transits}
-                  />
-                ))}
+                {sortExtractionList(mapOfTarkov.transits_info).map(
+                  (transits) => (
+                    <ExtractionRender
+                      key={transits.id}
+                      extractionInfo={transits}
+                    />
+                  )
+                )}
               </div>
             </div>
           )
