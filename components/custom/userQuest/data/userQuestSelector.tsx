@@ -175,7 +175,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
                           {...getItemProps({
                             index,
                             item,
-                            className: `cursor-pointer px-2 py-2 font-bold text-base ${
+                            className: `cursor-pointer px-2 py-2 font-bold text-base text-white ${
                               highlightedIndex === index
                                 ? "bg-NeutralGray"
                                 : "bg-Background"
@@ -184,7 +184,6 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
                         >
                           {item.title_kr}
                         </div>
-                        <hr className="my-2 border-white" />
                       </React.Fragment>
                     ))}
                 </div>

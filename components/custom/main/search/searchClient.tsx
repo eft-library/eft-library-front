@@ -3,9 +3,8 @@
 import Downshift from "downshift";
 import { useAppStore } from "@/store/provider";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -25,6 +24,8 @@ export default function SearchClient({ searchList }: SearchClient) {
   const { setHideoutCategory, setNpcId } = useAppStore((state) => state);
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   // 스크롤 부모로 전파 막기
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
@@ -48,6 +49,24 @@ export default function SearchClient({ searchList }: SearchClient) {
     router.push(item.link);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <div className="flex justify-center w-full relative">
       <Downshift
@@ -56,7 +75,8 @@ export default function SearchClient({ searchList }: SearchClient) {
         itemToString={(item) => (item ? item.value : "")}
         inputValue={inputValue} // Downshift가 inputValue를 제어하도록 설정
         onInputValueChange={(value) => setInputValue(value)} // inputValue 변경 시 상태 업데이트
-        isOpen={inputValue.length > 0} // 입력된 값이 있을 때만 드롭다운을 열도록 설정
+        isOpen={isOpen}
+        onOuterClick={() => setIsOpen(false)}
       >
         {({
           getInputProps,
@@ -69,6 +89,7 @@ export default function SearchClient({ searchList }: SearchClient) {
             <div className="w-5/12">
               <div
                 className="relative inline-block w-full"
+                ref={menuRef}
                 {...getRootProps({}, { suppressRefError: true })}
               >
                 <input
@@ -76,6 +97,10 @@ export default function SearchClient({ searchList }: SearchClient) {
                     placeholder: "검색어를 입력해주세요",
                     className:
                       "font-bold text-base w-full h-12 rounded-lg pl-5 box-border border-2 border-solid border-white",
+                    onClick: () => {
+                      setIsOpen(true);
+                      setInputValue("");
+                    },
                   })}
                 />
                 <Search className="absolute top-1/2 right-2.5 -translate-y-1/2" />
@@ -100,7 +125,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                               index,
                               item,
                               className: cn(
-                                "font-bold cursor-pointer pt-2 px-2.5",
+                                "font-bold cursor-pointer pt-2 px-2.5 text-base text-white",
                                 {
                                   "bg-NeutralGray": highlightedIndex === index,
                                 },
@@ -110,7 +135,6 @@ export default function SearchClient({ searchList }: SearchClient) {
                           >
                             {item.value}
                           </div>
-                          <Separator className="my-2 bg-white" />
                         </React.Fragment>
                       ))}
                   </div>
