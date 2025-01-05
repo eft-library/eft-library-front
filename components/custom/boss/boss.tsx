@@ -7,12 +7,10 @@ import GetBoss from "./data/getBoss";
 export default function Boss() {
   return (
     <ContentsWrapper>
-      <div className="flex flex-col justify-between items-center gap-10 my-10">
-        <h1 className="text-white text-4xl font-bold text-center">보스</h1>
-        <GetBossSelector />
-        <GetColumn columnDesign={7} columnKey={COLUMN_KEY.boss} />
-        <GetBoss />
-      </div>
+      <h1 className="text-white text-4xl font-bold text-center">보스</h1>
+      <GetBossSelector />
+      <GetColumn columnDesign={7} columnKey={COLUMN_KEY.boss} />
+      <GetBoss />
     </ContentsWrapper>
   );
 }

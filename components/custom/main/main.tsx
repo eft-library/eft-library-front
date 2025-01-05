@@ -7,12 +7,10 @@ import MapSlider from "@/components/custom/main/mapSlider/mapSlider";
 export default function Main() {
   return (
     <ContentsWrapper>
-      <div className="flex flex-col justify-between items-center gap-10 my-10">
-        <Search />
-        <News />
-        <MapSlider />
-        <NavItem />
-      </div>
+      <Search />
+      <News />
+      <MapSlider />
+      <NavItem />
     </ContentsWrapper>
   );
 }

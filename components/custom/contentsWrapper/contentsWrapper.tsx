@@ -17,7 +17,9 @@ export default function ContentsWrapper({ children }: ContentsWrapper) {
         />
       </div>
       <div className="flex-1 flex-col max-w-[1300px] min-w-[300px] pt-14 mx-[10%] bg-Background justify-center">
-        {children}
+        <div className="flex flex-col justify-between items-center gap-10 my-10">
+          {children}
+        </div>
       </div>
       <div className="hidden xl:block fixed top-2/4 right-4 -translate-y-2/4 w-[250px] min-h-24 max-h-[600px]">
         <AdBanner
