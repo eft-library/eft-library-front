@@ -165,7 +165,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                         href={`${item.item_link}${item.item_id}`}
                         scroll={false}
                       >
-                        <span className="text-center font-bold text-base hover:text-LightYellow">
+                        <span className="text-center font-bold text-GoldenYellow text-base hover:text-LightYellow">
                           {item.item_name_kr}
                         </span>
                       </Link>

@@ -125,7 +125,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                               index,
                               item,
                               className: cn(
-                                "font-bold cursor-pointer pt-2 px-2.5 text-base text-white",
+                                "font-bold cursor-pointer p-2 text-base text-white",
                                 {
                                   "bg-NeutralGray": highlightedIndex === index,
                                 },

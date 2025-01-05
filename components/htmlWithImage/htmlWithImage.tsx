@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -40,13 +39,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImage) {
           <DialogHeader>
             <DialogTitle />
             <DialogDescription>
-              <Image
-                src={selectedImage}
-                alt={selectedImage}
-                fill
-                sizes="1200px"
-                priority
-              />
+              <img src={selectedImage} alt={selectedImage} />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
