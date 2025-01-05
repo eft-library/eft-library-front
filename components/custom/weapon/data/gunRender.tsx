@@ -85,7 +85,7 @@ export default function GunRender({ gunList }: GunRender) {
             <div
               className={`${
                 gun.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-9 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+              } w-full grid grid-cols-9 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
               key={gun.id}
               id={gun.id}
             >

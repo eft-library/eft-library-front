@@ -63,11 +63,11 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
             <div
               className={`${
                 stationary.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
               key={stationary.id}
               id={stationary.id}
             >
-              <div className="flex justify-center items-center col-span-2">
+              <div className="flex justify-center items-center">
                 <Gallery>
                   <Item
                     original={formatImage(stationary.image)}

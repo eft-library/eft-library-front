@@ -37,7 +37,7 @@ export default function UserQuestList({
       {userQuest.quest_info.map((quest, index) => (
         <div
           key={`${index}-${quest.quest_id}`}
-          className="w-full grid grid-cols-12 gap-4 border-solid border-white border-2 mb-4 rounded-lg p-3"
+          className="w-full grid grid-cols-12 gap-4 border-solid border-white border-2 mb-2 rounded-lg p-3"
         >
           <div className="flex flex-col justify-center items-center">
             <input

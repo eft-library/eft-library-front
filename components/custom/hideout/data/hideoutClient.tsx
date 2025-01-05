@@ -108,7 +108,7 @@ export default function HideoutClient({ hideoutList }: HideoutClient) {
                 </div>
                 <div
                   id={info.level_id}
-                  className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+                  className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
                 >
                   <div className={"flex flex-col justify-center col-span-2"}>
                     <Require items={info.item_require} type="item" />

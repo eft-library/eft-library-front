@@ -77,7 +77,7 @@ export default function DrugClient({ medicalList }: DrugClient) {
             <div
               className={`${
                 drug.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
               key={drug.id}
               id={drug.id}
             >

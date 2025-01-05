@@ -93,7 +93,7 @@ export default function ItemSelector({
           >
             {/* 전체 버튼 */}
             <div
-              className="flex items-center cursor-pointer mb-4"
+              className="flex items-center cursor-pointer mb-2"
               onClick={() => onClickAllItemAction(checkAll())}
             >
               {checkAll() ? (

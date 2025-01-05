@@ -182,7 +182,7 @@ export default function MapOfTarkovClient({
                 dataFullWidthResponsive={true}
                 dataAdSlot="2690838054"
               />
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">보스</span>
                 <Separator className="bg-white" />
                 <GetClientColumn columnList={bossColumn} columnLength={7} />
@@ -190,7 +190,7 @@ export default function MapOfTarkovClient({
                   <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
                 ))}
               </div>
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">탈출구</span>
                 <Separator className="bg-white" />
                 <GetClientColumn
@@ -206,7 +206,7 @@ export default function MapOfTarkovClient({
                   )
                 )}
               </div>
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">Transits</span>
                 <Separator className="bg-white" />
                 <GetClientColumn

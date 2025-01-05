@@ -101,7 +101,7 @@ export default function LootClient({ lootList }: LootClient) {
             <div
               className={`${
                 loot.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-3 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+              } w-full grid grid-cols-3 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
               key={loot.id}
               id={loot.id}
             >
@@ -130,7 +130,7 @@ export default function LootClient({ lootList }: LootClient) {
               </div>
               <div className="flex flex-col ">
                 {loot.quest_notes.length > 0 && (
-                  <div className="mb-4">
+                  <div className="mb-2">
                     <span className="font-bold text-sm text-white">퀘스트</span>
                     {loot.quest_notes.map((quest) => (
                       <div key={quest.url_mapping}>

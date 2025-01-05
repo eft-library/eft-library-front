@@ -35,7 +35,7 @@ export default function ContainerClient({ containerList }: ContainerList) {
         <div
           className={`${
             container.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+          } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
           key={container.id}
           id={container.id}
         >

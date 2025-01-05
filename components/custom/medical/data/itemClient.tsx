@@ -63,7 +63,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
             <div
               className={`${
                 item.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
               key={item.id}
               id={item.id}
             >

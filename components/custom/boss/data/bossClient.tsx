@@ -90,7 +90,7 @@ export default function BossClient({ bossList }: BoosClient) {
         (boss) =>
           checkViewBoss(boss.id) && (
             <div key={boss.id} className="flex flex-col gap-6">
-              <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3">
+              <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
                 <div className="flex justify-center items-center">
                   <Gallery>
                     <Item
@@ -169,12 +169,12 @@ export default function BossClient({ bossList }: BoosClient) {
                 dataFullWidthResponsive={true}
                 dataAdSlot="2690838054"
               />
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">위치</span>
                 <Separator className="bg-white" />
                 <HtmlWithImage contents={boss.location_guide} />
               </div>
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">피통</span>
                 <Separator className="bg-white" />
                 <BossHealth subFollowers={boss.sub_followers} />

@@ -33,7 +33,7 @@ export default function BackpackClient({ backpackList }: BackpackList) {
         <div
           className={`${
             backpack.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
           key={backpack.id}
           id={backpack.id}
         >

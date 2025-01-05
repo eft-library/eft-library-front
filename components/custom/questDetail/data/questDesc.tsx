@@ -136,7 +136,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                 {questInfo.sub.map((item) => (
                   <div
                     key={item.item_id}
-                    className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+                    className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
                   >
                     <div className="flex justify-center items-center">
                       <Gallery>

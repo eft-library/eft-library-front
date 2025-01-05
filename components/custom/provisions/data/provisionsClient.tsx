@@ -114,7 +114,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
         <div
           className={`${
             provisions.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+          } w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
           key={provisions.id}
           id={provisions.id}
         >

@@ -38,7 +38,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   };
 
   return (
-    <div className="w-full grid grid-cols-11 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3">
+    <div className="w-full grid grid-cols-11 gap-2 border-solid border-white border-2 rounded-lg p-3">
       <div className="flex justify-center items-center col-span-2">
         <Gallery>
           <Item

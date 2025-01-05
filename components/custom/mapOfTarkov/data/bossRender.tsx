@@ -75,7 +75,7 @@ interface BoosClient {
 
 export default function BossRender({ bossInfo }: BoosClient) {
   return (
-    <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3">
+    <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
       <div className="flex justify-center items-center">
         <Gallery>
           <Item original={formatImage(bossInfo.image)} width="200" height="180">

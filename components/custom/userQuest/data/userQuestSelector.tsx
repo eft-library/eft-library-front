@@ -97,7 +97,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
       </div>
 
       {/* 선택된 아이템 표시 영역 */}
-      <div className="border-2 border-white w-full h-[140px] mb-4 overflow-auto p-1 rounded-lg">
+      <div className="border-2 border-white w-full h-[140px] mb-2 overflow-auto p-1 rounded-lg">
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((quest) => (
             <div

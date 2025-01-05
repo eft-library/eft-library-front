@@ -39,7 +39,7 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
           <div
             className={`${
               rig.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
             key={rig.id}
             id={rig.id}
           >
@@ -98,7 +98,7 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
           <div
             className={`${
               rig.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
             key={rig.id}
             id={rig.id}
           >

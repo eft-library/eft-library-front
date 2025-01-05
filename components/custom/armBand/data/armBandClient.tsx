@@ -29,7 +29,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
         <div
           className={`${
             armBand.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+          } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
           key={armBand.id}
           id={armBand.id}
         >

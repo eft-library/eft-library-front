@@ -63,7 +63,7 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
   return (
     <>
       {follower.loot.length > 0 && (
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-2">
           <span className="font-bold text-3xl">{follower.name_kr} 전리품</span>
           <Separator className="bg-white" />
           <div className="flex justify-center w-full flex-wrap gap-4">
@@ -82,14 +82,14 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
               </div>
             ))}
           </div>
-          <div className="flex flex-col justify-center items-center w-full gap-4">
+          <div className="flex flex-col justify-center items-center w-full gap-2">
             <GetClientColumn columnLength={2} columnList={follwerColumn} />
             {follower.loot.map(
               (loot) =>
                 lootType === loot.item_type && (
                   <div
                     key={loot.item_id}
-                    className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3"
+                    className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 rounded-lg p-3"
                   >
                     <div className="flex justify-center items-center">
                       <Gallery>

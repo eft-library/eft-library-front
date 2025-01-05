@@ -31,7 +31,7 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
         <div
           className={`${
             armorVest.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-4 rounded-lg p-3`}
+          } w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
           key={armorVest.id}
           id={armorVest.id}
         >
