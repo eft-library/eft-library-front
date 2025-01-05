@@ -2,13 +2,11 @@
 
 import { Separator } from "@/components/ui/separator";
 import GetClientColumn from "../../getColumn/getClientColumn";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import Link from "next/link";
 import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
 import AdBanner from "../../adsense/adBanner";
 import "../../../../assets/quest.css";
+import ImageView from "../../imageView/imageView";
 
 interface Quest {
   id: string;
@@ -138,28 +136,15 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                     key={item.item_id}
                     className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
                   >
-                    <div className="flex justify-center items-center">
-                      <Gallery>
-                        <Item
-                          original={item.item_image}
-                          width="200"
-                          height="180"
-                        >
-                          {({ ref, open }) => (
-                            <Image
-                              ref={ref}
-                              onClick={open}
-                              src={item.item_image}
-                              height={0}
-                              width={120}
-                              style={{ width: "auto", height: "auto" }}
-                              alt={item.item_name_en}
-                              priority
-                            />
-                          )}
-                        </Item>
-                      </Gallery>
-                    </div>
+                    <ImageView
+                      src={item.item_image}
+                      alt={item.item_name_en}
+                      popWidth={200}
+                      popHeight={180}
+                      size="240px"
+                      wrapWidth={240}
+                      wrapHeight={140}
+                    />
                     <div className="flex justify-center items-center">
                       <Link
                         href={`${item.item_link}${item.item_id}`}

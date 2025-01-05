@@ -4,9 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import GetClientColumn from "../../getColumn/getClientColumn";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
+import ImageView from "../../imageView/imageView";
 
 interface FollowersLoot {
   follower_name_en: string;
@@ -92,28 +90,15 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
                     className="w-full grid grid-cols-2 gap-2 border-solid border-white border-2 rounded-lg p-3"
                   >
                     <div className="flex justify-center items-center">
-                      <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                        <Gallery>
-                          <Item
-                            original={loot.item_image}
-                            width="320"
-                            height="180"
-                          >
-                            {({ ref, open }) => (
-                              <Image
-                                ref={ref}
-                                onClick={open}
-                                src={loot.item_image}
-                                fill
-                                sizes="240px"
-                                style={{ objectFit: "contain" }}
-                                alt={loot.item_name_en}
-                                priority
-                              />
-                            )}
-                          </Item>
-                        </Gallery>
-                      </div>
+                      <ImageView
+                        wrapWidth={240}
+                        wrapHeight={100}
+                        src={loot.item_image}
+                        alt={loot.item_name_en}
+                        popHeight={180}
+                        popWidth={320}
+                        size="240px"
+                      />
                     </div>
                     <div className="flex justify-center items-center">
                       <span className="text-center font-bold text-sm">

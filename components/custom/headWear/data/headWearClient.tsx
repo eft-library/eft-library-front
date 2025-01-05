@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface HeadWearClient {
   headWearData: HeadWearData;
@@ -48,24 +46,15 @@ export default function HeadWearClient({
             id={headWear.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                <Gallery>
-                  <Item original={headWear.image} width="400" height="380">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={headWear.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={headWear.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={headWear.image}
+                alt={headWear.name}
+                popWidth={400}
+                popHeight={380}
+                size="240px"
+                wrapWidth={240}
+                wrapHeight={140}
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">
@@ -111,24 +100,15 @@ export default function HeadWearClient({
             id={headWear.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                <Gallery>
-                  <Item original={headWear.image} width="400" height="380">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={headWear.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={headWear.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={headWear.image}
+                alt={headWear.name}
+                popWidth={400}
+                popHeight={380}
+                size="240px"
+                wrapWidth={240}
+                wrapHeight={140}
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">

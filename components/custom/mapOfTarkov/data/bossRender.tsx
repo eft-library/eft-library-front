@@ -1,11 +1,9 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
 import React from "react";
+import ImageView from "../../imageView/imageView";
 
 interface Boss extends BossInfo {
   health_total: number;
@@ -76,28 +74,16 @@ interface BoosClient {
 export default function BossRender({ bossInfo }: BoosClient) {
   return (
     <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
-      <div className="flex justify-center items-center">
-        <Gallery>
-          <Item original={formatImage(bossInfo.image)} width="180" height="180">
-            {({ ref, open }) => (
-              <div
-                ref={ref}
-                onClick={open}
-                className="relative w-[120px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
-              >
-                <Image
-                  src={formatImage(bossInfo.image)}
-                  alt={bossInfo.name_en}
-                  fill
-                  sizes="120px"
-                  style={{ objectFit: "contain" }} // 이미지 비율 유지
-                  priority
-                />
-              </div>
-            )}
-          </Item>
-        </Gallery>
-      </div>
+      <ImageView
+        src={formatImage(bossInfo.image)}
+        alt={bossInfo.name_en}
+        popWidth={120}
+        popHeight={120}
+        size="120px"
+        wrapWidth={120}
+        wrapHeight={120}
+      />
+
       <div className="flex justify-center items-center">
         <span className="text-center font-bold text-base">
           {bossInfo.name_kr}

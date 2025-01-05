@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface RigClient {
   rig_data: RigData;
@@ -44,24 +42,15 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             id={rig.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                <Gallery>
-                  <Item original={rig.image} width="380" height="400">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={rig.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={rig.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={rig.image}
+                alt={rig.name}
+                popWidth={380}
+                popHeight={400}
+                size="240px"
+                wrapWidth={240}
+                wrapHeight={140}
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">{rig.name}</span>
@@ -105,24 +94,15 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             id={rig.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                <Gallery>
-                  <Item original={rig.image} width="380" height="400">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={rig.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={rig.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={rig.image}
+                alt={rig.name}
+                popWidth={380}
+                popHeight={400}
+                size="240px"
+                wrapWidth={240}
+                wrapHeight={140}
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">{rig.name}</span>

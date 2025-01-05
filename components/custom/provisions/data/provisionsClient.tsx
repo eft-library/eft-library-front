@@ -1,12 +1,10 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import EffectText from "./effectText";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface ProvisionsList {
   provisionsList: Provisions[];
@@ -119,24 +117,15 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           id={provisions.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-              <Gallery>
-                <Item original={provisions.image} width="240" height="320">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={provisions.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={provisions.name_en}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={provisions.image}
+              alt={provisions.name_en}
+              popWidth={240}
+              popHeight={320}
+              size="240px"
+              wrapWidth={240}
+              wrapHeight={100}
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

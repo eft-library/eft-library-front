@@ -1,11 +1,9 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import Link from "next/link";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
+import ImageView from "../../imageView/imageView";
 
 interface GlassesClient {
   glassesData: RigData;
@@ -84,24 +82,15 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
             id={glasses.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                <Gallery>
-                  <Item original={glasses.image} width="220" height="180">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={glasses.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={glasses.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={glasses.image}
+                alt={glasses.name}
+                popWidth={220}
+                popHeight={180}
+                wrapWidth={240}
+                wrapHeight={100}
+                size="240px"
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">
@@ -135,24 +124,15 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
             id={glasses.id}
           >
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                <Gallery>
-                  <Item original={glasses.image} width="300" height="200">
-                    {({ ref, open }) => (
-                      <Image
-                        ref={ref}
-                        onClick={open}
-                        src={glasses.image}
-                        fill
-                        sizes="240px"
-                        style={{ objectFit: "contain" }}
-                        alt={glasses.name}
-                        priority
-                      />
-                    )}
-                  </Item>
-                </Gallery>
-              </div>
+              <ImageView
+                src={glasses.image}
+                alt={glasses.name}
+                popWidth={220}
+                popHeight={180}
+                wrapWidth={240}
+                wrapHeight={100}
+                size="240px"
+              />
             </div>
             <div className="flex justify-center items-center">
               <span className="text-center font-bold text-sm">

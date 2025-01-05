@@ -1,12 +1,10 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import Efficiency from "./efficency";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface AmmoClient {
   ammoList: Ammo[];
@@ -87,24 +85,15 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
               id={ammo.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                  <Gallery>
-                    <Item original={ammo.image} width="200" height="180">
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={ammo.image}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={ammo.name}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={ammo.image}
+                  alt={ammo.name}
+                  popWidth={200}
+                  popHeight={180}
+                  wrapHeight={140}
+                  wrapWidth={240}
+                  size="240px"
+                />
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

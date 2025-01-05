@@ -1,11 +1,9 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface MediKitClient {
   medicalList: MediKit[];
@@ -67,24 +65,15 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
               id={medikit.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                  <Gallery>
-                    <Item original={medikit.image} width="220" height="180">
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={medikit.image}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={medikit.name_en}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={medikit.image}
+                  alt={medikit.name_en}
+                  popWidth={220}
+                  popHeight={180}
+                  size="240px"
+                  wrapWidth={240}
+                  wrapHeight={100}
+                />
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

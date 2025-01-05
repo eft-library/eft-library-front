@@ -1,12 +1,10 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface KeyClient {
   keyList: Key[];
@@ -79,24 +77,15 @@ export default function KeyClient({ keyList }: KeyClient) {
               id={key.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                  <Gallery>
-                    <Item original={key.image} width="220" height="180">
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={key.image}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={key.name}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={key.image}
+                  alt={key.name}
+                  popWidth={220}
+                  popHeight={180}
+                  size="240px"
+                  wrapWidth={240}
+                  wrapHeight={100}
+                />
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
+import ImageView from "../../imageView/imageView";
 
 interface ArmBand {
   id: string;
@@ -34,24 +32,15 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
           id={armBand.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-              <Gallery>
-                <Item original={armBand.image} width="220" height="220">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={armBand.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={armBand.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={armBand.image}
+              alt={armBand.name}
+              popWidth={220}
+              popHeight={220}
+              wrapWidth={240}
+              wrapHeight={100}
+              size="240px"
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

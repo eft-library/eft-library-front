@@ -2,12 +2,10 @@
 
 import { useAppStore } from "@/store/provider";
 import GetClientColumn from "../../getColumn/getClientColumn";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
 import { formatImage } from "@/lib/func/formatImage";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface Weapon {
   id: string;
@@ -68,28 +66,15 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
               id={stationary.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-                  <Gallery>
-                    <Item
-                      original={formatImage(stationary.image)}
-                      width="1200"
-                      height="800"
-                    >
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={formatImage(stationary.image)}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={stationary.name}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={formatImage(stationary.image)}
+                  alt={stationary.name}
+                  popWidth={1200}
+                  popHeight={800}
+                  size="240px"
+                  wrapWidth={240}
+                  wrapHeight={140}
+                />
               </div>
 
               <div className="flex justify-center items-center">

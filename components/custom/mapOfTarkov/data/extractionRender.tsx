@@ -1,9 +1,7 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
+import ImageView from "../../imageView/imageView";
 
 interface Requirement {
   desc: string;
@@ -40,30 +38,15 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   return (
     <div className="w-full grid grid-cols-11 gap-2 border-solid border-white border-2 rounded-lg p-3">
       <div className="flex justify-center items-center col-span-2">
-        <Gallery>
-          <Item
-            original={formatImage(extractionInfo.image)}
-            width="1600"
-            height="900"
-          >
-            {({ ref, open }) => (
-              <div
-                ref={ref}
-                onClick={open}
-                className="relative w-[240px] h-[130px] cursor-pointer" // 부모 요소 크기 지정
-              >
-                <Image
-                  src={formatImage(extractionInfo.image)}
-                  alt={extractionInfo.name}
-                  fill
-                  sizes="240px"
-                  style={{ objectFit: "contain" }} // 이미지 비율 유지
-                  priority
-                />
-              </div>
-            )}
-          </Item>
-        </Gallery>
+        <ImageView
+          src={formatImage(extractionInfo.image)}
+          alt={extractionInfo.name}
+          popWidth={1600}
+          popHeight={900}
+          size="240px"
+          wrapWidth={240}
+          wrapHeight={130}
+        />
       </div>
       <div className="flex justify-center items-center col-span-2">
         <span className="text-center font-bold text-base">
@@ -94,30 +77,15 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
               className="flex flex-col items-center"
             >
               {require.image && (
-                <Gallery>
-                  <Item
-                    original={formatImage(require.image)}
-                    width="1600"
-                    height="900"
-                  >
-                    {({ ref, open }) => (
-                      <div
-                        ref={ref}
-                        onClick={open}
-                        className="relative w-[200px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
-                      >
-                        <Image
-                          src={formatImage(require.image)}
-                          alt={require.desc}
-                          fill
-                          sizes="200px"
-                          style={{ objectFit: "contain" }} // 이미지 비율 유지
-                          priority
-                        />
-                      </div>
-                    )}
-                  </Item>
-                </Gallery>
+                <ImageView
+                  src={formatImage(require.image)}
+                  alt={require.desc}
+                  popWidth={1600}
+                  popHeight={900}
+                  size="240px"
+                  wrapWidth={200}
+                  wrapHeight={120}
+                />
               )}
               <span className="text-center font-bold text-base">
                 {formatTextWithLineBreaks(require.desc)}
@@ -136,30 +104,15 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
               className="flex flex-col items-center"
             >
               {tip.image && (
-                <Gallery>
-                  <Item
-                    original={formatImage(tip.image)}
-                    width="1600"
-                    height="900"
-                  >
-                    {({ ref, open }) => (
-                      <div
-                        ref={ref}
-                        onClick={open}
-                        className="relative w-[200px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
-                      >
-                        <Image
-                          src={formatImage(tip.image)}
-                          alt={tip.desc}
-                          fill
-                          sizes="200px"
-                          style={{ objectFit: "contain" }} // 이미지 비율 유지
-                          priority
-                        />
-                      </div>
-                    )}
-                  </Item>
-                </Gallery>
+                <ImageView
+                  src={formatImage(tip.image)}
+                  alt={tip.desc}
+                  popWidth={1600}
+                  popHeight={900}
+                  size="240px"
+                  wrapWidth={200}
+                  wrapHeight={120}
+                />
               )}
               <span className="text-center font-bold text-base">
                 {formatTextWithLineBreaks(tip.desc)}

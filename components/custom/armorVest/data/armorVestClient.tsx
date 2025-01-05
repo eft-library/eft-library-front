@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface DefenseData {
   id: string;
@@ -36,24 +34,15 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
           id={armorVest.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-              <Gallery>
-                <Item original={armorVest.image} width="300" height="380">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={armorVest.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={armorVest.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={armorVest.image}
+              alt={armorVest.name}
+              popWidth={300}
+              popHeight={380}
+              wrapWidth={240}
+              wrapHeight={140}
+              size="240px"
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

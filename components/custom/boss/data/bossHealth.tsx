@@ -1,11 +1,9 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { formatImage } from "@/lib/func/formatImage";
+import ImageView from "../../imageView/imageView";
 
 interface BossHealth {
   subFollowers: Followers[];
@@ -72,31 +70,16 @@ export default function BossHealth({ subFollowers }: BossHealth) {
             {subFollowers.map(
               (follower) =>
                 follower.id === healthId && (
-                  <Gallery key={`${follower.id}-health-image`}>
-                    <Item
-                      original={formatImage(follower.health_image)}
-                      width="580"
-                      height="600"
-                    >
-                      {({ ref, open }) => (
-                        <div
-                          ref={ref}
-                          onClick={open}
-                          className="relative w-[580px] h-[600px] cursor-pointer"
-                        >
-                          <Image
-                            src={formatImage(follower.health_image)}
-                            ref={ref}
-                            onClick={open}
-                            alt={follower.name_en}
-                            sizes="580px"
-                            fill
-                            priority
-                          />
-                        </div>
-                      )}
-                    </Item>
-                  </Gallery>
+                  <ImageView
+                    key={`${follower.id}-health-image`}
+                    src={formatImage(follower.health_image)}
+                    alt={follower.name_en}
+                    popWidth={580}
+                    popHeight={600}
+                    size="580px"
+                    wrapWidth={580}
+                    wrapHeight={600}
+                  />
                 )
             )}
           </div>

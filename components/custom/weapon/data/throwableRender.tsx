@@ -1,11 +1,9 @@
 "use client";
 
 import GetClientColumn from "../../getColumn/getClientColumn";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface Weapon {
   id: string;
@@ -54,24 +52,15 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
           id={throwable.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-              <Gallery>
-                <Item original={throwable.image} width="340" height="300">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={throwable.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={throwable.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={throwable.image}
+              alt={throwable.name}
+              popWidth={340}
+              popHeight={300}
+              size="240px"
+              wrapWidth={240}
+              wrapHeight={140}
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-base">

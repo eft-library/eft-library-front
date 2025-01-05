@@ -1,11 +1,9 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface StimulantClient {
   medicalList: Stimulant[];
@@ -103,24 +101,15 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
               id={stimulant.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                  <Gallery>
-                    <Item original={stimulant.image} width="260" height="220">
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={stimulant.image}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={stimulant.name_en}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={stimulant.image}
+                  alt={stimulant.name_en}
+                  popWidth={260}
+                  popHeight={220}
+                  size="240px"
+                  wrapWidth={240}
+                  wrapHeight={100}
+                />
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

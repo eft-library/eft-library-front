@@ -1,8 +1,5 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -11,6 +8,7 @@ import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
 import BossHealth from "./bossHealth";
 import FollowerLoot from "./followerLoot";
 import AdBanner from "../../adsense/adBanner";
+import ImageView from "../../imageView/imageView";
 
 interface Boss {
   health_total: number;
@@ -91,32 +89,15 @@ export default function BossClient({ bossList }: BoosClient) {
           checkViewBoss(boss.id) && (
             <div key={boss.id} className="flex flex-col gap-6">
               <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
-                <div className="flex justify-center items-center">
-                  <Gallery>
-                    <Item
-                      original={formatImage(boss.image)}
-                      width="200"
-                      height="180"
-                    >
-                      {({ ref, open }) => (
-                        <div
-                          ref={ref}
-                          onClick={open}
-                          className="relative w-[120px] h-[120px] cursor-pointer" // 부모 요소 크기 지정
-                        >
-                          <Image
-                            src={formatImage(boss.image)}
-                            alt={boss.name_en}
-                            fill
-                            sizes="120px"
-                            style={{ objectFit: "contain" }} // 이미지 비율 유지
-                            priority
-                          />
-                        </div>
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={formatImage(boss.image)}
+                  alt={boss.name_en}
+                  popWidth={120}
+                  popHeight={120}
+                  wrapWidth={120}
+                  wrapHeight={120}
+                  size="120px"
+                />
                 <div className="flex justify-center items-center">
                   <span className="text-center font-bold text-base">
                     {boss.name_kr}

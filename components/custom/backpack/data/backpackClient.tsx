@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface BackpackList {
   backpackList: Backpack[];
@@ -38,24 +36,15 @@ export default function BackpackClient({ backpackList }: BackpackList) {
           id={backpack.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-              <Gallery>
-                <Item original={backpack.image} width="300" height="400">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={backpack.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={backpack.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={backpack.image}
+              alt={backpack.name}
+              popWidth={300}
+              popHeight={400}
+              wrapWidth={240}
+              wrapHeight={140}
+              size="240px"
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-sm">

@@ -1,12 +1,10 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import Link from "next/link";
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface LootClient {
   lootList: Loot[];
@@ -106,24 +104,15 @@ export default function LootClient({ lootList }: LootClient) {
               id={loot.id}
             >
               <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center relative w-[240px] h-[100px]">
-                  <Gallery>
-                    <Item original={loot.image} width="220" height="180">
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={loot.image}
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={loot.name_en}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={loot.image}
+                  alt={loot.name_en}
+                  popWidth={220}
+                  popHeight={180}
+                  size="240px"
+                  wrapWidth={240}
+                  wrapHeight={100}
+                />
               </div>
               <div className="flex justify-center items-center">
                 <span className="text-center font-bold text-sm">

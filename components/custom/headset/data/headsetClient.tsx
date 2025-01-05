@@ -1,10 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
+import ImageView from "../../imageView/imageView";
 
 interface Headset {
   id: string;
@@ -32,24 +30,15 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
           id={headset.id}
         >
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center relative w-[240px] h-[140px]">
-              <Gallery>
-                <Item original={headset.image} width="340" height="260">
-                  {({ ref, open }) => (
-                    <Image
-                      ref={ref}
-                      onClick={open}
-                      src={headset.image}
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: "contain" }}
-                      alt={headset.name}
-                      priority
-                    />
-                  )}
-                </Item>
-              </Gallery>
-            </div>
+            <ImageView
+              src={headset.image}
+              alt={headset.name}
+              popWidth={340}
+              popHeight={260}
+              size="240px"
+              wrapWidth={240}
+              wrapHeight={140}
+            />
           </div>
           <div className="flex justify-center items-center">
             <span className="text-center font-bold text-lg">

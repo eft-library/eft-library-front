@@ -1,7 +1,6 @@
 import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
-import { Gallery, Item } from "react-photoswipe-gallery";
 import { formatImage } from "@/lib/func/formatImage";
+import ImageView from "../../imageView/imageView";
 
 interface ItemRequire {
   id: string;
@@ -61,34 +60,19 @@ export default function Require({ items, type }: RequireList) {
               <div
                 className={"flex items-center justify-center cursor-pointer"}
               >
-                <div className="flex justify-center items-center relative w-[120px] h-[60px]">
-                  <Gallery>
-                    <Item
-                      original={
-                        type === "skill" ? formatImage(item.image) : item.image
-                      }
-                      width="400"
-                      height="380"
-                    >
-                      {({ ref, open }) => (
-                        <Image
-                          ref={ref}
-                          onClick={open}
-                          src={
-                            type === "skill"
-                              ? formatImage(item.image || "")
-                              : item.image || ""
-                          }
-                          fill
-                          sizes="240px"
-                          style={{ objectFit: "contain" }}
-                          alt={item.name_en || ""}
-                          priority
-                        />
-                      )}
-                    </Item>
-                  </Gallery>
-                </div>
+                <ImageView
+                  src={
+                    type === "skill"
+                      ? formatImage(item.image || "")
+                      : item.image || ""
+                  }
+                  alt={item.name_en || ""}
+                  popWidth={400}
+                  popHeight={380}
+                  size="240px"
+                  wrapWidth={120}
+                  wrapHeight={60}
+                />
               </div>
             )}
             {(type === "trader" || type === "skill") && (
