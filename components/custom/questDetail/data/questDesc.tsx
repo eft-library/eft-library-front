@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
 import AdBanner from "../../adsense/adBanner";
+import "../../../../assets/quest.css";
 
 interface Quest {
   id: string;
