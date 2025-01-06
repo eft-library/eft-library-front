@@ -10,7 +10,7 @@ export default function Quest() {
       <GetQuestSelector />
       <div className="w-full">
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />

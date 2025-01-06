@@ -47,7 +47,7 @@ export default function NoticeDetailClient({ noticeInfo }: NoticeDetailClient) {
         </div>
       </div>
       <AdBanner
-        dataAdFormat={"fluid"}
+        dataAdFormat={"auto"}
         dataFullWidthResponsive={true}
         dataAdSlot="2690838054"
       />

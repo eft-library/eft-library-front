@@ -8,7 +8,7 @@ export default function Event() {
       <h1 className="text-white text-4xl font-bold text-center">이벤트</h1>
       <div className="w-full">
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />

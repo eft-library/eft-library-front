@@ -176,7 +176,7 @@ export default function MapOfTarkovClient({
             <div key={mapOfTarkov.map_id} className="flex flex-col gap-6">
               <MapSlider mapInfo={mapOfTarkov.map_info} />
               <AdBanner
-                dataAdFormat={"fluid"}
+                dataAdFormat={"auto"}
                 dataFullWidthResponsive={true}
                 dataAdSlot="2690838054"
               />

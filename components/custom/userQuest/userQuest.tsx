@@ -10,7 +10,7 @@ export default function UserQuest() {
       </h1>
       <div className="w-full">
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />

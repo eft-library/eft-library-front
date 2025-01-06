@@ -11,7 +11,7 @@ export default function Ammo() {
       <h1 className="text-white text-4xl font-bold text-center">탄약</h1>
       <div className="w-full">
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />

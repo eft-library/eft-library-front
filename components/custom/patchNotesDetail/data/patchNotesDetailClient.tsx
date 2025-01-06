@@ -49,7 +49,7 @@ export default function PatchNotesDetailClient({
         </div>
       </div>
       <AdBanner
-        dataAdFormat={"fluid"}
+        dataAdFormat={"auto"}
         dataFullWidthResponsive={true}
         dataAdSlot="2690838054"
       />

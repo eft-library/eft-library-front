@@ -28,7 +28,7 @@ export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
         </TextSpan>
         <JpgViewDetail map={mapData} viewItemList={viewItemList} />
         <AdBanner
-          dataAdFormat={"fluid"}
+          dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />

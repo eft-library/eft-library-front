@@ -114,7 +114,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         </div>
       )}
       <AdBanner
-        dataAdFormat={"fluid"}
+        dataAdFormat={"auto"}
         dataFullWidthResponsive={true}
         dataAdSlot="2690838054"
       />
