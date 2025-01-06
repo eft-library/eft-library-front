@@ -10,6 +10,12 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import TextSpan from "../gridContents/textSpan";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 interface PaginationCustom {
   total: number;
@@ -96,11 +102,11 @@ export default function PaginationCustom({
               "border-[1px] border-white border-solid",
               currentPage === 1
                 ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
-                : "hover:bg-gray-200"
+                : "hover:bg-NeutralGray"
             )}
           >
             <TextSpan size="lg" isCenter={false}>
-              {"<<"}
+              <ChevronsLeft />
             </TextSpan>
           </PaginationLink>
         </PaginationItem>
@@ -111,11 +117,11 @@ export default function PaginationCustom({
               "border-[1px] border-white border-solid",
               currentPage === 1
                 ? "cursor-not-allowed opacity-50 hover:bg-NeutralGray"
-                : "hover:bg-gray-200"
+                : "hover:bg-NeutralGray"
             )}
           >
             <TextSpan size="lg" isCenter={false}>
-              {"<"}
+              <ChevronLeft />
             </TextSpan>
           </PaginationLink>
         </PaginationItem>
@@ -125,10 +131,10 @@ export default function PaginationCustom({
             onClick={() => handlePageChange(page)}
           >
             <PaginationLink
-              className={
-                "hover:bg-NeutralGray border-[1px] border-white border-solid flex items-center"
-              }
-              isActive={page === currentPage}
+              className={cn(
+                "hover:bg-NeutralGray border-[1px] border-white border-solid flex items-center",
+                { "bg-NeutralGray": page === currentPage }
+              )}
             >
               <TextSpan size="lg" isCenter={false}>
                 {page}
@@ -147,7 +153,7 @@ export default function PaginationCustom({
             )}
           >
             <TextSpan size="lg" isCenter={false}>
-              {">"}
+              <ChevronRight />
             </TextSpan>
           </PaginationLink>
         </PaginationItem>
@@ -162,7 +168,7 @@ export default function PaginationCustom({
             )}
           >
             <TextSpan size="lg" isCenter={false}>
-              {">>"}
+              <ChevronsRight />
             </TextSpan>
           </PaginationLink>
         </PaginationItem>
