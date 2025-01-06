@@ -6,28 +6,30 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 
 async function refreshAccessToken(token: JWT) {
   try {
-    let url = "";
-    url =
-      process.env.NEXT_PUBLIC_GOOGLE_REFRESH ??
-      "" +
-        new URLSearchParams({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_ID ?? "",
-          client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? "",
-          grant_type: "refresh_token",
-          refresh_token: token.refreshToken,
-        });
-    // }
+    // OAuth 토큰 갱신 URL
+    const url = "https://oauth2.googleapis.com/token";
 
+    // 요청 본문 파라미터 생성
+    const body = new URLSearchParams({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_ID ?? "",
+      client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? "",
+      grant_type: "refresh_token", // 반드시 "refresh_token"이어야 함
+      refresh_token: token.refreshToken ?? "", // 실제 refresh_token 전달
+    });
+
+    // Fetch 요청
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "POST",
+      body: body.toString(), // URLSearchParams 객체를 문자열로 변환
     });
 
     const refreshedTokens = await response.json();
 
     if (!response.ok) {
+      console.error("Error refreshing access token:", refreshedTokens);
       throw refreshedTokens;
     }
 
@@ -35,10 +37,10 @@ async function refreshAccessToken(token: JWT) {
       ...token,
       accessToken: refreshedTokens.access_token,
       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // 갱신된 refresh_token이 없으면 기존 값 유지
     };
   } catch (error) {
-    console.log(error);
+    console.error("Failed to refresh access token:", error);
 
     return {
       ...token,
