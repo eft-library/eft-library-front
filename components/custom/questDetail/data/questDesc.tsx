@@ -113,7 +113,6 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           ))}
         </div>
       )}
-
       <AdBanner
         dataAdFormat={"auto"}
         dataFullWidthResponsive={true}

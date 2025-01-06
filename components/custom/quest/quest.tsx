@@ -8,7 +8,7 @@ export default function Quest() {
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">퀘스트</h1>
       <GetQuestSelector />
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full">
         <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}

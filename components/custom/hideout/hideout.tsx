@@ -9,7 +9,7 @@ export default function Hideout() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">은신처</h1>
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full">
         <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
