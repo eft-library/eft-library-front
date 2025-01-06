@@ -8,6 +8,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { gunColumn } from "@/lib/consts/gridContsts";
 
 interface Weapon {
   id: string;
@@ -38,17 +39,6 @@ export default function GunRender({ gunList }: GunRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
   useScrollMove(pageId, gunList, "WEAPON");
-
-  const gunColumn = [
-    { name: "사진", colSpan: 2 },
-    { name: "이름", colSpan: 1 },
-    { name: "기본 탄약", colSpan: 1 },
-    { name: "발사모드", colSpan: 1 },
-    { name: "발사속도", colSpan: 1 },
-    { name: "인체공학", colSpan: 1 },
-    { name: "수평반동", colSpan: 1 },
-    { name: "수직반동", colSpan: 1 },
-  ];
 
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory =

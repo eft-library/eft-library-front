@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { handleScroll } from "@/lib/func/jsxfunction";
 
 interface SearchData {
   link: string;
@@ -26,18 +27,6 @@ export default function SearchClient({ searchList }: SearchClient) {
   const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
-  // 스크롤 부모로 전파 막기
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const list = event.target as HTMLDivElement; // 타입 단언
-    if (list.scrollTop === 0) {
-      // 스크롤이 맨 위에 있을 때
-      list.scrollTop = 1;
-    } else if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
-      // 스크롤이 맨 아래에 있을 때
-      list.scrollTop = list.scrollHeight - list.clientHeight - 1;
-    }
-  };
 
   const onClickItem = (item: SearchData) => {
     // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함

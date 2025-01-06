@@ -1,12 +1,10 @@
 "use client";
 
-import type {
-  UserQuestList,
-  UserQuestInfo,
-} from "@/components/custom/userQuest/data/userQuestType";
+import type { UserQuestList } from "@/components/custom/userQuest/data/userQuestType";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import UserQuestPopOver from "./userQuestPopover";
+import { getQuestTitle } from "@/lib/func/jsxfunction";
 
 export default function UserQuestList({
   userQuest,
@@ -14,24 +12,6 @@ export default function UserQuestList({
   checkedQuest,
   checkedBox,
 }: UserQuestList) {
-  const getTitle = (item: UserQuestInfo) => {
-    return (
-      <div className="flex flex-col justify-center items-center">
-        <Link href={`/quest/detail/${item.quest_id}`}>
-          <span className="text-sm font-bold text-LightOrange hover:text-Beige flex text-center flex items-center justify-center">
-            {item.quest_name_kr
-              .substring(0, item.quest_name_kr.indexOf("("))
-              .trim()}
-            <br />
-            {item.quest_name_kr
-              .substring(item.quest_name_kr.indexOf("("))
-              .trim()}
-          </span>
-        </Link>
-      </div>
-    );
-  };
-
   return (
     <div className="w-full">
       {userQuest.quest_info.map((quest, index) => (
@@ -55,7 +35,15 @@ export default function UserQuestList({
           </div>
 
           <div className="flex flex-col justify-center items-center col-span-3">
-            {getTitle(quest)}
+            <div className="flex flex-col justify-center items-center">
+              <Link href={`/quest/detail/${quest.quest_id}`}>
+                <span className="text-sm font-bold text-LightOrange hover:text-Beige flex text-center flex items-center justify-center">
+                  {getQuestTitle(quest.quest_name_kr, "kr")}
+                  <br />
+                  {getQuestTitle(quest.quest_name_kr, "en")}
+                </span>
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-col justify-center col-span-4">

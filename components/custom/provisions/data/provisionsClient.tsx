@@ -1,13 +1,18 @@
 "use client";
 
 import EffectText from "./effectText";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
 import TextSpan from "../../gridContents/textSpan";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
+import {
+  checkPlus,
+  getPlusMinus,
+  filterStimEffects,
+  returnQuestText,
+} from "@/lib/func/jsxfunction";
 
 interface ProvisionsList {
   provisionsList: Provisions[];
@@ -26,9 +31,11 @@ interface Provisions {
   notes: QuestNotes[];
 }
 interface StimEffet {
+  id: string;
   type: string;
   delay?: number;
   value: number;
+  chance: number;
   krSkill: string;
   duration?: number;
   skillName: string;
@@ -47,69 +54,6 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
   useScrollMove(pageId, provisionsList);
-
-  const checkPlus = (effect: number | string) => {
-    if (typeof effect === "number") {
-      if (effect == 0) {
-        return "text-white";
-      } else if (effect > 0) {
-        return "text-BrightCyan";
-      } else {
-        return "text-Red";
-      }
-    }
-  };
-
-  const addPlusMinus = (text: number | string) => {
-    if (typeof text === "number") {
-      if (text > 0) {
-        return `+${text}`;
-      } else {
-        return text;
-      }
-    }
-  };
-
-  const filterStimEffects = (effects: StimEffet[]) => {
-    const seen = new Set();
-    return effects.filter((effect) => {
-      const key = `${effect.delay}-${effect.duration}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        return true;
-      } else if (effect.skillName !== "Painkiller") {
-        delete effect.delay;
-        delete effect.duration;
-        return true;
-      }
-      return false;
-    });
-  };
-  const returnQuestText = (note: QuestNotes) => {
-    return note.in_raid ? (
-      <div className="flex items-center">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
-        <TextSpan textColor="SoftPink" isCenter={false}>
-          인레이드&nbsp;
-        </TextSpan>
-        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
-      </div>
-    ) : (
-      <div className="flex items-center ">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
-      </div>
-    );
-  };
 
   return (
     <div className="w-full">
@@ -138,13 +82,13 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
 
           <CenterContents>
             <TextSpan textColor={checkPlus(provisions.energy)}>
-              {addPlusMinus(provisions.energy)}
+              {getPlusMinus(provisions.energy)}
             </TextSpan>
           </CenterContents>
 
           <CenterContents>
             <TextSpan textColor={checkPlus(provisions.hydration)}>
-              {addPlusMinus(provisions.hydration)}
+              {getPlusMinus(provisions.hydration)}
             </TextSpan>
           </CenterContents>
 

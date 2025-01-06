@@ -1,3 +1,4 @@
+import { checkPlus, getPlusMinus } from "@/lib/func/jsxfunction";
 import TextSpan from "../../gridContents/textSpan";
 
 interface StimEffet {
@@ -14,35 +15,9 @@ interface EffectText {
 }
 
 export default function EffectText({ effect }: EffectText) {
-  const checkPlus = (effect: string | number) => {
-    if (typeof effect === "number") {
-      if (effect === 0) return "white";
-      return effect > 0 ? "text-BrightCyan" : "Red";
-    }
-
-    if (typeof effect === "string") {
-      switch (effect) {
-        case "손 떨림":
-          return "Red";
-        case "진통제":
-          return "BrightCyan";
-        default:
-          return "white";
-      }
-    }
-  };
-
   const fixStr = (value: string) => {
     const fixList = ["손 떨림", "진통제"];
     return fixList.includes(value) ? value : `${value} :`;
-  };
-
-  const addPlusMinus = (text: string | number) => {
-    if (typeof text === "number") {
-      if (text === 0) return "";
-      return text > 0 ? `+${text}` : `${text}`;
-    }
-    return "";
   };
 
   return (
@@ -62,7 +37,7 @@ export default function EffectText({ effect }: EffectText) {
         <TextSpan isCenter={false} textColor={checkPlus(effect.value)}>
           {effect.skillName === "Painkiller"
             ? ""
-            : ` ${addPlusMinus(effect.value)}`}
+            : ` ${getPlusMinus(effect.value)}`}
           &nbsp;
         </TextSpan>
       </div>

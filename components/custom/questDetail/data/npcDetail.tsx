@@ -4,6 +4,7 @@ import { formatImage } from "@/lib/func/formatImage";
 import { useRouter } from "next/navigation";
 import React from "react";
 import TextSpan from "../../gridContents/textSpan";
+import { getQuestTitle } from "@/lib/func/jsxfunction";
 
 interface Quest {
   id: string;
@@ -60,16 +61,6 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
     router.push("/quest");
   };
 
-  const getTitle = (title: string) => {
-    return (
-      <h1 className="text-xl font-bold text-white flex text-center flex items-center justify-center">
-        {title.substring(0, title.indexOf("(")).trim()}
-        <br />
-        {title.substring(title.indexOf("(")).trim()}
-      </h1>
-    );
-  };
-
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex flex-col items-center gap-2">
@@ -82,7 +73,11 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           }}
           onClick={() => onClickNPC()}
         />
-        {getTitle(questInfo.title_kr)}
+        <h1 className="text-xl font-bold text-white flex text-center flex items-center justify-center">
+          {getQuestTitle(questInfo.title_kr, "kr")}
+          <br />
+          {getQuestTitle(questInfo.title_kr, "en")}
+        </h1>
         <TextSpan size="lg">
           {questInfo.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
         </TextSpan>

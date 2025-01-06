@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { floatToPercent, returnQuestText } from "@/lib/func/jsxfunction";
 
 interface GlassesClient {
   glassesData: RigData;
@@ -40,40 +40,6 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
   useScrollMove(pageId, glassesData);
-
-  const returnQuestText = (note: QuestNotes) => {
-    return note.in_raid ? (
-      <div className="flex items-center">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
-        <TextSpan textColor="SoftPink" isCenter={false}>
-          인레이드&nbsp;
-        </TextSpan>
-        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
-      </div>
-    ) : (
-      <div className="flex items-center ">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
-      </div>
-    );
-  };
-
-  const floatToPercent = (value: number) => {
-    if (value !== 0) {
-      return Math.round(value * 100);
-    } else {
-      return value;
-    }
-  };
 
   return (
     <div className="w-full">

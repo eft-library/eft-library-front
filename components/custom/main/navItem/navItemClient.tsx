@@ -3,6 +3,7 @@
 import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import Link from "next/link";
+import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 
 interface NavItem {
   en_name: string;
@@ -19,16 +20,6 @@ interface NavItemList {
 }
 
 export default function NavItemClient({ navItemList }: NavItemList) {
-  const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = "scale(1.1)";
-    e.currentTarget.style.opacity = "0.8";
-  };
-
-  const handleHoverExit = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.opacity = "1";
-  };
-
   return (
     <div className="flex justify-center items-center">
       <div className="grid grid-cols-4 gap-12">

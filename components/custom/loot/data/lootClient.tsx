@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
@@ -8,6 +7,11 @@ import ImageView from "../../imageView/imageView";
 import TextSpan from "../../gridContents/textSpan";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
+import {
+  checkCategory,
+  returnQuestText,
+  returnHideOutText,
+} from "@/lib/func/jsxfunction";
 
 interface LootClient {
   lootList: Loot[];
@@ -47,58 +51,11 @@ export default function LootClient({ lootList }: LootClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, lootList, "LOOT");
 
-  const returnQuestText = (note: QuestNotes) => {
-    return note.in_raid ? (
-      <div className="flex items-center">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
-        <TextSpan textColor="SoftPink" isCenter={false}>
-          인레이드&nbsp;
-        </TextSpan>
-        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
-      </div>
-    ) : (
-      <div className="flex items-center ">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
-      </div>
-    );
-  };
-
-  const returnHideOutText = (note: HideoutNotes) => {
-    return (
-      <div className="flex items-center">
-        <Link
-          href={`/hideout?id=${note.level_id}`}
-          scroll={false}
-          onClick={() => setHideoutCategory(note.master_id)}
-        >
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>({note.count}개 필요)</TextSpan>
-      </div>
-    );
-  };
-
-  const checkViewLoot = (newCategory: string) => {
-    return lootCategory === "ALL" || lootCategory === newCategory;
-  };
-
   return (
     <div className="w-full">
       {lootList.map(
         (loot) =>
-          checkViewLoot(loot.category) && (
+          checkCategory(loot.category, lootCategory) && (
             <DefineGrid id={loot.id} pageId={pageId} cols="3" key={loot.id}>
               <CenterContents>
                 <ImageView
@@ -130,7 +87,7 @@ export default function LootClient({ lootList }: LootClient) {
                     <TextSpan>은신처</TextSpan>
                     {loot.hideout_notes.map((hideout, index) => (
                       <div key={`${hideout.level_id}-${index}`}>
-                        {returnHideOutText(hideout)}
+                        {returnHideOutText(hideout, setHideoutCategory)}
                       </div>
                     ))}
                   </div>

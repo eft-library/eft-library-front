@@ -7,6 +7,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { checkViewMedical } from "@/lib/func/jsxfunction";
 
 interface MediKitClient {
   medicalList: MediKit[];
@@ -46,20 +47,13 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, medicalList, "MEDICAL");
 
-  const checkViewMedikit = (medi: MediKit) => {
-    return (
-      (medicalCategory === "ALL" || medicalCategory === "Medikit") &&
-      medi.category === "Medikit"
-    );
-  };
-
   if (medicalCategory !== "ALL" && medicalCategory !== "Medikit") return null;
 
   return (
     <div className="w-full">
       {medicalList.map(
         (medikit) =>
-          checkViewMedikit(medikit) && (
+          checkViewMedical(medicalCategory, medikit.category, "Medikit") && (
             <DefineGrid
               key={medikit.id}
               id={medikit.id}

@@ -8,6 +8,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { specialColumn } from "@/lib/consts/gridContsts";
 
 interface Weapon {
   id: string;
@@ -39,10 +40,6 @@ export default function SpecialRender({ specialList }: SpecialRender) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, specialList, "WEAPON");
 
-  const specialColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
-  ];
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory === "Special weapons";
     const isMatchingCategory =

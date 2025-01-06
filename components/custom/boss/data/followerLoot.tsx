@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import GetClientColumn from "../../getColumn/getClientColumn";
 import ImageView from "../../imageView/imageView";
 import TextSpan from "../../gridContents/textSpan";
+import { follwerColumn } from "@/lib/consts/gridContsts";
 
 interface FollowersLoot {
   follower_name_en: string;
@@ -36,10 +37,6 @@ interface FolloweLoot {
 
 export default function FollowerLoot({ follower }: FolloweLoot) {
   const [lootType, setLootType] = useState<string>();
-  const follwerColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
-  ];
 
   useEffect(() => {
     if (follower && follower.loot.length > 0) {

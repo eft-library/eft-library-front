@@ -11,6 +11,7 @@ import AdBanner from "../../adsense/adBanner";
 import ImageView from "../../imageView/imageView";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { checkIdCategory } from "@/lib/func/jsxfunction";
 
 interface Boss {
   health_total: number;
@@ -80,15 +81,11 @@ interface BoosClient {
 export default function BossClient({ bossList }: BoosClient) {
   const param = useParams<{ id: string }>();
 
-  const checkViewBoss = (bossId: string) => {
-    return param.id === bossId;
-  };
-
   return (
     <div className="w-full">
       {bossList.map(
         (boss) =>
-          checkViewBoss(boss.id) && (
+          checkIdCategory(param.id, boss.id) && (
             <div key={boss.id} className="flex flex-col gap-6">
               <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
                 <CenterContents>

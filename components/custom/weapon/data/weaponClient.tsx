@@ -5,6 +5,7 @@ import KnifeRender from "./knifeRender";
 import ThrowableRender from "./throwableRender";
 import SpecialRender from "./specialRender";
 import StationaryRender from "./stationaryRender";
+import { gunColumnDefinition } from "@/lib/consts/gridContsts";
 
 interface WeaponClient {
   weapon: WeaponData;
@@ -53,40 +54,10 @@ interface WeaponData {
 export default function WeaponClient({ weapon }: WeaponClient) {
   const { weaponCategory } = useAppStore((state) => state);
 
-  const checkGunInclude = () => {
-    const columnList = {
-      value_en: [
-        "Assault carbine",
-        "Assault rifle",
-        "Machinegun",
-        "SMG",
-        "Sniper rifle",
-        "Marksman rifle",
-        "Shotgun",
-        "Grenade launcher",
-        "Handgun",
-      ],
-      type: "WEAPON",
-      id: "GUN_CATEGORY_INFO",
-      value_kr: [
-        "Assault carbine",
-        "Assault rifle",
-        "Machinegun",
-        "SMG",
-        "Sniper rifle",
-        "Marksman rifle",
-        "Shotgun",
-        "Grenade launcher",
-        "Handgun",
-      ],
-    };
-
-    return columnList.value_kr.includes(weaponCategory);
-  };
-
   return (
     <div className="w-full">
-      {(weaponCategory === "ALL" || checkGunInclude()) && (
+      {(weaponCategory === "ALL" ||
+        gunColumnDefinition.value_kr.includes(weaponCategory)) && (
         <GunRender gunList={weapon.gun} />
       )}
       {(weaponCategory === "ALL" ||

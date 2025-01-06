@@ -7,6 +7,11 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import {
+  checkViewMedical,
+  getPlusMinus,
+  filterStimEffects,
+} from "@/lib/func/jsxfunction";
 
 interface StimulantClient {
   medicalList: Stimulant[];
@@ -47,22 +52,9 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, medicalList, "MEDICAL");
 
-  const checkViewStimulant = (medi: Stimulant) => {
-    return (
-      (medicalCategory === "ALL" || medicalCategory === "Stimulant") &&
-      medi.category === "Stimulant"
-    );
-  };
+  if (medicalCategory !== "ALL" && medicalCategory !== "Stimulant") return null;
 
-  const addPlusMinus = (text: string | number) => {
-    if (typeof text === "number") {
-      if (text === 0) return "";
-      return text > 0 ? `+${text}` : `${text}`;
-    }
-    return "";
-  };
-
-  const checkSkillColor = (text: string) => {
+  const getSkillColor = (text: string) => {
     const blue = ["진통제", "해독제"];
     const red = ["손 떨림", "터널 효과"];
 
@@ -75,27 +67,15 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
     }
   };
 
-  const filterStimEffects = (effects: Effect[]) => {
-    const seen = new Set();
-    for (const effect of effects) {
-      const key = `${effect.delay}-${effect.duration}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-      } else if (effect.skillName !== "Painkiller") {
-        delete effect.delay;
-        delete effect.duration;
-      }
-    }
-    return effects;
-  };
-
-  if (medicalCategory !== "ALL" && medicalCategory !== "Stimulant") return null;
-
   return (
     <div className="w-full">
       {medicalList.map(
         (stimulant) =>
-          checkViewStimulant(stimulant) && (
+          checkViewMedical(
+            medicalCategory,
+            stimulant.category,
+            "Stimulant"
+          ) && (
             <DefineGrid
               id={stimulant.id}
               pageId={pageId}
@@ -135,11 +115,11 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
                         <TextSpan>-&nbsp;</TextSpan>
-                        <TextSpan textColor={checkSkillColor(buff.krSkill)}>
+                        <TextSpan textColor={getSkillColor(buff.krSkill)}>
                           {buff.krSkill}
                         </TextSpan>
                         <TextSpan textColor="BrightCyan">
-                          &nbsp;{addPlusMinus(buff.value)}
+                          &nbsp;{getPlusMinus(buff.value)}
                         </TextSpan>
                       </div>
                     </div>
@@ -163,11 +143,11 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
                         <TextSpan>-&nbsp;</TextSpan>
-                        <TextSpan textColor={checkSkillColor(debuff.krSkill)}>
+                        <TextSpan textColor={getSkillColor(debuff.krSkill)}>
                           {debuff.krSkill}
                         </TextSpan>
                         <TextSpan textColor="BrightCyan">
-                          &nbsp;{addPlusMinus(debuff.value)}
+                          &nbsp;{getPlusMinus(debuff.value)}
                         </TextSpan>
                       </div>
                     </div>

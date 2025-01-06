@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import React from "react";
+import { handleScroll } from "@/lib/func/jsxfunction";
 
 export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
   const [inputValue, setInputValue] = useState("");
@@ -47,15 +48,6 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
-
-  const handleScroll = (event: any) => {
-    const list = event.target;
-    if (list.scrollTop === 0) {
-      list.scrollTop = 1;
-    } else if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
-      list.scrollTop = list.scrollHeight - list.clientHeight - 1;
-    }
-  };
 
   const onClickQuest = (quest: Quest) => {
     const alreadySelected = selectedItems.find(

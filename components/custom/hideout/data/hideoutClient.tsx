@@ -7,6 +7,7 @@ import Require from "@/components/custom/hideout/data/require";
 import TextSpan from "../../gridContents/textSpan";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
+import { checkIdCategory } from "@/lib/func/jsxfunction";
 
 interface HideoutClient {
   hideoutList: Hideout[];
@@ -84,20 +85,14 @@ interface HideoutLevel {
 
 export default function HideoutClient({ hideoutList }: HideoutClient) {
   const { hideoutCategory } = useAppStore((state) => state);
-
-  const checkViewHideout = (newCategory: string) => {
-    return hideoutCategory === newCategory;
-  };
-
   const changeTime = (sec: number) => {
     return Math.floor(sec / 3600) + " 시간 ";
   };
-
   return (
     <div className="w-full">
       {hideoutList.map(
         (hideout) =>
-          checkViewHideout(hideout.master_id) &&
+          checkIdCategory(hideoutCategory, hideout.master_id) &&
           hideout.data.map((info) => (
             <div key={info.level_id}>
               <div

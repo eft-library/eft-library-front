@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getQuestTitle } from "@/lib/func/jsxfunction";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
 
@@ -64,18 +65,6 @@ interface QuestClient {
 export default function QuestClient({ questList }: QuestClient) {
   const { npcId } = useAppStore((state) => state);
 
-  const getTitle = (item: Quest) => {
-    return (
-      <Link href={`/quest/detail/${item.url_mapping}`}>
-        <span className="text-sm font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
-          {item.title_kr.substring(0, item.title_kr.indexOf("(")).trim()}
-          <br />
-          {item.title_kr.substring(item.title_kr.indexOf("(")).trim()}
-        </span>
-      </Link>
-    );
-  };
-
   return (
     <div className="w-full">
       <Table className="border-2 border-white border-solid">
@@ -101,7 +90,15 @@ export default function QuestClient({ questList }: QuestClient) {
               npcId === null ||
               (npcId === quest.npc_value && (
                 <TableRow key={quest.id} className="hover:bg-NeutralGray">
-                  <TableCell>{getTitle(quest)}</TableCell>
+                  <TableCell>
+                    <Link href={`/quest/detail/${quest.url_mapping}`}>
+                      <span className="text-sm font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
+                        {getQuestTitle(quest.title_kr, "kr")}
+                        <br />
+                        {getQuestTitle(quest.title_kr, "en")}
+                      </span>
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     {quest.objectives_kr.map((obj, oIndex) => (
                       <div

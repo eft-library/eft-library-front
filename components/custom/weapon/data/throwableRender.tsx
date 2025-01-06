@@ -7,6 +7,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { detailThrowable, throwableColumn } from "@/lib/consts/gridContsts";
 
 interface Weapon {
   id: string;
@@ -33,15 +34,6 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
   useScrollMove(pageId, throwableList, "WEAPON");
-
-  const throwableColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
-    { name: "폭발 지연", colSpan: 1 },
-    { name: "폭발 거리", colSpan: 1 },
-    { name: "파편 변경", colSpan: 1 },
-  ];
-  const detailThrowable = ["RGN", "RGO"];
 
   return (
     <div className="flex flex-col gap-2 w-full">

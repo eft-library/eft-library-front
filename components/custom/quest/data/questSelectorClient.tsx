@@ -2,6 +2,7 @@
 
 import { useAppStore } from "@/store/provider";
 import { formatImage } from "@/lib/func/formatImage";
+import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 
 interface QuestSelectorClient {
   npcList: QuestJson[];
@@ -17,16 +18,6 @@ interface QuestJson {
 
 export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
   const { npcId, setNpcId } = useAppStore((state) => state);
-
-  const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = "scale(1.1)";
-    e.currentTarget.style.opacity = "0.8";
-  };
-
-  const handleHoverExit = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.opacity = "1";
-  };
 
   return (
     <div className="grid grid-cols-5 gap-2 justify-items-center w-[70%]">

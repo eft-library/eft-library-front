@@ -8,6 +8,7 @@ import AdBanner from "../../adsense/adBanner";
 import "../../../../assets/quest.css";
 import ImageView from "../../imageView/imageView";
 import TextSpan from "../../gridContents/textSpan";
+import { relatedQuestColumn } from "@/lib/consts/gridContsts";
 
 interface Quest {
   id: string;
@@ -57,14 +58,6 @@ interface QuestDesc {
   questInfo: Quest;
 }
 export default function QuestDesc({ questInfo }: QuestDesc) {
-  const relatedQuestColumn = [
-    { name: "사진", colSpan: 2 },
-    { name: "이름", colSpan: 2 },
-    { name: "수량", colSpan: 1 },
-    { name: "인레이드", colSpan: 1 },
-    { name: "노트", colSpan: 2 },
-  ];
-
   return (
     <div className="w-full flex flex-col gap-10">
       {questInfo.requirements_kr && (

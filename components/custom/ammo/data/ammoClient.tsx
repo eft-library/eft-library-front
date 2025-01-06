@@ -1,13 +1,18 @@
 "use client";
 
 import { useAppStore } from "@/store/provider";
-import Efficiency from "./efficency";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import {
+  getPlusMinus,
+  checkCategory,
+  getColor,
+  floatToPercent,
+} from "@/lib/func/jsxfunction";
 
 interface AmmoClient {
   ammoList: Ammo[];
@@ -35,43 +40,22 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, ammoList, "AMMO");
 
-  const addPlusMinus = (text: number | string) => {
-    if (typeof text === "number") {
-      if (text === 0) return "0";
-      return text > 0 ? `+${text}` : `${text}`;
-    }
-    return "";
-  };
-
-  const checkViewAmmo = (newCategory: string) => {
-    return ammoCategory === "ALL" || ammoCategory === newCategory;
-  };
-
-  const checkColor = (value: number) => {
-    if (value === 0) {
-      return "white";
-    } else if (value > 0) {
-      return "BrightCyan";
-    } else {
-      return "Red";
-    }
-  };
-
-  const recoilColor = (value: number) => {
-    if (value === 0) {
-      return "white";
-    } else if (value < 0) {
-      return "BrightCyan";
-    } else {
-      return "Red";
-    }
-  };
-
-  const floatToPercent = (value: number) => {
-    if (value !== 0) {
-      return Math.round(value * 100);
-    } else {
-      return value;
+  const getEfficiencyColor = (val: number) => {
+    switch (val) {
+      case 6:
+        return "bg-VividGreen";
+      case 5:
+        return "bg-ForestGreen";
+      case 4:
+        return "bg-AmberGold";
+      case 3:
+        return "bg-WalnutBrown";
+      case 2:
+        return "bg-ChestnutBrown";
+      case 1:
+        return "bg-DeepBurgundy";
+      case 0:
+        return "bg-DarkMahogany";
     }
   };
 
@@ -79,7 +63,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
     <div className="w-full">
       {ammoList.map(
         (ammo) =>
-          checkViewAmmo(ammo.category) && (
+          checkCategory(ammo.category, ammoCategory) && (
             <DefineGrid cols="11" pageId={pageId} id={ammo.id} key={ammo.id}>
               <CenterContents>
                 <ImageView
@@ -107,47 +91,61 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
 
               <CenterContents>
                 <TextSpan
-                  textColor={checkColor(floatToPercent(ammo.accuracy_modifier))}
-                >
-                  {addPlusMinus(floatToPercent(ammo.accuracy_modifier))} %
-                </TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={recoilColor(floatToPercent(ammo.recoil_modifier))}
-                >
-                  {addPlusMinus(floatToPercent(ammo.recoil_modifier))}
-                </TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={checkColor(
-                    floatToPercent(ammo.light_bleed_modifier)
+                  textColor={getColor(
+                    floatToPercent(ammo.accuracy_modifier),
+                    "check"
                   )}
                 >
-                  {addPlusMinus(floatToPercent(ammo.light_bleed_modifier))} %
+                  {getPlusMinus(floatToPercent(ammo.accuracy_modifier))} %
                 </TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan
-                  textColor={checkColor(
-                    floatToPercent(ammo.heavy_bleed_modifier)
+                  textColor={getColor(
+                    floatToPercent(ammo.recoil_modifier),
+                    "recoil"
                   )}
                 >
-                  {addPlusMinus(floatToPercent(ammo.heavy_bleed_modifier))} %
+                  {getPlusMinus(floatToPercent(ammo.recoil_modifier))}
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={getColor(
+                    floatToPercent(ammo.light_bleed_modifier),
+                    "check"
+                  )}
+                >
+                  {getPlusMinus(floatToPercent(ammo.light_bleed_modifier))} %
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={getColor(
+                    floatToPercent(ammo.heavy_bleed_modifier),
+                    "check"
+                  )}
+                >
+                  {getPlusMinus(floatToPercent(ammo.heavy_bleed_modifier))} %
                 </TextSpan>
               </CenterContents>
 
               <CenterContents colSpan="2">
                 {ammo.efficiency &&
                   ammo.efficiency.map((efficiency, index) => (
-                    <Efficiency
+                    <div
                       key={`${efficiency}-${index}`}
-                      value={efficiency}
-                    />
+                      className={`${getEfficiencyColor(
+                        efficiency
+                      )} flex items-center justify-center rounded w-10 h-10 border-white border-solid border-[1px] ml-2`}
+                    >
+                      <TextSpan size="lg" isCenter={false}>
+                        {efficiency}
+                      </TextSpan>
+                    </div>
                   ))}
               </CenterContents>
             </DefineGrid>

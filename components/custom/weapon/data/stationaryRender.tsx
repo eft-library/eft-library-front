@@ -9,6 +9,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { stationaryColumn } from "@/lib/consts/gridContsts";
 
 interface Weapon {
   id: string;
@@ -39,14 +40,6 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
   useScrollMove(pageId, stationaryList, "WEAPON");
-
-  const stationaryColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
-    { name: "탄약통", colSpan: 1 },
-    { name: "발사모드", colSpan: 1 },
-    { name: "발사속도", colSpan: 1 },
-  ];
 
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory === "Stationary weapons";

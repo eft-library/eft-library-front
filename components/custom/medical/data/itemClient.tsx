@@ -7,6 +7,7 @@ import ImageView from "../../imageView/imageView";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
 import TextSpan from "../../gridContents/textSpan";
+import { checkViewMedical } from "@/lib/func/jsxfunction";
 
 interface ItemClient {
   medicalList: Item[];
@@ -46,13 +47,6 @@ export default function ItemClient({ medicalList }: ItemClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, medicalList, "MEDICAL");
 
-  const checkViewItem = (medi: Item) => {
-    return (
-      (medicalCategory === "ALL" || medicalCategory === "Medical item") &&
-      medi.category === "Medical item"
-    );
-  };
-
   if (medicalCategory !== "ALL" && medicalCategory !== "Medical item")
     return null;
 
@@ -60,7 +54,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
     <div className="w-full">
       {medicalList.map(
         (item) =>
-          checkViewItem(item) && (
+          checkViewMedical(medicalCategory, item.category, "Medical item") && (
             <DefineGrid cols="7" id={item.id} pageId={pageId} key={item.id}>
               <CenterContents>
                 <ImageView

@@ -1,13 +1,13 @@
 "use client";
 
 import { useAppStore } from "@/store/provider";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
 import TextSpan from "../../gridContents/textSpan";
 import DefineGrid from "../../gridContents/defineGrid";
 import CenterContents from "../../gridContents/centerContents";
+import { returnQuestText } from "@/lib/func/jsxfunction";
 
 interface KeyClient {
   keyList: Key[];
@@ -39,41 +39,15 @@ export default function KeyClient({ keyList }: KeyClient) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, keyList, "KEY");
 
-  const checkViewKey = (mapValue: Array<string>) => {
+  const checkKeyCategory = (mapValue: Array<string>, keyCategory: string) => {
     return keyCategory === "ALL" || mapValue.includes(keyCategory);
-  };
-
-  const returnQuestText = (note: QuestNotes) => {
-    return note.in_raid ? (
-      <div className="flex items-center">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
-        <TextSpan textColor="SoftPink" isCenter={false}>
-          인레이드&nbsp;
-        </TextSpan>
-        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
-      </div>
-    ) : (
-      <div className="flex items-center ">
-        <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
-            {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </TextSpan>
-        </Link>
-        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
-      </div>
-    );
   };
 
   return (
     <div className="w-full">
       {keyList.map(
         (key) =>
-          checkViewKey(key.map_value) && (
+          checkKeyCategory(key.map_value, keyCategory) && (
             <DefineGrid cols="5" id={key.id} pageId={pageId} key={key.id}>
               <CenterContents>
                 <ImageView

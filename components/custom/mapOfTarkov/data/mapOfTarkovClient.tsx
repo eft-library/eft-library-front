@@ -9,6 +9,7 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
 import AdBanner from "../../adsense/adBanner";
 import TextSpan from "../../gridContents/textSpan";
+import { checkIdCategory } from "@/lib/func/jsxfunction";
 
 interface MapOfTarkovClient {
   mapOfTarkovList: MapOfTarkov[];
@@ -152,10 +153,6 @@ export default function MapOfTarkovClient({
     { name: "Tip", colSpan: 2 },
   ];
 
-  const checkViewMapOfTarkov = (mapId: string) => {
-    return param.id === mapId;
-  };
-
   const sortBossList = (bossList: Boss[]) => {
     bossList.sort((a, b) => {
       return a.order - b.order;
@@ -175,7 +172,7 @@ export default function MapOfTarkovClient({
     <div className="w-full">
       {mapOfTarkovList.map(
         (mapOfTarkov) =>
-          checkViewMapOfTarkov(mapOfTarkov.map_id) && (
+          checkIdCategory(param.id, mapOfTarkov.map_id) && (
             <div key={mapOfTarkov.map_id} className="flex flex-col gap-6">
               <MapSlider mapInfo={mapOfTarkov.map_info} />
               <AdBanner
