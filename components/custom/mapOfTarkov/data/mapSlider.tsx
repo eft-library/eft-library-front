@@ -53,13 +53,6 @@ export default function MapSlider({ mapInfo }: MapSlider) {
     draggable: false,
   };
 
-  const sortSubList = () => {
-    mapInfo.sub.sort((a, b) => {
-      return a.order - b.order;
-    });
-    return mapInfo.sub;
-  };
-
   return (
     <div className="w-full flex flex-col gap-4">
       <TextSpan isCenter={false} size="3xl">
@@ -68,7 +61,7 @@ export default function MapSlider({ mapInfo }: MapSlider) {
       <Separator className="bg-white" />
       <Gallery>
         <Slider {...MOT_IMAGE_SLIDER_OPTION}>
-          {sortSubList().map((map) => (
+          {mapInfo.sub.map((map) => (
             <Item
               key={map.id}
               original={formatImage(map.mot_image)}
