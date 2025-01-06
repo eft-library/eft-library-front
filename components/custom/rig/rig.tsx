@@ -8,7 +8,7 @@ export default function Rig() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">전술 조끼</h1>
-      <div className="w-full">
+      <div className="w-full flex justify-center items-center">
         <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
