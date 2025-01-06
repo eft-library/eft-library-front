@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-iframe {
-  background-color: black;
-}
-
-.google-center-div {
-  background-color: black;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
