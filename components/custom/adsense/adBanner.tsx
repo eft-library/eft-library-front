@@ -1,6 +1,5 @@
 "use client";
 
-import "./adBanner.css";
 import React, { useEffect } from "react";
 
 type AdBannerTypes = {
@@ -30,7 +29,6 @@ export default function AdBanner({
         className="adsbygoogle"
         style={{
           display: "block",
-          backgroundColor: "transparent",
         }}
         data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
         data-ad-slot={dataAdSlot}
