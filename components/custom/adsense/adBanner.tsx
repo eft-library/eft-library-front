@@ -1,5 +1,6 @@
 "use client";
 
+import "./adBanner.css";
 import React, { useEffect } from "react";
 
 type AdBannerTypes = {
