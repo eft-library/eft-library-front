@@ -28,7 +28,9 @@ export default function AdBanner({
       <ins
         className="adsbygoogle"
         style={{
-          display: "block",
+          display: "flex",
+          justifyContent: "center",
+          background: "transparent",
         }}
         data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
         data-ad-slot={dataAdSlot}
