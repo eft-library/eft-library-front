@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+iframe {
+  background-color: black;
+}
+
 .google-center-div {
   background-color: black;
 }
