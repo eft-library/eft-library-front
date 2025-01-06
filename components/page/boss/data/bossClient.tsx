@@ -4,7 +4,7 @@ import { formatImage } from "@/lib/func/formatImage";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
+import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import BossHealth from "./bossHealth";
 import FollowerLoot from "./followerLoot";
 import AdBanner from "../../../custom/adsense/adBanner";

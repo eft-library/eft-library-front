@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import Link from "next/link";
-import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
+import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
