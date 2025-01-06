@@ -1,4 +1,4 @@
-import Glasses from "@/components/custom/glasses/glasses";
+import Glasses from "@/components/page/glasses/glasses";
 
 export const metadata = {
   title: "타르코프 안경",

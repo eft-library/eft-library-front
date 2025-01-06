@@ -1,4 +1,4 @@
-import MapDetail from "@/components/custom/mapDetail/mapDetail";
+import MapDetail from "@/components/page/mapDetail/mapDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";

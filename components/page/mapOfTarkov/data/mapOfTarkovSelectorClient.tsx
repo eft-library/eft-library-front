@@ -1,0 +1,52 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import TextSpan from "../../../custom/gridContents/textSpan";
+
+interface MapOfTarkovSelectorClient {
+  mapOfTarkovType: MapOfTarkovType;
+}
+
+interface MapOfTarkovType {
+  id: string;
+  json_value: MapOfTarkovJson[];
+}
+
+interface MapOfTarkovJson {
+  id: string;
+  link: string;
+  order: number;
+  name_kr: string;
+}
+
+export default function MapOfTarkovSelectorClient({
+  mapOfTarkovType,
+}: MapOfTarkovSelectorClient) {
+  const param = useParams<{ id: string }>();
+
+  const sortList = () => {
+    const result = mapOfTarkovType.json_value.sort((a, b) => {
+      return a.order - b.order;
+    });
+    return result;
+  };
+
+  return (
+    <div className="flex justify-center w-full flex-wrap gap-2">
+      {sortList().map((mapOfTarkov) => (
+        <Link href={mapOfTarkov.link} key={mapOfTarkov.id}>
+          <div
+            className={cn(
+              "rounded-lg flex justify-center items-center p-[8px] w-[120px] h-[40px] cursor-pointer hover:bg-NeutralGray border-solid border-[1px] border-white",
+              { "bg-NeutralGray": param.id === mapOfTarkov.id }
+            )}
+          >
+            <TextSpan>{mapOfTarkov.name_kr}</TextSpan>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}

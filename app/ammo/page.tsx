@@ -1,4 +1,4 @@
-import Ammo from "@/components/custom/ammo/ammo";
+import Ammo from "@/components/page/ammo/ammo";
 
 export const metadata = {
   title: "타르코프 탄약",

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/themeProvider/themeProvider";
-import Header from "@/components/custom/header/header";
-import Footer from "@/components/custom/footer/footer";
+import Header from "@/components/page/header/header";
+import Footer from "@/components/page/footer/footer";
 import AuthContext from "@/store/AuthContext";
 import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";

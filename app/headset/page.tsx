@@ -1,4 +1,4 @@
-import Headset from "@/components/custom/headset/headset";
+import Headset from "@/components/page/headset/headset";
 
 export const metadata = {
   title: "타르코프 헤드셋",

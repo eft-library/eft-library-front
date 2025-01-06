@@ -1,4 +1,4 @@
-import Terms from "@/components/custom/terms/terms";
+import Terms from "@/components/page/terms/terms";
 
 export const metadata = {
   title: "Terms | EFT Library",

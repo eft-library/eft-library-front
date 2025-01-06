@@ -1,4 +1,4 @@
-import MapOfTarkov from "@/components/custom/mapOfTarkov/mapOfTarkov";
+import MapOfTarkov from "@/components/page/mapOfTarkov/mapOfTarkov";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";

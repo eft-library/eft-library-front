@@ -1,4 +1,4 @@
-import Notice from "@/components/custom/notice/notice";
+import Notice from "@/components/page/notice/notice";
 
 export const metadata = {
   title: "EFT Library 공지사항",

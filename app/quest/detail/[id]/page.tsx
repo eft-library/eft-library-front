@@ -1,4 +1,4 @@
-import QuestDetail from "@/components/custom/questDetail/questDetail";
+import QuestDetail from "@/components/page/questDetail/questDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";

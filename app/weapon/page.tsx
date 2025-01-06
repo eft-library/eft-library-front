@@ -1,4 +1,4 @@
-import Weapon from "@/components/custom/weapon/weapon";
+import Weapon from "@/components/page/weapon/weapon";
 
 export const metadata = {
   title: "타르코프 무기",

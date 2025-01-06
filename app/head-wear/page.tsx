@@ -1,4 +1,4 @@
-import HeadWear from "@/components/custom/headWear/headWear";
+import HeadWear from "@/components/page/headWear/headWear";
 
 export const metadata = {
   title: "타르코프 방탄모",

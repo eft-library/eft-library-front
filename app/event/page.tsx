@@ -1,4 +1,4 @@
-import Event from "@/components/custom/event/event";
+import Event from "@/components/page/event/event";
 
 export const metadata = {
   title: "타르코프 이벤트",

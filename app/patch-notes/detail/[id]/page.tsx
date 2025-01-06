@@ -1,4 +1,4 @@
-import PatchNotesDetail from "@/components/custom/patchNotesDetail/patchNotesDetail";
+import PatchNotesDetail from "@/components/page/patchNotesDetail/patchNotesDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { Metadata } from "next";
 

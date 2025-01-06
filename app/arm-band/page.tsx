@@ -1,4 +1,4 @@
-import ArmBand from "@/components/custom/armBand/armBand";
+import ArmBand from "@/components/page/armBand/armBand";
 
 export const metadata = {
   title: "타르코프 완장",

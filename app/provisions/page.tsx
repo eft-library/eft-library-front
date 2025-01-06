@@ -1,4 +1,4 @@
-import Provisions from "@/components/custom/provisions/provisions";
+import Provisions from "@/components/page/provisions/provisions";
 
 export const metadata = {
   title: "타르코프 식량",

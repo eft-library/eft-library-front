@@ -1,4 +1,4 @@
-import Backpack from "@/components/custom/backpack/backpack";
+import Backpack from "@/components/page/backpack/backpack";
 
 export const metadata = {
   title: "타르코프 가방",

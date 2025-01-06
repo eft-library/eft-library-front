@@ -1,4 +1,4 @@
-import Key from "@/components/custom/key/key";
+import Key from "@/components/page/key/key";
 
 export const metadata = {
   title: "타르코프 열쇠",

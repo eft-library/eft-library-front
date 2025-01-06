@@ -1,4 +1,4 @@
-import Boss from "@/components/custom/boss/boss";
+import Boss from "@/components/page/boss/boss";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";

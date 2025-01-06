@@ -1,4 +1,4 @@
-import PrivacyPolicyKr from "@/components/custom/privacyPolicyKr/privacyPolicyKr";
+import PrivacyPolicyKr from "@/components/page/privacyPolicyKr/privacyPolicyKr";
 
 export const metadata = {
   title: "개인정보처리방침 | EFT Library",

@@ -1,4 +1,4 @@
-import Medical from "@/components/custom/medical/medical";
+import Medical from "@/components/page/medical/medical";
 
 export const metadata = {
   title: "타르코프 의료품",

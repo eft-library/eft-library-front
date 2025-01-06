@@ -1,4 +1,4 @@
-import EventDetail from "@/components/custom/eventDetail/eventDetail";
+import EventDetail from "@/components/page/eventDetail/eventDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { Metadata } from "next";
 

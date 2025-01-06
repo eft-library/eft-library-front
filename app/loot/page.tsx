@@ -1,4 +1,4 @@
-import Loot from "@/components/custom/loot/loot";
+import Loot from "@/components/page/loot/loot";
 
 export const metadata = {
   title: "타르코프 전리품",

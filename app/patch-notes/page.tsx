@@ -1,4 +1,4 @@
-import PatchNotes from "@/components/custom/patchNotes/patchNotes";
+import PatchNotes from "@/components/page/patchNotes/patchNotes";
 
 export const metadata = {
   title: "타르코프 패치노트",

@@ -1,4 +1,4 @@
-import Quest from "@/components/custom/quest/quest";
+import Quest from "@/components/page/quest/quest";
 
 export const metadata = {
   title: "타르코프 퀘스트",

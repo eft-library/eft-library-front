@@ -1,4 +1,4 @@
-import Hideout from "@/components/custom/hideout/hideout";
+import Hideout from "@/components/page/hideout/hideout";
 
 export const metadata = {
   title: "타르코프 은신처",

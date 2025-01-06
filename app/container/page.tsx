@@ -1,4 +1,4 @@
-import Container from "@/components/custom/container/container";
+import Container from "@/components/page/container/container";
 
 export const metadata = {
   title: "타르코프 컨테이너",

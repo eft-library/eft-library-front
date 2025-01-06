@@ -1,4 +1,4 @@
-import UserQuest from "@/components/custom/userQuest/userQuest";
+import UserQuest from "@/components/page/userQuest/userQuest";
 
 export const metadata = {
   title: "퀘스트 플래너 | EFT Library",

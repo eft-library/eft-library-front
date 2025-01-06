@@ -1,4 +1,4 @@
-import FaceCover from "@/components/custom/faceCover/faceCover";
+import FaceCover from "@/components/page/faceCover/faceCover";
 
 export const metadata = {
   title: "타르코프 얼굴 커버",

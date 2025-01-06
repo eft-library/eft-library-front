@@ -1,4 +1,4 @@
-import PrivacyPolicyEn from "@/components/custom/privacyPolicyEn/privacyPolicyEn";
+import PrivacyPolicyEn from "@/components/page/privacyPolicyEn/privacyPolicyEn";
 
 export const metadata = {
   title: "Privacy Policy | EFT Library",

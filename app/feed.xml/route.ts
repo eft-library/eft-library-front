@@ -1,6 +1,6 @@
 import RSS from "rss";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import type { Quest } from "@/components/custom/userQuest/data/userQuestType";
+import type { Quest } from "@/components/page/userQuest/data/userQuestType";
 
 async function getFeedData() {
   const response = await fetch(`${API_ENDPOINTS.GET_ALL_QUEST}`);

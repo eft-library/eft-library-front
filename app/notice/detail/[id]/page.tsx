@@ -1,4 +1,4 @@
-import NoticeDetail from "@/components/custom/noticeDetail/noticeDetail";
+import NoticeDetail from "@/components/page/noticeDetail/noticeDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { Metadata } from "next";
 

@@ -1,4 +1,4 @@
-import ArmorVest from "@/components/custom/armorVest/armorVest";
+import ArmorVest from "@/components/page/armorVest/armorVest";
 
 export const metadata = {
   title: "타르코프 방탄 조끼",
