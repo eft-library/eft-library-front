@@ -4,6 +4,9 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Weapon {
   id: string;
@@ -44,14 +47,13 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
     <div className="flex flex-col gap-2 w-full">
       <GetClientColumn columnLength={5} columnList={throwableColumn} />
       {throwableList.map((throwable) => (
-        <div
-          className={`${
-            throwable.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-          key={throwable.id}
+        <DefineGrid
+          cols="5"
           id={throwable.id}
+          pageId={pageId}
+          key={throwable.id}
         >
-          <div className="flex justify-center items-center">
+          <CenterContents>
             <ImageView
               src={throwable.image}
               alt={throwable.name}
@@ -61,40 +63,34 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
               wrapWidth={240}
               wrapHeight={140}
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {throwable.short_name}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            {detailThrowable.includes(throwable.short_name) ? (
-              <div className="flex flex-col">
-                <span className="text-center font-bold text-base">
-                  충격시 {throwable.min_fuse} 초
-                </span>
-                <span className="text-center font-bold text-sm">
-                  (충격 신관이 발동되지 않은 경우 {throwable.fuse} 초)
-                </span>
-              </div>
-            ) : (
-              <span className="text-center font-bold text-base">
-                {throwable.fuse} 초
-              </span>
-            )}
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{throwable.short_name}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>
+              {detailThrowable.includes(throwable.short_name) ? (
+                <div className="flex flex-col">
+                  <TextSpan>충격시 {throwable.min_fuse} 초</TextSpan>
+                  <TextSpan size="sm">
+                    (충격 신관이 발동되지 않은 경우 {throwable.fuse} 초)
+                  </TextSpan>
+                </div>
+              ) : (
+                <TextSpan>{throwable.fuse} 초</TextSpan>
+              )}
+            </TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>
               {throwable.min_explosion_distance} ~&nbsp;
               {throwable.max_explosion_distance} m
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {throwable.fragments} m
-            </span>
-          </div>
-        </div>
+            </TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{throwable.fragments} m</TextSpan>
+          </CenterContents>
+        </DefineGrid>
       ))}
     </div>
   );

@@ -16,6 +16,7 @@ import type {
 import Image from "next/image";
 import UserQuestList from "@/components/custom/userQuest/data/userQuestList";
 import UserQuestSelector from "./userQuestSelector";
+import TextSpan from "../../gridContents/textSpan";
 
 export default function UserQuestClient({ userQuestList }: UserClientQuest) {
   const [checkedQuest, setCheckedQuest] = useState<string[]>([]);
@@ -128,9 +129,9 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
     <div className={"w-full h-full"}>
       <UserQuestSelector updateQuest={updateUserQuest} />
       {userQuest.length < 0 || !userQuest[0].npc_id ? (
-        <span className={"text-white font-bold text-lg"}>
+        <TextSpan size="lg" isCenter={false}>
           퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.
-        </span>
+        </TextSpan>
       ) : (
         <div>
           {/* 상단 전체 선택 및 삭제 버튼 */}
@@ -142,7 +143,9 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
                 checked={checkAllQuest()}
                 onChange={allCheck}
               />
-              <span className="text-white font-bold text-lg">전체 선택</span>
+              <TextSpan isCenter={false} size="lg">
+                전체 선택
+              </TextSpan>
             </div>
             <button
               className="px-4 font-bold py-2 border-2 bg-Background border-white text-white rounded-lg hover:bg-DeepBurgundy"

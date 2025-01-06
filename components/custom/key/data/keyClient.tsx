@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
 
 interface KeyClient {
   keyList: Key[];
@@ -44,22 +47,24 @@ export default function KeyClient({ keyList }: KeyClient) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
-        <span className="font-bold text-sm">{note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
+        <TextSpan textColor="SoftPink" isCenter={false}>
+          인레이드&nbsp;
+        </TextSpan>
+        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
       </div>
     );
   };
@@ -69,14 +74,8 @@ export default function KeyClient({ keyList }: KeyClient) {
       {keyList.map(
         (key) =>
           checkViewKey(key.map_value) && (
-            <div
-              className={`${
-                key.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={key.id}
-              id={key.id}
-            >
-              <div className="flex justify-center items-center">
+            <DefineGrid cols="5" id={key.id} pageId={pageId} key={key.id}>
+              <CenterContents>
                 <ImageView
                   src={key.image}
                   alt={key.name}
@@ -86,28 +85,22 @@ export default function KeyClient({ keyList }: KeyClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {key.name}
-                </span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{key.name}</TextSpan>
+              </CenterContents>
+              <CenterContents isCol>
                 {key.use_map_kr.map((area, index) => (
-                  <span key={index} className="font-bold text-sm">
-                    {area}
-                  </span>
+                  <TextSpan key={`${index}-area-${key.id}`}>{area}</TextSpan>
                 ))}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {key.uses}
-                </span>
-              </div>
-              <div className="flex items-center">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{key.uses}</TextSpan>
+              </CenterContents>
+              <div className="flex flex-col justify-center">
                 {key.notes.length > 0 ? (
                   <div>
-                    <span className="font-bold text-sm text-white">퀘스트</span>
+                    <TextSpan>퀘스트</TextSpan>
                     {key.notes.map((quest) => (
                       <div key={quest.url_mapping}>
                         {returnQuestText(quest)}
@@ -115,10 +108,10 @@ export default function KeyClient({ keyList }: KeyClient) {
                     ))}
                   </div>
                 ) : (
-                  <span className="font-bold text-sm">-</span>
+                  <TextSpan isCenter={false}>-</TextSpan>
                 )}
               </div>
-            </div>
+            </DefineGrid>
           )
       )}
     </div>

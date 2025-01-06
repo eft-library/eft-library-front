@@ -9,6 +9,8 @@ import BossHealth from "./bossHealth";
 import FollowerLoot from "./followerLoot";
 import AdBanner from "../../adsense/adBanner";
 import ImageView from "../../imageView/imageView";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Boss {
   health_total: number;
@@ -89,61 +91,53 @@ export default function BossClient({ bossList }: BoosClient) {
           checkViewBoss(boss.id) && (
             <div key={boss.id} className="flex flex-col gap-6">
               <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
-                <ImageView
-                  src={formatImage(boss.image)}
-                  alt={boss.name_en}
-                  popWidth={180}
-                  popHeight={180}
-                  wrapWidth={120}
-                  wrapHeight={120}
-                  size="120px"
-                />
-                <div className="flex justify-center items-center">
-                  <span className="text-center font-bold text-base">
-                    {boss.name_kr}
-                  </span>
-                </div>
-                <div className="flex justify-center items-center">
-                  <span className="text-center font-bold text-base">
-                    {boss.faction}
-                  </span>
-                </div>
-                <div className="flex justify-center items-center flex-col">
+                <CenterContents>
+                  <ImageView
+                    src={formatImage(boss.image)}
+                    alt={boss.name_en}
+                    popWidth={120}
+                    popHeight={120}
+                    wrapWidth={120}
+                    wrapHeight={120}
+                    size="120px"
+                  />
+                </CenterContents>
+                <CenterContents>
+                  <TextSpan>{boss.name_kr}</TextSpan>
+                </CenterContents>
+                <CenterContents>
+                  <TextSpan>{boss.faction}</TextSpan>
+                </CenterContents>
+                <CenterContents isCol>
                   {boss.location_spawn_chance_kr.map((location, index) => (
                     <React.Fragment key={`${location.location}-${index}`}>
-                      <span className="text-center font-bold text-base">
-                        {location.location}
-                      </span>
+                      <TextSpan>{location.location}</TextSpan>
                       {boss.location_spawn_chance_kr.length !== index + 1 && (
                         <Separator className="my-[3px] bg-white w-[60%]" />
                       )}
                     </React.Fragment>
                   ))}
-                </div>
-                <div className="flex justify-center items-center flex-col">
+                </CenterContents>
+                <CenterContents isCol>
                   {boss.location_spawn_chance_kr.map((spawn, index) => (
                     <React.Fragment key={`${spawn.chance}-${index}`}>
-                      <span className="text-center font-bold text-base">
-                        {spawn.chance} %
-                      </span>
+                      <TextSpan>{spawn.chance} %</TextSpan>
                       {boss.location_spawn_chance_kr.length !== index + 1 && (
                         <Separator className="my-[3px] bg-white w-[60%]" />
                       )}
                     </React.Fragment>
                   ))}
-                </div>
-                <div className="flex justify-center items-center">
-                  <span className="text-center font-bold text-base">
-                    {boss.health_total}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-center items-center">
+                </CenterContents>
+                <CenterContents>
+                  <TextSpan>{boss.health_total}</TextSpan>
+                </CenterContents>
+                <CenterContents>
                   {boss.followers_kr.map((follower, index) => (
-                    <span key={index} className="font-bold text-base">
+                    <TextSpan key={`${index}-follower-${boss.id}`}>
                       {follower}
-                    </span>
+                    </TextSpan>
                   ))}
-                </div>
+                </CenterContents>
               </div>
               <AdBanner
                 dataAdFormat={"fluid"}

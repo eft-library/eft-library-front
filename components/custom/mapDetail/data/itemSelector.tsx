@@ -4,6 +4,7 @@ import { ItemSVG } from "@/components/custom/getIcon/getSVG";
 import { useState, useEffect } from "react";
 import { useAppStore } from "@/store/provider";
 import { Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
+import TextSpan from "../../gridContents/textSpan";
 
 interface ItemSelector {
   viewItemList: string[];
@@ -81,10 +82,12 @@ export default function ItemSelector({
             className={"w-full flex justify-between items-center"}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="font-bold text-white text-xl">Filter</span>
-            <span className="text-white">
+            <TextSpan isCenter={false} size="xl">
+              Filter
+            </TextSpan>
+            <TextSpan isCenter={false}>
               {isOpen ? <ChevronDown /> : <ChevronUp />}
-            </span>
+            </TextSpan>
           </div>
           <div
             className={`w-full overflow-hidden transition-[max-height] duration-300 ease-in-out ${

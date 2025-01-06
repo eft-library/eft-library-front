@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface RigClient {
   rig_data: RigData;
@@ -34,14 +37,14 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
     <div className="w-full">
       {isClass &&
         rig_data.class_rig.map((rig) => (
-          <div
-            className={`${
-              rig.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={rig.id}
+          <DefineGrid
             id={rig.id}
+            gap="8px"
+            pageId={pageId}
+            key={rig.id}
+            cols="7"
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={rig.image}
                 alt={rig.name}
@@ -51,49 +54,41 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
                 wrapWidth={240}
                 wrapHeight={140}
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">{rig.name}</span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.durability}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.capacity}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.class_value}
-              </span>
-            </div>
-            <div className="flex flex-col justify-center items-center">
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.durability}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.capacity}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.class_value}</TextSpan>
+            </CenterContents>
+            <CenterContents isCol>
               {rig.areas_kr.map((area, index) => (
-                <span key={index} className="font-bold text-sm">
+                <TextSpan isCenter={false} key={`${index}-area-${rig.id}`}>
                   {area}
-                </span>
+                </TextSpan>
               ))}
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.weight} kg
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.weight} kg</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
       {!isClass &&
         rig_data.no_class_rig.map((rig) => (
-          <div
-            className={`${
-              rig.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={rig.id}
+          <DefineGrid
             id={rig.id}
+            gap="8px"
+            pageId={pageId}
+            key={rig.id}
+            cols="4"
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={rig.image}
                 alt={rig.name}
@@ -103,21 +98,17 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
                 wrapWidth={240}
                 wrapHeight={140}
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">{rig.name}</span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.capacity}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {rig.weight} kg
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.capacity}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{rig.weight} kg</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
     </div>
   );

@@ -3,6 +3,7 @@
 import { formatImage } from "@/lib/func/formatImage";
 import { useRouter } from "next/navigation";
 import React from "react";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Quest {
   id: string;
@@ -82,17 +83,18 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           onClick={() => onClickNPC()}
         />
         {getTitle(questInfo.title_kr)}
-        <span className="text-white text-lg text-center font-bold">
+        <TextSpan size="lg">
           {questInfo.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
-        </span>
+        </TextSpan>
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col w-[50%]">
-          <span className="text-GoldenYellow font-bold font-lg text-center">
+          <TextSpan size="lg" textColor="GoldenYellow">
             이전
-          </span>
+          </TextSpan>
+
           {!questInfo.requires || questInfo.requires.length <= 0 ? (
-            <span className="text-white font-bold text-center">-</span>
+            <TextSpan>-</TextSpan>
           ) : (
             questInfo.requires.map((item) => {
               const others = questInfo.requires
@@ -104,21 +106,19 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
               return (
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-yellow-400 mb-1">
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow mb-1">
                       <a href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
                       </a>
                     </span>
                   ) : (
                     <>
-                      <span className="text-white font-bold text-center cursor-pointer hover:text-orange-400">
+                      <TextSpan isCursor hoverColor="LightOrange">
                         <a href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </a>
-                      </span>
-                      {!isLastOther && (
-                        <span className="font-bold text-center">or</span>
-                      )}
+                      </TextSpan>
+                      {!isLastOther && <TextSpan size="lg">or</TextSpan>}
                     </>
                   )}
                 </React.Fragment>
@@ -127,9 +127,11 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           )}
         </div>
         <div className="flex flex-col w-1/2">
-          <span className="text-yellow-400 font-bold text-center">다음</span>
+          <TextSpan size="lg" textColor="GoldenYellow">
+            다음
+          </TextSpan>
           {!questInfo.next || questInfo.next.length <= 0 ? (
-            <span className="text-white font-bold text-center">-</span>
+            <TextSpan>-</TextSpan>
           ) : (
             questInfo.next.map((item) => {
               const isLastOther =
@@ -141,21 +143,19 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
               return (
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-yellow-400 mb-1">
+                    <span className="text-white font-bold text-center cursor-pointer hover:PaleYellow mb-1">
                       <a href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
                       </a>
                     </span>
                   ) : (
                     <>
-                      <span className="text-white font-bold text-center cursor-pointer hover:text-orange-400">
+                      <TextSpan isCursor hoverColor="LightOrange">
                         <a href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </a>
-                      </span>
-                      {!isLastOther && (
-                        <span className="font-bold text-center">or</span>
-                      )}
+                      </TextSpan>
+                      {!isLastOther && <TextSpan size="lg">or</TextSpan>}
                     </>
                   )}
                 </React.Fragment>

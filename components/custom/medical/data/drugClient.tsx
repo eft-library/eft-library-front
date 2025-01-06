@@ -4,6 +4,9 @@ import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface DrugClient {
   medicalList: Drug[];
@@ -53,14 +56,10 @@ export default function DrugClient({ medicalList }: DrugClient) {
   const drugText = (label: string, value: number, positive: boolean) => {
     return (
       <div className={"flex mb-[4px]"}>
-        <span className={"font-bold text-sm"}>{label} :&nbsp;</span>
-        <span
-          className={`font-bold text-sm ${
-            positive ? "text-BrightCyan" : "text-Red"
-          }`}
-        >
+        <TextSpan isCenter={false}>{label} :&nbsp;</TextSpan>
+        <TextSpan isCenter={false} textColor={positive ? "BrightCyan" : "Red"}>
           {value}
-        </span>
+        </TextSpan>
       </div>
     );
   };
@@ -72,14 +71,8 @@ export default function DrugClient({ medicalList }: DrugClient) {
       {medicalList.map(
         (drug) =>
           checkViewDrug(drug) && (
-            <div
-              className={`${
-                drug.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={drug.id}
-              id={drug.id}
-            >
-              <div className="flex justify-center items-center">
+            <DefineGrid cols="7" id={drug.id} pageId={pageId} key={drug.id}>
+              <CenterContents>
                 <ImageView
                   src={drug.image}
                   alt={drug.name_en}
@@ -89,47 +82,45 @@ export default function DrugClient({ medicalList }: DrugClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {drug.name_kr}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <span className="text-center font-bold text-sm text-PaleYellow mt-[4px]">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{drug.name_kr}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+
+              <div className="flex flex-col justify-center">
+                <span className="font-bold text-base text-PaleYellow mt-[4px]">
                   {drug.painkiller_duration}초 지속
                 </span>
                 <div className={"flex mb-[4px]"}>
-                  <span>-&nbsp;</span>
-                  <span className={"font-bold text-sm text-BrightCyan"}>
+                  <TextSpan isCenter={false}>-&nbsp;</TextSpan>
+                  <TextSpan isCenter={false} textColor="BrightCyan">
                     진통제
-                  </span>
+                  </TextSpan>
                 </div>
                 {drug.hydration_impact > 0 &&
                   drugText("수분", drug.hydration_impact, true)}
                 {drug.energy_impact > 0 &&
                   drugText("에너지", drug.energy_impact, true)}
               </div>
-              <div className="flex flex-col justify-center items-center">
+
+              <CenterContents isCol>
                 {drug.hydration_impact < 0 &&
                   drugText("수분", drug.hydration_impact, false)}
                 {drug.energy_impact < 0 &&
                   drugText("에너지", drug.energy_impact, false)}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {drug.uses}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {drug.use_time} 초
-                </span>
-              </div>
-            </div>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>{drug.uses}</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>{drug.use_time} 초</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

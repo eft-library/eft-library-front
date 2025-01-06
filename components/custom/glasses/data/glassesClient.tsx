@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface GlassesClient {
   glassesData: RigData;
@@ -42,22 +45,24 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
-        <span className="font-bold text-sm">{note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
+        <TextSpan textColor="SoftPink" isCenter={false}>
+          인레이드&nbsp;
+        </TextSpan>
+        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
       </div>
     );
   };
@@ -74,14 +79,8 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
     <div className="w-full">
       {isClass &&
         glassesData.class_glasses.map((glasses) => (
-          <div
-            className={`${
-              glasses.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={glasses.id}
-            id={glasses.id}
-          >
-            <div className="flex justify-center items-center">
+          <DefineGrid id={glasses.id} pageId={pageId} cols="5" key={glasses.id}>
+            <CenterContents>
               <ImageView
                 src={glasses.image}
                 alt={glasses.name}
@@ -91,39 +90,27 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
                 wrapHeight={100}
                 size="240px"
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {glasses.name}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {glasses.class_value}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {glasses.durability}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{glasses.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{glasses.class_value}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{glasses.durability}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>
                 {floatToPercent(glasses.blindness_protection)} %
-              </span>
-            </div>
-          </div>
+              </TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
       {!isClass &&
         glassesData.no_class_glasses.map((glasses) => (
-          <div
-            className={`${
-              glasses.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={glasses.id}
-            id={glasses.id}
-          >
-            <div className="flex justify-center items-center">
+          <DefineGrid id={glasses.id} pageId={pageId} cols="4" key={glasses.id}>
+            <CenterContents>
               <ImageView
                 src={glasses.image}
                 alt={glasses.name}
@@ -133,30 +120,28 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
                 wrapHeight={100}
                 size="240px"
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {glasses.name}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{glasses.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>
                 {floatToPercent(glasses.blindness_protection)} %
-              </span>
-            </div>
-            <div className="flex items-center">
+              </TextSpan>
+            </CenterContents>
+            <div className="flex flex-col justify-center">
               {glasses.notes.length > 0 ? (
                 <div>
-                  <span className="font-bold text-sm text-white">퀘스트</span>
+                  <TextSpan>퀘스트</TextSpan>
                   {glasses.notes.map((quest) => (
                     <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
                   ))}
                 </div>
               ) : (
-                <span className="font-bold text-sm">-</span>
+                <TextSpan>-</TextSpan>
               )}
             </div>
-          </div>
+          </DefineGrid>
         ))}
     </div>
   );

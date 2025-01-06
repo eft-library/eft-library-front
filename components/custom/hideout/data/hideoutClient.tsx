@@ -4,6 +4,9 @@ import "photoswipe/dist/photoswipe.css";
 import Bonus from "@/components/custom/hideout/data/bonus";
 import { useAppStore } from "@/store/provider";
 import Require from "@/components/custom/hideout/data/require";
+import TextSpan from "../../gridContents/textSpan";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
 
 interface HideoutClient {
   hideoutList: Hideout[];
@@ -102,14 +105,11 @@ export default function HideoutClient({ hideoutList }: HideoutClient) {
                 className={"flex justify-center items-center w-full flex-col"}
               >
                 <div className={"flex w-full mb-[2px] mt-[2px]"}>
-                  <span className="text-center font-bold text-xl">
+                  <TextSpan size="xl">
                     {hideout.master_name_kr} {info.level_info[0].level}
-                  </span>
+                  </TextSpan>
                 </div>
-                <div
-                  id={info.level_id}
-                  className="w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
-                >
+                <DefineGrid cols="5" id={info.level_id} pageId="hideout">
                   <div className={"flex flex-col justify-center col-span-2"}>
                     <Require items={info.item_require} type="item" />
                     <Require items={info.skill_require} type="skill" />
@@ -128,12 +128,12 @@ export default function HideoutClient({ hideoutList }: HideoutClient) {
                       </>
                     )}
                   </div>
-                  <div className="flex justify-center items-center">
-                    <span className="text-center font-bold text-lg">
+                  <CenterContents>
+                    <TextSpan size="lg">
                       {changeTime(info.level_info[0].construction_time)}
-                    </span>
-                  </div>
-                </div>
+                    </TextSpan>
+                  </CenterContents>
+                </DefineGrid>
               </div>
             </div>
           ))

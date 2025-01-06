@@ -8,6 +8,7 @@ import BossRender from "./bossRender";
 import GetClientColumn from "../../getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
 import AdBanner from "../../adsense/adBanner";
+import TextSpan from "../../gridContents/textSpan";
 
 interface MapOfTarkovClient {
   mapOfTarkovList: MapOfTarkov[];
@@ -183,7 +184,9 @@ export default function MapOfTarkovClient({
                 dataAdSlot="2690838054"
               />
               <div className="w-full flex flex-col gap-2">
-                <span className="font-bold text-3xl">보스</span>
+                <TextSpan isCenter={false} size="3xl">
+                  보스
+                </TextSpan>
                 <Separator className="bg-white" />
                 <GetClientColumn columnList={bossColumn} columnLength={7} />
                 {sortBossList(mapOfTarkov.boss_list).map((boss, index) => (
@@ -191,7 +194,9 @@ export default function MapOfTarkovClient({
                 ))}
               </div>
               <div className="w-full flex flex-col gap-2">
-                <span className="font-bold text-3xl">탈출구</span>
+                <TextSpan isCenter={false} size="3xl">
+                  탈출구
+                </TextSpan>
                 <Separator className="bg-white" />
                 <GetClientColumn
                   columnList={extractionColumn}
@@ -207,7 +212,9 @@ export default function MapOfTarkovClient({
                 )}
               </div>
               <div className="w-full flex flex-col gap-2">
-                <span className="font-bold text-3xl">Transits</span>
+                <TextSpan isCenter={false} size="3xl">
+                  Transits
+                </TextSpan>
                 <Separator className="bg-white" />
                 <GetClientColumn
                   columnList={extractionColumn}

@@ -3,6 +3,9 @@
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface ContainerList {
   containerList: Container[];
@@ -30,14 +33,13 @@ export default function ContainerClient({ containerList }: ContainerList) {
   return (
     <div className="w-full">
       {containerList.map((container) => (
-        <div
-          className={`${
-            container.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-4 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-          key={container.id}
+        <DefineGrid
           id={container.id}
+          pageId={pageId}
+          cols="4"
+          key={container.id}
         >
-          <div className="flex justify-center items-center">
+          <CenterContents>
             <ImageView
               src={container.image}
               alt={container.name_en}
@@ -47,23 +49,19 @@ export default function ContainerClient({ containerList }: ContainerList) {
               wrapHeight={120}
               size="240px"
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {container.name_kr}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {container.capacity}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{container.name_kr}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{container.capacity}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>
               {container.grids[0].width} X {container.grids[0].height}
-            </span>
-          </div>
-        </div>
+            </TextSpan>
+          </CenterContents>
+        </DefineGrid>
       ))}
     </div>
   );

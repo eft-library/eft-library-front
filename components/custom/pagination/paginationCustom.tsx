@@ -9,6 +9,7 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import TextSpan from "../gridContents/textSpan";
 
 interface PaginationCustom {
   total: number;
@@ -98,7 +99,9 @@ export default function PaginationCustom({
                 : "hover:bg-gray-200"
             )}
           >
-            <span className={"font-bold text-lg"}>{"<<"}</span>
+            <TextSpan size="lg" isCenter={false}>
+              {"<<"}
+            </TextSpan>
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
@@ -111,7 +114,9 @@ export default function PaginationCustom({
                 : "hover:bg-gray-200"
             )}
           >
-            <span className={"font-bold text-lg"}>{"<"}</span>
+            <TextSpan size="lg" isCenter={false}>
+              {"<"}
+            </TextSpan>
           </PaginationLink>
         </PaginationItem>
         {visiblePages.map((page) => (
@@ -125,7 +130,9 @@ export default function PaginationCustom({
               }
               isActive={page === currentPage}
             >
-              <span className={"font-bold text-lg "}>{page}</span>
+              <TextSpan size="lg" isCenter={false}>
+                {page}
+              </TextSpan>
             </PaginationLink>
           </PaginationItem>
         ))}
@@ -139,7 +146,9 @@ export default function PaginationCustom({
                 : "hover:bg-NeutralGray"
             )}
           >
-            <span className={"font-bold text-lg"}>{">"}</span>
+            <TextSpan size="lg" isCenter={false}>
+              {">"}
+            </TextSpan>
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
@@ -152,7 +161,9 @@ export default function PaginationCustom({
                 : "hover:bg-NeutralGray"
             )}
           >
-            <span className={"font-bold text-lg"}>{">>"}</span>
+            <TextSpan size="lg" isCenter={false}>
+              {">>"}
+            </TextSpan>
           </PaginationLink>
         </PaginationItem>
       </PaginationContent>

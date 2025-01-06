@@ -7,6 +7,7 @@ import HtmlWithImage from "@/components/htmlWithImage/htmlWithImage";
 import AdBanner from "../../adsense/adBanner";
 import "../../../../assets/quest.css";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Quest {
   id: string;
@@ -57,8 +58,8 @@ interface QuestDesc {
 }
 export default function QuestDesc({ questInfo }: QuestDesc) {
   const relatedQuestColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
+    { name: "사진", colSpan: 2 },
+    { name: "이름", colSpan: 2 },
     { name: "수량", colSpan: 1 },
     { name: "인레이드", colSpan: 1 },
     { name: "노트", colSpan: 2 },
@@ -68,7 +69,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
     <div className="w-full flex flex-col gap-10">
       {questInfo.requirements_kr && (
         <div className="w-full flex flex-col gap-2">
-          <span className="font-bold text-3xl">요구사항</span>
+          <TextSpan size="3xl" isCenter={false}>
+            요구사항
+          </TextSpan>
           <Separator className="bg-white" />
           {questInfo.requirements_kr.map((requirements, index) => (
             <div
@@ -84,7 +87,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
 
       {questInfo.objectives_kr && (
         <div className="w-full flex flex-col gap-2">
-          <span className="font-bold text-3xl">목표</span>
+          <TextSpan size="3xl" isCenter={false}>
+            목표
+          </TextSpan>
           <Separator className="bg-white" />
           {questInfo.objectives_kr.map((objectives, index) => (
             <div
@@ -100,7 +105,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
 
       {questInfo.rewards_kr && (
         <div className="w-full flex flex-col gap-2">
-          <span className="font-bold text-3xl">보상</span>
+          <TextSpan size="3xl" isCenter={false}>
+            보상
+          </TextSpan>
           <Separator className="bg-white" />
           {questInfo.rewards_kr.map((rewards, index) => (
             <div
@@ -121,44 +128,51 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
 
       {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
         <div className="w-full flex flex-col gap-2">
-          <span className="font-bold text-3xl">가이드</span>
+          <TextSpan size="3xl" isCenter={false}>
+            가이드
+          </TextSpan>
           <Separator className="bg-white" />
           {questInfo.sub && questInfo.sub.length > 0 && (
             <div className="w-full flex flex-col gap-4">
-              <span className="font-bold text-xl">관련 퀘스트 아이템</span>
+              <TextSpan size="xl" isCenter={false}>
+                관련 퀘스트 아이템
+              </TextSpan>
               <div className="flex flex-col justify-center items-center gap-4">
                 <GetClientColumn
-                  columnLength={6}
+                  columnLength={8}
                   columnList={relatedQuestColumn}
                 />
                 {questInfo.sub.map((item) => (
                   <div
                     key={item.item_id}
-                    className="w-full grid grid-cols-6 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
+                    className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
                   >
-                    <ImageView
-                      src={item.item_image}
-                      alt={item.item_name_en}
-                      popWidth={200}
-                      popHeight={180}
-                      size="240px"
-                      wrapWidth={240}
-                      wrapHeight={140}
-                    />
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center col-span-2">
+                      <ImageView
+                        src={item.item_image}
+                        alt={item.item_name_en}
+                        popWidth={200}
+                        popHeight={180}
+                        size="240px"
+                        wrapWidth={240}
+                        wrapHeight={140}
+                      />
+                    </div>
+                    <div className="flex justify-center items-center col-span-2">
                       <Link
                         href={`${item.item_link}${item.item_id}`}
                         scroll={false}
                       >
-                        <span className="text-center font-bold text-GoldenYellow text-base hover:text-LightYellow">
+                        <TextSpan
+                          textColor="GoldenYellow"
+                          hoverColor="LightYellow"
+                        >
                           {item.item_name_kr}
-                        </span>
+                        </TextSpan>
                       </Link>
                     </div>
                     <div className="flex justify-center items-center">
-                      <span className="text-center font-bold text-base">
-                        {item.count}
-                      </span>
+                      <TextSpan>{item.count}</TextSpan>
                     </div>
                     <div className="flex justify-center items-center">
                       <span
@@ -176,9 +190,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                             key={`${index}-desc`}
                             className="flex justify-center items-center"
                           >
-                            <span className="text-center font-bold text-base">
-                              {desc}
-                            </span>
+                            <TextSpan>{desc}</TextSpan>
                           </div>
                         ))}
                     </div>

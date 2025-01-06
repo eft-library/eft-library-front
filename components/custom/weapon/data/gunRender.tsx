@@ -5,6 +5,9 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Weapon {
   id: string;
@@ -80,14 +83,8 @@ export default function GunRender({ gunList }: GunRender) {
       {gunList.map(
         (gun) =>
           shouldRenderWeapon(gun.category) && (
-            <div
-              className={`${
-                gun.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-9 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={gun.id}
-              id={gun.id}
-            >
-              <div className="flex justify-center items-center col-span-2">
+            <DefineGrid cols="9" id={gun.id} pageId={pageId} key={gun.id}>
+              <CenterContents colSpan="2">
                 <ImageView
                   src={gun.image}
                   alt={gun.name}
@@ -97,48 +94,31 @@ export default function GunRender({ gunList }: GunRender) {
                   wrapWidth={240}
                   wrapHeight={140}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {gun.short_name}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {sliceDefaultAmmo(gun.default_ammo)}
-                </span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{gun.short_name}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{sliceDefaultAmmo(gun.default_ammo)}</TextSpan>
+              </CenterContents>
+              <CenterContents>
                 {gun.modes_kr.map((mode, index) => (
-                  <span
-                    key={`mode-${mode}-${index}`}
-                    className="font-bold text-base"
-                  >
-                    {mode}
-                  </span>
+                  <TextSpan key={`mode-${mode}-${index}`}>{mode}</TextSpan>
                 ))}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {gun.fire_rate}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {gun.ergonomics}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {gun.recoil_horizontal}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {gun.recoil_vertical}
-                </span>
-              </div>
-            </div>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{gun.fire_rate}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{gun.ergonomics}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{gun.recoil_horizontal}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{gun.recoil_vertical}</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

@@ -3,6 +3,9 @@
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface ArmBand {
   id: string;
@@ -24,14 +27,8 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
   return (
     <div className="w-full">
       {armBandList.map((armBand) => (
-        <div
-          className={`${
-            armBand.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-          key={armBand.id}
-          id={armBand.id}
-        >
-          <div className="flex justify-center items-center">
+        <DefineGrid id={armBand.id} cols="2" pageId={pageId} key={armBand.id}>
+          <CenterContents>
             <ImageView
               src={armBand.image}
               alt={armBand.name}
@@ -41,13 +38,11 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
               wrapHeight={100}
               size="240px"
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {armBand.name}
-            </span>
-          </div>
-        </div>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{armBand.name}</TextSpan>
+          </CenterContents>
+        </DefineGrid>
       ))}
     </div>
   );

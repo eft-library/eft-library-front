@@ -1,6 +1,7 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetMapDetail from "@/components/custom/mapDetail/data/getMapDetail";
 import GetMapSelector from "@/components/custom/mapDetail/data/getMapSelector";
+import TextSpan from "../gridContents/textSpan";
 
 export default function MapDetail() {
   return (
@@ -9,9 +10,9 @@ export default function MapDetail() {
         <h1 className="text-white text-4xl font-bold text-center">
           대화형 지도
         </h1>
-        <span className={"font-bold text-SunsetYellow"}>
+        <TextSpan isCenter={false} textColor="SunsetYellow">
           (데이터 적재 진행중)
-        </span>
+        </TextSpan>
       </div>
       <GetMapSelector />
       <GetMapDetail />

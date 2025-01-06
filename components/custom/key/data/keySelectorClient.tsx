@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
+import TextSpan from "../../gridContents/textSpan";
 
 interface KeySelectorClient {
   keyType: KeyType;
@@ -32,7 +33,7 @@ export default function KeySelectorClient({ keyType }: KeySelectorClient) {
           )}
           onClick={() => setKeyCategory(key.value)}
         >
-          <span className="text-xs text-center font-bold">{key.desc_kr}</span>
+          <TextSpan size="xs">{key.desc_kr}</TextSpan>
         </div>
       ))}
     </div>

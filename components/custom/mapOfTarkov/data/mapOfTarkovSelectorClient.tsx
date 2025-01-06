@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import TextSpan from "../../gridContents/textSpan";
 
 interface MapOfTarkovSelectorClient {
   mapOfTarkovType: MapOfTarkovType;
@@ -42,9 +43,7 @@ export default function MapOfTarkovSelectorClient({
               { "bg-NeutralGray": param.id === mapOfTarkov.id }
             )}
           >
-            <span className="text-base text-center font-bold">
-              {mapOfTarkov.name_kr}
-            </span>
+            <TextSpan>{mapOfTarkov.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

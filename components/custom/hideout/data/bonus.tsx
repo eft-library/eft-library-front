@@ -1,3 +1,5 @@
+import TextSpan from "../../gridContents/textSpan";
+
 interface Bonus {
   value: number;
   name_en: string;
@@ -41,11 +43,11 @@ export default function Bonus({ bonuses }: BonusList) {
   const checkPlus = (effect: number | string) => {
     if (typeof effect === "number") {
       if (effect == 0) {
-        return "text-white";
+        return "white";
       } else if (effect > 0) {
-        return "text-SkyBlue";
+        return "SkyBlue";
       } else {
-        return "text-SoftRed";
+        return "SoftRed";
       }
     }
   };
@@ -53,25 +55,17 @@ export default function Bonus({ bonuses }: BonusList) {
   const BonusItem = ({ bonus }: BonusItem) => {
     return (
       <div className={"flex items-center"}>
-        <span className="text-center font-bold text-lg">{bonus.name_kr}</span>
+        <TextSpan size="lg">{bonus.name_kr}</TextSpan>
         {checkNoPercent(bonus.name_en) && (
-          <span className="text-center font-bold text-lg">
-            {bonus.skill_name_kr}
-          </span>
+          <TextSpan size="lg">{bonus.skill_name_kr}</TextSpan>
         )}
         {bonus.skill_name_kr && (
-          <span className="text-center font-bold text-lg">
-            &nbsp;{bonus.skill_name_kr}
-          </span>
+          <TextSpan size="lg">&nbsp;{bonus.skill_name_kr}</TextSpan>
         )}
         {!checkNoPercent(bonus.name_en) && (
-          <span
-            className={`text-center font-bold text-lg ${checkPlus(
-              bonus.value
-            )}`}
-          >
+          <TextSpan size="lg" textColor={checkPlus(bonus.value)}>
             &nbsp;{addPlusMinus(bonus.value)}
-          </span>
+          </TextSpan>
         )}
       </div>
     );

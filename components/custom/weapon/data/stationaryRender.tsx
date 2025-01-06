@@ -6,6 +6,9 @@ import { formatImage } from "@/lib/func/formatImage";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Weapon {
   id: string;
@@ -58,14 +61,13 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
       {stationaryList.map(
         (stationary) =>
           shouldRenderWeapon(stationary.category) && (
-            <div
-              className={`${
-                stationary.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={stationary.id}
+            <DefineGrid
+              cols="5"
               id={stationary.id}
+              pageId={pageId}
+              key={stationary.id}
             >
-              <div className="flex justify-center items-center">
+              <CenterContents>
                 <ImageView
                   src={formatImage(stationary.image)}
                   alt={stationary.name}
@@ -75,34 +77,24 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
                   wrapWidth={240}
                   wrapHeight={140}
                 />
-              </div>
-
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {stationary.short_name}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {stationary.carliber}
-                </span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{stationary.short_name}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{stationary.carliber}</TextSpan>
+              </CenterContents>
+              <CenterContents>
                 {stationary.modes_kr.map((mode, index) => (
-                  <span
-                    key={`mode-${mode}-${index}`}
-                    className="font-bold text-base"
-                  >
+                  <TextSpan key={`mode-${mode}-${index}`} isCenter={false}>
                     {mode}
-                  </span>
+                  </TextSpan>
                 ))}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-base">
-                  {stationary.fire_rate}
-                </span>
-              </div>
-            </div>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{stationary.fire_rate}</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

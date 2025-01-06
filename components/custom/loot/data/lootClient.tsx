@@ -5,6 +5,9 @@ import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
 
 interface LootClient {
   lootList: Loot[];
@@ -48,22 +51,24 @@ export default function LootClient({ lootList }: LootClient) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
-        <span className="font-bold text-sm">{note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
+        <TextSpan textColor="SoftPink" isCenter={false}>
+          인레이드&nbsp;
+        </TextSpan>
+        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
       </div>
     );
   };
@@ -76,13 +81,11 @@ export default function LootClient({ lootList }: LootClient) {
           scroll={false}
           onClick={() => setHideoutCategory(note.master_id)}
         >
-          <span className="font-bold text-GoldenYellow text-sm hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold text-sm text-white">
-          &nbsp;({note.count}개 필요)
-        </span>
+        <TextSpan isCenter={false}>({note.count}개 필요)</TextSpan>
       </div>
     );
   };
@@ -96,14 +99,8 @@ export default function LootClient({ lootList }: LootClient) {
       {lootList.map(
         (loot) =>
           checkViewLoot(loot.category) && (
-            <div
-              className={`${
-                loot.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-3 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={loot.id}
-              id={loot.id}
-            >
-              <div className="flex justify-center items-center">
+            <DefineGrid id={loot.id} pageId={pageId} cols="3" key={loot.id}>
+              <CenterContents>
                 <ImageView
                   src={loot.image}
                   alt={loot.name_en}
@@ -113,16 +110,14 @@ export default function LootClient({ lootList }: LootClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {loot.name_kr}
-                </span>
-              </div>
-              <div className="flex flex-col ">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{loot.name_kr}</TextSpan>
+              </CenterContents>
+              <div className="flex flex-col gap-2">
                 {loot.quest_notes.length > 0 && (
                   <div className="mb-2">
-                    <span className="font-bold text-sm text-white">퀘스트</span>
+                    <TextSpan>퀘스트</TextSpan>
                     {loot.quest_notes.map((quest) => (
                       <div key={quest.url_mapping}>
                         {returnQuestText(quest)}
@@ -132,7 +127,7 @@ export default function LootClient({ lootList }: LootClient) {
                 )}
                 {loot.hideout_notes.length > 0 && (
                   <div>
-                    <span className="font-bold text-sm text-white">은신처</span>
+                    <TextSpan>은신처</TextSpan>
                     {loot.hideout_notes.map((hideout, index) => (
                       <div key={`${hideout.level_id}-${index}`}>
                         {returnHideOutText(hideout)}
@@ -141,7 +136,7 @@ export default function LootClient({ lootList }: LootClient) {
                   </div>
                 )}
               </div>
-            </div>
+            </DefineGrid>
           )
       )}
     </div>

@@ -4,6 +4,9 @@ import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface MediKitClient {
   medicalList: MediKit[];
@@ -57,14 +60,13 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
       {medicalList.map(
         (medikit) =>
           checkViewMedikit(medikit) && (
-            <div
-              className={`${
-                medikit.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
+            <DefineGrid
               key={medikit.id}
               id={medikit.id}
+              cols="7"
+              pageId={pageId}
             >
-              <div className="flex justify-center items-center">
+              <CenterContents>
                 <ImageView
                   src={medikit.image}
                   alt={medikit.name_en}
@@ -74,43 +76,37 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {medikit.name_kr}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {medikit.hitpoints}
-                </span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{medikit.name_kr}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{medikit.hitpoints}</TextSpan>
+              </CenterContents>
+              <CenterContents isCol>
                 {medikit.cures_kr && medikit.cures_kr.length > 0 ? (
                   medikit.cures_kr.map((cures, index) => (
-                    <span
-                      key={`medikit-${index}`}
-                      className="font-bold text-sm"
+                    <TextSpan
+                      key={`${medikit.id}-cures-${index}`}
+                      isCenter={false}
                     >
                       {cures}
-                    </span>
+                    </TextSpan>
                   ))
                 ) : (
-                  <span className="font-bold text-sm">-</span>
+                  <TextSpan>-</TextSpan>
                 )}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {medikit.use_time} 초
-                </span>
-              </div>
-            </div>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{medikit.use_time} 초</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

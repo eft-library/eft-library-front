@@ -4,6 +4,9 @@ import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface ItemClient {
   medicalList: Item[];
@@ -58,14 +61,8 @@ export default function ItemClient({ medicalList }: ItemClient) {
       {medicalList.map(
         (item) =>
           checkViewItem(item) && (
-            <div
-              className={`${
-                item.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={item.id}
-              id={item.id}
-            >
-              <div className="flex justify-center items-center">
+            <DefineGrid cols="7" id={item.id} pageId={pageId} key={item.id}>
+              <CenterContents>
                 <ImageView
                   src={item.image}
                   alt={item.name_en}
@@ -75,36 +72,36 @@ export default function ItemClient({ medicalList }: ItemClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {item.name_kr}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex flex-col justify-center items-center">
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>{item.name_kr}</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+
+              <CenterContents isCol>
                 {item.cures_kr.map((cures, index) => (
-                  <span key={`${index}-cures`} className="font-bold text-sm">
+                  <TextSpan key={`${index}-cures`} isCenter={false}>
                     {cures}
-                  </span>
+                  </TextSpan>
                 ))}
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {item.uses}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {item.use_time} 초
-                </span>
-              </div>
-            </div>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>{item.uses}</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>{item.use_time} 초</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

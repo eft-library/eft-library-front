@@ -11,6 +11,7 @@ import type {
   JpgItemPath,
 } from "@/components/custom/mapDetail/data/mapType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
@@ -127,15 +128,13 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
                           target="_blank"
                           key={quest.id}
                         >
-                          <span className={"hover:text-GoldenYellow font-bold"}>
+                          <TextSpan isCenter={false} hoverColor="GoldenYellow">
                             {quest.name_kr}
-                          </span>
+                          </TextSpan>
                         </Link>
                       ))
                     ) : (
-                      <span className={"font-bold text-white text-base"}>
-                        -
-                      </span>
+                      <TextSpan isCenter={false}>-</TextSpan>
                     )}
                   </div>
                 </div>

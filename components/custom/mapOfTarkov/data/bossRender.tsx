@@ -4,6 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { formatImage } from "@/lib/func/formatImage";
 import React from "react";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Boss extends BossInfo {
   health_total: number;
@@ -73,63 +76,54 @@ interface BoosClient {
 
 export default function BossRender({ bossInfo }: BoosClient) {
   return (
-    <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
-      <ImageView
-        src={formatImage(bossInfo.image)}
-        alt={bossInfo.name_en}
-        popWidth={180}
-        popHeight={180}
-        size="120px"
-        wrapWidth={120}
-        wrapHeight={120}
-      />
-
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {bossInfo.name_kr}
-        </span>
-      </div>
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {bossInfo.faction}
-        </span>
-      </div>
-      <div className="flex justify-center items-center flex-col">
+    <DefineGrid cols="7" id={bossInfo.id} pageId="bossInfo">
+      <CenterContents>
+        <ImageView
+          src={formatImage(bossInfo.image)}
+          alt={bossInfo.name_en}
+          popWidth={180}
+          popHeight={180}
+          size="120px"
+          wrapWidth={120}
+          wrapHeight={120}
+        />
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{bossInfo.name_kr}</TextSpan>
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{bossInfo.faction}</TextSpan>
+      </CenterContents>
+      <CenterContents isCol>
         {bossInfo.location_spawn_chance_kr.map((location, index) => (
           <React.Fragment key={`${location.location}-${index}`}>
-            <span className="text-center font-bold text-base">
-              {location.location}
-            </span>
+            <TextSpan>{location.location}</TextSpan>
             {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
               <Separator className="my-[3px] bg-white w-[60%]" />
             )}
           </React.Fragment>
         ))}
-      </div>
-      <div className="flex justify-center items-center flex-col">
+      </CenterContents>
+      <CenterContents isCol>
         {bossInfo.location_spawn_chance_kr.map((spawn, index) => (
           <React.Fragment key={`${spawn.chance}-${index}`}>
-            <span className="text-center font-bold text-base">
-              {spawn.chance} %
-            </span>
+            <TextSpan>{spawn.chance} %</TextSpan>
             {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
               <Separator className="my-[3px] bg-white w-[60%]" />
             )}
           </React.Fragment>
         ))}
-      </div>
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {bossInfo.health_total}
-        </span>
-      </div>
-      <div className="flex flex-col justify-center items-center">
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{bossInfo.health_total}</TextSpan>
+      </CenterContents>
+      <CenterContents isCol>
         {bossInfo.followers_kr.map((follower, index) => (
-          <span key={index} className="font-bold text-base">
+          <TextSpan isCenter={false} key={`${index}-follower-${bossInfo.id}`}>
             {follower}
-          </span>
+          </TextSpan>
         ))}
-      </div>
-    </div>
+      </CenterContents>
+    </DefineGrid>
   );
 }

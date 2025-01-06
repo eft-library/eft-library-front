@@ -1,3 +1,5 @@
+import TextSpan from "../../gridContents/textSpan";
+
 interface Efficiency {
   value: number;
 }
@@ -27,7 +29,9 @@ export default function Efficiency({ value }: Efficiency) {
         value
       )} flex items-center justify-center rounded w-10 h-10 border-white border-solid border-[1px] ml-2`}
     >
-      <span className="font-bold text-lg text-white">{value}</span>
+      <TextSpan size="lg" isCenter={false}>
+        {value}
+      </TextSpan>
     </div>
   );
 }

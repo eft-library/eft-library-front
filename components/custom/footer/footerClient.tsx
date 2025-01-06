@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FooterSVG } from "../getIcon/getSVG";
+import TextSpan from "../gridContents/textSpan";
 
 interface Icon {
   link: string;
@@ -35,27 +36,41 @@ export default function FooterClient({ footerData }: FooterData) {
         <div className="col-span-3">
           <div className="flex flex-col justify-center">
             <div className="flex m-1">
-              <span className="text-SunsetYellow font-bold text-base hover:text-CreamYellow cursor-pointer">
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
                 <Link
                   href="https://eftlibrary.com/privacy-policy-kr"
                   target="_blank"
                 >
                   개인정보처리방침&nbsp;
                 </Link>
-              </span>
-              <span className="text-SunsetYellow font-bold text-base hover:text-CreamYellow cursor-pointer">
+              </TextSpan>
+
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
                 <Link
                   href="https://eftlibrary.com/privacy-policy-en"
                   target="_blank"
                 >
                   (Privacy Policy), &nbsp;
                 </Link>
-              </span>
-              <span className="text-SunsetYellow font-bold text-base hover:text-CreamYellow cursor-pointer">
-                <Link href="/terms" target="_blank">
+              </TextSpan>
+
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link href="https://eftlibrary.com/terms" target="_blank">
                   이용 약관
                 </Link>
-              </span>
+              </TextSpan>
             </div>
             {footerData.json_value.text.map((item) => (
               <span key={item.value} className="text-white m-1 font-bold">
@@ -63,15 +78,24 @@ export default function FooterClient({ footerData }: FooterData) {
               </span>
             ))}
             <div className="flex m-1">
-              <span className="text-SunsetYellow font-bold text-base hover:text-CreamYellow cursor-pointer">
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
                 <Link href="https://eftlibrary.com/" target="_blank">
                   EFT Library
                 </Link>
-              </span>
-              <span className="text-white font-bold">
+              </TextSpan>
+              <TextSpan isCenter={false}>
                 &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
-              </span>
-              <span className="text-SunsetYellow font-bold text-base hover:text-CreamYellow cursor-pointer">
+              </TextSpan>
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                {" "}
                 <Link
                   href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
                   target="_blank"
@@ -79,7 +103,7 @@ export default function FooterClient({ footerData }: FooterData) {
                 >
                   CC BY-NC-ND 4.0
                 </Link>
-              </span>
+              </TextSpan>
             </div>
             <Link
               href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"

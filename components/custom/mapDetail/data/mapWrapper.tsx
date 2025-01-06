@@ -6,6 +6,7 @@ import ThreeViewDetail from "@/components/custom/mapDetail/data/threeView/threeV
 import { useItemFilter } from "@/lib/hooks/useItemFilter";
 import type { MapWrapper } from "@/components/custom/mapDetail/data/mapType";
 import AdBanner from "../../adsense/adBanner";
+import TextSpan from "../../gridContents/textSpan";
 
 export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
@@ -22,14 +23,18 @@ export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
       />
       <SubMapSelector onClickMapAction={onClickMapAction} mapId={mapData.id} />
       <div className={"flex flex-col gap-4"}>
-        <span className={"text-white font-bold text-xl"}>2D Map</span>
+        <TextSpan isCenter={false} size="xl">
+          2D Map
+        </TextSpan>
         <JpgViewDetail map={mapData} viewItemList={viewItemList} />
         <AdBanner
           dataAdFormat={"fluid"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
         />
-        <span className={"text-white font-bold text-xl"}>3D Map</span>
+        <TextSpan isCenter={false} size="xl">
+          3D Map
+        </TextSpan>
         <ThreeViewDetail
           key={mapData.id}
           mapData={mapData}

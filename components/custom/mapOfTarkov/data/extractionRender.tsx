@@ -2,6 +2,9 @@
 
 import { formatImage } from "@/lib/func/formatImage";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Requirement {
   desc: string;
@@ -36,8 +39,8 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   };
 
   return (
-    <div className="w-full grid grid-cols-11 gap-2 border-solid border-white border-2 rounded-lg p-3">
-      <div className="flex justify-center items-center col-span-2">
+    <DefineGrid cols="11" id={extractionInfo.id} pageId="extraction">
+      <CenterContents colSpan="2">
         <ImageView
           src={formatImage(extractionInfo.image)}
           alt={extractionInfo.name}
@@ -47,35 +50,24 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
           wrapWidth={240}
           wrapHeight={130}
         />
-      </div>
-      <div className="flex justify-center items-center col-span-2">
-        <span className="text-center font-bold text-base">
-          {extractionInfo.name}
-        </span>
-      </div>
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {extractionInfo.faction}
-        </span>
-      </div>
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {extractionInfo.always_available ? "✅" : "❌"}
-        </span>
-      </div>
-      <div className="flex justify-center items-center">
-        <span className="text-center font-bold text-base">
-          {extractionInfo.single_use ? "✅" : "❌"}
-        </span>
-      </div>
+      </CenterContents>
+      <CenterContents colSpan="2">
+        <TextSpan>{extractionInfo.name}</TextSpan>
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{extractionInfo.faction}</TextSpan>
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{extractionInfo.always_available ? "✅" : "❌"}</TextSpan>
+      </CenterContents>
+      <CenterContents>
+        <TextSpan>{extractionInfo.single_use ? "✅" : "❌"}</TextSpan>
+      </CenterContents>
       <div className="flex justify-center flex-col items-center col-span-2 gap-8">
         {extractionInfo.requirements &&
         extractionInfo.requirements.length > 0 ? (
           extractionInfo.requirements.map((require, index) => (
-            <div
-              key={`${require.image}-${index}`}
-              className="flex flex-col items-center"
-            >
+            <CenterContents key={`${require.image}-${index}`} isCol>
               {require.image && (
                 <ImageView
                   src={formatImage(require.image)}
@@ -87,22 +79,17 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
                   wrapHeight={120}
                 />
               )}
-              <span className="text-center font-bold text-base">
-                {formatTextWithLineBreaks(require.desc)}
-              </span>
-            </div>
+              <TextSpan>{formatTextWithLineBreaks(require.desc)}</TextSpan>
+            </CenterContents>
           ))
         ) : (
-          <span className="text-center font-bold text-base">-</span>
+          <TextSpan>-</TextSpan>
         )}
       </div>
       <div className="flex justify-center flex-col items-center col-span-2 gap-8">
         {extractionInfo.tip && extractionInfo.tip.length > 0 ? (
           extractionInfo.tip.map((tip, index) => (
-            <div
-              key={`${tip.image}-${index}`}
-              className="flex flex-col items-center"
-            >
+            <CenterContents key={`${tip.image}-${index}`} isCol>
               {tip.image && (
                 <ImageView
                   src={formatImage(tip.image)}
@@ -114,15 +101,13 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
                   wrapHeight={120}
                 />
               )}
-              <span className="text-center font-bold text-base">
-                {formatTextWithLineBreaks(tip.desc)}
-              </span>
-            </div>
+              <TextSpan>{formatTextWithLineBreaks(tip.desc)}</TextSpan>
+            </CenterContents>
           ))
         ) : (
-          <span className="text-center font-bold text-base">-</span>
+          <TextSpan>-</TextSpan>
         )}
       </div>
-    </div>
+    </DefineGrid>
   );
 }

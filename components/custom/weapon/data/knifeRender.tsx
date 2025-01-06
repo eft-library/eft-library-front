@@ -4,6 +4,9 @@ import GetClientColumn from "../../getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Weapon {
   id: string;
@@ -41,14 +44,8 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
     <div className="flex flex-col gap-2 w-full">
       <GetClientColumn columnLength={5} columnList={knifeColumn} />
       {knifeList.map((knife) => (
-        <div
-          className={`${
-            knife.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-          key={knife.id}
-          id={knife.id}
-        >
-          <div className="flex justify-center items-center">
+        <DefineGrid cols="5" id={knife.id} pageId={pageId} key={knife.id}>
+          <CenterContents>
             <ImageView
               src={knife.image}
               alt={knife.name}
@@ -58,28 +55,20 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
               wrapWidth={240}
               wrapHeight={140}
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {knife.name}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {knife.slash_damage}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {knife.stab_damage}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-base">
-              {knife.hit_radius} m
-            </span>
-          </div>
-        </div>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{knife.name}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{knife.slash_damage}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{knife.stab_damage}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{knife.hit_radius} m</TextSpan>
+          </CenterContents>
+        </DefineGrid>
       ))}
     </div>
   );

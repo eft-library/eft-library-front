@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import TextSpan from "../../gridContents/textSpan";
 
 interface BossSelectorClient {
   bossType: BossType;
@@ -33,9 +34,7 @@ export default function BossSelectorClient({ bossType }: BossSelectorClient) {
               { "bg-NeutralGray": param.id === boss.id }
             )}
           >
-            <span className="text-base text-center font-bold">
-              {boss.name_kr}
-            </span>
+            <TextSpan>{boss.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

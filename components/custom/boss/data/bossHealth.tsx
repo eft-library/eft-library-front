@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { formatImage } from "@/lib/func/formatImage";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
 
 interface BossHealth {
   subFollowers: Followers[];
@@ -60,9 +61,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                   { "bg-NeutralGray": healthId === follower.id }
                 )}
               >
-                <span className="text-base text-center font-bold">
-                  {follower.name_kr}
-                </span>
+                <TextSpan>{follower.name_kr}</TextSpan>
               </div>
             ))}
           </div>

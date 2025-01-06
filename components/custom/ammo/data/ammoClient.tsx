@@ -5,6 +5,9 @@ import Efficiency from "./efficency";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface AmmoClient {
   ammoList: Ammo[];
@@ -46,21 +49,21 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
 
   const checkColor = (value: number) => {
     if (value === 0) {
-      return "text-white";
+      return "white";
     } else if (value > 0) {
-      return "text-BrightCyan";
+      return "BrightCyan";
     } else {
-      return "text-Red";
+      return "Red";
     }
   };
 
   const recoilColor = (value: number) => {
     if (value === 0) {
-      return "text-white";
+      return "white";
     } else if (value < 0) {
-      return "text-BrightCyan";
+      return "BrightCyan";
     } else {
-      return "text-Red";
+      return "Red";
     }
   };
 
@@ -77,14 +80,8 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
       {ammoList.map(
         (ammo) =>
           checkViewAmmo(ammo.category) && (
-            <div
-              className={`${
-                ammo.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-11 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={ammo.id}
-              id={ammo.id}
-            >
-              <div className="flex justify-center items-center">
+            <DefineGrid cols="11" pageId={pageId} id={ammo.id} key={ammo.id}>
+              <CenterContents>
                 <ImageView
                   src={ammo.image}
                   alt={ammo.name}
@@ -94,64 +91,57 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                   wrapWidth={240}
                   size="240px"
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {ammo.name}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {ammo.damage}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {ammo.penetration_power}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {ammo.armor_damage} %
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span
-                  className={`text-center font-bold text-sm ${checkColor(
-                    floatToPercent(ammo.accuracy_modifier)
-                  )}`}
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{ammo.name}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{ammo.damage}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{ammo.penetration_power}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{ammo.armor_damage} %</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={checkColor(floatToPercent(ammo.accuracy_modifier))}
                 >
                   {addPlusMinus(floatToPercent(ammo.accuracy_modifier))} %
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span
-                  className={`text-center font-bold text-sm ${recoilColor(
-                    floatToPercent(ammo.recoil_modifier)
-                  )}`}
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={recoilColor(floatToPercent(ammo.recoil_modifier))}
                 >
                   {addPlusMinus(floatToPercent(ammo.recoil_modifier))}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span
-                  className={`text-center font-bold text-sm ${checkColor(
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={checkColor(
                     floatToPercent(ammo.light_bleed_modifier)
-                  )}`}
+                  )}
                 >
                   {addPlusMinus(floatToPercent(ammo.light_bleed_modifier))} %
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span
-                  className={`text-center font-bold text-sm ${checkColor(
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan
+                  textColor={checkColor(
                     floatToPercent(ammo.heavy_bleed_modifier)
-                  )}`}
+                  )}
                 >
                   {addPlusMinus(floatToPercent(ammo.heavy_bleed_modifier))} %
-                </span>
-              </div>
-              <div className="flex justify-center items-center col-span-2">
+                </TextSpan>
+              </CenterContents>
+
+              <CenterContents colSpan="2">
                 {ammo.efficiency &&
                   ammo.efficiency.map((efficiency, index) => (
                     <Efficiency
@@ -159,8 +149,8 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                       value={efficiency}
                     />
                   ))}
-              </div>
-            </div>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

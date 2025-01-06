@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import TextSpan from "../../gridContents/textSpan";
 
 interface MapSelectorClient {
   mapType: MapType;
@@ -39,9 +40,7 @@ export default function MapSelectorClient({ mapType }: MapSelectorClient) {
               { "bg-NeutralGray": param.id === mapInfo.id }
             )}
           >
-            <span className="text-base text-center font-bold">
-              {mapInfo.name_kr}
-            </span>
+            <TextSpan>{mapInfo.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

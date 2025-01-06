@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface BackpackList {
   backpackList: Backpack[];
@@ -28,14 +31,8 @@ export default function BackpackClient({ backpackList }: BackpackList) {
   return (
     <div className="w-full">
       {backpackList.map((backpack) => (
-        <div
-          className={`${
-            backpack.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-5 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-          key={backpack.id}
-          id={backpack.id}
-        >
-          <div className="flex justify-center items-center">
+        <DefineGrid cols="5" id={backpack.id} pageId={pageId} key={backpack.id}>
+          <CenterContents>
             <ImageView
               src={backpack.image}
               alt={backpack.name}
@@ -45,28 +42,22 @@ export default function BackpackClient({ backpackList }: BackpackList) {
               wrapHeight={140}
               size="240px"
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {backpack.name}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {backpack.capacity}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{backpack.name}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{backpack.capacity}</TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>
               {backpack.grids[0].width} X {backpack.grids[0].height}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {backpack.weight} kg
-            </span>
-          </div>
-        </div>
+            </TextSpan>
+          </CenterContents>
+          <CenterContents>
+            <TextSpan>{backpack.weight} kg</TextSpan>
+          </CenterContents>
+        </DefineGrid>
       ))}
     </div>
   );

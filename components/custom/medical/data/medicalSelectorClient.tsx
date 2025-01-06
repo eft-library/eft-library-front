@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
+import TextSpan from "../../gridContents/textSpan";
 
 interface MedicalSelectorClient {
   medicalType: MedicalType;
@@ -34,9 +35,9 @@ export default function MedicalSelectorClient({
           )}
           onClick={() => setMedicalCategory(medical.value)}
         >
-          <span className="text-xs text-center font-bold">
+          <TextSpan isCenter={false} size="xs">
             {medical.desc_kr}
-          </span>
+          </TextSpan>
         </div>
       ))}
     </div>

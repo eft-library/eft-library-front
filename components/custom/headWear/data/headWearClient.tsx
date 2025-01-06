@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface HeadWearClient {
   headWearData: HeadWearData;
@@ -38,14 +41,13 @@ export default function HeadWearClient({
     <div className="w-full">
       {isClass &&
         headWearData.class_headwear.map((headWear) => (
-          <div
-            className={`${
-              headWear.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={headWear.id}
+          <DefineGrid
             id={headWear.id}
+            pageId={pageId}
+            cols="7"
+            key={headWear.id}
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={headWear.image}
                 alt={headWear.name}
@@ -55,51 +57,38 @@ export default function HeadWearClient({
                 wrapWidth={240}
                 wrapHeight={140}
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.name}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.class_value}
-              </span>
-            </div>
-            <div className="flex flex-col justify-center items-center">
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.class_value}</TextSpan>
+            </CenterContents>
+            <CenterContents isCol>
               {headWear.areas_kr.map((area, index) => (
-                <span key={index} className="font-bold text-sm">
-                  {area}
-                </span>
+                <TextSpan key={`${index}-area-${headWear.id}`}>{area}</TextSpan>
               ))}
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.durability}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.ricochet_str_kr}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.weight} kg
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.durability}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.ricochet_str_kr}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.weight} kg</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
       {!isClass &&
         headWearData.no_class_headwear.map((headWear) => (
-          <div
-            className={`${
-              headWear.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={headWear.id}
+          <DefineGrid
             id={headWear.id}
+            pageId={pageId}
+            cols="2"
+            key={headWear.id}
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={headWear.image}
                 alt={headWear.name}
@@ -109,13 +98,11 @@ export default function HeadWearClient({
                 wrapWidth={240}
                 wrapHeight={140}
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {headWear.name}
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{headWear.name}</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
     </div>
   );

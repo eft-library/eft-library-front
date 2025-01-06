@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface FaceCoverClient {
   face_cover_data: FaceCoverData;
@@ -37,68 +40,59 @@ export default function FaceCoverClient({
     <div className="w-full">
       {isClass &&
         face_cover_data.class_face_cover.map((faceCover) => (
-          <div
-            className={`${
-              faceCover.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={faceCover.id}
+          <DefineGrid
             id={faceCover.id}
+            pageId={pageId}
+            cols="7"
+            key={faceCover.id}
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={faceCover.image}
                 alt={faceCover.name}
                 popWidth={220}
                 popHeight={240}
+                size="240px"
                 wrapWidth={240}
                 wrapHeight={100}
-                size="240px"
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.name}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.class_value}
-              </span>
-            </div>
-            <div className="flex flex-col justify-center items-center">
-              {faceCover.areas_kr.map((area, index) => (
-                <span key={index} className="font-bold text-sm">
-                  {area}
-                </span>
-              ))}
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.durability}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.ricochet_str_kr}
-              </span>
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.weight} kg
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.name}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.class_value}</TextSpan>
+            </CenterContents>
+            <CenterContents isCol>
+              <TextSpan>
+                {faceCover.areas_kr.map((area, index) => (
+                  <TextSpan key={`${index}-area-${faceCover.id}`}>
+                    {area}
+                  </TextSpan>
+                ))}
+              </TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.durability}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.ricochet_str_kr}</TextSpan>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.weight} kg</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
+
       {!isClass &&
         face_cover_data.no_class_face_cover.map((faceCover) => (
-          <div
-            className={`${
-              faceCover.id === pageId && "bg-NeutralGray"
-            } w-full grid grid-cols-2 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-            key={faceCover.id}
+          <DefineGrid
             id={faceCover.id}
+            pageId={pageId}
+            cols="2"
+            key={faceCover.id}
           >
-            <div className="flex justify-center items-center">
+            <CenterContents>
               <ImageView
                 src={faceCover.image}
                 alt={faceCover.name}
@@ -108,13 +102,11 @@ export default function FaceCoverClient({
                 wrapWidth={240}
                 wrapHeight={100}
               />
-            </div>
-            <div className="flex justify-center items-center">
-              <span className="text-center font-bold text-sm">
-                {faceCover.name}
-              </span>
-            </div>
-          </div>
+            </CenterContents>
+            <CenterContents>
+              <TextSpan>{faceCover.name}</TextSpan>
+            </CenterContents>
+          </DefineGrid>
         ))}
     </div>
   );

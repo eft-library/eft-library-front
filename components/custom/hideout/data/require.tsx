@@ -1,6 +1,7 @@
 import "photoswipe/dist/photoswipe.css";
 import { formatImage } from "@/lib/func/formatImage";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
 
 interface ItemRequire {
   id: string;
@@ -78,13 +79,11 @@ export default function Require({ items, type }: RequireList) {
             {(type === "trader" || type === "skill") && (
               <div className={"mr-[2px]"} />
             )}
-            <span className={"text-center font-bold text-lg"}>
-              {item.name_kr}
-            </span>
-            <span className={"text-center font-bold text-lg text-LightOrange"}>
+            <TextSpan size="lg">{item.name_kr}</TextSpan>
+            <TextSpan size="lg" textColor="LightOrange">
               &nbsp;
               {checkType(item)}
-            </span>
+            </TextSpan>
           </div>
         ))}
       </>

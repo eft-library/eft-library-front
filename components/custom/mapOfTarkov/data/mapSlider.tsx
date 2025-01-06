@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
+import TextSpan from "../../gridContents/textSpan";
 
 interface Map {
   sub: SubMap[];
@@ -61,7 +62,9 @@ export default function MapSlider({ mapInfo }: MapSlider) {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <span className="font-bold text-3xl">{mapInfo.name_kr}</span>
+      <TextSpan isCenter={false} size="3xl">
+        {mapInfo.name_kr}
+      </TextSpan>
       <Separator className="bg-white" />
       <Gallery>
         <Slider {...MOT_IMAGE_SLIDER_OPTION}>
@@ -73,17 +76,20 @@ export default function MapSlider({ mapInfo }: MapSlider) {
               height="900"
             >
               {({ ref, open }) => (
-                  <div
-                      ref={ref}
-                      onClick={open} className={"flex justify-center items-center cursor-pointer"}>
-                <Image
-                  src={formatImage(map.mot_image)}
-                  alt={map.name_en}
-                  width={1100}
-                  height={400}
-                  style={{ width: "auto", height: "auto" }}
-                  priority
-                /></div>
+                <div
+                  ref={ref}
+                  onClick={open}
+                  className={"flex justify-center items-center cursor-pointer"}
+                >
+                  <Image
+                    src={formatImage(map.mot_image)}
+                    alt={map.name_en}
+                    width={1100}
+                    height={400}
+                    style={{ width: "auto", height: "auto" }}
+                    priority
+                  />
+                </div>
               )}
             </Item>
           ))}

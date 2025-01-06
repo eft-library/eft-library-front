@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import GetClientColumn from "../../getColumn/getClientColumn";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
 
 interface FollowersLoot {
   follower_name_en: string;
@@ -74,9 +75,7 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
                   { "bg-NeutralGray": lootType === selector.item_type }
                 )}
               >
-                <span className="text-base text-center font-bold">
-                  {selector.item_type_kr}
-                </span>
+                <TextSpan>{selector.item_type_kr}</TextSpan>
               </div>
             ))}
           </div>
@@ -101,9 +100,7 @@ export default function FollowerLoot({ follower }: FolloweLoot) {
                       />
                     </div>
                     <div className="flex justify-center items-center">
-                      <span className="text-center font-bold text-sm">
-                        {loot.item_name_kr}
-                      </span>
+                      <TextSpan size="sm">{loot.item_name_kr}</TextSpan>
                     </div>
                   </div>
                 )

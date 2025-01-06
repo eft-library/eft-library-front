@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import TextSpan from "../../gridContents/textSpan";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
 
 interface ProvisionsList {
   provisionsList: Provisions[];
@@ -86,22 +89,24 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
     return note.in_raid ? (
       <div className="flex items-center">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold">&nbsp;(</span>
-        <span className="font-bold text-SoftPink text-sm">인레이드&nbsp;</span>
-        <span className="font-bold text-sm">{note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;(</TextSpan>
+        <TextSpan textColor="SoftPink" isCenter={false}>
+          인레이드&nbsp;
+        </TextSpan>
+        <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
       </div>
     ) : (
       <div className="flex items-center ">
         <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-          <span className="font-bold text-sm text-GoldenYellow hover:text-LightYellow">
+          <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
             {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-          </span>
+          </TextSpan>
         </Link>
-        <span className="font-bold text-sm">&nbsp;({note.count}개 필요)</span>
+        <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
       </div>
     );
   };
@@ -109,14 +114,13 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
   return (
     <div className="w-full">
       {provisionsList.map((provisions) => (
-        <div
-          className={`${
-            provisions.id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
+        <DefineGrid
           key={provisions.id}
           id={provisions.id}
+          cols="8"
+          pageId={pageId}
         >
-          <div className="flex justify-center items-center">
+          <CenterContents>
             <ImageView
               src={provisions.image}
               alt={provisions.name_en}
@@ -126,57 +130,54 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
               wrapWidth={240}
               wrapHeight={100}
             />
-          </div>
-          <div className="flex justify-center items-center">
-            <span className="text-center font-bold text-sm">
-              {provisions.name_kr}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span
-              className={`text-center font-bold text-sm ${checkPlus(
-                provisions.energy
-              )}`}
-            >
+          </CenterContents>
+
+          <CenterContents>
+            <TextSpan>{provisions.name_kr}</TextSpan>
+          </CenterContents>
+
+          <CenterContents>
+            <TextSpan textColor={checkPlus(provisions.energy)}>
               {addPlusMinus(provisions.energy)}
-            </span>
-          </div>
-          <div className="flex justify-center items-center">
-            <span
-              className={`text-center font-bold text-sm ${checkPlus(
-                provisions.hydration
-              )}`}
-            >
+            </TextSpan>
+          </CenterContents>
+
+          <CenterContents>
+            <TextSpan textColor={checkPlus(provisions.hydration)}>
               {addPlusMinus(provisions.hydration)}
-            </span>
-          </div>
-          <div className="flex flex-col justify-center col-span-2 gap-1">
+            </TextSpan>
+          </CenterContents>
+
+          <div className="flex flex-col justify-center col-span-2">
             {provisions.stim_effects.length > 0 ? (
               filterStimEffects(provisions.stim_effects).map(
                 (effect, index) => (
                   <EffectText
                     effect={effect}
-                    key={`${effect.krSkill}-${index}`}
+                    key={`${effect.krSkill}-${index}-${provisions.id}`}
                   />
                 )
               )
             ) : (
-              <span className="font-bold text-sm">-</span>
+              <TextSpan>-</TextSpan>
             )}
           </div>
-          <div className="flex items-center col-span-2">
+
+          <div className="flex flex-col justify-center col-span-2">
             {provisions.notes.length > 0 ? (
               <div>
-                <span className="font-bold text-sm text-white">퀘스트</span>
+                <TextSpan isCenter={false}>퀘스트</TextSpan>
                 {provisions.notes.map((quest) => (
-                  <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
+                  <div key={`${provisions.id}-${quest.url_mapping}`}>
+                    {returnQuestText(quest)}
+                  </div>
                 ))}
               </div>
             ) : (
-              <span className="text-center font-bold text-sm">-</span>
+              <TextSpan>-</TextSpan>
             )}
           </div>
-        </div>
+        </DefineGrid>
       ))}
     </div>
   );

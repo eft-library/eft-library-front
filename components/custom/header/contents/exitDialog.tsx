@@ -17,6 +17,7 @@ import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
+import TextSpan from "../../gridContents/textSpan";
 
 export default function ExitDialog() {
   const { data: session } = useSession();
@@ -61,9 +62,9 @@ export default function ExitDialog() {
         <DialogHeader>
           <DialogTitle></DialogTitle>
           <DialogDescription>
-            <span className="font-bold text-lg text-white">
+            <TextSpan isCenter={false} size="lg">
               회원 탈퇴를 원하시면 이메일을 입력해주세요
-            </span>
+            </TextSpan>
             <br />
             <br />
             <span className="font-bold text-base text-GoldenYellow underline decoration-white">

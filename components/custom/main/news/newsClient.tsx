@@ -6,6 +6,7 @@ import { useState } from "react";
 import DefaultAlert from "../../alert/defaultAlert";
 import { Bell, CalendarCheck, Download, LogIn } from "lucide-react";
 import Link from "next/link";
+import TextSpan from "../../gridContents/textSpan";
 
 interface News {
   game_version: string;
@@ -47,7 +48,10 @@ export default function NewsClient({ news }: NewsClient) {
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
             <LogIn />
-            &nbsp;<span className="font-bold text-white">로그인 기능</span>
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              로그인 기능
+            </TextSpan>
           </div>
 
           <div className="flex flex-col">
@@ -55,15 +59,15 @@ export default function NewsClient({ news }: NewsClient) {
               func.use_yn ? (
                 <span
                   key={func.name_en}
-                  className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink"
+                  className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
                   onClick={() => onClickUserFunction(func.link)}
                 >
                   - {func.name_kr}
                 </span>
               ) : (
-                <span key={func.name_en} className="font-bold text-white">
+                <TextSpan key={func.name_en} isCenter={false} size="lg">
                   - {func.name_kr}
-                </span>
+                </TextSpan>
               )
             )}
           </div>
@@ -72,21 +76,29 @@ export default function NewsClient({ news }: NewsClient) {
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
             <Download />
-            &nbsp;<span className="font-bold text-white">현재 게임 버전</span>
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              현재 게임 버전
+            </TextSpan>
           </div>
-          <span className="font-bold text-white">- {news.game_version}</span>
+          <TextSpan isCenter={false} size="lg">
+            - {news.game_version}
+          </TextSpan>
         </div>
 
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
             <CalendarCheck />
-            &nbsp;<span className="font-bold text-white">업데이트 예정</span>
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              업데이트 예정
+            </TextSpan>
           </div>
           <div className="flex flex-col">
             {news.next_update.map((patch) => (
-              <span key={patch} className="font-bold text-white">
+              <TextSpan isCenter={false} key={patch} size="lg">
                 - {patch}
-              </span>
+              </TextSpan>
             ))}
           </div>
         </div>
@@ -94,15 +106,32 @@ export default function NewsClient({ news }: NewsClient) {
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
             <Bell />
-            &nbsp;<span className="font-bold text-white">타르코프 정보</span>
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              타르코프 정보
+            </TextSpan>
           </div>
 
           <div className="flex flex-col">
             <Link href={news.event_link}>
-              <span className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink">- 이벤트</span>
+              <TextSpan
+                textColor="CreamYellow"
+                isCursor
+                hoverColor="SoftPink"
+                size="lg"
+              >
+                - 이벤트
+              </TextSpan>
             </Link>
             <Link href={news.patch_link}>
-              <span className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink">- 패치노트</span>
+              <TextSpan
+                textColor="CreamYellow"
+                isCursor
+                hoverColor="SoftPink"
+                size="lg"
+              >
+                - 패치노트
+              </TextSpan>
             </Link>
           </div>
         </div>
@@ -110,9 +139,15 @@ export default function NewsClient({ news }: NewsClient) {
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
             <Download />
-            &nbsp;<span className="font-bold text-white">아레나 버전</span>
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              아레나 버전
+            </TextSpan>
           </div>
-          <span className="font-bold text-white">- {news.arena_version}</span>
+          &nbsp;
+          <TextSpan isCenter={false} size="lg">
+            - {news.arena_version}
+          </TextSpan>
         </div>
       </div>
 

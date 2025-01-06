@@ -4,6 +4,9 @@ import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../imageView/imageView";
+import DefineGrid from "../../gridContents/defineGrid";
+import CenterContents from "../../gridContents/centerContents";
+import TextSpan from "../../gridContents/textSpan";
 
 interface StimulantClient {
   medicalList: Stimulant[];
@@ -64,11 +67,11 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
     const red = ["손 떨림", "터널 효과"];
 
     if (blue.includes(text)) {
-      return "text-BrightCyan";
+      return "BrightCyan";
     } else if (red.includes(text)) {
-      return "text-Red";
+      return "Red";
     } else {
-      return "text-white";
+      return "white";
     }
   };
 
@@ -93,14 +96,13 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
       {medicalList.map(
         (stimulant) =>
           checkViewStimulant(stimulant) && (
-            <div
-              className={`${
-                stimulant.id === pageId && "bg-NeutralGray"
-              } w-full grid grid-cols-7 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3`}
-              key={stimulant.id}
+            <DefineGrid
               id={stimulant.id}
+              pageId={pageId}
+              cols="7"
+              key={stimulant.id}
             >
-              <div className="flex justify-center items-center">
+              <CenterContents>
                 <ImageView
                   src={stimulant.image}
                   alt={stimulant.name_en}
@@ -110,19 +112,18 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                   wrapWidth={240}
                   wrapHeight={100}
                 />
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">
-                  {stimulant.name_kr}
-                </span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{stimulant.name_kr}</TextSpan>
+              </CenterContents>
+
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
               <div className="flex justify-center flex-col">
                 {stimulant.buff.length > 0 ? (
-                  filterStimEffects(stimulant.buff).map((buff) => (
-                    <div key={buff.krSkill}>
+                  filterStimEffects(stimulant.buff).map((buff, index) => (
+                    <div key={`${index}-buff-${buff.id}`}>
                       {buff.delay != null && buff.duration != null && (
                         <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
                           {buff.id === "5ed5166ad380ab312177c100"
@@ -133,30 +134,24 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         </span>
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
-                        <span className="text-center font-bold text-sm">
-                          -&nbsp;
-                        </span>
-                        <span
-                          className={`text-center font-bold text-sm ${checkSkillColor(
-                            buff.krSkill
-                          )}`}
-                        >
+                        <TextSpan>-&nbsp;</TextSpan>
+                        <TextSpan textColor={checkSkillColor(buff.krSkill)}>
                           {buff.krSkill}
-                        </span>
-                        <span className="text-center font-bold text-sm text-BrightCyan">
+                        </TextSpan>
+                        <TextSpan textColor="BrightCyan">
                           &nbsp;{addPlusMinus(buff.value)}
-                        </span>
+                        </TextSpan>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <span className={`text-center font-bold text-sm`}>-</span>
+                  <TextSpan>-</TextSpan>
                 )}
               </div>
               <div className="flex justify-center flex-col">
-                {stimulant.buff.length > 0 ? (
-                  filterStimEffects(stimulant.debuff).map((debuff) => (
-                    <div key={debuff.krSkill}>
+                {stimulant.debuff.length > 0 ? (
+                  filterStimEffects(stimulant.debuff).map((debuff, index) => (
+                    <div key={`${index}-debuff-${debuff.id}`}>
                       {debuff.delay != null && debuff.duration != null && (
                         <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
                           {debuff.id === "5ed5166ad380ab312177c100"
@@ -167,33 +162,27 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         </span>
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
-                        <span className="text-center font-bold text-sm">
-                          -&nbsp;
-                        </span>
-                        <span
-                          className={`text-center font-bold text-sm ${checkSkillColor(
-                            debuff.krSkill
-                          )}`}
-                        >
+                        <TextSpan>-&nbsp;</TextSpan>
+                        <TextSpan textColor={checkSkillColor(debuff.krSkill)}>
                           {debuff.krSkill}
-                        </span>
-                        <span className="text-center font-bold text-sm text-Red">
+                        </TextSpan>
+                        <TextSpan textColor="BrightCyan">
                           &nbsp;{addPlusMinus(debuff.value)}
-                        </span>
+                        </TextSpan>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <span className={`text-center font-bold text-sm`}>-</span>
+                  <TextSpan>-</TextSpan>
                 )}
               </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="text-center font-bold text-sm">-</span>
-              </div>
-            </div>
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>-</TextSpan>
+              </CenterContents>
+            </DefineGrid>
           )
       )}
     </div>

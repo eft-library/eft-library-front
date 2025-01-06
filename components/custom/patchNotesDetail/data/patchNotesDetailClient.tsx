@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { formatISODate } from "@/lib/func/formatTime";
 import Link from "next/link";
 import AdBanner from "../../adsense/adBanner";
+import TextSpan from "../../gridContents/textSpan";
 
 interface InformationInfoDetail {
   information_group: InformationInfo[];
@@ -73,12 +74,12 @@ export default function PatchNotesDetailClient({
                 "flex justify-between items-center border-solid border-white border-2 p-4 rounded-lg hover:bg-NeutralGray"
               }
             >
-              <span className={"font-bold text-white text-lg"}>
+              <TextSpan isCenter={false} size="lg">
                 {info.name_kr}
-              </span>
-              <span className={"font-bold text-white text-base"}>
+              </TextSpan>
+              <TextSpan isCenter={false}>
                 {formatISODate(info.update_time)}
-              </span>
+              </TextSpan>
             </div>
           </Link>
         ))}
