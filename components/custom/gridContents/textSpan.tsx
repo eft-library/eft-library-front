@@ -25,9 +25,9 @@ export default function TextSpan({
         isCenter && "text-center",
         `font-${textWeight}`,
         `text-${size}`,
-        `text-${textColor}`,
+        textColor && `text-${textColor}`, // 수정된 부분
         isCursor && "cursor-pointer",
-        hoverColor && `hover:text-${hoverColor}`
+        hoverColor && `hover:text-${hoverColor}` // 수정된 부분
       )}
     >
       {children}

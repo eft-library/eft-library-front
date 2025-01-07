@@ -9,7 +9,22 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./@/**/*.{ts,tsx}",
   ],
-  safelist: [{ pattern: /^grid-cols-\d+$/ }, { pattern: /^col-span-\d+$/ }],
+  safelist: [
+    { pattern: /^grid-cols-\d+$/ },
+    { pattern: /^col-span-\d+$/ },
+    // text-color classes
+    {
+      pattern:
+        /text-(NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
+    },
+
+    // hover:text-color classes
+    {
+      pattern:
+        /hover:text-(NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
+    },
+  ],
+
   theme: {
     extend: {
       gridTemplateColumns: {
