@@ -84,7 +84,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
               <TextSpan size="xl" isCenter={false}>
                 관련 퀘스트 아이템
               </TextSpan>
-              <div className="flex flex-col justify-center items-center gap-4">
+              <div className="flex flex-col justify-center items-center gap-2">
                 <GetClientColumn
                   columnLength={8}
                   columnList={relatedQuestColumn}
@@ -100,9 +100,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                         alt={item.item_name_en}
                         popWidth={200}
                         popHeight={180}
-                        size="240px"
-                        wrapWidth={240}
-                        wrapHeight={140}
+                        size="170px"
+                        wrapWidth={170}
+                        wrapHeight={100}
                       />
                     </div>
                     <div className="flex justify-center items-center col-span-2">
