@@ -6,16 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface Headset {
-  id: string;
-  name: string;
-  image: string;
-}
-
-interface HeadsetList {
-  headsetList: Headset[];
-}
+import type { HeadsetList } from "./headsetTypes";
 
 export default function HeadsetClient({ headsetList }: HeadsetList) {
   const param = useSearchParams();

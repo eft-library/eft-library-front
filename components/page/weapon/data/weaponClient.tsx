@@ -6,50 +6,7 @@ import ThrowableRender from "./throwableRender";
 import SpecialRender from "./specialRender";
 import StationaryRender from "./stationaryRender";
 import { gunColumnDefinition } from "@/lib/consts/gridContsts";
-
-interface WeaponClient {
-  weapon: WeaponData;
-}
-
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  update_time: string;
-}
-
-interface Gun extends Weapon {
-  default_ammo: string;
-  modes_kr: string[];
-  modes_en: string[];
-  ergonomics: number;
-  recoil_horizontal: number;
-  fire_rate: number;
-  recoil_vertical: number;
-  carliber: string;
-}
-
-interface Knife extends Weapon {
-  slash_damage: number;
-  hit_radius: number;
-  stab_damage: number;
-}
-
-interface Throwable extends Weapon {
-  fuse: number;
-  min_explosion_distance: number;
-  max_explosion_distance: number;
-  fragments: number;
-  min_fuse: number | null;
-}
-
-interface WeaponData {
-  gun: Gun[];
-  knife: Knife[];
-  throwable: Throwable[];
-}
+import type { WeaponClient } from "./weaponTypes";
 
 export default function WeaponClient({ weapon }: WeaponClient) {
   const { weaponCategory } = useAppStore((state) => state);

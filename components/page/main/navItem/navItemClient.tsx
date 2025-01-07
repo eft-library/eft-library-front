@@ -4,20 +4,7 @@ import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import Link from "next/link";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
-
-interface NavItem {
-  en_name: string;
-  link: string;
-  order: number;
-  value: string;
-  kr_name: string;
-  image: string;
-  parent_value: string;
-}
-
-interface NavItemList {
-  navItemList: NavItem[];
-}
+import type { NavItemList } from "../mainTypes";
 
 export default function NavItemClient({ navItemList }: NavItemList) {
   return (

@@ -3,21 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface LootSelectorClient {
-  lootType: LootType;
-}
-
-interface LootType {
-  id: string;
-  json_value: LootJson[];
-}
-
-interface LootJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
+import type { LootSelectorClient } from "./lootTypes";
 
 export default function LootSelectorClient({ lootType }: LootSelectorClient) {
   const { setLootCategory, lootCategory } = useAppStore((state) => state);

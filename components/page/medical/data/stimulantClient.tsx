@@ -12,39 +12,7 @@ import {
   getPlusMinus,
   filterStimEffects,
 } from "@/lib/func/jsxfunction";
-
-interface StimulantClient {
-  medicalList: Stimulant[];
-}
-
-interface Stimulant {
-  id: string;
-  category: string;
-  name_kr: string;
-  name_en: string;
-  image: string;
-  short_name: string;
-  cures_en: string[];
-  cures_kr: string[];
-  buff: Effect[];
-  debuff: Effect[];
-  use_time: number;
-  uses: number;
-  energy_impact: number;
-  hydration_impact: number;
-  painkiller_duration: number;
-  hitpoints: number;
-}
-interface Effect {
-  id: string;
-  type: string;
-  delay?: number;
-  value: number;
-  chance: number;
-  krSkill: string;
-  duration?: number;
-  skillName: string;
-}
+import type { StimulantClient } from "./medicalTypes";
 
 export default function StimulantClient({ medicalList }: StimulantClient) {
   const { medicalCategory } = useAppStore((state) => state);

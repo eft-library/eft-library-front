@@ -13,26 +13,7 @@ import {
   getColor,
   floatToPercent,
 } from "@/lib/func/jsxfunction";
-
-interface AmmoClient {
-  ammoList: Ammo[];
-}
-
-interface Ammo {
-  id: string;
-  name: string;
-  round: string;
-  damage: number;
-  penetration_power: number;
-  armor_damage: number;
-  accuracy_modifier: number;
-  recoil_modifier: number;
-  light_bleed_modifier: number;
-  heavy_bleed_modifier: number;
-  efficiency: number[];
-  image: string;
-  category: string;
-}
+import type { AmmoClient } from "./ammoTypes";
 
 export default function AmmoClient({ ammoList }: AmmoClient) {
   const { ammoCategory } = useAppStore((state) => state);

@@ -4,22 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface BossSelectorClient {
-  bossType: BossType;
-}
-
-interface BossType {
-  id: string;
-  json_value: BossJson[];
-}
-
-interface BossJson {
-  id: string;
-  link: string;
-  order: number;
-  name_kr: string;
-}
+import type { BossSelectorClient } from "./bossTypes";
 
 export default function BossSelectorClient({ bossType }: BossSelectorClient) {
   const param = useParams<{ id: string }>();

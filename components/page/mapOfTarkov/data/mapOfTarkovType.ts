@@ -1,0 +1,146 @@
+export interface Boss extends BossInfo {
+  health_total: number;
+  spawn: string[];
+  faction: string;
+  location_spawn_chance_en: SpawnChance[];
+  location_spawn_chance_kr: SpawnChance[];
+  followers_en: string[];
+  followers_kr: string[];
+  name_kr: string;
+  name_en: string;
+  image: string;
+  order: number;
+}
+interface SpawnChance {
+  order: number;
+  chance: number;
+  location: string;
+}
+interface BossInfo {
+  id: string;
+  location_guide: string;
+  sub: BossLoot[];
+  sub_followers: Followers[];
+}
+interface BossLoot {
+  boss_name_en: string;
+  boss_name_kr: string;
+  item_id: string;
+  boss_id: string;
+  item_type: string;
+  item_type_en: string;
+  item_type_kr: string;
+  item_name_en: string;
+  item_name_kr: string;
+  item_image: string;
+  link: string;
+}
+
+interface Followers {
+  id: string;
+  name_kr: string;
+  name_en: string;
+  boss_id: string;
+  health_image: string;
+  loot: FollowersLoot[];
+}
+
+interface FollowersLoot {
+  follower_name_en: string;
+  follower_name_kr: string;
+  follower_id: string;
+  item_id: string;
+  boss_id: string;
+  item_type: string;
+  item_type_en: string;
+  item_type_kr: string;
+  item_name_en: string;
+  item_name_kr: string;
+  item_image: string;
+  link: string;
+}
+
+export interface BossClient {
+  bossInfo: Boss;
+}
+
+interface Requirement {
+  desc: string;
+  image: string;
+  thumbnail: string;
+}
+
+export interface ExtractionRender {
+  extractionInfo: Extraction;
+}
+
+export interface MapOfTarkovSelectorClient {
+  mapOfTarkovType: MapOfTarkovType;
+}
+
+interface MapOfTarkovType {
+  id: string;
+  json_value: MapOfTarkovJson[];
+}
+
+interface MapOfTarkovJson {
+  id: string;
+  link: string;
+  order: number;
+  name_kr: string;
+}
+
+export interface MapOfTarkovClient {
+  mapOfTarkovList: MapOfTarkov[];
+}
+
+interface MapOfTarkov {
+  boss_list: Boss[];
+  map_info: Map;
+  extraction_info: Extraction[];
+  transits_info: Extraction[];
+  map_id: string;
+}
+interface Requirement {
+  desc: string;
+  image: string;
+  thumbnail: string;
+}
+export interface Extraction {
+  id: string;
+  name: string;
+  faction: string;
+  single_use: boolean;
+  tip: Requirement[];
+  image: string;
+  image_thumbnail: string;
+  always_available: boolean;
+  requirements: Requirement[];
+  map: string;
+}
+interface Map {
+  sub: SubMap[];
+  id: string;
+  name_en: string;
+  three_image: string;
+  jpg_image: string;
+  depth: number;
+  link: string;
+  name_kr: string;
+  mot_image: string;
+  order: number;
+  main_image: string;
+}
+interface SubMap {
+  id: string;
+  name_en: string;
+  three_image: string;
+  jpg_image: string;
+  depth: number;
+  link: string;
+  name_kr: string;
+  mot_image: string;
+  order: number;
+  main_image: string;
+  parent_value: string;
+}

@@ -1,18 +1,6 @@
 import { checkPlus, getPlusMinus } from "@/lib/func/jsxfunction";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface StimEffet {
-  type: string;
-  delay?: number;
-  value: number;
-  krSkill: string;
-  duration?: number;
-  skillName: string;
-}
-
-interface EffectText {
-  effect: StimEffet;
-}
+import type { EffectText } from "./provisionsTypes";
 
 export default function EffectText({ effect }: EffectText) {
   const fixStr = (value: string) => {

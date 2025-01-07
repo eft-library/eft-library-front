@@ -7,35 +7,9 @@ import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { follwerColumn } from "@/lib/consts/gridContsts";
+import type { FollowerLoot, FollowersLoot } from "./bossTypes";
 
-interface FollowersLoot {
-  follower_name_en: string;
-  follower_name_kr: string;
-  follower_id: string;
-  item_id: string;
-  boss_id: string;
-  item_type: string;
-  item_type_en: string;
-  item_type_kr: string;
-  item_name_en: string;
-  item_name_kr: string;
-  item_image: string;
-  link: string;
-}
-
-interface Follower {
-  id: string;
-  name_kr: string;
-  name_en: string;
-  boss_id: string;
-  health_image: string;
-  loot: FollowersLoot[];
-}
-interface FolloweLoot {
-  follower: Follower;
-}
-
-export default function FollowerLoot({ follower }: FolloweLoot) {
+export default function FollowerLoot({ follower }: FollowerLoot) {
   const [lootType, setLootType] = useState<string>();
 
   useEffect(() => {

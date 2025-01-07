@@ -6,18 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface ArmBand {
-  id: string;
-  name: string;
-  short_name: string;
-  weight: string;
-  image: string;
-}
-
-interface ArmBandList {
-  armBandList: ArmBand[];
-}
+import type { ArmBandList } from "./armBandType";
 
 export default function ArmBandClient({ armBandList }: ArmBandList) {
   const param = useSearchParams();

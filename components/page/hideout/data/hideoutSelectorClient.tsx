@@ -3,22 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
 import Image from "next/image";
-
-interface HideoutSelectorClient {
-  hideoutType: HideoutType;
-}
-
-interface HideoutType {
-  id: string;
-  json_value: HideoutJson[];
-}
-
-interface HideoutJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-  image: string;
-}
+import type { HideoutSelectorClient } from "./hideoutTypes";
 
 export default function HideoutSelectorClient({
   hideoutType,

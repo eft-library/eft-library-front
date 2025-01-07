@@ -1,20 +1,5 @@
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface Bonus {
-  value: number;
-  name_en: string;
-  name_kr: string | null;
-  skill_name_en: string | null;
-  skill_name_kr: string | null;
-}
-
-interface BonusItem {
-  bonus: Bonus;
-}
-
-interface BonusList {
-  bonuses: Bonus[];
-}
+import type { BonusItem, BonusList } from "./hideoutTypes";
 
 export default function Bonus({ bonuses }: BonusList) {
   const checkNoPercent = (value: string) => {

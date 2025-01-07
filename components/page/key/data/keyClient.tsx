@@ -8,30 +8,7 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import { returnQuestText } from "@/lib/func/jsxfunction";
-
-interface KeyClient {
-  keyList: Key[];
-}
-
-interface Key {
-  id: string;
-  uses: number;
-  use_map_en: string[];
-  use_map_kr: string[];
-  map_value: string[];
-  notes: QuestNotes[];
-  name: string;
-  image: string;
-}
-
-interface QuestNotes {
-  id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
-  name_kr: string;
-  url_mapping: string;
-}
+import type { KeyClient } from "./keyTypes";
 
 export default function KeyClient({ keyList }: KeyClient) {
   const { keyCategory } = useAppStore((state) => state);

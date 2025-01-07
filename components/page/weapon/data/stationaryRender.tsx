@@ -10,30 +10,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { stationaryColumn } from "@/lib/consts/gridContsts";
-
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  update_time: string;
-}
-
-interface Gun extends Weapon {
-  default_ammo: string;
-  modes_kr: string[];
-  modes_en: string[];
-  ergonomics: number;
-  recoil_horizontal: number;
-  fire_rate: number;
-  recoil_vertical: number;
-  carliber: string;
-}
-
-interface StationaryRender {
-  stationaryList: Gun[];
-}
+import type { StationaryRender } from "./weaponTypes";
 
 export default function StationaryRender({ stationaryList }: StationaryRender) {
   const { weaponCategory } = useAppStore((state) => state);

@@ -6,22 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface BackpackList {
-  backpackList: Backpack[];
-}
-interface Backpack {
-  name: string;
-  image: string;
-  id: string;
-  capacity: number;
-  grids: Size[];
-  weight: number;
-}
-interface Size {
-  width: number;
-  height: number;
-}
+import type { BackpackList } from "./backpackTypes";
 
 export default function BackpackClient({ backpackList }: BackpackList) {
   const param = useSearchParams();

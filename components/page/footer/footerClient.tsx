@@ -5,29 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FooterSVG } from "../../custom/getIcon/getSVG";
 import TextSpan from "../../custom/gridContents/textSpan";
-
-interface Icon {
-  link: string;
-  name: string;
-}
-
-interface FooterColumn {
-  id: string;
-  json_value: FooterJsonValue;
-  type: string;
-}
-
-interface FooterJsonValue {
-  icon: Icon[];
-  text: Text[];
-}
-
-interface Text {
-  value: string;
-}
-interface FooterData {
-  footerData: FooterColumn;
-}
+import type { FooterData } from "./footerTypes";
 
 export default function FooterClient({ footerData }: FooterData) {
   return (

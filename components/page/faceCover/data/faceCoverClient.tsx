@@ -6,27 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface FaceCoverClient {
-  face_cover_data: FaceCoverData;
-  isClass: boolean;
-}
-
-interface FaceCoverData {
-  class_face_cover: DefenseData[];
-  no_class_face_cover: DefenseData[];
-}
-
-interface DefenseData {
-  id: string;
-  durability: number;
-  class_value: number;
-  areas_kr: string[];
-  weight: number;
-  name: string;
-  image: string;
-  ricochet_str_kr: string;
-}
+import type { FaceCoverClient } from "./faceCoverTypes";
 
 export default function FaceCoverClient({
   face_cover_data,

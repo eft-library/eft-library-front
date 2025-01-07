@@ -5,29 +5,7 @@ import { useState, useEffect } from "react";
 import { useAppStore } from "@/store/provider";
 import { Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface ItemSelector {
-  viewItemList: string[];
-  onClickItemAction: (val: string) => void;
-  onClickAllItemAction: (val: boolean) => void;
-  originItemList: JpgItemPath[];
-}
-
-interface UserNextQuest {
-  url_mapping: string;
-  id: string;
-  name: string;
-  name_kr: string;
-}
-
-interface JpgItemPath {
-  childValue: string;
-  motherValue: string;
-  quest_info: UserNextQuest[];
-  x: number;
-  y: number;
-  scale: number;
-}
+import type { ItemSelector } from "./mapType";
 
 export default function ItemSelector({
   viewItemList,

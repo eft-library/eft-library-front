@@ -7,34 +7,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { floatToPercent, returnQuestText } from "@/lib/func/jsxfunction";
-
-interface GlassesClient {
-  glassesData: RigData;
-  isClass: boolean;
-}
-
-interface RigData {
-  class_glasses: DefenseData[];
-  no_class_glasses: DefenseData[];
-}
-
-interface DefenseData {
-  id: string;
-  durability: number;
-  class_value: number;
-  name: string;
-  image: string;
-  blindness_protection: number;
-  notes: QuestNotes[];
-}
-interface QuestNotes {
-  id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
-  name_kr: string;
-  url_mapping: string;
-}
+import type { GlassesClient } from "./glassesTypes";
 
 export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
   const param = useSearchParams();

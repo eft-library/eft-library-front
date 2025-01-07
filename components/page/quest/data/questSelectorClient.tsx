@@ -3,18 +3,7 @@
 import { useAppStore } from "@/store/provider";
 import { formatImage } from "@/lib/func/formatImage";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
-
-interface QuestSelectorClient {
-  npcList: QuestJson[];
-}
-
-interface QuestJson {
-  id: string;
-  order: number;
-  name_kr: string;
-  name_en: string;
-  image: string;
-}
+import type { QuestSelectorClient } from "./questTypes";
 
 export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
   const { npcId, setNpcId } = useAppStore((state) => state);

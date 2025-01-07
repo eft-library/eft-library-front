@@ -3,31 +3,8 @@
 import { TextureLoader } from "three";
 import { useState, useEffect } from "react";
 import { formatImage } from "@/lib/func/formatImage";
-import { Vector3 } from "three";
 import * as THREE from "three";
-
-type Vector3Like = [
-  width?: number,
-  height?: number,
-  depth?: number,
-  widthSegments?: number,
-  heightSegments?: number,
-  depthSegments?: number
-];
-interface SubFilter {
-  en: string;
-  parent_value: string;
-  kr: string;
-  image: string;
-  value: string;
-}
-interface ThreeItemPath {
-  boxArgs: Vector3Like;
-  position: Vector3;
-  childValue: string;
-  filterInfo: SubFilter[];
-  zoomLevel: number;
-}
+import type { ThreeItemPath } from "../mapType";
 
 export default function ItemBox({
   position,

@@ -4,29 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ExitDialog from "./exitDialog";
-
-interface MenuData {
-  en_name: string;
-  link: string;
-  order: number;
-  value: string;
-  kr_name: string;
-  image: string | null;
-}
-
-interface SubMenu extends MenuData {
-  parent_value: string;
-}
-
-interface Menu extends MenuData {
-  sub_menus: SubMenu[];
-}
-
-interface MenuButton {
-  menuData: Menu;
-  selectedMenu: string | null;
-  setSelectedMenu: (menu: string | null) => void;
-}
+import type { MenuButton } from "./headerTypes";
 
 export default function UserMenu({
   menuData,

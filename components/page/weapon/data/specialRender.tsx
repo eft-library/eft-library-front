@@ -9,30 +9,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { specialColumn } from "@/lib/consts/gridContsts";
-
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  update_time: string;
-}
-
-interface Gun extends Weapon {
-  default_ammo: string;
-  modes_kr: string[];
-  modes_en: string[];
-  ergonomics: number;
-  recoil_horizontal: number;
-  fire_rate: number;
-  recoil_vertical: number;
-  carliber: string;
-}
-
-interface SpecialRender {
-  specialList: Gun[];
-}
+import type { SpecialRender } from "./weaponTypes";
 
 export default function SpecialRender({ specialList }: SpecialRender) {
   const { weaponCategory } = useAppStore((state) => state);

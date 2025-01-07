@@ -6,28 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface HeadWearClient {
-  headWearData: HeadWearData;
-  isClass: boolean;
-}
-
-interface HeadWearData {
-  class_headwear: DefenseData[];
-  no_class_headwear: DefenseData[];
-}
-
-interface DefenseData {
-  id: string;
-  ricochet_str_kr: string;
-  durability: number;
-  class_value: number;
-  areas_kr: string[];
-  name: string;
-  image: string;
-  weight: string;
-  blindness_protection: number;
-}
+import type { HeadWearClient } from "./headwearTypes";
 
 export default function HeadWearClient({
   headWearData,

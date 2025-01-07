@@ -8,38 +8,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { checkViewMedical } from "@/lib/func/jsxfunction";
-
-interface ItemClient {
-  medicalList: Item[];
-}
-
-interface Item {
-  id: string;
-  category: string;
-  name_kr: string;
-  name_en: string;
-  image: string;
-  short_name: string;
-  cures_en: string[];
-  cures_kr: string[];
-  buff: Effect[];
-  debuff: Effect[];
-  use_time: number;
-  uses: number;
-  energy_impact: number;
-  hydration_impact: number;
-  painkiller_duration: number;
-  hitpoints: number;
-}
-interface Effect {
-  type: string;
-  delay: number;
-  value: number;
-  chance: number;
-  krSkill: string;
-  duration: number;
-  skillName: string;
-}
+import type { ItemClient } from "./medicalTypes";
 
 export default function ItemClient({ medicalList }: ItemClient) {
   const { medicalCategory } = useAppStore((state) => state);

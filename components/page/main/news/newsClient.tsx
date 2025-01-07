@@ -7,27 +7,7 @@ import DefaultAlert from "../../../custom/alert/defaultAlert";
 import { Bell, CalendarCheck, Download, LogIn } from "lucide-react";
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface News {
-  game_version: string;
-  arena_version: string;
-  patch_link: string;
-  event_link: string;
-  youtube_id: string;
-  next_update: string[];
-  user_function: NewsUserFunction[];
-}
-
-interface NewsUserFunction {
-  link: string;
-  name_en: string;
-  name_kr: string;
-  use_yn: boolean;
-}
-
-interface NewsClient {
-  news: News;
-}
+import type { NewsClient } from "../mainTypes";
 
 export default function NewsClient({ news }: NewsClient) {
   const { data: session } = useSession();

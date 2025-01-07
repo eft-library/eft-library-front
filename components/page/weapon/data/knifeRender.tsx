@@ -8,25 +8,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { knifeColumn } from "@/lib/consts/gridContsts";
-
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  update_time: string;
-}
-
-interface Knife extends Weapon {
-  slash_damage: number;
-  hit_radius: number;
-  stab_damage: number;
-}
-
-interface KnifeRender {
-  knifeList: Knife[];
-}
+import type { KnifeRender } from "./weaponTypes";
 
 export default function KnifeRender({ knifeList }: KnifeRender) {
   const param = useSearchParams();

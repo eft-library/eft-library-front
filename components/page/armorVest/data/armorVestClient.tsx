@@ -6,20 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface DefenseData {
-  id: string;
-  durability: number;
-  class_value: number;
-  areas_kr: string[];
-  weight: number;
-  name: string;
-  image: string;
-}
-
-interface ArmorVestList {
-  armorVestList: DefenseData[];
-}
+import type { ArmorVestList } from "./armorVestTypes";
 
 export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
   const param = useSearchParams();

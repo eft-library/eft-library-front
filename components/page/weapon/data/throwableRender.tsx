@@ -8,27 +8,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { detailThrowable, throwableColumn } from "@/lib/consts/gridContsts";
-
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  update_time: string;
-}
-
-interface Throwable extends Weapon {
-  fuse: number;
-  min_explosion_distance: number;
-  max_explosion_distance: number;
-  fragments: number;
-  min_fuse: number | null;
-}
-
-interface ThrowableRender {
-  throwableList: Throwable[];
-}
+import type { ThrowableRender } from "./weaponTypes";
 
 export default function ThrowableRender({ throwableList }: ThrowableRender) {
   const param = useSearchParams();

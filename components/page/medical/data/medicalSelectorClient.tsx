@@ -3,21 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface MedicalSelectorClient {
-  medicalType: MedicalType;
-}
-
-interface MedicalType {
-  id: string;
-  json_value: MedicalJson[];
-}
-
-interface MedicalJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
+import type { MedicalSelectorClient } from "./medicalTypes";
 
 export default function MedicalSelectorClient({
   medicalType,

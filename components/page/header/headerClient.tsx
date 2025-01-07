@@ -8,23 +8,7 @@ import { useAppStore } from "@/store/provider";
 import { useSession, signIn } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import UserMenu from "./contents/userMenu";
-
-interface MenuData {
-  en_name: string;
-  link: string;
-  order: number;
-  value: string;
-  kr_name: string;
-  image: string | null;
-}
-
-interface SubMenu extends MenuData {
-  parent_value: string;
-}
-
-interface Menu extends MenuData {
-  sub_menus: SubMenu[];
-}
+import type { Menu } from "./contents/headerTypes";
 
 export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
   const { setNpcId } = useAppStore((state) => state);

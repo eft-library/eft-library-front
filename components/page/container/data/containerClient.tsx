@@ -6,24 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface ContainerList {
-  containerList: Container[];
-}
-
-interface Container {
-  id: string;
-  name_en: string;
-  name_kr: string;
-  image: string;
-  capacity: number;
-  grids: Size[];
-}
-
-interface Size {
-  width: number;
-  height: number;
-}
+import type { ContainerList } from "./containerTypes";
 
 export default function ContainerClient({ containerList }: ContainerList) {
   const param = useSearchParams();

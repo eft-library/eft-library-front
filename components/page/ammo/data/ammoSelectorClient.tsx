@@ -2,22 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
-
-interface AmmoSelectorClient {
-  ammoType: AmmoType;
-}
-
-interface AmmoType {
-  id: string;
-  json_value: AmmoJson[];
-}
-
-interface AmmoJson {
-  color: string;
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
+import type { AmmoSelectorClient } from "./ammoTypes";
 
 export default function AmmoSelectorClient({ ammoType }: AmmoSelectorClient) {
   const { setAmmoCategory, ammoCategory } = useAppStore((state) => state);

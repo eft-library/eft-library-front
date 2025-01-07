@@ -8,7 +8,7 @@ type Vector3Like = [
   heightSegments?: number,
   depthSegments?: number
 ];
-interface ThreeItemPath {
+export interface ThreeItemPath {
   boxArgs: Vector3Like;
   position: Vector3;
   childValue: string;
@@ -46,6 +46,13 @@ export interface SubMap extends MapData {
 interface MapJson {
   geometry: string;
   material: string;
+}
+
+export interface ItemSelector {
+  viewItemList: string[];
+  onClickItemAction: (val: string) => void;
+  onClickAllItemAction: (val: boolean) => void;
+  originItemList: JpgItemPath[];
 }
 
 export interface JpgItemPath {
@@ -91,4 +98,20 @@ export interface MapDetailClient {
 export interface MapWrapper {
   mapData: Map;
   onClickMapAction: (val: MapData) => void;
+}
+
+export interface MapSelectorClient {
+  mapType: MapType;
+}
+
+export interface MapType {
+  id: string;
+  json_value: MapJson[];
+}
+
+interface MapJson {
+  id: string;
+  link: string;
+  order: number;
+  name_kr: string;
 }

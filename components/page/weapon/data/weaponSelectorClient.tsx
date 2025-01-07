@@ -3,21 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface WeaponSelectorClient {
-  weaponType: WeaponType;
-}
-
-interface WeaponType {
-  id: string;
-  json_value: WeaponJson[];
-}
-
-interface WeaponJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
+import type { WeaponSelectorClient } from "./weaponTypes";
 
 export default function WeaponSelectorClient({
   weaponType,

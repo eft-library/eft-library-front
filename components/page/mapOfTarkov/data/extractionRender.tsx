@@ -5,28 +5,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface Requirement {
-  desc: string;
-  image: string;
-  thumbnail: string;
-}
-interface Extraction {
-  id: string;
-  name: string;
-  faction: string;
-  single_use: boolean;
-  tip: Requirement[];
-  image: string;
-  image_thumbnail: string;
-  always_available: boolean;
-  requirements: Requirement[];
-  map: string;
-}
-
-interface ExtractionRender {
-  extractionInfo: Extraction;
-}
+import type { ExtractionRender } from "./mapOfTarkovType";
 
 export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   const formatTextWithLineBreaks = (text: string) => {

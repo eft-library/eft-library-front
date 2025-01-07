@@ -4,22 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface MapSelectorClient {
-  mapType: MapType;
-}
-
-interface MapType {
-  id: string;
-  json_value: MapJson[];
-}
-
-interface MapJson {
-  id: string;
-  link: string;
-  order: number;
-  name_kr: string;
-}
+import type { MapSelectorClient, MapType } from "./mapType";
 
 export default function MapSelectorClient({ mapType }: MapSelectorClient) {
   const param = useParams<{ id: string }>();

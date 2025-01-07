@@ -8,18 +8,7 @@ import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { handleScroll } from "@/lib/func/jsxfunction";
-
-interface SearchData {
-  link: string;
-  page_value: string;
-  type: string;
-  value: string;
-  order: number;
-}
-
-interface SearchClient {
-  searchList: SearchData[];
-}
+import type { SearchClient, SearchData } from "../mainTypes";
 
 export default function SearchClient({ searchList }: SearchClient) {
   const { setHideoutCategory, setNpcId } = useAppStore((state) => state);

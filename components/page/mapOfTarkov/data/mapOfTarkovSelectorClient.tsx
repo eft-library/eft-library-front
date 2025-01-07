@@ -4,22 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import TextSpan from "../../../custom/gridContents/textSpan";
-
-interface MapOfTarkovSelectorClient {
-  mapOfTarkovType: MapOfTarkovType;
-}
-
-interface MapOfTarkovType {
-  id: string;
-  json_value: MapOfTarkovJson[];
-}
-
-interface MapOfTarkovJson {
-  id: string;
-  link: string;
-  order: number;
-  name_kr: string;
-}
+import type { MapOfTarkovSelectorClient } from "./mapOfTarkovType";
 
 export default function MapOfTarkovSelectorClient({
   mapOfTarkovType,
