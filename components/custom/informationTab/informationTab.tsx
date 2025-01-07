@@ -1,39 +1,50 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TextSpan from "../gridContents/textSpan";
+import { cn } from "@/lib/utils";
 
 export default function InformationTab() {
   const pathname = usePathname();
   const router = useRouter();
 
   return (
-    <Tabs
-      defaultValue={pathname.split("/").filter(Boolean)[0]}
-      className="w-[400px]"
-    >
-      <TabsList className="grid w-full grid-cols-3 ">
-        <TabsTrigger
-          className={"font-bold text-white"}
-          value="event"
-          onClick={() => router.push("/event?id=1")}
-        >
-          이벤트
-        </TabsTrigger>
-        <TabsTrigger
-          className={"font-bold text-white"}
-          value="patch-notes"
-          onClick={() => router.push("/patch-notes?id=1")}
-        >
-          패치노트
-        </TabsTrigger>
-        <TabsTrigger
-          className={"font-bold text-white"}
-          value="notice"
-          onClick={() => router.push("/notice?id=1")}
-        >
-          공지
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <div className="flex gap-4 w-full  justify-center items-center">
+      <div
+        className={cn(
+          "cursor-pointer p-4 border-white boder-solid border-2 rounded-full w-40 justify-center items-center hover:bg-NeutralGray flex",
+          {
+            "bg-NeutralGray":
+              pathname.split("/").filter(Boolean)[0] === "event",
+          }
+        )}
+        onClick={() => router.push("/event?id=1")}
+      >
+        <TextSpan size="2xl">이벤트</TextSpan>
+      </div>
+      <div
+        className={cn(
+          "cursor-pointer p-4 border-white boder-solid border-2 rounded-full w-40 justify-center items-center hover:bg-NeutralGray flex",
+          {
+            "bg-NeutralGray":
+              pathname.split("/").filter(Boolean)[0] === "patch-notes",
+          }
+        )}
+        onClick={() => router.push("/patch-notes?id=1")}
+      >
+        <TextSpan size="2xl">패치노트</TextSpan>
+      </div>
+      <div
+        className={cn(
+          "cursor-pointer p-4 border-white boder-solid border-2 rounded-full w-40 justify-center items-center hover:bg-NeutralGray flex",
+          {
+            "bg-NeutralGray":
+              pathname.split("/").filter(Boolean)[0] === "notice",
+          }
+        )}
+        onClick={() => router.push("/notice?id=1")}
+      >
+        <TextSpan size="2xl">공지사항</TextSpan>
+      </div>
+    </div>
   );
 }
