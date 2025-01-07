@@ -19,7 +19,7 @@ export default function BossSelectorClient({ bossType }: BossSelectorClient) {
               { "bg-NeutralGray": param.id === boss.id }
             )}
           >
-            <TextSpan size="lg">{boss.name_kr}</TextSpan>
+            <TextSpan>{boss.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

@@ -96,6 +96,7 @@ export default {
         Goldenrod: "#d2b82e",
         MutedGray: "#B8B8B8",
         Background: "#111111",
+        LimeGreen: "#7fd14a",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",

@@ -25,7 +25,7 @@ export default function MapSelectorClient({ mapType }: MapSelectorClient) {
               { "bg-NeutralGray": param.id === mapInfo.id }
             )}
           >
-            <TextSpan size="lg">{mapInfo.name_kr}</TextSpan>
+            <TextSpan>{mapInfo.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

@@ -33,7 +33,7 @@ export default function KeySelectorClient({ keyType }: KeySelectorClient) {
           )}
           onClick={() => setKeyCategory(key.value)}
         >
-          <TextSpan size="lg">{key.desc_kr}</TextSpan>
+          <TextSpan>{key.desc_kr}</TextSpan>
         </div>
       ))}
     </div>

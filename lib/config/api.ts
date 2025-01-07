@@ -26,6 +26,32 @@ export async function requestData(url: string): Promise<FetchSchema | null> {
   }
 }
 
+export async function requestPostData(
+  url: string,
+  body: any
+): Promise<FetchSchema | null> {
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result: FetchSchema = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function requestUserData(url: string, body: any, session: any) {
   try {
     const response = await fetch(url, {
@@ -36,6 +62,10 @@ export async function requestUserData(url: string, body: any, session: any) {
       },
       body: JSON.stringify(body),
     });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
 
     const result: FetchSchema = await response.json();
 

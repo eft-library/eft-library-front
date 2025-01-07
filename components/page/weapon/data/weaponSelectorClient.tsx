@@ -21,7 +21,7 @@ export default function WeaponSelectorClient({
           )}
           onClick={() => setWeaponCategory(weapon.value)}
         >
-          <TextSpan size="lg">{weapon.desc_kr}</TextSpan>
+          <TextSpan>{weapon.desc_kr}</TextSpan>
         </div>
       ))}
     </div>
