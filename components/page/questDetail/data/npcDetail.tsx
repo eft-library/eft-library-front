@@ -4,7 +4,11 @@ import { formatImage } from "@/lib/func/formatImage";
 import { useRouter } from "next/navigation";
 import React from "react";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { getQuestTitle } from "@/lib/func/jsxfunction";
+import {
+  getQuestTitle,
+  handleHover,
+  handleHoverExit,
+} from "@/lib/func/jsxfunction";
 import type { NpcDetail } from "../../quest/data/questTypes";
 
 export default function NpcDetail({ questInfo }: NpcDetail) {
@@ -24,6 +28,8 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHoverExit}
           onClick={() => onClickNPC()}
         />
         <h1 className="text-xl font-bold text-white flex text-center flex items-center justify-center">
