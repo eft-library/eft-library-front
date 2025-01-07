@@ -19,7 +19,7 @@ export default function AmmoSelectorClient({ ammoType }: AmmoSelectorClient) {
           style={{ border: `1px solid ${ammo.color}` }}
           onClick={() => setAmmoCategory(ammo.value)}
         >
-          <span className="text-[10px] text-center font-bold">
+          <span className="text-[12px] text-center font-bold">
             {ammo.desc_kr}
           </span>
         </div>

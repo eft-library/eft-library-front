@@ -16,7 +16,7 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
   useScrollMove(pageId, throwableList, "WEAPON");
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={5} columnList={throwableColumn} />
       {throwableList.map((throwable) => (
         <DefineGrid

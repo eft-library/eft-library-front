@@ -21,7 +21,7 @@ export default function MedicalSelectorClient({
           )}
           onClick={() => setMedicalCategory(medical.value)}
         >
-          <TextSpan isCenter={false} size="xs">
+          <TextSpan isCenter={false} size="lg">
             {medical.desc_kr}
           </TextSpan>
         </div>

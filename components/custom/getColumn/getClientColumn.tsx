@@ -27,7 +27,7 @@ export default function GetClientColumn({
             `col-span-${val.colSpan} flex justify-center items-center`
           )}
         >
-          <span className="font-bold p-1 text-sm">{val.name}</span>
+          <span className="font-bold p-1 text-lg">{val.name}</span>
         </div>
       ))}
     </div>

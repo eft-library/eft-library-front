@@ -16,7 +16,7 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
   useScrollMove(pageId, knifeList, "WEAPON");
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={5} columnList={knifeColumn} />
       {knifeList.map((knife) => (
         <DefineGrid cols="5" id={knife.id} pageId={pageId} key={knife.id}>

@@ -34,7 +34,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                   { "bg-NeutralGray": healthId === follower.id }
                 )}
               >
-                <TextSpan>{follower.name_kr}</TextSpan>
+                <TextSpan size="lg">{follower.name_kr}</TextSpan>
               </div>
             ))}
           </div>

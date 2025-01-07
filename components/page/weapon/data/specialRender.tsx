@@ -25,7 +25,7 @@ export default function SpecialRender({ specialList }: SpecialRender) {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={2} columnList={specialColumn} />
       {specialList.map(
         (special) =>

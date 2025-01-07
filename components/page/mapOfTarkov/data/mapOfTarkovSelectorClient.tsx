@@ -28,7 +28,7 @@ export default function MapOfTarkovSelectorClient({
               { "bg-NeutralGray": param.id === mapOfTarkov.id }
             )}
           >
-            <TextSpan>{mapOfTarkov.name_kr}</TextSpan>
+            <TextSpan size="lg">{mapOfTarkov.name_kr}</TextSpan>
           </div>
         </Link>
       ))}

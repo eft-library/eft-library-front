@@ -26,7 +26,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={5} columnList={stationaryColumn} />
       {stationaryList.map(
         (stationary) =>

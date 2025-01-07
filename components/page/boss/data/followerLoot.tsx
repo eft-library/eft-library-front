@@ -46,7 +46,7 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
                   { "bg-NeutralGray": lootType === selector.item_type }
                 )}
               >
-                <TextSpan>{selector.item_type_kr}</TextSpan>
+                <TextSpan size="lg">{selector.item_type_kr}</TextSpan>
               </div>
             ))}
           </div>
@@ -71,7 +71,7 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
                       />
                     </div>
                     <div className="flex justify-center items-center">
-                      <TextSpan size="sm">{loot.item_name_kr}</TextSpan>
+                      <TextSpan>{loot.item_name_kr}</TextSpan>
                     </div>
                   </div>
                 )

@@ -19,7 +19,7 @@ export default function LootSelectorClient({ lootType }: LootSelectorClient) {
           )}
           onClick={() => setLootCategory(loot.value)}
         >
-          <TextSpan size="xs">{loot.desc_kr}</TextSpan>
+          <TextSpan size="lg">{loot.desc_kr}</TextSpan>
         </div>
       ))}
     </div>

@@ -45,8 +45,8 @@ export default function SubMapSelector({
           key={sub.id}
           onClick={() => onClickMapAction(sub)}
           className={`font-bold px-2 cursor-pointer ${
-            mapId === sub.id ? "text-yellow-500" : "text-yellow-700"
-          } hover:text-yellow-500`}
+            mapId === sub.id ? "text-GoldenYellow" : "text-yellow-700"
+          } hover:text-GoldenYellow`}
         >
           * {sub.name_kr}
         </p>

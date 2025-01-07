@@ -45,7 +45,7 @@ export default function GunRender({ gunList }: GunRender) {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={9} columnList={gunColumn} />
       {gunList.map(
         (gun) =>
