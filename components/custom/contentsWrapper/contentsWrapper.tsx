@@ -16,7 +16,7 @@ export default function ContentsWrapper({ children }: ContentsWrapper) {
           dataAdSlot="8601640289"
         />
       </div>
-      <div className="flex-1 flex-col max-w-[1300px] min-w-[300px] pt-14 mx-[10%] bg-Background justify-center">
+      <div className="flex-1 flex-col max-w-[1300px] min-w-[300px] pt-14 mx-[10%] bg-Background justify-center z-10">
         <div className="flex flex-col justify-between items-center gap-10 my-10">
           {children}
         </div>

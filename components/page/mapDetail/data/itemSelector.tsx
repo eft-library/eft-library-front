@@ -44,7 +44,7 @@ export default function ItemSelector({
   if (!originalItem || !itemFilter) return null;
 
   return (
-    <div className="relative">
+    <div className="relative z-20">
       {/* Accordion Header - 고정된 위치 */}
       <div
         className={`fixed left-4 overflow-auto h-[75%] top-1/2 transform -translate-y-1/2 z-5 w-56 p-4 rounded-md transition-all duration-300 ease-in-out ${
