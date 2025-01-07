@@ -105,7 +105,7 @@ export const returnQuestText = (note: QuestNotes) => {
   return note.in_raid ? (
     <div className="flex items-center">
       <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-        <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
+        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
           {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
         </TextSpan>
       </Link>
@@ -118,7 +118,7 @@ export const returnQuestText = (note: QuestNotes) => {
   ) : (
     <div className="flex items-center ">
       <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-        <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
+        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
           {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
         </TextSpan>
       </Link>
@@ -147,7 +147,7 @@ export const returnHideOutText = (
         scroll={false}
         onClick={() => onClickAction(note.master_id)}
       >
-        <TextSpan textColor="GoldenYellow" hoverColor="LightYellow">
+        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
           {note.name_kr}
         </TextSpan>
       </Link>
