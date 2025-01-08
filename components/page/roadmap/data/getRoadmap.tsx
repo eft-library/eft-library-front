@@ -2,7 +2,7 @@
 
 import { requestPostData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import RoadMapClient from "./roadmapClient";
+import RoadmapClient from "./roadmapClient";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import type { RoadmapData } from "./roadmapTypes";
@@ -40,5 +40,5 @@ export default function GetRoadmap() {
 
   if (!roadmapList) return null;
 
-  return <RoadMapClient roadmapInfo={roadmapList} />;
+  return <RoadmapClient roadmapInfo={roadmapList} />;
 }
