@@ -67,7 +67,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
                     </span>
                   ) : (
                     <>
-                      <TextSpan isCursor hoverColor="LightOrange">
+                      <TextSpan isCursor hoverColor="SoftPink">
                         <a href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </a>
@@ -104,7 +104,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
                     </span>
                   ) : (
                     <>
-                      <TextSpan isCursor hoverColor="LightOrange">
+                      <TextSpan isCursor hoverColor="SoftPink">
                         <a href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
                         </a>
