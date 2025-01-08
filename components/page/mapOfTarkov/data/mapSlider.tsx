@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
+import { MOT_IMAGE_SLIDER_OPTION } from "@/lib/consts/libraryConsts";
 
 interface Map {
   sub: SubMap[];
@@ -42,17 +43,6 @@ interface MapSlider {
 }
 
 export default function MapSlider({ mapInfo }: MapSlider) {
-  const MOT_IMAGE_SLIDER_OPTION = {
-    dots: false,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 3000,
-    draggable: false,
-  };
-
   return (
     <div className="w-full flex flex-col gap-4">
       <TextSpan isCenter={false} size="3xl">

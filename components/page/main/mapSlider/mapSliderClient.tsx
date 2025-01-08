@@ -9,24 +9,14 @@ import "slick-carousel/slick/slick-theme.css";
 import "photoswipe/dist/photoswipe.css";
 import { Gallery } from "react-photoswipe-gallery";
 import type { MapSlider } from "../mainTypes";
+import { MAIN_IMAGE_SLIDER_OPTION } from "@/lib/consts/libraryConsts";
 
 export default function MapSliderClient({ mapList }: MapSlider) {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    draggable: false,
-  };
-
   return (
     <div className="w-full h-full flex justify-center">
       <div className="w-[85%] h-[20%]">
         <Gallery>
-          <Slider {...settings}>
+          <Slider {...MAIN_IMAGE_SLIDER_OPTION}>
             {mapList.map((mapImg) => (
               <Link
                 href={`/map-of-tarkov/${mapImg.id}`}
