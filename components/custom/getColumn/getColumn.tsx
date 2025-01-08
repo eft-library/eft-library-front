@@ -93,7 +93,7 @@ export default async function GetColumn({
             `col-span-${checkColSpan(index)} flex justify-center items-center`
           )}
         >
-          <span className="font-bold p-1 text-lg">{val}</span>
+          <span className="font-bold p-1 text-sm">{val}</span>
         </div>
       ))}
     </div>

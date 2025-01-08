@@ -60,7 +60,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
               return (
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow mb-1">
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow">
                       <a href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
                       </a>
@@ -97,7 +97,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
               return (
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow mb-1">
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow">
                       <a href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
                       </a>
