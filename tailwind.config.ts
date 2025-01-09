@@ -97,6 +97,7 @@ export default {
         MutedGray: "#B8B8B8",
         Background: "#111111",
         LimeGreen: "#7fd14a",
+        ScreaminGreen: "#5EFF5E",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",

@@ -76,8 +76,10 @@ export default function QuestClient({ questList }: QuestClient) {
                   <TableCell>
                     <span
                       className={`${
-                        quest.required_kappa ? "text-GoldenYellow" : "text-Red"
-                      } text-lg flex justify-center items-center`}
+                        quest.required_kappa
+                          ? "text-ScreaminGreen"
+                          : "text-GoldenYellow"
+                      } text-lg flex justify-center items-center font-bold`}
                     >
                       {quest.required_kappa ? "Y" : "N"}
                     </span>

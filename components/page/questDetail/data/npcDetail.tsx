@@ -39,7 +39,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           {getQuestTitle(questInfo.title_kr, "en")}
         </h1>
         <TextSpan size="lg">
-          {questInfo.required_kappa ? "✅" : "❌"}&nbsp;&nbsp;&nbsp;Kappa
+          Kappa&nbsp;&nbsp;&nbsp;{questInfo.required_kappa ? "✅" : "❌"}
         </TextSpan>
       </div>
       <div className="flex w-full justify-between">
