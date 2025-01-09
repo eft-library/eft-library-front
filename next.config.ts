@@ -10,6 +10,19 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   reactStrictMode: false,
+  async headers() {
+    return [
+      {
+        source: "/(.*)", // 모든 경로에 헤더 적용
+        headers: [
+          {
+            key: "Permissions-Policy",
+            value: "run-ad-auction=*", // run-ad-auction 허용
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
