@@ -7,7 +7,11 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkViewMedical, filterStimEffects } from "@/lib/func/jsxfunction";
+import {
+  checkViewMedical,
+  filterStimEffects,
+  checkPlus,
+} from "@/lib/func/jsxfunction";
 import type { StimulantClient } from "./medicalTypes";
 
 export default function StimulantClient({ medicalList }: StimulantClient) {
@@ -93,7 +97,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         >
                           {buff.krSkill}
                         </TextSpan>
-                        <TextSpan size="sm" textColor="BrightCyan">
+                        <TextSpan size="sm" textColor={checkPlus(buff.value)}>
                           &nbsp;{getPlusMinusValue(buff.value)}
                         </TextSpan>
                       </div>
@@ -124,7 +128,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         >
                           {debuff.krSkill}
                         </TextSpan>
-                        <TextSpan size="sm" textColor="BrightCyan">
+                        <TextSpan size="sm" textColor={checkPlus(debuff.value)}>
                           &nbsp;{getPlusMinusValue(debuff.value)}
                         </TextSpan>
                       </div>

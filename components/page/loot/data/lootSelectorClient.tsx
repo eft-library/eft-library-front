@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import type { LootSelectorClient } from "./lootTypes";
 
 export default function LootSelectorClient({ lootType }: LootSelectorClient) {
@@ -19,7 +18,7 @@ export default function LootSelectorClient({ lootType }: LootSelectorClient) {
           )}
           onClick={() => setLootCategory(loot.value)}
         >
-          <TextSpan>{loot.desc_kr}</TextSpan>
+          <span className="text-center mt-[4px]">{loot.desc_kr}</span>
         </div>
       ))}
     </div>

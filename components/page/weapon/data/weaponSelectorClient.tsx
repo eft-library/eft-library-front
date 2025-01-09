@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import type { WeaponSelectorClient } from "./weaponTypes";
 
 export default function WeaponSelectorClient({
@@ -21,7 +20,7 @@ export default function WeaponSelectorClient({
           )}
           onClick={() => setWeaponCategory(weapon.value)}
         >
-          <TextSpan>{weapon.desc_kr}</TextSpan>
+          <span className="text-center mt-[4px]">{weapon.desc_kr}</span>
         </div>
       ))}
     </div>

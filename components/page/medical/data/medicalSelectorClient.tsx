@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/provider";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MedicalSelectorClient } from "./medicalTypes";
 
 export default function MedicalSelectorClient({
@@ -21,7 +20,7 @@ export default function MedicalSelectorClient({
           )}
           onClick={() => setMedicalCategory(medical.value)}
         >
-          <TextSpan isCenter={false}>{medical.desc_kr}</TextSpan>
+          <span className="text-center mt-[4px]">{medical.desc_kr}</span>
         </div>
       ))}
     </div>
