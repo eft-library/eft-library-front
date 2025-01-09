@@ -17,7 +17,7 @@ export default function Ammo() {
         />
       </div>
       <GetAmmoSelector />
-      <GetColumn columnDesign={11} columnKey={COLUMN_KEY.ammo} isAmmo />
+      <GetColumn columnDesign={12} columnKey={COLUMN_KEY.ammo} isAmmo />
       <GetAmmo />
     </ContentsWrapper>
   );

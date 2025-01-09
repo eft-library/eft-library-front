@@ -23,7 +23,7 @@ export default function EffectText({ effect }: EffectText) {
           {fixStr(effect.krSkill)}&nbsp;
         </TextSpan>
         <TextSpan isCenter={false} textColor={checkPlus(effect.value)}>
-          {effect.skillName === "Painkiller"
+          {effect.skillName === "Painkiller" || effect.type === "HandsTremor"
             ? ""
             : ` ${getPlusMinus(effect.value)}`}
           &nbsp;

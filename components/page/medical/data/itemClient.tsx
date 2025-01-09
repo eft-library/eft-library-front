@@ -24,7 +24,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
       {medicalList.map(
         (item) =>
           checkViewMedical(medicalCategory, item.category, "Medical item") && (
-            <DefineGrid cols="7" id={item.id} pageId={pageId} key={item.id}>
+            <DefineGrid cols="10" id={item.id} pageId={pageId} key={item.id}>
               <CenterContents>
                 <ImageView
                   src={item.image}
@@ -37,15 +37,15 @@ export default function ItemClient({ medicalList }: ItemClient) {
                 />
               </CenterContents>
 
-              <CenterContents>
-                <TextSpan>{item.name_kr}</TextSpan>
+              <CenterContents colSpan="2">
+                <TextSpan size="sm">{item.name_kr}</TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan>-</TextSpan>
               </CenterContents>
 
-              <CenterContents isCol>
+              <CenterContents isCol colSpan="2">
                 {item.cures_kr.map((cures, index) => (
                   <TextSpan key={`${index}-cures`} isCenter={false}>
                     {cures}
@@ -53,7 +53,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
                 ))}
               </CenterContents>
 
-              <CenterContents>
+              <CenterContents colSpan="2">
                 <TextSpan>-</TextSpan>
               </CenterContents>
 

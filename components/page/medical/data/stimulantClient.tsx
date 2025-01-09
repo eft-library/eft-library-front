@@ -7,11 +7,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import {
-  checkViewMedical,
-  getPlusMinus,
-  filterStimEffects,
-} from "@/lib/func/jsxfunction";
+import { checkViewMedical, filterStimEffects } from "@/lib/func/jsxfunction";
 import type { StimulantClient } from "./medicalTypes";
 
 export default function StimulantClient({ medicalList }: StimulantClient) {
@@ -35,6 +31,14 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
     }
   };
 
+  const getPlusMinusValue = (text: number | string) => {
+    if (typeof text === "number") {
+      if (text === 0) return "";
+      return text > 0 ? `+${text}` : `${text}`;
+    }
+    return "";
+  };
+
   return (
     <div className="w-full">
       {medicalList.map(
@@ -47,7 +51,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
             <DefineGrid
               id={stimulant.id}
               pageId={pageId}
-              cols="7"
+              cols="10"
               key={stimulant.id}
             >
               <CenterContents>
@@ -61,14 +65,14 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                   wrapHeight={100}
                 />
               </CenterContents>
-              <CenterContents>
-                <TextSpan>{stimulant.name_kr}</TextSpan>
+              <CenterContents colSpan="2">
+                <TextSpan size="sm">{stimulant.name_kr}</TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan>-</TextSpan>
               </CenterContents>
-              <div className="flex justify-center flex-col">
+              <div className="flex justify-center flex-col col-span-2">
                 {stimulant.buff.length > 0 ? (
                   filterStimEffects(stimulant.buff).map((buff, index) => (
                     <div key={`${index}-buff-${buff.id}`}>
@@ -82,12 +86,15 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         </span>
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
-                        <TextSpan>-&nbsp;</TextSpan>
-                        <TextSpan textColor={getSkillColor(buff.krSkill)}>
+                        <TextSpan size="sm">-&nbsp;</TextSpan>
+                        <TextSpan
+                          size="sm"
+                          textColor={getSkillColor(buff.krSkill)}
+                        >
                           {buff.krSkill}
                         </TextSpan>
-                        <TextSpan textColor="BrightCyan">
-                          &nbsp;{getPlusMinus(buff.value)}
+                        <TextSpan size="sm" textColor="BrightCyan">
+                          &nbsp;{getPlusMinusValue(buff.value)}
                         </TextSpan>
                       </div>
                     </div>
@@ -96,7 +103,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                   <TextSpan>-</TextSpan>
                 )}
               </div>
-              <div className="flex justify-center flex-col">
+              <div className="flex justify-center flex-col col-span-2">
                 {stimulant.debuff.length > 0 ? (
                   filterStimEffects(stimulant.debuff).map((debuff, index) => (
                     <div key={`${index}-debuff-${debuff.id}`}>
@@ -110,12 +117,15 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         </span>
                       )}
                       <div className={"flex ml-[4px] mt-[2px]"}>
-                        <TextSpan>-&nbsp;</TextSpan>
-                        <TextSpan textColor={getSkillColor(debuff.krSkill)}>
+                        <TextSpan size="sm">-&nbsp;</TextSpan>
+                        <TextSpan
+                          size="sm"
+                          textColor={getSkillColor(debuff.krSkill)}
+                        >
                           {debuff.krSkill}
                         </TextSpan>
-                        <TextSpan textColor="BrightCyan">
-                          &nbsp;{getPlusMinus(debuff.value)}
+                        <TextSpan size="sm" textColor="BrightCyan">
+                          &nbsp;{getPlusMinusValue(debuff.value)}
                         </TextSpan>
                       </div>
                     </div>

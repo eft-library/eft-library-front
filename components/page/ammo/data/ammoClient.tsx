@@ -45,7 +45,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
       {ammoList.map(
         (ammo) =>
           checkCategory(ammo.category, ammoCategory) && (
-            <DefineGrid cols="11" pageId={pageId} id={ammo.id} key={ammo.id}>
+            <DefineGrid cols="12" pageId={pageId} id={ammo.id} key={ammo.id}>
               <CenterContents>
                 <ImageView
                   src={ammo.image}
@@ -57,7 +57,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                   size="240px"
                 />
               </CenterContents>
-              <CenterContents>
+              <CenterContents colSpan="2">
                 <TextSpan>{ammo.name}</TextSpan>
               </CenterContents>
               <CenterContents>

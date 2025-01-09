@@ -34,7 +34,7 @@ export default function DrugClient({ medicalList }: DrugClient) {
       {medicalList.map(
         (drug) =>
           checkViewMedical(medicalCategory, drug.category, "Drug") && (
-            <DefineGrid cols="7" id={drug.id} pageId={pageId} key={drug.id}>
+            <DefineGrid cols="10" id={drug.id} pageId={pageId} key={drug.id}>
               <CenterContents>
                 <ImageView
                   src={drug.image}
@@ -46,14 +46,14 @@ export default function DrugClient({ medicalList }: DrugClient) {
                   wrapHeight={100}
                 />
               </CenterContents>
-              <CenterContents>
-                <TextSpan>{drug.name_kr}</TextSpan>
+              <CenterContents colSpan="2">
+                <TextSpan size="sm">{drug.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>-</TextSpan>
               </CenterContents>
 
-              <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center col-span-2">
                 <span className="font-bold text-base text-PaleYellow mt-[4px]">
                   {drug.painkiller_duration}초 지속
                 </span>
@@ -69,7 +69,7 @@ export default function DrugClient({ medicalList }: DrugClient) {
                   drugText("에너지", drug.energy_impact, true)}
               </div>
 
-              <CenterContents isCol>
+              <CenterContents isCol colSpan="2">
                 {drug.hydration_impact < 0 &&
                   drugText("수분", drug.hydration_impact, false)}
                 {drug.energy_impact < 0 &&

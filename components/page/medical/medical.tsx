@@ -17,7 +17,7 @@ export default function Medical() {
         />
       </div>
       <GetMedicalSelector />
-      <GetColumn columnDesign={7} columnKey={COLUMN_KEY.medical} />
+      <GetColumn columnDesign={10} columnKey={COLUMN_KEY.medical} isMedical />
       <GetMedical medicalType="Drug" />
       <GetMedical medicalType="Stimulant" />
       <GetMedical medicalType="Medical item" />

@@ -26,7 +26,7 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
             <DefineGrid
               key={medikit.id}
               id={medikit.id}
-              cols="7"
+              cols="10"
               pageId={pageId}
             >
               <CenterContents>
@@ -40,13 +40,13 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                   wrapHeight={100}
                 />
               </CenterContents>
-              <CenterContents>
-                <TextSpan>{medikit.name_kr}</TextSpan>
+              <CenterContents colSpan="2">
+                <TextSpan size="sm">{medikit.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>{medikit.hitpoints}</TextSpan>
               </CenterContents>
-              <CenterContents isCol>
+              <CenterContents isCol colSpan="2">
                 {medikit.cures_kr && medikit.cures_kr.length > 0 ? (
                   medikit.cures_kr.map((cures, index) => (
                     <TextSpan
@@ -60,7 +60,7 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                   <TextSpan>-</TextSpan>
                 )}
               </CenterContents>
-              <CenterContents>
+              <CenterContents colSpan="2">
                 <TextSpan>-</TextSpan>
               </CenterContents>
               <CenterContents>

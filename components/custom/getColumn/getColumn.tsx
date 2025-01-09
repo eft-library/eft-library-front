@@ -33,6 +33,7 @@ interface GetColumnProps {
   isNote?: boolean;
   isQuest?: boolean;
   isProvision?: boolean;
+  isMedical?: boolean;
 }
 
 export default async function GetColumn({
@@ -45,6 +46,7 @@ export default async function GetColumn({
   isNote = false,
   isQuest = false,
   isProvision = false,
+  isMedical = false,
 }: GetColumnProps) {
   // 데이터 요청
   const data = await requestData(`${API_ENDPOINTS.GET_COLUMN}/${columnKey}`);
@@ -60,11 +62,12 @@ export default async function GetColumn({
   const colSpanMapping = {
     isNote: (index: number) => (columnDesign === index + 2 ? 2 : 1),
     isWeapon: (index: number) => (index === 0 ? 2 : 1),
-    isAmmo: (index: number) => (index === 9 ? 2 : 1),
+    isAmmo: (index: number) => ([1, 9].includes(index) ? 2 : 1),
     isExtraction: (index: number) => ([0, 5, 6].includes(index) ? 2 : 1),
     isHideout: (index: number) => ([0, 1].includes(index) ? 2 : 1),
     isQuest: (index: number) => (index === 4 ? 2 : 1),
     isProvision: (index: number) => (index === 4 || index === 5 ? 2 : 1),
+    isMedical: (index: number) => ([1, 3, 4].includes(index) ? 2 : 1),
     default: () => 1,
   };
 
@@ -76,6 +79,7 @@ export default async function GetColumn({
     if (isHideout) return colSpanMapping.isHideout(index);
     if (isQuest) return colSpanMapping.isQuest(index);
     if (isProvision) return colSpanMapping.isProvision(index);
+    if (isMedical) return colSpanMapping.isMedical(index);
     return colSpanMapping.default();
   };
 
@@ -93,7 +97,9 @@ export default async function GetColumn({
             `col-span-${checkColSpan(index)} flex justify-center items-center`
           )}
         >
-          <span className="font-bold p-1 text-sm">{val}</span>
+          <span className={`font-bold p-1 ${isAmmo ? "text-xs" : "text-sm"}`}>
+            {val}
+          </span>
         </div>
       ))}
     </div>
