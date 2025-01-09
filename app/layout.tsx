@@ -11,7 +11,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import localFont from "next/font/local";
 
 const pretendard = localFont({
-  src: "../public/fonts/SpoqaHanSansNeoMedium.woff2",
+  src: "../public/fonts/SpoqaHanSansNeoLight.woff2",
   display: "swap",
   weight: "45 920",
   variable: "--font-pretendard",
