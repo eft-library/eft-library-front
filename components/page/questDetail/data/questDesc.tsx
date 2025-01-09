@@ -13,7 +13,7 @@ import type { QuestDesc } from "../../quest/data/questTypes";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="w-full flex flex-col gap-10 items-center">
       {questInfo.requirements_kr && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
@@ -67,11 +67,13 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           ))}
         </div>
       )}
-      <AdBanner
-        dataAdFormat={"auto"}
-        dataFullWidthResponsive={true}
-        dataAdSlot="2690838054"
-      />
+      <div className="w-[1200px]">
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+        />
+      </div>
 
       {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
         <div className="w-full flex flex-col gap-2">
