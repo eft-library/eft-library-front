@@ -8,14 +8,14 @@ import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
 import AdSense from "@/components/custom/adsense/adSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
-// import localFont from "next/font/local";
+import localFont from "next/font/local";
 
-// const pretendard = localFont({
-//   src: "../public/fonts/SBAggroM.woff",
-//   display: "swap",
-//   weight: "45 920",
-//   variable: "--font-pretendard",
-// });
+const pretendard = localFont({
+  src: "../public/fonts/SpoqaHanSansNeoMedium.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -62,8 +62,7 @@ export default function RootLayout({
           gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""}
         />
       </head>
-      {/* <body className={pretendard.className}> */}
-      <body>
+      <body className={pretendard.className}>
         <AuthContext>
           <ThemeProvider
             attribute={"class"}

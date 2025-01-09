@@ -18,7 +18,7 @@ export default function BossSelectorClient({ bossType }: BossSelectorClient) {
               { "bg-NeutralGray": param.id === boss.id }
             )}
           >
-            <span className="text-center mt-[4px]">{boss.name_kr}</span>
+            <span className="text-center">{boss.name_kr}</span>
           </div>
         </Link>
       ))}
