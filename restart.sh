@@ -4,7 +4,7 @@
 cd /home/eft-library-front
 
 # .next 디렉토리와 빌드를 삭제
-# rm -rf /home/eft-library-front/.next/
+rm -rf /home/eft-library-front/.next/
 
 # 애플리케이션 빌드
 /usr/bin/npm run build --prefix /home/eft-library-front
