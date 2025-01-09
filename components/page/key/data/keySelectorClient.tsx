@@ -32,7 +32,7 @@ export default function KeySelectorClient({ keyType }: KeySelectorClient) {
           )}
           onClick={() => setKeyCategory(key.value)}
         >
-          <span className="text-center">{key.desc_kr}</span>
+          <span className="text-center font-bold">{key.desc_kr}</span>
         </div>
       ))}
     </div>

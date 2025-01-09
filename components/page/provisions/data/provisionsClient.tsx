@@ -26,7 +26,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
         <DefineGrid
           key={provisions.id}
           id={provisions.id}
-          cols="8"
+          cols="9"
           pageId={pageId}
         >
           <CenterContents>
@@ -41,7 +41,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
             />
           </CenterContents>
 
-          <CenterContents>
+          <CenterContents colSpan="2">
             <TextSpan>{provisions.name_kr}</TextSpan>
           </CenterContents>
 

@@ -20,7 +20,7 @@ export default function MedicalSelectorClient({
           )}
           onClick={() => setMedicalCategory(medical.value)}
         >
-          <span className="text-center">{medical.desc_kr}</span>
+          <span className="text-center font-bold">{medical.desc_kr}</span>
         </div>
       ))}
     </div>

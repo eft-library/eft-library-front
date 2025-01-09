@@ -16,7 +16,7 @@ export default function Provisions() {
         />
       </div>
       <GetColumn
-        columnDesign={8}
+        columnDesign={9}
         columnKey={COLUMN_KEY.provisions}
         isProvision
       />

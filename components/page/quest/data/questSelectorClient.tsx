@@ -27,9 +27,7 @@ export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
             onMouseEnter={handleHover}
             onMouseLeave={handleHoverExit}
           />
-          <p className="text-white text-center mt-2 font-semibold">
-            {npc.name_kr}
-          </p>
+          <p className="text-white text-center mt-2 font-bold">{npc.name_kr}</p>
         </div>
       ))}
     </div>
