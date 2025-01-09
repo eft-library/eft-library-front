@@ -10,6 +10,7 @@ import {
   handleHoverExit,
 } from "@/lib/func/jsxfunction";
 import type { NpcDetail } from "../../quest/data/questTypes";
+import Link from "next/link";
 
 export default function NpcDetail({ questInfo }: NpcDetail) {
   const router = useRouter();
@@ -60,18 +61,18 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
               return (
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow">
-                      <a href={`/quest/detail/${item.url_mapping}`}>
+                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow ">
+                      <Link href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
-                      </a>
+                      </Link>
                     </span>
                   ) : (
                     <>
-                      <TextSpan isCursor hoverColor="SoftPink">
-                        <a href={`/quest/detail/${item.url_mapping}`}>
+                      <span className="text-white font-bold text-center cursor-pointer hover:text-SoftPink mt-[2px]">
+                        <Link href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
-                        </a>
-                      </TextSpan>
+                        </Link>
+                      </span>
                       {!isLastOther && <TextSpan size="lg">or</TextSpan>}
                     </>
                   )}
@@ -98,17 +99,17 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
                 <React.Fragment key={item.id}>
                   {item.is_other === false ? (
                     <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow">
-                      <a href={`/quest/detail/${item.url_mapping}`}>
+                      <Link href={`/quest/detail/${item.url_mapping}`}>
                         {item.name_kr}
-                      </a>
+                      </Link>
                     </span>
                   ) : (
                     <>
-                      <TextSpan isCursor hoverColor="SoftPink">
-                        <a href={`/quest/detail/${item.url_mapping}`}>
+                      <span className="text-white font-bold text-center cursor-pointer hover:text-SoftPink mt-[1px]">
+                        <Link href={`/quest/detail/${item.url_mapping}`}>
                           {item.name_kr}
-                        </a>
-                      </TextSpan>
+                        </Link>
+                      </span>
                       {!isLastOther && <TextSpan size="lg">or</TextSpan>}
                     </>
                   )}
