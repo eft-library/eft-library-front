@@ -22,19 +22,25 @@ export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
         onClickAllItemAction={onClickAllItem}
       />
       <SubMapSelector onClickMapAction={onClickMapAction} mapId={mapData.id} />
-      <div className={"flex flex-col gap-4"}>
-        <TextSpan isCenter={false} size="xl">
-          2D Map
-        </TextSpan>
+      <div className={"flex flex-col gap-4 items-center"}>
+        <div className="w-full">
+          <TextSpan isCenter={false} size="xl">
+            2D Map
+          </TextSpan>
+        </div>
         <JpgViewDetail map={mapData} viewItemList={viewItemList} />
-        <AdBanner
-          dataAdFormat={"auto"}
-          dataFullWidthResponsive={true}
-          dataAdSlot="2690838054"
-        />
-        <TextSpan isCenter={false} size="xl">
-          3D Map
-        </TextSpan>
+        <div className="w-[1200px]">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
+        <div className="w-full">
+          <TextSpan isCenter={false} size="xl">
+            3D Map
+          </TextSpan>
+        </div>
         <ThreeViewDetail
           key={mapData.id}
           mapData={mapData}

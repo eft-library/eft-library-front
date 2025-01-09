@@ -8,7 +8,7 @@ export default function Glasses() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">안경</h1>
-      <div className="w-full">
+      <div className="w-[1200px]">
         <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}

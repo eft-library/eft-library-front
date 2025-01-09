@@ -12,13 +12,13 @@ export default function InformationDetailClient({
   routeLink,
 }: InformationDetailClient) {
   return (
-    <div className={"w-full flex flex-col gap-4"}>
+    <div className={"w-full flex flex-col gap-4 items-center"}>
       <div
         className={
-          "rounded-lg flex flex-col border-2 border-solid border-white p-4"
+          "rounded-lg flex flex-col border-2 border-solid border-white p-4 w-full"
         }
       >
-        <div className={"flex justify-center items-center"}>
+        <div className={"flex justify-center items-center w-full"}>
           <span className={"font-bold text-xl text-white mb-6"}>
             {informationInfo.information.name_kr}&nbsp;(
             {formatISODate(informationInfo.information.update_time)})
@@ -33,13 +33,15 @@ export default function InformationDetailClient({
           />
         </div>
       </div>
-      <AdBanner
-        dataAdFormat={"auto"}
-        dataFullWidthResponsive={true}
-        dataAdSlot="2690838054"
-      />
+      <div className="w-[1200px]">
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+        />
+      </div>
 
-      <div className={"flex justify-end"}>
+      <div className={"flex justify-end w-full"}>
         <Link href={`${routeLink}?id=1`}>
           <Button
             className={
@@ -51,7 +53,7 @@ export default function InformationDetailClient({
         </Link>
       </div>
 
-      <div className={"flex flex-col gap-6"}>
+      <div className={"flex flex-col gap-2 w-full"}>
         {informationInfo.information_group.map((info) => (
           <Link href={`${routeLink}/detail/${info.id}`} key={info.id}>
             <div

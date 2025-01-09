@@ -57,13 +57,19 @@ export default function MapOfTarkovClient({
       {mapOfTarkovList.map(
         (mapOfTarkov) =>
           checkIdCategory(param.id, mapOfTarkov.map_id) && (
-            <div key={mapOfTarkov.map_id} className="flex flex-col gap-6">
+            <div
+              key={mapOfTarkov.map_id}
+              className="flex flex-col gap-6 items-center"
+            >
               <MapSlider mapInfo={mapOfTarkov.map_info} />
-              <AdBanner
-                dataAdFormat={"auto"}
-                dataFullWidthResponsive={true}
-                dataAdSlot="2690838054"
-              />
+
+              <div className="w-[1200px]">
+                <AdBanner
+                  dataAdFormat={"auto"}
+                  dataFullWidthResponsive={true}
+                  dataAdSlot="2690838054"
+                />
+              </div>
               <div className="w-full flex flex-col gap-2">
                 <TextSpan isCenter={false} size="3xl">
                   보스
