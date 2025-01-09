@@ -14,12 +14,14 @@ export default function AdBanner({
   dataFullWidthResponsive,
 }: AdBannerTypes) {
   useEffect(() => {
+    // 광고 스크립트 로드 및 에러 무시
     try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
-        {}
-      );
+      if (typeof window !== "undefined" && (window as any).adsbygoogle) {
+        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+        (window as any).adsbygoogle.push({});
+      }
     } catch (e) {
-      console.log(e);
+      console.error("Google AdSense script load error:", e);
     }
   }, []);
 
@@ -33,7 +35,7 @@ export default function AdBanner({
         data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
         data-ad-slot={dataAdSlot}
         data-ad-format={dataAdFormat}
-        data-full-width-resposive={dataFullWidthResponsive.toString()}
+        data-full-width-responsive={dataFullWidthResponsive.toString()}
       ></ins>
     </div>
   );
