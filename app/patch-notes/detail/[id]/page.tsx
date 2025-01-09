@@ -22,13 +22,19 @@ export async function generateMetadata({
   const res = product.data;
 
   return {
-    title: `${res.information.name_kr}`,
+    title: `${res.information.name_kr} - EFT Library`,
     description: `${res.information_group.name_kr}`,
     openGraph: {
-      title: "EFT Library 패치노트",
-      description: "EFT Library 패치노트",
+      title: "EFT Library 패치노트 상세 정보 - EFT Library",
+      description:
+        "Escape from Tarkov (타르코프) 패치노트 상세 정보를 한글 번역으로 제공합니다.",
       url: `https://eftlibrary.com/patch-notes/detail/${id}`,
-      siteName: "Escape From Tarkov Library",
+      siteName: "EFT Library",
+    },
+    twitter: {
+      title: "EFT Library 패치노트 상세 정보 - EFT Library",
+      description:
+        "Escape from Tarkov (타르코프) 패치노트 상세 정보를 한글 번역으로 제공합니다.",
     },
   };
 }

@@ -21,13 +21,17 @@ export async function generateMetadata({
 
   const res = product.data;
   return {
-    title: `${res.information.name_kr}`,
+    title: `${res.information.name_kr} - EFT Library`,
     description: `${res.information_group.name_kr}`,
     openGraph: {
-      title: "EFT Library 공지사항",
-      description: "EFT Library 공지사항",
+      title: "EFT Library 공지사항 상세 정보 - EFT Library",
+      description: "EFT Library 사이트 관련 공지사항 상세 정보.",
       url: `https://eftlibrary.com/notice/detail/${id}`,
-      siteName: "Escape From Tarkov Library",
+      siteName: "EFT Library",
+    },
+    twitter: {
+      title: "EFT Library 공지사항 상세 정보 - EFT Library",
+      description: "EFT Library 사이트 관련 공지사항 상세 정보.",
     },
   };
 }

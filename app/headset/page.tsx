@@ -1,12 +1,22 @@
 import Headset from "@/components/page/headset/headset";
 
 export const metadata = {
-  title: "타르코프 헤드셋",
-  description: "타르코프 헤드셋, tarkov headset",
+  title: "타르코프 헤드셋 - EFT Library",
+  description:
+    "Escape from Tarkov (타르코프) 헤드셋 종류와 사진에 대한 정보를 제공합니다.",
   openGraph: {
-    siteName: "Escape From Tarkov Library",
-    title: "EFT Library 헤드셋",
-    description: "EFT Library 헤드셋",
+    siteName: "EFT Library",
+    title: "타르코프 헤드셋 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 헤드셋 종류와 사진에 대한 정보를 제공합니다.",
+    images: "/og.png",
+    url: "https://eftlibrary.com/headset",
+  },
+  twitter: {
+    siteName: "EFT Library",
+    title: "타르코프 헤드셋 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 헤드셋 종류와 사진에 대한 정보를 제공합니다.",
     images: "/og.png",
     url: "https://eftlibrary.com/headset",
   },

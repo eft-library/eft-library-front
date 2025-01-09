@@ -1,12 +1,22 @@
 import Medical from "@/components/page/medical/medical";
 
 export const metadata = {
-  title: "타르코프 의료품",
-  description: "타르코프 의료품, tarkov medical",
+  title: "타르코프 의료품 - EFT Library",
+  description:
+    "Escape from Tarkov (타르코프) 의료품으로 진통제, 주사기, 부상 치료, 회복, 버프, 디버프 등의 정보를 제공합니다.",
   openGraph: {
-    siteName: "Escape From Tarkov Library",
-    title: "EFT Library 의료품",
-    description: "EFT Library 의료품",
+    siteName: "EFT Library",
+    title: "타르코프 의료품 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 의료품으로 진통제, 주사기, 부상 치료, 회복, 버프, 디버프 등의 정보를 제공합니다.",
+    images: "/og.png",
+    url: "https://eftlibrary.com/medical",
+  },
+  twitter: {
+    siteName: "EFT Library",
+    title: "타르코프 의료품 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 의료품으로 진통제, 주사기, 부상 치료, 회복, 버프, 디버프 등의 정보를 제공합니다.",
     images: "/og.png",
     url: "https://eftlibrary.com/medical",
   },

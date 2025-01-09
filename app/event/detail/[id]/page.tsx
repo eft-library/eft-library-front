@@ -21,13 +21,19 @@ export async function generateMetadata({
 
   const res = product.data;
   return {
-    title: `${res.information.name_kr}`,
+    title: `${res.information.name_kr} - EFT Library`,
     description: `${res.information_group.name_kr}`,
     openGraph: {
-      title: "EFT Library 이벤트",
-      description: "EFT Library 이벤트",
+      title: "타르코프 이벤트 상세 정보 - EFT Library",
+      description:
+        "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 상세 정보를 제공합니다.",
       url: `https://eftlibrary.com/event/detail/${id}`,
-      siteName: "Escape From Tarkov Library",
+      siteName: "EFT Library",
+    },
+    twitter: {
+      title: "타르코프 이벤트 상세 정보 - EFT Library",
+      description:
+        "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 상세 정보를 제공합니다.",
     },
   };
 }

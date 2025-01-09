@@ -23,14 +23,19 @@ export async function generateMetadata({
   const res = product.data;
 
   return {
-    title: `타르코프 ${res.name_kr}`,
-    description: "타르코프 보스, tarkov boss",
+    title: `타르코프 ${res.name_kr} - EFT Library`,
+    description: `Escape from Tarkov (타르코프) 보스 ${res.name_kr}  스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
     openGraph: {
       images: [formatImage(res.image)],
-      title: "EFT Library 보스",
-      description: "EFT Library 보스",
-      url: "https://eftlibrary.com/boss",
-      siteName: "Escape From Tarkov Library",
+      title: `타르코프 ${res.name_kr} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 보스 ${res.name_kr}  스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
+      url: `https://eftlibrary.com/boss/${res.id}`,
+      siteName: "EFT Library",
+    },
+    twitter: {
+      images: [formatImage(res.image)],
+      title: `타르코프 ${res.name_kr} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 보스 ${res.name_kr}  스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
     },
   };
 }

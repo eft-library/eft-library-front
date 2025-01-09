@@ -1,12 +1,22 @@
 import HeadWear from "@/components/page/headWear/headWear";
 
 export const metadata = {
-  title: "타르코프 방탄모",
-  description: "타르코프 방탄모, tarkov headwear, tarkov helmet",
+  title: "타르코프 방탄모 - EFT Library",
+  description:
+    "Escape from Tarkov (타르코프) 방탄모 별 보호 등급, 보호 부위, 내구성, 도탄 기회, 무게에 대한 정보를 제공합니다.",
   openGraph: {
-    siteName: "Escape From Tarkov Library",
-    title: "EFT Library 방탄모",
-    description: "EFT Library 방탄모",
+    siteName: "EFT Library",
+    title: "타르코프 방탄모 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 방탄모 별 보호 등급, 보호 부위, 내구성, 도탄 기회, 무게에 대한 정보를 제공합니다.",
+    images: "/og.png",
+    url: "https://eftlibrary.com/head-wear",
+  },
+  twitter: {
+    siteName: "EFT Library",
+    title: "타르코프 방탄모 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 방탄모 별 보호 등급, 보호 부위, 내구성, 도탄 기회, 무게에 대한 정보를 제공합니다.",
     images: "/og.png",
     url: "https://eftlibrary.com/head-wear",
   },

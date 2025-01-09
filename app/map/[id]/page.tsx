@@ -23,14 +23,19 @@ export async function generateMetadata({
   const res = product.data;
 
   return {
-    title: `타르코프 ${res.name_kr}`,
-    description: "타르코프 지도, tarkov map",
+    title: `타르코프 ${res.name_kr} - EFT Library`,
+    description: `Escape from Tarkov (타르코프) 대화형 지도. ${res.name_kr} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
     openGraph: {
-      title: `타르코프 ${res.name_kr}`,
-      description: `타르코프 ${res.name_kr}`,
+      title: `타르코프 ${res.name_kr} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 대화형 지도. ${res.name_kr} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
       images: [formatImage(res.mot_image)],
       url: `https://eftlibrary.com/map/${id}`,
-      siteName: "Escape From Tarkov Library",
+      siteName: "EFT Library",
+    },
+    twitter: {
+      title: `타르코프 ${res.name_kr} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 대화형 지도. ${res.name_kr} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
+      images: [formatImage(res.mot_image)],
     },
   };
 }

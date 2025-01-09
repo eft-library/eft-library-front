@@ -1,12 +1,22 @@
 import ArmBand from "@/components/page/armBand/armBand";
 
 export const metadata = {
-  title: "타르코프 완장",
-  description: "타르코프 완장, tarkov arm band",
+  title: "타르코프 완장 - EFT Library",
+  description:
+    "Escape from Tarkov (타르코프) 완장 종류와 사진에 대한 정보를 제공합니다.",
   openGraph: {
-    siteName: "Escape From Tarkov Library",
-    title: "EFT Library 완장",
-    description: "EFT Library 완장",
+    siteName: "EFT Library",
+    title: "타르코프 완장 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 완장 종류와 사진에 대한 정보를 제공합니다.",
+    images: "/og.png",
+    url: "https://eftlibrary.com/arm-band",
+  },
+  twitter: {
+    siteName: "EFT Library",
+    title: "타르코프 완장 - EFT Library",
+    description:
+      "Escape from Tarkov (타르코프) 완장 종류와 사진에 대한 정보를 제공합니다.",
     images: "/og.png",
     url: "https://eftlibrary.com/arm-band",
   },
