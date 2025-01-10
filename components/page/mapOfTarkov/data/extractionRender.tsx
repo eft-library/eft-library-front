@@ -6,6 +6,7 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { ExtractionRender } from "./mapOfTarkovType";
+import { SquareCheckBig, SquareX } from "lucide-react";
 
 export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   const formatTextWithLineBreaks = (text: string) => {
@@ -37,10 +38,22 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
         <TextSpan>{extractionInfo.faction}</TextSpan>
       </CenterContents>
       <CenterContents>
-        <TextSpan>{extractionInfo.always_available ? "✅" : "❌"}</TextSpan>
+        <TextSpan>
+          {extractionInfo.always_available ? (
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+          ) : (
+            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+          )}
+        </TextSpan>
       </CenterContents>
       <CenterContents>
-        <TextSpan>{extractionInfo.single_use ? "✅" : "❌"}</TextSpan>
+        <TextSpan>
+          {extractionInfo.single_use ? (
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+          ) : (
+            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+          )}
+        </TextSpan>
       </CenterContents>
       <div className="flex justify-center flex-col items-center col-span-2 gap-8">
         {extractionInfo.requirements &&

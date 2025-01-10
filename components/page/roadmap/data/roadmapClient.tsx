@@ -32,6 +32,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   );
 
   // 저장 통신 함수 만들기
+  // nodes에서 true인 것들을 전부 저장하면 될 듯
 
   // tab 별 대응 만들기
   // userQuest 관련 로직 추가
@@ -55,7 +56,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           if (node && node.data.next) {
             node.data.next.forEach((nextNode: any) => {
               updatedNodes = updateNodeCheckStatus(
-                nextNode.id,
+                nextNode,
                 checkStatus,
                 updatedNodes
               );
@@ -69,7 +70,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           if (node && node.data.require) {
             node.data.require.forEach((requiredNode: any) => {
               updatedNodes = updateNodeCheckStatus(
-                requiredNode.id,
+                requiredNode,
                 checkStatus,
                 updatedNodes
               );

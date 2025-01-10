@@ -11,6 +11,7 @@ import {
 } from "@/lib/func/jsxfunction";
 import type { NpcDetail } from "../../quest/data/questTypes";
 import Link from "next/link";
+import { SquareCheckBig, SquareX } from "lucide-react";
 
 export default function NpcDetail({ questInfo }: NpcDetail) {
   const router = useRouter();
@@ -38,9 +39,14 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           <br />
           {getQuestTitle(questInfo.title_kr, "en")}
         </h1>
-        <TextSpan size="lg">
-          Kappa&nbsp;&nbsp;&nbsp;{questInfo.required_kappa ? "✅" : "❌"}
-        </TextSpan>
+        <div className="flex justify-between items-center gap-4">
+          <TextSpan size="lg">Kappa</TextSpan>
+          {questInfo.required_kappa ? (
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+          ) : (
+            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+          )}
+        </div>
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col w-[50%]">
