@@ -13,6 +13,7 @@ import { getQuestTitle } from "@/lib/func/jsxfunction";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
 import type { QuestClient } from "./questTypes";
+import { SquareCheckBig, SquareX } from "lucide-react";
 
 export default function QuestClient({ questList }: QuestClient) {
   const { npcId } = useAppStore((state) => state);
@@ -75,13 +76,17 @@ export default function QuestClient({ questList }: QuestClient) {
                   </TableCell>
                   <TableCell>
                     <span
-                      className={`${
-                        quest.required_kappa
-                          ? "text-ScreaminGreen"
-                          : "text-GoldenYellow"
-                      } text-lg flex justify-center items-center font-bold`}
+                      className={`text-lg flex justify-center items-center font-bold`}
                     >
-                      {quest.required_kappa ? "Y" : "N"}
+                      {quest.required_kappa ? (
+                        <SquareCheckBig
+                          color="#5EFF5E"
+                          strokeWidth={3}
+                          size={30}
+                        />
+                      ) : (
+                        <SquareX color="#FF0000" strokeWidth={3} size={32} />
+                      )}
                     </span>
                   </TableCell>
                 </TableRow>

@@ -10,6 +10,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { relatedQuestColumn } from "@/lib/consts/gridContsts";
 import type { QuestDesc } from "../../quest/data/questTypes";
+import { SquareCheckBig, SquareX } from "lucide-react";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   return (
@@ -122,11 +123,17 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                     </div>
                     <div className="flex justify-center items-center">
                       <span
-                        className={`${
-                          item.in_raid ? "text-GoldenYellow" : "text-Red"
-                        } text-base flex justify-center items-center`}
+                        className={`text-base flex justify-center items-center`}
                       >
-                        {item.in_raid ? "Y" : "N"}
+                        {item.in_raid ? (
+                          <SquareCheckBig
+                            color="#5EFF5E"
+                            strokeWidth={3}
+                            size={30}
+                          />
+                        ) : (
+                          <SquareX color="#FF0000" strokeWidth={3} size={32} />
+                        )}
                       </span>
                     </div>
                     <div className="flex justify-center items-center col-span-2">
