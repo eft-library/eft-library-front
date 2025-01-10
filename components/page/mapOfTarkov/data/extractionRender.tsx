@@ -40,18 +40,18 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
       <CenterContents>
         <TextSpan>
           {extractionInfo.always_available ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+            <SquareX color="#FF0000" strokeWidth={3} size={25} />
           )}
         </TextSpan>
       </CenterContents>
       <CenterContents>
         <TextSpan>
           {extractionInfo.single_use ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+            <SquareX color="#FF0000" strokeWidth={3} size={25} />
           )}
         </TextSpan>
       </CenterContents>

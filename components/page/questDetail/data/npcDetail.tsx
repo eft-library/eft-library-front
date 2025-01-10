@@ -42,9 +42,9 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         <div className="flex justify-between items-center gap-4">
           <TextSpan size="lg">Kappa</TextSpan>
           {questInfo.required_kappa ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={30} />
+            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={32} />
+            <SquareX color="#FF0000" strokeWidth={3} size={25} />
           )}
         </div>
       </div>

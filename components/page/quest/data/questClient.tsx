@@ -82,10 +82,10 @@ export default function QuestClient({ questList }: QuestClient) {
                         <SquareCheckBig
                           color="#5EFF5E"
                           strokeWidth={3}
-                          size={30}
+                          size={23}
                         />
                       ) : (
-                        <SquareX color="#FF0000" strokeWidth={3} size={32} />
+                        <SquareX color="#FF0000" strokeWidth={3} size={25} />
                       )}
                     </span>
                   </TableCell>
