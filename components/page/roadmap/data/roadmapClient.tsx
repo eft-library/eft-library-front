@@ -7,24 +7,71 @@ import {
   Background,
   Controls,
   MiniMap,
+  Position,
   ReactFlow,
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
-import { initialNodes, initialEdges } from "./example";
+import { initialEdges } from "./example";
 import { useCallback, useMemo } from "react";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import type { RoadmapClient } from "./roadmapTypes";
+import type { RoadmapClient, Quest } from "./roadmapTypes";
 import RoadmapNode from "./roadmapNode";
 import { Button } from "@/components/ui/button";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
+  console.log(roadmapInfo);
+
+  // 여기서 user quest list에 있는 거는 true로 is_check를 바꿔야 함
+  const processNode = () => {
+    const initialNodes = roadmapInfo.node_info.flatMap((npc) => {
+      if (["PRAPOR", "THERAPIST", "FENCE"].includes(npc.id)) {
+        // 퀘스트 노드를 추가
+        const questNodes = npc.all_quest.map((quest) => ({
+          id: quest.id,
+          type: "questNode",
+          sourcePosition: Position.Right,
+          targetPosition: Position.Left,
+          data: {
+            title_en: quest.title_en,
+            title_kr: quest.title_kr,
+            id: quest.id,
+            type: "quest",
+            isCheck: true,
+          },
+          position: {
+            x: quest.total_x_coordinate,
+            y: quest.total_y_coordinate,
+          },
+          draggable: false,
+        }));
+        return [...questNodes];
+      } else {
+        return [];
+      }
+    });
+    return initialNodes;
+  };
+
+  const processEdge = () => {
+    const initialEdges = roadmapInfo.edge_info.map((edge) => ({
+      id: edge.id,
+      source: edge.source_id,
+      target: edge.target_id,
+      type: "smoothstep",
+      animated: true,
+      style: { stroke: "white", strokeWidth: 2 },
+    }));
+    return [...initialEdges];
+  };
+
   const nodeTypes = {
     questNode: RoadmapNode,
   };
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(processNode());
+  const [edges, setEdges, onEdgesChange] = useEdgesState(processEdge());
 
   const onConnect = useCallback(
     (params: any) => setEdges((els) => addEdge(params, els)),
@@ -37,7 +84,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   // tab 별 대응 만들기
   // userQuest 관련 로직 추가
   const onNodeChange = useCallback(
-    (data: any, isCheck: boolean) => {
+    (data: Quest, isCheck: boolean) => {
+      console.log(data);
       // 모든 노드에 대해 isCheck 값을 업데이트하는 재귀 함수
       const updateNodeCheckStatus = (
         nodeId: string,
@@ -133,6 +181,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        minZoom={0.05}
+        maxZoom={5}
         zoomOnDoubleClick={false}
         nodeTypes={nodeTypes}
         colorMode="dark"

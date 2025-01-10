@@ -1,5 +1,7 @@
 import Roadmap from "@/components/page/roadmap/roadmap";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "타르코프 퀘스트 로드맵 - EFT Library",
   description:

@@ -32,14 +32,13 @@ export default function RoadmapNode(props: any) {
           className="text-center font-bold cursor-pointer text-white hover:text-Beige"
           onClick={() => onClickTitle(props.data)}
         >
-          {/* {props.data.title_kr
+          {props.data.title_kr
             .substring(0, props.data.title_kr.indexOf("("))
             .trim()}
           <br />
           {props.data.title_kr
             .substring(props.data.title_kr.indexOf("("))
-            .trim()} */}
-          {props.data.label}
+            .trim()}
         </span>
       </div>
 

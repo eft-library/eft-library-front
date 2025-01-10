@@ -3,8 +3,15 @@ export interface RoadmapClient {
 }
 
 export interface RoadmapData {
-  quest_info: NPCData[];
+  node_info: NPCData[];
   quest_list: string[];
+  edge_info: Edge[];
+}
+
+interface Edge {
+  id: string;
+  source_id: string;
+  target_id: string;
 }
 
 // 최상위 인터페이스
@@ -14,37 +21,21 @@ interface NPCData {
   order: number;
   id: string;
   name_kr: string;
-  update_time: string;
   all_quest: Quest[];
 }
 
 // 퀘스트 인터페이스
-interface Quest {
+export interface Quest {
   title_en: string;
   id: string;
-  objectives_en: string[];
-  rewards_en: string[];
-  required_kappa: boolean;
-  requirements_kr: string[] | null;
-  order: number;
-  guide: string | null;
-  next: string | null;
+  is_kappa: boolean;
+  next_list: string[] | null;
+  prev_list: string[] | null;
   url_mapping: string;
   npc_value: string;
   title_kr: string;
-  objectives_kr: string[];
-  rewards_kr: string[];
-  requirements_en: string[] | null;
-  update_time: string;
-  requires: Requirement[];
-  is_event: boolean;
-}
-
-// 퀘스트 요구 조건 인터페이스
-interface Requirement {
-  id: string;
-  name: string;
-  name_kr: string;
-  is_other: boolean;
-  url_mapping: string;
+  single_x_coordinate: number;
+  single_y_coordinate: number;
+  total_x_coordinate: number;
+  total_y_coordinate: number;
 }
