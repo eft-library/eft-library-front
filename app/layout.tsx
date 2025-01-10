@@ -8,6 +8,8 @@ import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
 import AdSense from "@/components/custom/adsense/adSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -55,6 +57,8 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <AdBlockAlert />
+        <Toaster />
         <AuthContext>
           <ThemeProvider
             attribute={"class"}
