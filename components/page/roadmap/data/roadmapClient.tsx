@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client";
 
 import {
@@ -12,7 +10,7 @@ import {
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { RoadmapClient, Quest } from "./roadmapTypes";
@@ -20,12 +18,12 @@ import RoadmapNode from "./roadmapNode";
 import { Button } from "@/components/ui/button";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
-  // 여기서 user quest list에 있는 거는 true로 is_check를 바꿔야 함
-  const processNode = () => {
-    const initialNodes = roadmapInfo.node_info.flatMap((npc) => {
-      if (["PRAPOR", "THERAPIST", "FENCE"].includes(npc.id)) {
-        // 퀘스트 노드를 추가
-        const questNodes = npc.all_quest.map((quest) => ({
+  const [questList, setQuestList] = useState<string[]>([]);
+
+  const processNode = useCallback(() => {
+    return roadmapInfo.node_info.flatMap((npc) => {
+      if (["THERAPIST", "PRAPOR", "FENCE"].includes(npc.id)) {
+        return npc.all_quest.map((quest) => ({
           id: quest.id,
           type: "questNode",
           sourcePosition: Position.Right,
@@ -35,7 +33,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             title_kr: quest.title_kr,
             id: quest.id,
             type: "quest",
-            isCheck: true,
+            isCheck: questList.includes(quest.id),
             prev_list: quest.prev_list || [],
             next_list: quest.next_list || [],
           },
@@ -45,16 +43,13 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           },
           draggable: false,
         }));
-        return [...questNodes];
-      } else {
-        return [];
       }
+      return [];
     });
-    return initialNodes;
-  };
+  }, [roadmapInfo, questList]);
 
-  const processEdge = () => {
-    const initialEdges = roadmapInfo.edge_info.map((edge) => ({
+  const processEdge = useCallback(() => {
+    return roadmapInfo.edge_info.map((edge) => ({
       id: edge.id,
       source: edge.source_id,
       target: edge.target_id,
@@ -62,100 +57,96 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       animated: true,
       style: { stroke: "white", strokeWidth: 2 },
     }));
-    return [...initialEdges];
-  };
-
-  const nodeTypes = {
-    questNode: RoadmapNode,
-  };
+  }, [roadmapInfo]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(processNode());
   const [edges, setEdges, onEdgesChange] = useEdgesState(processEdge());
+
+  useEffect(() => {
+    if (roadmapInfo.quest_list.length > 0) {
+      setQuestList(roadmapInfo.quest_list);
+    }
+  }, [roadmapInfo]);
+
+  useEffect(() => {
+    if (questList.length > 0) {
+      setNodes(processNode());
+    }
+  }, [questList, processNode]);
+
+  useEffect(() => {
+    setNodes(processNode());
+  }, [roadmapInfo.quest_list, processNode, questList]);
 
   const onConnect = useCallback(
     (params: any) => setEdges((els) => addEdge(params, els)),
     []
   );
 
+  const nodeTypes = useMemo(
+    () => ({
+      questNode: RoadmapNode,
+    }),
+    []
+  );
+
   // 저장 통신 함수 만들기
-  // nodes에서 true인 것들을 전부 저장하면 될 듯
 
   // tab 별 대응 만들기
-  // userQuest 관련 로직 추가
   const onNodeChange = useCallback(
     (data: Quest, isCheck: boolean) => {
-      // 모든 노드에 대해 isCheck 값을 업데이트하는 재귀 함수
       const updateNodeCheckStatus = (
         nodeId: string,
         checkStatus: boolean,
         nodes: any[]
       ): any[] => {
-        let updatedNodes = nodes.map((node) =>
-          node.id === nodeId
-            ? { ...node, data: { ...node.data, isCheck: checkStatus } }
-            : node
-        );
+        const updatedNodes = new Map(nodes.map((node) => [node.id, node]));
 
-        const currentNode = nodes.find((n) => n.id === nodeId);
+        const updateNode = (nodeId: string) => {
+          const node = updatedNodes.get(nodeId);
+          if (!node) return;
 
-        if (!currentNode) return updatedNodes;
-
-        // 만약 isCheck가 false라면 next_list의 모든 노드도 false로 변경
-        if (!checkStatus && currentNode.data.next_list) {
-          currentNode.data.next_list.forEach((nextNodeId: string) => {
-            updatedNodes = updateNodeCheckStatus(
-              nextNodeId,
-              checkStatus,
-              updatedNodes
-            );
+          updatedNodes.set(nodeId, {
+            ...node,
+            data: { ...node.data, isCheck: checkStatus },
           });
-        }
 
-        // 만약 isCheck가 true일 때, prev_list의 모든 노드도 true로 변경
-        if (checkStatus && currentNode.data.prev_list) {
-          currentNode.data.prev_list.forEach((prevNodeId: string) => {
-            updatedNodes = updateNodeCheckStatus(
-              prevNodeId,
-              checkStatus,
-              updatedNodes
-            );
-          });
-        }
+          if (checkStatus && node.data.prev_list) {
+            node.data.prev_list.forEach(updateNode);
+          } else if (!checkStatus && node.data.next_list) {
+            node.data.next_list.forEach(updateNode);
+          }
+        };
 
-        return updatedNodes;
+        updateNode(nodeId);
+
+        return Array.from(updatedNodes.values());
       };
 
       setNodes((nds) => {
-        let updatedNodes = [...nds];
-        // 해당 노드의 isCheck 상태만 업데이트
-        updatedNodes = updateNodeCheckStatus(data.id, isCheck, updatedNodes);
+        const updatedNodes = updateNodeCheckStatus(data.id, isCheck, nds);
+        const nodesCheckList = updatedNodes
+          .filter((node) => node.data.isCheck)
+          .map((node) => node.data.id);
+
+        setQuestList(nodesCheckList);
+
         return updatedNodes;
       });
     },
-    [setNodes]
+    [setNodes, setQuestList]
   );
 
   const checkAllNodes = useCallback(() => {
-    // userQuest 전체 추가하는 로직 넣기
-    // tab이 변경 되면 해당 npc만 전체 추가
-    setNodes((nds) =>
-      nds.map((node) => ({
-        ...node,
-        data: { ...node.data, isCheck: true },
-      }))
+    const allQuestIds = roadmapInfo.node_info.flatMap((npc) =>
+      npc.all_quest.map((quest) => quest.id)
     );
-  }, [setNodes]);
+    setQuestList(allQuestIds);
+  }, [roadmapInfo.node_info]);
 
   const uncheckAllNodes = useCallback(() => {
-    // userQuest 비우는 로직 넣기
-    // tab이 변경 되면 해당 npc만 전체 제거
-    setNodes((nds) =>
-      nds.map((node) => ({
-        ...node,
-        data: { ...node.data, isCheck: false },
-      }))
-    );
-  }, [setNodes]);
+    setQuestList([]);
+  }, []);
 
   const enhancedNodes = useMemo(
     () =>
@@ -209,6 +200,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           onClick={uncheckAllNodes}
         >
           전체 해제
+        </Button>
+        <Button
+          className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+          onClick={() => console.log(questList)}
+        >
+          저장
         </Button>
       </div>
     </div>
