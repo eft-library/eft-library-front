@@ -9,7 +9,6 @@ import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "EFT Library",
