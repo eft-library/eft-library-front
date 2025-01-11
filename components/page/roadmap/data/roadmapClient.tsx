@@ -12,7 +12,6 @@ import {
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
-import { initialEdges } from "./example";
 import { useCallback, useMemo } from "react";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
@@ -21,8 +20,6 @@ import RoadmapNode from "./roadmapNode";
 import { Button } from "@/components/ui/button";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
-  console.log(roadmapInfo);
-
   // 여기서 user quest list에 있는 거는 true로 is_check를 바꿔야 함
   const processNode = () => {
     const initialNodes = roadmapInfo.node_info.flatMap((npc) => {
@@ -39,6 +36,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             id: quest.id,
             type: "quest",
             isCheck: true,
+            prev_list: quest.prev_list || [],
+            next_list: quest.next_list || [],
           },
           position: {
             x: quest.total_x_coordinate,
@@ -85,7 +84,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   // userQuest 관련 로직 추가
   const onNodeChange = useCallback(
     (data: Quest, isCheck: boolean) => {
-      console.log(data);
       // 모든 노드에 대해 isCheck 값을 업데이트하는 재귀 함수
       const updateNodeCheckStatus = (
         nodeId: string,
@@ -98,32 +96,30 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             : node
         );
 
-        // 만약 isCheck가 false라면 next 노드들도 false로 변경
-        if (!checkStatus) {
-          const node = nodes.find((n) => n.id === nodeId);
-          if (node && node.data.next) {
-            node.data.next.forEach((nextNode: any) => {
-              updatedNodes = updateNodeCheckStatus(
-                nextNode,
-                checkStatus,
-                updatedNodes
-              );
-            });
-          }
+        const currentNode = nodes.find((n) => n.id === nodeId);
+
+        if (!currentNode) return updatedNodes;
+
+        // 만약 isCheck가 false라면 next_list의 모든 노드도 false로 변경
+        if (!checkStatus && currentNode.data.next_list) {
+          currentNode.data.next_list.forEach((nextNodeId: string) => {
+            updatedNodes = updateNodeCheckStatus(
+              nextNodeId,
+              checkStatus,
+              updatedNodes
+            );
+          });
         }
 
-        // 만약 isCheck가 true일 때, require 배열의 노드들을 모두 체크
-        if (checkStatus) {
-          const node = nodes.find((n) => n.id === nodeId);
-          if (node && node.data.require) {
-            node.data.require.forEach((requiredNode: any) => {
-              updatedNodes = updateNodeCheckStatus(
-                requiredNode,
-                checkStatus,
-                updatedNodes
-              );
-            });
-          }
+        // 만약 isCheck가 true일 때, prev_list의 모든 노드도 true로 변경
+        if (checkStatus && currentNode.data.prev_list) {
+          currentNode.data.prev_list.forEach((prevNodeId: string) => {
+            updatedNodes = updateNodeCheckStatus(
+              prevNodeId,
+              checkStatus,
+              updatedNodes
+            );
+          });
         }
 
         return updatedNodes;
