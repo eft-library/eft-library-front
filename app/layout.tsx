@@ -6,10 +6,10 @@ import Footer from "@/components/page/footer/footer";
 import AuthContext from "@/store/AuthContext";
 import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
-import AdSense from "@/components/custom/adsense/adSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -51,7 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} />
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
+        ></script>
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""}
         />
