@@ -22,29 +22,26 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
   const processNode = useCallback(() => {
     return roadmapInfo.node_info.flatMap((npc) => {
-      if (["THERAPIST", "PRAPOR", "FENCE"].includes(npc.id)) {
-        return npc.all_quest.map((quest) => ({
+      return npc.all_quest.map((quest) => ({
+        id: quest.id,
+        type: "questNode",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        data: {
+          title_en: quest.title_en,
+          title_kr: quest.title_kr,
           id: quest.id,
-          type: "questNode",
-          sourcePosition: Position.Right,
-          targetPosition: Position.Left,
-          data: {
-            title_en: quest.title_en,
-            title_kr: quest.title_kr,
-            id: quest.id,
-            type: "quest",
-            isCheck: questList.includes(quest.id),
-            prev_list: quest.prev_list || [],
-            next_list: quest.next_list || [],
-          },
-          position: {
-            x: quest.total_x_coordinate,
-            y: quest.total_y_coordinate,
-          },
-          draggable: false,
-        }));
-      }
-      return [];
+          type: "quest",
+          isCheck: questList.includes(quest.id),
+          prev_list: quest.prev_list || [],
+          next_list: quest.next_list || [],
+        },
+        position: {
+          x: quest.total_x_coordinate,
+          y: quest.total_y_coordinate,
+        },
+        draggable: false,
+      }));
     });
   }, [roadmapInfo, questList]);
 
