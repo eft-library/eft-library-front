@@ -42,9 +42,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           x: quest.total_x_coordinate,
           y: quest.total_y_coordinate,
         },
-        draggable: false,
+        // draggable: false,
       }));
-      return [];
     });
   }, [roadmapInfo, questList]);
 
@@ -137,6 +136,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     [setNodes, setQuestList]
   );
 
+  const onNodeDragStop = (event: any, node: any) => {
+    const roundedPosition = {
+      x: Math.round(node.position.x),
+      y: Math.round(node.position.y),
+    };
+    console.log(roundedPosition); // 소수점을 제거한 노드의 위치 출력
+  };
+
   const checkAllNodes = useCallback(() => {
     const allQuestIds = roadmapInfo.node_info.flatMap((npc) =>
       npc.all_quest.map((quest) => quest.id)
@@ -167,6 +174,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStop={onNodeDragStop}
         onConnect={onConnect}
         minZoom={0.05}
         maxZoom={5}
