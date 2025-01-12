@@ -7,12 +7,8 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import {
-  checkViewMedical,
-  filterStimEffects,
-  checkPlus,
-} from "@/lib/func/jsxfunction";
-import type { StimulantClient } from "./medicalTypes";
+import { checkViewMedical, filterStimEffects } from "@/lib/func/jsxfunction";
+import type { StimulantClient, Effect } from "./medicalTypes";
 
 export default function StimulantClient({ medicalList }: StimulantClient) {
   const { medicalCategory } = useAppStore((state) => state);
@@ -41,6 +37,29 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
       return text > 0 ? `+${text}` : `${text}`;
     }
     return "";
+  };
+
+  const checkPlus = (effect: Effect) => {
+    const red = ["BodyTemperature", "DamageModifier"];
+    if (red.includes(effect.type)) {
+      if (effect.value == 0) {
+        return "white";
+      } else if (effect.value > 0) {
+        return "Red";
+      } else {
+        return "BrightCyan";
+      }
+    }
+
+    if (typeof effect.value === "number") {
+      if (effect.value == 0) {
+        return "white";
+      } else if (effect.value > 0) {
+        return "BrightCyan";
+      } else {
+        return "Red";
+      }
+    }
   };
 
   return (
@@ -97,7 +116,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         >
                           {buff.krSkill}
                         </TextSpan>
-                        <TextSpan size="sm" textColor={checkPlus(buff.value)}>
+                        <TextSpan size="sm" textColor={checkPlus(buff)}>
                           &nbsp;{getPlusMinusValue(buff.value)}
                         </TextSpan>
                       </div>
@@ -128,7 +147,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                         >
                           {debuff.krSkill}
                         </TextSpan>
-                        <TextSpan size="sm" textColor={checkPlus(debuff.value)}>
+                        <TextSpan size="sm" textColor={checkPlus(debuff)}>
                           &nbsp;{getPlusMinusValue(debuff.value)}
                         </TextSpan>
                       </div>

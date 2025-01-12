@@ -32,7 +32,7 @@ interface Medical {
   painkiller_duration: number;
   hitpoints: number;
 }
-interface Effect {
+export interface Effect {
   id: string;
   type: string;
   delay?: number;
