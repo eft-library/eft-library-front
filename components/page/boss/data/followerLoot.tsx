@@ -46,7 +46,7 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
                   { "bg-NeutralGray": lootType === selector.item_type }
                 )}
               >
-                <TextSpan size="lg">{selector.item_type_kr}</TextSpan>
+                <TextSpan size="sm">{selector.item_type_kr}</TextSpan>
               </div>
             ))}
           </div>

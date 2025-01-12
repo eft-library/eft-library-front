@@ -30,11 +30,11 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                 key={`${follower.id}-health`}
                 onClick={() => clickHealth(follower.id)}
                 className={cn(
-                  "rounded-lg flex justify-center items-center p-[8px] w-[120px] h-[40px] cursor-pointer hover:bg-NeutralGray border-solid border-[1px] border-white",
+                  "rounded-lg flex justify-center items-center p-[8px] w-[140px] h-[40px] cursor-pointer hover:bg-NeutralGray border-solid border-[1px] border-white",
                   { "bg-NeutralGray": healthId === follower.id }
                 )}
               >
-                <TextSpan size="lg">{follower.name_kr}</TextSpan>
+                <TextSpan size="sm">{follower.name_kr}</TextSpan>
               </div>
             ))}
           </div>

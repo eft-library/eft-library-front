@@ -22,7 +22,7 @@ export default function BossClient({ bossList }: BossClient) {
       {bossList.map(
         (boss) =>
           checkIdCategory(param.id, boss.id) && (
-            <div key={boss.id} className="flex flex-col gap-6">
+            <div key={boss.id} className="flex flex-col gap-6 items-center">
               <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
                 <CenterContents>
                   <ImageView
@@ -72,11 +72,14 @@ export default function BossClient({ bossList }: BossClient) {
                   ))}
                 </CenterContents>
               </div>
-              <AdBanner
-                dataAdFormat={"auto"}
-                dataFullWidthResponsive={true}
-                dataAdSlot="2690838054"
-              />
+
+              <div className="w-[1200px]">
+                <AdBanner
+                  dataAdFormat={"auto"}
+                  dataFullWidthResponsive={true}
+                  dataAdSlot="2690838054"
+                />
+              </div>
               <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">위치</span>
                 <Separator className="bg-white" />
