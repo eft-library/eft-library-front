@@ -39,3 +39,15 @@ export interface Quest {
   total_x_coordinate: number;
   total_y_coordinate: number;
 }
+
+export interface RoadmapTab {
+  npcList: TabNpc[];
+  setTabState: (val: string) => void;
+  tabState: string;
+}
+
+interface TabNpc {
+  id: string;
+  name_en: string;
+  name_kr: string;
+}

@@ -15,13 +15,19 @@ import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { RoadmapClient, Quest } from "./roadmapTypes";
 import RoadmapNode from "./roadmapNode";
+import RoadmapTab from "./roadmapTab";
 import { Button } from "@/components/ui/button";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const [questList, setQuestList] = useState<string[]>([]);
+  const [tabState, setTabState] = useState<string>("all");
 
   const processNode = useCallback(() => {
     return roadmapInfo.node_info.flatMap((npc) => {
+      if (tabState !== "all" && npc.id !== tabState) {
+        return []; // `tabState`와 일치하지 않으면 아무것도 추가하지 않음
+      }
+
       return npc.all_quest.map((quest) => ({
         id: quest.id,
         type: "questNode",
@@ -45,7 +51,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         // draggable: false,
       }));
     });
-  }, [roadmapInfo, questList]);
+  }, [roadmapInfo, questList, tabState]);
 
   const processEdge = useCallback(() => {
     return roadmapInfo.edge_info.map((edge) => ({
@@ -145,11 +151,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   };
 
   const checkAllNodes = useCallback(() => {
-    const allQuestIds = roadmapInfo.node_info.flatMap((npc) =>
-      npc.all_quest.map((quest) => quest.id)
-    );
+    const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
+      if (tabState !== "all" && npc.id !== tabState) {
+        return []; // `tabState`와 일치하지 않는 경우 빈 배열 반환
+      }
+      return npc.all_quest.map((quest) => quest.id);
+    });
     setQuestList(allQuestIds);
-  }, [roadmapInfo.node_info]);
+  }, [roadmapInfo.node_info, tabState]); // tabState를 의존성 배열에 추가
 
   const uncheckAllNodes = useCallback(() => {
     setQuestList([]);
@@ -164,58 +173,75 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     [nodes, onNodeChange]
   );
 
-  return (
-    <div
-      className="w-full border-white border-2 border-solid rounded-lg relative"
-      style={{ height: "80vh" }}
-    >
-      <ReactFlow
-        nodes={enhancedNodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeDragStop={onNodeDragStop}
-        onConnect={onConnect}
-        minZoom={0.05}
-        maxZoom={5}
-        zoomOnDoubleClick={false}
-        nodeTypes={nodeTypes}
-        colorMode="dark"
-        fitView
-        attributionPosition="bottom-left"
-        style={{ backgroundColor: ALL_COLOR.BACKGROUND }}
-      >
-        <Controls
-          style={{
-            transform: "scale(1.5)",
-            marginBottom: "50px",
-          }}
-          showInteractive={false}
-        />
-        <MiniMap />
-        <Background />
-      </ReactFlow>
+  const onChangeNpcTab = (tab: string) => {
+    setQuestList([]);
+    setTabState(tab);
+  };
 
-      <div className="absolute top-2 right-2 flex gap-2">
-        <Button
-          className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
-          onClick={checkAllNodes}
+  return (
+    <>
+      <RoadmapTab
+        npcList={roadmapInfo.node_info.map((npc) => ({
+          id: npc.id,
+          name_kr: npc.name_kr,
+          name_en: npc.name_en,
+        }))}
+        setTabState={onChangeNpcTab}
+        tabState={tabState}
+      />
+
+      <div
+        className="w-full border-white border-2 border-solid rounded-lg relative"
+        style={{ height: "80vh" }}
+      >
+        <ReactFlow
+          nodes={enhancedNodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onNodeDragStop={onNodeDragStop}
+          onConnect={onConnect}
+          minZoom={0.05}
+          maxZoom={5}
+          zoomOnDoubleClick={false}
+          nodeTypes={nodeTypes}
+          colorMode="dark"
+          fitView
+          attributionPosition="bottom-left"
+          style={{ backgroundColor: ALL_COLOR.BACKGROUND }}
         >
-          전체 선택
-        </Button>
-        <Button
-          className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
-          onClick={uncheckAllNodes}
-        >
-          전체 해제
-        </Button>
-        <Button
-          className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
-          onClick={() => console.log(questList)}
-        >
-          저장
-        </Button>
+          <Controls
+            style={{
+              transform: "scale(1.5)",
+              marginBottom: "50px",
+            }}
+            showInteractive={false}
+          />
+          <MiniMap />
+          <Background />
+        </ReactFlow>
+
+        <div className="absolute top-2 right-2 flex gap-2">
+          <Button
+            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+            onClick={checkAllNodes}
+          >
+            전체 선택
+          </Button>
+          <Button
+            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+            onClick={uncheckAllNodes}
+          >
+            전체 해제
+          </Button>
+          <Button
+            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+            onClick={() => console.log(questList)}
+          >
+            저장
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
