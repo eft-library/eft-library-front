@@ -32,6 +32,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           title_kr: quest.title_kr,
           id: quest.id,
           type: "quest",
+          iskappa: quest.is_kappa,
+          urlMapping: quest.url_mapping,
           isCheck: questList.includes(quest.id),
           prev_list: quest.prev_list || [],
           next_list: quest.next_list || [],
@@ -42,6 +44,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         },
         draggable: false,
       }));
+      return [];
     });
   }, [roadmapInfo, questList]);
 
