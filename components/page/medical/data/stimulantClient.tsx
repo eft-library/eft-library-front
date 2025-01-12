@@ -82,7 +82,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                     <div key={`${index}-buff-${buff.id}`}>
                       {buff.delay != null && buff.duration != null && (
                         <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
-                          {buff.id === "5ed5166ad380ab312177c100"
+                          {stimulant.id === "5ed5166ad380ab312177c100"
                             ? `25% 확률 / ${buff.delay}초 지연 / ${buff.duration}초 지속`
                             : buff.delay === 0
                             ? `${buff.duration}초 지속`
@@ -113,7 +113,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                     <div key={`${index}-debuff-${debuff.id}`}>
                       {debuff.delay != null && debuff.duration != null && (
                         <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
-                          {debuff.id === "5ed5166ad380ab312177c100"
+                          {stimulant.id === "5ed5166ad380ab312177c100"
                             ? `25% 확률 / ${debuff.delay}초 지연 / ${debuff.duration}초 지속`
                             : debuff.delay === 0
                             ? `${debuff.duration}초 지속`
