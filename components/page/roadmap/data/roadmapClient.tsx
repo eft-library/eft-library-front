@@ -67,7 +67,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       source: edge.source_id,
       target: edge.target_id,
       type: "smoothstep",
-      animated: true,
+      animated: false,
       style: { stroke: "white", strokeWidth: 2 },
     }));
   }, [roadmapInfo]);
