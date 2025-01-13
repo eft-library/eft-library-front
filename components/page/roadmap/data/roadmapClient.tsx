@@ -9,6 +9,7 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
+  useReactFlow,
 } from "@xyflow/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import "@xyflow/react/dist/style.css";
@@ -21,6 +22,7 @@ import { Button } from "@/components/ui/button";
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const [questList, setQuestList] = useState<string[]>([]);
   const [tabState, setTabState] = useState<string>("all");
+  const { fitView } = useReactFlow();
 
   const processNode = useCallback(() => {
     return roadmapInfo.node_info.flatMap((npc) => {
@@ -176,6 +178,9 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const onChangeNpcTab = (tab: string) => {
     setQuestList([]);
     setTabState(tab);
+    setTimeout(() => {
+      fitView();
+    }, 500);
   };
 
   return (

@@ -6,6 +6,7 @@ import RoadmapClient from "./roadmapClient";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import type { RoadmapData } from "./roadmapTypes";
+import { ReactFlowProvider } from "@xyflow/react";
 
 export default function GetRoadmap() {
   const { data: session } = useSession();
@@ -40,5 +41,9 @@ export default function GetRoadmap() {
 
   if (!roadmapList) return null;
 
-  return <RoadmapClient roadmapInfo={roadmapList} />;
+  return (
+    <ReactFlowProvider>
+      <RoadmapClient roadmapInfo={roadmapList} />
+    </ReactFlowProvider>
+  );
 }
