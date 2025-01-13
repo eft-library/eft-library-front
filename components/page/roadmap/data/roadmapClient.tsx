@@ -47,8 +47,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           next_list: quest.next_list || [],
         },
         position: {
-          x: quest.total_x_coordinate,
-          y: quest.total_y_coordinate,
+          x:
+            tabState === "all"
+              ? quest.total_x_coordinate
+              : quest.single_x_coordinate,
+          y:
+            tabState === "all"
+              ? quest.total_y_coordinate
+              : quest.single_y_coordinate,
         },
         // draggable: false,
       }));
