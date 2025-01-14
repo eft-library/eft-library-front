@@ -32,9 +32,10 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { fitView } = useReactFlow();
 
   const processNode = useCallback(() => {
+    const npcIdList = roadmapInfo.node_info.map((npc) => npc.id);
     return roadmapInfo.node_info.flatMap((npc) => {
       if (tabState !== "all" && npc.id !== tabState) {
-        return []; // `tabState`와 일치하지 않으면 아무것도 추가하지 않음
+        return [];
       }
 
       return npc.all_quest.map((quest) => ({
@@ -46,7 +47,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           title_en: quest.title_en,
           title_kr: quest.title_kr,
           id: quest.id,
-          type: "quest",
+          type: npcIdList.includes(quest.id) ? "npc" : "quest",
           iskappa: quest.is_kappa,
           urlMapping: quest.url_mapping,
           isCheck: questList.includes(quest.id),
