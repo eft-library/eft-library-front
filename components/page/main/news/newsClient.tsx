@@ -135,7 +135,7 @@ export default function NewsClient({ news }: NewsClient) {
         open={alertStatus}
         setOpen={setAlertStatus}
         title="알림"
-        description="로그인 한 사용자만 가능합니다."
+        description="퀘스트 플래너는 로그인 한 사용자만 사용 가능합니다."
       />
     </div>
   );

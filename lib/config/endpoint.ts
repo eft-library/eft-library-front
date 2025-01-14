@@ -64,6 +64,7 @@ export const USER_API_ENDPOINTS = {
   GET_USER_INFO: baseUrl + "/api/user/get",
   GET_USER_QUEST: baseUrl + "/api/user/quest",
   DELETE_USER_QUEST: baseUrl + "/api/user/quest/delete",
+  UPDATE_ROADMAP: baseUrl + "/api/roadmap/save_roadmap",
   UPDATE_USER_QUEST: baseUrl + "/api/user/quest/update",
   ADD_POST: baseUrl + "/api/board/add",
   UPDATE_POST: baseUrl + "/api/board/update",

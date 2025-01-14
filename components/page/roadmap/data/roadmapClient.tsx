@@ -18,10 +18,16 @@ import type { RoadmapClient, Quest } from "./roadmapTypes";
 import RoadmapNode from "./roadmapNode";
 import RoadmapTab from "./roadmapTab";
 import { Button } from "@/components/ui/button";
+import { signOut, useSession } from "next-auth/react";
+import DefaultAlert from "@/components/custom/alert/defaultAlert";
+import { requestUserData } from "@/lib/config/api";
+import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
+  const { data: session } = useSession();
   const [questList, setQuestList] = useState<string[]>([]);
   const [tabState, setTabState] = useState<string>("all");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { fitView } = useReactFlow();
 
   const processNode = useCallback(() => {
@@ -189,6 +195,29 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     }, 500);
   };
 
+  const onClickSave = async () => {
+    console.log(questList);
+    if (session && session.email) {
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_ROADMAP,
+        { questList: questList },
+        session
+      );
+
+      if (!response) return;
+
+      if (response.status === 200) {
+        alert("저장 되었습니다.");
+      } else {
+        alert("로그인을 다시 해주세요");
+        signOut();
+        window.location.reload();
+      }
+    } else {
+      setAlertStatus(!alertStatus);
+    }
+  };
+
   return (
     <>
       <RoadmapTab
@@ -247,12 +276,19 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           </Button>
           <Button
             className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
-            onClick={() => console.log(questList)}
+            onClick={() => onClickSave()}
           >
             저장
           </Button>
         </div>
       </div>
+
+      <DefaultAlert
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="알림"
+        description="퀘스트 로드맵은 로그인 한 사용자만 사용 가능합니다."
+      />
     </>
   );
 }
