@@ -25,6 +25,7 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import QuestNode from "./questNode";
 import NpcNode from "./npcNode";
 import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
@@ -326,7 +327,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
               onClick={handleSearch}
               className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
             >
-              검색
+              <Search />
             </Button>
           </div>
           <Button
