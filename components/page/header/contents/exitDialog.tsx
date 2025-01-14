@@ -30,7 +30,9 @@ export default function ExitDialog() {
     try {
       if (email !== session?.email) {
         setAlertDesc("이메일이 다릅니다.");
-        setAlertStatus(true);
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
         return;
       }
 
@@ -42,11 +44,15 @@ export default function ExitDialog() {
 
       if (!data || data.status !== 200) {
         setAlertDesc("잠시후 다시 시도해주세요.");
-        setAlertStatus(true);
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
         location.reload();
       } else {
         setAlertDesc("회원 탈퇴가 완료 되었습니다. 그동안 감사했습니다.");
-        setAlertStatus(true);
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
         signOut();
       }
     } catch (error) {

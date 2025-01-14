@@ -205,15 +205,24 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (response.status === 200) {
         setQuestList(response.data);
         setAlertDesc("저장 되었습니다.");
-        setAlertStatus(true);
+
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
       } else {
         setAlertDesc("로그인을 다시 해주세요.");
-        setAlertStatus(true);
+
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
         signOut();
         window.location.reload();
       }
     } else {
-      setAlertStatus(!alertStatus);
+      setAlertDesc("로그인을 다시 해주세요.");
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
     }
   };
 
