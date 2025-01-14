@@ -35,6 +35,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { fitView } = useReactFlow();
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchIndex, setSearchIndex] = useState(0);
   const reactFlowWrapper = useRef(null);
   const reactFlowInstance = useReactFlow();
 
@@ -113,6 +114,10 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   useEffect(() => {
     setNodes(processNode());
   }, [roadmapInfo.quest_list, processNode, questList]);
+
+  useEffect(() => {
+    setSearchIndex(0);
+  }, [searchQuery]);
 
   const onConnect = useCallback(
     (params: any) => setEdges((els) => addEdge(params, els)),
@@ -242,27 +247,34 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
+      return;
+    }
+
+    // 검색 결과 필터링
+    const matchingNodes = nodes.filter((node) =>
+      node.data.title_kr.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (matchingNodes.length > 0) {
+      // 현재 인덱스에서 다음 결과로 이동
+      const nextIndex = searchIndex % matchingNodes.length;
+      const targetNode = matchingNodes[nextIndex];
+      setSearchIndex(nextIndex + 1); // 다음 검색 결과로 이동하도록 인덱스 증가
+
+      const { x, y } = targetNode.position;
+      const bounds = {
+        x: x,
+        y: y,
+        width: 300,
+        height: 300,
+      };
+
+      reactFlowInstance.fitBounds(bounds);
     } else {
-      const targetNode = nodes.find((node) =>
-        node.data.title_kr.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-      if (targetNode) {
-        const { x, y } = targetNode.position;
-        const bounds = {
-          x: x,
-          y: y,
-          width: 300,
-          height: 300,
-        };
-
-        reactFlowInstance.fitBounds(bounds);
-      } else {
-        setAlertDesc("노드를 찾을 수 없습니다.");
-        setTimeout(() => {
-          setAlertStatus(true);
-        }, 500);
-      }
+      setAlertDesc("일치하는 노드를 찾을 수 없습니다.");
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
     }
   };
 
