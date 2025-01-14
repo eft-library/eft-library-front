@@ -228,7 +228,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         window.location.reload();
       }
     } else {
-      setAlertDesc("로그인을 다시 해주세요.");
+      setAlertDesc("퀘스트 로드맵은 로그인 사용자만 저장 가능합니다.");
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);

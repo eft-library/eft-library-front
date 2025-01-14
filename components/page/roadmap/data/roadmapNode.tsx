@@ -21,7 +21,7 @@ export default function RoadmapNode(props: any) {
         <div className="w-full flex justify-end pr-1 pt-1">
           <input
             type="checkbox"
-            className="w-5 h-5 border border-white cursor-pointer"
+            className="w-6 h-6 border border-white cursor-pointer"
             onChange={(e) => props.data.onChange(props.data, e.target.checked)}
             checked={props.data.isCheck}
           />
