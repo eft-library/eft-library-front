@@ -17,12 +17,14 @@ import Image from "next/image";
 import UserQuestList from "@/components/page/userQuest/data/userQuestList";
 import UserQuestSelector from "./userQuestSelector";
 import TextSpan from "../../../custom/gridContents/textSpan";
+import DefaultAlert from "@/components/custom/alert/defaultAlert";
 
 export default function UserQuestClient({ userQuestList }: UserClientQuest) {
   const [checkedQuest, setCheckedQuest] = useState<string[]>([]);
   const router = useRouter();
   const [indices, setIndices] = useState<number[]>([0]);
   const [userQuest, setUserQuest] = useState<UserQuest[]>(userQuestList);
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { data: session } = useSession();
 
   const checkResponse = (response: FetchSchema | null) => {
@@ -35,7 +37,7 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
       }
       setCheckedQuest([]);
     } else {
-      alert("로그인 다시");
+      setAlertStatus(true);
       signOut();
       router.push("/");
     }
@@ -211,6 +213,13 @@ export default function UserQuestClient({ userQuestList }: UserClientQuest) {
           </div>
         </div>
       )}
+
+      <DefaultAlert
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="알림"
+        description="로그인을 다시 해주세요."
+      />
     </div>
   );
 }

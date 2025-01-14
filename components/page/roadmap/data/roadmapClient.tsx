@@ -27,6 +27,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
   const [questList, setQuestList] = useState<string[]>([]);
   const [tabState, setTabState] = useState<string>("all");
+  const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { fitView } = useReactFlow();
 
@@ -109,9 +110,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     []
   );
 
-  // 저장 통신 함수 만들기
-
-  // tab 별 대응 만들기
   const onNodeChange = useCallback(
     (data: Quest, isCheck: boolean) => {
       const updateNodeCheckStatus = (
@@ -167,12 +165,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const checkAllNodes = useCallback(() => {
     const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
       if (tabState !== "all" && npc.id !== tabState) {
-        return []; // `tabState`와 일치하지 않는 경우 빈 배열 반환
+        return [];
       }
       return npc.all_quest.map((quest) => quest.id);
     });
     setQuestList(allQuestIds);
-  }, [roadmapInfo.node_info, tabState]); // tabState를 의존성 배열에 추가
+  }, [roadmapInfo.node_info, tabState]);
 
   const uncheckAllNodes = useCallback(() => {
     setQuestList([]);
@@ -188,7 +186,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   );
 
   const onChangeNpcTab = (tab: string) => {
-    setQuestList([]);
     setTabState(tab);
     setTimeout(() => {
       fitView();
@@ -196,7 +193,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   };
 
   const onClickSave = async () => {
-    console.log(questList);
     if (session && session.email) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_ROADMAP,
@@ -207,9 +203,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (!response) return;
 
       if (response.status === 200) {
-        alert("저장 되었습니다.");
+        setQuestList(response.data);
+        setAlertDesc("저장 되었습니다.");
+        setAlertStatus(true);
       } else {
-        alert("로그인을 다시 해주세요");
+        setAlertDesc("로그인을 다시 해주세요.");
+        setAlertStatus(true);
         signOut();
         window.location.reload();
       }
@@ -287,7 +286,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         open={alertStatus}
         setOpen={setAlertStatus}
         title="알림"
-        description="퀘스트 로드맵은 로그인 한 사용자만 사용 가능합니다."
+        description={alertDesc}
       />
     </>
   );

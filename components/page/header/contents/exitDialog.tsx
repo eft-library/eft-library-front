@@ -18,15 +18,20 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import TextSpan from "../../../custom/gridContents/textSpan";
+import DefaultAlert from "@/components/custom/alert/defaultAlert";
 
 export default function ExitDialog() {
   const { data: session } = useSession();
   const [email, setEmail] = useState<string>("");
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
 
   const userExit = async () => {
     try {
       if (email !== session?.email) {
-        return alert("이메일이 다릅니다.");
+        setAlertDesc("이메일이 다릅니다.");
+        setAlertStatus(true);
+        return;
       }
 
       const data = await requestUserData(
@@ -36,14 +41,12 @@ export default function ExitDialog() {
       );
 
       if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch user data:",
-          data?.msg || "Unknown error"
-        );
-        alert("잠시후 다시 시도해주세요");
+        setAlertDesc("잠시후 다시 시도해주세요.");
+        setAlertStatus(true);
         location.reload();
       } else {
-        alert("회원 탈퇴가 완료 되었습니다. 그동안 감사했습니다.");
+        setAlertDesc("회원 탈퇴가 완료 되었습니다. 그동안 감사했습니다.");
+        setAlertStatus(true);
         signOut();
       }
     } catch (error) {
@@ -104,6 +107,13 @@ export default function ExitDialog() {
           </DialogClose>
         </DialogFooter>
       </DialogContent>
+
+      <DefaultAlert
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="알림"
+        description={alertDesc}
+      />
     </Dialog>
   );
 }
