@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
-export default function RoadmapNode(props: any) {
+export default function QuestNode(props: any) {
   const onClickTitle = useCallback((urlMapping: string) => {
     window.open(`/quest/detail/${urlMapping}`, "_blank");
   }, []);
@@ -19,16 +19,12 @@ export default function RoadmapNode(props: any) {
         }}
       >
         <div className="w-full flex justify-end pr-1 pt-1">
-          {props.data.type === "quest" && (
-            <input
-              type="checkbox"
-              className="w-6 h-6 border border-white cursor-pointer"
-              onChange={(e) =>
-                props.data.onChange(props.data, e.target.checked)
-              }
-              checked={props.data.isCheck}
-            />
-          )}
+          <input
+            type="checkbox"
+            className="w-6 h-6 border border-white cursor-pointer"
+            onChange={(e) => props.data.onChange(props.data, e.target.checked)}
+            checked={props.data.isCheck}
+          />
         </div>
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">

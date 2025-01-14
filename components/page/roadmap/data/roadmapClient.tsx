@@ -15,13 +15,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { RoadmapClient, Quest } from "./roadmapTypes";
-import RoadmapNode from "./roadmapNode";
 import RoadmapTab from "./roadmapTab";
 import { Button } from "@/components/ui/button";
 import { signOut, useSession } from "next-auth/react";
 import DefaultAlert from "@/components/custom/alert/defaultAlert";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
+import QuestNode from "./questNode";
+import NpcNode from "./npcNode";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
@@ -30,6 +31,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { fitView } = useReactFlow();
+
+  const nodeTypes = useMemo(
+    () => ({
+      questNode: QuestNode,
+      npcNode: NpcNode,
+    }),
+    []
+  );
 
   const processNode = useCallback(() => {
     const npcIdList = roadmapInfo.node_info.map((npc) => npc.id);
@@ -40,7 +49,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
       return npc.all_quest.map((quest) => ({
         id: quest.id,
-        type: "questNode",
+        type: npcIdList.includes(quest.id) ? "npcNode" : "questNode",
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
         data: {
@@ -64,6 +73,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
               ? quest.total_y_coordinate
               : quest.single_y_coordinate,
         },
+        // TODO 노드 찍는거 끝나면 활성화 하기
         // draggable: false,
       }));
     });
@@ -101,13 +111,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
   const onConnect = useCallback(
     (params: any) => setEdges((els) => addEdge(params, els)),
-    []
-  );
-
-  const nodeTypes = useMemo(
-    () => ({
-      questNode: RoadmapNode,
-    }),
     []
   );
 
@@ -155,6 +158,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     [setNodes, setQuestList]
   );
 
+  // TODO 노드 찍는거 끝나면 제거
   const onNodeDragStop = (event: any, node: any) => {
     const roundedPosition = {
       x: Math.round(node.position.x),
