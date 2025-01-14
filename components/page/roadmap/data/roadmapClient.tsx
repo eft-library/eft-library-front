@@ -173,8 +173,17 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   }, [roadmapInfo.node_info, tabState]);
 
   const uncheckAllNodes = useCallback(() => {
-    setQuestList([]);
-  }, []);
+    const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
+      if (tabState !== "all" && npc.id !== tabState) {
+        return [];
+      }
+      return npc.all_quest.map((quest) => quest.id);
+    });
+
+    setQuestList((prevQuestList) =>
+      prevQuestList.filter((id) => !allQuestIds.includes(id))
+    );
+  }, [roadmapInfo.node_info, tabState]);
 
   const enhancedNodes = useMemo(
     () =>
