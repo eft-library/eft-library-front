@@ -4,10 +4,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DefaultAlert from "../../../custom/alert/defaultAlert";
-import { Bell, CalendarCheck, Download, LogIn } from "lucide-react";
+import { Bell, CalendarCheck, Download, Star } from "lucide-react";
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { NewsClient } from "../mainTypes";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NewsClient({ news }: NewsClient) {
   const { data: session } = useSession();
@@ -15,10 +16,14 @@ export default function NewsClient({ news }: NewsClient) {
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
 
   const onClickUserFunction = (link: string) => {
-    if (session) {
-      router.push(link);
+    if (link === "/user/quest") {
+      if (session) {
+        router.push(link);
+      } else {
+        setAlertStatus(!alertStatus);
+      }
     } else {
-      setAlertStatus(!alertStatus);
+      router.push(link);
     }
   };
 
@@ -27,10 +32,10 @@ export default function NewsClient({ news }: NewsClient) {
       <div className="grid grid-cols-3 w-full gap-4">
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
-            <LogIn />
+            <Star color={ALL_COLOR.YELLOW} />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              로그인 기능
+              추천 기능
             </TextSpan>
           </div>
 

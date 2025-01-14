@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -11,7 +12,7 @@ import {
   useNodesState,
   useReactFlow,
 } from "@xyflow/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { RoadmapClient, Quest } from "./roadmapTypes";
@@ -23,6 +24,7 @@ import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import QuestNode from "./questNode";
 import NpcNode from "./npcNode";
+import { Input } from "@/components/ui/input";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
@@ -31,6 +33,9 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const { fitView } = useReactFlow();
+  const [searchQuery, setSearchQuery] = useState("");
+  const reactFlowWrapper = useRef(null);
+  const reactFlowInstance = useReactFlow();
 
   const nodeTypes = useMemo(
     () => ({
@@ -73,8 +78,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
               ? quest.total_y_coordinate
               : quest.single_y_coordinate,
         },
-        // TODO 노드 찍는거 끝나면 활성화 하기
-        // draggable: false,
+        draggable: false,
       }));
     });
   }, [roadmapInfo, questList, tabState]);
@@ -158,15 +162,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     [setNodes, setQuestList]
   );
 
-  // TODO 노드 찍는거 끝나면 제거
-  const onNodeDragStop = (event: any, node: any) => {
-    const roundedPosition = {
-      x: Math.round(node.position.x),
-      y: Math.round(node.position.y),
-    };
-    console.log(roundedPosition); // 소수점을 제거한 노드의 위치 출력
-  };
-
   const checkAllNodes = useCallback(() => {
     const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
       if (tabState !== "all" && npc.id !== tabState) {
@@ -240,6 +235,36 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     }
   };
 
+  const handleSearch = () => {
+    if (searchQuery.length < 1) {
+      setAlertDesc("검색어를 입력해주세요.");
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+    } else {
+      const targetNode = nodes.find((node) =>
+        node.data.title_kr.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      if (targetNode) {
+        const { x, y } = targetNode.position;
+        const bounds = {
+          x: x,
+          y: y,
+          width: 300,
+          height: 300,
+        };
+
+        reactFlowInstance.fitBounds(bounds);
+      } else {
+        setAlertDesc("노드를 찾을 수 없습니다.");
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
+      }
+    }
+  };
+
   return (
     <>
       <RoadmapTab
@@ -255,13 +280,13 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       <div
         className="w-full border-white border-2 border-solid rounded-lg relative"
         style={{ height: "80vh" }}
+        ref={reactFlowWrapper}
       >
         <ReactFlow
           nodes={enhancedNodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onNodeDragStop={onNodeDragStop}
           onConnect={onConnect}
           minZoom={0.05}
           maxZoom={5}
@@ -284,24 +309,45 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         </ReactFlow>
 
         <div className="absolute top-2 right-2 flex gap-2">
+          <div className="flex gap-2 items-center justify-center flex-end">
+            <Input
+              id="name"
+              className="col-span-3 text-base font-bold border-white border-2 border-solid"
+              placeholder="퀘스트 검색"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
+            />
+            <Button
+              onClick={handleSearch}
+              className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
+            >
+              검색
+            </Button>
+          </div>
           <Button
-            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
             onClick={checkAllNodes}
           >
             전체 선택
           </Button>
           <Button
-            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
             onClick={uncheckAllNodes}
           >
             전체 해제
           </Button>
-          <Button
-            className="border-2 border-white border-solid bg-Background text-white text-lg rounded-lg hover:bg-NeutralGray"
+          {/* prev, next 끝나면 활성화 */}
+          {/* <Button
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
             onClick={() => onClickSave()}
           >
             저장
-          </Button>
+          </Button> */}
         </div>
       </div>
 
