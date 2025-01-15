@@ -12,6 +12,7 @@ import type {
 } from "@/components/page/mapDetail/data/mapType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import Loading from "@/components/custom/loading/loading";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
   const size = useWindowSize();
@@ -61,7 +62,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
     };
   }, []);
 
-  if (!size.width || !size.height) return null;
+  if (!size.width || !size.height) return <Loading />;
 
   return (
     <div className={"h-full w-full flex flex-col items-center justify-center"}>

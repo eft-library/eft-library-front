@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import QuestDetailClient from "./questDetailClient";
 import type { Quest } from "../../quest/data/questTypes";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetQuestDetail() {
   const [questInfo, setQuestInfo] = useState<Quest>();
@@ -29,7 +30,7 @@ export default function GetQuestDetail() {
     getQuestById();
   }, [param.id]);
 
-  if (!questInfo) return null;
+  if (!questInfo) return <Loading />;
 
   return <QuestDetailClient questInfo={questInfo} />;
 }

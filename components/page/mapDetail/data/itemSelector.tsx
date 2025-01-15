@@ -6,6 +6,7 @@ import { useAppStore } from "@/store/provider";
 import { Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { ItemSelector } from "./mapType";
+import Loading from "@/components/custom/loading/loading";
 
 export default function ItemSelector({
   viewItemList,
@@ -41,7 +42,7 @@ export default function ItemSelector({
     return true;
   };
 
-  if (!originalItem || !itemFilter) return null;
+  if (!originalItem || !itemFilter) return <Loading />;
 
   return (
     <div className="relative z-20">

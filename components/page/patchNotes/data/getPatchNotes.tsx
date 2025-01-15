@@ -6,6 +6,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type { InformationData } from "../../../custom/information/informationTypes";
 import Information from "../../../custom/information/information";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetPatchNotes() {
   const [patchNotesData, setPatchNotesData] = useState<InformationData>();
@@ -34,7 +35,7 @@ export default function GetPatchNotes() {
     }
   }, [param]);
 
-  if (!patchNotesData) return null;
+  if (!patchNotesData) return <Loading />;
 
   return (
     <Information informationData={patchNotesData} routeLink="/patch-notes" />

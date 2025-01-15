@@ -6,6 +6,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type { InformationData } from "../../../custom/information/informationTypes";
 import Information from "../../../custom/information/information";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetEvent() {
   const [eventData, setEventData] = useState<InformationData>();
@@ -34,7 +35,7 @@ export default function GetEvent() {
     }
   }, [param]);
 
-  if (!eventData) return null;
+  if (!eventData) return <Loading />;
 
   return <Information informationData={eventData} routeLink="/event" />;
 }

@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { InformationInfoDetail } from "../../../custom/informationDetail/informationDetailTypes";
 import InformationDetailClient from "../../../custom/informationDetail/informationDetail";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetPatchNotesDetail() {
   const [patchNotesInfo, setPatchNotesInfo] = useState<InformationInfoDetail>();
@@ -33,7 +34,7 @@ export default function GetPatchNotesDetail() {
     }
   }, [param.id]);
 
-  if (!patchNotesInfo) return null;
+  if (!patchNotesInfo) return <Loading />;
 
   return (
     <InformationDetailClient

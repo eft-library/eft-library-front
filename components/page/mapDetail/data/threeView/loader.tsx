@@ -11,15 +11,15 @@ export default function Loader() {
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-center justify-center w-[600px] h-auto">
           <Image
-            src="/loading.gif"
-            alt="loading"
+            src="/loading.png"
+            alt="3d map loading"
             width={120}
             height={0}
             style={{ height: "auto", width: "auto" }}
             unoptimized
           />
         </div>
-        <p className="font-bold">{progress.toFixed(2)}% Loading...</p>
+        <p className="font-bold mt-2">{progress.toFixed(2)}% Loading...</p>
       </div>
     </Html>
   );

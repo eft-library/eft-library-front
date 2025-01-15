@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { InformationInfoDetail } from "../../../custom/informationDetail/informationDetailTypes";
 import InformationDetailClient from "../../../custom/informationDetail/informationDetail";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetEventDetail() {
   const [eventInfo, setEventInfo] = useState<InformationInfoDetail>();
@@ -33,7 +34,7 @@ export default function GetEventDetail() {
     }
   }, [param.id]);
 
-  if (!eventInfo) return null;
+  if (!eventInfo) return <Loading />;
 
   return (
     <InformationDetailClient informationInfo={eventInfo} routeLink="/event" />

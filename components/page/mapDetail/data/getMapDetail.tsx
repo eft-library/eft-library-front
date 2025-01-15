@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MapDetailClient from "@/components/page/mapDetail/data/mapDetailClient";
 import type { MapData } from "@/components/page/mapDetail/data/mapType";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetMapDetail() {
   const [mapInfo, setMapInfo] = useState<MapData>();
@@ -31,7 +32,7 @@ export default function GetMapDetail() {
     }
   }, [param.id]);
 
-  if (!mapInfo) return null;
+  if (!mapInfo) return <Loading />;
 
   return <MapDetailClient mapInfo={mapInfo} />;
 }

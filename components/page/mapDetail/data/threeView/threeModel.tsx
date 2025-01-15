@@ -5,6 +5,7 @@ import { useGLTF, Edges } from "@react-three/drei";
 import { formatImage } from "@/lib/func/formatImage";
 import dynamic from "next/dynamic";
 import type { ThreeModel } from "@/components/page/mapDetail/data/mapType";
+import Loading from "@/components/custom/loading/loading";
 
 const ItemBox = dynamic(() => import("./threeItem"), {
   ssr: false,
@@ -17,7 +18,7 @@ export default function ThreeModel({
   zoomLevel,
 }: ThreeModel) {
   const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
-  if (!nodes || !materials) return null;
+  if (!nodes || !materials) return <Loading />;
 
   return (
     <>

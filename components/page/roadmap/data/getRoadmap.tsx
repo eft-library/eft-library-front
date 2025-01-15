@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import type { RoadmapData } from "./roadmapTypes";
 import { ReactFlowProvider } from "@xyflow/react";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetRoadmap() {
   const { data: session } = useSession();
@@ -39,7 +40,7 @@ export default function GetRoadmap() {
     }
   }, [session?.email]);
 
-  if (!roadmapList) return null;
+  if (!roadmapList) return <Loading />;
 
   return (
     <ReactFlowProvider>

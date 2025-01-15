@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { UserQuest } from "@/components/page/userQuest/data/userQuestType";
 import UserQuestClient from "@/components/page/userQuest/data/userQuestClient";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetUserQuest() {
   const { data: session } = useSession();
@@ -35,7 +36,7 @@ export default function GetUserQuest() {
     }
   }, [session]);
 
-  if (!userQuestList) return null;
+  if (!userQuestList) return <Loading />;
 
   return <UserQuestClient userQuestList={userQuestList} />;
 }

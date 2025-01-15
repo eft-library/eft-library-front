@@ -10,6 +10,7 @@ import Loader from "./loader";
 import ThreeModel from "./threeModel";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { ThreeviewDetail } from "@/components/page/mapDetail/data/mapType";
+import Loading from "@/components/custom/loading/loading";
 
 export default function ThreeViewDetail({
   mapData,
@@ -53,7 +54,7 @@ export default function ThreeViewDetail({
     };
   }, [updateZoomLevel]);
 
-  if (!filterInfo) return null;
+  if (!filterInfo) return <Loading />;
 
   return (
     // Canvas를 클라이언트에서만 렌더링되도록 하기

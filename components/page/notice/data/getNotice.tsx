@@ -6,6 +6,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import Information from "../../../custom/information/information";
 import type { InformationData } from "../../../custom/information/informationTypes";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetNotice() {
   const [noticeData, setNoticeData] = useState<InformationData>();
@@ -34,7 +35,7 @@ export default function GetNotice() {
     }
   }, [param]);
 
-  if (!noticeData) return null;
+  if (!noticeData) return <Loading />;
 
   return <Information informationData={noticeData} routeLink="/notice" />;
 }

@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { InformationInfoDetail } from "../../../custom/informationDetail/informationDetailTypes";
 import InformationDetailClient from "../../../custom/informationDetail/informationDetail";
+import Loading from "@/components/custom/loading/loading";
 
 export default function GetNoticeDetail() {
   const [noticeInfo, setNoticeInfo] = useState<InformationInfoDetail>();
@@ -33,7 +34,7 @@ export default function GetNoticeDetail() {
     }
   }, [param.id]);
 
-  if (!noticeInfo) return null;
+  if (!noticeInfo) return <Loading />;
 
   return (
     <InformationDetailClient informationInfo={noticeInfo} routeLink="/notice" />

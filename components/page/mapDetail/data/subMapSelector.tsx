@@ -8,6 +8,7 @@ import type {
   SubMapSelector,
   SubMap,
 } from "@/components/page/mapDetail/data/mapType";
+import Loading from "@/components/custom/loading/loading";
 
 export default function SubMapSelector({
   onClickMapAction,
@@ -36,7 +37,7 @@ export default function SubMapSelector({
     getSubMapById();
   }, [param.id]);
 
-  if (!subMap) return null;
+  if (!subMap) return <Loading />;
 
   return (
     <div className="flex justify-center">

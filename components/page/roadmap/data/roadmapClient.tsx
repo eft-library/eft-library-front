@@ -335,26 +335,26 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             />
             <Button
               onClick={handleSearch}
-              className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
+              className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             >
               <Search />
             </Button>
           </div>
           <Button
-            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={checkAllNodes}
           >
             전체 선택
           </Button>
           <Button
-            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={uncheckAllNodes}
           >
             전체 해제
           </Button>
           {/* prev, next 끝나면 활성화 */}
           {/* <Button
-            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray"
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={() => onClickSave()}
           >
             저장
