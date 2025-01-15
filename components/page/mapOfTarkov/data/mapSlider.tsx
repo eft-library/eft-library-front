@@ -10,37 +10,7 @@ import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { MOT_IMAGE_SLIDER_OPTION } from "@/lib/consts/libraryConsts";
-
-interface Map {
-  sub: SubMap[];
-  id: string;
-  name_en: string;
-  three_image: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  name_kr: string;
-  mot_image: string;
-  order: number;
-  main_image: string;
-}
-interface SubMap {
-  id: string;
-  name_en: string;
-  three_image: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  name_kr: string;
-  mot_image: string;
-  order: number;
-  main_image: string;
-  parent_value: string;
-}
-
-interface MapSlider {
-  mapInfo: Map;
-}
+import type { MapSlider } from "./mapOfTarkovType";
 
 export default function MapSlider({ mapInfo }: MapSlider) {
   return (
@@ -62,13 +32,15 @@ export default function MapSlider({ mapInfo }: MapSlider) {
                 <div
                   ref={ref}
                   onClick={open}
-                  className={"flex justify-center items-center cursor-pointer"}
+                  className={
+                    "flex justify-center items-center cursor-pointer min-h-[600px]"
+                  }
                 >
                   <Image
                     src={formatImage(map.mot_image)}
                     alt={map.name_en}
                     width={1100}
-                    height={400}
+                    height={600}
                     style={{ width: "auto", height: "auto" }}
                     priority
                   />

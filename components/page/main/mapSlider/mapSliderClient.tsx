@@ -20,7 +20,7 @@ export default function MapSliderClient({ mapList }: MapSlider) {
             {mapList.map((mapImg) => (
               <Link
                 href={`/map-of-tarkov/${mapImg.id}`}
-                className="cursor-pointer"
+                className="cursor-pointer flex items-center justify-center w-full"
                 key={mapImg.id}
               >
                 <Image

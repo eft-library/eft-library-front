@@ -144,3 +144,7 @@ interface SubMap {
   main_image: string;
   parent_value: string;
 }
+
+export interface MapSlider {
+  mapInfo: Map;
+}
