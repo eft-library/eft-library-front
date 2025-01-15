@@ -138,7 +138,7 @@ export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
                 {...getInputProps({
                   placeholder: "퀘스트를 선택해주세요",
                   className:
-                    "font-semibold text-[18px] w-full h-[50px] rounded-[10px] pl-5",
+                    "font-semibold text-[18px] w-full h-[50px] rounded-[10px] pl-5 placeholder:text-SilverGray",
                   onClick: () => {
                     setIsOpen(true);
                     setInputValue("");

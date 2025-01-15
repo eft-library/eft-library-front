@@ -99,6 +99,7 @@ export default {
         NodeBackgground: "#1e1e1e",
         LimeGreen: "#7fd14a",
         ScreaminGreen: "#5EFF5E",
+        SilverGray: "#D3D3D3",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",

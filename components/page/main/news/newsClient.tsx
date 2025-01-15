@@ -84,7 +84,7 @@ export default function NewsClient({ news }: NewsClient) {
             <Download />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              현재 게임 버전
+              타르코프 버전
             </TextSpan>
           </div>
           <TextSpan isCenter={false} size="lg">

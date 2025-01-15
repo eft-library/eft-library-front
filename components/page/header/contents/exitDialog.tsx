@@ -88,7 +88,7 @@ export default function ExitDialog() {
             </Label>
             <Input
               id="name"
-              className="col-span-3 text-base font-bold border-white"
+              className="col-span-3 text-base font-bold border-white placeholder:text-SilverGray"
               value={email}
               placeholder="이메일"
               onChange={(e) => setEmail(e.currentTarget.value)}

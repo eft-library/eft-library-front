@@ -9,7 +9,7 @@ import type { NavItemList } from "../mainTypes";
 export default function NavItemClient({ navItemList }: NavItemList) {
   return (
     <div className="flex justify-center items-center">
-      <div className="grid grid-cols-4 gap-12">
+      <div className="grid grid-cols-5 gap-12">
         {navItemList.map((nav) => (
           <Link key={nav.value} href={nav.link} className="flex flex-col">
             <div

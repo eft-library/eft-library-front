@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -323,7 +322,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <div className="flex gap-2 items-center justify-center flex-end">
             <Input
               id="name"
-              className="col-span-3 text-base font-bold border-white border-2 border-solid"
+              className="col-span-3 text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
               placeholder="퀘스트 검색"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -352,13 +351,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           >
             전체 해제
           </Button>
-          {/* prev, next 끝나면 활성화 */}
-          {/* <Button
+          <Button
             className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={() => onClickSave()}
           >
             저장
-          </Button> */}
+          </Button>
         </div>
       </div>
 

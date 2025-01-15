@@ -74,7 +74,7 @@ export default function SearchClient({ searchList }: SearchClient) {
                   {...getInputProps({
                     placeholder: "검색어를 입력해주세요",
                     className:
-                      "font-bold text-base w-full h-12 rounded-lg pl-5 box-border border-2 border-solid border-white",
+                      "font-bold text-base w-full h-12 rounded-lg pl-5 box-border border-2 border-solid border-white placeholder:text-SilverGray",
                     onClick: () => {
                       setIsOpen(true);
                       setInputValue("");
