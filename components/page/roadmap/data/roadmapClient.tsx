@@ -250,16 +250,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       return;
     }
 
-    // 검색 결과 필터링
     const matchingNodes = nodes.filter((node) =>
       node.data.title_kr.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (matchingNodes.length > 0) {
-      // 현재 인덱스에서 다음 결과로 이동
       const nextIndex = searchIndex % matchingNodes.length;
       const targetNode = matchingNodes[nextIndex];
-      setSearchIndex(nextIndex + 1); // 다음 검색 결과로 이동하도록 인덱스 증가
+      setSearchIndex(nextIndex + 1);
 
       const { x, y } = targetNode.position;
       const bounds = {
@@ -301,8 +299,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          minZoom={0.05}
-          maxZoom={5}
+          minZoom={0.01}
+          maxZoom={1}
           zoomOnDoubleClick={false}
           nodeTypes={nodeTypes}
           colorMode="dark"

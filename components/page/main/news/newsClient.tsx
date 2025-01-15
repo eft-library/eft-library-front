@@ -7,7 +7,7 @@ import DefaultAlert from "../../../custom/alert/defaultAlert";
 import { Bell, CalendarCheck, Download, Star } from "lucide-react";
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import type { NewsClient } from "../mainTypes";
+import type { NewsClient, NewsUserFunction } from "../mainTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NewsClient({ news }: NewsClient) {
@@ -27,6 +27,33 @@ export default function NewsClient({ news }: NewsClient) {
     }
   };
 
+  const newText = (text: NewsUserFunction) => {
+    const blinkStyle = {
+      animation: "fade 1.5s infinite", // 애니메이션 이름과 설정
+    };
+
+    return (
+      <span
+        key={text.name_en}
+        className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
+        onClick={() => onClickUserFunction(text.link)}
+      >
+        - {text.name_kr} &nbsp;
+        <style>
+          {`
+          @keyframes fade {
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.5; }    
+          }
+        `}
+        </style>
+        <span className="text-SoftPink" style={blinkStyle}>
+          {text.is_new && "new !"}
+        </span>
+      </span>
+    );
+  };
+
   return (
     <div className="rounded-lg flex items-center justify-between border-white border-2 border-solid w-[85%] mx-auto p-4 ">
       <div className="grid grid-cols-3 w-full gap-4">
@@ -42,13 +69,7 @@ export default function NewsClient({ news }: NewsClient) {
           <div className="flex flex-col">
             {news.user_function.map((func) =>
               func.use_yn ? (
-                <span
-                  key={func.name_en}
-                  className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
-                  onClick={() => onClickUserFunction(func.link)}
-                >
-                  - {func.name_kr}
-                </span>
+                newText(func)
               ) : (
                 <TextSpan key={func.name_en} isCenter={false} size="lg">
                   - {func.name_kr}

@@ -20,11 +20,12 @@ interface News {
   user_function: NewsUserFunction[];
 }
 
-interface NewsUserFunction {
+export interface NewsUserFunction {
   link: string;
   name_en: string;
   name_kr: string;
   use_yn: boolean;
+  is_new: boolean;
 }
 
 export interface NewsClient {
