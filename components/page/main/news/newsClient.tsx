@@ -48,7 +48,7 @@ export default function NewsClient({ news }: NewsClient) {
         `}
         </style>
         <span className="text-SoftPink" style={blinkStyle}>
-          {text.is_new && "new !"}
+          {text.is_new && "new"}
         </span>
       </span>
     );
