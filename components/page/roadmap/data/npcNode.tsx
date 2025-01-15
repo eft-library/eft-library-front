@@ -1,13 +1,8 @@
 "use client";
-import { useCallback } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NpcNode(props: any) {
-  const onClickTitle = useCallback((urlMapping: string) => {
-    window.open(`/quest/detail/${urlMapping}`, "_blank");
-  }, []);
-
   return (
     <div className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] p-2 bg-NodeBackgground shadow-NeutralGray shadow-md">
       <div
@@ -21,10 +16,7 @@ export default function NpcNode(props: any) {
         <div className="w-full flex justify-end pr-1 pt-1"></div>
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">
-            <span
-              className="text-center font-bold cursor-pointer text-white hover:text-Beige text-base"
-              onClick={() => onClickTitle(props.data.urlMapping)}
-            >
+            <span className="text-center font-bold cursor-pointer text-white text-base">
               {props.data.title_kr
                 .substring(0, props.data.title_kr.indexOf("("))
                 .trim()}
@@ -35,11 +27,7 @@ export default function NpcNode(props: any) {
             </span>
           </div>
         </div>
-        <div className="w-full flex justify-end p-1">
-          {props.data.iskappa && (
-            <span className="text-Red font-bold text-xs">Kappa</span>
-          )}
-        </div>
+        <div className="w-full flex justify-end p-1"></div>
       </div>
 
       {["top", "bottom"].includes(props.sourcePosition) ? (

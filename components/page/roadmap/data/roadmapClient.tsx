@@ -299,8 +299,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          minZoom={0.01}
-          maxZoom={1}
+          minZoom={0.03}
+          maxZoom={2}
           zoomOnDoubleClick={false}
           nodeTypes={nodeTypes}
           colorMode="dark"
