@@ -22,7 +22,7 @@ export const API_ENDPOINTS = {
   GET_ALL_PROVISIONS: baseUrl + "/api/item/provisions",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   GET_ALL_QUEST: baseUrl + "/api/quest/all",
-  GET_ALL_WEAPON: baseUrl + "/api/weapon/all",
+  GET_ALL_WEAPON: baseUrl + "/api/item/weapon",
   GET_BOSS: baseUrl + "/api/boss/info",
   GET_BOARD_BY_TYPE: baseUrl + "/api/board",
   GET_BOARD_TYPE: baseUrl + "/api/board/all/categories",

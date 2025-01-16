@@ -1,8 +1,8 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetUserQuest from "@/components/page/userQuest/data/getUserQuest";
+import GetPlanner from "./data/getPlanner";
 import AdBanner from "../../custom/adsense/adBanner";
 
-export default function UserQuest() {
+export default function Planner() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">
@@ -15,7 +15,7 @@ export default function UserQuest() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetUserQuest />
+      <GetPlanner />
     </ContentsWrapper>
   );
 }

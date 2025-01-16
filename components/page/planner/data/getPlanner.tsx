@@ -1,23 +1,22 @@
 "use client";
 
-import { requestUserData } from "@/lib/config/api";
+import { requestPostData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import type { UserQuest } from "@/components/page/userQuest/data/userQuestType";
-import UserQuestClient from "@/components/page/userQuest/data/userQuestClient";
+import type { Planner } from "./plannerType";
+import PlannerClient from "./plannerClient";
 import Loading from "@/components/custom/loading/loading";
 
-export default function GetUserQuest() {
+export default function GetPlanner() {
   const { data: session } = useSession();
-  const [userQuestList, setUserQuestList] = useState<UserQuest[]>();
+  const [userQuestList, setUserQuestList] = useState<Planner[]>();
 
   useEffect(() => {
-    const getUserQuest = async () => {
-      const data = await requestUserData(
+    const getUserQuest = async (email: string) => {
+      const data = await requestPostData(
         `${USER_API_ENDPOINTS.GET_USER_QUEST}`,
-        {},
-        session
+        { user_email: email }
       );
 
       if (!data || data.status !== 200) {
@@ -31,12 +30,14 @@ export default function GetUserQuest() {
       setUserQuestList(data.data);
     };
 
-    if (session && session.accessToken) {
-      getUserQuest();
+    if (session && session.email) {
+      getUserQuest(session.email);
+    } else {
+      getUserQuest("");
     }
   }, [session]);
 
   if (!userQuestList) return <Loading />;
 
-  return <UserQuestClient userQuestList={userQuestList} />;
+  return <PlannerClient userQuestList={userQuestList} />;
 }

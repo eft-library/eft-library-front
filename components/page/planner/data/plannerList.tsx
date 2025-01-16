@@ -1,17 +1,18 @@
 "use client";
 
-import type { UserQuestList } from "@/components/page/userQuest/data/userQuestType";
+import type { PlannerList } from "./plannerType";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import UserQuestPopOver from "./userQuestPopover";
+import PlannerPopOver from "./plannerPopover";
 import { getQuestTitle } from "@/lib/func/jsxfunction";
 
-export default function UserQuestList({
+export default function PlannerList({
   userQuest,
   successQuest,
   checkedQuest,
   checkedBox,
-}: UserQuestList) {
+  isPreview = false,
+}: PlannerList) {
   return (
     <div className="w-full">
       {userQuest.quest_info.map((quest, index) => (
@@ -24,13 +25,13 @@ export default function UserQuestList({
               type="checkbox"
               className="w-6 h-6 border border-white cursor-pointer"
               checked={checkedQuest.includes(quest.quest_id)}
-              onChange={() => checkedBox(quest.quest_id)}
+              onChange={() => checkedBox(quest.quest_id, isPreview)}
             />
           </div>
 
           <div className="flex flex-col justify-center items-center">
             {quest.requirements_kr && quest.requirements_kr.length > 0 && (
-              <UserQuestPopOver quest={quest} />
+              <PlannerPopOver quest={quest} />
             )}
           </div>
 

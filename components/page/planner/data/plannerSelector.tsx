@@ -1,5 +1,5 @@
 "use client";
-import type { UserQuestSelector, Quest } from "./userQuestType";
+import type { PlannerSelector, Quest } from "./plannerType";
 import Downshift from "downshift";
 import { useState, useEffect, useRef } from "react";
 import { requestData } from "@/lib/config/api";
@@ -7,7 +7,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import React from "react";
 import { handleScroll } from "@/lib/func/jsxfunction";
 
-export default function UserQuestSelector({ updateQuest }: UserQuestSelector) {
+export default function PlannerSelector({ updateQuest }: PlannerSelector) {
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState<Quest[]>([]);
   const [isOpen, setIsOpen] = useState(false);

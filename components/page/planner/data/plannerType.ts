@@ -1,12 +1,12 @@
-export interface UserQuest {
+export interface Planner {
   npc_id: string;
   npc_name_kr: string;
   npc_name_en: string;
   npc_image: string;
-  quest_info: UserQuestInfo[];
+  quest_info: PlannerInfo[];
 }
 
-export interface UserQuestInfo {
+export interface PlannerInfo {
   quest_id: string;
   quest_name_en: string;
   quest_name_kr: string;
@@ -14,7 +14,7 @@ export interface UserQuestInfo {
   objectives_kr: string[];
   requirements_en: string[];
   requirements_kr: string[];
-  next: UserNextQuest[];
+  next: PlannerNextQuest[];
 }
 
 export interface Quest {
@@ -62,32 +62,33 @@ export interface Require {
   url_mapping: string;
 }
 
-export interface UserNextQuest {
+export interface PlannerNextQuest {
   url_mapping: string;
   id: string;
   name: string;
   name_kr: string;
 }
-export interface UserClientQuest {
-  userQuestList: UserQuest[];
+export interface PlannerClientQuest {
+  userQuestList: Planner[];
 }
 
 export interface FetchSchema {
   status: number;
   msg: string;
-  data: UserQuest[];
+  data: Planner[];
 }
 
-export interface UserQuestList {
-  userQuest: UserQuest;
+export interface PlannerList {
+  userQuest: Planner;
   successQuest: (val: string, nextVal: any) => void;
   checkedQuest: string[];
-  checkedBox: (val: string) => void;
+  checkedBox: (val: string, pr: boolean) => void;
+  isPreview?: boolean;
 }
-export interface UserQuestPopOver {
-  quest: UserQuestInfo;
+export interface PlannerPopOver {
+  quest: PlannerInfo;
 }
 
-export interface UserQuestSelector {
+export interface PlannerSelector {
   updateQuest: Function;
 }

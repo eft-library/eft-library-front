@@ -2,10 +2,10 @@
 
 import "../../../../assets/quest.css";
 import { useState } from "react";
-import type { UserQuestPopOver } from "./userQuestType";
+import type { PlannerPopOver } from "./plannerType";
 import { CircleAlert } from "lucide-react";
 
-export default function UserQuestPopOver({ quest }: UserQuestPopOver) {
+export default function PlannerPopOver({ quest }: PlannerPopOver) {
   const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
 
   const changePopoverState = (condition: boolean) => {
