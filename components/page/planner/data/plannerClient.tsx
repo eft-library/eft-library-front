@@ -37,6 +37,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
 
   useEffect(() => {
     setUserQuest(userQuestList);
+    setIndices(userQuestList.map((_, index) => index));
   }, [userQuestList]);
 
   const checkResponse = (response: FetchSchema | null) => {
@@ -218,7 +219,6 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                   삭제
                 </button>
               </div>
-
               {/* 아코디언 리스트 */}
               <div className={"flex flex-col gap-2"}>
                 {userQuest.map((npc, index) => (
@@ -278,7 +278,11 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
         </>
       ) : (
         <div>
-          {/* 상단 전체 선택 및 삭제 버튼 */}
+          <div className="mb-8">
+            <span className="font-bold text-xl text-SoftPink">
+              아래에 추가된 퀘스트는 예시이며, 모든 동작은 로그인이 필요합니다.
+            </span>
+          </div>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center space-x-2">
               <input
