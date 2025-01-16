@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DefaultAlert from "../../../custom/alert/defaultAlert";
@@ -11,21 +10,8 @@ import type { NewsClient, NewsUserFunction } from "../mainTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NewsClient({ news }: NewsClient) {
-  const { data: session } = useSession();
   const router = useRouter();
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
-
-  const onClickUserFunction = (link: string) => {
-    if (link === "/user/quest") {
-      if (session) {
-        router.push(link);
-      } else {
-        setAlertStatus(!alertStatus);
-      }
-    } else {
-      router.push(link);
-    }
-  };
 
   const newText = (text: NewsUserFunction) => {
     const blinkStyle = {
@@ -36,7 +22,7 @@ export default function NewsClient({ news }: NewsClient) {
       <span
         key={text.name_en}
         className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
-        onClick={() => onClickUserFunction(text.link)}
+        onClick={() => router.push(text.link)}
       >
         - {text.name_kr} &nbsp;
         <style>
@@ -48,7 +34,7 @@ export default function NewsClient({ news }: NewsClient) {
         `}
         </style>
         <span className="text-SoftPink" style={blinkStyle}>
-          {text.is_new && "new"}
+          {text.is_new ? (text.link === "/planner" ? "Renewal" : "New") : ""}
         </span>
       </span>
     );
