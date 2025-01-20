@@ -193,7 +193,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
       <PlannerSelector updateQuest={updateUserQuest} />
       {session && session.email ? (
         <>
-          {userQuest.length < 1 ? (
+          {userQuest.length < 1 || !userQuest[0].npc_id ? (
             <TextSpan size="lg" isCenter={false}>
               퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.
             </TextSpan>
