@@ -9,7 +9,7 @@ export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
   const { npcId, setNpcId } = useAppStore((state) => state);
 
   return (
-    <div className="grid grid-cols-5 gap-2 justify-items-center w-[70%]">
+    <div className="grid grid-cols-6 gap-4 justify-items-center w-[70%]">
       {npcList.map((npc) => (
         <div className="flex flex-col items-center" key={npc.id}>
           <div
