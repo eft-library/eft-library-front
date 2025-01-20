@@ -80,6 +80,7 @@ export default {
         SoftPink: "#ff7a7a",
         BrightCyan: "#00E0FF",
         Red: "#FF0000",
+        NeonOrange: "#FF4500",
         PaleYellow: "#FDFFA7",
         VividGreen: "#3DBA00",
         ForestGreen: "#2E6D0F",

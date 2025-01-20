@@ -33,8 +33,8 @@ export default function NewsClient({ news }: NewsClient) {
           }
         `}
         </style>
-        <span className="text-SoftPink" style={blinkStyle}>
-          {text.is_new ? (text.link === "/planner" ? "Renewal" : "New") : ""}
+        <span className="text-NeonOrange" style={blinkStyle}>
+          {text.is_new ? (text.link === "/planner" ? "Bug Fix" : "New") : ""}
         </span>
       </span>
     );
