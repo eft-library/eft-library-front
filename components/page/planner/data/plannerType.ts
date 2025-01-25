@@ -15,6 +15,7 @@ export interface PlannerInfo {
   requirements_en: string[];
   requirements_kr: string[];
   next: PlannerNextQuest[];
+  url_mapping?: string;
 }
 
 export interface Quest {
