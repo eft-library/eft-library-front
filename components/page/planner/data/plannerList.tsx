@@ -37,7 +37,7 @@ export default function PlannerList({
 
           <div className="flex flex-col justify-center items-center col-span-3">
             <div className="flex flex-col justify-center items-center">
-              <Link href={`/quest/detail/${quest.url_mapping}`}>
+              <Link href={`/quest/detail/${quest.quest_id}`}>
                 <span className="text-sm font-bold text-LightOrange hover:text-Beige flex text-center flex items-center justify-center">
                   {getQuestTitle(quest.quest_name_kr, "kr")}
                   <br />
