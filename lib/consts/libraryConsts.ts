@@ -56,7 +56,7 @@ export const previewData = [
             url_mapping: "bp-depot",
           },
         ],
-        url_mapping: "bp-depot",
+        url_mapping: "delivery-from-the-past",
         quest_id: "59674eb386f774539f14813a",
         objectives_en: [
           'Obtain the secure folder in the Tarcone Directors office at the <a href="/map-of-tarkov/CUSTOMS" target=" _blank" class="highlight_quest">Customs</a> terminal warehouse',
