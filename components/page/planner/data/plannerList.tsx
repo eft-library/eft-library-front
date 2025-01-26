@@ -2,7 +2,6 @@
 
 import type { PlannerList } from "./plannerType";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import PlannerPopOver from "./plannerPopover";
 import { getQuestTitle } from "@/lib/func/jsxfunction";
 
@@ -37,13 +36,17 @@ export default function PlannerList({
 
           <div className="flex flex-col justify-center items-center col-span-3">
             <div className="flex flex-col justify-center items-center">
-              <Link href={`/quest/detail/${quest.url_mapping}`}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`/quest/detail/${quest.url_mapping}`}
+              >
                 <span className="text-sm font-bold text-LightOrange hover:text-Beige flex text-center flex items-center justify-center">
                   {getQuestTitle(quest.quest_name_kr, "kr")}
                   <br />
                   {getQuestTitle(quest.quest_name_kr, "en")}
                 </span>
-              </Link>
+              </a>
             </div>
           </div>
 

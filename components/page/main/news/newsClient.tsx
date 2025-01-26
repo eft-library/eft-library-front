@@ -125,6 +125,20 @@ export default function NewsClient({ news }: NewsClient) {
                 - 패치노트
               </TextSpan>
             </Link>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={process.env.NEXT_PUBLIC_DISCORD || ""}
+            >
+              <TextSpan
+                textColor="CreamYellow"
+                isCursor
+                hoverColor="SoftPink"
+                size="lg"
+              >
+                - Discord 🔥
+              </TextSpan>
+            </a>
           </div>
         </div>
 

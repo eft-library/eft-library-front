@@ -35,6 +35,7 @@ export const previewData = [
           "Locate the temporary USEC camp",
           "Survive and extract from the location",
         ],
+        url_mapping: "search-mission",
         objectives_kr: [
           '<a href="/map-of-tarkov/WOODS" target=" _blank" class="highlight_quest">삼림</a>에서 Prapor의 실종된 호송대 찾기',
           "임시 USEC 캠프 찾기",
@@ -55,6 +56,7 @@ export const previewData = [
             url_mapping: "bp-depot",
           },
         ],
+        url_mapping: "bp-depot",
         quest_id: "59674eb386f774539f14813a",
         objectives_en: [
           'Obtain the secure folder in the Tarcone Directors office at the <a href="/map-of-tarkov/CUSTOMS" target=" _blank" class="highlight_quest">Customs</a> terminal warehouse',
@@ -96,6 +98,7 @@ export const previewData = [
             url_mapping: "the-huntsman-path-big-game",
           },
         ],
+        url_mapping: "urban-medicine",
         quest_id: "639135e0fa894f0a866afde6",
         objectives_en: [
           'Locate the chemical laboratory on <a href="/map-of-tarkov/STREET_OF_TARKOV" target="_blank" class="highlight_quest">Streets of Tarkov</a>',
@@ -123,6 +126,7 @@ export const previewData = [
           },
         ],
         quest_id: "6573387d0b26ed4fde798de3",
+        url_mapping: "pets-won-t-need-it-part-2",
         objectives_en: [
           'Locate the first pharmacy on Primorsky Ave on <a href="/map-of-tarkov/STREET_OF_TARKOV" target="_blank" class="highlight_quest">Streets of Tarkov</a>',
           'Locate the second pharmacy on Primorsky Ave on <a href="/map-of-tarkov/STREET_OF_TARKOV" target="_blank" class="highlight_quest">Streets of Tarkov</a>',
