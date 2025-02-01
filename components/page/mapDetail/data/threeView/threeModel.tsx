@@ -33,7 +33,7 @@ export default function ThreeModel({
             visible={true}
             scale={1}
             color={ALL_COLOR.MAP_BLACK}
-            threshold={15}
+            threshold={40}
           />
         </mesh>
       ))}
