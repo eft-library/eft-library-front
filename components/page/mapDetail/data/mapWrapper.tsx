@@ -36,9 +36,12 @@ export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
             dataAdSlot="2690838054"
           />
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-between">
           <TextSpan isCenter={false} size="xl">
             3D Map
+          </TextSpan>
+          <TextSpan textColor="GoldenYellow">
+            좌클릭 드래그 - 이동 / 우클릭 드래그 - 회전 / 휠 - 확대, 축소
           </TextSpan>
         </div>
         <ThreeViewDetail

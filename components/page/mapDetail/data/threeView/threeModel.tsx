@@ -6,6 +6,7 @@ import { formatImage } from "@/lib/func/formatImage";
 import dynamic from "next/dynamic";
 import type { ThreeModel } from "@/components/page/mapDetail/data/mapType";
 import Loading from "@/components/custom/loading/loading";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 const ItemBox = dynamic(() => import("./threeItem"), {
   ssr: false,
@@ -28,7 +29,12 @@ export default function ThreeModel({
           material={materials[data.material]}
           key={data.geometry}
         >
-          <Edges visible={true} scale={1} color="black" threshold={15} />
+          <Edges
+            visible={true}
+            scale={1}
+            color={ALL_COLOR.MAP_BLACK}
+            threshold={15}
+          />
         </mesh>
       ))}
       {map.three_item_path.map(
