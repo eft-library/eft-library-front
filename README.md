@@ -1,10 +1,10 @@
-# EFT Library의 Frontend 운영 방식
+# EFT Library의 Frontend 운영 방식 (작성중)
 
 EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받는다.
 
 이 페이지는 Frontend에 대하여 설명한다.
 
-사진
+![front](https://github.com/user-attachments/assets/165161a3-35c1-4cc4-a048-de5cda87adf1)
 
 ## 주요 사항
 
