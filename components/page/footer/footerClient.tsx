@@ -106,8 +106,6 @@ export default function FooterClient({ footerData }: FooterData) {
             </span>
             <div className="flex">
               {footerData.json_value.icon.map((item, index) => {
-                if (item.name === "JY") return null;
-
                 return (
                   <div
                     key={item.name}

@@ -1,7 +1,7 @@
 import Chzzk from "@/assets/footer/chzzk";
 import Github from "@/assets/footer/github";
-import Youtube from "@/assets/footer/youtube";
 import ItemSvg from "@/assets/filter/itemSvg";
+import Discord from "@/assets/footer/discord";
 
 interface DynamicSVG {
   svgValue: string;
@@ -88,6 +88,6 @@ export const FooterSVG = ({ svgValue }: FooterSVG) => {
     case "SY":
       return <Github height={footerHeigth} width={footerWidth} />;
     case "JY":
-      return <Youtube height={footerHeigth} width={footerWidth} />;
+      return <Discord height={footerHeigth} width={footerWidth} />;
   }
 };
