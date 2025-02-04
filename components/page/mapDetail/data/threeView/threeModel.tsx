@@ -29,12 +29,12 @@ export default function ThreeModel({
           material={materials[data.material]}
           key={data.geometry}
         >
-          <Edges
+          {/* <Edges
             visible={true}
             scale={1}
             color={ALL_COLOR.MAP_BLACK}
             threshold={40}
-          />
+          /> */}
         </mesh>
       ))}
       {map.three_item_path.map(

@@ -68,7 +68,8 @@ export default function ThreeViewDetail({
         enableZoom={true}
         ref={controlsRef}
       />
-      <ambientLight intensity={2} />
+      <ambientLight intensity={1} />
+      <directionalLight position={[10, 5, 5]} intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
       <group onClick={(e) => console.log(e.point)}>
         <Suspense fallback={<Loader />}>
