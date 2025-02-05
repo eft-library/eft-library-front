@@ -38,7 +38,7 @@ export default function PriceTable({ price, viewType }: PriceTable) {
   const fleaMarketPricePVP = findFleaMarketPrice(pvpTraders);
 
   // 현재 viewType에 맞는 값 선택
-  const isPVP = viewType === "pvp";
+  const isPVP = viewType === "PVP";
   const expensiveTrader = isPVP ? expensiveTraderPVP : expensiveTraderPVE;
   const fleaMarketPrice = isPVP ? fleaMarketPricePVP : fleaMarketPricePVE;
 
