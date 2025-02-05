@@ -1,13 +1,20 @@
 "use client";
 
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Loading from "@/components/custom/loading/loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Button } from "@/components/ui/button";
+import PriceTable from "./priceTable";
+import PriceHeader from "./priceHeader";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 export default function PriceClient() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
+  const [fetchWord, setFetchWord] = useState<string>("");
+  const [priceType, setPriceType] = useState<string>("PVP");
 
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {
     try {
@@ -29,9 +36,18 @@ export default function PriceClient() {
     }
   };
 
-  const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
-    queryKey: ["items", search],
-    queryFn: ({ pageParam = 1 }) => getItemPrice({ pageParam, query: search }),
+  const changePriceType = () => {
+    if (priceType === "PVP") {
+      setPriceType("PVE");
+    } else {
+      setPriceType("PVP");
+    }
+  };
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["items", fetchWord],
+    queryFn: ({ pageParam = 1 }) =>
+      getItemPrice({ pageParam, query: fetchWord }),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.data.current_page + 1;
       const totalPages = lastPage.data.max_pages;
@@ -41,37 +57,56 @@ export default function PriceClient() {
     initialPageParam: 1,
   });
 
-  // 데이터 검색어 변경시 리셋
-  useEffect(() => {
-    refetch();
-  }, [search, refetch]);
-
   const items = data?.pages.flatMap((page) => page.data.data) || [];
 
   return (
-    <div>
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="검색어 입력"
-        className="border p-2"
-      />
-      <button onClick={() => refetch()}>검색</button>
-
-      <InfiniteScroll
-        dataLength={items.length}
-        next={fetchNextPage}
-        hasMore={hasNextPage}
-        loader={<Loading />}
-        scrollThreshold={0.9} // 화면의 90%까지 스크롤되면 데이터를 불러옴
-      >
-        {items.map((item, index) => (
-          <div key={index} className="p-4 border-b">
-            {item.item_name_en}
-          </div>
-        ))}
-      </InfiniteScroll>
+    <div className="w-full flex flex-col justify-center items-center gap-4">
+      <div className="flex gap-2 w-full">
+        <Button
+          className={cn(
+            priceType === "PVP" ? "text-PeachCream" : "text-SkyBloom",
+            "border-2 font-bold border-white px-4 py-2 bg-transparent rounded-lg hover:bg-NeutralGray transition"
+          )}
+          onClick={() => changePriceType()}
+        >
+          {priceType}
+        </Button>
+        <Input
+          type="text"
+          value={search}
+          className="text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="검색어 입력"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setFetchWord(search);
+            }
+          }}
+        />
+        <Button
+          className="border-2 font-bold border-white px-4 py-2 bg-transparent text-white rounded-lg hover:bg-NeutralGray transition"
+          onClick={() => setFetchWord(search)}
+        >
+          검색
+        </Button>
+      </div>
+      <div className="w-full">
+        <div className="max-h-[600px] overflow-y-auto" id="scrollableDiv">
+          <PriceHeader />
+          <InfiniteScroll
+            dataLength={items.length}
+            next={fetchNextPage}
+            hasMore={hasNextPage}
+            loader={<Loading />}
+            scrollThreshold={0.9}
+            scrollableTarget="scrollableDiv"
+          >
+            {items.map((item) => (
+              <PriceTable price={item} key={item.id} viewType={priceType} />
+            ))}
+          </InfiniteScroll>
+        </div>
+      </div>
     </div>
   );
 }

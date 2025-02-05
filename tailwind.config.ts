@@ -15,7 +15,7 @@ export default {
     // text-color classes
     {
       pattern:
-        /text-(NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
+        /text-(PeachCream|SkyBloom|NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
     },
 
     // hover:text-color classes
@@ -101,6 +101,8 @@ export default {
         LimeGreen: "#7fd14a",
         ScreaminGreen: "#5EFF5E",
         SilverGray: "#D3D3D3",
+        PeachCream: "#FFA46B",
+        SkyBloom: "#6B89FF",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",
