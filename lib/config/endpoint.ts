@@ -54,6 +54,7 @@ export const API_ENDPOINTS = {
   GET_USER_POST_DETAIL: baseUrl + "/api/user/post_detail",
   GET_USER_COMMENT_DETAIL: baseUrl + "/api/user/comment_detail",
   GET_QUEST_LOADMAP: baseUrl + "/api/roadmap/get_quest",
+  GET_PRICE: baseUrl + "/api/price/search",
 };
 
 export const USER_API_ENDPOINTS = {

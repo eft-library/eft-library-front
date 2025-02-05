@@ -10,6 +10,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
 import AdSense from "@/components/custom/adsense/adSense";
+import QueryProvider from "@/store/queryProvider";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -68,9 +69,11 @@ export default function RootLayout({
           >
             <Suspense>
               <AppStoreProvider>
-                <Header />
-                {children}
-                <Footer />
+                <QueryProvider>
+                  <Header />
+                  {children}
+                  <Footer />
+                </QueryProvider>
               </AppStoreProvider>
             </Suspense>
           </ThemeProvider>
