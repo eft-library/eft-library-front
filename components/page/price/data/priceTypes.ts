@@ -1,6 +1,8 @@
 export interface PriceTable {
   price: Price;
   viewType: string;
+  setSelectItem: (val: Price) => void;
+  selectItem: Price | undefined;
 }
 
 export interface TraderInfo {
@@ -25,4 +27,9 @@ export interface Price {
     pvp_trader: TradeOption[];
   };
   id: string;
+}
+
+export interface PriceDetail {
+  item: Price | undefined;
+  viewType: string;
 }

@@ -3,7 +3,7 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function PriceHeader() {
   return (
-    <div className="grid grid-cols-5 border-[1px] border-white p-2">
+    <div className="grid grid-cols-5 border-b border-white p-2">
       <CenterContents>
         <TextSpan>사진</TextSpan>
       </CenterContents>

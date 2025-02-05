@@ -5,8 +5,14 @@ import type { PriceTable, TradeOption } from "./priceTypes";
 import ImageView from "@/components/custom/imageView/imageView";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { formatImage } from "@/lib/func/formatImage";
+import { cn } from "@/lib/utils";
 
-export default function PriceTable({ price, viewType }: PriceTable) {
+export default function PriceTable({
+  price,
+  viewType,
+  setSelectItem,
+  selectItem,
+}: PriceTable) {
   // 가장 비싼 트레이더 찾는 함수
   const findExpensiveTrader = (traders: TradeOption[]) => {
     if (!traders) return null;
@@ -24,7 +30,7 @@ export default function PriceTable({ price, viewType }: PriceTable) {
   const findFleaMarketPrice = (traders: TradeOption[]) => {
     if (!traders) return "-";
     const fleaMarket = traders.find((t) => t.trader.npc_id === "FLEA_MARKET");
-    return fleaMarket?.price || "-";
+    return fleaMarket?.price ? `${fleaMarket?.price} ₽` : "-";
   };
 
   // PVE, PVP 각각의 값 미리 계산
@@ -43,7 +49,13 @@ export default function PriceTable({ price, viewType }: PriceTable) {
   const fleaMarketPrice = isPVP ? fleaMarketPricePVP : fleaMarketPricePVE;
 
   return (
-    <div className="grid grid-cols-5 border-b border-white border-2 cursor-pointer hover:bg-NeutralGray">
+    <div
+      onClick={() => setSelectItem(price)}
+      className={cn(
+        "grid grid-cols-5 border-b border-white border-2 cursor-pointer hover:bg-NeutralGray",
+        selectItem && selectItem.id === price.id && "bg-NeutralGray"
+      )}
+    >
       <CenterContents>
         <ImageView
           src={price.item_image}
@@ -62,31 +74,27 @@ export default function PriceTable({ price, viewType }: PriceTable) {
         </TextSpan>
       </CenterContents>
 
-      <CenterContents>
-        {expensiveTrader ? (
-          <div className="flex gap-4 items-center">
-            <ImageView
-              src={formatImage(expensiveTrader.trader.npc_image || "")}
-              alt={expensiveTrader.trader.npc_name_en || ""}
-              popWidth={80}
-              popHeight={80}
-              size="40px"
-              wrapWidth={40}
-              wrapHeight={40}
-            />
-            <TextSpan
-              textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
-            >
-              {expensiveTrader.price}
-            </TextSpan>
-          </div>
-        ) : (
-          <TextSpan textColor="gray">-</TextSpan>
-        )}
-      </CenterContents>
+      {expensiveTrader ? (
+        <div className="flex gap-4 items-center">
+          <ImageView
+            src={formatImage(expensiveTrader.trader.npc_image || "")}
+            alt={expensiveTrader.trader.npc_name_en || ""}
+            popWidth={80}
+            popHeight={80}
+            size="40px"
+            wrapWidth={40}
+            wrapHeight={40}
+          />
+          <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>
+            {expensiveTrader.price}&nbsp;₽
+          </TextSpan>
+        </div>
+      ) : (
+        <TextSpan textColor="gray">-</TextSpan>
+      )}
 
       <CenterContents>
-        <TextSpan textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}>
+        <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>
           {fleaMarketPrice}
         </TextSpan>
       </CenterContents>

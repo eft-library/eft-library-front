@@ -8,13 +8,16 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Button } from "@/components/ui/button";
 import PriceTable from "./priceTable";
 import PriceHeader from "./priceHeader";
+import PriceDetail from "./priceDetail";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import type { Price } from "./priceTypes";
 
 export default function PriceClient() {
   const [search, setSearch] = useState<string>("");
   const [fetchWord, setFetchWord] = useState<string>("");
   const [priceType, setPriceType] = useState<string>("PVP");
+  const [selectItem, setSelectItem] = useState<Price>();
 
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {
     try {
@@ -90,9 +93,10 @@ export default function PriceClient() {
           검색
         </Button>
       </div>
+      <PriceDetail item={selectItem} viewType={priceType} />
       <div className="w-full">
-        <div className="max-h-[600px] overflow-y-auto" id="scrollableDiv">
-          <PriceHeader />
+        <PriceHeader />
+        <div className="max-h-[800px] overflow-y-auto" id="scrollableDiv">
           <InfiniteScroll
             dataLength={items.length}
             next={fetchNextPage}
@@ -102,7 +106,13 @@ export default function PriceClient() {
             scrollableTarget="scrollableDiv"
           >
             {items.map((item) => (
-              <PriceTable price={item} key={item.id} viewType={priceType} />
+              <PriceTable
+                price={item}
+                key={item.id}
+                viewType={priceType}
+                setSelectItem={setSelectItem}
+                selectItem={selectItem}
+              />
             ))}
           </InfiniteScroll>
         </div>
