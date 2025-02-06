@@ -2,10 +2,10 @@
 
 import CenterContents from "@/components/custom/gridContents/centerContents";
 import type { PriceTable, TradeOption } from "./priceTypes";
-import ImageView from "@/components/custom/imageView/imageView";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { formatImage } from "@/lib/func/formatImage";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export default function PriceTable({
   price,
@@ -52,20 +52,27 @@ export default function PriceTable({
     <div
       onClick={() => setSelectItem(price)}
       className={cn(
-        "grid grid-cols-5 border-b border-white border-2 cursor-pointer hover:bg-NeutralGray",
+        "grid grid-cols-5 border-b border-white cursor-pointer hover:bg-NeutralGray",
         selectItem && selectItem.id === price.id && "bg-NeutralGray"
       )}
     >
       <CenterContents>
-        <ImageView
-          src={price.item_image}
-          alt={price.item_name_en}
-          popWidth={220}
-          popHeight={200}
-          size="160px"
-          wrapWidth={160}
-          wrapHeight={80}
-        />
+        <div
+          style={{
+            width: `${160}px`,
+            height: `${80}px`,
+          }}
+          className={`flex justify-center items-center relative cursor-pointer`}
+        >
+          <Image
+            src={price.item_image}
+            alt={price.item_name_en}
+            fill
+            sizes={"160px"}
+            style={{ objectFit: "contain" }}
+            priority
+          />
+        </div>
       </CenterContents>
 
       <CenterContents colSpan="2">
@@ -76,15 +83,22 @@ export default function PriceTable({
 
       {expensiveTrader ? (
         <div className="flex gap-4 items-center">
-          <ImageView
-            src={formatImage(expensiveTrader.trader.npc_image || "")}
-            alt={expensiveTrader.trader.npc_name_en || ""}
-            popWidth={80}
-            popHeight={80}
-            size="40px"
-            wrapWidth={40}
-            wrapHeight={40}
-          />
+          <div
+            style={{
+              width: `${40}px`,
+              height: `${40}px`,
+            }}
+            className={`flex justify-center items-center relative cursor-pointer`}
+          >
+            <Image
+              src={formatImage(expensiveTrader.trader.npc_image || "")}
+              fill
+              sizes={"40px"}
+              style={{ objectFit: "contain" }}
+              alt={expensiveTrader.trader.npc_name_en || ""}
+              priority
+            />
+          </div>
           <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>
             {expensiveTrader.price}&nbsp;₽
           </TextSpan>

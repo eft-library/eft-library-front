@@ -11,7 +11,7 @@ export default function PriceHeader() {
         <TextSpan>이름</TextSpan>
       </CenterContents>
       <CenterContents>
-        <TextSpan>상인</TextSpan>
+        <TextSpan>상인에게 판매</TextSpan>
       </CenterContents>
       <CenterContents>
         <TextSpan>플리마켓</TextSpan>
