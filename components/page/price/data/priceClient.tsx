@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { Price } from "./priceTypes";
 import PriceChart from "./priceChart";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function PriceClient() {
   const [search, setSearch] = useState<string>("");
@@ -72,6 +73,14 @@ export default function PriceClient() {
 
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
+      <div className="w-full flex justify-start">
+        <TextSpan textColor="SkyBloom">PVE</TextSpan>
+        <TextSpan>&nbsp;/&nbsp;</TextSpan>
+        <TextSpan textColor="PeachCream">PVP</TextSpan>
+        <TextSpan textColor="GoldenYellow">
+          &nbsp;시세를 확인하려면 버튼을 클릭하세요!
+        </TextSpan>
+      </div>
       <div className="flex gap-2 w-full">
         <Button
           className={cn(
@@ -107,6 +116,11 @@ export default function PriceClient() {
       <PriceDetail item={selectItem} viewType={priceType} />
 
       <div className="w-full">
+        <div className="w-full flex justify-end">
+          <TextSpan textColor="GoldenYellow">
+            아이템 클릭 후 최신 시세를 확인하세요!
+          </TextSpan>
+        </div>
         <PriceHeader />
         <div className="max-h-[600px] overflow-y-auto" id="scrollableDiv">
           <InfiniteScroll
