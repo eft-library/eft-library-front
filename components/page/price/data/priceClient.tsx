@@ -22,7 +22,7 @@ export default function PriceClient() {
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {
     try {
       const response = await fetch(
-        `${API_ENDPOINTS.GET_PRICE}?page=${pageParam}&page_size=50&word=${query}`,
+        `${API_ENDPOINTS.GET_PRICE}?page=${pageParam}&page_size=10&word=${query}`,
         {
           next: { revalidate: 60000 },
         }
@@ -47,7 +47,7 @@ export default function PriceClient() {
     }
   };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["items", fetchWord],
     queryFn: ({ pageParam = 1 }) =>
       getItemPrice({ pageParam, query: fetchWord }),
@@ -96,7 +96,7 @@ export default function PriceClient() {
       <PriceDetail item={selectItem} viewType={priceType} />
       <div className="w-full">
         <PriceHeader />
-        <div className="max-h-[800px] overflow-y-auto" id="scrollableDiv">
+        <div className="max-h-[600px] overflow-y-auto" id="scrollableDiv">
           <InfiniteScroll
             dataLength={items.length}
             next={fetchNextPage}
@@ -117,6 +117,7 @@ export default function PriceClient() {
           </InfiniteScroll>
         </div>
       </div>
+      {isFetching && <Loading />}
     </div>
   );
 }
