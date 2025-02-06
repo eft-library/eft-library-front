@@ -1,5 +1,6 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { PriceDetail } from "./priceTypes";
+import Image from "next/image";
 import ImageView from "@/components/custom/imageView/imageView";
 import { formatImage } from "@/lib/func/formatImage";
 import CenterContents from "@/components/custom/gridContents/centerContents";
@@ -10,15 +11,22 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
   return (
     <div className="w-full grid grid-cols-6">
       <CenterContents>
-        <ImageView
-          src={item.item_image || ""}
-          alt={item.item_name_en || ""}
-          popWidth={220}
-          popHeight={200}
-          size="40px"
-          wrapWidth={220}
-          wrapHeight={200}
-        />
+        <div
+          style={{
+            width: `${220}px`,
+            height: `${200}px`,
+          }}
+          className={`flex justify-center items-center relative`}
+        >
+          <Image
+            src={item.item_image || ""}
+            alt={item.item_name_en || ""}
+            fill
+            sizes={"220px"}
+            style={{ objectFit: "contain" }}
+            priority
+          />
+        </div>
       </CenterContents>
 
       <CenterContents colSpan="2">
@@ -32,15 +40,22 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                 key={`pvp-${pvp.trader.npc_name_en}`}
                 className="flex flex-col"
               >
-                <ImageView
-                  src={formatImage(pvp.trader.npc_image || "")}
-                  alt={pvp.trader.npc_name_en || ""}
-                  popWidth={70}
-                  popHeight={70}
-                  size="70px"
-                  wrapWidth={70}
-                  wrapHeight={70}
-                />
+                <div
+                  style={{
+                    width: `${70}px`,
+                    height: `${70}px`,
+                  }}
+                  className={`flex justify-center items-center relative`}
+                >
+                  <Image
+                    src={formatImage(pvp.trader.npc_image || "")}
+                    alt={pvp.trader.npc_name_en || ""}
+                    fill
+                    sizes={"70px"}
+                    style={{ objectFit: "contain" }}
+                    priority
+                  />
+                </div>
                 <TextSpan
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
