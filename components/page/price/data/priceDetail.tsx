@@ -1,7 +1,6 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { PriceDetail } from "./priceTypes";
 import Image from "next/image";
-import ImageView from "@/components/custom/imageView/imageView";
 import { formatImage } from "@/lib/func/formatImage";
 import CenterContents from "@/components/custom/gridContents/centerContents";
 
@@ -68,15 +67,22 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                 key={`pve-${pve.trader.npc_name_en}`}
                 className="flex flex-col"
               >
-                <ImageView
-                  src={formatImage(pve.trader.npc_image || "")}
-                  alt={pve.trader.npc_name_en || ""}
-                  popWidth={70}
-                  popHeight={70}
-                  size="70px"
-                  wrapWidth={70}
-                  wrapHeight={70}
-                />
+                <div
+                  style={{
+                    width: `${70}px`,
+                    height: `${70}px`,
+                  }}
+                  className={`flex justify-center items-center relative`}
+                >
+                  <Image
+                    src={formatImage(pve.trader.npc_image || "")}
+                    alt={pve.trader.npc_name_en || ""}
+                    fill
+                    sizes={"70px"}
+                    style={{ objectFit: "contain" }}
+                    priority
+                  />
+                </div>
                 <TextSpan
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
