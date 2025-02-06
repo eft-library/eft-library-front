@@ -12,40 +12,47 @@ import "dayjs/locale/ko";
 import type { PriceChart } from "./priceTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
-const CustomTooltip = ({
-  active,
-  payload,
-}: {
-  active?: boolean;
-  payload?: any[];
-}) => {
-  if (active && payload && payload.length) {
-    const formattedDate = dayjs(payload[0].payload.price_time).format(
-      "YYYY년 MM월 DD일 HH시 mm분 ss초"
-    );
-
-    return (
-      <div
-        style={{
-          backgroundColor: "black",
-          border: "2px solid white",
-          color: "white",
-          padding: "10px",
-          borderRadius: "5px",
-        }}
-      >
-        <p style={{ margin: 0, fontWeight: "bold" }}>{formattedDate}</p>
-        <p style={{ margin: 0, fontWeight: "bold" }}>
-          가격: {payload[0].value}
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
-
 export default function PriceChart({ viewType, item }: PriceChart) {
   if (!item) return null;
+
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: any[];
+  }) => {
+    if (active && payload && payload.length) {
+      const formattedDate = dayjs(payload[0].payload.price_time).format(
+        "YYYY년 MM월 DD일 HH시 mm분 ss초"
+      );
+
+      return (
+        <div
+          style={{
+            backgroundColor: "black",
+            border: "2px solid white",
+            color: "white",
+            padding: "10px",
+            borderRadius: "5px",
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: "bold" }}>{formattedDate}</p>
+          <span style={{ margin: 0, fontWeight: "bold" }}>플리마켓 시세:</span>
+          <span
+            style={
+              viewType === "PVP"
+                ? { color: ALL_COLOR.PeachCream, fontWeight: "bold" }
+                : { color: ALL_COLOR.SkyBloom, fontWeight: "bold" }
+            }
+          >
+            &nbsp;{payload[0].value}
+          </span>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="w-full h-[400px]">

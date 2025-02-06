@@ -1,7 +1,7 @@
 "use client";
 
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/components/custom/loading/loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -62,6 +62,13 @@ export default function PriceClient() {
   });
 
   const items = data?.pages.flatMap((page) => page.data.data) || [];
+
+  useEffect(() => {
+    if (data?.pages.length && !selectItem) {
+      const firstItem = data.pages[0]?.data?.data?.[0];
+      setSelectItem(firstItem);
+    }
+  }, [data, selectItem]);
 
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
