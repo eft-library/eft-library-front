@@ -73,7 +73,6 @@ export default function FooterClient({ footerData }: FooterData) {
                 textColor="SunsetYellow"
                 hoverColor="CreamYellow"
               >
-                {" "}
                 <Link
                   href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
                   target="_blank"
@@ -92,6 +91,7 @@ export default function FooterClient({ footerData }: FooterData) {
               <Image
                 src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
                 alt="ND"
+                priority
                 width={142}
                 height={50}
                 style={{ width: "auto", height: "auto" }}

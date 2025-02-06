@@ -12,6 +12,7 @@ import PriceDetail from "./priceDetail";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { Price } from "./priceTypes";
+import PriceChart from "./priceChart";
 
 export default function PriceClient() {
   const [search, setSearch] = useState<string>("");
@@ -93,7 +94,11 @@ export default function PriceClient() {
           검색
         </Button>
       </div>
+
+      <PriceChart item={selectItem} viewType={priceType} />
+
       <PriceDetail item={selectItem} viewType={priceType} />
+
       <div className="w-full">
         <PriceHeader />
         <div className="max-h-[600px] overflow-y-auto" id="scrollableDiv">

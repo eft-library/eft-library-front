@@ -35,6 +35,8 @@ export const ALL_COLOR = {
   FOOTER_YELLO: "#FFC368",
   BOARD_HEADER_ORANGE: "#FFB245",
   PROFILE_BAN: "#891E1E",
+  PeachCream: "#FFA46B",
+  SkyBloom: "#6B89FF",
 
   // Shadow
   WHITE_SHADOW: "0px 2px 4px rgba(0, 0, 0, 0.1)",
