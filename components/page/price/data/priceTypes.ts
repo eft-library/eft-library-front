@@ -51,3 +51,8 @@ export interface PriceChart {
   item: Price | undefined;
   viewType: string;
 }
+
+export interface PriceTab {
+  tabState: string;
+  setTabState: (val: string) => void;
+}
