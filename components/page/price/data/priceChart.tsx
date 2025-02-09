@@ -55,11 +55,11 @@ export default function PriceChart({ viewType, item }: PriceChart) {
   };
 
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}
-          height={400}
+          height={300}
           data={
             viewType === "PVP"
               ? item.history_by_type.pvp
