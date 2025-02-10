@@ -22,17 +22,6 @@ export default function PriceTab({ tabState, setTabState }: PriceTab) {
         className={cn(
           "cursor-pointer p-2 border-white boder-solid border-2 rounded-full w-60 justify-center items-center hover:bg-NeutralGray flex",
           {
-            "bg-NeutralGray": tabState === "priceTop",
-          }
-        )}
-        onClick={() => setTabState("priceTop")}
-      >
-        <TextSpan size="2xl">상위 10개 시세</TextSpan>
-      </div>
-      <div
-        className={cn(
-          "cursor-pointer p-2 border-white boder-solid border-2 rounded-full w-60 justify-center items-center hover:bg-NeutralGray flex",
-          {
             "bg-NeutralGray": tabState === "priceGrade",
           }
         )}
