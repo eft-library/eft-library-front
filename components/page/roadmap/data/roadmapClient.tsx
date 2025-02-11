@@ -123,49 +123,57 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     []
   );
 
-  const onNodeChange = useCallback(
-    (data: Quest, isCheck: boolean) => {
-      const updateNodeCheckStatus = (
-        nodeId: string,
-        checkStatus: boolean,
-        nodes: any[]
-      ): any[] => {
-        const updatedNodes = new Map(nodes.map((node) => [node.id, node]));
+  const onNodeChange = (data: Quest, isCheck: boolean) => {
+    const updateNodeCheckStatus = (
+      nodeId: string,
+      checkStatus: boolean,
+      nodes: any[]
+    ): any[] => {
+      const updatedNodes = new Map(nodes.map((node) => [node.id, node]));
 
-        const updateNode = (nodeId: string) => {
-          const node = updatedNodes.get(nodeId);
-          if (!node) return;
+      const updateNode = (nodeId: string) => {
+        const node = updatedNodes.get(nodeId);
+        if (!node) return;
 
-          updatedNodes.set(nodeId, {
-            ...node,
-            data: { ...node.data, isCheck: checkStatus },
-          });
+        updatedNodes.set(nodeId, {
+          ...node,
+          data: { ...node.data, isCheck: checkStatus },
+        });
 
-          if (checkStatus && node.data.prev_list) {
-            node.data.prev_list.forEach(updateNode);
-          } else if (!checkStatus && node.data.next_list) {
-            node.data.next_list.forEach(updateNode);
-          }
-        };
-
-        updateNode(nodeId);
-
-        return Array.from(updatedNodes.values());
+        if (checkStatus && node.data.prev_list) {
+          node.data.prev_list.forEach(updateNode);
+        } else if (!checkStatus && node.data.next_list) {
+          node.data.next_list.forEach(updateNode);
+        }
       };
 
-      setNodes((nds) => {
-        const updatedNodes = updateNodeCheckStatus(data.id, isCheck, nds);
-        const nodesCheckList = updatedNodes
-          .filter((node) => node.data.isCheck)
-          .map((node) => node.data.id);
+      updateNode(nodeId);
 
-        setQuestList(nodesCheckList);
+      const nodesCheckList = Array.from(updatedNodes.values())
+        .filter((node) => node.data.isCheck)
+        .map((node) => node.data.id);
 
-        return updatedNodes;
+      setQuestList((prevQuestList) => {
+        // enhancedNodes에 존재하지 않는 ID만 유지 (즉, 있는 애들은 제거)
+        const filteredQuestList = prevQuestList.filter(
+          (id) => !enhancedNodes.some((node) => node.data.id === id)
+        );
+
+        // 새로운 체크된 리스트와 합치면서 중복 제거
+        const newQuestList = [
+          ...new Set([...filteredQuestList, ...nodesCheckList]),
+        ];
+
+        return newQuestList;
       });
-    },
-    [setNodes, setQuestList]
-  );
+
+      return Array.from(updatedNodes.values());
+    };
+
+    setNodes((nds) => {
+      return updateNodeCheckStatus(data.id, isCheck, nds);
+    });
+  };
 
   const checkAllNodes = useCallback(() => {
     const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
@@ -198,7 +206,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       })),
     [nodes, onNodeChange]
   );
-
   const onChangeNpcTab = (tab: string) => {
     setTabState(tab);
     setTimeout(() => {
@@ -213,7 +220,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         { questList: questList },
         session
       );
-
       if (!response) return;
 
       if (response.status === 200) {
