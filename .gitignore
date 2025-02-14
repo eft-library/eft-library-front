@@ -38,5 +38,4 @@ yarn-error.log*
 next-env.d.ts
 
 # info
-/public/robots.txt
 /public/ads.txt
