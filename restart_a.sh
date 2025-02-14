@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # 작업 디렉토리로 이동
-cd /home/eft-library-front
+cd /home/frontend_a/eft-library-front
 
 # .next 디렉토리와 빌드를 삭제
-rm -rf /home/eft-library-front/.next/
+rm -rf /home/frontend_a/eft-library-front/.next/
 
 # 애플리케이션 빌드
-/usr/bin/npm run build --prefix /home/eft-library-front
+/usr/bin/npm run build --prefix /home/frontend_a/eft-library-front
 
 # 포트 번호를 첫 번째 인수로 받아옴
-port=4000
+port=4001
 
 # 해당 포트를 사용 중인 프로세스의 PID를 찾아서 변수에 저장
 pid=$(/usr/bin/netstat -tnlp | /usr/bin/grep ":$port\b" | /usr/bin/awk '{print $7}' | /usr/bin/cut -d'/' -f1)
@@ -28,6 +28,6 @@ fi
 /bin/sleep 1
 
 # 백그라운드에서 애플리케이션 시작
-/usr/bin/nohup /usr/bin/npm run start --prefix /home/eft-library-front > /home/eft-library-front/log.out 2>&1 &
+/usr/bin/nohup /usr/bin/npm run start --prefix /home/frontend_a/eft-library-front > /home/frontend_a/eft-library-front/log.out 2>&1 &
 
 echo "Next.js를 실행합니다."
