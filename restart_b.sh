@@ -28,6 +28,6 @@ fi
 /bin/sleep 1
 
 # 백그라운드에서 애플리케이션 시작
-/usr/bin/nohup bash -c 'PORT=4002 /usr/bin/npm run start --prefix /home/frontend_a/eft-library-front' > /home/frontend_a/eft-library-front/log.out 2>&1 &
+/usr/bin/nohup bash -c 'PORT=4002 /usr/bin/npm run start --prefix /home/frontend_b/eft-library-front' > /home/frontend_a/eft-library-front/log.out 2>&1 &
 
 echo "Next.js를 실행합니다."
