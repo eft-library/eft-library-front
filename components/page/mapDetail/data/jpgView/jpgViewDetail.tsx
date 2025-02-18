@@ -3,7 +3,6 @@
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { ItemJPG } from "@/components/custom/getIcon/getJPG";
 import { formatImage } from "@/lib/func/formatImage";
-import { useWindowSize } from "@/lib/hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type {
@@ -12,10 +11,8 @@ import type {
 } from "@/components/page/mapDetail/data/mapType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import Loading from "@/components/custom/loading/loading";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
-  const size = useWindowSize();
   const transformWrapperRef = useRef(null);
   const [scale, setScale] = useState(1);
   const popoverRef = useRef<HTMLDivElement | null>(null); // 팝오버 참조
@@ -62,15 +59,11 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
     };
   }, []);
 
-  if (!size.width || !size.height) return <Loading />;
-
   return (
     <div className={"h-full w-full flex flex-col items-center justify-center"}>
       <div className="w-full h-full flex items-center justify-center">
         <TransformWrapper
           initialScale={1}
-          initialPositionX={-320}
-          initialPositionY={0}
           minScale={0.8}
           // wheel={{ step: 0.1 }}
           wheel={{ disabled: true }}
@@ -79,8 +72,8 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
         >
           <TransformComponent>
             <svg
-              width={size.width}
-              height={size.height / 1.3}
+              width={1200}
+              height={720}
               fill={ALL_COLOR.THREE_BACKGROUND}
               onClick={handleClick}
             >
