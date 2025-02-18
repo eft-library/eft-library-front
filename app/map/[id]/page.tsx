@@ -3,6 +3,8 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 type paramsType = Promise<{ id: string }>;
 
 type MetaProps = {
