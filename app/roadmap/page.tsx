@@ -22,6 +22,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/roadmap",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/roadmap",
+  },
 };
 
 export default function RoadmapPage() {

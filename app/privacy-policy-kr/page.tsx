@@ -17,6 +17,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/privacy-policy-kr",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/privacy-policy-kr",
+  },
 };
 
 export default function PrivacyPolicyKrPage() {

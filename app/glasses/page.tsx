@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/glasses",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/glasses",
+  },
 };
 
 export default function GlassesPage() {

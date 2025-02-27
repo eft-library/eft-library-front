@@ -19,6 +19,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/price",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/price",
+  },
 };
 
 export default function PricePage() {

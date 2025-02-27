@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/patch-notes?id=1",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/patch-notes?id=1",
+  },
 };
 
 export default function PatchNotesPage() {

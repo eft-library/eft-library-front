@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/quest",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/quest",
+  },
 };
 
 export default function QuestPage() {

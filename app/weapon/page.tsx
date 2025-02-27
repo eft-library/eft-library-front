@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/weapon",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/weapon",
+  },
 };
 
 export default function WeaponPage() {

@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/backpack",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/backpack",
+  },
 };
 
 export default function BackpackPage() {

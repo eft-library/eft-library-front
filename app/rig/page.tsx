@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/rig",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/rig",
+  },
 };
 
 export default function RigPage() {
