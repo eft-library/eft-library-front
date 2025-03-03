@@ -17,6 +17,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/terms",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/terms",
+  },
 };
 
 export default function TermsPage() {

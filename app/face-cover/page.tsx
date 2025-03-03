@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/face-cover",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/face-cover",
+  },
 };
 
 export default function FaceCoverPage() {

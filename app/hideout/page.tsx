@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/hideout",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/hideout",
+  },
 };
 
 export default function HideoutPage() {

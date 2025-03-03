@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/head-wear",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/head-wear",
+  },
 };
 
 export default function HeadWearPage() {

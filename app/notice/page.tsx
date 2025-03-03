@@ -17,6 +17,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/notice?id=1",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/notice?id=1",
+  },
 };
 
 export default function NoticePage() {

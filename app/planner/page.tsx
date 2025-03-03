@@ -22,6 +22,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/planner",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/planner",
+  },
 };
 
 export default function PlannerPage() {

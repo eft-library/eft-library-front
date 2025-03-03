@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/medical",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/medical",
+  },
 };
 
 export default function MedicalPage() {

@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/key",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/key",
+  },
 };
 
 export default function KeyPage() {

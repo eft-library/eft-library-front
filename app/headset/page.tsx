@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/headset",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/headset",
+  },
 };
 
 export default function HeadsetPage() {

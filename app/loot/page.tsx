@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/loot",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/loot",
+  },
 };
 
 export default function LootPage() {

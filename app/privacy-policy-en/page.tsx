@@ -17,6 +17,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/privacy-policy-en",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/privacy-policy-en",
+  },
 };
 
 export default function PrivacyPolicyEnPage() {

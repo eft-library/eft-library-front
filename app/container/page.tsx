@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/container",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/container",
+  },
 };
 
 export default function ContainerPage() {

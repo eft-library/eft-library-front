@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/armor-vest",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/armor-vest",
+  },
 };
 
 export default function ArmorVestPage() {

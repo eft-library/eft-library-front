@@ -20,6 +20,9 @@ export const metadata = {
     images: "/og.png",
     url: "https://eftlibrary.com/arm-band",
   },
+  alternates: {
+    canonical: "https://eftlibrary.com/arm-band",
+  },
 };
 
 export default function ArmBandPage() {
