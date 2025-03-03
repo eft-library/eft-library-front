@@ -25,7 +25,7 @@ export const previewData = [
     npc_id: "PRAPOR",
     npc_name_kr: "프라퍼",
     npc_name_en: "Prapor",
-    npc_image: "/tkl_quest/npc/prapor.webp",
+    npc_image: "/eftlibrary/tkl_quest/npc/prapor.webp",
     quest_info: [
       {
         next: [],
@@ -79,7 +79,7 @@ export const previewData = [
     npc_id: "THERAPIST",
     npc_name_kr: "테라피스트",
     npc_name_en: "Therapist",
-    npc_image: "/tkl_quest/npc/therapist.webp",
+    npc_image: "/eftlibrary/tkl_quest/npc/therapist.webp",
     quest_info: [
       {
         next: [
