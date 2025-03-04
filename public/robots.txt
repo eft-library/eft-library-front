@@ -1051,7 +1051,6 @@ Disallow: /quest/detail/addquest1
 Disallow: /quest/detail/6179ac7511973d018217d0b9
 Disallow: /quest/detail/addquest2
 Disallow: /icon.ico
-Disallow: /boss
 Disallow: /quest/detail/66058cb22cee99303f1ba067
 Disallow: /cdn-cgi/l/email-protection
 
