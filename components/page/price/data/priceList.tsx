@@ -24,7 +24,7 @@ export default function PriceList() {
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {
     try {
       const response = await fetch(
-        `${API_ENDPOINTS.GET_PRICE}?page=${pageParam}&page_size=10&word=${query}`,
+        `${API_ENDPOINTS.GET_PRICE}?page=${pageParam}&page_size=50&word=${query}`,
         {
           next: { revalidate: 60000 },
         }

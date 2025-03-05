@@ -27,7 +27,7 @@ export default function PriceTab({ tabState, setTabState }: PriceTab) {
         )}
         onClick={() => setTabState("priceGrade")}
       >
-        <TextSpan size="2xl">아이템 등급표 (개발중)</TextSpan>
+        <TextSpan size="2xl">아이템 등급표</TextSpan>
       </div>
     </div>
   );
