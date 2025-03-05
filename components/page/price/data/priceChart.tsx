@@ -46,7 +46,7 @@ export default function PriceChart({ viewType, item }: PriceChart) {
                 : { color: ALL_COLOR.SkyBloom, fontWeight: "bold" }
             }
           >
-            &nbsp;{payload[0].value}
+            &nbsp;{payload[0].value.toLocaleString()}
           </span>
         </div>
       );
@@ -77,7 +77,7 @@ export default function PriceChart({ viewType, item }: PriceChart) {
             dataKey="price_time"
             tick={{ fill: "white", fontWeight: "bold" }}
             tickFormatter={(value, index) => {
-              return index === 0 ? "" : dayjs(value).format("MM/DD HH:mm");
+              return index === 0 ? "" : dayjs(value).format("M월 D일 H시");
             }}
             interval={Math.floor(
               viewType === "PVP"
