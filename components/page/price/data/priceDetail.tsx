@@ -38,7 +38,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
             item.trader.pvp_trader.map((pvp) => (
               <div
                 key={`pvp-${pvp.trader.npc_name_en}`}
-                className="flex flex-col"
+                className="flex flex-col justify-center items-center "
               >
                 <div
                   style={{
@@ -59,7 +59,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                 <TextSpan
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
-                  {pvp.price}&nbsp;₽
+                  {pvp.price.toLocaleString()}&nbsp;₽
                 </TextSpan>
               </div>
             ))
@@ -67,7 +67,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
             item.trader.pve_trader.map((pve) => (
               <div
                 key={`pve-${pve.trader.npc_name_en}`}
-                className="flex flex-col"
+                className="flex flex-col justify-center items-center "
               >
                 <div
                   style={{
@@ -88,7 +88,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                 <TextSpan
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
-                  {pve.price}&nbsp;₽
+                  {pve.price.toLocaleString()}&nbsp;₽
                 </TextSpan>
               </div>
             ))}

@@ -30,7 +30,7 @@ export default function PriceTable({
   const findFleaMarketPrice = (traders: TradeOption[]) => {
     if (!traders) return "-";
     const fleaMarket = traders.find((t) => t.trader.npc_id === "FLEA_MARKET");
-    return fleaMarket?.price ? `${fleaMarket?.price} ₽` : "-";
+    return fleaMarket?.price ? `${fleaMarket?.price.toLocaleString()} ₽` : "-";
   };
 
   // PVE, PVP 각각의 값 미리 계산
@@ -100,7 +100,7 @@ export default function PriceTable({
             />
           </div>
           <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>
-            {expensiveTrader.price}&nbsp;₽
+            {expensiveTrader.price.toLocaleString()}&nbsp;₽
           </TextSpan>
         </div>
       ) : (

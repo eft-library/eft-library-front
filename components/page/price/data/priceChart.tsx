@@ -55,7 +55,7 @@ export default function PriceChart({ viewType, item }: PriceChart) {
   };
 
   return (
-    <div className="w-full h-[300px]">
+    <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}
@@ -85,7 +85,11 @@ export default function PriceChart({ viewType, item }: PriceChart) {
                 : item.history_by_type.pve.length / 10
             )}
           />
-          <YAxis tick={{ fill: "white", fontWeight: "bold" }} />
+          <YAxis
+            tick={{ fill: "white", fontWeight: "bold" }}
+            tickFormatter={(value) => value.toLocaleString()}
+            width={100}
+          />
           <Tooltip
             contentStyle={{
               backgroundColor: "black", // 배경을 검은색으로

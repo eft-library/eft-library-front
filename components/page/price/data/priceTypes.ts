@@ -26,6 +26,7 @@ export interface Price {
     pve_trader: TradeOption[];
     pvp_trader: TradeOption[];
   };
+  category: string;
   history_by_type: HistoryDefine;
   id: string;
 }
