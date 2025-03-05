@@ -104,7 +104,9 @@ export default function PriceTable({
           </TextSpan>
         </div>
       ) : (
-        <TextSpan textColor="gray">-</TextSpan>
+        <CenterContents>
+          <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>-</TextSpan>
+        </CenterContents>
       )}
 
       <CenterContents>

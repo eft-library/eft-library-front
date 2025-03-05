@@ -34,7 +34,8 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
 
       <div className="col-span-3 flex justify-center items-center gap-4">
         {viewType === "PVP"
-          ? item.trader.pvp_trader.map((pvp) => (
+          ? item.trader.pvp_trader &&
+            item.trader.pvp_trader.map((pvp) => (
               <div
                 key={`pvp-${pvp.trader.npc_name_en}`}
                 className="flex flex-col"
@@ -62,7 +63,8 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                 </TextSpan>
               </div>
             ))
-          : item.trader.pve_trader.map((pve) => (
+          : item.trader.pve_trader &&
+            item.trader.pve_trader.map((pve) => (
               <div
                 key={`pve-${pve.trader.npc_name_en}`}
                 className="flex flex-col"
