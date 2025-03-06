@@ -51,7 +51,7 @@ export default function SubMapSelector({
 
   return (
     <div className="mb-6">
-      <div className="flex justify-between w-full flex-wrap rounded-t-lg border-solid border-[1px] border-white p-1">
+      <div className="flex justify-between w-full flex-wrap rounded-t-lg border-solid border-2 border-white p-1">
         {sortList(mapType).map((mapInfo) => (
           <Link href={mapInfo.link} key={mapInfo.id}>
             <div
@@ -67,7 +67,7 @@ export default function SubMapSelector({
         ))}
       </div>
 
-      <div className="flex w-full flex-wrap rounded-b-lg border-solid border-[1px] border-t-0 border-white p-1 gap-1">
+      <div className="flex w-full flex-wrap rounded-b-lg border-solid border-2 border-t-0 border-white p-1 gap-1">
         {subMap.map((sub) => (
           <div
             key={sub.id}

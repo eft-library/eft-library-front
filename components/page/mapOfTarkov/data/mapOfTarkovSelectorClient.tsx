@@ -18,13 +18,14 @@ export default function MapOfTarkovSelectorClient({
   };
 
   return (
-    <div className="flex justify-center w-full flex-wrap gap-2">
+    <div className="flex justify-between w-full flex-wrap rounded-t-lg border-solid border-2 border-white p-1">
       {sortList().map((mapOfTarkov) => (
         <Link href={mapOfTarkov.link} key={mapOfTarkov.id}>
           <div
             className={cn(
-              "rounded-lg flex justify-center items-center p-[8px] w-[120px] h-[40px] cursor-pointer hover:bg-NeutralGray border-solid border-[1px] border-white",
-              { "bg-NeutralGray": param.id === mapOfTarkov.id }
+              "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
+              { "bg-CloudGray": param.id === mapOfTarkov.id },
+              { "text-Background": param.id === mapOfTarkov.id }
             )}
           >
             <span className="text-center font-bold">{mapOfTarkov.name_kr}</span>

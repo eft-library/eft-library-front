@@ -15,13 +15,13 @@ export default {
     // text-color classes
     {
       pattern:
-        /text-(PeachCream|SkyBloom|NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
+        /text-(CloudGray|DeepSlate|PeachCream|SkyBloom|NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
     },
 
     // hover:text-color classes
     {
       pattern:
-        /hover:text-(NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
+        /hover:text-(CloudGray|DeepSlate|NeutralGray|MidnightBlack|GoldenYellow|SunsetYellow|CreamYellow|LightYellow|SoftPink|BrightCyan|Red|PaleYellow|VividGreen|ForestGreen|AmberGold|WalnutBrown|ChestnutBrown|DeepBurgundy|DarkMahogany|LightOrange|Orange|Beige|SoftRed|SkyBlue|Goldenrod|MutedGray|Background)/,
     },
   ],
 

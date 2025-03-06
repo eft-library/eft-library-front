@@ -10,13 +10,14 @@ export default function WeaponSelectorClient({
   const { setWeaponCategory, weaponCategory } = useAppStore((state) => state);
 
   return (
-    <div className="flex justify-center w-full flex-wrap gap-2">
+    <div className="flex w-full flex-wrap rounded-lg border-solid border-2 border-white gap-1 p-1">
       {weaponType.json_value.map((weapon) => (
         <div
           key={weapon.value}
           className={cn(
-            "rounded-lg flex justify-center items-center p-[8px] w-[120px] h-[40px] cursor-pointer hover:bg-NeutralGray border-solid border-[1px] border-white",
-            { "bg-NeutralGray": weaponCategory === weapon.value }
+            "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
+            { "bg-CloudGray": weaponCategory === weapon.value },
+            { "text-Background": weaponCategory === weapon.value }
           )}
           onClick={() => setWeaponCategory(weapon.value)}
         >
