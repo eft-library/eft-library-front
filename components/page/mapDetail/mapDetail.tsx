@@ -1,6 +1,5 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetMapDetail from "@/components/page/mapDetail/data/getMapDetail";
-import GetMapSelector from "@/components/page/mapDetail/data/getMapSelector";
 import TextSpan from "../../custom/gridContents/textSpan";
 
 export default function MapDetail() {
@@ -14,7 +13,6 @@ export default function MapDetail() {
           (데이터 적재 진행중)
         </TextSpan>
       </div>
-      <GetMapSelector />
       <GetMapDetail />
     </ContentsWrapper>
   );

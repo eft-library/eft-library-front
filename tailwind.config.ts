@@ -103,6 +103,8 @@ export default {
         SilverGray: "#D3D3D3",
         PeachCream: "#FFA46B",
         SkyBloom: "#6B89FF",
+        CloudGray: "#E5E7EB",
+        DeepSlate: "#394151",
       },
       boxShadow: {
         BlackShadow: "0px 2px 4px rgba(1, 1, 1, 0.8)",

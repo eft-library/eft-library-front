@@ -8,7 +8,11 @@ import type { MapWrapper } from "@/components/page/mapDetail/data/mapType";
 import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
 
-export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
+export default function MapWrapper({
+  mapData,
+  onClickMapAction,
+  mapType,
+}: MapWrapper) {
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
     mapData.jpg_item_path
   );
@@ -21,7 +25,11 @@ export default function MapWrapper({ mapData, onClickMapAction }: MapWrapper) {
         onClickItemAction={onClickItem}
         onClickAllItemAction={onClickAllItem}
       />
-      <SubMapSelector onClickMapAction={onClickMapAction} mapId={mapData.id} />
+      <SubMapSelector
+        onClickMapAction={onClickMapAction}
+        mapId={mapData.id}
+        mapType={mapType}
+      />
       <div className={"flex flex-col gap-4 items-center"}>
         <div className="w-full">
           <TextSpan isCenter={false} size="xl">

@@ -77,6 +77,7 @@ export interface ThreeviewDetail {
 export interface SubMapSelector {
   onClickMapAction: (val: MapData) => void;
   mapId: string;
+  mapType: MapType;
 }
 export interface ThreeModel {
   filterInfo: SubFilter[];
@@ -94,10 +95,12 @@ export interface JPGView {
 
 export interface MapDetailClient {
   mapInfo: MapData;
+  mapType: MapType;
 }
 export interface MapWrapper {
   mapData: Map;
   onClickMapAction: (val: MapData) => void;
+  mapType: MapType;
 }
 
 export interface MapSelectorClient {
@@ -113,5 +116,13 @@ interface MapJson {
   id: string;
   link: string;
   order: number;
+  name_kr: string;
+  sub_list: SubMapJson[];
+}
+
+interface SubMapJson {
+  id: string;
+  order: number;
+  depth: number;
   name_kr: string;
 }
