@@ -50,11 +50,11 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                 <ImageView
                   src={ammo.image}
                   alt={ammo.name}
-                  popWidth={200}
-                  popHeight={180}
-                  wrapHeight={140}
-                  wrapWidth={240}
-                  size="240px"
+                  popWidth={140}
+                  popHeight={140}
+                  wrapHeight={ammo.height * 64}
+                  wrapWidth={ammo.width * 64}
+                  size={(ammo.height * 64).toString()}
                 />
               </CenterContents>
               <CenterContents colSpan="2">

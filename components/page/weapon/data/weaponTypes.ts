@@ -23,6 +23,8 @@ interface Weapon {
   name: string;
   short_name: string;
   image: string;
+  width: number;
+  height: number;
   update_time: string;
 }
 

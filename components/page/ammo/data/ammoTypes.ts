@@ -13,6 +13,8 @@ interface Ammo {
   recoil_modifier: number;
   light_bleed_modifier: number;
   heavy_bleed_modifier: number;
+  width: number;
+  height: number;
   efficiency: number[];
   image: string;
   category: string;
