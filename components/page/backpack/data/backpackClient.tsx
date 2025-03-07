@@ -21,11 +21,11 @@ export default function BackpackClient({ backpackList }: BackpackList) {
             <ImageView
               src={backpack.image}
               alt={backpack.name}
-              popWidth={backpack.width * 128}
-              popHeight={backpack.height * 128}
-              wrapWidth={backpack.width * 64}
-              wrapHeight={backpack.height * 64}
-              size={(backpack.width * 64).toString()}
+              popWidth={backpack.width * 72}
+              popHeight={backpack.height * 72}
+              wrapWidth={backpack.width * 36}
+              wrapHeight={backpack.height * 36}
+              size={(backpack.width * 36).toString()}
             />
           </CenterContents>
           <CenterContents>
