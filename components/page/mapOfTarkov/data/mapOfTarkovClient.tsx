@@ -14,6 +14,7 @@ import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
 
 export default function MapOfTarkovClient({
   mapOfTarkovList,
+  imageSelect,
 }: MapOfTarkovClient) {
   const param = useParams<{ id: string }>();
 
@@ -61,7 +62,10 @@ export default function MapOfTarkovClient({
               key={mapOfTarkov.map_id}
               className="flex flex-col gap-6 items-center"
             >
-              <MapSlider mapInfo={mapOfTarkov.map_info} />
+              <MapSlider
+                mapInfo={mapOfTarkov.map_info}
+                imageSelect={imageSelect}
+              />
 
               <div className="w-[1200px]">
                 <AdBanner

@@ -75,10 +75,11 @@ export interface ExtractionRender {
 }
 
 export interface MapOfTarkovSelectorClient {
-  mapOfTarkovType: MapOfTarkovType;
+  setImageSelect: (val: string) => void;
+  imageSelect: string;
 }
 
-interface MapOfTarkovType {
+export interface MapOfTarkovType {
   id: string;
   json_value: MapOfTarkovJson[];
 }
@@ -88,9 +89,22 @@ interface MapOfTarkovJson {
   link: string;
   order: number;
   name_kr: string;
+  image_list: ImageJson[];
+}
+
+interface ImageJson {
+  id: string;
+  name_en: string;
+  name_kr: string;
+  image: string;
 }
 
 export interface MapOfTarkovClient {
+  mapOfTarkovList: MapOfTarkov[];
+  imageSelect: string;
+}
+
+export interface MapOfTarkovWrapper {
   mapOfTarkovList: MapOfTarkov[];
 }
 
@@ -147,4 +161,5 @@ interface SubMap {
 
 export interface MapSlider {
   mapInfo: Map;
+  imageSelect: string;
 }

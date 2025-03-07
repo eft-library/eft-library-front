@@ -2,7 +2,7 @@
 
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import MapOfTarkovClient from "./mapOfTarkovClient";
+import MapOfTarkovWrapper from "./mapOfTarkovWrapper";
 
 export default async function GetMapOfTarkov() {
   const data = await requestData(API_ENDPOINTS.GET_ALL_MAP_OF_TARKOV);
@@ -15,5 +15,5 @@ export default async function GetMapOfTarkov() {
     return null;
   }
 
-  return <MapOfTarkovClient mapOfTarkovList={data.data} />;
+  return <MapOfTarkovWrapper mapOfTarkovList={data.data} />;
 }
