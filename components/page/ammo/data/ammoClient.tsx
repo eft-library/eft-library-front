@@ -54,7 +54,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                   popHeight={140}
                   wrapHeight={ammo.height * 64}
                   wrapWidth={ammo.width * 64}
-                  size={(ammo.height * 64).toString()}
+                  size={(ammo.width * 64).toString()}
                 />
               </CenterContents>
               <CenterContents colSpan="2">

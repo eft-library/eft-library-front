@@ -30,11 +30,11 @@ export default function FaceCoverClient({
               <ImageView
                 src={faceCover.image}
                 alt={faceCover.name}
-                popWidth={220}
-                popHeight={240}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={100}
+                popWidth={faceCover.width * 128}
+                popHeight={faceCover.height * 128}
+                size={(faceCover.width * 64).toString()}
+                wrapWidth={faceCover.width * 64}
+                wrapHeight={faceCover.height * 64}
               />
             </CenterContents>
             <CenterContents>

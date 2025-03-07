@@ -22,6 +22,8 @@ interface Loot {
   category: string;
   name_en: string;
   name_kr: string;
+  width: number;
+  height: number;
   image: string;
   quest_notes: QuestNotes[];
   hideout_notes: HideoutNotes[];

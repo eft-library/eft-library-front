@@ -3,6 +3,8 @@ interface ArmBand {
   name: string;
   short_name: string;
   weight: string;
+  width: number;
+  height: number;
   image: string;
 }
 

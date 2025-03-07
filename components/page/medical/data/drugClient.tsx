@@ -39,11 +39,11 @@ export default function DrugClient({ medicalList }: DrugClient) {
                 <ImageView
                   src={drug.image}
                   alt={drug.name_en}
-                  popWidth={220}
-                  popHeight={180}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={drug.width * 128}
+                  popHeight={drug.height * 128}
+                  size={(drug.width * 64).toString()}
+                  wrapWidth={drug.width * 64}
+                  wrapHeight={drug.height * 64}
                 />
               </CenterContents>
               <CenterContents colSpan="2">

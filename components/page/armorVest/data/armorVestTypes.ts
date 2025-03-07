@@ -4,6 +4,8 @@ export interface DefenseData {
   class_value: number;
   areas_kr: string[];
   weight: number;
+  width: number;
+  height: number;
   name: string;
   image: string;
   ricochet_str_kr: string;

@@ -10,6 +10,8 @@ interface Key {
   map_value: string[];
   notes: QuestNotes[];
   name: string;
+  width: number;
+  height: number;
   image: string;
 }
 

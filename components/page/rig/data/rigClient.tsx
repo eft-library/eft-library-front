@@ -28,11 +28,11 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
               <ImageView
                 src={rig.image}
                 alt={rig.name}
-                popWidth={380}
-                popHeight={400}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={140}
+                popWidth={rig.width * 128}
+                popHeight={rig.height * 128}
+                size={(rig.width * 64).toString()}
+                wrapWidth={rig.width * 64}
+                wrapHeight={rig.height * 64}
               />
             </CenterContents>
             <CenterContents>

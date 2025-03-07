@@ -26,11 +26,11 @@ export default function ContainerClient({ containerList }: ContainerList) {
             <ImageView
               src={container.image}
               alt={container.name_en}
-              popWidth={260}
-              popHeight={200}
-              wrapWidth={240}
-              wrapHeight={120}
-              size="240px"
+              popWidth={container.width * 128}
+              popHeight={container.height * 128}
+              wrapWidth={container.width * 64}
+              wrapHeight={container.height * 64}
+              size={(container.width * 64).toString()}
             />
           </CenterContents>
           <CenterContents>

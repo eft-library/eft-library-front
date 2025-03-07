@@ -33,11 +33,11 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
             <ImageView
               src={provisions.image}
               alt={provisions.name_en}
-              popWidth={240}
-              popHeight={320}
-              size="240px"
-              wrapWidth={240}
-              wrapHeight={100}
+              popWidth={provisions.width * 128}
+              popHeight={provisions.height * 128}
+              size={(provisions.width * 64).toString()}
+              wrapWidth={provisions.width * 64}
+              wrapHeight={provisions.height * 64}
             />
           </CenterContents>
 

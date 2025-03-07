@@ -7,6 +7,8 @@ interface Backpack {
   id: string;
   capacity: number;
   grids: Size[];
+  width: number;
+  height: number;
   weight: number;
 }
 interface Size {

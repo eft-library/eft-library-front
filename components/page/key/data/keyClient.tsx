@@ -30,11 +30,11 @@ export default function KeyClient({ keyList }: KeyClient) {
                 <ImageView
                   src={key.image}
                   alt={key.name}
-                  popWidth={220}
-                  popHeight={180}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={key.width * 128}
+                  popHeight={key.height * 128}
+                  size={(key.width * 64).toString()}
+                  wrapWidth={key.width * 64}
+                  wrapHeight={key.height * 64}
                 />
               </CenterContents>
               <CenterContents>

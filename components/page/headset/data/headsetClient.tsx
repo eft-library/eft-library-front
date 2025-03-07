@@ -21,11 +21,11 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
             <ImageView
               src={headset.image}
               alt={headset.name}
-              popWidth={340}
-              popHeight={260}
-              size="240px"
-              wrapWidth={240}
-              wrapHeight={140}
+              popWidth={headset.width * 128}
+              popHeight={headset.height * 128}
+              size={(headset.width * 64).toString()}
+              wrapWidth={headset.width * 64}
+              wrapHeight={headset.height * 64}
             />
           </CenterContents>
           <CenterContents>

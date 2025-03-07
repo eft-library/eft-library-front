@@ -33,11 +33,11 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                 <ImageView
                   src={medikit.image}
                   alt={medikit.name_en}
-                  popWidth={220}
-                  popHeight={180}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={medikit.width * 128}
+                  popHeight={medikit.height * 128}
+                  size={(medikit.width * 64).toString()}
+                  wrapWidth={medikit.width * 64}
+                  wrapHeight={medikit.height * 64}
                 />
               </CenterContents>
               <CenterContents colSpan="2">

@@ -30,11 +30,11 @@ export default function HeadWearClient({
               <ImageView
                 src={headWear.image}
                 alt={headWear.name}
-                popWidth={400}
-                popHeight={380}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={140}
+                popWidth={headWear.width * 128}
+                popHeight={headWear.height * 128}
+                size={(headWear.width * 64).toString()}
+                wrapWidth={headWear.width * 64}
+                wrapHeight={headWear.height * 64}
               />
             </CenterContents>
             <CenterContents>

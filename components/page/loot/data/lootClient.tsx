@@ -30,11 +30,11 @@ export default function LootClient({ lootList }: LootClient) {
                 <ImageView
                   src={loot.image}
                   alt={loot.name_en}
-                  popWidth={220}
-                  popHeight={180}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={loot.width * 128}
+                  popHeight={loot.height * 128}
+                  size={(loot.width * 64).toString()}
+                  wrapWidth={loot.width * 64}
+                  wrapHeight={loot.height * 64}
                 />
               </CenterContents>
               <CenterContents>

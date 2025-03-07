@@ -26,6 +26,8 @@ interface Medical {
   buff: Effect[];
   debuff: Effect[];
   use_time: number;
+  width: number;
+  height: number;
   uses: number;
   energy_impact: number;
   hydration_impact: number;

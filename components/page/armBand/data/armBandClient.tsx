@@ -21,11 +21,11 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
             <ImageView
               src={armBand.image}
               alt={armBand.name}
-              popWidth={220}
-              popHeight={220}
-              wrapWidth={240}
-              wrapHeight={100}
-              size="240px"
+              popWidth={armBand.width * 128}
+              popHeight={armBand.height * 128}
+              wrapWidth={armBand.width * 64}
+              wrapHeight={armBand.height * 64}
+              size={(armBand.width * 64).toString()}
             />
           </CenterContents>
           <CenterContents>

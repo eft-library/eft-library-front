@@ -24,11 +24,11 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
             <ImageView
               src={knife.image}
               alt={knife.name}
-              popWidth={280}
-              popHeight={400}
-              size="240px"
-              wrapWidth={240}
-              wrapHeight={140}
+              popWidth={knife.width * 128}
+              popHeight={knife.height * 128}
+              size={(knife.width * 64).toString()}
+              wrapWidth={knife.width * 64}
+              wrapHeight={knife.height * 64}
             />
           </CenterContents>
           <CenterContents>

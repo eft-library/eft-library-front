@@ -7,6 +7,8 @@ interface Container {
   name_en: string;
   name_kr: string;
   image: string;
+  width: number;
+  height: number;
   capacity: number;
   grids: Size[];
 }

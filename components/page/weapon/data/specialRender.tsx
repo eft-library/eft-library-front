@@ -40,11 +40,11 @@ export default function SpecialRender({ specialList }: SpecialRender) {
                 <ImageView
                   src={special.image}
                   alt={special.name}
-                  popWidth={340}
-                  popHeight={420}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={140}
+                  popWidth={special.width * 128}
+                  popHeight={special.height * 128}
+                  size={(special.width * 64).toString()}
+                  wrapWidth={special.width * 64}
+                  wrapHeight={special.height * 64}
                 />
               </CenterContents>
               <CenterContents>

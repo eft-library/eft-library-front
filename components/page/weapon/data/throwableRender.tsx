@@ -29,11 +29,11 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
             <ImageView
               src={throwable.image}
               alt={throwable.name}
-              popWidth={340}
-              popHeight={300}
-              size="240px"
-              wrapWidth={240}
-              wrapHeight={140}
+              popWidth={throwable.width * 128}
+              popHeight={throwable.height * 128}
+              size={(throwable.width * 64).toString()}
+              wrapWidth={throwable.width * 64}
+              wrapHeight={throwable.height * 64}
             />
           </CenterContents>
           <CenterContents>

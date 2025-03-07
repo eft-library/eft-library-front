@@ -16,5 +16,7 @@ interface DefenseData {
   areas_kr: string[];
   weight: number;
   name: string;
+  width: number;
+  height: number;
   image: string;
 }

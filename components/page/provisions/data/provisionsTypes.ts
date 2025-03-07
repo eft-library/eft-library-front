@@ -11,6 +11,8 @@ interface Provisions {
   short_name: string;
   energy: number;
   hydration: number;
+  width: number;
+  height: number;
   stim_effects: StimEffet[];
   notes: QuestNotes[];
 }

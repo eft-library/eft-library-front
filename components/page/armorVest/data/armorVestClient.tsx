@@ -26,11 +26,11 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
             <ImageView
               src={armorVest.image}
               alt={armorVest.name}
-              popWidth={300}
-              popHeight={380}
-              wrapWidth={240}
-              wrapHeight={140}
-              size="240px"
+              popWidth={armorVest.width * 128}
+              popHeight={armorVest.height * 128}
+              wrapWidth={armorVest.width * 64}
+              wrapHeight={armorVest.height * 64}
+              size={(armorVest.width * 64).toString()}
             />
           </CenterContents>
           <CenterContents>

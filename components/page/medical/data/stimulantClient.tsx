@@ -81,11 +81,11 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                 <ImageView
                   src={stimulant.image}
                   alt={stimulant.name_en}
-                  popWidth={260}
-                  popHeight={220}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={stimulant.height * 128}
+                  popHeight={stimulant.height * 128}
+                  size={(stimulant.width * 64).toString()}
+                  wrapWidth={stimulant.height * 64}
+                  wrapHeight={stimulant.height * 64}
                 />
               </CenterContents>
               <CenterContents colSpan="2">

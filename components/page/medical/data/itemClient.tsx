@@ -29,11 +29,11 @@ export default function ItemClient({ medicalList }: ItemClient) {
                 <ImageView
                   src={item.image}
                   alt={item.name_en}
-                  popWidth={220}
-                  popHeight={180}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={100}
+                  popWidth={item.width * 128}
+                  popHeight={item.height * 128}
+                  size={(item.width * 64).toString()}
+                  wrapWidth={item.width * 64}
+                  wrapHeight={item.height * 64}
                 />
               </CenterContents>
 

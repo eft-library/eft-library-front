@@ -23,11 +23,11 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               <ImageView
                 src={glasses.image}
                 alt={glasses.name}
-                popWidth={300}
-                popHeight={200}
-                wrapWidth={240}
-                wrapHeight={100}
-                size="240px"
+                popWidth={glasses.width * 128}
+                popHeight={glasses.height * 128}
+                wrapWidth={glasses.width * 64}
+                wrapHeight={glasses.height * 64}
+                size={(glasses.width * 64).toString()}
               />
             </CenterContents>
             <CenterContents>
