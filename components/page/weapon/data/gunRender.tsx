@@ -55,11 +55,11 @@ export default function GunRender({ gunList }: GunRender) {
                 <ImageView
                   src={gun.image}
                   alt={gun.name}
-                  popWidth={540}
-                  popHeight={200}
-                  size="240px"
-                  wrapWidth={240}
-                  wrapHeight={140}
+                  popWidth={gun.width * 128}
+                  popHeight={gun.height * 128}
+                  size={(gun.width * 64).toString()}
+                  wrapWidth={gun.width * 64}
+                  wrapHeight={gun.height * 64}
                 />
               </CenterContents>
               <CenterContents>
