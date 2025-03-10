@@ -97,7 +97,7 @@ export default function RankDetail() {
 
       {topRankData.pve_top_list.map((rankItem) => (
         <div
-          className="flex flex-col h-[200px] bg-Background w-full"
+          className="flex flex-col h-full bg-Background w-full"
           key={`item-rank-${rankItem.tier}`}
         >
           <TierIndicator
