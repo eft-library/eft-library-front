@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import type { PriceChart } from "./priceTypes";
+import type { PriceChart } from "../priceTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function PriceChart({ viewType, item }: PriceChart) {

@@ -11,7 +11,7 @@ import PriceHeader from "./priceHeader";
 import PriceDetail from "./priceDetail";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import type { Price } from "./priceTypes";
+import type { Price } from "../priceTypes";
 import PriceChart from "./priceChart";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 

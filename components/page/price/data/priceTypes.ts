@@ -26,6 +26,8 @@ export interface Price {
     pve_trader: TradeOption[];
     pvp_trader: TradeOption[];
   };
+  width: number;
+  height: number;
   category: string;
   history_by_type: HistoryDefine;
   id: string;
@@ -56,4 +58,40 @@ export interface PriceChart {
 export interface PriceTab {
   tabState: string;
   setTabState: (val: string) => void;
+}
+
+export interface RankData {
+  pvp_top_list: TopList;
+  pve_top_list: TopList;
+}
+
+interface TopList {
+  S: TopListDetail;
+  A: TopListDetail;
+  B: TopListDetail;
+  C: TopListDetail;
+  D: TopListDetail;
+  E: TopListDetail;
+  F: TopListDetail;
+}
+
+interface TopListDetail {
+  max: number;
+  min: number;
+  list: TopListDetailData[];
+}
+
+interface TopListDetailData {
+  item_image: string;
+  item_name_en: string;
+  item_name_kr: string | null;
+  update_time: string;
+  trader_list: TradeOption[];
+  width: number;
+  height: number;
+  category: string;
+  history_by_type: HistoryDefine;
+  id: string;
+  per_slot: number;
+  flea_market_price: number;
 }

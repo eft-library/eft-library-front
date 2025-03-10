@@ -1,5 +1,5 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import type { PriceDetail } from "./priceTypes";
+import type { PriceDetail } from "../priceTypes";
 import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
 import CenterContents from "@/components/custom/gridContents/centerContents";
@@ -12,8 +12,8 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
       <CenterContents>
         <div
           style={{
-            width: `${220}px`,
-            height: `${200}px`,
+            width: `${180}px`,
+            height: `${160}px`,
           }}
           className={`flex justify-center items-center relative`}
         >
@@ -21,9 +21,8 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
             src={item.item_image || ""}
             alt={item.item_name_en || ""}
             fill
-            sizes={"220px"}
+            sizes={(item.width * 64).toString()}
             style={{ objectFit: "contain" }}
-            priority
           />
         </div>
       </CenterContents>

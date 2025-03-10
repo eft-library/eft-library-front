@@ -19,10 +19,10 @@ export default function PriceTab({ tabState, setTabState }: PriceTab) {
       <div
         className={cn(
           "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
-          { "bg-CloudGray": tabState === "priceGrade" },
-          { "text-Background": tabState === "priceGrade" }
+          { "bg-CloudGray": tabState === "priceRank" },
+          { "text-Background": tabState === "priceRank" }
         )}
-        onClick={() => setTabState("priceGrade")}
+        onClick={() => setTabState("priceRank")}
       >
         <span className="text-center font-bold">아이템 등급표</span>
       </div>
