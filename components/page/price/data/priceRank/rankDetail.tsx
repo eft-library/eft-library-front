@@ -11,9 +11,6 @@ import { cn } from "@/lib/utils";
 import TierIndicator from "./tierIndicater";
 import InventoryGrid from "./inventoryGrid";
 
-// 여기서 rankList 조회
-// category 동작도 여기
-
 export default function RankDetail() {
   const [priceType, setPriceType] = useState<string>("PVP");
   const [topRankData, setTopRankData] = useState<RankData>();
