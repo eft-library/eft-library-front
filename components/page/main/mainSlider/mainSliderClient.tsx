@@ -14,7 +14,7 @@ import { MAIN_IMAGE_SLIDER_OPTION } from "@/lib/consts/libraryConsts";
 export default function MainSliderClient({ sliderList }: MainSlider) {
   return (
     <div className="w-full h-full flex justify-center">
-      <div className="w-[85%] h-[20%]">
+      <div className="w-[85%]">
         <Gallery>
           <Slider {...MAIN_IMAGE_SLIDER_OPTION}>
             {sliderList.map((sliderImg) => (
@@ -25,6 +25,7 @@ export default function MainSliderClient({ sliderList }: MainSlider) {
               >
                 <Image
                   src={formatImage(sliderImg.main_image)}
+                  className="mx-auto"
                   alt={sliderImg.kr_name}
                   width={1100}
                   height={400}
