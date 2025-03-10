@@ -105,8 +105,9 @@ export default function RankClient() {
               tier={rankItem.tier}
               min={rankItem.min}
               max={rankItem.max}
+              viewType={priceType}
             />
-            <InventoryGrid topList={rankItem.list} />
+            <InventoryGrid topList={rankItem.list} viewType={priceType} />
           </div>
         ))}
 
@@ -120,8 +121,9 @@ export default function RankClient() {
               tier={rankItem.tier}
               min={rankItem.min}
               max={rankItem.max}
+              viewType={priceType}
             />
-            <InventoryGrid topList={rankItem.list} />
+            <InventoryGrid topList={rankItem.list} viewType={priceType} />
           </div>
         ))}
     </div>

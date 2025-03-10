@@ -1,21 +1,30 @@
 "use client";
 
 import type { TierIndicator } from "./rankTypes";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
-export default function TierIndicator({ tier, min, max }: TierIndicator) {
+export default function TierIndicator({
+  tier,
+  min,
+  max,
+  viewType,
+}: TierIndicator) {
   return (
     <div className="flex flex-col w-full bg-Background justify-center items-center p-6 gap-4">
-      <div className="text-5xl font-bold text-CloudGray">{tier} 티어</div>
+      <TextSpan size="5xl">{tier} 티어</TextSpan>
       <div className="flex items-center">
-        <span className="text-xl text-CloudGray font-bold">
-          슬롯당 가격&nbsp;
-        </span>
-        <span className="text-xl text-CloudGray font-bold">
+        <TextSpan
+          size="xl"
+          textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
+        >
           {max.toLocaleString()}&nbsp;₽&nbsp;~&nbsp;
-        </span>
-        <span className="text-xl text-CloudGray font-bold">
+        </TextSpan>
+        <TextSpan
+          size="xl"
+          textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
+        >
           {min.toLocaleString()}&nbsp;₽
-        </span>
+        </TextSpan>
       </div>
     </div>
   );

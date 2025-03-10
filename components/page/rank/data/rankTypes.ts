@@ -39,8 +39,10 @@ export interface TierIndicator {
   max: number;
   min: number;
   tier: string;
+  viewType: string;
 }
 
 export interface InventoryGrid {
   topList: TopListDetailData[];
+  viewType: string;
 }

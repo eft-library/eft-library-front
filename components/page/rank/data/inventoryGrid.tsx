@@ -2,6 +2,7 @@
 "use client";
 
 import type { InventoryGrid, TopListDetailData } from "./rankTypes";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 import Masonry from "react-masonry-css";
 import {
   Tooltip,
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 
-export default function InventoryGrid({ topList }: InventoryGrid) {
+export default function InventoryGrid({ topList, viewType }: InventoryGrid) {
   const [openTooltipIndex, setOpenTooltipIndex] = useState<number | null>(null);
   const [hoverItem, setHoverItem] = useState<TopListDetailData>();
 
@@ -44,19 +45,33 @@ export default function InventoryGrid({ topList }: InventoryGrid) {
               />
             </TooltipTrigger>
             <TooltipContent side="top" align="center" className="bg-Background">
-              <p className="text-GoldenYellow text-lg font-bold">
+              <TextSpan size="xl" textColor="GoldenYellow">
                 {hoverItem?.item_name_kr || hoverItem?.item_name_en}
-              </p>
-              <p className="text-white text-lg font-bold">
-                플리마켓 가격:&nbsp;
+              </TextSpan>
+              <br />
+              <TextSpan size="xl">플리마켓 가격:&nbsp;</TextSpan>
+              <TextSpan
+                size="xl"
+                textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
+              >
                 {hoverItem?.flea_market_price.toLocaleString()}
-              </p>
-              <p className="text-white text-lg font-bold">
-                슬롯당 가격:&nbsp;{hoverItem?.per_slot.toLocaleString()}
-              </p>
-              <p className="text-white text-lg font-bold">
-                슬롯 크기:&nbsp;{hoverItem?.width} X {hoverItem?.height}
-              </p>
+              </TextSpan>
+              <br />
+              <TextSpan size="xl">슬롯당 가격:&nbsp;</TextSpan>
+              <TextSpan
+                size="xl"
+                textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
+              >
+                {hoverItem?.per_slot.toLocaleString()}
+              </TextSpan>
+              <br />
+              <TextSpan size="xl">슬롯 크기:&nbsp;</TextSpan>
+              <TextSpan
+                size="xl"
+                textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
+              >
+                {hoverItem?.width} X {hoverItem?.height}
+              </TextSpan>
             </TooltipContent>
           </Tooltip>
         ))}
