@@ -24,6 +24,14 @@ export default function RankClient() {
   const [listCategory, setListCategory] = useState<string[]>([
     "Keys",
     "Weapon",
+    "Ammo",
+    "Provisions",
+    "Container",
+    "Keys",
+    "Meds",
+    "Wearables",
+    "LOOT",
+    "Mods",
   ]);
 
   const getItemRank = async () => {
