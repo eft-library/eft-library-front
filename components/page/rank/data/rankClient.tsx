@@ -63,12 +63,11 @@ export default function RankClient() {
     } else {
       setListCategory((prevCategory) => [...prevCategory, clickCategory]);
     }
-    getItemRank();
   };
 
   useEffect(() => {
     getItemRank();
-  }, []);
+  }, [listCategory]);
 
   if (!topRankData) return <Loading />;
 
@@ -92,7 +91,31 @@ export default function RankClient() {
         >
           {priceType}
         </Button>
-        <Button onClick={() => onChangeCategory("Mods")}>개발중</Button>
+        <div className="flex flex-wrap gap-2">
+          {[
+            "Keys",
+            "Weapon",
+            "Ammo",
+            "Provisions",
+            "Container",
+            "Meds",
+            "Wearables",
+            "LOOT",
+            "Mods",
+          ].map((category) => (
+            <button
+              key={category}
+              onClick={() => onChangeCategory(category)}
+              className={`px-4 py-2 rounded-md text-white font-semibold transition-colors duration-200 ${
+                listCategory.includes(category)
+                  ? "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
       {priceType === "PVE" &&
