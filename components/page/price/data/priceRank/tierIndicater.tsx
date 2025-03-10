@@ -4,7 +4,7 @@ import type { TierIndicator } from "../priceTypes";
 
 export default function TierIndicator({ tier, min, max }: TierIndicator) {
   return (
-    <div className="flex flex-col w-full bg-black justify-center items-center p-6 gap-4">
+    <div className="flex flex-col w-full bg-Background justify-center items-center p-6 gap-4">
       <div className="text-5xl font-bold text-CloudGray">{tier} 티어</div>
       <div className="flex items-center">
         <span className="text-xl text-CloudGray font-bold">
