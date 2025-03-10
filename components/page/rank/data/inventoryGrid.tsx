@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { Gallery, Item } from "react-photoswipe-gallery";
+import "photoswipe/dist/photoswipe.css";
 import type { InventoryGrid, TopListDetailData } from "./rankTypes";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import Masonry from "react-masonry-css";
@@ -59,17 +61,29 @@ export default function InventoryGrid({
               }
             >
               <TooltipTrigger className="mr-4">
-                <img
-                  src={topImage.item_image}
-                  onMouseEnter={() => onHoverItem(topImage, index)}
-                  onMouseLeave={() => setOpenTooltipIndex(null)}
-                  onFocus={() => onHoverItem(topImage, index)}
-                  onBlur={() => setOpenTooltipIndex(null)}
-                  alt={topImage.item_name_en}
-                  width={topImage.width * 64}
-                  height={topImage.height * 64}
-                  style={imgStyle}
-                />
+                <Gallery>
+                  <Item
+                    original={topImage.item_image}
+                    width={topImage.width * 128}
+                    height={topImage.height * 128}
+                  >
+                    {({ ref, open }) => (
+                      <img
+                        ref={ref}
+                        onClick={open}
+                        src={topImage.item_image}
+                        onMouseEnter={() => onHoverItem(topImage, index)}
+                        onMouseLeave={() => setOpenTooltipIndex(null)}
+                        onFocus={() => onHoverItem(topImage, index)}
+                        onBlur={() => setOpenTooltipIndex(null)}
+                        alt={topImage.item_name_en}
+                        width={topImage.width * 64}
+                        height={topImage.height * 64}
+                        style={imgStyle}
+                      />
+                    )}
+                  </Item>
+                </Gallery>
               </TooltipTrigger>
               <TooltipContent
                 side="top"

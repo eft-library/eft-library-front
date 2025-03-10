@@ -143,8 +143,8 @@ export default function RankClient() {
             onClick={() => onChangeCategory(category.value)}
             className={`px-4 py-2 rounded-md text-white font-semibold transition-colors duration-200 border-white border-solid border-2 flex bg-Background hover:bg-NeutralGray ${
               listCategory.includes(category.value)
-                ? "bg-CloudGray hover:bg-NeutralGray text-Background"
-                : "bg-Background hover:bg-NeutralGray"
+                ? "bg-Background hover:bg-NeutralGray"
+                : "bg-Background hover:bg-NeutralGray opacity-50"
             }`}
           >
             {category.kr_name}
