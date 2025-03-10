@@ -8,8 +8,8 @@ import Loading from "@/components/custom/loading/loading";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-// import TierIndicator from "./tierIndicater";
-// import InventoryGrid from "./inventoryGrid";
+import TierIndicator from "./tierIndicater";
+import InventoryGrid from "./inventoryGrid";
 
 // 여기서 rankList 조회
 // category 동작도 여기
@@ -97,12 +97,20 @@ export default function RankDetail() {
         </Button>
         <Button onClick={() => onChangeCategory("Mods")}>카테고리 변경</Button>
       </div>
-      {/* {topRankData.pve_top_list.S.list.map((s_item, index) => (
-        <div className="flex h-[600px] bg-[#1a1a1a]" key={index}>
-          <TierIndicator />
-          <InventoryGrid />
+
+      {topRankData.pve_top_list.map((rankItem) => (
+        <div
+          className="flex flex-col h-[200px] bg-Background w-full"
+          key={`item-rank-${rankItem.tier}`}
+        >
+          <TierIndicator
+            tier={rankItem.tier}
+            min={rankItem.min}
+            max={rankItem.max}
+          />
+          <InventoryGrid topList={rankItem.list} />
         </div>
-      ))} */}
+      ))}
     </div>
   );
 }

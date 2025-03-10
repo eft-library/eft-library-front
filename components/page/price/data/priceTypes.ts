@@ -61,23 +61,14 @@ export interface PriceTab {
 }
 
 export interface RankData {
-  pvp_top_list: TopList;
-  pve_top_list: TopList;
+  pvp_top_list: TopList[];
+  pve_top_list: TopList[];
 }
 
 interface TopList {
-  S: TopListDetail;
-  A: TopListDetail;
-  B: TopListDetail;
-  C: TopListDetail;
-  D: TopListDetail;
-  E: TopListDetail;
-  F: TopListDetail;
-}
-
-interface TopListDetail {
   max: number;
   min: number;
+  tier: string;
   list: TopListDetailData[];
 }
 
@@ -94,4 +85,14 @@ interface TopListDetailData {
   id: string;
   per_slot: number;
   flea_market_price: number;
+}
+
+export interface TierIndicator {
+  max: number;
+  min: number;
+  tier: string;
+}
+
+export interface InventoryGrid {
+  topList: TopListDetailData[];
 }
