@@ -31,9 +31,13 @@ export default function InventoryGrid({
         {topList.map((topImage, index) => {
           const isHighlighted =
             searchWord.length > 0 &&
-            (topImage.item_name_en.includes(searchWord) ||
+            (topImage.item_name_en
+              .toLowerCase()
+              .includes(searchWord.toLowerCase()) ||
               (topImage.item_name_kr &&
-                topImage.item_name_kr.includes(searchWord)));
+                topImage.item_name_kr
+                  .toLowerCase()
+                  .includes(searchWord.toLowerCase())));
 
           const imgStyle =
             searchWord.length < 1
