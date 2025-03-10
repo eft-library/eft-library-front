@@ -22,11 +22,7 @@ export default function InventoryGrid({ topList }: InventoryGrid) {
 
   return (
     <TooltipProvider>
-      <Masonry
-        breakpointCols={16}
-        className="masonry-grid flex flex-wrap"
-        columnClassName="masonry-grid_column"
-      >
+      <Masonry breakpointCols={16} className="flex flex-wrap">
         {topList.map((topImage, index) => (
           <Tooltip
             key={topImage.id}
@@ -35,7 +31,7 @@ export default function InventoryGrid({ topList }: InventoryGrid) {
               open ? setOpenTooltipIndex(index) : setOpenTooltipIndex(null)
             }
           >
-            <TooltipTrigger>
+            <TooltipTrigger className="mr-4">
               <img
                 src={topImage.item_image}
                 onMouseEnter={() => onHoverItem(topImage, index)}
@@ -45,10 +41,6 @@ export default function InventoryGrid({ topList }: InventoryGrid) {
                 alt={topImage.item_name_en}
                 width={topImage.width * 64}
                 height={topImage.height * 64}
-                style={{
-                  display: "block",
-                  objectFit: "contain",
-                }}
               />
             </TooltipTrigger>
             <TooltipContent side="top" align="center" className="bg-Background">

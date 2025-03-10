@@ -95,19 +95,35 @@ export default function RankClient() {
         <Button onClick={() => onChangeCategory("Mods")}>개발중</Button>
       </div>
 
-      {topRankData.pve_top_list.map((rankItem) => (
-        <div
-          className="flex flex-col h-full bg-Background w-full"
-          key={`item-rank-${rankItem.tier}`}
-        >
-          <TierIndicator
-            tier={rankItem.tier}
-            min={rankItem.min}
-            max={rankItem.max}
-          />
-          <InventoryGrid topList={rankItem.list} />
-        </div>
-      ))}
+      {priceType === "PVE" &&
+        topRankData.pve_top_list.map((rankItem) => (
+          <div
+            className="flex flex-col h-full bg-Background w-full"
+            key={`item-rank-${rankItem.tier}`}
+          >
+            <TierIndicator
+              tier={rankItem.tier}
+              min={rankItem.min}
+              max={rankItem.max}
+            />
+            <InventoryGrid topList={rankItem.list} />
+          </div>
+        ))}
+
+      {priceType === "PVP" &&
+        topRankData.pvp_top_list.map((rankItem) => (
+          <div
+            className="flex flex-col h-full bg-Background w-full"
+            key={`item-rank-${rankItem.tier}`}
+          >
+            <TierIndicator
+              tier={rankItem.tier}
+              min={rankItem.min}
+              max={rankItem.max}
+            />
+            <InventoryGrid topList={rankItem.list} />
+          </div>
+        ))}
     </div>
   );
 }
