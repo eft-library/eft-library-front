@@ -72,7 +72,7 @@ interface TopList {
   list: TopListDetailData[];
 }
 
-interface TopListDetailData {
+export interface TopListDetailData {
   item_image: string;
   item_name_en: string;
   item_name_kr: string | null;

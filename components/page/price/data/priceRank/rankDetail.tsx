@@ -92,7 +92,7 @@ export default function RankDetail() {
         >
           {priceType}
         </Button>
-        <Button onClick={() => onChangeCategory("Mods")}>카테고리 변경</Button>
+        <Button onClick={() => onChangeCategory("Mods")}>개발중</Button>
       </div>
 
       {topRankData.pve_top_list.map((rankItem) => (

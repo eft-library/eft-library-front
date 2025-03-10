@@ -8,6 +8,9 @@ export default function TierIndicator({ tier, min, max }: TierIndicator) {
       <div className="text-5xl font-bold text-CloudGray">{tier} 티어</div>
       <div className="flex items-center">
         <span className="text-xl text-CloudGray font-bold">
+          슬롯당 가격&nbsp;
+        </span>
+        <span className="text-xl text-CloudGray font-bold">
           {max.toLocaleString()}&nbsp;₽&nbsp;~&nbsp;
         </span>
         <span className="text-xl text-CloudGray font-bold">

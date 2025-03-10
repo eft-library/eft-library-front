@@ -6,7 +6,7 @@ import PriceTab from "./priceTab";
 import RankDetail from "./priceRank/rankDetail";
 
 export default function PriceClient() {
-  const [tabState, setTabState] = useState("priceList");
+  const [tabState, setTabState] = useState("priceRank");
 
   return (
     <>
