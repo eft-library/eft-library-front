@@ -10,8 +10,8 @@ export default function TierIndicator({
   viewType,
 }: TierIndicator) {
   return (
-    <div className="flex flex-col w-full bg-Background justify-center items-center p-6 gap-4">
-      <TextSpan size="5xl">{tier} 티어</TextSpan>
+    <div className="flex flex-col w-full bg-Background justify-center items-center p-6 gap-1">
+      <TextSpan size="4xl">{tier} 티어</TextSpan>
       <div className="flex items-center">
         <TextSpan
           size="xl"

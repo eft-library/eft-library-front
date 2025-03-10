@@ -45,4 +45,5 @@ export interface TierIndicator {
 export interface InventoryGrid {
   topList: TopListDetailData[];
   viewType: string;
+  searchWord: string;
 }

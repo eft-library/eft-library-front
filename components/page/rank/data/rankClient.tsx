@@ -10,9 +10,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import TierIndicator from "./tierIndicater";
 import InventoryGrid from "./inventoryGrid";
+import { X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function RankClient() {
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [priceType, setPriceType] = useState<string>("PVP");
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [realWord, setSearchRealWord] = useState<string>("");
   const [topRankData, setTopRankData] = useState<RankData>();
   const [listCategory, setListCategory] = useState<string[]>([
     "Keys",
@@ -29,6 +34,7 @@ export default function RankClient() {
 
   const getItemRank = async () => {
     try {
+      setLoading(true);
       const data = await requestPostData(API_ENDPOINTS.GET_TOP_PRICE, {
         categoryList: listCategory,
       });
@@ -41,7 +47,9 @@ export default function RankClient() {
         return null;
       }
       setTopRankData(data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
       return null;
     }
@@ -72,7 +80,8 @@ export default function RankClient() {
   if (!topRankData) return <Loading />;
 
   return (
-    <div className="w-full flex flex-col justify-center items-center gap-4">
+    <div className="w-full flex flex-col justify-center items-center gap-2">
+      {isLoading && <Loading />}
       <div className="w-full flex justify-start">
         <TextSpan textColor="SkyBloom">PVE</TextSpan>
         <TextSpan>&nbsp;/&nbsp;</TextSpan>
@@ -91,31 +100,51 @@ export default function RankClient() {
         >
           {priceType}
         </Button>
-        <div className="flex flex-wrap gap-2">
-          {[
-            "Keys",
-            "Weapon",
-            "Ammo",
-            "Provisions",
-            "Container",
-            "Meds",
-            "Wearables",
-            "LOOT",
-            "Mods",
-          ].map((category) => (
-            <button
-              key={category}
-              onClick={() => onChangeCategory(category)}
-              className={`px-4 py-2 rounded-md text-white font-semibold transition-colors duration-200 ${
-                listCategory.includes(category)
-                  ? "bg-blue-500 hover:bg-blue-600"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+
+        <Input
+          id="name"
+          className="text-base font-bold border-white placeholder:text-SilverGray"
+          value={searchWord}
+          placeholder="검색어"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setSearchRealWord(searchWord);
+            }
+          }}
+          onChange={(e) => setSearchWord(e.currentTarget.value)}
+        />
+        <Button
+          className="border-2 font-bold border-white px-4 py-2 bg-transparent text-white rounded-lg hover:bg-NeutralGray transition"
+          onClick={() => setSearchRealWord(searchWord)}
+        >
+          검색
+        </Button>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {[
+          { value: "Keys", kr_name: "열쇠" },
+          { value: "Meds", kr_name: "치료품" },
+          { value: "Weapon", kr_name: "무기" },
+          { value: "Ammo", kr_name: "탄약" },
+          { value: "Provisions", kr_name: "식량" },
+          { value: "Container", kr_name: "컨테이너" },
+          { value: "Wearables", kr_name: "장비" },
+          { value: "LOOT", kr_name: "전리품" },
+          { value: "Mods", kr_name: "부품" },
+        ].map((category) => (
+          <Button
+            key={category.value}
+            onClick={() => onChangeCategory(category.value)}
+            className={`px-4 py-2 rounded-md text-white font-semibold transition-colors duration-200 border-white border-solid border-2 flex bg-Background hover:bg-NeutralGray ${
+              listCategory.includes(category.value)
+                ? "bg-CloudGray hover:bg-NeutralGray text-Background"
+                : "bg-Background hover:bg-NeutralGray"
+            }`}
+          >
+            {category.kr_name}
+            {listCategory.includes(category.value) && <X strokeWidth={5} />}
+          </Button>
+        ))}
       </div>
 
       {priceType === "PVE" &&
@@ -130,7 +159,11 @@ export default function RankClient() {
               max={rankItem.max}
               viewType={priceType}
             />
-            <InventoryGrid topList={rankItem.list} viewType={priceType} />
+            <InventoryGrid
+              topList={rankItem.list}
+              viewType={priceType}
+              searchWord={realWord}
+            />
           </div>
         ))}
 
@@ -146,7 +179,11 @@ export default function RankClient() {
               max={rankItem.max}
               viewType={priceType}
             />
-            <InventoryGrid topList={rankItem.list} viewType={priceType} />
+            <InventoryGrid
+              topList={rankItem.list}
+              viewType={priceType}
+              searchWord={realWord}
+            />
           </div>
         ))}
     </div>
