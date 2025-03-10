@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
   GET_ALL_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/all",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
   GET_NAVI_MENU: baseUrl + "/api/menu/navi",
+  GET_ALL_SLIDE: baseUrl + "/api/menu/slide",
   GET_NPC: baseUrl + "/api/quest/npc",
   GET_NEWS: baseUrl + "/api/news/news",
   GET_NOTICE: baseUrl + "/api/notice/board",

@@ -46,60 +46,11 @@ export interface NavItemList {
   navItemList: NavItem[];
 }
 
-interface ThreeItemPath {
-  boxArgs: number[];
-  position: number[];
-  childValue: string;
-}
-
-interface JpgItemPath {
-  x: number;
-  y: number;
-  childValue: string;
-  motherValue: string;
-}
-
-interface MapJson {
-  geometry: string;
-  material: string;
-}
-
-interface SubItem {
-  name_kr: string;
-  id: string;
-  three_item_path: ThreeItemPath[];
-  jpg_image: string;
-  depth: number;
-  link: string;
+interface SliderData extends NavItem {
   main_image: string;
-  map_json: MapJson[];
-  three_image: string;
-  name_en: string;
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  parent_value: string;
-  mot_image: string;
-  update_time: string;
+  use_slide: true;
 }
 
-interface MapData {
-  name_en: string;
-  three_image: string;
-  three_item_path: ThreeItemPath[];
-  jpg_item_path: JpgItemPath[];
-  order: number;
-  main_image: string;
-  map_json: MapJson[];
-  id: string;
-  name_kr: string;
-  jpg_image: string;
-  depth: number;
-  link: string;
-  mot_image: string;
-  update_time: string;
-  sub: SubItem[];
-}
-
-export interface MapSlider {
-  mapList: MapData[];
+export interface MainSlider {
+  sliderList: SliderData[];
 }
