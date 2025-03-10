@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import type { InventoryGrid, TopListDetailData } from "../priceTypes";
+import type { InventoryGrid, TopListDetailData } from "./rankTypes";
 import Masonry from "react-masonry-css";
 import {
   Tooltip,

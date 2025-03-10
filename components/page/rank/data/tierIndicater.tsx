@@ -1,6 +1,6 @@
 "use client";
 
-import type { TierIndicator } from "../priceTypes";
+import type { TierIndicator } from "./rankTypes";
 
 export default function TierIndicator({ tier, min, max }: TierIndicator) {
   return (

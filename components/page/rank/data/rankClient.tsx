@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { requestPostData } from "@/lib/config/api";
-import type { RankData } from "../priceTypes";
+import type { RankData } from "./rankTypes";
 import Loading from "@/components/custom/loading/loading";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import TierIndicator from "./tierIndicater";
 import InventoryGrid from "./inventoryGrid";
 
-export default function RankDetail() {
+export default function RankClient() {
   const [priceType, setPriceType] = useState<string>("PVP");
   const [topRankData, setTopRankData] = useState<RankData>();
   const [listCategory, setListCategory] = useState<string[]>([

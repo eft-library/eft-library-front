@@ -1,5 +1,5 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import type { PriceDetail } from "../priceTypes";
+import type { PriceDetail } from "./priceTypes";
 import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
 import CenterContents from "@/components/custom/gridContents/centerContents";

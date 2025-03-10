@@ -1,7 +1,7 @@
 "use client";
 
 import CenterContents from "@/components/custom/gridContents/centerContents";
-import type { PriceTable, TradeOption } from "../priceTypes";
+import type { PriceTable, TradeOption } from "./priceTypes";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { formatImage } from "@/lib/func/formatImage";
 import { cn } from "@/lib/utils";
