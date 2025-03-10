@@ -12,24 +12,18 @@ import TierIndicator from "./tierIndicater";
 import InventoryGrid from "./inventoryGrid";
 import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import DefaultAlert from "@/components/custom/alert/defaultAlert";
 
 export default function RankClient() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [priceType, setPriceType] = useState<string>("PVP");
   const [searchWord, setSearchWord] = useState<string>("");
   const [realWord, setSearchRealWord] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [topRankData, setTopRankData] = useState<RankData>();
   const [listCategory, setListCategory] = useState<string[]>([
     "Keys",
     "Weapon",
-    "Ammo",
-    "Provisions",
-    "Container",
-    "Keys",
-    "Meds",
-    "Wearables",
-    "LOOT",
-    "Mods",
   ]);
 
   const getItemRank = async () => {
@@ -64,13 +58,17 @@ export default function RankClient() {
   };
 
   const onChangeCategory = (clickCategory: string) => {
-    if (listCategory.includes(clickCategory)) {
-      setListCategory((prevCategory) =>
-        prevCategory.filter((category) => category !== clickCategory)
-      );
-    } else {
-      setListCategory((prevCategory) => [...prevCategory, clickCategory]);
-    }
+    setListCategory((prevCategory) => {
+      if (prevCategory.includes(clickCategory)) {
+        if (prevCategory.length === 1) {
+          setAlertStatus(true);
+          return prevCategory;
+        }
+        return prevCategory.filter((category) => category !== clickCategory);
+      } else {
+        return [...prevCategory, clickCategory];
+      }
+    });
   };
 
   useEffect(() => {
@@ -186,6 +184,13 @@ export default function RankClient() {
             />
           </div>
         ))}
+
+      <DefaultAlert
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="알림"
+        description={"카테고리는 최소 1개가 존재해야 합니다."}
+      />
     </div>
   );
 }
