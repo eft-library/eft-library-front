@@ -81,7 +81,7 @@ export default function InventoryGrid({
                   size="base"
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
-                  {hoverItem?.flea_market_price.toLocaleString()}nbsp;₽
+                  {hoverItem?.flea_market_price.toLocaleString()}&nbsp;₽
                 </TextSpan>
                 <br />
                 <TextSpan size="base">슬롯당 가격&nbsp;:&nbsp;</TextSpan>
@@ -89,7 +89,7 @@ export default function InventoryGrid({
                   size="base"
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
                 >
-                  {hoverItem?.per_slot.toLocaleString()}nbsp;₽
+                  {hoverItem?.per_slot.toLocaleString()}&nbsp;₽
                 </TextSpan>
                 <br />
                 <TextSpan size="base">슬롯 크기&nbsp;:&nbsp;</TextSpan>
