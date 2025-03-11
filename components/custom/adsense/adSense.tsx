@@ -7,11 +7,29 @@ type AdsenseTypes = {
 
 export default function AdSense({ pId }: AdsenseTypes) {
   return (
-    <Script
-      async
-      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${pId}`}
-      crossOrigin="anonymous"
-      strategy={"afterInteractive"}
-    />
+    <>
+      {/* Google Consent Mode 설정 */}
+      <Script
+        id="google-consent"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted'
+          });
+        `,
+        }}
+      />
+
+      {/* Google Ads 스크립트 */}
+      <Script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${pId}`}
+        strategy="afterInteractive"
+      />
+    </>
   );
 }
