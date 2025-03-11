@@ -23,6 +23,11 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
             fill
             sizes={(item.width * 64).toString()}
             style={{ objectFit: "contain" }}
+            placeholder="blur"
+            blurDataURL={
+              "data:image/jpeg;base64," +
+              "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            }
           />
         </div>
       </CenterContents>
@@ -53,6 +58,11 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                     sizes={"70px"}
                     style={{ objectFit: "contain" }}
                     priority
+                    placeholder="blur"
+                    blurDataURL={
+                      "data:image/jpeg;base64," +
+                      "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                    }
                   />
                 </div>
                 <TextSpan
@@ -82,6 +92,11 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                     sizes={"70px"}
                     style={{ objectFit: "contain" }}
                     priority
+                    placeholder="blur"
+                    blurDataURL={
+                      "data:image/jpeg;base64," +
+                      "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                    }
                   />
                 </div>
                 <TextSpan

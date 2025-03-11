@@ -27,6 +27,11 @@ export default function HideoutSelectorClient({
             height={34}
             alt={hideout.desc_en}
             style={{ width: "auto", height: "auto" }}
+            placeholder="blur"
+            blurDataURL={
+              "data:image/jpeg;base64," +
+              "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            }
           />
         </div>
       ))}

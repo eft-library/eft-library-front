@@ -23,6 +23,11 @@ export default function NavItemClient({ navItemList }: NavItemList) {
                 fill
                 sizes="120px"
                 className="rounded-lg object-cover"
+                placeholder="blur"
+                blurDataURL={
+                  "data:image/jpeg;base64," +
+                  "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                }
               />
             </div>
             <span className="text-white font-bold text-center mt-0.5">

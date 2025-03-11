@@ -95,6 +95,11 @@ export default function FooterClient({ footerData }: FooterData) {
                 width={142}
                 height={50}
                 style={{ width: "auto", height: "auto" }}
+                placeholder="blur"
+                blurDataURL={
+                  "data:image/jpeg;base64," +
+                  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                }
               />
             </Link>
           </div>

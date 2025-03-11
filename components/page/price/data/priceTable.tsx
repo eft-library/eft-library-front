@@ -71,6 +71,11 @@ export default function PriceTable({
             sizes={"160px"}
             style={{ objectFit: "contain" }}
             priority
+            placeholder="blur"
+            blurDataURL={
+              "data:image/jpeg;base64," +
+              "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            }
           />
         </div>
       </CenterContents>
@@ -97,6 +102,11 @@ export default function PriceTable({
               style={{ objectFit: "contain" }}
               alt={expensiveTrader.trader.npc_name_en || ""}
               priority
+              placeholder="blur"
+              blurDataURL={
+                "data:image/jpeg;base64," +
+                "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+              }
             />
           </div>
           <TextSpan textColor={isPVP ? "PeachCream" : "SkyBloom"}>

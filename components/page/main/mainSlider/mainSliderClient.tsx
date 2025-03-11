@@ -31,6 +31,11 @@ export default function MainSliderClient({ sliderList }: MainSlider) {
                   height={400}
                   style={{ width: "auto", height: "auto" }}
                   priority
+                  placeholder="blur"
+                  blurDataURL={
+                    "data:image/jpeg;base64," +
+                    "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                  }
                 />
               </Link>
             ))}

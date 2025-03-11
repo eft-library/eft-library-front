@@ -240,6 +240,11 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                           width={40}
                           height={40}
                           className={"rounded-lg"}
+                          placeholder="blur"
+                          blurDataURL={
+                            "data:image/jpeg;base64," +
+                            "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                          }
                         />
                         <span className="flex-1 text-left font-bold">
                           {npc.npc_name_kr}
@@ -324,6 +329,11 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                       width={40}
                       height={40}
                       className={"rounded-lg"}
+                      placeholder="blur"
+                      blurDataURL={
+                        "data:image/jpeg;base64," +
+                        "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                      }
                     />
                     <span className="flex-1 text-left font-bold">
                       {npc.npc_name_kr}
