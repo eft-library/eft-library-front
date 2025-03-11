@@ -12,14 +12,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState, useEffect } from "react";
 
 export default function WipeClient({ wipeList }: WipeClient) {
-  const calculateProgress = (dateNumber: number) => {
-    const durations = wipeList.map((wipe) =>
-      getDateRange(wipe.season_start, wipe.season_end)
+  const [durations, setDurations] = useState<number[]>([]);
+
+  useEffect(() => {
+    setDurations(
+      wipeList.map((wipe) => getDateRange(wipe.season_start, wipe.season_end))
     );
+  }, [wipeList]);
+
+  const calculateProgress = (dateNumber: number) => {
     const maxDate = Math.max(...durations);
-    return Number(((dateNumber / maxDate) * 100).toFixed(2));
+    return maxDate > 0 ? Number(((dateNumber / maxDate) * 100).toFixed(2)) : 0;
   };
 
   const getDateRange = (start: string, end: string) => {
@@ -27,6 +33,7 @@ export default function WipeClient({ wipeList }: WipeClient) {
     const endDate = dayjs(end).isValid() ? dayjs(end) : dayjs();
     return endDate.diff(startDate, "day");
   };
+
   return (
     <div className="w-full">
       <Table className="border-2 border-white border-solid">
@@ -47,7 +54,7 @@ export default function WipeClient({ wipeList }: WipeClient) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {wipeList.map((wipe) => (
+          {wipeList.map((wipe, index) => (
             <TableRow key={wipe.id}>
               <TableCell className="text-center">
                 <TextSpan size="lg">{wipe.patch_version}</TextSpan>
@@ -60,16 +67,12 @@ export default function WipeClient({ wipeList }: WipeClient) {
               </TableCell>
               <TableCell className="text-center">
                 <div className="flex w-full gap-4 items-center">
-                  <TextSpan size="lg">
-                    <Progress
-                      value={calculateProgress(
-                        getDateRange(wipe.season_start, wipe.season_end)
-                      )}
-                      className="w-[200px] bg-CedarBrown"
-                    />
-                  </TextSpan>
+                  <Progress
+                    value={calculateProgress(durations[index] || 0)}
+                    className="w-[200px] bg-CedarBrown"
+                  />
                   <TextSpan size="lg" textColor="GoldenAmber">
-                    {getDateRange(wipe.season_start, wipe.season_end)} 일
+                    {durations[index] || 0} 일
                   </TextSpan>
                 </div>
               </TableCell>
