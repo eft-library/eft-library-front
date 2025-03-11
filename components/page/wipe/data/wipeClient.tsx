@@ -65,10 +65,10 @@ export default function WipeClient({ wipeList }: WipeClient) {
                       value={calculateProgress(
                         getDateRange(wipe.season_start, wipe.season_end)
                       )}
-                      className="w-[200px] bg-MutedGray"
+                      className="w-[200px] bg-CedarBrown"
                     />
                   </TextSpan>
-                  <TextSpan size="lg">
+                  <TextSpan size="lg" textColor="GoldenAmber">
                     {getDateRange(wipe.season_start, wipe.season_end)} 일
                   </TextSpan>
                 </div>
