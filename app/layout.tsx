@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
-import AdSense from "@/components/custom/adsense/adSense";
+// import AdSense from "@/components/custom/adsense/adSense";
 import QueryProvider from "@/store/queryProvider";
 
 export const metadata: Metadata = {
@@ -52,7 +52,27 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} />
+        <>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted'
+          });
+        `,
+            }}
+          />
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+              process.env.NEXT_PUBLIC_ADSENSE || ""
+            }`}
+          />
+        </>
+        {/* <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} /> */}
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""}
         />
