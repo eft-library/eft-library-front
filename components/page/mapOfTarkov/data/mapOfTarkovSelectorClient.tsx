@@ -59,8 +59,8 @@ export default function MapOfTarkovSelectorClient({
       <div className="flex justify-between w-full flex-wrap rounded-t-lg border-solid border-2 border-white p-1">
         {sortList().map((mapOfTarkov) => (
           <div key={mapOfTarkov.id}>
-            <Link href={mapOfTarkov.link}>
-              <div
+            <Link href={mapOfTarkov.link} legacyBehavior>
+              <a
                 className={cn(
                   "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
                   { "bg-CloudGray": param.id === mapOfTarkov.id },
@@ -70,7 +70,7 @@ export default function MapOfTarkovSelectorClient({
                 <span className="text-center font-bold">
                   {mapOfTarkov.name_kr}
                 </span>
-              </div>
+              </a>
             </Link>
           </div>
         ))}

@@ -52,26 +52,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('consent', 'default', {
-            'ad_storage': 'granted',
-            'analytics_storage': 'granted'
-          });
-        `,
-            }}
-          />
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
-              process.env.NEXT_PUBLIC_ADSENSE || ""
-            }`}
-          />
-        </>
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+            process.env.NEXT_PUBLIC_ADSENSE || ""
+          }`}
+        />
         {/* <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} /> */}
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""}
