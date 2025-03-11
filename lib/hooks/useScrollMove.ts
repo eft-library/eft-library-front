@@ -43,9 +43,7 @@ export const useScrollMove = (
         }
       };
 
-      requestAnimationFrame(() => {
-        setTimeout(scrollToElement, 1000);
-      });
+      requestAnimationFrame(scrollToElement);
     }
   }, [
     id,
