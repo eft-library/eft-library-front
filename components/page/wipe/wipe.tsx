@@ -5,9 +5,7 @@ import GetWipe from "./data/getWipe";
 export default function Wipe() {
   return (
     <ContentsWrapper>
-      <h1 className="text-white text-4xl font-bold text-center">
-        타르코프 초기화
-      </h1>
+      <h1 className="text-white text-4xl font-bold text-center">시즌 초기화</h1>
       <div className="w-[1200px]">
         <AdBanner
           dataAdFormat={"auto"}
