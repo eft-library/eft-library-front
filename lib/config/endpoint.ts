@@ -45,7 +45,7 @@ export const API_ENDPOINTS = {
   GET_NOTICE_BY_ID: baseUrl + "/api/notice/detail",
   GET_PATCH_NOTES: baseUrl + "/api/patch_notes/board",
   GET_PATCH_NOTES_BY_ID: baseUrl + "/api/patch_notes/detail",
-  GET_POPUP: baseUrl + "/api/news/popup",
+  GET_WIPE: baseUrl + "/api/news/wipe",
   GET_QUEST: baseUrl + "/api/quest/detail",
   GET_SEARCH: baseUrl + "/api/search/info",
   GET_SUB_FILTER: baseUrl + "/api/item_filter/sub_info",
