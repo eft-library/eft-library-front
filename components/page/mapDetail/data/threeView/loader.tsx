@@ -17,6 +17,11 @@ export default function Loader() {
             height={0}
             style={{ height: "auto", width: "auto" }}
             unoptimized
+            placeholder="blur"
+            blurDataURL={
+              "data:image/jpeg;base64," +
+              "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            }
           />
         </div>
         <p className="font-bold mt-2">{progress.toFixed(2)}% Loading...</p>
