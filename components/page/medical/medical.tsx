@@ -3,18 +3,18 @@ import GetMedical from "./data/getMedical";
 import GetMedicalSelector from "@/components/page/medical/data/medicalSelector";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetColumn from "@/components/custom/getColumn/getColumn";
-import AdBanner from "../../custom/adsense/adBanner";
+// import AdBanner from "../../custom/adsense/adBanner";
 
 export default function Medical() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">의료품</h1>
       <div className="w-[1200px]">
-        <AdBanner
+        {/* <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
-        />
+        /> */}
       </div>
       <GetMedicalSelector />
       <GetColumn columnDesign={10} columnKey={COLUMN_KEY.medical} isMedical />

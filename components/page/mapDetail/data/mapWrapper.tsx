@@ -5,7 +5,7 @@ import SubMapSelector from "@/components/page/mapDetail/data/subMapSelector";
 import ThreeViewDetail from "@/components/page/mapDetail/data/threeView/threeViewDetail";
 import { useItemFilter } from "@/lib/hooks/useItemFilter";
 import type { MapWrapper } from "@/components/page/mapDetail/data/mapType";
-import AdBanner from "../../../custom/adsense/adBanner";
+// import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
 
 export default function MapWrapper({
@@ -38,11 +38,11 @@ export default function MapWrapper({
         </div>
         <JpgViewDetail map={mapData} viewItemList={viewItemList} />
         <div className="w-[1200px]">
-          <AdBanner
+          {/* <AdBanner
             dataAdFormat={"auto"}
             dataFullWidthResponsive={true}
             dataAdSlot="2690838054"
-          />
+          /> */}
         </div>
         <div className="w-full flex justify-between">
           <TextSpan isCenter={false} size="xl">
