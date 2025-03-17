@@ -9,9 +9,12 @@ export default function QuestNode(props: any) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] p-2 bg-NodeBackgground shadow-NeutralGray shadow-md">
+    <div
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] shadow-NeutralGray shadow-md"
+      style={{ backgroundColor: props.data.node_color }}
+    >
       <div
-        className="w-full h-full  border-solid border-2 rounded-lg"
+        className="w-full h-full  border-solid border-4 rounded-lg"
         style={{
           borderColor: props.data.isCheck
             ? ALL_COLOR.QUEST_RELATED_ONE
@@ -29,7 +32,7 @@ export default function QuestNode(props: any) {
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">
             <span
-              className="text-center font-bold cursor-pointer text-white hover:text-Beige text-base"
+              className="text-center font-black cursor-pointer text-Background hover:text-ForestGreen text-base"
               onClick={() => onClickTitle(props.data.urlMapping)}
             >
               {props.data.title_kr

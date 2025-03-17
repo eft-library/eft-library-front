@@ -68,6 +68,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           isCheck: questList.includes(quest.id),
           prev_list: quest.prev_list || [],
           next_list: quest.next_list || [],
+          npc_value: quest.npc_value,
+          node_color: quest.node_color,
         },
         position: {
           x:

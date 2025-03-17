@@ -4,7 +4,10 @@ import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NpcNode(props: any) {
   return (
-    <div className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] p-2 bg-NodeBackgground shadow-NeutralGray shadow-md">
+    <div
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] p-2 shadow-NeutralGray shadow-md"
+      style={{ backgroundColor: props.data.node_color }}
+    >
       <div
         className="w-full h-full  border-solid border-2 rounded-lg"
         style={{
@@ -16,7 +19,7 @@ export default function NpcNode(props: any) {
         <div className="w-full flex justify-end pr-1 pt-1"></div>
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">
-            <span className="text-center font-bold cursor-pointer text-white text-base">
+            <span className="text-center font-black cursor-pointer text-Background text-xl">
               {props.data.title_kr
                 .substring(0, props.data.title_kr.indexOf("("))
                 .trim()}

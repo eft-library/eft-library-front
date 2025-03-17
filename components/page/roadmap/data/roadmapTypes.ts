@@ -34,6 +34,7 @@ export interface Quest {
   url_mapping: string;
   npc_value: string;
   title_kr: string;
+  node_color: string;
   single_x_coordinate: number;
   single_y_coordinate: number;
   total_x_coordinate: number;
