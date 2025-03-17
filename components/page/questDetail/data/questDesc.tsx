@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import Link from "next/link";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
-// import AdBanner from "../../../custom/adsense/adBanner";
+import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
@@ -69,11 +69,11 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         </div>
       )}
       <div className="w-[1200px]">
-        {/* <AdBanner
+        <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
-        /> */}
+        />
       </div>
 
       {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (

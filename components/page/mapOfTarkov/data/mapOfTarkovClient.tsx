@@ -7,7 +7,7 @@ import MapSlider from "./mapSlider";
 import BossRender from "./bossRender";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
-// import AdBanner from "../../../custom/adsense/adBanner";
+import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { checkIdCategory } from "@/lib/func/jsxfunction";
 import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
@@ -68,11 +68,11 @@ export default function MapOfTarkovClient({
               />
 
               <div className="w-[1200px]">
-                {/* <AdBanner
+                <AdBanner
                   dataAdFormat={"auto"}
                   dataFullWidthResponsive={true}
                   dataAdSlot="2690838054"
-                /> */}
+                />
               </div>
               <div className="w-full flex flex-col gap-2">
                 <TextSpan isCenter={false} size="3xl">

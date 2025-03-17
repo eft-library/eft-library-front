@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { formatISODate } from "@/lib/func/formatTime";
 import Link from "next/link";
-// import AdBanner from "../adsense/adBanner";
+import AdBanner from "../adsense/adBanner";
 import TextSpan from "../gridContents/textSpan";
 import type { InformationDetailClient } from "./informationDetailTypes";
 
@@ -34,11 +34,11 @@ export default function InformationDetailClient({
         </div>
       </div>
       <div className="w-[1200px]">
-        {/* <AdBanner
+        <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
-        /> */}
+        />
       </div>
 
       <div className={"flex justify-end w-full"}>

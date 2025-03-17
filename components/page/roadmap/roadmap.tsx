@@ -1,6 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetRoadmap from "./data/getRoadmap";
-// import AdBanner from "@/components/custom/adsense/adBanner";
+import AdBanner from "@/components/custom/adsense/adBanner";
 
 export default function Roadmap() {
   return (
@@ -9,11 +9,11 @@ export default function Roadmap() {
         퀘스트 로드맵
       </h1>
       <div className="w-[1200px]">
-        {/* <AdBanner
+        <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
-        /> */}
+        />
       </div>
       <GetRoadmap />
     </ContentsWrapper>

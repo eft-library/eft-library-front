@@ -1,6 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetPlanner from "./data/getPlanner";
-// import AdBanner from "../../custom/adsense/adBanner";
+import AdBanner from "../../custom/adsense/adBanner";
 
 export default function Planner() {
   return (
@@ -9,11 +9,11 @@ export default function Planner() {
         퀘스트 플래너
       </h1>
       <div className="w-[1200px]">
-        {/* <AdBanner
+        <AdBanner
           dataAdFormat={"auto"}
           dataFullWidthResponsive={true}
           dataAdSlot="2690838054"
-        /> */}
+        />
       </div>
       <GetPlanner />
     </ContentsWrapper>

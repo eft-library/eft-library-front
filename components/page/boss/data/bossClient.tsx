@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import BossHealth from "./bossHealth";
 import FollowerLoot from "./followerLoot";
-// import AdBanner from "../../../custom/adsense/adBanner";
+import AdBanner from "../../../custom/adsense/adBanner";
 import ImageView from "../../../custom/imageView/imageView";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
@@ -74,11 +74,11 @@ export default function BossClient({ bossList }: BossClient) {
               </div>
 
               <div className="w-[1200px]">
-                {/* <AdBanner
+                <AdBanner
                   dataAdFormat={"auto"}
                   dataFullWidthResponsive={true}
                   dataAdSlot="2690838054"
-                /> */}
+                />
               </div>
               <div className="w-full flex flex-col gap-2">
                 <span className="font-bold text-3xl">위치</span>
