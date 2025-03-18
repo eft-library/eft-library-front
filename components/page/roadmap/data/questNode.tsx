@@ -32,7 +32,7 @@ export default function QuestNode(props: any) {
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">
             <span
-              className="text-center font-black cursor-pointer text-Background hover:text-ForestGreen text-base"
+              className="text-center font-black cursor-pointer text-white hover:text-Beige text-base"
               onClick={() => onClickTitle(props.data.urlMapping)}
             >
               {props.data.title_kr

@@ -102,7 +102,7 @@ export default {
         Goldenrod: "#d2b82e",
         MutedGray: "#B8B8B8",
         Background: "#111111",
-        NodeBackgground: "#1e1e1e",
+        NodeBackground: "#1e1e1e",
         LimeGreen: "#7fd14a",
         ScreaminGreen: "#5EFF5E",
         SilverGray: "#D3D3D3",

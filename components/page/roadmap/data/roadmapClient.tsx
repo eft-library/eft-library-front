@@ -25,6 +25,7 @@ import QuestNode from "./questNode";
 import NpcNode from "./npcNode";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
@@ -325,6 +326,38 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <MiniMap />
           <Background />
         </ReactFlow>
+
+        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[200px] max-w-[200px] border-white border-solid border-2 rounded-lg p-2">
+          <div className="p-2 pb-4">
+            <TextSpan size="lg">퀘스트 현황판</TextSpan>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
+            <TextSpan size="sm">총 퀘스트 개수</TextSpan>
+            <TextSpan size="sm">:</TextSpan>
+            <TextSpan size="sm">466</TextSpan>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
+            <TextSpan size="sm">Kappa 완료 퀘스트</TextSpan>
+            <TextSpan size="sm">:</TextSpan>
+            <TextSpan size="sm">1</TextSpan>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
+            <TextSpan size="sm">Kappa 퀘스트</TextSpan>
+            <TextSpan size="sm">:</TextSpan>
+            <TextSpan size="sm">1</TextSpan>
+          </div>
+
+          <div className="border-t border-[#2a2a2a]">
+            <div className="grid grid-cols-3 gap-2 p-2">
+              <TextSpan size="sm">완료 퀘스트</TextSpan>
+              <TextSpan size="sm">:</TextSpan>
+              <TextSpan size="sm">1</TextSpan>
+            </div>
+          </div>
+        </div>
 
         <div className="absolute top-2 right-2 flex gap-2">
           <div className="flex gap-2 items-center justify-center flex-end">
