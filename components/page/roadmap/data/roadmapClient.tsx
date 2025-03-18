@@ -369,7 +369,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             </span>
           </div>
 
-          <div className="grid grid-col-3 p-1">
+          <div className="grid grid-cols-3 p-1">
             <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
             <span className="text-sm font-bold text-LimeGreen">
               {getCompleteCount()}
