@@ -342,7 +342,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <Background />
         </ReactFlow>
 
-        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[240px] max-w-[240px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
+        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[260px] max-w-[260px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
           <div className="p-2">
             <TextSpan size="lg">퀘스트 현황판</TextSpan>
           </div>
