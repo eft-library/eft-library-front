@@ -47,7 +47,7 @@ export default function QuestNode(props: any) {
         </div>
         <div className="w-full flex justify-end p-1">
           {props.data.iskappa && (
-            <span className="text-Red font-bold text-xs">Kappa</span>
+            <span className="text-Red font-bold text-[13px]">Kappa</span>
           )}
         </div>
       </div>

@@ -5,11 +5,11 @@ import { ALL_COLOR } from "@/lib/consts/colorConsts";
 export default function NpcNode(props: any) {
   return (
     <div
-      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] p-2 shadow-NeutralGray shadow-md"
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] shadow-NeutralGray shadow-md"
       style={{ backgroundColor: props.data.node_color }}
     >
       <div
-        className="w-full h-full  border-solid border-2 rounded-lg"
+        className="w-full h-full  border-solid border-4 rounded-lg"
         style={{
           borderColor: props.data.isCheck
             ? ALL_COLOR.QUEST_RELATED_ONE

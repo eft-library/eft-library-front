@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import {
@@ -284,6 +285,20 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     }
   };
 
+  const getAllKappaCount = () => {
+    return nodes.filter((item) => item.data.iskappa === true).length;
+  };
+
+  const getKappaCompleteCount = () => {
+    return nodes.filter(
+      (item) => questList.includes(item.id) && item.data.iskappa === true
+    ).length;
+  };
+
+  const getCompleteCount = () => {
+    return nodes.filter((node) => questList.includes(node.id)).length;
+  };
+
   return (
     <>
       <RoadmapTab
@@ -327,35 +342,41 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <Background />
         </ReactFlow>
 
-        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[200px] max-w-[200px] border-white border-solid border-2 rounded-lg p-2">
-          <div className="p-2 pb-4">
+        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[220px] max-w-[220px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
+          <div className="p-2">
             <TextSpan size="lg">퀘스트 현황판</TextSpan>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
-            <TextSpan size="sm">총 퀘스트 개수</TextSpan>
-            <TextSpan size="sm">:</TextSpan>
-            <TextSpan size="sm">466</TextSpan>
+          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">전체 퀘스트</span>
+            <span className="text-sm font-bold">:</span>
+            <span className="text-sm font-bold">{nodes.length}</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
-            <TextSpan size="sm">Kappa 완료 퀘스트</TextSpan>
-            <TextSpan size="sm">:</TextSpan>
-            <TextSpan size="sm">1</TextSpan>
+          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">카파 퀘스트</span>
+            <span className="text-sm font-bold">:</span>
+            <span className="text-sm font-bold text-SoftPink">
+              {getAllKappaCount()}
+            </span>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 p-2 border-b border-[#2a2a2a]">
-            <TextSpan size="sm">Kappa 퀘스트</TextSpan>
-            <TextSpan size="sm">:</TextSpan>
-            <TextSpan size="sm">1</TextSpan>
+          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">
+              카파 완료 퀘스트
+            </span>
+            <span className="text-sm font-bold">:</span>
+            <span className="text-sm font-bold text-SunsetYellow">
+              {getKappaCompleteCount()}
+            </span>
           </div>
 
-          <div className="border-t border-[#2a2a2a]">
-            <div className="grid grid-cols-3 gap-2 p-2">
-              <TextSpan size="sm">완료 퀘스트</TextSpan>
-              <TextSpan size="sm">:</TextSpan>
-              <TextSpan size="sm">1</TextSpan>
-            </div>
+          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">완료 퀘스트</span>
+            <span className="text-sm font-bold">:</span>
+            <span className="text-sm font-bold text-LimeGreen">
+              {getCompleteCount()}
+            </span>
           </div>
         </div>
 
