@@ -123,7 +123,8 @@ export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
                     />
                     {isViewWhere && (
                       <div
-                        className={`absolute top-[${imageCoord.x}px] left-[${imageCoord.y}px] w-6 h-6 bg-CloudGray rounded-3xl`}
+                        className={`absolute  w-6 h-6 bg-Red rounded-3xl`}
+                        style={{ top: imageCoord.x, left: imageCoord.y }}
                       />
                     )}
                   </div>
