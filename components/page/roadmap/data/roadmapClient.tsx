@@ -349,13 +349,15 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
-            <span className="text-sm font-bold">{nodes.length}</span>
+            <span className="text-sm font-bold text-right block">
+              {nodes.length}
+            </span>
           </div>
 
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">카파 퀘스트:</span>
 
-            <span className="text-sm font-bold text-SoftPink">
+            <span className="text-sm font-bold text-SoftPink text-right block">
               {getAllKappaCount()}
             </span>
           </div>
@@ -364,14 +366,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             <span className="text-sm font-bold col-span-2">
               카파 완료 퀘스트:
             </span>
-            <span className="text-sm font-bold text-SunsetYellow">
+            <span className="text-sm font-bold text-SunsetYellow text-right block">
               {getKappaCompleteCount()}
             </span>
           </div>
 
           <div className="grid grid-cols-3 p-1">
             <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
-            <span className="text-sm font-bold text-LimeGreen">
+            <span className="text-sm font-bold text-LimeGreen text-right block">
               {getCompleteCount()}
             </span>
           </div>
