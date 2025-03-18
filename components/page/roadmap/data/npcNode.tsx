@@ -1,18 +1,14 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import Image from "next/image";
 import { formatImage } from "@/lib/func/formatImage";
 
 export default function NpcNode(props: any) {
   return (
     <div
-      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[200px] shadow-NeutralGray shadow-md border-solid border-4 rounded-lg"
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[200px] shadow-NeutralGray shadow-md rounded-lg"
       style={{
         backgroundColor: props.data.node_color,
-        borderColor: props.data.isCheck
-          ? ALL_COLOR.QUEST_RELATED_ONE
-          : ALL_COLOR.RED,
       }}
     >
       <div className="w-full h-full">

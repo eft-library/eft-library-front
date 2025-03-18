@@ -184,8 +184,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (tabState !== "all" && npc.id !== tabState) {
         return [];
       }
-      return npc.all_quest.map((quest) => quest.id);
+
+      return npc.all_quest
+        .filter(
+          (quest) => !roadmapInfo.node_info.some((node) => node.id === quest.id)
+        ) // 조건 추가
+        .map((quest) => quest.id);
     });
+
     setQuestList(allQuestIds);
   }, [roadmapInfo.node_info, tabState]);
 
@@ -299,6 +305,11 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     return nodes.filter((node) => questList.includes(node.id)).length;
   };
 
+  const getAllCount = () => {
+    const roadmapIds = new Set(roadmapInfo.node_info.map((npc) => npc.id)); // roadmapInfo.node_info의 id를 Set으로 저장
+    return nodes.filter((node) => !roadmapIds.has(node.id)).length;
+  };
+
   return (
     <>
       <RoadmapTab
@@ -351,7 +362,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
             <span className="text-sm font-bold text-right block">
-              {nodes.length}
+              {getAllCount()}
             </span>
           </div>
 
