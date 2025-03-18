@@ -342,7 +342,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <Background />
         </ReactFlow>
 
-        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[260px] max-w-[260px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
+        <div className="absolute top-2 left-2 flex-col gap-2 min-w-[200px] max-w-[200px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
           <div className="p-2">
             <TextSpan size="lg">퀘스트 현황판</TextSpan>
           </div>
@@ -369,7 +369,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             </span>
           </div>
 
-          <div className="grid grid-col3-4 p-1">
+          <div className="grid grid-col-3 p-1">
             <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
             <span className="text-sm font-bold text-LimeGreen">
               {getCompleteCount()}
