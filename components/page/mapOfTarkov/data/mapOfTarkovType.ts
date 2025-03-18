@@ -163,3 +163,5 @@ export interface MapSlider {
   mapInfo: Map;
   imageSelect: string;
 }
+
+export type CoordPx = [number, number, number, number];
