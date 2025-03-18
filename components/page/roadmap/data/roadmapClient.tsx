@@ -347,33 +347,30 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             <TextSpan size="lg">퀘스트 현황판</TextSpan>
           </div>
 
-          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">전체 퀘스트</span>
-            <span className="text-sm font-bold">:</span>
+          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
             <span className="text-sm font-bold">{nodes.length}</span>
           </div>
 
-          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">카파 퀘스트</span>
-            <span className="text-sm font-bold">:</span>
+          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold col-span-2">카파 퀘스트:</span>
+
             <span className="text-sm font-bold text-SoftPink">
               {getAllKappaCount()}
             </span>
           </div>
 
-          <div className="grid grid-cols-4 p-1 border-b border-NeutralGray">
+          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">
-              카파 완료 퀘스트
+              카파 완료 퀘스트:
             </span>
-            <span className="text-sm font-bold">:</span>
             <span className="text-sm font-bold text-SunsetYellow">
               {getKappaCompleteCount()}
             </span>
           </div>
 
-          <div className="grid grid-cols-4 p-1">
-            <span className="text-sm font-bold col-span-2">완료 퀘스트</span>
-            <span className="text-sm font-bold">:</span>
+          <div className="grid grid-col3-4 p-1">
+            <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
             <span className="text-sm font-bold text-LimeGreen">
               {getCompleteCount()}
             </span>
