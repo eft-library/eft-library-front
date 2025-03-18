@@ -9,14 +9,7 @@ import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
-import { Inter } from "next/font/google";
 import QueryProvider from "@/store/queryProvider";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -56,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           async
