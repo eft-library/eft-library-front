@@ -54,7 +54,6 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (tabState !== "all" && npc.id !== tabState) {
         return [];
       }
-
       return npc.all_quest.map((quest) => ({
         id: quest.id,
         type: npcIdList.includes(quest.id) ? "npcNode" : "questNode",
@@ -65,6 +64,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           title_kr: quest.title_kr,
           id: quest.id,
           type: npcIdList.includes(quest.id) ? "npc" : "quest",
+          image: npcIdList.includes(quest.id) ? npc.image : "none",
           iskappa: quest.is_kappa,
           urlMapping: quest.url_mapping,
           isCheck: questList.includes(quest.id),
@@ -306,6 +306,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           id: npc.id,
           name_kr: npc.name_kr,
           name_en: npc.name_en,
+          color: npc.all_quest[0].node_color,
         }))}
         setTabState={onChangeNpcTab}
         tabState={tabState}

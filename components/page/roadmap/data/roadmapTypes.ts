@@ -51,4 +51,5 @@ interface TabNpc {
   id: string;
   name_en: string;
   name_kr: string;
+  color: string;
 }

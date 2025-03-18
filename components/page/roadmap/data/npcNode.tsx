@@ -1,23 +1,38 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import Image from "next/image";
+import { formatImage } from "@/lib/func/formatImage";
 
 export default function NpcNode(props: any) {
   return (
     <div
-      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] shadow-NeutralGray shadow-md"
-      style={{ backgroundColor: props.data.node_color }}
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[200px] shadow-NeutralGray shadow-md border-solid border-4 rounded-lg"
+      style={{
+        backgroundColor: props.data.node_color,
+        borderColor: props.data.isCheck
+          ? ALL_COLOR.QUEST_RELATED_ONE
+          : ALL_COLOR.RED,
+      }}
     >
-      <div
-        className="w-full h-full  border-solid border-4 rounded-lg"
-        style={{
-          borderColor: props.data.isCheck
-            ? ALL_COLOR.QUEST_RELATED_ONE
-            : ALL_COLOR.RED,
-        }}
-      >
+      <div className="w-full h-full">
         <div className="w-full flex justify-end pr-1 pt-1"></div>
-        <div className="flex items-center justify-center h-full w-full p-3">
+        <div className="flex-col items-center justify-center h-full w-full p-3">
+          <div className="flex items-center justify-center w-full mb-4">
+            <Image
+              src={formatImage(props.data.image)}
+              width={120}
+              height={120}
+              placeholder="blur"
+              blurDataURL={
+                "data:image/jpeg;base64," +
+                "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+              }
+              alt={props.data.title_kr
+                .substring(props.data.title_kr.indexOf("("))
+                .trim()}
+            />
+          </div>
           <div className="flex items-center justify-center w-full">
             <span className="text-center font-black cursor-pointer text-white text-xl">
               {props.data.title_kr
