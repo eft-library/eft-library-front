@@ -67,25 +67,13 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
 
         {/* Required Items */}
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">필요:</h3>
+          <h3 className="text-white text-xl font-bold mb-3">요구사항:</h3>
           <div className="grid grid-cols-7 gap-2">
             {/* Item 1 */}
             <div className="relative">
               <div className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
                 <div className="h-20 w-full relative">
                   <div className="absolute inset-0 bg-purple-900/20"></div>
-                </div>
-                <div className="absolute bottom-0 right-0 bg-black/80 px-1 rounded-tl-md">
-                  <span className="text-white text-xs">x1</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Item 2 */}
-            <div className="relative">
-              <div className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
-                <div className="h-20 w-full relative">
-                  <div className="absolute inset-0 bg-blue-900/20"></div>
                 </div>
                 <div className="absolute bottom-0 right-0 bg-black/80 px-1 rounded-tl-md">
                   <span className="text-white text-xs">x1</span>

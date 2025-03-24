@@ -10,9 +10,6 @@ export default function StationClient({ hideoutData }: StationClient) {
   const [master, setMaster] = useState<string>("5d484fe3654e76006657e0ac");
   const [level, setLevel] = useState<string>("5d484fe3654e76006657e0ac-1");
 
-  console.log(hideoutData);
-  console.log(level);
-
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex">

@@ -6,7 +6,6 @@ import Image from "next/image";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { formatImage } from "@/lib/func/formatImage";
 
-// TODO: 클릭할 경우 위로 level_id를 전달
 export default function LevelSelector({
   masterId,
   hideoutData,
