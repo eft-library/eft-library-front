@@ -15,7 +15,12 @@ export interface BonusList {
 }
 
 export interface StationClient {
-  hideoutList: Hideout[];
+  hideoutData: HideoutData;
+}
+
+interface HideoutData {
+  hideout_info: Hideout[];
+  complete_list: string[];
 }
 
 interface Hideout {
@@ -125,4 +130,15 @@ interface StationMapList {
 export interface StationMapColumn {
   id: string;
   json_value: JsonValue;
+}
+
+export interface StationMap {
+  onChangeMaster: (val: string) => void;
+  masterId: string;
+  completeList: string[];
+}
+
+export interface LevelSelector {
+  masterId: string;
+  hideoutData: HideoutData;
 }

@@ -3,12 +3,22 @@
 import type { StationClient } from "./stationType";
 import StationDetail from "./stationDetail";
 import StationMap from "./stationMap";
+import LevelSelector from "./levelSelector";
+import { useState } from "react";
 
-export default function StationClient({ hideoutList }: StationClient) {
-  console.log(hideoutList);
+export default function StationClient({ hideoutData }: StationClient) {
+  const [master, setMaster] = useState<string>("5d484fe3654e76006657e0ac");
+  console.log(hideoutData);
   return (
-    <div className="w-full flex flex-col items-center">
-      <StationMap />
+    <div className="w-full flex flex-col">
+      <div className="w-full flex">
+        <StationMap
+          masterId={master}
+          onChangeMaster={setMaster}
+          completeList={hideoutData.complete_list}
+        />
+        <LevelSelector masterId={master} hideoutData={hideoutData} />
+      </div>
       <StationDetail />
     </div>
   );

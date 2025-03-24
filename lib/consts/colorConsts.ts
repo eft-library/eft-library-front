@@ -134,6 +134,14 @@ export const ALL_COLOR = {
   ETC_THREE: "#1500ec",
   ETC_FOUR: "#ffec00",
   FOOD_TWO: "#7f7f7f",
+
+  ASH_GRAY: "#807F7B",
+  SAND_BEIGE: "#C8A68C",
+  BURNT_SIENNA: "#D68B5E",
+  SAGE_GREEN: "#9FB68B",
+  DUSTY_TEAL: "#8BB0B6",
+  LAVENDER_BLUE: "#8B8CB6",
+  MAUVE_ORCHID: "#AF8BB6",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;

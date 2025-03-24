@@ -35,5 +35,5 @@ export default function GetStation() {
 
   if (!stationData) return <Loading />;
 
-  return <StationClient hideoutList={stationData} />;
+  return <StationClient hideoutData={stationData} />;
 }
