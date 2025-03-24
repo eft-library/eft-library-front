@@ -141,4 +141,10 @@ export interface StationMap {
 export interface LevelSelector {
   masterId: string;
   hideoutData: HideoutData;
+  onChangeLevel: (val: string) => void;
+}
+
+export interface StationDetail {
+  levelId: string;
+  hideoutData: HideoutData;
 }

@@ -1,8 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import type { StationDetail } from "./stationType";
+import { formatImage } from "@/lib/func/formatImage";
 
-export default function StationDetail() {
+export default function StationDetail({ levelId, hideoutData }: StationDetail) {
+  const splitLevel = levelId.split("-");
+
+  const masterInfo = hideoutData.hideout_info.find(
+    (station) => station.master_id === splitLevel[0]
+  );
+
+  const levelItem = masterInfo?.data.find((sub) => sub.level_id === levelId);
+
+  const changeTime = (sec: number | undefined) => {
+    if (!sec) return "0 시간";
+    return Math.floor(sec / 3600) + " 시간 ";
+  };
+
   return (
     <div className="w-full border-solid border-white border-2 rounded-lg overflow-hidden">
       <div className="p-5 space-y-6">
@@ -10,29 +26,26 @@ export default function StationDetail() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="relative h-16 w-16">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-700/80 to-amber-900/80 rounded-lg"></div>
+              <div className="absolute inset-0 from-amber-700/80 to-amber-900/80 rounded-lg"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-10 h-10 flex items-center justify-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="w-8 h-8 text-amber-200"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
+                <Image
+                  width={60}
+                  height={60}
+                  alt={"asd"}
+                  src={
+                    (masterInfo &&
+                      masterInfo.image &&
+                      formatImage(masterInfo.image)) ||
+                    ""
+                  }
+                />
               </div>
             </div>
             <div>
-              <p className="text-xl font-medium font-bold">무기 거치대</p>
-              <p className="text-lg font-bold">Level 1</p>
+              <p className="text-xl font-medium font-bold">
+                {masterInfo ? masterInfo.master_name_kr : ""}
+              </p>
+              <p className="text-lg font-bold">Level {splitLevel[1]}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4 pt-2 w-[140px]">
@@ -47,7 +60,9 @@ export default function StationDetail() {
 
         {/* Construction Time */}
         <div>
-          <p className="text-white text-xl font-bold">건설 시간 : 12 시간</p>
+          <p className="text-white text-xl font-bold">
+            건설 시간 : {changeTime(levelItem?.level_info[0].construction_time)}
+          </p>
         </div>
 
         {/* Required Items */}

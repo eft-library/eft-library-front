@@ -6,9 +6,11 @@ import Image from "next/image";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { formatImage } from "@/lib/func/formatImage";
 
+// TODO: 클릭할 경우 위로 level_id를 전달
 export default function LevelSelector({
   masterId,
   hideoutData,
+  onChangeLevel,
 }: LevelSelector) {
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
@@ -47,7 +49,7 @@ export default function LevelSelector({
           {(masterInfo?.data || []).map((level, index) => (
             <button
               key={level.level_id}
-              onClick={() => alert(level.level_id)}
+              onClick={() => onChangeLevel(level.level_id)}
               className="flex flex-col items-center justify-center transition-transform hover:scale-105"
             >
               <span
