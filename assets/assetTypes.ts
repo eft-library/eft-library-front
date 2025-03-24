@@ -22,3 +22,7 @@ export interface Size {
   width: number;
   height: number;
 }
+
+export interface StationSize extends Size {
+  color: string;
+}
