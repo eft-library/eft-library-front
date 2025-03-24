@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { LevelSelector } from "./stationType";
 import Image from "next/image";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { formatImage } from "@/lib/func/formatImage";
 
 export default function LevelSelector({
   masterId,
@@ -30,7 +31,12 @@ export default function LevelSelector({
             width={60}
             height={60}
             alt={"asd"}
-            src={masterInfo?.image || ""}
+            src={
+              (masterInfo &&
+                masterInfo.image &&
+                formatImage(masterInfo.image)) ||
+              ""
+            }
           />
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
