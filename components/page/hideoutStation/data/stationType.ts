@@ -108,3 +108,21 @@ export interface RequireList {
   items: ItemRequire[] | SkillRequire[] | TraderRequire[] | StationRequire[];
   type: string;
 }
+
+interface JsonValue {
+  width: number;
+  height: number;
+  station_list: StationMapList[];
+}
+
+interface StationMapList {
+  id: string;
+  top: number;
+  left: number;
+  image: string;
+}
+
+export interface StationMapColumn {
+  id: string;
+  json_value: JsonValue;
+}

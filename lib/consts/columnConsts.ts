@@ -26,6 +26,7 @@ export const COLUMN_KEY = {
   medicalType: "MEDICAL_TYPE",
   ammoType: "AMMO_TYPE",
   ammo: "AMMO_COLUMN",
+  stationType: "STATION_TYPE",
   lootType: "LOOT_TYPE",
   loot: "LOOT_COLUMN",
   hideoutType: "HIDEOUT_TYPE",

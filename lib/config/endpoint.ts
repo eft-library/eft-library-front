@@ -16,7 +16,7 @@ export const API_ENDPOINTS = {
   GET_ALL_HEADSET: baseUrl + "/api/item/headset",
   GET_ALL_HEAD_WEAR: baseUrl + "/api/item/headwear",
   GET_ALL_HIDEOUT: baseUrl + "/api/hideout/all",
-  GET_ALL_STATION: baseUrl + "/api/hideout/station",
+  GET_ALL_STATION: baseUrl + "/api/hideout/get_station",
   GET_ALL_ITEM: baseUrl + "/api/item/all",
   GET_ALL_LOOT: baseUrl + "/api/item/loot",
   GET_ALL_MEDICAL: baseUrl + "/api/item/medical",
