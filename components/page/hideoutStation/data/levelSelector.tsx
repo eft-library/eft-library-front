@@ -9,35 +9,18 @@ export default function LevelSelector({
   masterId,
   hideoutData,
   onChangeLevel,
-  completeList,
 }: LevelSelector) {
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
   );
 
   const getLevelColor = (index: number) => {
-    if (index === 0) return ALL_COLOR.SAND_BEIGE;
-    if (index === 1) return ALL_COLOR.BURNT_SIENNA;
-    if (index === 2) return ALL_COLOR.SAGE_GREEN;
-    if (index === 3) return ALL_COLOR.DUSTY_TEAL;
-    if (index === 4) return ALL_COLOR.LAVENDER_BLUE;
-    if (index === 5) return ALL_COLOR.MAUVE_ORCHID;
-    return ALL_COLOR.ASH_GRAY;
-  };
-
-  const getMaxSuffix = (id: string) => {
-    const maxDepth = Math.max(
-      ...completeList
-        .filter((item) => item.startsWith(id + "-"))
-        .map((item) => parseInt(item.split("-")[1], 10))
-    );
-
-    if (maxDepth === 1) return ALL_COLOR.SAND_BEIGE;
-    if (maxDepth === 2) return ALL_COLOR.BURNT_SIENNA;
-    if (maxDepth === 3) return ALL_COLOR.SAGE_GREEN;
-    if (maxDepth === 4) return ALL_COLOR.DUSTY_TEAL;
-    if (maxDepth === 5) return ALL_COLOR.LAVENDER_BLUE;
-    if (maxDepth === 6) return ALL_COLOR.MAUVE_ORCHID;
+    if (index === 1) return ALL_COLOR.SAND_BEIGE;
+    if (index === 2) return ALL_COLOR.BURNT_SIENNA;
+    if (index === 3) return ALL_COLOR.SAGE_GREEN;
+    if (index === 4) return ALL_COLOR.DUSTY_TEAL;
+    if (index === 5) return ALL_COLOR.LAVENDER_BLUE;
+    if (index === 6) return ALL_COLOR.MAUVE_ORCHID;
     return ALL_COLOR.ASH_GRAY;
   };
 
@@ -45,7 +28,7 @@ export default function LevelSelector({
     <div className="w-full">
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
-          {getStationSVG(masterId, 60, 60, getMaxSuffix(masterId))}
+          {getStationSVG(masterId, 60, 60, ALL_COLOR.ASH_GRAY)}
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
           </div>
@@ -60,7 +43,7 @@ export default function LevelSelector({
             >
               <span
                 className={cn("text-lg font-medium")}
-                style={{ color: getLevelColor(index) }}
+                style={{ color: getLevelColor(index + 1) }}
               >
                 Level {index + 1}
               </span>
