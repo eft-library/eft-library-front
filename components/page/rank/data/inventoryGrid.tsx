@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Gallery, Item } from "react-photoswipe-gallery";
@@ -13,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function InventoryGrid({
   topList,
@@ -68,7 +68,7 @@ export default function InventoryGrid({
                     height={topImage.height * 128}
                   >
                     {({ ref, open }) => (
-                      <img
+                      <Image
                         ref={ref}
                         onClick={open}
                         src={topImage.item_image}

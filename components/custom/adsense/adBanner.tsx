@@ -26,17 +26,15 @@ export default function AdBanner({
   }, []);
 
   return (
-    <div className="bg-Background">
-      <ins
-        className="adsbygoogle"
-        style={{
-          display: "block",
-        }}
-        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
-        data-ad-slot={dataAdSlot}
-        data-ad-format={dataAdFormat}
-        data-full-width-responsive={dataFullWidthResponsive.toString()}
-      ></ins>
-    </div>
+    <ins
+      className="adsbygoogle"
+      style={{
+        display: "block",
+      }}
+      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
+      data-ad-slot={dataAdSlot}
+      data-ad-format={dataAdFormat}
+      data-full-width-responsive={dataFullWidthResponsive.toString()}
+    />
   );
 }

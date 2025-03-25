@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
-import "react-quill/dist/quill.snow.css";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import "../../../assets/editor.css";
+import "../../../assets/snow.css";
 
 interface HtmlWithImage {
   contents: string;
