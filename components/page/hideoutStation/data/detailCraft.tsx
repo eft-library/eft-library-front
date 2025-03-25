@@ -40,7 +40,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
         {crafts.map((craft, index) => (
           <div
             key={`${craft.level}-${index}-make`}
-            className={`flex flex-col pb-2 ${
+            className={`flex flex-col gap-2 pb-2 ${
               index !== crafts.length - 1
                 ? "border-solid border-b-[1px] border-white"
                 : ""

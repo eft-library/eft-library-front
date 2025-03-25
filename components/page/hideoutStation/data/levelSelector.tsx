@@ -25,7 +25,7 @@ export default function LevelSelector({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-[450px] absolute bottom-10 right-60">
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
           {getStationSVG(masterId, 60, 60, ALL_COLOR.ASH_GRAY)}
@@ -45,7 +45,7 @@ export default function LevelSelector({
                 className={cn("text-lg font-medium")}
                 style={{ color: getLevelColor(index + 1) }}
               >
-                Level {index + 1}
+                LV {index + 1}
               </span>
             </button>
           ))}

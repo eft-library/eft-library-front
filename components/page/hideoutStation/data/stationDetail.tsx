@@ -57,7 +57,7 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
               <p className="text-3xl font-medium font-bold">
                 {masterInfo ? masterInfo.master_name_kr : ""}
               </p>
-              <p className="text-2xl font-bold">Level {splitLevel[1]}</p>
+              <p className="text-2xl font-bold">LV {splitLevel[1]}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4 pt-2 w-[140px]">

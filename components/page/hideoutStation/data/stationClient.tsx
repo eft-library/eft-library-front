@@ -12,7 +12,7 @@ export default function StationClient({ hideoutData }: StationClient) {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full flex">
+      <div className="w-full flex justify-center relative">
         <StationMap
           masterId={master}
           onChangeMaster={setMaster}
