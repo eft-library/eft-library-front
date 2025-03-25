@@ -54,10 +54,10 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
               </div>
             </div>
             <div>
-              <p className="text-xl font-medium font-bold">
+              <p className="text-3xl font-medium font-bold">
                 {masterInfo ? masterInfo.master_name_kr : ""}
               </p>
-              <p className="text-lg font-bold">Level {splitLevel[1]}</p>
+              <p className="text-2xl font-bold">Level {splitLevel[1]}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4 pt-2 w-[140px]">
@@ -71,14 +71,16 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
         </div>
 
         <div>
-          <p className="text-white text-xl font-bold">건설 시간</p>
-          <p className="text-white text-base font-bold">
+          <p className="text-2xl font-bold mb-2 text-GoldenYellow">건설 시간</p>
+          <p className="text-white text-lg font-bold">
             {changeTime(levelItem?.level_info[0].construction_time)}
           </p>
         </div>
 
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">요구사항</h3>
+          <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">
+            요구 사항
+          </h3>
           <div className="w-full flex flex-col gap-4">
             {levelItem && levelItem.trader_require && (
               <DetailRequire items={levelItem?.trader_require} type="trader" />
@@ -96,7 +98,7 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
         </div>
 
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">보너스</h3>
+          <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">보너스</h3>
           <div className="w-full flex flex-col gap-2">
             {levelItem && levelItem.bonus && (
               <DetailBonus bonuses={levelItem?.bonus} />
@@ -105,7 +107,7 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
         </div>
 
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">제작</h3>
+          <h3 className="text-2xl mb-2 font-bold text-GoldenYellow">제작</h3>
           <div className="w-full flex flex-col gap-2">
             {levelItem && levelItem.crafts && (
               <DetailCraft crafts={levelItem.crafts} />

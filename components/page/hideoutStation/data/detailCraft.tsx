@@ -1,11 +1,25 @@
 "use client";
 
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import type { DetailCraft } from "./stationType";
+import type { DetailCraft, CraftItem } from "./stationType";
 import Image from "next/image";
 import { MoveRight } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useState } from "react";
 
 export default function DetailCraft({ crafts }: DetailCraft) {
+  const [openTooltipIndex, setOpenTooltipIndex] = useState<string | null>(null);
+  const [hoverItem, setHoverItem] = useState<CraftItem>();
+
+  const onHoverItem = (itemInfo: CraftItem, index: string | null) => {
+    setOpenTooltipIndex(index);
+    setHoverItem(itemInfo);
+  };
   const changeTime = (sec: number | undefined) => {
     if (!sec) return "0 분";
 
@@ -24,30 +38,78 @@ export default function DetailCraft({ crafts }: DetailCraft) {
     crafts && (
       <div className="flex flex-col justify-center w-full gap-6">
         {crafts.map((craft, index) => (
-          <div key={`${craft.level}-${index}-make`} className="flex flex-col">
-            <span className="font-bold text-sm">{craft.name_kr}</span>
+          <div
+            key={`${craft.level}-${index}-make`}
+            className={`flex flex-col pb-2 ${
+              index !== crafts.length - 1
+                ? "border-solid border-b-[1px] border-white"
+                : ""
+            }`}
+          >
+            <span className="font-bold text-lg">{craft.name_kr} 제작</span>
             <div className="flex gap-2 items-center">
               {craft.req_item.map((req, sIndex) => (
                 <div key={`${craft.name_en}-${req.item.name}-${sIndex}`}>
-                  <Image
-                    width={req.item.width * 60}
-                    height={req.item.height * 60}
-                    alt={req.item.name}
-                    key={`${craft.name_en}-${req.item.name}-${sIndex}`}
-                    src={req.item.gridImageLink}
-                  />
+                  <TooltipProvider>
+                    <Tooltip
+                      open={
+                        openTooltipIndex ===
+                        `${craft.name_en}-${req.item.name}-${sIndex}`
+                      }
+                      onOpenChange={(open) =>
+                        open
+                          ? setOpenTooltipIndex(
+                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                            )
+                          : setOpenTooltipIndex(null)
+                      }
+                    >
+                      <TooltipTrigger className="mr-4">
+                        <Image
+                          width={req.item.width * 60}
+                          height={req.item.height * 60}
+                          alt={req.item.name}
+                          key={`${craft.name_en}-${req.item.name}-${sIndex}`}
+                          onMouseEnter={() =>
+                            onHoverItem(
+                              req,
+                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                            )
+                          }
+                          onMouseLeave={() => setOpenTooltipIndex(null)}
+                          onFocus={() =>
+                            onHoverItem(
+                              req,
+                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                            )
+                          }
+                          onBlur={() => setOpenTooltipIndex(null)}
+                          src={req.item.gridImageLink}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="top"
+                        align="center"
+                        className="bg-Background border-solid border-white border-2"
+                      >
+                        <TextSpan size="base" textColor="GoldenYellow">
+                          {hoverItem?.item.name}
+                        </TextSpan>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <div className="relative">
                     <div className="absolute bottom-0 right-0">
-                      <span className="text-white text-xs font-bold">
+                      <span className="text-white text-xs font-bold bg-Background">
                         x{req.quantity}
                       </span>
                     </div>
                   </div>
                 </div>
               ))}
-              <div className="flex flex-col w-[80px] justify-center items-center">
+              <div className="flex flex-col w-[100px] justify-center items-center">
                 <MoveRight strokeWidth={1} size={60} />
-                <TextSpan size="sm">{changeTime(craft.duration)}</TextSpan>
+                <TextSpan size="base">{changeTime(craft.duration)}</TextSpan>
               </div>
 
               <div>
@@ -59,13 +121,12 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                 />
                 <div className="relative">
                   <div className="absolute bottom-0 right-0">
-                    <span className="text-white text-xs font-bold">
+                    <span className="text-white text-sm font-bold bg-Background">
                       x{craft.quantity}
                     </span>
                   </div>
                 </div>
               </div>
-              <div></div>
             </div>
           </div>
         ))}

@@ -42,15 +42,15 @@ export default function DetailBonus({ bonuses }: BonusList) {
   const BonusItem = ({ bonus }: BonusItem) => {
     return (
       <div className={"flex items-center"}>
-        <TextSpan size="sm">{bonus.name_kr}</TextSpan>
+        <TextSpan size="lg">{bonus.name_kr}</TextSpan>
         {checkNoPercent(bonus.name_en) && (
-          <TextSpan size="sm">{bonus.skill_name_kr}</TextSpan>
+          <TextSpan size="lg">{bonus.skill_name_kr}</TextSpan>
         )}
         {bonus.skill_name_kr && (
-          <TextSpan size="sm">&nbsp;{bonus.skill_name_kr}</TextSpan>
+          <TextSpan size="lg">&nbsp;{bonus.skill_name_kr}</TextSpan>
         )}
         {!checkNoPercent(bonus.name_en) && (
-          <TextSpan size="sm" textColor={checkPlus(bonus.value)}>
+          <TextSpan size="lg" textColor={checkPlus(bonus.value)}>
             &nbsp;{addPlusMinus(bonus.value)}
           </TextSpan>
         )}

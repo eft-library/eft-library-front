@@ -31,7 +31,7 @@ interface Hideout {
   data: HideoutLevel[];
 }
 
-interface Craft {
+export interface Craft {
   level: number | null;
   name_en: string | null;
   name_kr: string | null;
@@ -43,7 +43,7 @@ interface Craft {
   image: string;
 }
 
-interface CraftItem {
+export interface CraftItem {
   item: CraftItemDetail;
   quantity: number;
 }
