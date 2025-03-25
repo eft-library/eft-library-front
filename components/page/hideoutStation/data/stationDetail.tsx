@@ -6,6 +6,7 @@ import type { StationDetail } from "./stationType";
 import { formatImage } from "@/lib/func/formatImage";
 import DetailRequire from "./detailRequire";
 import DetailBonus from "./detailBonus";
+import DetailCraft from "./detailCraft";
 
 export default function StationDetail({ levelId, hideoutData }: StationDetail) {
   const splitLevel = levelId.split("-");
@@ -32,7 +33,7 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
                 <Image
                   width={60}
                   height={60}
-                  alt={"asd"}
+                  alt={masterInfo?.master_name_en || ""}
                   src={
                     (masterInfo &&
                       masterInfo.image &&
@@ -97,11 +98,23 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
             {levelItem && levelItem.crafts && (
               <>
                 {levelItem.crafts.map((craft, index) => (
-                  <span className="font-bold text-sm" key={index}>
+                  <span
+                    className="font-bold text-sm"
+                    key={`${craft.level}-${index}`}
+                  >
                     {craft.name_kr} 제작
                   </span>
                 ))}
               </>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-white text-xl font-bold mb-3">제작</h3>
+          <div className="w-full flex flex-col gap-2">
+            {levelItem && levelItem.crafts && (
+              <DetailCraft crafts={levelItem.crafts} />
             )}
           </div>
         </div>

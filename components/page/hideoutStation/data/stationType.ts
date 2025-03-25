@@ -35,6 +35,23 @@ interface Craft {
   level: number | null;
   name_en: string | null;
   name_kr: string | null;
+  height: number;
+  width: number;
+  duration: number;
+  req_item: CraftItem[];
+  image: string;
+}
+
+interface CraftItem {
+  item: CraftItemDetail;
+  quantity: number;
+}
+
+interface CraftItemDetail {
+  gridImageLink: string;
+  height: number;
+  width: number;
+  name: string;
 }
 
 interface LevelInfo {
@@ -200,4 +217,8 @@ export interface BonusItem {
 
 export interface BonusList {
   bonuses: Bonus[];
+}
+
+export interface DetailCraft {
+  crafts: Craft[];
 }
