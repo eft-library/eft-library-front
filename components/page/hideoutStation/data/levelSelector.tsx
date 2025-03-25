@@ -44,7 +44,7 @@ export default function LevelSelector({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-4">
           {(masterInfo?.data || []).map((level, index) => (
             <button
               key={level.level_id}

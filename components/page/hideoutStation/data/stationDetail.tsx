@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import type { StationDetail } from "./stationType";
 import { formatImage } from "@/lib/func/formatImage";
+import DetailRequire from "./detailRequire";
+import DetailBonus from "./detailBonus";
 
 export default function StationDetail({ levelId, hideoutData }: StationDetail) {
   const splitLevel = levelId.split("-");
@@ -22,7 +24,6 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
   return (
     <div className="w-full border-solid border-white border-2 rounded-lg overflow-hidden">
       <div className="p-5 space-y-6">
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="relative h-16 w-16">
@@ -58,80 +59,52 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
           </div>
         </div>
 
-        {/* Construction Time */}
         <div>
-          <p className="text-white text-xl font-bold">
-            건설 시간 : {changeTime(levelItem?.level_info[0].construction_time)}
+          <p className="text-white text-xl font-bold">건설 시간</p>
+          <p className="text-white text-base font-bold">
+            {changeTime(levelItem?.level_info[0].construction_time)}
           </p>
         </div>
 
-        {/* Required Items */}
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">요구사항:</h3>
-          <div className="grid grid-cols-7 gap-2">
-            {/* Item 1 */}
-            <div className="relative">
-              <div className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
-                <div className="h-20 w-full relative">
-                  <div className="absolute inset-0 bg-purple-900/20"></div>
-                </div>
-                <div className="absolute bottom-0 right-0 bg-black/80 px-1 rounded-tl-md">
-                  <span className="text-white text-xs">x1</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Level Icons */}
-        <div className="flex space-x-4 mt-4">
-          <div className="flex flex-col items-center">
-            <div className="relative w-16 h-16 mb-1"></div>
-            <span className="text-white text-sm">Level 2</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="relative w-16 h-16 mb-1 flex items-center justify-center border border-gray-700 rounded-md bg-black">
-              <div className="w-8 h-8 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-6 h-6 border-t-2 border-r-2 border-white rounded-full animate-spin"></div>
-                </div>
-              </div>
-            </div>
-            <span className="text-white text-sm">Level 3</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="relative w-16 h-16 mb-1 flex items-center justify-center border border-gray-700 rounded-md bg-black">
-              <div className="w-8 h-8 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-6 h-6 bg-white/20 rounded"></div>
-                </div>
-              </div>
-            </div>
-            <span className="text-white text-sm">Level 2</span>
+          <h3 className="text-white text-xl font-bold mb-3">요구사항</h3>
+          <div className="w-full flex flex-col gap-4">
+            {levelItem && levelItem.trader_require && (
+              <DetailRequire items={levelItem?.trader_require} type="trader" />
+            )}
+            {levelItem && levelItem.station_require && (
+              <DetailRequire
+                items={levelItem?.station_require}
+                type="station"
+              />
+            )}
+            {levelItem && levelItem.skill_require && (
+              <DetailRequire items={levelItem?.skill_require} type="skill" />
+            )}
+            {levelItem && levelItem.item_require && (
+              <DetailRequire items={levelItem?.item_require} type="item" />
+            )}
           </div>
         </div>
 
         {/* Bonus */}
         <div>
-          <h3 className="text-white text-xl font-bold mb-3">보너스:</h3>
-          <p className="text-gray-300 mb-3">
-            수리 키트를 사용하면 방어구 수리 비용 감소 +3 %
-          </p>
-
-          <div className="grid grid-cols-4 gap-2">
-            {/* Bonus Item 1 */}
-            <div className="flex flex-col items-center">
-              <div className="bg-gray-800 border border-gray-700 rounded-md overflow-hidden mb-1">
-                <div className="h-16 w-16 relative"></div>
-              </div>
-              <span className="text-white text-xs">제작</span>
-            </div>
+          <h3 className="text-white text-xl font-bold mb-3">보너스</h3>
+          <div className="w-full flex flex-col gap-2">
+            {levelItem && levelItem.bonus && (
+              <DetailBonus bonuses={levelItem?.bonus} />
+            )}
+            {levelItem && levelItem.crafts && (
+              <>
+                {levelItem.crafts.map((craft, index) => (
+                  <span className="font-bold text-sm" key={index}>
+                    {craft.name_kr} 제작
+                  </span>
+                ))}
+              </>
+            )}
           </div>
         </div>
-
-        {/* Action Buttons */}
       </div>
     </div>
   );

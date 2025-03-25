@@ -148,3 +148,56 @@ export interface StationDetail {
   levelId: string;
   hideoutData: HideoutData;
 }
+
+export interface ItemRequire {
+  id: string;
+  count: number;
+  image: string;
+  name_en: string;
+  name_kr: string | null;
+  quantity: number;
+}
+
+export interface SkillRequire {
+  level: number | null;
+  name_en: string | null;
+  name_kr: string | null;
+  image: string | null;
+}
+
+export interface TraderRequire {
+  image: string | null;
+  value: number | null;
+  compare: string | null;
+  name_en: string | null;
+  name_kr: string | null;
+  require_type: string | null;
+}
+
+interface StationRequire {
+  image: string | null;
+  level: number | null;
+  name_en: string | null;
+  name_kr: string | null;
+}
+
+export interface RequireList {
+  items: ItemRequire[] | SkillRequire[] | TraderRequire[] | StationRequire[];
+  type: string;
+}
+
+interface Bonus {
+  value: number;
+  name_en: string;
+  name_kr: string | null;
+  skill_name_en: string | null;
+  skill_name_kr: string | null;
+}
+
+export interface BonusItem {
+  bonus: Bonus;
+}
+
+export interface BonusList {
+  bonuses: Bonus[];
+}
