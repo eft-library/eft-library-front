@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import type { MapControlsProps } from "@react-three/drei";
 import { MapControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import Loader from "./loader";
@@ -17,14 +16,6 @@ export default function ThreeViewDetail({
   viewItemList,
 }: ThreeviewDetail) {
   const [filterInfo, setFilterInfo] = useState(null);
-  const controlsRef = useRef<MapControlsProps | null>(null);
-  const [zoomLevel, setZoomLevel] = useState(0);
-
-  const updateZoomLevel = useCallback(() => {
-    if (controlsRef.current) {
-      setZoomLevel(controlsRef.current.object.position.y);
-    }
-  }, []);
 
   useEffect(() => {
     const getSubMapItem = async () => {
@@ -41,33 +32,14 @@ export default function ThreeViewDetail({
     getSubMapItem();
   }, []);
 
-  useEffect(() => {
-    const animate = () => {
-      updateZoomLevel();
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      controlsRef.current.removeEventListener("change", updateZoomLevel);
-    };
-  }, [updateZoomLevel]);
-
   if (!filterInfo) return <Loading />;
 
   return (
-    // Canvas를 클라이언트에서만 렌더링되도록 하기
     <Canvas
       camera={{ position: [0, 60, 0] }}
       style={{ backgroundColor: ALL_COLOR.THREE_BACKGROUND, height: "100vh" }}
     >
-      <MapControls
-        zoomSpeed={2.0}
-        enableDamping={true}
-        enableZoom={true}
-        ref={controlsRef}
-      />
+      <MapControls zoomSpeed={2.0} enableDamping={true} enableZoom={true} />
       <ambientLight intensity={1} />
       <directionalLight position={[10, 5, 5]} intensity={2} />
       <pointLight position={[0, 0, 0]} intensity={2} />
@@ -77,7 +49,7 @@ export default function ThreeViewDetail({
             map={mapData}
             filterInfo={filterInfo}
             viewItemList={viewItemList}
-            zoomLevel={zoomLevel}
+            zoomLevel={1}
           />
         </Suspense>
       </group>
