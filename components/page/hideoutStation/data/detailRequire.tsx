@@ -21,7 +21,7 @@ export default function DetailRequire({ items, type }: RequireList) {
     } else if (type === "trader" && isTraderRequire(item)) {
       return `Level ${item.value || ""}`;
     } else if (type === "skill" && isSkillRequire(item)) {
-      return `Level ${item.level || ""}`;
+      return `${item.name_kr} ${item.level || ""}`;
     }
     return `Level ${"level" in item ? item.level : ""}`;
   };
