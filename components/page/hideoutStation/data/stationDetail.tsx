@@ -18,8 +18,18 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
   const levelItem = masterInfo?.data.find((sub) => sub.level_id === levelId);
 
   const changeTime = (sec: number | undefined) => {
-    if (!sec) return "0 시간";
-    return Math.floor(sec / 3600) + " 시간 ";
+    if (!sec) return "0 분";
+
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+
+    if (hours > 0 && minutes > 0) {
+      return `${hours}시간 ${minutes}분`;
+    } else if (hours > 0) {
+      return `${hours}시간`;
+    } else {
+      return `${minutes}분`;
+    }
   };
 
   return (
@@ -74,38 +84,22 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
               <DetailRequire items={levelItem?.trader_require} type="trader" />
             )}
             {levelItem && levelItem.station_require && (
-              <DetailRequire
-                items={levelItem?.station_require}
-                type="station"
-              />
+              <DetailRequire items={levelItem.station_require} type="station" />
             )}
             {levelItem && levelItem.skill_require && (
-              <DetailRequire items={levelItem?.skill_require} type="skill" />
+              <DetailRequire items={levelItem.skill_require} type="skill" />
             )}
             {levelItem && levelItem.item_require && (
-              <DetailRequire items={levelItem?.item_require} type="item" />
+              <DetailRequire items={levelItem.item_require} type="item" />
             )}
           </div>
         </div>
 
-        {/* Bonus */}
         <div>
           <h3 className="text-white text-xl font-bold mb-3">보너스</h3>
           <div className="w-full flex flex-col gap-2">
             {levelItem && levelItem.bonus && (
               <DetailBonus bonuses={levelItem?.bonus} />
-            )}
-            {levelItem && levelItem.crafts && (
-              <>
-                {levelItem.crafts.map((craft, index) => (
-                  <span
-                    className="font-bold text-sm"
-                    key={`${craft.level}-${index}`}
-                  >
-                    {craft.name_kr} 제작
-                  </span>
-                ))}
-              </>
             )}
           </div>
         </div>

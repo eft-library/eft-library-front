@@ -38,6 +38,7 @@ interface Craft {
   height: number;
   width: number;
   duration: number;
+  quantity: number;
   req_item: CraftItem[];
   image: string;
 }
