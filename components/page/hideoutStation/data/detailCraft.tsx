@@ -99,8 +99,8 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                     </Tooltip>
                   </TooltipProvider>
                   <div className="relative">
-                    <div className="absolute bottom-0 right-0">
-                      <span className="text-white text-xs font-bold bg-Background">
+                    <div className="absolute bottom-1 right-4">
+                      <span className="text-white text-xs font-bold">
                         x{req.quantity}
                       </span>
                     </div>
@@ -121,7 +121,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                 />
                 <div className="relative">
                   <div className="absolute bottom-0 right-0">
-                    <span className="text-white text-sm font-bold bg-Background">
+                    <span className="text-white text-sm font-bold">
                       x{craft.quantity}
                     </span>
                   </div>

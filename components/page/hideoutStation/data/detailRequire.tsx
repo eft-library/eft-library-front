@@ -95,7 +95,7 @@ export default function DetailRequire({ items, type }: RequireList) {
             {type === "item" ? (
               <div className="relative">
                 <div className="absolute bottom-1 left-2">
-                  <span className="text-white text-sm font-bold whitespace-nowrap bg-Background">
+                  <span className="text-white text-sm font-bold whitespace-nowrap">
                     x{"quantity" in item ? item.quantity : 1}
                   </span>
                 </div>
