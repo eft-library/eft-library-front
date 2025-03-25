@@ -64,7 +64,7 @@ export default function DetailRequire({ items, type }: RequireList) {
                       : setOpenTooltipIndex(null)
                   }
                 >
-                  <TooltipTrigger className="mr-4">
+                  <TooltipTrigger>
                     <Image
                       src={
                         type === "skill" || type === "station"

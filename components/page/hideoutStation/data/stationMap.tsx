@@ -8,6 +8,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { requestData } from "@/lib/config/api";
 import type { StationMapColumn, StationMap } from "./stationType";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,6 @@ export default function StationMap({
   masterId,
   completeList,
 }: StationMap) {
-  console.log(completeList);
   const [stationMapData, setStationMapData] = useState<StationMapColumn>();
 
   useEffect(() => {
@@ -40,6 +40,22 @@ export default function StationMap({
 
   if (!stationMapData) return <Loading />;
 
+  const getMaxSuffix = (id: string) => {
+    const maxDepth = Math.max(
+      ...completeList
+        .filter((item) => item.startsWith(id + "-"))
+        .map((item) => parseInt(item.split("-")[1], 10))
+    );
+
+    if (maxDepth === 1) return ALL_COLOR.SAND_BEIGE;
+    if (maxDepth === 2) return ALL_COLOR.BURNT_SIENNA;
+    if (maxDepth === 3) return ALL_COLOR.SAGE_GREEN;
+    if (maxDepth === 4) return ALL_COLOR.DUSTY_TEAL;
+    if (maxDepth === 5) return ALL_COLOR.LAVENDER_BLUE;
+    if (maxDepth === 6) return ALL_COLOR.MAUVE_ORCHID;
+    return ALL_COLOR.ASH_GRAY;
+  };
+
   return (
     <div className="relative w-[800px] mb-4">
       <StationBackground />
@@ -59,7 +75,7 @@ export default function StationMap({
             station.id,
             stationMapData.json_value.width,
             stationMapData.json_value.height,
-            "red"
+            getMaxSuffix(station.id)
           )}
         </div>
       ))}

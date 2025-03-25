@@ -64,7 +64,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                           : setOpenTooltipIndex(null)
                       }
                     >
-                      <TooltipTrigger className="mr-4">
+                      <TooltipTrigger>
                         <Image
                           width={req.item.width * 60}
                           height={req.item.height * 60}
@@ -99,7 +99,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                     </Tooltip>
                   </TooltipProvider>
                   <div className="relative">
-                    <div className="absolute bottom-1 right-4">
+                    <div className="absolute bottom-1 right-0">
                       <span className="text-white text-xs font-bold">
                         x{req.quantity}
                       </span>

@@ -22,6 +22,7 @@ export default function StationClient({ hideoutData }: StationClient) {
           masterId={master}
           hideoutData={hideoutData}
           onChangeLevel={setLevel}
+          completeList={hideoutData.complete_list}
         />
       </div>
       <StationDetail levelId={level} hideoutData={hideoutData} />

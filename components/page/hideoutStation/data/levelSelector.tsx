@@ -2,14 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import type { LevelSelector } from "./stationType";
-import Image from "next/image";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import { formatImage } from "@/lib/func/formatImage";
+import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 
 export default function LevelSelector({
   masterId,
   hideoutData,
   onChangeLevel,
+  completeList,
 }: LevelSelector) {
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
@@ -22,23 +22,30 @@ export default function LevelSelector({
     if (index === 3) return ALL_COLOR.DUSTY_TEAL;
     if (index === 4) return ALL_COLOR.LAVENDER_BLUE;
     if (index === 5) return ALL_COLOR.MAUVE_ORCHID;
+    return ALL_COLOR.ASH_GRAY;
+  };
+
+  const getMaxSuffix = (id: string) => {
+    const maxDepth = Math.max(
+      ...completeList
+        .filter((item) => item.startsWith(id + "-"))
+        .map((item) => parseInt(item.split("-")[1], 10))
+    );
+
+    if (maxDepth === 1) return ALL_COLOR.SAND_BEIGE;
+    if (maxDepth === 2) return ALL_COLOR.BURNT_SIENNA;
+    if (maxDepth === 3) return ALL_COLOR.SAGE_GREEN;
+    if (maxDepth === 4) return ALL_COLOR.DUSTY_TEAL;
+    if (maxDepth === 5) return ALL_COLOR.LAVENDER_BLUE;
+    if (maxDepth === 6) return ALL_COLOR.MAUVE_ORCHID;
+    return ALL_COLOR.ASH_GRAY;
   };
 
   return (
     <div className="w-full">
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
-          <Image
-            width={60}
-            height={60}
-            alt={"asd"}
-            src={
-              (masterInfo &&
-                masterInfo.image &&
-                formatImage(masterInfo.image)) ||
-              ""
-            }
-          />
+          {getStationSVG(masterId, 60, 60, getMaxSuffix(masterId))}
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
           </div>

@@ -97,23 +97,29 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
           </div>
         </div>
 
-        <div>
-          <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">보너스</h3>
-          <div className="w-full flex flex-col gap-2">
-            {levelItem && levelItem.bonus && (
-              <DetailBonus bonuses={levelItem?.bonus} />
-            )}
+        {levelItem && levelItem.bonus && levelItem.bonus.length > 0 && (
+          <div>
+            <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">
+              보너스
+            </h3>
+            <div className="w-full flex flex-col gap-2">
+              {levelItem && levelItem.bonus && (
+                <DetailBonus bonuses={levelItem?.bonus} />
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-          <h3 className="text-2xl mb-2 font-bold text-GoldenYellow">제작</h3>
-          <div className="w-full flex flex-col gap-2">
-            {levelItem && levelItem.crafts && (
-              <DetailCraft crafts={levelItem.crafts} />
-            )}
+        {levelItem && levelItem.crafts && levelItem.crafts.length > 0 && (
+          <div>
+            <h3 className="text-2xl mb-2 font-bold text-GoldenYellow">제작</h3>
+            <div className="w-full flex flex-col gap-2">
+              {levelItem && levelItem.crafts && (
+                <DetailCraft crafts={levelItem.crafts} />
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
