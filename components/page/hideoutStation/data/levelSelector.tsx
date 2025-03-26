@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { LevelSelector } from "./stationType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function LevelSelector({
   masterId,
@@ -26,6 +27,9 @@ export default function LevelSelector({
 
   return (
     <div className="w-[450px] absolute bottom-10 right-60">
+      <TextSpan textColor="GoldenYellow">
+        LV를 눌러 상세 정보를 확인하세요!
+      </TextSpan>
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
           {getStationSVG(masterId, 60, 60, ALL_COLOR.ASH_GRAY)}
