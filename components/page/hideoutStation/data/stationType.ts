@@ -165,6 +165,7 @@ export interface LevelSelector {
 export interface StationDetail {
   levelId: string;
   hideoutData: HideoutData;
+  onClickSave: (val: string, type: string) => void;
 }
 
 export interface ItemRequire {

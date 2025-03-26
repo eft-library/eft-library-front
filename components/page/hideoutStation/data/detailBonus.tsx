@@ -4,7 +4,6 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { BonusItem, BonusList } from "./stationType";
 
 export default function DetailBonus({ bonuses }: BonusList) {
-  console.log(bonuses);
   const checkNoPercent = (value: string) => {
     const noPercentList = [
       "Unlocks armor repair via repair kits",

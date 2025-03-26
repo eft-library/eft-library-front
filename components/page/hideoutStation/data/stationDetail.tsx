@@ -8,7 +8,11 @@ import DetailRequire from "./detailRequire";
 import DetailBonus from "./detailBonus";
 import DetailCraft from "./detailCraft";
 
-export default function StationDetail({ levelId, hideoutData }: StationDetail) {
+export default function StationDetail({
+  levelId,
+  hideoutData,
+  onClickSave,
+}: StationDetail) {
   const splitLevel = levelId.split("-");
 
   const masterInfo = hideoutData.hideout_info.find(
@@ -61,10 +65,16 @@ export default function StationDetail({ levelId, hideoutData }: StationDetail) {
             </div>
           </div>
           <div className="flex flex-col gap-4 pt-2 w-[140px]">
-            <Button className="px-4 font-bold py-2 border-2 bg-Background border-LimeGreen text-white rounded-lg hover:bg-NeutralGray text-lg">
+            <Button
+              onClick={() => onClickSave(levelId, "complete")}
+              className="px-4 font-bold py-2 border-2 bg-Background border-LimeGreen text-white rounded-lg hover:bg-NeutralGray text-lg"
+            >
               건설
             </Button>
-            <Button className="px-4 font-bold py-2 border-2 bg-Background border-Red text-white rounded-lg hover:bg-NeutralGray text-lg">
+            <Button
+              onClick={() => onClickSave(levelId, "broken")}
+              className="px-4 font-bold py-2 border-2 bg-Background border-Red text-white rounded-lg hover:bg-NeutralGray text-lg"
+            >
               파괴
             </Button>
           </div>
