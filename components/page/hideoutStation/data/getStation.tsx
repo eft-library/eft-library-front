@@ -34,6 +34,5 @@ export default function GetStation() {
   }, [session?.email]);
 
   if (!stationData) return <Loading />;
-
   return <StationClient hideoutData={stationData} />;
 }

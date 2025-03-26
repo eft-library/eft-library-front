@@ -4,7 +4,7 @@ import type { StationClient } from "./stationType";
 import StationDetail from "./stationDetail";
 import StationMap from "./stationMap";
 import LevelSelector from "./levelSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
@@ -21,6 +21,10 @@ export default function StationClient({ hideoutData }: StationClient) {
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCompleteList(hideoutData.complete_list);
+  }, [hideoutData]);
 
   const onClickSave = async (id: string, type: string) => {
     if (session && session.email) {
