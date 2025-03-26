@@ -118,6 +118,11 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                   height={craft.height * 60}
                   alt={craft.name_en || ""}
                   src={craft.image || ""}
+                  placeholder="blur"
+                  blurDataURL={
+                    "data:image/jpeg;base64," +
+                    "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                  }
                 />
                 <div className="relative">
                   <div className="absolute bottom-0 right-0">
