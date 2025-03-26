@@ -64,7 +64,7 @@ export default function StationMap({
           key={station.id}
           onClick={() => onChangeMaster(station.id)}
           className={`absolute opacity-${
-            masterId === station.id ? "100" : "50"
+            masterId === station.id ? "100" : "70"
           } hover:opacity-100 transition-opacity duration-100 cursor-pointer`}
           style={{
             top: station.top,
