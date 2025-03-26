@@ -42,7 +42,7 @@ export const useLoadMap = (map_three_path: string) => {
         // 상태를 업데이트
         setMap({ colladaData: loadedColladaData });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     };
 

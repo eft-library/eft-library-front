@@ -56,7 +56,7 @@ export default function ExitDialog() {
         signOut();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

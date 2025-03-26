@@ -50,7 +50,6 @@ export default function StationClient({ hideoutData }: StationClient) {
         if (subList) {
           changeList = [
             ...completeList.filter((item) => !subList.includes(item)),
-            ...subList.filter((item) => !completeList.includes(item)),
           ];
         }
       }
