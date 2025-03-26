@@ -11,6 +11,7 @@ import DetailCraft from "./detailCraft";
 export default function StationDetail({
   levelId,
   hideoutData,
+  complete_list,
   onClickSave,
 }: StationDetail) {
   const splitLevel = levelId.split("-");
@@ -34,6 +35,14 @@ export default function StationDetail({
     } else {
       return `${minutes}분`;
     }
+  };
+
+  const checkBuild = () => {
+    return complete_list.includes(levelId);
+  };
+
+  const checkBroken = () => {
+    return !complete_list.includes(levelId);
   };
 
   return (
@@ -67,12 +76,14 @@ export default function StationDetail({
           <div className="flex flex-col gap-4 pt-2 w-[140px]">
             <Button
               onClick={() => onClickSave(levelId, "complete")}
+              disabled={checkBuild()}
               className="px-4 font-bold py-2 border-2 bg-Background border-LimeGreen text-white rounded-lg hover:bg-NeutralGray text-lg"
             >
               건설
             </Button>
             <Button
               onClick={() => onClickSave(levelId, "broken")}
+              disabled={checkBroken()}
               className="px-4 font-bold py-2 border-2 bg-Background border-Red text-white rounded-lg hover:bg-NeutralGray text-lg"
             >
               파괴

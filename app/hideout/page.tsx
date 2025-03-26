@@ -1,4 +1,6 @@
-import Hideout from "@/components/page/hideout/hideout";
+import HideoutStation from "@/components/page/hideoutStation/hideoutStation";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "타르코프 은신처 - EFT Library",
@@ -26,5 +28,5 @@ export const metadata = {
 };
 
 export default function HideoutPage() {
-  return <Hideout />;
+  return <HideoutStation />;
 }

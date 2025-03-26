@@ -166,6 +166,7 @@ export interface StationDetail {
   levelId: string;
   hideoutData: HideoutData;
   onClickSave: (val: string, type: string) => void;
+  complete_list: string[];
 }
 
 export interface ItemRequire {
