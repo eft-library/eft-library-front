@@ -4,7 +4,6 @@ export const COLUMN_KEY = {
   map: "MAP_COLUMN",
   mapOfTarkov: "MAP_OF_TARKOV_COLUMN",
   weaponType: "WEAPON_TYPE",
-  weapon: "WEAOPN_COLUMN",
   footer: "FOOTER_COLUMN",
   headset: "HEAD_PHONE_COLUMN",
   arm_band: "ARM_BAND_COLUMN",
@@ -29,6 +28,4 @@ export const COLUMN_KEY = {
   stationType: "STATION_TYPE",
   lootType: "LOOT_TYPE",
   loot: "LOOT_COLUMN",
-  hideoutType: "HIDEOUT_TYPE",
-  hideout: "HIDEOUT_COLUMN",
 } as const;
