@@ -37,7 +37,7 @@ export default function ThreeViewDetail({
   return (
     <Canvas
       camera={{ position: [0, 60, 0] }}
-      style={{ backgroundColor: ALL_COLOR.THREE_BACKGROUND, height: "100vh" }}
+      style={{ backgroundColor: ALL_COLOR.DarkBluishGray, height: "100vh" }}
     >
       <MapControls zoomSpeed={2.0} enableDamping={true} enableZoom={true} />
       <ambientLight intensity={1} />

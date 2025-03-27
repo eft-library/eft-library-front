@@ -175,6 +175,7 @@ export default function StationClient({ hideoutData }: StationClient) {
         />
         <LevelSelector
           masterId={master}
+          selectLevelId={level}
           hideoutData={hideoutData}
           onChangeLevel={setLevel}
         />

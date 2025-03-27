@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import type { LevelSelector } from "./stationType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
@@ -9,20 +8,23 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 export default function LevelSelector({
   masterId,
   hideoutData,
+  selectLevelId,
   onChangeLevel,
 }: LevelSelector) {
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
   );
 
-  const getLevelColor = (index: number) => {
-    if (index === 1) return ALL_COLOR.SAND_BEIGE;
-    if (index === 2) return ALL_COLOR.BURNT_SIENNA;
-    if (index === 3) return ALL_COLOR.SAGE_GREEN;
-    if (index === 4) return ALL_COLOR.DUSTY_TEAL;
-    if (index === 5) return ALL_COLOR.LAVENDER_BLUE;
-    if (index === 6) return ALL_COLOR.MAUVE_ORCHID;
-    return ALL_COLOR.ASH_GRAY;
+  const getLevelColor = (index: number, level: string) => {
+    if (selectLevelId === level) return "text-GoldenYellow";
+
+    if (index === 1) return "text-SandBeige";
+    if (index === 2) return "text-ButnrSienna";
+    if (index === 3) return "text-SageGreen";
+    if (index === 4) return "text-DustyTeal";
+    if (index === 5) return "text-LavenderBlue";
+    if (index === 6) return "text-MauveOrchid";
+    return "text-AshGray";
   };
 
   return (
@@ -32,22 +34,24 @@ export default function LevelSelector({
       </TextSpan>
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
-          {getStationSVG(masterId, 60, 60, ALL_COLOR.ASH_GRAY)}
+          {getStationSVG(masterId, 60, 60, ALL_COLOR.WarmGray)}
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2">
           {(masterInfo?.data || []).map((level, index) => (
             <button
               key={level.level_id}
               onClick={() => onChangeLevel(level.level_id)}
-              className="flex flex-col items-center justify-center transition-transform hover:scale-105"
+              className="flex flex-col items-center justify-center"
             >
               <span
-                className={cn("text-lg font-medium")}
-                style={{ color: getLevelColor(index + 1) }}
+                className={`text-lg hover:text-GoldenYellow font-medium ${getLevelColor(
+                  index + 1,
+                  level.level_id
+                )}`}
               >
                 LV {index + 1}
               </span>

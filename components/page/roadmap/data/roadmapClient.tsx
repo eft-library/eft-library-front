@@ -341,7 +341,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           colorMode="dark"
           fitView
           attributionPosition="bottom-left"
-          style={{ backgroundColor: ALL_COLOR.BACKGROUND }}
+          style={{ backgroundColor: ALL_COLOR.VeryDarkGray }}
         >
           <Controls
             style={{

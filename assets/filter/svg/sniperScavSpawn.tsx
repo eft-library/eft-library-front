@@ -15,7 +15,7 @@ export default function SniperScavSpawn({ width, height, opacity, x, y }: SVG) {
       opacity={opacity ? opacity : "1"}
     >
       <circle
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-1"
         cx="13.99"
         cy="13.96"

@@ -12,14 +12,14 @@ export default function Logo() {
     >
       <rect
         className="cls-1"
-        fill={ALL_COLOR.BACKGROUND}
+        fill={ALL_COLOR.VeryDarkGray}
         x="0.02"
         width="64.89"
         height="51.88"
       />
       <rect
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         x="29"
         y="18.43"
         width="17.76"
@@ -29,7 +29,7 @@ export default function Logo() {
       />
       <rect
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         x="48.63"
         y="20.28"
         width="2.57"
@@ -39,67 +39,67 @@ export default function Logo() {
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M15,14.67H31.3a1.44,1.44,0,0,1,1.44,1.44v0a1.44,1.44,0,0,1-1.44,1.44H13.59a0,0,0,0,1,0,0V16.1A1.43,1.43,0,0,1,15,14.67Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M13.59,25.59H34.3a1.23,1.23,0,0,1,1.23,1.23v0a1.23,1.23,0,0,1-1.23,1.23H14.85a1.27,1.27,0,0,1-1.27-1.27v-1.2A0,0,0,0,1,13.59,25.59Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M13.59,20.34h14a1.22,1.22,0,0,1,1.22,1.22v0a1.22,1.22,0,0,1-1.22,1.22h-14a0,0,0,0,1,0,0V20.34A0,0,0,0,1,13.59,20.34Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M16.47,32.9v.54H14.24v1.42h2.09v.54H14.24v1.54h2.27v.54h-2.9V32.9Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M20.25,32.9v.54h-2.2V35h2.07v.54H18.05v2h-.63V32.9Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M22,37.48v-4h-1.4V32.9H24v.54h-1.4v4Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M26.88,32.9v4h2.2v.54H26.25V32.9Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M30.36,32.9v4.58h-.63V32.9Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M31.4,32.9H33c1,0,1.46.37,1.46,1.12v.13a1.54,1.54,0,0,1,0,.3.91.91,0,0,1-.13.26.67.67,0,0,1-.23.21,1.34,1.34,0,0,1-.34.15,1.23,1.23,0,0,1,.68.31,1,1,0,0,1,.27.74v.15a1.12,1.12,0,0,1-.36.89,1.6,1.6,0,0,1-1.11.32H31.4Zm.63.54v1.39h.81l.43,0a.87.87,0,0,0,.31-.11.51.51,0,0,0,.2-.21.82.82,0,0,0,.06-.35V34a.7.7,0,0,0-.06-.32.37.37,0,0,0-.19-.18.94.94,0,0,0-.33-.08H32Zm0,3.5h1a3.28,3.28,0,0,0,.47,0,1,1,0,0,0,.33-.11.46.46,0,0,0,.19-.2.69.69,0,0,0,.07-.34v-.14a.88.88,0,0,0-.06-.35.6.6,0,0,0-.2-.25.84.84,0,0,0-.37-.13,3,3,0,0,0-.57,0H32Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M36.07,37.48h-.63V32.9H37.1a2,2,0,0,1,.62.09,1.35,1.35,0,0,1,.46.26,1,1,0,0,1,.28.4,1.18,1.18,0,0,1,.1.5v.17a1.16,1.16,0,0,1-.2.68,1.18,1.18,0,0,1-.57.45l.91,2H38l-.82-1.91H36.07Zm0-2.45H37a1.12,1.12,0,0,0,.76-.2.67.67,0,0,0,.22-.53v-.13a.65.65,0,0,0-.22-.53,1,1,0,0,0-.7-.2h-.94Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M43.18,37.48h-.67L42,36.14H40.28l-.49,1.34h-.64l1.7-4.58h.61Zm-2.71-1.89h1.37l-.38-1.07c0-.09-.06-.18-.09-.25a1.59,1.59,0,0,1-.07-.2c0-.06,0-.13-.07-.21l-.08-.26c0,.1-.06.19-.08.27l-.06.2c0,.07,0,.13-.07.2a2,2,0,0,1-.09.25Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M44.45,37.48h-.63V32.9h1.66a2,2,0,0,1,.63.09,1.58,1.58,0,0,1,.46.26,1.15,1.15,0,0,1,.28.4,1.35,1.35,0,0,1,.1.5v.17a1.23,1.23,0,0,1-.2.68,1.28,1.28,0,0,1-.57.45l.91,2h-.68l-.83-1.91H44.45Zm0-2.45h.88a1.1,1.1,0,0,0,.76-.2.67.67,0,0,0,.23-.53v-.13a.68.68,0,0,0-.22-.53,1,1,0,0,0-.7-.2h-.95Z"
       />
       <path
         className="cls-2"
-        fill={ALL_COLOR.WHITE}
+        fill={ALL_COLOR.White}
         d="M49.59,35.64v1.84H49V35.64L47.38,32.9h.7L49.28,35l1.17-2.14h.7Z"
       />
     </svg>

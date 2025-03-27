@@ -15,13 +15,13 @@ export default function ScavSpawn({ width, height, opacity, x, y }: SVG) {
       opacity={opacity ? opacity : "1"}
     >
       <path
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-1"
         d="M10,18m-8,2.5,16,0M10,18m0-1c-5,0-9,1.56-9,3.5S5,24,10,24s9-1.57,9-3.5S15,17,10,17Z"
       />
       <path d="M10,18c5.18,0,8,1.65,8,2.5S15.17,23,10,23s-8-1.65-8-2.5S4.82,18,10,18m0-1c-5,0-9,1.56-9,3.5S5,24,10,24s9-1.57,9-3.5S15,17,10,17Z" />
       <path
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-1"
         d="M3,7.85A7,7,0,0,1,10,1a7,7,0,0,1,7,6.89C17,11.66,10,21,10,21S3,11.66,3,7.85Z"
       />

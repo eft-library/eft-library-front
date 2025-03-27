@@ -15,7 +15,7 @@ export default function SniperLocation({ width, height, opacity, x, y }: SVG) {
       opacity={opacity ? opacity : "1"}
     >
       <path
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-1"
         d="M18,13.46h6A10,10,0,0,0,14.49,4v6h-1V4A10,10,0,0,0,4,13.46h6v1H4a10,10,0,0,0,9.47,9.47V18h1v6A10,10,0,0,0,24,14.46H18Zm-1,.75H14.24V17h-.5V14.21H11v-.5h2.75V11h.5v2.75H17Z"
       />

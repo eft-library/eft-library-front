@@ -74,7 +74,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
             <svg
               width={1200}
               height={720}
-              fill={ALL_COLOR.THREE_BACKGROUND}
+              fill={ALL_COLOR.DarkBluishGray}
               onClick={handleClick}
             >
               <image

@@ -45,7 +45,7 @@ export default function NewsClient({ news }: NewsClient) {
       <div className="grid grid-cols-3 w-full gap-4">
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
-            <Star color={ALL_COLOR.YELLOW} />
+            <Star color={ALL_COLOR.Yellow} />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
               추천 기능

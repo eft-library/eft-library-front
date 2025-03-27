@@ -1,15 +1,12 @@
 export const ALL_COLOR = {
-  BACKGROUND: "#111111",
-  MAP_BLACK: "#191D27",
-  RED: "#FF0000",
-  THREE_BACKGROUND: "#1e1e24",
-  WHITE: "#ffffff",
-  YELLOW: "#ffd700",
-  PROFILE_BAN: "#891E1E",
+  VeryDarkGray: "#111111",
+  Red: "#FF0000",
+  DarkBluishGray: "#1e1e24",
+  White: "#ffffff",
+  Yellow: "#ffd700",
   PeachCream: "#FFA46B",
   SkyBloom: "#6B89FF",
   GraphiteDust: "#4c4c4c",
-  DISABLE: "#f4f4f4",
   BronzeEmber: "#724c2e",
   DeepWalnut: "#513b27",
   GoldenHusk: "#ce9a4e",
@@ -78,18 +75,16 @@ export const ALL_COLOR = {
   CrimsonRose: "#b94546",
   LavenderPurple: "#9060a8",
   LemonChiffon: "#f1e25c",
+  PalePeriwinkle: "#c5d1ea",
+  LimeGreen: "#7fd14a",
 
-  CASH_REGISTER_THREE: "#c5d1ea",
-
-  QUEST_RELATED_ONE: "#7fd14a",
-
-  ASH_GRAY: "#807F7B",
-  SAND_BEIGE: "#C8A68C",
-  BURNT_SIENNA: "#D68B5E",
-  SAGE_GREEN: "#9FB68B",
-  DUSTY_TEAL: "#8BB0B6",
-  LAVENDER_BLUE: "#8B8CB6",
-  MAUVE_ORCHID: "#AF8BB6",
+  WarmGray: "#807F7B",
+  SandBeige: "#C8A68C",
+  BurntSienna: "#D68B5E",
+  SageGreen: "#9FB68B",
+  DustyTeal: "#8BB0B6",
+  LavenderBlue: "#8B8CB6",
+  MauveOrchid: "#AF8BB6",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;

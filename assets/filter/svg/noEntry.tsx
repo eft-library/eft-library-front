@@ -20,7 +20,7 @@ export default function NoEntry({ width, height, opacity, x, y }: SVG) {
         d="M14,3A11,11,0,1,0,25,14,11,11,0,0,0,14,3Z"
       />
       <path
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-2"
         d="M14,3A11,11,0,1,0,25,14,11,11,0,0,0,14,3Zm7,12H7V13H21Z"
       />

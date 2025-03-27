@@ -15,7 +15,7 @@ export default function MedItem({ width, height, opacity, x, y }: SVG) {
       viewBox="0 0 28 28"
     >
       <polygon
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-1"
         points="15.76 7.48 13.44 7.48 13.44 12.75 8.15 12.75 8.15 15.07 13.44 15.07 13.44 20.37 15.76 20.37 15.76 15.07 21.04 15.08 21.04 12.75 15.76 12.75 15.76 7.48"
       />

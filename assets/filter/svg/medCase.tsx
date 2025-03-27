@@ -29,7 +29,7 @@ export default function MedCase({ width, height, opacity, x, y }: SVG) {
       />
       <path d="M18.06,10V7h-8v3H3.27V22h22V10H18.06Zm-7-2h6v2h-6ZM24.27,21h-20v-4.5h20Zm0-5.5h-20V11h20Z" />
       <polygon
-        fill={ALL_COLOR.RED}
+        fill={ALL_COLOR.Red}
         className="cls-3"
         points="14.43 11.75 13.68 11.75 13.68 12.88 12.55 12.88 12.55 13.63 13.68 13.63 13.68 14.75 14.43 14.75 14.43 13.63 15.55 13.63 15.55 12.88 14.43 12.88 14.43 11.75"
       />

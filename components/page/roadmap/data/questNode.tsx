@@ -16,9 +16,7 @@ export default function QuestNode(props: any) {
       <div
         className="w-full h-full  border-solid border-4 rounded-lg"
         style={{
-          borderColor: props.data.isCheck
-            ? ALL_COLOR.QUEST_RELATED_ONE
-            : ALL_COLOR.RED,
+          borderColor: props.data.isCheck ? ALL_COLOR.LimeGreen : ALL_COLOR.Red,
         }}
       >
         <div className="w-full flex justify-end pr-1 pt-1">
