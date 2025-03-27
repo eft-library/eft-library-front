@@ -107,13 +107,38 @@ export default function StationClient({ hideoutData }: StationClient) {
     }
   };
 
+  const onClickChangeMaster = (masterId: string) => {
+    setMaster(masterId);
+
+    const masterInfo = hideoutData.hideout_info.find(
+      (station) => station.master_id === masterId
+    );
+
+    const allList = masterInfo?.data.map((sub) => sub.level_id) || [];
+
+    const filtered = completeList
+      .filter((item) => item.startsWith(masterId + "-"))
+      .map((item) => parseInt(item.split("-")[1], 10));
+
+    if (filtered.length === 0) {
+      setLevel(masterId + "-1");
+    } else {
+      const nextValue = `${masterId}-${Math.max(...filtered) + 1}`;
+      if (allList?.includes(nextValue)) {
+        setLevel(nextValue);
+      } else {
+        setLevel(`${masterId}-${Math.max(...filtered)}`);
+      }
+    }
+  };
+
   return (
     <div className="w-full flex flex-col">
       {isLoading && <Loading />}
       <div className="w-full flex justify-center relative">
         <StationMap
           masterId={master}
-          onChangeMaster={setMaster}
+          onChangeMaster={onClickChangeMaster}
           completeList={completeList}
         />
         <LevelSelector
