@@ -32,28 +32,28 @@ export default function StationClient({ hideoutData }: StationClient) {
       const masterInfo = hideoutData.hideout_info.find(
         (station) => station.master_id === masterId
       );
+      const allList = masterInfo?.data.map((sub) => sub.level_id);
+      const downList = masterInfo?.data
+        .map((sub) => sub.level_id)
+        .filter((idValue) => idValue <= id);
+
+      const upList = masterInfo?.data
+        .map((sub) => sub.level_id)
+        .filter((idValue) => idValue >= id);
 
       let changeList: string[] = [];
 
       if (type === "complete") {
-        const subList = masterInfo?.data
-          .map((sub) => sub.level_id)
-          .filter((idValue) => idValue <= id);
-
-        if (subList) {
+        if (downList) {
           changeList = [
             ...completeList,
-            ...subList.filter((item) => !completeList.includes(item)),
+            ...downList.filter((item) => !completeList.includes(item)),
           ];
         }
       } else {
-        const subList = masterInfo?.data
-          .map((sub) => sub.level_id)
-          .filter((idValue) => idValue >= id);
-
-        if (subList) {
+        if (upList) {
           changeList = [
-            ...completeList.filter((item) => !subList.includes(item)),
+            ...completeList.filter((item) => !upList.includes(item)),
           ];
         }
       }
@@ -75,6 +75,18 @@ export default function StationClient({ hideoutData }: StationClient) {
           setAlertStatus(true);
         }, 500);
         setLoading(false);
+
+        if (type === "complete") {
+          const nextValue = `${masterId}-${parseInt(id.split("-")[1], 10) + 1}`;
+          if (allList?.includes(nextValue)) {
+            setLevel(nextValue);
+          }
+        } else {
+          const prevValue = `${masterId}-${parseInt(id.split("-")[1], 10) - 1}`;
+          if (allList?.includes(prevValue)) {
+            setLevel(prevValue);
+          }
+        }
       } else {
         setCompleteList([]);
         setAlertDesc("로그인을 다시 해주세요.");
