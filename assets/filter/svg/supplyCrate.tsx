@@ -1,14 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function SupplyCrate({
-  color,
-  width,
-  height,
-  opacity,
-  x,
-  y,
-}: SVG) {
+export default function SupplyCrate({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -21,126 +14,89 @@ export default function SupplyCrate({
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
     >
-      <path
+      <polygon
+        fill={ALL_COLOR.MintWhisper}
         className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        d="M25.71,7.84,21.55,3.7H6.9L2.82,7.84h0V24.3H25.71V7.84Zm-1,.42v9h-21v-9h0l3.65-3.7H21.07l3.66,3.7h0Z"
+        points="21.11 9.13 20.38 8.38 17 8.38 17.34 9.13 21.11 9.13"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="21.38 6.3 20.65 5.56 17.27 5.56 17.61 6.3 21.38 6.3"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="23.05 11.09 22.06 10.09 17.78 10.09 18.23 11.09 23.05 11.09"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="23.32 8.26 22.33 7.26 18.05 7.26 18.5 8.26 23.32 8.26"
-      />
-      <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="18 7.16 22.23 7.16 21.47 6.39 17.65 6.39 18 7.16"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="17.73 9.99 21.96 9.99 21.2 9.21 17.38 9.21 17.73 9.99"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="10.6"
+        fill={ALL_COLOR.SeafoamBreeze}
+        className="cls-2"
+        x="4.46"
+        y="13.42"
         width="19"
         height="1.31"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="13.43"
+        fill={ALL_COLOR.SeafoamBreeze}
+        className="cls-2"
+        x="4.46"
+        y="16.25"
         width="19"
         height="1.31"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="12.01"
-        width="19"
-        height="1.31"
-      />
-      <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
+        fill={ALL_COLOR.SeafoamBreeze}
+        className="cls-2"
+        x="4.46"
         y="14.84"
         width="19"
+        height="1.31"
+      />
+      <rect
+        fill={ALL_COLOR.SeafoamBreeze}
+        className="cls-2"
+        x="4.46"
+        y="17.66"
+        width="19"
         height="1.42"
       />
       <polygon
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        points="23.73 10.5 23.73 9.26 18.63 9.26 18.66 10.35 17.66 10.35 17.66 9.26 10.68 9.26 10.68 10.35 9.68 10.35 9.71 9.26 4.73 9.26 4.73 10.5 23.73 10.5"
+        fill={ALL_COLOR.SeafoamBreeze}
+        className="cls-2"
+        points="23.46 13.32 23.46 12.09 18.36 12.09 18.39 13.17 17.39 13.17 17.39 12.09 10.41 12.09 10.41 13.17 9.41 13.17 9.44 12.09 4.46 12.09 4.46 13.32 23.46 13.32"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="10.72 6.3 11.06 5.56 7.8 5.56 7.06 6.3 10.72 6.3"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="10.46 9.13 10.79 8.38 7.53 8.38 6.79 9.13 10.46 9.13"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="10.29 7.26 6.12 7.26 5.13 8.26 9.84 8.26 10.29 7.26"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="10.02 10.09 5.85 10.09 4.86 11.09 9.57 11.09 10.02 10.09"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="6.21 7.16 10.33 7.16 10.69 6.39 6.98 6.39 6.21 7.16"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="5.95 9.99 10.06 9.99 10.42 9.21 6.71 9.21 5.95 9.99"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="10.93 8.26 17.4 8.26 16.95 7.26 11.39 7.26 10.93 8.26"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="10.66 11.09 17.13 11.09 16.68 10.09 11.12 10.09 10.66 11.09"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="16.51 6.3 16.18 5.56 14.21 5.56 14.11 5.56 12.16 5.56 11.82 6.3 16.51 6.3"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="16.25 9.13 15.91 8.38 13.95 8.38 13.84 8.38 11.89 8.38 11.55 9.13 16.25 9.13"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.SUPPLY_CASE_TWO}
-        points="11.43 7.16 16.9 7.16 16.55 6.39 11.78 6.39 11.43 7.16"
+        fill={ALL_COLOR.MintWhisper}
+        className="cls-1"
+        points="11.16 9.99 16.64 9.99 16.28 9.21 11.52 9.21 11.16 9.99"
       />
-      <path d="M21.07,4.56H7.38L3.73,8.26h0v15h21v-15h0ZM4.73,13.43h19v1.31h-19Zm19-.1h-19V12h19Zm-19-1.42V10.6h19v1.31ZM17.4,8.26H10.93l.46-1H17Zm-11.28-1h4.17l-.46,1H5.13Zm16.11-.1H18l-.35-.77h3.82Zm-5.33,0H11.43l.35-.77h4.77Zm-6.57,0H6.22L7,6.39h3.71Zm12,.1,1,1H18.5l-.45-1Zm-1.68-1.7.73.74H17.61l-.34-.74Zm-6.54,0h2.07l.33.74H11.82l.34-.74Zm-6.31,0h3.26l-.34.74H7.06Zm1.9,3.7,0,1.09h1V9.26h7v1.09h1l0-1.09h5.1V10.5h-19V9.26Zm-5,7V14.84h19v1.42Z" />
-      <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="16.38"
-        width="19"
-        height="1.31"
-      />
-      <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="19.2"
-        width="19"
-        height="1.31"
-      />
-      <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="17.79"
-        width="19"
-        height="1.31"
-      />
-      <rect
-        className="cls-3"
-        fill={ALL_COLOR.SUPPLY_CASE_THREE}
-        x="4.73"
-        y="20.62"
-        width="19"
-        height="1.42"
-      />
+      <path d="M20.8,7.38H7.11L3.46,11.09h0v9h21v-9h0ZM4.46,16.25h19v1.31h-19Zm19-.1h-19V14.84h19Zm-19-1.41V13.42h19v1.32Zm12.67-3.65H10.66l.46-1h5.56Zm-11.28-1H10l-.45,1H4.86ZM22,10H17.73l-.35-.78H21.2Zm-5.32,0H11.16l.36-.78h4.76Zm-6.57,0H6l.76-.78h3.71Zm12,.1,1,1H18.23l-.45-1ZM20.38,8.38l.73.75H17.34L17,8.38Zm-6.54,0h2.07l.33.75H11.55l.34-.75Zm-6.31,0h3.26l-.33.75H6.8Zm1.91,3.71,0,1.08h1V12.09h7v1.08h1l0-1.08h5.1v1.23h-19V12.09Zm-5,7V17.66h19v1.43Z" />
     </svg>
   );
 }

@@ -35,8 +35,15 @@ import ToolBox from "./svg/toolBox";
 import WeaponBox from "./svg/weaponBox";
 import WoodBox from "./svg/woodBox";
 import StationaryWeapon from "./svg/stationaryWeapon";
-import Etc from "./svg/etc";
-import Food from "./svg/food";
+import BlueKeyCard from "./svg/blueKeyCard";
+import BlackKeyCard from "./svg/blackKeyCard";
+import GreenKeyCard from "./svg/greenKeyCard";
+import MedItem from "./svg/medItem";
+import Provisions from "./svg/provisions";
+import RandomSpawn from "./svg/randomSpawn";
+import RedKeyCard from "./svg/redKeyCard";
+import VioletKeyCard from "./svg/violetKeyCard";
+import YellowKeyCard from "./svg/yellowKeyCard";
 
 const ItemSvg = {
   AmmoBox,
@@ -76,8 +83,15 @@ const ItemSvg = {
   WeaponBox,
   WoodBox,
   StationaryWeapon,
-  Etc,
-  Food,
+  Provisions,
+  BlueKeyCard,
+  BlackKeyCard,
+  GreenKeyCard,
+  MedItem,
+  RandomSpawn,
+  RedKeyCard,
+  VioletKeyCard,
+  YellowKeyCard,
 };
 
 export default ItemSvg;

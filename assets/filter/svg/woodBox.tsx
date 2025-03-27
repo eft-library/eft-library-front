@@ -1,7 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function WoodBox({ color, width, height, opacity, x, y }: SVG) {
+export default function WoodBox({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -14,94 +14,121 @@ export default function WoodBox({ color, width, height, opacity, x, y }: SVG) {
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
     >
-      <path
+      <polygon
+        fill={ALL_COLOR.GoldenOak}
         className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        d="M25.45,10.71,21.29,6.57H6.64L2.55,10.71h0V21h22.9V10.71h0Zm-1,.42v9h-21v-9h0l3.66-3.7H20.81l3.65,3.7Z"
+        points="21.38 6.26 20.64 5.52 17.27 5.52 17.61 6.26 21.38 6.26"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="21.12 9.17 20.39 8.43 17.01 8.43 17.35 9.17 21.12 9.17"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="23.31 8.22 22.32 7.22 18.04 7.22 18.5 8.22 23.31 8.22"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="23.05 11.13 22.07 10.13 17.79 10.13 18.24 11.13 23.05 11.13"
-      />
-      <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="17.74 10.03 21.97 10.03 21.2 9.26 17.39 9.26 17.74 10.03"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="18 7.12 22.23 7.12 21.46 6.35 17.64 6.35 18 7.12"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.WOOD_BOX_THREE}
-        x="4.46"
-        y="13.47"
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="10.56"
         width="19"
         height="1.31"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.WOOD_BOX_THREE}
-        x="4.46"
-        y="16.29"
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="13.38"
         width="19"
         height="1.31"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.WOOD_BOX_THREE}
-        x="4.46"
-        y="14.88"
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="11.97"
         width="19"
         height="1.31"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.WOOD_BOX_THREE}
-        x="4.46"
-        y="17.71"
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="14.8"
         width="19"
         height="1.42"
       />
       <polygon
-        className="cls-3"
-        fill={ALL_COLOR.WOOD_BOX_THREE}
-        points="23.46 13.37 23.46 12.13 18.37 12.13 18.39 13.21 17.39 13.21 17.39 12.13 10.42 12.13 10.42 13.21 9.42 13.21 9.44 12.13 4.46 12.13 4.46 13.37 23.46 13.37"
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        points="23.72 10.46 23.72 9.22 18.62 9.22 18.65 10.3 17.65 10.3 17.65 9.22 10.67 9.22 10.67 10.3 9.67 10.3 9.7 9.22 4.72 9.22 4.72 10.46 23.72 10.46"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="10.46 9.17 10.8 8.43 7.54 8.43 6.8 9.17 10.46 9.17"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="10.72 6.26 11.06 5.52 7.79 5.52 7.06 6.26 10.72 6.26"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="10.03 10.13 5.86 10.13 4.87 11.13 9.57 11.13 10.03 10.13"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="10.28 7.22 6.11 7.22 5.12 8.22 9.83 8.22 10.28 7.22"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="5.95 10.03 10.07 10.03 10.42 9.26 6.72 9.26 5.95 10.03"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="6.21 7.12 10.33 7.12 10.68 6.35 6.97 6.35 6.21 7.12"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="10.67 11.13 17.14 11.13 16.69 10.13 11.12 10.13 10.67 11.13"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="10.93 8.22 17.4 8.22 16.94 7.22 11.38 7.22 10.93 8.22"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="16.25 9.17 15.91 8.43 13.95 8.43 13.84 8.43 11.9 8.43 11.56 9.17 16.25 9.17"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="16.51 6.26 16.17 5.52 14.21 5.52 14.1 5.52 12.15 5.52 11.82 6.26 16.51 6.26"
       />
       <polygon
-        className="cls-2"
-        fill={ALL_COLOR.WOOD_BOX_TWO}
-        points="11.17 10.03 16.64 10.03 16.29 9.26 11.52 9.26 11.17 10.03"
+        fill={ALL_COLOR.GoldenOak}
+        className="cls-1"
+        points="11.43 7.12 16.9 7.12 16.55 6.35 11.78 6.35 11.43 7.12"
       />
-      <path d="M20.81,7.43H7.12l-3.66,3.7h0v9h21v-9h0ZM4.46,16.29h19v1.32h-19Zm19-.1h-19V14.88h19Zm-19-1.41V13.47h19v1.31Zm12.68-3.65H10.67l.45-1h5.57Zm-11.29-1H10l-.46,1H4.87ZM22,10H17.74l-.35-.77H21.2Zm-5.33,0H11.17l.35-.77h4.77Zm-6.57,0H6l.77-.77h3.7Zm12,.1,1,1H18.24l-.46-1Zm-1.68-1.7.73.74H17.35L17,8.43Zm-6.55,0h2.07l.34.74H11.56l.34-.74Zm-6.3,0H10.8l-.34.74H6.8Zm1.9,3.7,0,1.08h1V12.13h7v1.08h1l0-1.08h5.09v1.24h-19V12.13Zm-5,7V17.71h19v1.42Z" />
+      <path d="M21.07,4.52H7.37L3.72,8.22h0v15h21v-15h0ZM4.72,13.38h19V14.7h-19Zm19-.1h-19V12h19Zm-19-1.41V10.56h19v1.31ZM17.4,8.22H10.93l.45-1h5.56Zm-11.29-1h4.17l-.45,1H5.12Zm16.12-.1H18l-.36-.77h3.82Zm-5.33,0H11.43l.35-.77h4.77Zm-6.57,0H6.21L7,6.35h3.71Zm12,.1,1,1H18.49l-.45-1Zm-1.68-1.7.74.74H17.61l-.34-.74Zm-6.54,0h2.07l.34.74H11.82l.33-.74Zm-6.31,0h3.27l-.34.74H7.06ZM9.7,9.22l0,1.09h1V9.22h7v1.09h1l0-1.09h5.1v1.24h-19V9.22Zm-5,7V14.8h19v1.42Z" />
+      <rect
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="16.33"
+        width="19"
+        height="1.31"
+      />
+      <rect
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="19.16"
+        width="19"
+        height="1.31"
+      />
+      <rect
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="17.75"
+        width="19"
+        height="1.31"
+      />
+      <rect
+        fill={ALL_COLOR.ChestnutBrown}
+        className="cls-2"
+        x="4.72"
+        y="20.57"
+        width="19"
+        height="1.42"
+      />
     </svg>
   );
 }

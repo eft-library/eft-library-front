@@ -1,7 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function Drawers({ color, width, height, opacity, x, y }: SVG) {
+export default function Drawers({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -14,39 +14,31 @@ export default function Drawers({ color, width, height, opacity, x, y }: SVG) {
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
     >
-      <rect
+      <path
+        fill={ALL_COLOR.StormyBlue}
         className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        x="7.08"
-        y="1.02"
-        width="14"
-        height="26"
+        d="M9.1,13.13h10V8.63H9.1ZM13,9.07H15.3v1H13Z"
       />
       <path
-        className="cls-2"
-        fill={ALL_COLOR.DRAWERS_TWO}
-        d="M9.1,13.17h10V8.67H9.1ZM13,9.11h2.32v1H13Z"
+        fill={ALL_COLOR.StormyBlue}
+        className="cls-1"
+        d="M9.1,18.91h10V14.13H9.1ZM13,14.54H15.3v1H13Z"
       />
       <path
-        className="cls-2"
-        fill={ALL_COLOR.DRAWERS_TWO}
-        d="M9.1,19h10V14.17H9.1ZM13,14.58h2.32v1H13Z"
+        fill={ALL_COLOR.StormyBlue}
+        className="cls-1"
+        d="M9.1,25h10V19.91H9.1ZM13,20.4H15.3v1H13Z"
       />
       <path
-        className="cls-2"
-        fill={ALL_COLOR.DRAWERS_TWO}
-        d="M9.1,25h10V20H9.1ZM13,20.44h2.32v1H13Z"
+        fill={ALL_COLOR.StormyBlue}
+        className="cls-1"
+        d="M9.1,7.63h10V3H9.1ZM13,3.46H15.3v1H13Z"
       />
-      <path
-        className="cls-2"
-        fill={ALL_COLOR.DRAWERS_TWO}
-        d="M9.1,7.67h10V3H9.1ZM13,3.5h2.32v1H13Z"
-      />
-      <path d="M8.1,2V26h12V2Zm11,23H9.1V20h10Zm0-6.07H9.1V14.17h10Zm0-5.78H9.1V8.67h10Zm0-5.5H9.1V3h10Z" />
-      <rect x="12.99" y="3.5" width="2.31" height="1" />
-      <rect x="12.99" y="9.11" width="2.31" height="1" />
-      <rect x="12.99" y="14.58" width="2.31" height="1" />
-      <rect x="12.99" y="20.44" width="2.31" height="1" />
+      <path d="M8.1,2V26h12V2Zm11,23H9.1V19.91h10Zm0-6.07H9.1V14.13h10Zm0-5.78H9.1V8.63h10Zm0-5.5H9.1V3h10Z" />
+      <rect x="12.99" y="3.46" width="2.31" height="1" />
+      <rect x="12.99" y="9.07" width="2.31" height="1" />
+      <rect x="12.99" y="14.54" width="2.31" height="1" />
+      <rect x="12.99" y="20.4" width="2.31" height="1" />
     </svg>
   );
 }

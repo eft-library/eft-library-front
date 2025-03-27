@@ -1,14 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function PmcExtraction({
-  color,
-  width,
-  height,
-  opacity,
-  x,
-  y,
-}: SVG) {
+export default function PmcExtraction({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -22,17 +15,12 @@ export default function PmcExtraction({
       opacity={opacity ? opacity : "1"}
     >
       <path
+        fill={ALL_COLOR.CrystalBlue}
         className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        d="M1.9,9.93A8,8,0,0,1,10,2,8,8,0,0,1,18,9.93C18,14.31,10,25,10,25S1.9,14.31,1.9,9.93Z"
+        d="M3,9.85A7,7,0,0,1,10,3a7,7,0,0,1,7,6.89C17,13.66,10,23,10,23S3,13.66,3,9.85Z"
       />
-      <path
-        className="cls-2"
-        fill={ALL_COLOR.PMC_EXTRACTION_TWO}
-        d="M3,9.9A7,7,0,0,1,10,3a7,7,0,0,1,7,6.9C17,13.71,10,23,10,23S3,13.71,3,9.9Z"
-      />
-      <path d="M10,4a6,6,0,0,1,6,5.9c0,2.5-3.8,8.33-6,11.41C7.8,18.23,4,12.4,4,9.9A6,6,0,0,1,10,4m0-1A7,7,0,0,0,3,9.9C3,13.71,10,23,10,23s7-9.29,7-13.1A7,7,0,0,0,10,3Z" />
-      <circle cx="10" cy="9.73" r="1.5" />
+      <path d="M10,4a6,6,0,0,1,6,5.89c0,2.51-3.8,8.34-6,11.42-2.2-3.08-6-8.91-6-11.42A6,6,0,0,1,10,4m0-1A7,7,0,0,0,3,9.85C3,13.66,10,23,10,23s7-9.3,7-13.11A7,7,0,0,0,10,3Z" />
+      <circle cx="9.99" cy="9.69" r="1.5" />
     </svg>
   );
 }

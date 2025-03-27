@@ -1,7 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function Suitcase({ color, width, height, opacity, x, y }: SVG) {
+export default function Suitcase({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -14,119 +14,70 @@ export default function Suitcase({ color, width, height, opacity, x, y }: SVG) {
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
     >
-      <path
-        className="cls-1"
-        fill={ALL_COLOR.SUITCASE_ONE}
-        d="M11.11,24.15a.91.91,0,0,1-1.82,0"
-      />
-      <path
-        className="cls-1"
-        fill={ALL_COLOR.SUITCASE_ONE}
-        d="M18.7,24.15a.91.91,0,0,1-1.82,0"
-      />
       <rect
+        fill="none"
+        className="cls-1"
+        x="12.34"
+        y="4.97"
+        width="3.33"
+        height="2.29"
+      />
+      <path
+        fill={ALL_COLOR.RoyalViolet}
         className="cls-2"
-        fill={ALL_COLOR.SUITCASE_TWO}
-        x="7.82"
-        y="8.08"
-        width="12.36"
-        height="15.6"
-      />
-      <rect
-        className="cls-3"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="7.82"
-        y="8.08"
-        width="12.36"
-        height="15.6"
-        rx="0.65"
-      />
-      <rect
-        className="cls-3"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="11.28"
-        y="3.57"
-        width="5.49"
-        height="4.51"
-      />
-      <rect
-        className="cls-3"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="11.28"
-        y="2.94"
-        width="5.49"
-        height="0.63"
-      />
-      <rect
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="9.33"
-        y="9.75"
-        width="9.4"
-        height="2.11"
-        rx="0.37"
-      />
-      <rect
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="9.33"
-        y="13.02"
-        width="9.4"
-        height="2.11"
-        rx="0.37"
-      />
-      <rect
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="9.33"
-        y="16.45"
-        width="9.4"
-        height="2.11"
-        rx="0.37"
-      />
-      <rect
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        x="9.33"
-        y="19.89"
-        width="9.4"
-        height="2.11"
-        rx="0.37"
+        d="M10.19,25.1a.65.65,0,0,0,.65-.63H9.53A.66.66,0,0,0,10.19,25.1Z"
       />
       <path
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        d="M11.11,24.15a.91.91,0,0,1-1.82,0"
+        fill={ALL_COLOR.RoyalViolet}
+        className="cls-2"
+        d="M17.78,25.1a.67.67,0,0,0,.66-.63H17.12A.67.67,0,0,0,17.78,25.1Z"
+      />
+      <rect
+        fill={ALL_COLOR.LavenderMist}
+        className="cls-3"
+        x="9.57"
+        y="20.44"
+        width="8.9"
+        height="1.61"
+        rx="0.12"
       />
       <path
-        className="cls-4"
-        strokeWidth="0.5px"
-        stroke={ALL_COLOR.SUITCASE_THREE}
-        strokeMiterlimit={10}
-        fill="none"
-        d="M18.7,24.15a.91.91,0,0,1-1.82,0"
+        fill={ALL_COLOR.LavenderMist}
+        className="cls-3"
+        d="M19.52,8.87H8.46A.15.15,0,0,0,8.31,9v14.3a.15.15,0,0,0,.15.15H19.52a.15.15,0,0,0,.15-.15V9A.15.15,0,0,0,19.52,8.87ZM19,21.93a.62.62,0,0,1-.62.62H9.69a.62.62,0,0,1-.62-.62V20.56a.62.62,0,0,1,.62-.62h8.66a.62.62,0,0,1,.62.62Zm0-3.45a.62.62,0,0,1-.62.62H9.69a.62.62,0,0,1-.62-.62V17.11a.62.62,0,0,1,.62-.62h8.66a.62.62,0,0,1,.62.62Zm0-3.42a.62.62,0,0,1-.62.62H9.69a.62.62,0,0,1-.62-.62V13.69a.62.62,0,0,1,.62-.62h8.66a.62.62,0,0,1,.62.62Zm0-3.28a.62.62,0,0,1-.62.62H9.69a.62.62,0,0,1-.62-.62V10.41a.62.62,0,0,1,.62-.62h8.66a.62.62,0,0,1,.62.62Z"
       />
+      <rect
+        fill={ALL_COLOR.LavenderMist}
+        className="cls-3"
+        x="9.57"
+        y="16.99"
+        width="8.9"
+        height="1.61"
+        rx="0.12"
+      />
+      <rect
+        fill={ALL_COLOR.LavenderMist}
+        className="cls-3"
+        x="9.57"
+        y="13.57"
+        width="8.9"
+        height="1.61"
+        rx="0.12"
+      />
+      <rect
+        fill={ALL_COLOR.LavenderMist}
+        className="cls-3"
+        x="9.57"
+        y="10.29"
+        width="8.9"
+        height="1.61"
+        rx="0.12"
+      />
+      <path d="M18.35,9.79H9.69a.62.62,0,0,0-.62.62v1.37a.62.62,0,0,0,.62.62h8.66a.62.62,0,0,0,.62-.62V10.41A.62.62,0,0,0,18.35,9.79Zm.12,2a.12.12,0,0,1-.12.12H9.69a.12.12,0,0,1-.12-.12V10.41a.12.12,0,0,1,.12-.12h8.66a.12.12,0,0,1,.12.12Z" />
+      <path d="M18.35,13.07H9.69a.62.62,0,0,0-.62.62v1.37a.62.62,0,0,0,.62.62h8.66a.62.62,0,0,0,.62-.62V13.69A.62.62,0,0,0,18.35,13.07Zm.12,2a.13.13,0,0,1-.12.12H9.69a.12.12,0,0,1-.12-.12V13.69a.12.12,0,0,1,.12-.12h8.66a.12.12,0,0,1,.12.12Z" />
+      <path d="M18.35,16.49H9.69a.62.62,0,0,0-.62.62v1.37a.62.62,0,0,0,.62.62h8.66a.62.62,0,0,0,.62-.62V17.11A.62.62,0,0,0,18.35,16.49Zm.12,2a.12.12,0,0,1-.12.12H9.69a.12.12,0,0,1-.12-.12V17.11A.12.12,0,0,1,9.69,17h8.66a.12.12,0,0,1,.12.12Z" />
+      <path d="M18.35,19.94H9.69a.62.62,0,0,0-.62.62v1.37a.62.62,0,0,0,.62.62h8.66a.62.62,0,0,0,.62-.62V20.56A.62.62,0,0,0,18.35,19.94Zm.12,2a.13.13,0,0,1-.12.12H9.69a.12.12,0,0,1-.12-.12V20.56a.12.12,0,0,1,.12-.12h8.66a.12.12,0,0,1,.12.12Z" />
+      <path d="M19.52,7.87H17.26V2.73H10.77V7.87H8.46A1.15,1.15,0,0,0,7.31,9v14.3a1.16,1.16,0,0,0,1.15,1.15H9a1.16,1.16,0,0,0,1.16,1.13,1.15,1.15,0,0,0,1.15-1.13h5.28a1.16,1.16,0,0,0,2.32,0h.58a1.16,1.16,0,0,0,1.15-1.15V9A1.15,1.15,0,0,0,19.52,7.87ZM11.77,4.36h4.49V7.87H11.77ZM10.19,25.1a.66.66,0,0,1-.66-.63h1.31A.65.65,0,0,1,10.19,25.1Zm7.59,0a.67.67,0,0,1-.66-.63h1.32A.67.67,0,0,1,17.78,25.1Zm1.89-1.78a.15.15,0,0,1-.15.15H8.46a.15.15,0,0,1-.15-.15V9a.15.15,0,0,1,.15-.15H19.52a.15.15,0,0,1,.15.15Z" />
     </svg>
   );
 }

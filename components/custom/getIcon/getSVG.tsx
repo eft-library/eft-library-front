@@ -53,6 +53,15 @@ const svgComponents = {
   TOOL_BOX: ItemSvg.ToolBox,
   WEAPON_BOX: ItemSvg.WeaponBox,
   WOOD_BOX: ItemSvg.WoodBox,
+  PROVISIONS: ItemSvg.Provisions,
+  BLUE_KEY_CARD: ItemSvg.BlueKeyCard,
+  BLACK_KEY_CARD: ItemSvg.BlackKeyCard,
+  GREEN_KEY_CARD: ItemSvg.GreenKeyCard,
+  MED_ITEM: ItemSvg.MedItem,
+  RANDOM_SPAWN: ItemSvg.RandomSpawn,
+  RED_KEY_CARD: ItemSvg.RedKeyCard,
+  VIOLET_KEY_CARD: ItemSvg.VioletKeyCard,
+  YELLOW_KEY_CARD: ItemSvg.YellowKeyCard,
 };
 
 export const ItemSVG = ({ x, y, svgValue, isEnable }: DynamicSVG) => {

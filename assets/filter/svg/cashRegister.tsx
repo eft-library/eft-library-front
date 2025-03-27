@@ -1,14 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function CashRegister({
-  color,
-  width,
-  height,
-  opacity,
-  x,
-  y,
-}: SVG) {
+export default function CashRegister({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -21,62 +14,57 @@ export default function CashRegister({
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
     >
-      <path
-        className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        d="M22.41,10.51V3.4H14.48V6.68h-9v3.83L3,19.22v4.92H25V19.22ZM24,23.22H4v-4H4l2.48-8.64V7.51H16.61V6.9H15.36V4.25h6.09V6.9H20v.61h1.41v3.42L24,19.22h0Z"
-      />
       <rect
-        className="cls-2"
-        fill={ALL_COLOR.CASH_REGISTER_TWO}
-        x="16.36"
-        y="5.25"
+        fill={ALL_COLOR.SteelBlue}
+        className="cls-1"
+        x="16.35"
+        y="5.21"
         width="4.09"
         height="0.65"
       />
       <rect
-        className="cls-3"
-        fill={ALL_COLOR.CASH_REGISTER_THREE}
-        x="17.61"
-        y="6.9"
+        fill={ALL_COLOR.CloudMist}
+        className="cls-2"
+        x="17.6"
+        y="6.86"
         width="1.44"
         height="0.6"
       />
       <path
-        className="cls-4"
-        fill={ALL_COLOR.CASH_REGISTER_FOUR}
-        d="M5,22.22H23v-2H5Zm9-1.6a.54.54,0,0,1,0,1.07.54.54,0,0,1,0-1.07Z"
+        fill={ALL_COLOR.SlateWave}
+        className="cls-3"
+        d="M5,22.18H23v-2H5Zm9-1.6a.53.53,0,0,1,.53.53.54.54,0,1,1-.53-.53Z"
       />
       <rect
-        className="cls-2"
-        fill={ALL_COLOR.CASH_REGISTER_TWO}
+        fill={ALL_COLOR.SteelBlue}
+        className="cls-1"
         x="7.45"
-        y="8.51"
+        y="8.46"
         width="13"
         height="2"
       />
       <path
-        className="cls-3"
-        fill={ALL_COLOR.CASH_REGISTER_THREE}
-        d="M20.58,11.51H7.23L5,19.22H22.9Zm-6.33,1.63h1.43l.09,1H14.25Zm0,1.85h1.61l.1,1H14.23Zm-1,2.85H6.92l1.34-4.7h5.19Zm1,0v-1H16l.1,1Zm2.48-4.7h1.38l.2,1H16.8ZM16.89,15h1.53l.19,1H17Zm.34,2.85-.12-1h1.66l.2,1Zm1.69-4.7h1.36l.31,1h-1.4Zm.5,1.85h1.43l.29,1H19.7Zm.46,1.83h1.53l.3,1H20.15Z"
+        fill={ALL_COLOR.CloudMist}
+        className="cls-2"
+        d="M20.57,11.46H7.22L5,19.18H22.9ZM14.24,13.1h1.43l.1,1H14.24Zm0,1.85h1.62l.09,1H14.22Zm-1,2.85H6.91l1.35-4.7h5.19Zm1,0v-1H16l.11,1Zm2.47-4.69h1.39l.19,1H16.79ZM16.88,15h1.54l.19,1H17Zm.35,2.84-.13-1h1.67l.19,1Zm1.68-4.69h1.36l.31,1h-1.4ZM19.42,15h1.42l.3,1H19.69Zm.45,1.83H21.4l.31,1H20.14Z"
       />
       <polygon
-        className="cls-3"
-        fill={ALL_COLOR.CASH_REGISTER_THREE}
-        points="12.28 16.84 12.41 14.14 9.02 14.14 8.24 16.84 12.28 16.84"
+        fill={ALL_COLOR.CloudMist}
+        className="cls-2"
+        points="12.28 16.8 12.4 14.1 9.01 14.1 8.24 16.8 12.28 16.8"
       />
-      <path d="M21.45,10.93V7.51H20V6.9h1.41V4.25H15.36V6.9h1.25v.61H6.45v3.07L4,19.22H4v4H24v-4h0Zm-5.09-5V5.25h4.09V5.9ZM19,6.9v.61H17.61V6.9ZM7.45,8.51h13v2h-13Zm-.22,3H20.58l2.32,7.71H5ZM23,22.22H5v-2H23Z" />
-      <polygon points="15.68 13.14 14.25 13.14 14.25 14.14 15.77 14.14 15.68 13.14" />
-      <polygon points="18.06 13.14 16.68 13.14 16.8 14.14 18.26 14.14 18.06 13.14" />
-      <polygon points="20.28 13.14 18.92 13.14 19.19 14.14 20.59 14.14 20.28 13.14" />
-      <polygon points="14.21 16.82 14.2 17.84 16.13 17.84 16.03 16.82 14.21 16.82" />
-      <polygon points="17.11 16.82 17.23 17.84 18.97 17.84 18.77 16.82 17.11 16.82" />
-      <polygon points="21.41 16.82 19.88 16.82 20.15 17.84 21.71 17.84 21.41 16.82" />
-      <polygon points="15.85 14.99 14.23 14.99 14.23 15.98 15.95 15.98 15.85 14.99" />
-      <polygon points="18.42 14.99 16.89 14.99 17.01 15.98 18.61 15.98 18.42 14.99" />
-      <polygon points="20.85 14.99 19.43 14.99 19.7 15.98 21.14 15.98 20.85 14.99" />
-      <path d="M6.92,17.84h6.32l.21-4.7H8.26Zm5.49-3.7-.13,2.7h-4L9,14.14Z" />
-      <path d="M14,21.69a.54.54,0,1,0-.53-.54A.54.54,0,0,0,14,21.69Z" />
+      <path d="M21.45,10.89V7.46H20v-.6h1.41V4.21h-6.1V6.86H16.6v.6H6.45v3.08L4,19.18H4v4H24v-4h0Zm-5.1-5V5.21h4.1v.65Zm2.69,1v.6H17.6v-.6ZM7.45,8.46h13v2h-13Zm-.23,3H20.57l2.33,7.72H5ZM23,22.18H5v-2H23Z" />
+      <polygon points="15.67 13.1 14.24 13.1 14.24 14.1 15.77 14.1 15.67 13.1" />
+      <polygon points="18.06 13.1 16.67 13.1 16.79 14.1 18.25 14.1 18.06 13.1" />
+      <polygon points="20.27 13.1 18.91 13.1 19.18 14.1 20.58 14.1 20.27 13.1" />
+      <polygon points="14.21 16.78 14.2 17.79 16.13 17.79 16.02 16.78 14.21 16.78" />
+      <polygon points="17.1 16.78 17.23 17.79 18.96 17.79 18.77 16.78 17.1 16.78" />
+      <polygon points="21.4 16.78 19.87 16.78 20.14 17.79 21.71 17.79 21.4 16.78" />
+      <polygon points="15.85 14.95 14.23 14.95 14.22 15.94 15.94 15.94 15.85 14.95" />
+      <polygon points="18.41 14.95 16.88 14.95 17.01 15.94 18.61 15.94 18.41 14.95" />
+      <polygon points="20.84 14.95 19.42 14.95 19.69 15.94 21.14 15.94 20.84 14.95" />
+      <path d="M6.91,17.8h6.32l.22-4.7H8.26Zm5.49-3.7-.12,2.7h-4L9,14.1Z" />
+      <path d="M14,21.64a.53.53,0,0,0,.53-.53.54.54,0,0,0-1.07,0A.54.54,0,0,0,14,21.64Z" />
     </svg>
   );
 }

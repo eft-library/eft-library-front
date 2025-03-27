@@ -1,56 +1,51 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function Etc({ color, width, height, opacity, x, y }: SVG) {
+export default function RandomSpawn({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
       data-name="Layer 2"
+      xmlns="http://www.w3.org/2000/svg"
       x={x ? x : "0px"}
       y={y ? y : "0px"}
       width={width ? width : "20px"}
       height={height ? height : "20px"}
       opacity={opacity ? opacity : "1"}
-      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 28 28"
     >
       <rect
+        fill={ALL_COLOR.PureWhite}
         className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        x="7.37"
-        y="7.51"
+        x="7.36"
+        y="7.47"
         width="6.34"
         height="6.34"
       />
-      <path d="M6.87,7V21.18H21V7H6.87ZM13.71,20.7H7.37V14.35h6.34ZM7.37,13.85V7.51h6.34v6.34ZM20.56,20.7H14.21V14.35h6.35ZM14.21,7.51h6.35v6.34H14.21Z" />
+      <path d="M6.86,7V21.14H21V7H6.86ZM13.7,20.65H7.36V14.31H13.7ZM7.36,13.81V7.47H13.7v6.34Zm13.19,6.84H14.21V14.31h6.34ZM14.21,7.47h6.34v6.34H14.21Z" />
       <rect
+        fill={ALL_COLOR.ScarletRed}
         className="cls-2"
-        fill={ALL_COLOR.ETC_TWO}
         x="14.21"
-        y="7.51"
+        y="7.47"
         width="6.34"
         height="6.34"
       />
       <rect
+        fill={ALL_COLOR.ElectricBlue}
         className="cls-3"
-        fill={ALL_COLOR.ETC_THREE}
-        x="7.37"
-        y="14.35"
+        x="7.36"
+        y="14.31"
         width="6.34"
         height="6.34"
       />
       <rect
+        fill={ALL_COLOR.LemonYellow}
         className="cls-4"
-        fill={ALL_COLOR.ETC_FOUR}
         x="14.21"
-        y="14.35"
+        y="14.31"
         width="6.34"
         height="6.34"
-      />
-      <path
-        className="cls-1"
-        fill={ALL_COLOR.WHITE}
-        d="M21,6.53H6.37V21.68H21.53V6.53Zm0,7.32v7.33H6.87V7H21Z"
       />
     </svg>
   );

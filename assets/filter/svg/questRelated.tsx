@@ -1,14 +1,7 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { SVG } from "@/assets/assetTypes";
 
-export default function QuestRelated({
-  color,
-  width,
-  height,
-  opacity,
-  x,
-  y,
-}: SVG) {
+export default function QuestRelated({ width, height, opacity, x, y }: SVG) {
   return (
     <svg
       id="Layer_2"
@@ -22,39 +15,26 @@ export default function QuestRelated({
       opacity={opacity ? opacity : "1"}
     >
       <path
+        fill={ALL_COLOR.NeonGreen}
         className="cls-1"
-        fill={ALL_COLOR.QUEST_RELATED_ONE}
-        d="M13.63,23.34c-4.56,0-8.28-4.29-8.28-9.57S9.07,4.2,13.63,4.2s8.28,4.29,8.28,9.57S18.2,23.34,13.63,23.34Zm0-17.15c-3.46,0-6,3.4-6,7.58s2.53,7.57,6,7.57,6-3.52,6-7.7S17.09,6.19,13.63,6.19Z"
+        d="M22.7,5.64H5.28V23.06H22.7Zm-.94,16.48H6.23V6.59H21.76Z"
       />
-      <ellipse
+      <path
+        fill={ALL_COLOR.LightSilver}
         className="cls-2"
-        fill={ALL_COLOR.QUEST_RELATED_TWO}
-        strokeMiterlimit={10}
-        strokeWidth={0.5}
-        cx="13.62"
-        cy="13.78"
-        rx="8.49"
-        ry="9.81"
+        d="M21.51,6.84h-15v15h15Zm-2.33,4.55c-.82,2.06-3.83,7.36-6,7.66h-.25c-2.49,0-4.06-4-4.08-4a1.28,1.28,0,0,1,.57-1.61,1.07,1.07,0,0,1,.49-.12,1.16,1.16,0,0,1,1.07.76c.59,1.54,1.52,2.53,1.88,2.53s2.72-2.32,4.26-6.17a1.09,1.09,0,0,1,1.56-.63A1.29,1.29,0,0,1,19.18,11.39Z"
       />
-      <ellipse
-        className="cls-2"
-        fill={ALL_COLOR.QUEST_RELATED_TWO}
-        strokeMiterlimit={10}
-        strokeWidth={0.5}
-        cx="13.63"
-        cy="13.77"
-        rx="5.99"
-        ry="7.36"
-      />
-      <path d="M15,18.33l5.75,5,2-2.26-5.75-5ZM22,21.11l-1.37,1.58-5-4.39L17,16.72Z" />
-      <rect
+      <path d="M6.23,22.12H21.76V6.59H6.23ZM6.48,6.84h15v15h-15Z" />
+      <path
+        fill={ALL_COLOR.NeonGreen}
         className="cls-1"
-        fill={ALL_COLOR.QUEST_RELATED_ONE}
-        x="17.77"
-        y="16.37"
-        width="2.1"
-        height="6.68"
-        transform="translate(-8.4 20.94) rotate(-48.91)"
+        d="M18.39,10.21a.52.52,0,0,0-.27-.07.65.65,0,0,0-.59.44c-1.57,3.93-3.94,6.35-4.62,6.48h-.07c-.74,0-1.79-1.31-2.38-2.85a.62.62,0,0,0-.86-.38.79.79,0,0,0-.33,1c.3.78,1.72,3.73,3.61,3.73h.18c1.77-.23,4.67-4.87,5.66-7.34A.81.81,0,0,0,18.39,10.21Z"
+      />
+      <path d="M5,23.31H23V5.39H5ZM5.28,5.64H22.7V23.06H5.28Z" />
+      <path
+        fill={ALL_COLOR.EbonyShade}
+        className="cls-3"
+        d="M18.63,9.77a1.09,1.09,0,0,0-1.56.63c-1.54,3.85-3.79,6-4.26,6.17s-1.29-1-1.88-2.53a1.16,1.16,0,0,0-1.07-.76,1.07,1.07,0,0,0-.49.12A1.28,1.28,0,0,0,8.8,15s1.59,4,4.08,4h.25c2.22-.3,5.23-5.6,6-7.66A1.29,1.29,0,0,0,18.63,9.77Zm.09,1.44c-1,2.47-3.89,7.11-5.66,7.34h-.18c-1.89,0-3.31-2.95-3.61-3.73a.79.79,0,0,1,.33-1,.62.62,0,0,1,.86.38c.59,1.54,1.64,2.85,2.38,2.85h.07c.68-.13,3.05-2.55,4.62-6.48a.65.65,0,0,1,.59-.44.52.52,0,0,1,.27.07A.81.81,0,0,1,18.72,11.21Z"
       />
     </svg>
   );
