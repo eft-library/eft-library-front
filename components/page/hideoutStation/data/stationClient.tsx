@@ -10,6 +10,7 @@ import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import DefaultAlert from "@/components/custom/alert/defaultAlert";
 import Loading from "@/components/custom/loading/loading";
+import { Button } from "@/components/ui/button";
 
 export default function StationClient({ hideoutData }: StationClient) {
   const { data: session } = useSession();
@@ -132,6 +133,37 @@ export default function StationClient({ hideoutData }: StationClient) {
     }
   };
 
+  const onClickReset = async () => {
+    setLoading(true);
+    const response = await requestUserData(
+      USER_API_ENDPOINTS.UPDATE_STATION,
+      { complete_list: [] },
+      session
+    );
+    setLoading(false);
+    if (!response) return;
+
+    setMaster("5d484fe3654e76006657e0ac-1");
+    setLevel("5d484fe3654e76006657e0ac-1");
+    if (response.status === 200) {
+      setCompleteList([]);
+      setAlertDesc("저장 되었습니다.");
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+      setLoading(false);
+    } else {
+      setCompleteList([]);
+      setAlertDesc("로그인을 다시 해주세요.");
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+      setLoading(false);
+      signOut();
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="w-full flex flex-col">
       {isLoading && <Loading />}
@@ -146,6 +178,16 @@ export default function StationClient({ hideoutData }: StationClient) {
           hideoutData={hideoutData}
           onChangeLevel={setLevel}
         />
+        {session && session.email && (
+          <div className="w-[100px] absolute bottom-20 left-0">
+            <Button
+              onClick={() => onClickReset()}
+              className="rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
+            >
+              은신처 초기화
+            </Button>
+          </div>
+        )}
       </div>
       <StationDetail
         levelId={level}
