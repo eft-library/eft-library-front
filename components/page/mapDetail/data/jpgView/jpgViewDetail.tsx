@@ -1,7 +1,6 @@
 "use client";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { ItemJPG } from "@/components/custom/getIcon/getJPG";
 import { formatImage } from "@/lib/func/formatImage";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import type {
 } from "@/components/page/mapDetail/data/mapType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { ItemSVG } from "@/components/custom/getIcon/getSVG";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
   const transformWrapperRef = useRef(null);
@@ -90,11 +90,12 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
                       key={`${item.x}-${index}`}
                       cursor={"pointer"}
                     >
-                      <ItemJPG
+                      <ItemSVG
                         svgValue={item.childValue}
                         x={item.x}
                         y={item.y}
                         scale={1 / scale}
+                        isEnable={true}
                       />
                     </g>
                   )
