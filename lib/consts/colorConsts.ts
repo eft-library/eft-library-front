@@ -78,7 +78,11 @@ export const ALL_COLOR = {
   CrimsonRose: "#b94546",
   LavenderPurple: "#9060a8",
   LemonChiffon: "#f1e25c",
+
+  CASH_REGISTER_THREE: "#c5d1ea",
+
   QUEST_RELATED_ONE: "#7fd14a",
+
   ASH_GRAY: "#807F7B",
   SAND_BEIGE: "#C8A68C",
   BURNT_SIENNA: "#D68B5E",
