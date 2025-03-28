@@ -67,22 +67,6 @@ export interface BossHealth {
   subFollowers: Followers[];
 }
 
-export interface BossSelectorClient {
-  bossType: BossType;
-}
-
-interface BossType {
-  id: string;
-  json_value: BossJson[];
-}
-
-interface BossJson {
-  id: string;
-  link: string;
-  order: number;
-  name_kr: string;
-}
-
 export interface FollowerLoot {
   follower: Followers;
 }

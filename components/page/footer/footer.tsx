@@ -1,19 +1,147 @@
-"use server";
+"use client";
 
-import { requestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
-import FooterClient from "./footerClient";
+import Link from "next/link";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { FooterSVG } from "../../custom/getIcon/getSVG";
+import TextSpan from "../../custom/gridContents/textSpan";
 
-export default async function Footer() {
-  const data = await requestData(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.footer}`
+export default function Footer() {
+  const footerColumn = {
+    icon: [
+      {
+        link: "https://chzzk.naver.com/9f015658fd7b36976be2e849ac14f197",
+        name: "HJ",
+      },
+      { link: "https://github.com/eft-library", name: "SY" },
+      { link: "https://discord.gg/U39nmwB4ba", name: "JY" },
+    ],
+    text: [
+      { value: "문의: tarkovlibrary@gmail.com" },
+      { value: "Handcrafted Tarkov maps are Copyright 2024. TKL." },
+      {
+        value:
+          "Game content and materials are trademarks and copyrights of Battlestate Games and its licensors. All rights reserved.",
+      },
+    ],
+  };
+  return (
+    <div className="bg-cover bg-Background bg-center flex flex-col items-center justify-center w-full h-auto pt-10">
+      <div className="grid grid-cols-4 gap-16">
+        <div className="col-span-3">
+          <div className="flex flex-col justify-center">
+            <div className="flex m-1">
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link
+                  href="https://eftlibrary.com/privacy-policy-kr"
+                  target="_blank"
+                >
+                  개인정보처리방침&nbsp;
+                </Link>
+              </TextSpan>
+
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link
+                  href="https://eftlibrary.com/privacy-policy-en"
+                  target="_blank"
+                >
+                  (Privacy Policy), &nbsp;
+                </Link>
+              </TextSpan>
+
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link href="https://eftlibrary.com/terms" target="_blank">
+                  이용 약관
+                </Link>
+              </TextSpan>
+            </div>
+            {footerColumn.text.map((item) => (
+              <span key={item.value} className="text-white m-1 font-bold">
+                {item.value}
+              </span>
+            ))}
+            <div className="flex m-1">
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link href="https://eftlibrary.com/" target="_blank">
+                  EFT Library
+                </Link>
+              </TextSpan>
+              <TextSpan isCenter={false}>
+                &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
+              </TextSpan>
+              <TextSpan
+                isCursor
+                textColor="SunsetYellow"
+                hoverColor="CreamYellow"
+              >
+                <Link
+                  href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
+                  target="_blank"
+                  rel="license noopener noreferrer"
+                >
+                  CC BY-NC-ND 4.0
+                </Link>
+              </TextSpan>
+            </div>
+            <Link
+              href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
+              target="_blank"
+              rel="license noopener noreferrer"
+              style={{ display: "inline-block", width: "146px" }}
+            >
+              <Image
+                src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
+                alt="ND"
+                priority
+                width={142}
+                height={50}
+                style={{ width: "auto", height: "auto" }}
+                placeholder="blur"
+                blurDataURL={
+                  "data:image/jpeg;base64," +
+                  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                }
+              />
+            </Link>
+          </div>
+        </div>
+        <div className="col-span-1">
+          <div className="flex flex-col m-1">
+            <span className="text-white m-1 font-bold">
+              Team TKL - HJ, SY, JY
+            </span>
+            <div className="flex">
+              {footerColumn.icon.map((item, index) => {
+                return (
+                  <div
+                    key={item.name}
+                    className={cn("cursor-pointer", { "ml-4": index !== 0 })}
+                    onClick={() => window.open(item.link, "_blank")}
+                  >
+                    <FooterSVG svgValue={item.name} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-
-  if (!data || data.status !== 200) {
-    console.error("Failed to fetch footer data:", data?.msg || "Unknown error");
-    return null;
-  }
-
-  return <FooterClient footerData={data.data} />;
 }

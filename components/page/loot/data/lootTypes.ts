@@ -1,18 +1,3 @@
-export interface LootSelectorClient {
-  lootType: LootType;
-}
-
-interface LootType {
-  id: string;
-  json_value: LootJson[];
-}
-
-interface LootJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
-
 export interface LootClient {
   lootList: Loot[];
 }

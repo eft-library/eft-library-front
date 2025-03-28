@@ -1,6 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetMedical from "./data/getMedical";
-import GetMedicalSelector from "@/components/page/medical/data/medicalSelector";
+import MedicalSelectorClient from "./data/medicalSelectorClient";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetColumn from "@/components/custom/getColumn/getColumn";
 import AdBanner from "../../custom/adsense/adBanner";
@@ -16,7 +16,7 @@ export default function Medical() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetMedicalSelector />
+      <MedicalSelectorClient />
       <GetColumn columnDesign={10} columnKey={COLUMN_KEY.medical} isMedical />
       <GetMedical medicalType="Drug" />
       <GetMedical medicalType="Stimulant" />

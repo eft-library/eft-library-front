@@ -44,18 +44,3 @@ export interface Effect {
   duration?: number;
   skillName: string;
 }
-
-export interface MedicalSelectorClient {
-  medicalType: MedicalType;
-}
-
-interface MedicalType {
-  id: string;
-  json_value: MedicalJson[];
-}
-
-interface MedicalJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}

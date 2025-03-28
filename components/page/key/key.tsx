@@ -2,7 +2,7 @@ import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper
 import GetColumn from "@/components/custom/getColumn/getColumn";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetKey from "./data/getKey";
-import GetKeySelector from "./data/getKeySelector";
+import KeySelectorClient from "./data/keySelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
 
 export default function Key() {
@@ -16,7 +16,7 @@ export default function Key() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetKeySelector />
+      <KeySelectorClient />
       <GetColumn columnDesign={5} columnKey={COLUMN_KEY.key} />
       <GetKey />
     </ContentsWrapper>

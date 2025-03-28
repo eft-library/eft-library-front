@@ -1,18 +1,3 @@
-export interface WeaponSelectorClient {
-  weaponType: WeaponType;
-}
-
-interface WeaponType {
-  id: string;
-  json_value: WeaponJson[];
-}
-
-interface WeaponJson {
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
-
 export interface WeaponClient {
   weapon: WeaponData;
 }

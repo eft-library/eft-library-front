@@ -1,5 +1,5 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetWeaponSelector from "./data/getWeaponSelector";
+import WeaponSelectorClient from "./data/weaponSelectorClient";
 import GetWeapon from "./data/getWeapon";
 import AdBanner from "../../custom/adsense/adBanner";
 
@@ -14,7 +14,7 @@ export default function Weapon() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetWeaponSelector />
+      <WeaponSelectorClient />
       <GetWeapon />
     </ContentsWrapper>
   );

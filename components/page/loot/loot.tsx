@@ -2,7 +2,7 @@ import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper
 import GetColumn from "@/components/custom/getColumn/getColumn";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetLoot from "./data/getLoot";
-import GetLootSelector from "./data/getLootSelector";
+import LootSelectorClient from "./data/lootSelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
 
 export default function Loot() {
@@ -16,7 +16,7 @@ export default function Loot() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetLootSelector />
+      <LootSelectorClient />
       <GetColumn columnDesign={3} columnKey={COLUMN_KEY.loot} />
       <GetLoot />
     </ContentsWrapper>

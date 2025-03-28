@@ -19,19 +19,3 @@ interface Ammo {
   image: string;
   category: string;
 }
-
-export interface AmmoSelectorClient {
-  ammoType: AmmoType;
-}
-
-interface AmmoType {
-  id: string;
-  json_value: AmmoJson[];
-}
-
-interface AmmoJson {
-  color: string;
-  value: string;
-  desc_en: string;
-  desc_kr: string;
-}
