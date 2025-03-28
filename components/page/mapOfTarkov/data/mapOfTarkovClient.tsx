@@ -11,32 +11,13 @@ import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { checkIdCategory } from "@/lib/func/jsxfunction";
 import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
+import { extractionColumn, motBossColumn } from "@/lib/consts/gridContsts";
 
 export default function MapOfTarkovClient({
   mapOfTarkovList,
   imageSelect,
 }: MapOfTarkovClient) {
   const param = useParams<{ id: string }>();
-
-  const bossColumn = [
-    { name: "사진", colSpan: 1 },
-    { name: "이름", colSpan: 1 },
-    { name: "소속", colSpan: 1 },
-    { name: "위치", colSpan: 1 },
-    { name: "스폰확률", colSpan: 1 },
-    { name: "피통", colSpan: 1 },
-    { name: "추종자", colSpan: 1 },
-  ];
-
-  const extractionColumn = [
-    { name: "사진", colSpan: 2 },
-    { name: "이름", colSpan: 2 },
-    { name: "소속", colSpan: 1 },
-    { name: "항상 열림", colSpan: 1 },
-    { name: "일회용", colSpan: 1 },
-    { name: "필요 조건", colSpan: 2 },
-    { name: "Tip", colSpan: 2 },
-  ];
 
   const sortBossList = (bossList: Boss[]) => {
     bossList.sort((a, b) => {
@@ -79,7 +60,7 @@ export default function MapOfTarkovClient({
                   보스
                 </TextSpan>
                 <Separator className="bg-white" />
-                <GetClientColumn columnList={bossColumn} columnLength={7} />
+                <GetClientColumn columnList={motBossColumn} columnLength={7} />
                 {sortBossList(mapOfTarkov.boss_list).map((boss, index) => (
                   <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
                 ))}

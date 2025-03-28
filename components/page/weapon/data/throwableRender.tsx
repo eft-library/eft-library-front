@@ -7,7 +7,8 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { detailThrowable, throwableColumn } from "@/lib/consts/gridContsts";
+import { throwableColumn } from "@/lib/consts/gridContsts";
+import { detailThrowable } from "@/lib/consts/columnConsts";
 import type { ThrowableRender } from "./weaponTypes";
 
 export default function ThrowableRender({ throwableList }: ThrowableRender) {

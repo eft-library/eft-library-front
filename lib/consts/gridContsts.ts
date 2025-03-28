@@ -10,33 +10,6 @@ export const follwerColumn = [
   { name: "이름", colSpan: 1 },
 ];
 
-export const gunColumnDefinition = {
-  value_en: [
-    "Assault carbine",
-    "Assault rifle",
-    "Machinegun",
-    "SMG",
-    "Sniper rifle",
-    "Marksman rifle",
-    "Shotgun",
-    "Grenade launcher",
-    "Handgun",
-  ],
-  type: "WEAPON",
-  id: "GUN_CATEGORY_INFO",
-  value_kr: [
-    "Assault carbine",
-    "Assault rifle",
-    "Machinegun",
-    "SMG",
-    "Sniper rifle",
-    "Marksman rifle",
-    "Shotgun",
-    "Grenade launcher",
-    "Handgun",
-  ],
-};
-
 export const throwableColumn = [
   { name: "사진", colSpan: 1 },
   { name: "이름", colSpan: 1 },
@@ -44,7 +17,6 @@ export const throwableColumn = [
   { name: "폭발 거리", colSpan: 1 },
   { name: "파편 변경", colSpan: 1 },
 ];
-export const detailThrowable = ["RGN", "RGO"];
 
 export const stationaryColumn = [
   { name: "사진", colSpan: 1 },
@@ -75,4 +47,24 @@ export const gunColumn = [
   { name: "인체공학", colSpan: 1 },
   { name: "수평반동", colSpan: 1 },
   { name: "수직반동", colSpan: 1 },
+];
+
+export const motBossColumn = [
+  { name: "사진", colSpan: 1 },
+  { name: "이름", colSpan: 1 },
+  { name: "소속", colSpan: 1 },
+  { name: "위치", colSpan: 1 },
+  { name: "스폰확률", colSpan: 1 },
+  { name: "피통", colSpan: 1 },
+  { name: "추종자", colSpan: 1 },
+];
+
+export const extractionColumn = [
+  { name: "사진", colSpan: 2 },
+  { name: "이름", colSpan: 2 },
+  { name: "소속", colSpan: 1 },
+  { name: "항상 열림", colSpan: 1 },
+  { name: "일회용", colSpan: 1 },
+  { name: "필요 조건", colSpan: 2 },
+  { name: "Tip", colSpan: 2 },
 ];

@@ -5,26 +5,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FooterSVG } from "../../custom/getIcon/getSVG";
 import TextSpan from "../../custom/gridContents/textSpan";
+import { footerColumn } from "@/lib/consts/columnConsts";
 
 export default function Footer() {
-  const footerColumn = {
-    icon: [
-      {
-        link: "https://chzzk.naver.com/9f015658fd7b36976be2e849ac14f197",
-        name: "HJ",
-      },
-      { link: "https://github.com/eft-library", name: "SY" },
-      { link: "https://discord.gg/U39nmwB4ba", name: "JY" },
-    ],
-    text: [
-      { value: "문의: tarkovlibrary@gmail.com" },
-      { value: "Handcrafted Tarkov maps are Copyright 2024. TKL." },
-      {
-        value:
-          "Game content and materials are trademarks and copyrights of Battlestate Games and its licensors. All rights reserved.",
-      },
-    ],
-  };
   return (
     <div className="bg-cover bg-Background bg-center flex flex-col items-center justify-center w-full h-auto pt-10">
       <div className="grid grid-cols-4 gap-16">

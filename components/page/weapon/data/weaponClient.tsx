@@ -5,7 +5,7 @@ import KnifeRender from "./knifeRender";
 import ThrowableRender from "./throwableRender";
 import SpecialRender from "./specialRender";
 import StationaryRender from "./stationaryRender";
-import { gunColumnDefinition } from "@/lib/consts/gridContsts";
+import { gunColumnDefinition } from "@/lib/consts/columnConsts";
 import type { WeaponClient } from "./weaponTypes";
 
 export default function WeaponClient({ weapon }: WeaponClient) {
