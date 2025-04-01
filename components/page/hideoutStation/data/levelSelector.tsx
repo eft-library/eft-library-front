@@ -34,7 +34,7 @@ export default function LevelSelector({
       </TextSpan>
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-12 gap-4">
-          {getStationSVG(masterId, 60, 60, ALL_COLOR.WarmGray)}
+          {getStationSVG(masterId, 60, 60, ALL_COLOR.SoftAlloy)}
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
           </div>

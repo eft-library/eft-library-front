@@ -78,7 +78,6 @@ export const ALL_COLOR = {
   PalePeriwinkle: "#c5d1ea",
   LimeGreen: "#7fd14a",
 
-  WarmGray: "#807F7B",
   SandBeige: "#C8A68C",
   BurntSienna: "#D68B5E",
   SageGreen: "#9FB68B",

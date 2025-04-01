@@ -53,7 +53,7 @@ export default function StationMap({
     if (maxDepth === 4) return ALL_COLOR.DustyTeal;
     if (maxDepth === 5) return ALL_COLOR.LavenderBlue;
     if (maxDepth === 6) return ALL_COLOR.MauveOrchid;
-    return ALL_COLOR.WarmGray; // maxDepth === -1일 경우 기본값
+    return ALL_COLOR.SoftAlloy; // maxDepth === -1일 경우 기본값
   };
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import type { StationDetail } from "./stationType";
-import { formatImage } from "@/lib/func/formatImage";
 import DetailRequire from "./detailRequire";
 import DetailBonus from "./detailBonus";
 import DetailCraft from "./detailCraft";
+import { getStationSVG } from "@/assets/hideout/hideoutSvg";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function StationDetail({
   levelId,
@@ -15,6 +15,17 @@ export default function StationDetail({
   onClickSave,
 }: StationDetail) {
   const splitLevel = levelId.split("-");
+
+  const getMaxSuffix = (id: string) => {
+    const nowLevel = parseInt(id.split("-")[1], 10);
+    if (nowLevel === 1) return ALL_COLOR.SandBeige;
+    if (nowLevel === 2) return ALL_COLOR.BurntSienna;
+    if (nowLevel === 3) return ALL_COLOR.SageGreen;
+    if (nowLevel === 4) return ALL_COLOR.DustyTeal;
+    if (nowLevel === 5) return ALL_COLOR.LavenderBlue;
+    if (nowLevel === 6) return ALL_COLOR.MauveOrchid;
+    return ALL_COLOR.SoftAlloy;
+  };
 
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === splitLevel[0]
@@ -53,17 +64,14 @@ export default function StationDetail({
             <div className="relative h-16 w-16">
               <div className="absolute inset-0 from-amber-700/80 to-amber-900/80 rounded-lg"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Image
-                  width={60}
-                  height={60}
-                  alt={masterInfo?.master_name_en || ""}
-                  src={
-                    (masterInfo &&
-                      masterInfo.image &&
-                      formatImage(masterInfo.image)) ||
-                    ""
-                  }
-                />
+                {masterInfo
+                  ? getStationSVG(
+                      masterInfo?.master_id,
+                      60,
+                      60,
+                      getMaxSuffix(levelId)
+                    )
+                  : ""}
               </div>
             </div>
             <div>

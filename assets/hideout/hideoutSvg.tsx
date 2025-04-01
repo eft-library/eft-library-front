@@ -1,7 +1,6 @@
 import AirFilteringUnit from "./airFilteringUnit";
 import BitCoinFarm from "./bitCoinFarm";
 import BoozeGenerator from "./boozeGenerator";
-import ChristmasTree from "./christmasTree";
 import CultistCircle from "./cultistCircle";
 import DefectiveWall from "./defectiveWall";
 import GearRack from "./gearRack";
@@ -30,7 +29,6 @@ export const StationSvg = {
   AirFilteringUnit,
   BitCoinFarm,
   BoozeGenerator,
-  ChristmasTree,
   CultistCircle,
   DefectiveWall,
   GearRack,
