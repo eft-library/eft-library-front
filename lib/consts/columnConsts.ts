@@ -1,3 +1,5 @@
+import { ALL_COLOR } from "./colorConsts";
+
 export const COLUMN_KEY = {
   stationType: "STATION_TYPE",
   map: "MAP_COLUMN",
@@ -7,135 +9,155 @@ export const COLUMN_KEY = {
 export const ammoColumn = [
   { color: "#ffffff", value: "ALL", desc_en: "All", desc_kr: "전체" },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "5.45x39mm",
     desc_en: "5.45x39mm",
     desc_kr: "5.45x39mm",
   },
-  { color: "#90bdff", value: "9x39mm", desc_en: "9x39mm", desc_kr: "9x39mm" },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
+    value: "9x39mm",
+    desc_en: "9x39mm",
+    desc_kr: "9x39mm",
+  },
+  {
+    color: ALL_COLOR.SkyBlue,
     value: "6.8x51mm",
     desc_en: "6.8x51mm",
     desc_kr: "6.8x51mm",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "5.56x45mm NATO",
     desc_en: "5.56x45mm NATO",
     desc_kr: "5.56x45mm NATO",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "7.62x51mm NATO",
     desc_en: "7.62x51mm NATO",
     desc_kr: "7.62x51mm NATO",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "7.62x54mmR",
     desc_en: "7.62x54mmR",
     desc_kr: "7.62x54mmR",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: ".366 TKM",
     desc_en: ".366 TKM",
     desc_kr: ".366 TKM",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "7.62x39mm",
     desc_en: "7.62x39mm",
     desc_kr: "7.62x39mm",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: "12.7x55mm STs-130",
     desc_en: "12.7x55mm STs-130",
     desc_kr: "12.7x55mm STs-130",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: ".300 Blackout",
     desc_en: ".300 Blackout",
     desc_kr: ".300 Blackout",
   },
   {
-    color: "#90bdff",
+    color: ALL_COLOR.SkyBlue,
     value: ".338 Lapua Magnum",
     desc_en: ".338 Lapua Magnum",
     desc_kr: ".338 Lapua Magnum",
   },
   {
-    color: "#61ffe3",
+    color: ALL_COLOR.MintSplash,
     value: "4.6x30mm HK",
     desc_en: "4.6x30mm HK",
     desc_kr: "4.6x30mm HK",
   },
   {
-    color: "#61ffe3",
+    color: ALL_COLOR.MintSplash,
     value: "5.7x28mm FN",
     desc_en: "5.7x28mm FN",
     desc_kr: "5.7x28mm FN",
   },
-  { color: "#ff4e4e", value: "12/70", desc_en: "12/70", desc_kr: "12/70" },
-  { color: "#ff4e4e", value: "20/70", desc_en: "20/70", desc_kr: "20/70" },
   {
-    color: "#ff4e4e",
+    color: ALL_COLOR.CrimsonGlow,
+    value: "12/70",
+    desc_en: "12/70",
+    desc_kr: "12/70",
+  },
+  {
+    color: ALL_COLOR.CrimsonGlow,
+    value: "20/70",
+    desc_en: "20/70",
+    desc_kr: "20/70",
+  },
+  {
+    color: ALL_COLOR.CrimsonGlow,
     value: "23x75mm",
     desc_en: "23x75mm",
     desc_kr: "23x75mm",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: "9x18mm Makarov",
     desc_en: "9x18mm Makarov",
     desc_kr: "9x18mm Makarov",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: "9x21mm Gyurza",
     desc_en: "9x21mm Gyurza",
     desc_kr: "9x21mm Gyurza",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: "9x19mm Parabellum",
     desc_en: "9x19mm Parabellum",
     desc_kr: "9x19mm Parabellum",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: "7.62x25mm Tokarev",
     desc_en: "7.62x25mm Tokarev",
     desc_kr: "7.62x25mm Tokarev",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: ".45 ACP",
     desc_en: ".45 ACP",
     desc_kr: ".45 ACP",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: ".357 Magnum",
     desc_en: ".357 Magnum",
     desc_kr: ".357 Magnum",
   },
   {
-    color: "#ffb169",
+    color: ALL_COLOR.AmberSunset,
     value: ".50 Action Express",
     desc_en: ".50 Action Express",
     desc_kr: ".50 Action Express",
   },
   {
-    color: "#fff500",
+    color: ALL_COLOR.GoldenBeam,
     value: "40x46mm",
     desc_en: "40x46mm",
     desc_kr: "40x46mm",
   },
-  { color: "#fff500", value: "other", desc_en: "other", desc_kr: "other" },
+  {
+    color: ALL_COLOR.GoldenBeam,
+    value: "other",
+    desc_en: "other",
+    desc_kr: "other",
+  },
 ];
 export const bossColumn = [
   { id: "RESHALA", link: "/boss/RESHALA", order: 1, name_kr: "르샬라" },
@@ -246,8 +268,6 @@ export const gunColumnDefinition = {
     "Grenade launcher",
     "Handgun",
   ],
-  type: "WEAPON",
-  id: "GUN_CATEGORY_INFO",
   value_kr: [
     "Assault carbine",
     "Assault rifle",
@@ -262,45 +282,26 @@ export const gunColumnDefinition = {
 };
 
 export const glassesClassColumn = {
-  json_value: null,
-  id: "GLASSES_CLASS_COLUMN",
-  update_time: "2024-07-25T14:34:04.447568+09:00",
   value_en: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
   value_kr: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
-  type: "GLASSES",
 };
 
 export const glassesNoClassColumn = {
-  json_value: null,
-  id: "GLASSES_NO_CLASS_COLUMN",
-  update_time: "2024-07-25T14:34:04.447568+09:00",
   value_en: ["사진", "이름", "실명 보호"],
   value_kr: ["사진", "이름", "실명 보호"],
-  type: "GLASSES",
 };
 
 export const keyTableColumn = {
-  json_value: null,
-  id: "KEY_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "사용 맵", "사용 횟수"],
   value_kr: ["사진", "이름", "사용 맵", "사용 횟수"],
-  type: "KEY",
 };
 
 export const lootTableColumn = {
-  json_value: null,
-  id: "LOOT_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름"],
   value_kr: ["사진", "이름"],
-  type: "LOOT",
 };
 
 export const medicalTableColumn = {
-  json_value: null,
-  id: "MEDICAL_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: [
     "사진",
     "이름",
@@ -319,22 +320,14 @@ export const medicalTableColumn = {
     "사용 횟수",
     "사용 시간",
   ],
-  type: "MEDICAL",
 };
 
 export const provisionsTableColumn = {
-  json_value: null,
-  id: "PROVISIONS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "에너지", "수분", "효과"],
   value_kr: ["사진", "이름", "에너지", "수분", "효과"],
-  type: "FOOD_DRINK",
 };
 
 export const ammoTableColumn = {
-  json_value: null,
-  id: "AMMO_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: [
     "사진",
     "이름",
@@ -359,58 +352,34 @@ export const ammoTableColumn = {
     "깊은 출혈",
     "방탄 등급별 총알 효율성",
   ],
-  type: "AMMO",
 };
 
 export const armBandTableColumn = {
-  json_value: null,
-  id: "ARM_BAND_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름"],
   value_kr: ["사진", "이름"],
-  type: "ARM_BAND",
 };
 
 export const armorVestTableColumn = {
-  json_value: null,
-  id: "ARMOR_VEST_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
   value_kr: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
-  type: "ARMOR_VEST",
 };
 
 export const backpackTableColumn = {
-  json_value: null,
-  id: "BACKPACK_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
   value_kr: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
-  type: "BACKPACK",
 };
 
 export const bossTableColumn = {
-  json_value: null,
-  id: "BOSS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
   value_kr: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
-  type: "BOSS",
 };
 
 export const containerTableColumn = {
-  json_value: null,
-  id: "CONTAINER_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "슬롯", "내부 크기"],
   value_kr: ["사진", "이름", "슬롯", "내부 크기"],
-  type: "CONTAINER",
 };
 
 export const faceCoverClassTableColumn = {
-  json_value: null,
-  id: "FACE_COVER_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: [
     "사진",
     "이름",
@@ -429,31 +398,19 @@ export const faceCoverClassTableColumn = {
     "도탄 기회",
     "무게",
   ],
-  type: "FACE_COVER",
 };
 
 export const faceCoverNoClassTableColumn = {
-  json_value: null,
-  id: "FACE_COVER_NO_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름"],
   value_kr: ["사진", "이름"],
-  type: "FACE_COVER",
 };
 
 export const headsetTableColumn = {
-  json_value: null,
-  id: "HEAD_PHONE_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름"],
   value_kr: ["사진", "이름"],
-  type: "HEAD_PHONE",
 };
 
 export const headwearClassTableColumn = {
-  json_value: null,
-  id: "HEAD_WEAR_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: [
     "사진",
     "이름",
@@ -472,22 +429,14 @@ export const headwearClassTableColumn = {
     "도탄 기회",
     "무게",
   ],
-  type: "HEAD_WEAR",
 };
 
 export const headwearNoClassTableColumn = {
-  json_value: null,
-  id: "HEAD_WEAR_NO_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름"],
   value_kr: ["사진", "이름"],
-  type: "HEAD_WEAR",
 };
 
 export const rigClassTableColumn = {
-  json_value: null,
-  id: "RIG_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: [
     "사진",
     "이름",
@@ -506,14 +455,9 @@ export const rigClassTableColumn = {
     "보호 부위",
     "무게",
   ],
-  type: "RIG",
 };
 
 export const rigNoClassTableColumn = {
-  json_value: null,
-  id: "RIG_NO_CLASS_COLUMN",
-  update_time: "2024-07-17T11:15:10.336306+09:00",
   value_en: ["사진", "이름", "슬롯", "무게"],
   value_kr: ["사진", "이름", "슬롯", "무게"],
-  type: "RIG",
 };
