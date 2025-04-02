@@ -279,3 +279,73 @@ export const gunColumnDefinition = {
     "Handgun",
   ],
 };
+
+export const glassesClassColumn = {
+  json_value: null,
+  id: "GLASSES_CLASS_COLUMN",
+  update_time: "2024-07-25T14:34:04.447568+09:00",
+  value_en: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
+  value_kr: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
+  type: "GLASSES",
+};
+
+export const glassesNoClassColumn = {
+  json_value: null,
+  id: "GLASSES_NO_CLASS_COLUMN",
+  update_time: "2024-07-25T14:34:04.447568+09:00",
+  value_en: ["사진", "이름", "실명 보호"],
+  value_kr: ["사진", "이름", "실명 보호"],
+  type: "GLASSES",
+};
+
+export const keyTableColumn = {
+  json_value: null,
+  id: "KEY_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "사용 맵", "사용 횟수"],
+  value_kr: ["사진", "이름", "사용 맵", "사용 횟수"],
+  type: "KEY",
+};
+
+export const lootTableColumn = {
+  json_value: null,
+  id: "LOOT_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
+  type: "LOOT",
+};
+
+export const medicalTableColumn = {
+  json_value: null,
+  id: "MEDICAL_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: [
+    "사진",
+    "이름",
+    "회복량",
+    "버프",
+    "디버프",
+    "사용 횟수",
+    "사용 시간",
+  ],
+  value_kr: [
+    "사진",
+    "이름",
+    "회복량",
+    "버프",
+    "디버프",
+    "사용 횟수",
+    "사용 시간",
+  ],
+  type: "MEDICAL",
+};
+
+export const provisionsTableColumn = {
+  json_value: null,
+  id: "PROVISIONS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "에너지", "수분", "효과"],
+  value_kr: ["사진", "이름", "에너지", "수분", "효과"],
+  type: "FOOD_DRINK",
+};

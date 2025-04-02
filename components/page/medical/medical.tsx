@@ -1,9 +1,9 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetMedical from "./data/getMedical";
 import MedicalSelectorClient from "./data/medicalSelectorClient";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
-import GetColumn from "@/components/custom/getColumn/getColumn";
+import { medicalTableColumn } from "@/lib/consts/columnConsts";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Medical() {
   return (
@@ -17,7 +17,11 @@ export default function Medical() {
         />
       </div>
       <MedicalSelectorClient />
-      <GetColumn columnDesign={10} columnKey={COLUMN_KEY.medical} isMedical />
+      <TableColumn
+        columnDesign={10}
+        columnData={medicalTableColumn}
+        isMedical
+      />
       <GetMedical medicalType="Drug" />
       <GetMedical medicalType="Stimulant" />
       <GetMedical medicalType="Medical item" />

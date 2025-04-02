@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import ArmorVestClient from "./armorVestClient";
 
 export default async function GetArmorVest() {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_ARMOR_VEST);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/armor-vest");
 
   if (!data || data.status !== 200) {
     console.error(

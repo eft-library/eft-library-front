@@ -1,8 +1,8 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { provisionsTableColumn } from "@/lib/consts/columnConsts";
 import GetProvisions from "./data/getProvisions";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Provisions() {
   return (
@@ -15,9 +15,9 @@ export default function Provisions() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn
-        columnDesign={9}
-        columnKey={COLUMN_KEY.provisions}
+      <TableColumn
+        columnDesign={7}
+        columnData={provisionsTableColumn}
         isProvision
       />
       <GetProvisions />

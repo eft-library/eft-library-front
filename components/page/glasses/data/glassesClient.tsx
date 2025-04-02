@@ -6,7 +6,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { floatToPercent, returnQuestText } from "@/lib/func/jsxfunction";
+import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { GlassesClient } from "./glassesTypes";
 
 export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
@@ -22,64 +22,53 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
             <CenterContents>
               <ImageView
                 src={glasses.image}
-                alt={glasses.name}
-                popWidth={glasses.width * 128}
-                popHeight={glasses.height * 128}
-                wrapWidth={glasses.width * 64}
-                wrapHeight={glasses.height * 64}
-                size={(glasses.width * 64).toString()}
+                alt={glasses.name_en}
+                popWidth={glasses.image_width * 128}
+                popHeight={glasses.image_height * 128}
+                wrapWidth={glasses.image_width * 64}
+                wrapHeight={glasses.image_height * 64}
+                size={(glasses.image_width * 64).toString()}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{glasses.name}</TextSpan>
+              <TextSpan>{glasses.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{glasses.class_value}</TextSpan>
+              <TextSpan>{glasses.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{glasses.durability}</TextSpan>
+              {/* <TextSpan>{glasses.info.durability}</TextSpan> */}
+              <TextSpan>0</TextSpan>
             </CenterContents>
             <CenterContents>
               <TextSpan>
-                {floatToPercent(glasses.blindness_protection)} %
+                {floatToPercent(glasses.info.blindness_protection)} %
               </TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}
       {!isClass &&
         glassesData.no_class_glasses.map((glasses) => (
-          <DefineGrid id={glasses.id} pageId={pageId} cols="4" key={glasses.id}>
+          <DefineGrid id={glasses.id} pageId={pageId} cols="3" key={glasses.id}>
             <CenterContents>
               <ImageView
                 src={glasses.image}
-                alt={glasses.name}
-                popWidth={300}
-                popHeight={200}
-                wrapWidth={240}
-                wrapHeight={100}
-                size="240px"
+                alt={glasses.name_en}
+                popWidth={glasses.image_width * 128}
+                popHeight={glasses.image_height * 128}
+                wrapWidth={glasses.image_width * 64}
+                wrapHeight={glasses.image_height * 64}
+                size={(glasses.image_width * 64).toString()}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{glasses.name}</TextSpan>
+              <TextSpan>{glasses.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
               <TextSpan>
-                {floatToPercent(glasses.blindness_protection)} %
+                {floatToPercent(glasses.info.blindness_protection)} %
               </TextSpan>
             </CenterContents>
-            <div className="flex flex-col justify-center">
-              {glasses.notes.length > 0 ? (
-                <div>
-                  <TextSpan>퀘스트</TextSpan>
-                  {glasses.notes.map((quest) => (
-                    <div key={quest.url_mapping}>{returnQuestText(quest)}</div>
-                  ))}
-                </div>
-              ) : (
-                <TextSpan>-</TextSpan>
-              )}
-            </div>
           </DefineGrid>
         ))}
     </div>

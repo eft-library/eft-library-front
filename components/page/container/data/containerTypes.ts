@@ -1,19 +1,27 @@
 export interface ContainerList {
-  containerList: Container[];
-}
-
-interface Container {
-  id: string;
-  name_en: string;
-  name_kr: string;
-  image: string;
-  width: number;
-  height: number;
-  capacity: number;
-  grids: Size[];
+  containerList: ContainerDetail[];
 }
 
 interface Size {
   width: number;
   height: number;
+}
+
+interface ContainerInfo {
+  grids: Size[];
+  width: number;
+  height: number;
+  capacity: number;
+}
+
+interface ContainerDetail {
+  category: string;
+  id: string;
+  info: ContainerInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

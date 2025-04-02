@@ -1,9 +1,9 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { lootTableColumn } from "@/lib/consts/columnConsts";
 import GetLoot from "./data/getLoot";
 import LootSelectorClient from "./data/lootSelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Loot() {
   return (
@@ -17,7 +17,7 @@ export default function Loot() {
         />
       </div>
       <LootSelectorClient />
-      <GetColumn columnDesign={3} columnKey={COLUMN_KEY.loot} />
+      <TableColumn columnDesign={2} columnData={lootTableColumn} />
       <GetLoot />
     </ContentsWrapper>
   );

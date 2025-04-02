@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import HeadsetClient from "./headsetClient";
 
 export default async function GetHeadset() {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_HEADSET);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/headset");
 
   if (!data || data.status !== 200) {
     console.error(

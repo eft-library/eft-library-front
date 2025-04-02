@@ -1,8 +1,11 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "../../custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import GetGlasses from "./data/getGlasses";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import {
+  glassesClassColumn,
+  glassesNoClassColumn,
+} from "@/lib/consts/columnConsts";
 
 export default function Glasses() {
   return (
@@ -15,9 +18,9 @@ export default function Glasses() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnDesign={5} columnKey={COLUMN_KEY.glassesClass} />
+      <TableColumn columnDesign={5} columnData={glassesClassColumn} />
       <GetGlasses isClass />
-      <GetColumn columnDesign={4} columnKey={COLUMN_KEY.glassesNoClass} />
+      <TableColumn columnDesign={3} columnData={glassesNoClassColumn} />
       <GetGlasses isClass={false} />
     </ContentsWrapper>
   );

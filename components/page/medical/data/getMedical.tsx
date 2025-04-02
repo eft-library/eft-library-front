@@ -12,7 +12,7 @@ interface GetMedical {
 }
 
 export default async function GetMedical({ medicalType }: GetMedical) {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_MEDICAL);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/medical");
 
   if (!data || data.status !== 200) {
     console.error(

@@ -1,27 +1,23 @@
-export interface DefenseData {
-  id: string;
+export interface ArmorVestList {
+  armorVestList: ArmorVestDetail[];
+}
+
+interface ArmorVestInfo {
+  weight: number;
+  areas_en: string[];
+  areas_kr: string[];
   durability: number;
   class_value: number;
-  areas_kr: string[];
-  weight: number;
-  width: number;
-  height: number;
-  name: string;
-  image: string;
-  ricochet_str_kr: string;
-  blindness_protection: number;
-  notes: QuestNotes[];
 }
 
-export interface ArmorVestList {
-  armorVestList: DefenseData[];
-}
-
-export interface QuestNotes {
+interface ArmorVestDetail {
+  category: string;
   id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
+  info: ArmorVestInfo;
+  image_height: number;
   name_kr: string;
-  url_mapping: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

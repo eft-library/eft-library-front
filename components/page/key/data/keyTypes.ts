@@ -1,25 +1,22 @@
 export interface KeyClient {
-  keyList: Key[];
+  keyList: KeyDetail[];
 }
 
-interface Key {
-  id: string;
+interface KeyInfo {
   uses: number;
   use_map_en: string[];
   use_map_kr: string[];
   map_value: string[];
-  notes: QuestNotes[];
-  name: string;
-  width: number;
-  height: number;
-  image: string;
 }
 
-interface QuestNotes {
+interface KeyDetail {
+  category: string;
   id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
+  info: KeyInfo;
+  image_height: number;
   name_kr: string;
-  url_mapping: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

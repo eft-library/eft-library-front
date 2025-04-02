@@ -8,7 +8,7 @@ interface GetHeadWear {
   isClass: boolean;
 }
 export default async function GetHeadWear({ isClass }: GetHeadWear) {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_HEAD_WEAR);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/headwear");
 
   if (!data || data.status !== 200) {
     console.error(

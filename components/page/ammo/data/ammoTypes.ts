@@ -1,21 +1,28 @@
 export interface AmmoClient {
-  ammoList: Ammo[];
+  ammoList: AmmoDetail[];
 }
 
-interface Ammo {
-  id: string;
-  name: string;
+interface AmmoInfo {
   round: string;
   damage: number;
-  penetration_power: number;
+  efficiency: any[];
   armor_damage: number;
-  accuracy_modifier: number;
+  ammo_category: string;
   recoil_modifier: number;
-  light_bleed_modifier: number;
+  accuracy_modifier: number;
+  penetration_power: number;
   heavy_bleed_modifier: number;
-  width: number;
-  height: number;
-  efficiency: number[];
-  image: string;
+  light_bleed_modifier: number;
+}
+
+interface AmmoDetail {
   category: string;
+  id: string;
+  info: AmmoInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

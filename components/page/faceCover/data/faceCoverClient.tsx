@@ -29,23 +29,23 @@ export default function FaceCoverClient({
             <CenterContents>
               <ImageView
                 src={faceCover.image}
-                alt={faceCover.name}
-                popWidth={faceCover.width * 128}
-                popHeight={faceCover.height * 128}
-                size={(faceCover.width * 64).toString()}
-                wrapWidth={faceCover.width * 64}
-                wrapHeight={faceCover.height * 64}
+                alt={faceCover.name_en}
+                popWidth={faceCover.image_width * 128}
+                popHeight={faceCover.image_height * 128}
+                size={(faceCover.image_width * 64).toString()}
+                wrapWidth={faceCover.image_width * 64}
+                wrapHeight={faceCover.image_height * 64}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.name}</TextSpan>
+              <TextSpan>{faceCover.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.class_value}</TextSpan>
+              <TextSpan>{faceCover.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents isCol>
               <TextSpan>
-                {faceCover.areas_kr.map((area, index) => (
+                {faceCover.info.areas_kr.map((area, index) => (
                   <TextSpan key={`${index}-area-${faceCover.id}`}>
                     {area}
                   </TextSpan>
@@ -53,13 +53,14 @@ export default function FaceCoverClient({
               </TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.durability}</TextSpan>
+              {/* <TextSpan>{faceCover.info.durability}</TextSpan> */}
+              <TextSpan>0</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.ricochet_str_kr}</TextSpan>
+              <TextSpan>{faceCover.info.ricochet_str_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.weight} kg</TextSpan>
+              <TextSpan>{faceCover.info.weight} kg</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}
@@ -75,16 +76,16 @@ export default function FaceCoverClient({
             <CenterContents>
               <ImageView
                 src={faceCover.image}
-                alt={faceCover.name}
-                popWidth={220}
-                popHeight={240}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={100}
+                alt={faceCover.name_en}
+                popWidth={faceCover.image_width * 128}
+                popHeight={faceCover.image_height * 128}
+                size={(faceCover.image_width * 64).toString()}
+                wrapWidth={faceCover.image_width * 64}
+                wrapHeight={faceCover.image_height * 64}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{faceCover.name}</TextSpan>
+              <TextSpan>{faceCover.name_kr}</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}

@@ -43,80 +43,82 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
   return (
     <div className="w-full">
       {ammoList.map(
-        (ammo) =>
-          checkCategory(ammo.category, ammoCategory) && (
-            <DefineGrid cols="12" pageId={pageId} id={ammo.id} key={ammo.id}>
+        (item) =>
+          checkCategory(item.info.ammo_category, ammoCategory) && (
+            <DefineGrid cols="12" pageId={pageId} id={item.id} key={item.id}>
               <CenterContents>
                 <ImageView
-                  src={ammo.image}
-                  alt={ammo.name}
+                  src={item.image}
+                  alt={item.name_en}
                   popWidth={140}
                   popHeight={140}
-                  wrapHeight={ammo.height * 64}
-                  wrapWidth={ammo.width * 64}
-                  size={(ammo.width * 64).toString()}
+                  wrapHeight={item.image_height * 64}
+                  wrapWidth={item.image_width * 64}
+                  size={(item.image_width * 64).toString()}
                 />
               </CenterContents>
               <CenterContents colSpan="2">
-                <TextSpan>{ammo.name}</TextSpan>
+                <TextSpan>{item.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{ammo.damage}</TextSpan>
+                <TextSpan>{item.info.damage}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{ammo.penetration_power}</TextSpan>
+                <TextSpan>{item.info.penetration_power}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{ammo.armor_damage} %</TextSpan>
+                <TextSpan>{item.info.armor_damage} %</TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan
                   textColor={getColor(
-                    floatToPercent(ammo.accuracy_modifier),
+                    floatToPercent(item.info.accuracy_modifier),
                     "check"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(ammo.accuracy_modifier))} %
+                  {getPlusMinus(floatToPercent(item.info.accuracy_modifier))} %
                 </TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan
                   textColor={getColor(
-                    floatToPercent(ammo.recoil_modifier),
+                    floatToPercent(item.info.recoil_modifier),
                     "recoil"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(ammo.recoil_modifier))}
+                  {getPlusMinus(floatToPercent(item.info.recoil_modifier))}
                 </TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan
                   textColor={getColor(
-                    floatToPercent(ammo.light_bleed_modifier),
+                    floatToPercent(item.info.light_bleed_modifier),
                     "check"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(ammo.light_bleed_modifier))} %
+                  {getPlusMinus(floatToPercent(item.info.light_bleed_modifier))}{" "}
+                  %
                 </TextSpan>
               </CenterContents>
 
               <CenterContents>
                 <TextSpan
                   textColor={getColor(
-                    floatToPercent(ammo.heavy_bleed_modifier),
+                    floatToPercent(item.info.heavy_bleed_modifier),
                     "check"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(ammo.heavy_bleed_modifier))} %
+                  {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}{" "}
+                  %
                 </TextSpan>
               </CenterContents>
 
               <CenterContents colSpan="2">
-                {ammo.efficiency &&
-                  ammo.efficiency.map((efficiency, index) => (
+                {item.info.efficiency &&
+                  item.info.efficiency.map((efficiency, index) => (
                     <div
                       key={`${efficiency}-${index}`}
                       className={`${getEfficiencyColor(

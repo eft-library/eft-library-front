@@ -20,27 +20,27 @@ export default function BackpackClient({ backpackList }: BackpackList) {
           <CenterContents>
             <ImageView
               src={backpack.image}
-              alt={backpack.name}
-              popWidth={backpack.width * 72}
-              popHeight={backpack.height * 72}
-              wrapWidth={backpack.width * 36}
-              wrapHeight={backpack.height * 36}
-              size={(backpack.width * 36).toString()}
+              alt={backpack.name_en}
+              popWidth={backpack.image_width * 72}
+              popHeight={backpack.image_height * 72}
+              wrapWidth={backpack.image_width * 36}
+              wrapHeight={backpack.image_height * 36}
+              size={(backpack.image_width * 36).toString()}
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{backpack.name}</TextSpan>
+            <TextSpan>{backpack.name_kr}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{backpack.capacity}</TextSpan>
+            <TextSpan>{backpack.info.capacity}</TextSpan>
           </CenterContents>
           <CenterContents>
             <TextSpan>
-              {backpack.grids[0].width} X {backpack.grids[0].height}
+              {backpack.info.grids[0].width} X {backpack.info.grids[0].height}
             </TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{backpack.weight} kg</TextSpan>
+            <TextSpan>{backpack.info.weight} kg</TextSpan>
           </CenterContents>
         </DefineGrid>
       ))}

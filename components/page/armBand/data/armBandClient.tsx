@@ -20,16 +20,16 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
           <CenterContents>
             <ImageView
               src={armBand.image}
-              alt={armBand.name}
-              popWidth={armBand.width * 128}
-              popHeight={armBand.height * 128}
-              wrapWidth={armBand.width * 64}
-              wrapHeight={armBand.height * 64}
-              size={(armBand.width * 64).toString()}
+              alt={armBand.name_en}
+              popWidth={armBand.image_width * 128}
+              popHeight={armBand.image_height * 128}
+              wrapWidth={armBand.image_width * 64}
+              wrapHeight={armBand.image_height * 64}
+              size={(armBand.image_width * 64).toString()}
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{armBand.name}</TextSpan>
+            <TextSpan>{armBand.name_kr}</TextSpan>
           </CenterContents>
         </DefineGrid>
       ))}

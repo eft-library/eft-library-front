@@ -1,13 +1,14 @@
-interface ArmBand {
-  id: string;
-  name: string;
-  short_name: string;
-  weight: string;
-  width: number;
-  height: number;
-  image: string;
+export interface ArmBandList {
+  armBandList: ArmbandDetail[];
 }
 
-export interface ArmBandList {
-  armBandList: ArmBand[];
+interface ArmbandDetail {
+  category: string;
+  id: string;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

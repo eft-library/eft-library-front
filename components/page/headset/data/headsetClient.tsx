@@ -20,16 +20,16 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
           <CenterContents>
             <ImageView
               src={headset.image}
-              alt={headset.name}
-              popWidth={headset.width * 128}
-              popHeight={headset.height * 128}
-              size={(headset.width * 64).toString()}
-              wrapWidth={headset.width * 64}
-              wrapHeight={headset.height * 64}
+              alt={headset.name_en}
+              popWidth={headset.image_width * 128}
+              popHeight={headset.image_height * 128}
+              size={(headset.image_width * 64).toString()}
+              wrapWidth={headset.image_width * 64}
+              wrapHeight={headset.image_height * 64}
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{headset.name}</TextSpan>
+            <TextSpan>{headset.name_kr}</TextSpan>
           </CenterContents>
         </DefineGrid>
       ))}

@@ -1,22 +1,8 @@
 export interface ProvisionsList {
-  provisionsList: Provisions[];
+  provisionsList: ProvisionsDetail[];
 }
 
-interface Provisions {
-  id: string;
-  name_kr: string;
-  name_en: string;
-  image: string;
-  category: string;
-  short_name: string;
-  energy: number;
-  hydration: number;
-  width: number;
-  height: number;
-  stim_effects: StimEffet[];
-  notes: QuestNotes[];
-}
-interface StimEffet {
+interface StimEffect {
   id: string;
   type: string;
   delay?: number;
@@ -27,14 +13,24 @@ interface StimEffet {
   skillName: string;
 }
 
-interface QuestNotes {
-  id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
-  name_kr: string;
-  url_mapping: string;
-}
 export interface EffectText {
-  effect: StimEffet;
+  effect: StimEffect;
+}
+
+interface ProvisionsInfo {
+  energy: number;
+  hydration: number;
+  stim_effects: StimEffect[];
+}
+
+interface ProvisionsDetail {
+  category: string;
+  id: string;
+  info: ProvisionsInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

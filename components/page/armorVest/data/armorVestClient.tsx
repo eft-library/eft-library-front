@@ -25,30 +25,31 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
           <CenterContents>
             <ImageView
               src={armorVest.image}
-              alt={armorVest.name}
-              popWidth={armorVest.width * 96}
-              popHeight={armorVest.height * 96}
-              wrapWidth={armorVest.width * 48}
-              wrapHeight={armorVest.height * 48}
-              size={(armorVest.width * 48).toString()}
+              alt={armorVest.name_en}
+              popWidth={armorVest.image_width * 96}
+              popHeight={armorVest.image_height * 96}
+              wrapWidth={armorVest.image_width * 48}
+              wrapHeight={armorVest.image_height * 48}
+              size={(armorVest.image_width * 48).toString()}
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{armorVest.name}</TextSpan>
+            <TextSpan>{armorVest.name_kr}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{armorVest.durability}</TextSpan>
+            {/* <TextSpan>{armorVest.durability}</TextSpan> */}
+            <TextSpan>0</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{armorVest.class_value}</TextSpan>
+            <TextSpan>{armorVest.info.class_value}</TextSpan>
           </CenterContents>
           <CenterContents isCol>
-            {armorVest.areas_kr.map((area, index) => (
+            {armorVest.info.areas_kr.map((area, index) => (
               <TextSpan key={`${index}-area-${armorVest.id}`}>{area}</TextSpan>
             ))}
           </CenterContents>
           <CenterContents>
-            <TextSpan>{armorVest.weight} kg</TextSpan>
+            <TextSpan>{armorVest.info.weight} kg</TextSpan>
           </CenterContents>
         </DefineGrid>
       ))}

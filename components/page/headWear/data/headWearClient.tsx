@@ -29,33 +29,33 @@ export default function HeadWearClient({
             <CenterContents>
               <ImageView
                 src={headWear.image}
-                alt={headWear.name}
-                popWidth={headWear.width * 128}
-                popHeight={headWear.height * 128}
-                size={(headWear.width * 64).toString()}
-                wrapWidth={headWear.width * 64}
-                wrapHeight={headWear.height * 64}
+                alt={headWear.name_en}
+                popWidth={headWear.image_width * 128}
+                popHeight={headWear.image_height * 128}
+                size={(headWear.image_width * 64).toString()}
+                wrapWidth={headWear.image_width * 64}
+                wrapHeight={headWear.image_height * 64}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.name}</TextSpan>
+              <TextSpan>{headWear.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.class_value}</TextSpan>
+              <TextSpan>{headWear.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents isCol>
-              {headWear.areas_kr.map((area, index) => (
+              {headWear.info.areas_kr.map((area, index) => (
                 <TextSpan key={`${index}-area-${headWear.id}`}>{area}</TextSpan>
               ))}
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.durability}</TextSpan>
+              <TextSpan>{headWear.info.durability}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.ricochet_str_kr}</TextSpan>
+              <TextSpan>{headWear.info.ricochet_str_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.weight} kg</TextSpan>
+              <TextSpan>{headWear.info.weight} kg</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}
@@ -70,16 +70,16 @@ export default function HeadWearClient({
             <CenterContents>
               <ImageView
                 src={headWear.image}
-                alt={headWear.name}
-                popWidth={400}
-                popHeight={380}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={140}
+                alt={headWear.name_en}
+                popWidth={headWear.image_width * 128}
+                popHeight={headWear.image_height * 128}
+                size={(headWear.image_width * 64).toString()}
+                wrapWidth={headWear.image_width * 64}
+                wrapHeight={headWear.image_height * 64}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{headWear.name}</TextSpan>
+              <TextSpan>{headWear.name_kr}</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}

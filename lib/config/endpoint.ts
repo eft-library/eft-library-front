@@ -1,6 +1,7 @@
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const API_ENDPOINTS = {
+  GET_ITEM_LIST: baseUrl + "/api/item/list",
   GET_ALL_BOSS: baseUrl + "/api/boss/all",
   GET_ALL_KEY: baseUrl + "/api/item/key",
   GET_ALL_MAP: baseUrl + "/api/map/all",

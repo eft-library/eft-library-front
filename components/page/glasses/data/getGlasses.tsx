@@ -9,7 +9,7 @@ interface GetGlasses {
 }
 
 export default async function GetGlasses({ isClass = true }: GetGlasses) {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_GLASSES);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/glasses");
 
   if (!data || data.status !== 200) {
     console.error(

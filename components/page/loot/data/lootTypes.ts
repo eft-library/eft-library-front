@@ -1,33 +1,19 @@
 export interface LootClient {
-  lootList: Loot[];
+  lootList: LootDetail[];
 }
 
-interface Loot {
-  id: string;
+interface LootInfo {
+  loot_category: string;
+}
+
+interface LootDetail {
   category: string;
-  name_en: string;
-  name_kr: string;
-  width: number;
-  height: number;
-  image: string;
-  quest_notes: QuestNotes[];
-  hideout_notes: HideoutNotes[];
-}
-
-interface HideoutNotes {
-  name: string;
-  count: number;
-  item_id: string;
-  name_kr: string;
-  level_id: string;
-  master_id: string;
-}
-
-interface QuestNotes {
   id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
+  info: LootInfo;
+  image_height: number;
   name_kr: string;
-  url_mapping: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

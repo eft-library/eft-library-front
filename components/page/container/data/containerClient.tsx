@@ -26,22 +26,22 @@ export default function ContainerClient({ containerList }: ContainerList) {
             <ImageView
               src={container.image}
               alt={container.name_en}
-              popWidth={container.width * 128}
-              popHeight={container.height * 128}
-              wrapWidth={container.width * 64}
-              wrapHeight={container.height * 64}
-              size={(container.width * 64).toString()}
+              popWidth={container.image_width * 128}
+              popHeight={container.image_height * 128}
+              wrapWidth={container.image_width * 64}
+              wrapHeight={container.image_height * 64}
+              size={(container.image_width * 64).toString()}
             />
           </CenterContents>
           <CenterContents>
             <TextSpan>{container.name_kr}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{container.capacity}</TextSpan>
+            <TextSpan>{container.info.capacity}</TextSpan>
           </CenterContents>
           <CenterContents>
             <TextSpan>
-              {container.grids[0].width} X {container.grids[0].height}
+              {container.info.grids[0].width} X {container.info.grids[0].height}
             </TextSpan>
           </CenterContents>
         </DefineGrid>

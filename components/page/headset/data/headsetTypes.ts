@@ -1,11 +1,13 @@
-interface Headset {
-  id: string;
-  name: string;
-  image: string;
-  width: number;
-  height: number;
-}
-
 export interface HeadsetList {
-  headsetList: Headset[];
+  headsetList: HeadsetDetail[];
+}
+interface HeadsetDetail {
+  category: string;
+  id: string;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

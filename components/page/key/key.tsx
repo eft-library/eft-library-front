@@ -1,9 +1,9 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { keyTableColumn } from "@/lib/consts/columnConsts";
 import GetKey from "./data/getKey";
 import KeySelectorClient from "./data/keySelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Key() {
   return (
@@ -17,7 +17,7 @@ export default function Key() {
         />
       </div>
       <KeySelectorClient />
-      <GetColumn columnDesign={5} columnKey={COLUMN_KEY.key} />
+      <TableColumn columnDesign={4} columnData={keyTableColumn} />
       <GetKey />
     </ContentsWrapper>
   );

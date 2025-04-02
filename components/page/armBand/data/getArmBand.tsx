@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import ArmBandClient from "./armBandClient";
 
 export default async function GetArmBand() {
-  const data = await requestData(API_ENDPOINTS.GET_ALL_ARM_BAND);
+  const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/arm-band");
 
   if (!data || data.status !== 200) {
     console.error(
