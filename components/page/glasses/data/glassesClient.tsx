@@ -37,8 +37,7 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
               <TextSpan>{glasses.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents>
-              {/* <TextSpan>{glasses.info.durability}</TextSpan> */}
-              <TextSpan>0</TextSpan>
+              <TextSpan>{glasses.info.durability}</TextSpan>
             </CenterContents>
             <CenterContents>
               <TextSpan>

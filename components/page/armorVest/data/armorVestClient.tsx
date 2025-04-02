@@ -37,8 +37,7 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
             <TextSpan>{armorVest.name_kr}</TextSpan>
           </CenterContents>
           <CenterContents>
-            {/* <TextSpan>{armorVest.durability}</TextSpan> */}
-            <TextSpan>0</TextSpan>
+            <TextSpan>{armorVest.info.durability}</TextSpan>
           </CenterContents>
           <CenterContents>
             <TextSpan>{armorVest.info.class_value}</TextSpan>
