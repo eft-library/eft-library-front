@@ -1,8 +1,8 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { backpackTableColumn } from "@/lib/consts/columnConsts";
 import GetBackpack from "./data/getBackpack";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Backpack() {
   return (
@@ -15,7 +15,7 @@ export default function Backpack() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnDesign={5} columnKey={COLUMN_KEY.backpack} />
+      <TableColumn columnDesign={5} columnData={backpackTableColumn} />
       <GetBackpack />
     </ContentsWrapper>
   );

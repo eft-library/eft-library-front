@@ -1,8 +1,11 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetRig from "./data/getRig";
-import GetColumn from "../../custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import {
+  rigClassTableColumn,
+  rigNoClassTableColumn,
+} from "@/lib/consts/columnConsts";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Rig() {
   return (
@@ -15,9 +18,9 @@ export default function Rig() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnDesign={7} columnKey={COLUMN_KEY.rigClass} />
+      <TableColumn columnDesign={7} columnData={rigClassTableColumn} />
       <GetRig isClass />
-      <GetColumn columnDesign={4} columnKey={COLUMN_KEY.rigNoClass} />
+      <TableColumn columnDesign={4} columnData={rigNoClassTableColumn} />
       <GetRig isClass={false} />
     </ContentsWrapper>
   );

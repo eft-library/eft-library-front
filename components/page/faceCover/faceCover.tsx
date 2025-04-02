@@ -1,8 +1,11 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetFaceCover from "./data/getFaceCover";
-import GetColumn from "../../custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import {
+  faceCoverClassTableColumn,
+  faceCoverNoClassTableColumn,
+} from "@/lib/consts/columnConsts";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function FaceCover() {
   return (
@@ -15,9 +18,9 @@ export default function FaceCover() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnDesign={7} columnKey={COLUMN_KEY.faceCoverClass} />
+      <TableColumn columnDesign={7} columnData={faceCoverClassTableColumn} />
       <GetFaceCover isClass />
-      <GetColumn columnDesign={2} columnKey={COLUMN_KEY.faceCoverNoClass} />
+      <TableColumn columnDesign={2} columnData={faceCoverNoClassTableColumn} />
       <GetFaceCover isClass={false} />
     </ContentsWrapper>
   );

@@ -1,9 +1,9 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { ammoTableColumn } from "@/lib/consts/columnConsts";
 import GetAmmo from "./data/getAmmo";
 import AdBanner from "../../custom/adsense/adBanner";
 import AmmoSelectorClient from "./data/ammoSelectorClient";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Ammo() {
   return (
@@ -17,7 +17,7 @@ export default function Ammo() {
         />
       </div>
       <AmmoSelectorClient />
-      <GetColumn columnDesign={12} columnKey={COLUMN_KEY.ammo} isAmmo />
+      <TableColumn columnDesign={12} columnData={ammoTableColumn} />
       <GetAmmo />
     </ContentsWrapper>
   );

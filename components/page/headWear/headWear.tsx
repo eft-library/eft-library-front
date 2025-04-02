@@ -1,8 +1,11 @@
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import {
+  headwearClassTableColumn,
+  headwearNoClassTableColumn,
+} from "@/lib/consts/columnConsts";
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "../../custom/getColumn/getColumn";
 import GetHeadWear from "./data/getHeadWear";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function HeadWear() {
   return (
@@ -15,9 +18,9 @@ export default function HeadWear() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnKey={COLUMN_KEY.headWearClass} columnDesign={7} />
+      <TableColumn columnDesign={7} columnData={headwearClassTableColumn} />
       <GetHeadWear isClass />
-      <GetColumn columnKey={COLUMN_KEY.headwearNoClass} columnDesign={2} />
+      <TableColumn columnDesign={2} columnData={headwearNoClassTableColumn} />
       <GetHeadWear isClass={false} />
     </ContentsWrapper>
   );

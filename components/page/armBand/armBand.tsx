@@ -1,8 +1,8 @@
 import GetArmBand from "@/components/page/armBand/data/getArmBand";
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import GetColumn from "@/components/custom/getColumn/getColumn";
-import { COLUMN_KEY } from "@/lib/consts/columnConsts";
+import { armBandTableColumn } from "@/lib/consts/columnConsts";
 import AdBanner from "../../custom/adsense/adBanner";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function ArmBand() {
   return (
@@ -15,7 +15,7 @@ export default function ArmBand() {
           dataAdSlot="2690838054"
         />
       </div>
-      <GetColumn columnDesign={2} columnKey={COLUMN_KEY.arm_band} />
+      <TableColumn columnData={armBandTableColumn} columnDesign={2} />
       <GetArmBand />
     </ContentsWrapper>
   );

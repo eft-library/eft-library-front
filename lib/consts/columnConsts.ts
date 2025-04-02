@@ -1,26 +1,7 @@
 export const COLUMN_KEY = {
-  ammo: "AMMO_COLUMN",
-  arm_band: "ARM_BAND_COLUMN",
-  armorVest: "ARMOR_VEST_COLUMN",
-  backpack: "BACKPACK_COLUMN",
-  boss: "BOSS_COLUMN",
-  container: "CONTAINER_COLUMN",
-  headWearClass: "HEAD_WEAR_CLASS_COLUMN",
-  headwearNoClass: "HEAD_WEAR_NO_CLASS_COLUMN",
-  faceCoverClass: "FACE_COVER_CLASS_COLUMN",
-  faceCoverNoClass: "FACE_COVER_NO_CLASS_COLUMN",
-  rigClass: "RIG_CLASS_COLUMN",
-  rigNoClass: "RIG_NO_CLASS_COLUMN",
-  glassesClass: "GLASSES_CLASS_COLUMN",
-  glassesNoClass: "GLASSES_NO_CLASS_COLUMN",
-  headset: "HEAD_PHONE_COLUMN",
   stationType: "STATION_TYPE",
-  key: "KEY_COLUMN",
-  loot: "LOOT_COLUMN",
   map: "MAP_COLUMN",
   mapOfTarkov: "MAP_OF_TARKOV_COLUMN",
-  medical: "MEDICAL_COLUMN",
-  provisions: "PROVISIONS_COLUMN",
 } as const;
 
 export const ammoColumn = [
@@ -348,4 +329,191 @@ export const provisionsTableColumn = {
   value_en: ["사진", "이름", "에너지", "수분", "효과"],
   value_kr: ["사진", "이름", "에너지", "수분", "효과"],
   type: "FOOD_DRINK",
+};
+
+export const ammoTableColumn = {
+  json_value: null,
+  id: "AMMO_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: [
+    "사진",
+    "이름",
+    "데미지",
+    "관통력",
+    "방어구 피해량",
+    "정확성",
+    "반동",
+    "가벼운 출혈",
+    "깊은 출혈",
+    "방탄 등급별 총알 효율성",
+  ],
+  value_kr: [
+    "사진",
+    "이름",
+    "데미지",
+    "관통력",
+    "방어구 피해량",
+    "정확성",
+    "반동",
+    "가벼운 출혈",
+    "깊은 출혈",
+    "방탄 등급별 총알 효율성",
+  ],
+  type: "AMMO",
+};
+
+export const armBandTableColumn = {
+  json_value: null,
+  id: "ARM_BAND_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
+  type: "ARM_BAND",
+};
+
+export const armorVestTableColumn = {
+  json_value: null,
+  id: "ARMOR_VEST_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
+  value_kr: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
+  type: "ARMOR_VEST",
+};
+
+export const backpackTableColumn = {
+  json_value: null,
+  id: "BACKPACK_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
+  value_kr: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
+  type: "BACKPACK",
+};
+
+export const bossTableColumn = {
+  json_value: null,
+  id: "BOSS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
+  value_kr: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
+  type: "BOSS",
+};
+
+export const containerTableColumn = {
+  json_value: null,
+  id: "CONTAINER_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "슬롯", "내부 크기"],
+  value_kr: ["사진", "이름", "슬롯", "내부 크기"],
+  type: "CONTAINER",
+};
+
+export const faceCoverClassTableColumn = {
+  json_value: null,
+  id: "FACE_COVER_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: [
+    "사진",
+    "이름",
+    "보호 등급",
+    "보호 부위",
+    "내구성",
+    "도탄 기회",
+    "무게",
+  ],
+  value_kr: [
+    "사진",
+    "이름",
+    "보호 등급",
+    "보호 부위",
+    "내구성",
+    "도탄 기회",
+    "무게",
+  ],
+  type: "FACE_COVER",
+};
+
+export const faceCoverNoClassTableColumn = {
+  json_value: null,
+  id: "FACE_COVER_NO_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
+  type: "FACE_COVER",
+};
+
+export const headsetTableColumn = {
+  json_value: null,
+  id: "HEAD_PHONE_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
+  type: "HEAD_PHONE",
+};
+
+export const headwearClassTableColumn = {
+  json_value: null,
+  id: "HEAD_WEAR_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: [
+    "사진",
+    "이름",
+    "보호 등급",
+    "보호 부위",
+    "내구성",
+    "도탄 기회",
+    "무게",
+  ],
+  value_kr: [
+    "사진",
+    "이름",
+    "보호 등급",
+    "보호 부위",
+    "내구성",
+    "도탄 기회",
+    "무게",
+  ],
+  type: "HEAD_WEAR",
+};
+
+export const headwearNoClassTableColumn = {
+  json_value: null,
+  id: "HEAD_WEAR_NO_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
+  type: "HEAD_WEAR",
+};
+
+export const rigClassTableColumn = {
+  json_value: null,
+  id: "RIG_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: [
+    "사진",
+    "이름",
+    "내구성",
+    "슬롯",
+    "보호 등급",
+    "보호 부위",
+    "무게",
+  ],
+  value_kr: [
+    "사진",
+    "이름",
+    "내구성",
+    "슬롯",
+    "보호 등급",
+    "보호 부위",
+    "무게",
+  ],
+  type: "RIG",
+};
+
+export const rigNoClassTableColumn = {
+  json_value: null,
+  id: "RIG_NO_CLASS_COLUMN",
+  update_time: "2024-07-17T11:15:10.336306+09:00",
+  value_en: ["사진", "이름", "슬롯", "무게"],
+  value_kr: ["사진", "이름", "슬롯", "무게"],
+  type: "RIG",
 };

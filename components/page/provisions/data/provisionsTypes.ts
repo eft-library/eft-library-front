@@ -3,14 +3,13 @@ export interface ProvisionsList {
 }
 
 interface StimEffect {
-  id: string;
   type: string;
   delay?: number;
   value: number;
   chance: number;
   krSkill: string;
   duration?: number;
-  skillName: string;
+  skillName: string | null;
 }
 
 export interface EffectText {
