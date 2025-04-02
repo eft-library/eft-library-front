@@ -23,17 +23,21 @@ export default function ItemClient({ medicalList }: ItemClient) {
     <div className="w-full">
       {medicalList.map(
         (item) =>
-          checkViewMedical(medicalCategory, item.category, "Medical item") && (
+          checkViewMedical(
+            medicalCategory,
+            item.info.medical_category,
+            "Medical item"
+          ) && (
             <DefineGrid cols="10" id={item.id} pageId={pageId} key={item.id}>
               <CenterContents>
                 <ImageView
                   src={item.image}
                   alt={item.name_en}
-                  popWidth={item.width * 128}
-                  popHeight={item.height * 128}
-                  size={(item.width * 64).toString()}
-                  wrapWidth={item.width * 64}
-                  wrapHeight={item.height * 64}
+                  popWidth={item.image_width * 128}
+                  popHeight={item.image_height * 128}
+                  size={(item.image_width * 64).toString()}
+                  wrapWidth={item.image_width * 64}
+                  wrapHeight={item.image_height * 64}
                 />
               </CenterContents>
 
@@ -46,7 +50,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
               </CenterContents>
 
               <CenterContents isCol colSpan="2">
-                {item.cures_kr.map((cures, index) => (
+                {item.info.cures_kr.map((cures, index) => (
                   <TextSpan key={`${index}-cures`} isCenter={false}>
                     {cures}
                   </TextSpan>
@@ -58,11 +62,11 @@ export default function ItemClient({ medicalList }: ItemClient) {
               </CenterContents>
 
               <CenterContents>
-                <TextSpan>{item.uses}</TextSpan>
+                <TextSpan>{item.info.uses}</TextSpan>
               </CenterContents>
 
               <CenterContents>
-                <TextSpan>{item.use_time} 초</TextSpan>
+                <TextSpan>{item.info.use_time} 초</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

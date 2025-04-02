@@ -2,62 +2,90 @@ export interface WeaponClient {
   weapon: WeaponData;
 }
 
-interface Weapon {
-  id: string;
-  category: string;
-  name: string;
-  short_name: string;
-  image: string;
-  width: number;
-  height: number;
-  update_time: string;
-}
-
-interface Gun extends Weapon {
-  default_ammo: string;
-  modes_kr: string[];
-  modes_en: string[];
-  ergonomics: number;
-  recoil_horizontal: number;
-  fire_rate: number;
-  recoil_vertical: number;
-  carliber: string;
-}
-
-interface Knife extends Weapon {
-  slash_damage: number;
-  hit_radius: number;
-  stab_damage: number;
-}
-
-interface Throwable extends Weapon {
-  fuse: number;
-  min_explosion_distance: number;
-  max_explosion_distance: number;
-  fragments: number;
-  min_fuse: number | null;
-}
-
 interface WeaponData {
-  gun: Gun[];
-  knife: Knife[];
-  throwable: Throwable[];
+  gun: GunDetail[];
+  knife: KnifeDetail[];
+  throwable: ThrowableDetail[];
 }
 
 export interface ThrowableRender {
-  throwableList: Throwable[];
+  throwableList: ThrowableDetail[];
 }
 
 export interface StationaryRender {
-  stationaryList: Gun[];
+  stationaryList: GunDetail[];
 }
 export interface SpecialRender {
-  specialList: Gun[];
+  specialList: GunDetail[];
 }
 export interface KnifeRender {
-  knifeList: Knife[];
+  knifeList: KnifeDetail[];
 }
 
 export interface GunRender {
-  gunList: Gun[];
+  gunList: GunDetail[];
+}
+
+interface GunInfo {
+  carliber: string;
+  modes_en: string[];
+  modes_kr: string[];
+  fire_rate: number;
+  ergonomics: number;
+  default_ammo: string;
+  gun_category: string;
+  recoil_vertical: number;
+  recoil_horizontal: number;
+}
+
+interface GunDetail {
+  category: string;
+  id: string;
+  info: GunInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
+}
+
+interface KnifeInfo {
+  hit_radius: number;
+  stab_damage: number;
+  slash_damage: number;
+  gun_category: string;
+}
+
+interface KnifeDetail {
+  category: string;
+  id: string;
+  info: KnifeInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
+}
+
+interface ThrowableInfo {
+  fuse: number;
+  fragments: number;
+  gun_category: string;
+  max_explosion_distance: number;
+  min_explosion_distance: number;
+  min_fuse: number;
+}
+
+interface ThrowableDetail {
+  category: string;
+  id: string;
+  info: ThrowableInfo;
+  image_height: number;
+  name_kr: string;
+  image: string;
+  name_en: string;
+  image_width: number;
+  update_time: string;
 }

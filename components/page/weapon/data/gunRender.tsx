@@ -49,41 +49,41 @@ export default function GunRender({ gunList }: GunRender) {
       <GetClientColumn columnLength={9} columnList={gunColumn} />
       {gunList.map(
         (gun) =>
-          shouldRenderWeapon(gun.category) && (
+          shouldRenderWeapon(gun.info.gun_category) && (
             <DefineGrid cols="9" id={gun.id} pageId={pageId} key={gun.id}>
               <CenterContents colSpan="2">
                 <ImageView
                   src={gun.image}
-                  alt={gun.name}
-                  popWidth={gun.width * 128}
-                  popHeight={gun.height * 128}
-                  size={(gun.width * 64).toString()}
-                  wrapWidth={gun.width * 64}
-                  wrapHeight={gun.height * 64}
+                  alt={gun.name_en}
+                  popWidth={gun.image_width * 128}
+                  popHeight={gun.image_height * 128}
+                  size={(gun.image_width * 64).toString()}
+                  wrapWidth={gun.image_width * 64}
+                  wrapHeight={gun.image_height * 64}
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.short_name}</TextSpan>
+                <TextSpan>{gun.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{sliceDefaultAmmo(gun.default_ammo)}</TextSpan>
+                <TextSpan>{sliceDefaultAmmo(gun.info.default_ammo)}</TextSpan>
               </CenterContents>
               <CenterContents>
-                {gun.modes_kr.map((mode, index) => (
+                {gun.info.modes_kr.map((mode, index) => (
                   <TextSpan key={`mode-${mode}-${index}`}>{mode}</TextSpan>
                 ))}
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.fire_rate}</TextSpan>
+                <TextSpan>{gun.info.fire_rate}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.ergonomics}</TextSpan>
+                <TextSpan>{gun.info.ergonomics}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.recoil_horizontal}</TextSpan>
+                <TextSpan>{gun.info.recoil_horizontal}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.recoil_vertical}</TextSpan>
+                <TextSpan>{gun.info.recoil_vertical}</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

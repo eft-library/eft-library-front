@@ -1,4 +1,5 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { Buff, Debuff } from "@/components/page/medical/data/medicalTypes";
 import Link from "next/link";
 
 export const getPlusMinus = (text: number | string) => {
@@ -44,18 +45,7 @@ export const checkViewMedical = (
   );
 };
 
-interface Effect {
-  id: string;
-  type: string;
-  delay?: number;
-  value: number;
-  chance: number;
-  krSkill: string;
-  duration?: number;
-  skillName: string;
-}
-
-export const filterStimEffects = (effects: Effect[]) => {
+export const filterStimEffects = (effects: Buff[] | Debuff[]) => {
   const seen = new Set();
   for (const effect of effects) {
     const key = `${effect.delay}-${effect.duration}`;

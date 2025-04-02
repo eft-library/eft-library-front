@@ -29,7 +29,7 @@ export default function SpecialRender({ specialList }: SpecialRender) {
       <GetClientColumn columnLength={2} columnList={specialColumn} />
       {specialList.map(
         (special) =>
-          shouldRenderWeapon(special.category) && (
+          shouldRenderWeapon(special.info.gun_category) && (
             <DefineGrid
               cols="2"
               id={special.id}
@@ -39,16 +39,16 @@ export default function SpecialRender({ specialList }: SpecialRender) {
               <CenterContents>
                 <ImageView
                   src={special.image}
-                  alt={special.name}
-                  popWidth={special.width * 128}
-                  popHeight={special.height * 128}
-                  size={(special.width * 64).toString()}
-                  wrapWidth={special.width * 64}
-                  wrapHeight={special.height * 64}
+                  alt={special.name_en}
+                  popWidth={special.image_width * 128}
+                  popHeight={special.image_height * 128}
+                  size={(special.image_width * 64).toString()}
+                  wrapWidth={special.image_width * 64}
+                  wrapHeight={special.image_height * 64}
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{special.short_name}</TextSpan>
+                <TextSpan>{special.name_kr}</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

@@ -30,7 +30,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
       <GetClientColumn columnLength={5} columnList={stationaryColumn} />
       {stationaryList.map(
         (stationary) =>
-          shouldRenderWeapon(stationary.category) && (
+          shouldRenderWeapon(stationary.info.gun_category) && (
             <DefineGrid
               cols="5"
               id={stationary.id}
@@ -40,7 +40,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
               <CenterContents>
                 <ImageView
                   src={formatImage(stationary.image)}
-                  alt={stationary.name}
+                  alt={stationary.name_en}
                   popWidth={1200}
                   popHeight={800}
                   size="240px"
@@ -49,20 +49,20 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{stationary.short_name}</TextSpan>
+                <TextSpan>{stationary.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{stationary.carliber}</TextSpan>
+                <TextSpan>{stationary.info.carliber}</TextSpan>
               </CenterContents>
               <CenterContents>
-                {stationary.modes_kr.map((mode, index) => (
+                {stationary.info.modes_kr.map((mode, index) => (
                   <TextSpan key={`mode-${mode}-${index}`} isCenter={false}>
                     {mode}
                   </TextSpan>
                 ))}
               </CenterContents>
               <CenterContents>
-                <TextSpan>{stationary.fire_rate}</TextSpan>
+                <TextSpan>{stationary.info.fire_rate}</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

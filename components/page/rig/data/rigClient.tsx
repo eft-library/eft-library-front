@@ -27,35 +27,35 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             <CenterContents>
               <ImageView
                 src={rig.image}
-                alt={rig.name}
-                popWidth={rig.width * 96}
-                popHeight={rig.height * 96}
-                size={(rig.width * 48).toString()}
-                wrapWidth={rig.width * 48}
-                wrapHeight={rig.height * 48}
+                alt={rig.name_en}
+                popWidth={rig.image_width * 96}
+                popHeight={rig.image_height * 96}
+                size={(rig.image_width * 48).toString()}
+                wrapWidth={rig.image_width * 48}
+                wrapHeight={rig.image_height * 48}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.name}</TextSpan>
+              <TextSpan>{rig.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.durability}</TextSpan>
+              <TextSpan>{rig.info.durability}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.capacity}</TextSpan>
+              <TextSpan>{rig.info.capacity}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.class_value}</TextSpan>
+              <TextSpan>{rig.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents isCol>
-              {rig.areas_kr.map((area, index) => (
+              {rig.info.areas_kr.map((area, index) => (
                 <TextSpan isCenter={false} key={`${index}-area-${rig.id}`}>
                   {area}
                 </TextSpan>
               ))}
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.weight} kg</TextSpan>
+              <TextSpan>{rig.info.weight} kg</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}
@@ -71,22 +71,22 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             <CenterContents>
               <ImageView
                 src={rig.image}
-                alt={rig.name}
-                popWidth={380}
-                popHeight={400}
-                size="240px"
-                wrapWidth={240}
-                wrapHeight={140}
+                alt={rig.name_en}
+                popWidth={rig.image_width * 96}
+                popHeight={rig.image_height * 96}
+                size={(rig.image_width * 48).toString()}
+                wrapWidth={rig.image_width * 48}
+                wrapHeight={rig.image_height * 48}
               />
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.name}</TextSpan>
+              <TextSpan>{rig.name_kr}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.capacity}</TextSpan>
+              <TextSpan>{rig.info.capacity}</TextSpan>
             </CenterContents>
             <CenterContents>
-              <TextSpan>{rig.weight} kg</TextSpan>
+              <TextSpan>{rig.info.weight} kg</TextSpan>
             </CenterContents>
           </DefineGrid>
         ))}

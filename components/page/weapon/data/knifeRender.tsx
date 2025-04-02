@@ -23,25 +23,25 @@ export default function KnifeRender({ knifeList }: KnifeRender) {
           <CenterContents>
             <ImageView
               src={knife.image}
-              alt={knife.name}
-              popWidth={knife.width * 128}
-              popHeight={knife.height * 128}
-              size={(knife.width * 64).toString()}
-              wrapWidth={knife.width * 64}
-              wrapHeight={knife.height * 64}
+              alt={knife.name_en}
+              popWidth={knife.image_width * 128}
+              popHeight={knife.image_height * 128}
+              size={(knife.image_width * 64).toString()}
+              wrapWidth={knife.image_width * 64}
+              wrapHeight={knife.image_height * 64}
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{knife.name}</TextSpan>
+            <TextSpan>{knife.name_kr}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{knife.slash_damage}</TextSpan>
+            <TextSpan>{knife.info.slash_damage}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{knife.stab_damage}</TextSpan>
+            <TextSpan>{knife.info.stab_damage}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{knife.hit_radius} m</TextSpan>
+            <TextSpan>{knife.info.hit_radius} m</TextSpan>
           </CenterContents>
         </DefineGrid>
       ))}

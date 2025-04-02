@@ -22,7 +22,11 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
     <div className="w-full">
       {medicalList.map(
         (medikit) =>
-          checkViewMedical(medicalCategory, medikit.category, "Medikit") && (
+          checkViewMedical(
+            medicalCategory,
+            medikit.info.medical_category,
+            "Medikit"
+          ) && (
             <DefineGrid
               key={medikit.id}
               id={medikit.id}
@@ -33,22 +37,22 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                 <ImageView
                   src={medikit.image}
                   alt={medikit.name_en}
-                  popWidth={medikit.width * 128}
-                  popHeight={medikit.height * 128}
-                  size={(medikit.width * 64).toString()}
-                  wrapWidth={medikit.width * 64}
-                  wrapHeight={medikit.height * 64}
+                  popWidth={medikit.image_width * 128}
+                  popHeight={medikit.image_height * 128}
+                  size={(medikit.image_width * 64).toString()}
+                  wrapWidth={medikit.image_width * 64}
+                  wrapHeight={medikit.image_height * 64}
                 />
               </CenterContents>
               <CenterContents colSpan="2">
                 <TextSpan size="sm">{medikit.name_kr}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{medikit.hitpoints}</TextSpan>
+                <TextSpan>{medikit.info.hitpoints}</TextSpan>
               </CenterContents>
               <CenterContents isCol colSpan="2">
-                {medikit.cures_kr && medikit.cures_kr.length > 0 ? (
-                  medikit.cures_kr.map((cures, index) => (
+                {medikit.info.cures_kr && medikit.info.cures_kr.length > 0 ? (
+                  medikit.info.cures_kr.map((cures, index) => (
                     <TextSpan
                       key={`${medikit.id}-cures-${index}`}
                       isCenter={false}
@@ -67,7 +71,7 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                 <TextSpan>-</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{medikit.use_time} 초</TextSpan>
+                <TextSpan>{medikit.info.use_time} 초</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

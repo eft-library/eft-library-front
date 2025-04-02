@@ -4,19 +4,27 @@ export interface RigClient {
 }
 
 interface RigData {
-  class_rig: DefenseData[];
-  no_class_rig: DefenseData[];
+  class_rig: RigDetail[];
+  no_class_rig: RigDetail[];
 }
 
-interface DefenseData {
-  id: string;
-  durability: number;
-  capacity: number;
-  class_value: number;
+interface RigInfo {
+  weight?: number;
+  areas_en: string[];
   areas_kr: string[];
-  weight: number;
-  name: string;
-  width: number;
-  height: number;
+  capacity?: number;
+  durability?: number;
+  class_value?: number;
+}
+
+interface RigDetail {
+  id: string;
+  name_en: string;
+  name_kr: string;
+  category: string;
   image: string;
+  image_width: number;
+  image_height: number;
+  info: RigInfo;
+  update_time: string;
 }
