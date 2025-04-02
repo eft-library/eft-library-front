@@ -68,7 +68,7 @@ export default function GunRender({ gunList }: GunRender) {
               <CenterContents>
                 <TextSpan>{sliceDefaultAmmo(gun.info.default_ammo)}</TextSpan>
               </CenterContents>
-              <CenterContents>
+              <CenterContents isCol>
                 {gun.info.modes_kr.map((mode, index) => (
                   <TextSpan key={`mode-${mode}-${index}`}>{mode}</TextSpan>
                 ))}

@@ -54,7 +54,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
               <CenterContents>
                 <TextSpan>{stationary.info.carliber}</TextSpan>
               </CenterContents>
-              <CenterContents>
+              <CenterContents isCol>
                 {stationary.info.modes_kr.map((mode, index) => (
                   <TextSpan key={`mode-${mode}-${index}`} isCenter={false}>
                     {mode}
