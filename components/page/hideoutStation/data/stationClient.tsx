@@ -180,7 +180,7 @@ export default function StationClient({ hideoutData }: StationClient) {
           onChangeLevel={setLevel}
         />
         {session && session.email && (
-          <div className="w-[100px] absolute bottom-20 left-0">
+          <div className="w-[100px] absolute top-[-20] right-80">
             <Button
               onClick={() => onClickReset()}
               className="rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"

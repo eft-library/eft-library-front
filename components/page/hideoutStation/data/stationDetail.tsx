@@ -18,12 +18,12 @@ export default function StationDetail({
 
   const getMaxSuffix = (id: string) => {
     const nowLevel = parseInt(id.split("-")[1], 10);
-    if (nowLevel === 1) return ALL_COLOR.SandBeige;
-    if (nowLevel === 2) return ALL_COLOR.BurntSienna;
-    if (nowLevel === 3) return ALL_COLOR.SageGreen;
-    if (nowLevel === 4) return ALL_COLOR.DustyTeal;
-    if (nowLevel === 5) return ALL_COLOR.LavenderBlue;
-    if (nowLevel === 6) return ALL_COLOR.MauveOrchid;
+    if (nowLevel === 1) return ALL_COLOR.SandyOchre;
+    if (nowLevel === 2) return ALL_COLOR.BurningOrange;
+    if (nowLevel === 3) return ALL_COLOR.OliveTeal;
+    if (nowLevel === 4) return ALL_COLOR.CobaltBlue;
+    if (nowLevel === 5) return ALL_COLOR.IndigoViolet;
+    if (nowLevel === 6) return ALL_COLOR.RoyalPurple;
     return ALL_COLOR.SoftAlloy;
   };
 

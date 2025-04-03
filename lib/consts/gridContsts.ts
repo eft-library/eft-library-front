@@ -15,7 +15,7 @@ export const throwableColumn = [
   { name: "이름", colSpan: 1 },
   { name: "폭발 지연", colSpan: 1 },
   { name: "폭발 거리", colSpan: 1 },
-  { name: "파편 변경", colSpan: 1 },
+  { name: "파편 반경", colSpan: 1 },
 ];
 
 export const stationaryColumn = [

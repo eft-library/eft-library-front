@@ -18,12 +18,12 @@ export default function LevelSelector({
   const getLevelColor = (index: number, level: string) => {
     if (selectLevelId === level) return "text-GoldenYellow";
 
-    if (index === 1) return "text-SandBeige";
-    if (index === 2) return "text-ButnrSienna";
-    if (index === 3) return "text-SageGreen";
-    if (index === 4) return "text-DustyTeal";
-    if (index === 5) return "text-LavenderBlue";
-    if (index === 6) return "text-MauveOrchid";
+    if (index === 1) return "text-SandyOchre";
+    if (index === 2) return "text-BurningOrange";
+    if (index === 3) return "text-MossGreen";
+    if (index === 4) return "text-CobaltBlue";
+    if (index === 5) return "text-IndigoViolet";
+    if (index === 6) return "text-RoyalPurple";
     return "text-AshGray";
   };
 
@@ -48,7 +48,7 @@ export default function LevelSelector({
               className="flex flex-col items-center justify-center"
             >
               <span
-                className={`text-lg hover:text-GoldenYellow font-medium ${getLevelColor(
+                className={`text-lg hover:text-GoldenYellow font-bold ${getLevelColor(
                   index + 1,
                   level.level_id
                 )}`}

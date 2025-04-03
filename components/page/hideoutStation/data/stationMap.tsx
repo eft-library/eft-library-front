@@ -47,12 +47,12 @@ export default function StationMap({
 
     const maxDepth = filteredList.length > 0 ? Math.max(...filteredList) : -1; // 기본값 -1
 
-    if (maxDepth === 1) return ALL_COLOR.SandBeige;
-    if (maxDepth === 2) return ALL_COLOR.BurntSienna;
-    if (maxDepth === 3) return ALL_COLOR.SageGreen;
-    if (maxDepth === 4) return ALL_COLOR.DustyTeal;
-    if (maxDepth === 5) return ALL_COLOR.LavenderBlue;
-    if (maxDepth === 6) return ALL_COLOR.MauveOrchid;
+    if (maxDepth === 1) return ALL_COLOR.SandyOchre;
+    if (maxDepth === 2) return ALL_COLOR.BurningOrange;
+    if (maxDepth === 3) return ALL_COLOR.OliveTeal;
+    if (maxDepth === 4) return ALL_COLOR.CobaltBlue;
+    if (maxDepth === 5) return ALL_COLOR.IndigoViolet;
+    if (maxDepth === 6) return ALL_COLOR.RoyalPurple;
     return ALL_COLOR.SoftAlloy; // maxDepth === -1일 경우 기본값
   };
 

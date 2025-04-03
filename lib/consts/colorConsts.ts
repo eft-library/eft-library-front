@@ -82,13 +82,12 @@ export const ALL_COLOR = {
   LemonChiffon: "#f1e25c",
   PalePeriwinkle: "#c5d1ea",
   LimeGreen: "#7fd14a",
-
-  SandBeige: "#C8A68C",
-  BurntSienna: "#D68B5E",
-  SageGreen: "#9FB68B",
-  DustyTeal: "#8BB0B6",
-  LavenderBlue: "#8B8CB6",
-  MauveOrchid: "#AF8BB6",
+  SandyOchre: "#D4A076",
+  BurningOrange: "#E06A32",
+  OliveTeal: "#70A568",
+  CobaltBlue: "#4B91A3",
+  IndigoViolet: "#5A5FAA",
+  RoyalPurple: "#914FA3",
 } as const;
 
 export type AllColorKeys = keyof typeof ALL_COLOR;
