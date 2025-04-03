@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
   GET_EVENT: baseUrl + "/api/event/board",
   GET_EVENT_BY_ID: baseUrl + "/api/event/detail",
   GET_ITEM_FILTER: baseUrl + "/api/item_filter/all",
+  GET_ITEM_DETAIL: baseUrl + "/api/item/detail",
   GET_MAP: baseUrl + "/api/map/info",
   GET_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/detail",
   GET_ALL_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/all",
