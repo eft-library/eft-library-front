@@ -8,6 +8,7 @@ import type {
   TraderRequire,
 } from "./stationType";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import Image from "next/image";
 import {
   Tooltip,
@@ -16,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function DetailRequire({ items, type }: RequireList) {
   const [openTooltipIndex, setOpenTooltipIndex] = useState<number | null>(null);
@@ -35,6 +37,36 @@ export default function DetailRequire({ items, type }: RequireList) {
   const isSkillRequire = (item: any): item is SkillRequire => "level" in item;
   const isTraderRequire = (item: any): item is TraderRequire => "value" in item;
 
+  const getLevelColor = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "station") {
+      if ("level" in item) {
+        if (item.level === 1) return "text-SandyOchre";
+        if (item.level === 2) return "text-BurningOrange";
+        if (item.level === 3) return "text-MossGreen";
+        if (item.level === 4) return "text-CobaltBlue";
+        if (item.level === 5) return "text-IndigoViolet";
+        if (item.level === 6) return "text-RoyalPurple";
+      }
+    }
+
+    return "text-white";
+  };
+
+  const getMaxSuffix = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "station") {
+      if ("level" in item) {
+        if (item.level === 1) return ALL_COLOR.SandyOchre;
+        if (item.level === 2) return ALL_COLOR.BurningOrange;
+        if (item.level === 3) return ALL_COLOR.OliveTeal;
+        if (item.level === 4) return ALL_COLOR.CobaltBlue;
+        if (item.level === 5) return ALL_COLOR.IndigoViolet;
+        if (item.level === 6) return ALL_COLOR.RoyalPurple;
+      }
+    }
+
+    return ALL_COLOR.AshGray;
+  };
+
   const checkType = (item: ItemRequire | SkillRequire | TraderRequire) => {
     if (type === "item" && isItemRequire(item)) {
       return `x ${item.quantity}`;
@@ -44,6 +76,16 @@ export default function DetailRequire({ items, type }: RequireList) {
       return `${item.name_kr} ${item.level || ""}`;
     }
     return `LV ${"level" in item ? item.level : ""}`;
+  };
+
+  const getMaster = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "station") {
+      if ("level_id" in item) {
+        const masterLevel = item.level_id.split("-")[0];
+        return masterLevel;
+      }
+    }
+    return "";
   };
 
   return (
@@ -65,20 +107,29 @@ export default function DetailRequire({ items, type }: RequireList) {
                   }
                 >
                   <TooltipTrigger>
-                    <Image
-                      src={
-                        type === "skill" || type === "station"
-                          ? formatImage(item.image || "")
-                          : item.image || ""
-                      }
-                      onMouseEnter={() => onHoverItem(item, index)}
-                      onMouseLeave={() => setOpenTooltipIndex(null)}
-                      onFocus={() => onHoverItem(item, index)}
-                      onBlur={() => setOpenTooltipIndex(null)}
-                      alt={item.name_en || ""}
-                      width={60}
-                      height={60}
-                    />
+                    {type !== "station" && (
+                      <Image
+                        src={
+                          type === "skill"
+                            ? formatImage(item.image || "")
+                            : item.image || ""
+                        }
+                        onMouseEnter={() => onHoverItem(item, index)}
+                        onMouseLeave={() => setOpenTooltipIndex(null)}
+                        onFocus={() => onHoverItem(item, index)}
+                        onBlur={() => setOpenTooltipIndex(null)}
+                        alt={item.name_en || ""}
+                        width={60}
+                        height={60}
+                      />
+                    )}
+                    {type === "station" &&
+                      getStationSVG(
+                        getMaster(item),
+                        60,
+                        60,
+                        getMaxSuffix(item)
+                      )}
                   </TooltipTrigger>
                   <TooltipContent
                     side="top"
@@ -101,10 +152,14 @@ export default function DetailRequire({ items, type }: RequireList) {
                 </div>
               </div>
             ) : (
-              <TextSpan size="lg">
+              <span
+                className={`text-center font-bold text-lg ${getLevelColor(
+                  item
+                )}`}
+              >
                 &nbsp;
                 {checkType(item)}
-              </TextSpan>
+              </span>
             )}
           </div>
         ))}
