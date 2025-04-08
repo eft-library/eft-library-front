@@ -99,7 +99,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                     "check"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(item.info.light_bleed_modifier))}{" "}
+                  {getPlusMinus(floatToPercent(item.info.light_bleed_modifier))}
                   %
                 </TextSpan>
               </CenterContents>
@@ -111,7 +111,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                     "check"
                   )}
                 >
-                  {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}{" "}
+                  {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}
                   %
                 </TextSpan>
               </CenterContents>

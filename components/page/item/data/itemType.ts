@@ -13,3 +13,7 @@ export interface ItemDetail {
 export interface ItemClient {
   itemInfo: ItemDetail;
 }
+
+export interface ItemView {
+  item: any;
+}
