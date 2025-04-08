@@ -15,7 +15,7 @@ export default function LevelSelector({
     (station) => station.master_id === masterId
   );
 
-  const getLevelColor = (index: number, level: string) => {
+  const getLevelColor = (index: number) => {
     if (index === 1) return "text-SandyOchre";
     if (index === 2) return "text-BurningOrange";
     if (index === 3) return "text-MossGreen";
@@ -48,12 +48,7 @@ export default function LevelSelector({
                 "border-2 border-solid border-white rounded-lg"
               }`}
             >
-              <span
-                className={`text-lg font-bold ${getLevelColor(
-                  index + 1,
-                  level.level_id
-                )}`}
-              >
+              <span className={`text-lg font-bold ${getLevelColor(index + 1)}`}>
                 LV {index + 1}
               </span>
             </button>
