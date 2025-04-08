@@ -1,17 +1,7 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { ItemView } from "../itemType";
 
-export default function DrugView({ item }: ItemView) {
-  const drugText = (label: string, value: number, positive: boolean) => {
-    return (
-      <div className={"flex mb-[4px]"}>
-        <TextSpan isCenter={false}>{label} :&nbsp;</TextSpan>
-        <TextSpan isCenter={false} textColor={positive ? "BrightCyan" : "Red"}>
-          {value}
-        </TextSpan>
-      </div>
-    );
-  };
+export default function MedicalItemView({ item }: ItemView) {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -61,32 +51,16 @@ export default function DrugView({ item }: ItemView) {
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold">
             <div className="flex flex-col justify-center items-center col-span-2">
-              <span className="font-bold text-base text-PaleYellow mt-[4px]">
-                {item.info.painkiller_duration}초 지속
-              </span>
-              <div className={"flex mb-[4px]"}>
-                <TextSpan isCenter={false}>-&nbsp;</TextSpan>
-                <TextSpan isCenter={false} textColor="BrightCyan">
-                  진통제
-                </TextSpan>
-              </div>
-              {item.info.hydration_impact > 0 &&
-                drugText("수분", item.info.hydration_impact, true)}
-              {item.info.energy_impact > 0 &&
-                drugText("에너지", item.info.energy_impact, true)}
+              {item.info.cures_kr && item.info.cures_kr.length > 0 ? (
+                item.info.cures_kr.map((cures: string, index: number) => (
+                  <TextSpan key={`${item.id}-cures-${index}`} isCenter={false}>
+                    {cures}
+                  </TextSpan>
+                ))
+              ) : (
+                <TextSpan>-</TextSpan>
+              )}
             </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
-            디버프
-          </div>
-          <div className="py-2 px-2 bg-black text-center font-bold flex flex-col justify-center items-center">
-            {item.info.hydration_impact < 0 &&
-              drugText("수분", item.info.hydration_impact, false)}
-            {item.info.energy_impact < 0 &&
-              drugText("에너지", item.info.energy_impact, false)}
           </div>
         </div>
       </div>

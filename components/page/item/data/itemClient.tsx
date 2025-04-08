@@ -16,6 +16,14 @@ import KeyView from "./itemDetail/keyView";
 import GunView from "./itemDetail/gunView";
 import ContainerView from "./itemDetail/ContainerView";
 import ProvisionsView from "./itemDetail/provisionsView";
+import DrugView from "./itemDetail/drugView";
+import StimulantView from "./itemDetail/stimulantView";
+import MedikitView from "./itemDetail/medikitView";
+import MedicalItemView from "./itemDetail/medicalItemView";
+import KnifeView from "./itemDetail/knifeView";
+import ThrowableView from "./itemDetail/throwableView";
+import StationaryView from "./itemDetail/stationaryView";
+import { formatImage } from "@/lib/func/formatImage";
 
 export default function ItemClient({ itemInfo }: ItemClient) {
   return (
@@ -30,7 +38,12 @@ export default function ItemClient({ itemInfo }: ItemClient) {
             className={`flex justify-center items-center relative`}
           >
             <Image
-              src={itemInfo.image || ""}
+              src={
+                itemInfo.category === "Gun" &&
+                itemInfo.info.gun_category === "Stationary weapons"
+                  ? formatImage(itemInfo.image)
+                  : itemInfo.image
+              }
               alt={itemInfo.name_en || ""}
               fill
               sizes={"180"}
@@ -57,11 +70,36 @@ export default function ItemClient({ itemInfo }: ItemClient) {
         {itemInfo.category === "Backpack" && <BackpackView item={itemInfo} />}
         {itemInfo.category === "FaceCover" && <FaceCoverView item={itemInfo} />}
         {itemInfo.category === "Key" && <KeyView item={itemInfo} />}
-        {itemInfo.category === "Gun" && <GunView item={itemInfo} />}
+        {itemInfo.category === "Gun" &&
+          itemInfo.info.gun_category !== "Stationary weapons" && (
+            <GunView item={itemInfo} />
+          )}
+        {itemInfo.category === "Gun" &&
+          itemInfo.info.gun_category === "Stationary weapons" && (
+            <StationaryView item={itemInfo} />
+          )}
+        {itemInfo.category === "Knife" && <KnifeView item={itemInfo} />}
+        {itemInfo.category === "Throwable" && <ThrowableView item={itemInfo} />}
         {itemInfo.category === "Container" && <ContainerView item={itemInfo} />}
         {itemInfo.category === "Provisions" && (
           <ProvisionsView item={itemInfo} />
         )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Drug" && (
+            <DrugView item={itemInfo} />
+          )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Stimulant" && (
+            <StimulantView item={itemInfo} />
+          )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Medikit" && (
+            <MedikitView item={itemInfo} />
+          )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Medical item" && (
+            <MedicalItemView item={itemInfo} />
+          )}
       </div>
     </div>
   );

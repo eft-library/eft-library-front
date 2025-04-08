@@ -1,6 +1,4 @@
-import TextSpan from "@/components/custom/gridContents/textSpan";
 import { Buff, Debuff } from "@/components/page/medical/data/medicalTypes";
-import Link from "next/link";
 
 export const getPlusMinus = (text: number | string) => {
   if (typeof text === "number") {
@@ -80,70 +78,6 @@ export const checkPlus = (effect: number | string) => {
         return "white";
     }
   }
-};
-
-interface QuestNotes {
-  id: string;
-  name: string;
-  count: number;
-  in_raid: boolean;
-  name_kr: string;
-  url_mapping: string;
-}
-
-export const returnQuestText = (note: QuestNotes) => {
-  return note.in_raid ? (
-    <div className="flex items-center">
-      <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
-          {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-        </TextSpan>
-      </Link>
-      <TextSpan isCenter={false}>&nbsp;(</TextSpan>
-      <TextSpan textColor="SoftPink" isCenter={false}>
-        인레이드&nbsp;
-      </TextSpan>
-      <TextSpan isCenter={false}>{note.count}개 필요)</TextSpan>
-    </div>
-  ) : (
-    <div className="flex items-center ">
-      <Link href={`/quest/detail/${note.url_mapping}`} key={note.url_mapping}>
-        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
-          {note.name_kr.substring(0, note.name_kr.indexOf("(")).trim()}
-        </TextSpan>
-      </Link>
-      <TextSpan isCenter={false}>&nbsp;({note.count}개 필요)</TextSpan>
-    </div>
-  );
-};
-
-interface HideoutNotes {
-  name: string;
-  count: number;
-  item_id: string;
-  name_kr: string;
-  level_id: string;
-  master_id: string;
-}
-
-export const returnHideOutText = (
-  note: HideoutNotes,
-  onClickAction: (val: string) => void
-) => {
-  return (
-    <div className="flex items-center">
-      <Link
-        href={`/hideout?id=${note.level_id}`}
-        scroll={false}
-        onClick={() => onClickAction(note.master_id)}
-      >
-        <TextSpan textColor="GoldenYellow" hoverColor="PaleYellow">
-          {note.name_kr}
-        </TextSpan>
-      </Link>
-      <TextSpan isCenter={false}>({note.count}개 필요)</TextSpan>
-    </div>
-  );
 };
 
 export const checkIdCategory = (id: string, checkId: string) => {

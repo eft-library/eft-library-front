@@ -54,10 +54,10 @@ export default function ProvisionsView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2 text-GoldenYellow font-bold flex flex-col justify-center items-center">
             효과
           </div>
-          <div className="py-2 px-2 font-bold">
+          <div className="py-2 px-2 font-bold flex flex-col justify-center items-center">
             {item.info.stim_effects.length > 0 ? (
               filterStimEffects(item.info.stim_effects).map((effect, index) => (
                 <EffectText
