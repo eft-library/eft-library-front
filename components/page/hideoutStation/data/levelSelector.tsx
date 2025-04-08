@@ -16,8 +16,6 @@ export default function LevelSelector({
   );
 
   const getLevelColor = (index: number, level: string) => {
-    if (selectLevelId === level) return "text-GoldenYellow";
-
     if (index === 1) return "text-SandyOchre";
     if (index === 2) return "text-BurningOrange";
     if (index === 3) return "text-MossGreen";
@@ -33,7 +31,7 @@ export default function LevelSelector({
         LV를 눌러 상세 정보를 확인하세요!
       </TextSpan>
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
-        <div className="flex items-center justify-center mb-12 gap-4">
+        <div className="flex items-center justify-center mb-4 gap-4">
           {getStationSVG(masterId, 60, 60, ALL_COLOR.SoftAlloy)}
           <div className="flex justify-center font-bold text-xl">
             {masterInfo?.master_name_kr || ""}
@@ -45,10 +43,13 @@ export default function LevelSelector({
             <button
               key={level.level_id}
               onClick={() => onChangeLevel(level.level_id)}
-              className="flex flex-col items-center justify-center"
+              className={`flex flex-col items-center p-2 justify-center ${
+                selectLevelId === level.level_id &&
+                "border-2 border-solid border-white rounded-lg"
+              }`}
             >
               <span
-                className={`text-lg hover:text-GoldenYellow font-bold ${getLevelColor(
+                className={`text-lg font-bold ${getLevelColor(
                   index + 1,
                   level.level_id
                 )}`}
