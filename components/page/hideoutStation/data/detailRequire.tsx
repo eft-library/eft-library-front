@@ -80,9 +80,8 @@ export default function DetailRequire({ items, type }: RequireList) {
 
   const getMaster = (item: ItemRequire | SkillRequire | TraderRequire) => {
     if (type === "station") {
-      if ("level_id" in item) {
-        const masterLevel = item.level_id.split("-")[0];
-        return masterLevel;
+      if ("station_master_id" in item) {
+        return item.station_master_id || "";
       }
     }
     return "";
@@ -123,13 +122,19 @@ export default function DetailRequire({ items, type }: RequireList) {
                         height={60}
                       />
                     )}
-                    {type === "station" &&
-                      getStationSVG(
-                        getMaster(item),
-                        60,
-                        60,
-                        getMaxSuffix(item)
-                      )}
+                    {type === "station" && (
+                      <div
+                        onMouseEnter={() => onHoverItem(item, index)}
+                        onMouseLeave={() => setOpenTooltipIndex(null)}
+                      >
+                        {getStationSVG(
+                          getMaster(item),
+                          60,
+                          60,
+                          getMaxSuffix(item)
+                        )}
+                      </div>
+                    )}
                   </TooltipTrigger>
                   <TooltipContent
                     side="top"

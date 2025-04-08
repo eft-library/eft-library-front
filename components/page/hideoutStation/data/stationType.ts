@@ -178,6 +178,7 @@ export interface ItemRequire {
   name_kr: string | null;
   quantity: number;
   level_id: string;
+  station_master_id: string;
 }
 
 export interface SkillRequire {
@@ -186,6 +187,7 @@ export interface SkillRequire {
   name_kr: string | null;
   image: string | null;
   level_id: string;
+  station_master_id: string;
 }
 
 export interface TraderRequire {
@@ -196,6 +198,7 @@ export interface TraderRequire {
   name_kr: string | null;
   require_type: string | null;
   level_id: string;
+  station_master_id: string;
 }
 
 interface StationRequire {
@@ -204,6 +207,7 @@ interface StationRequire {
   name_en: string | null;
   name_kr: string | null;
   level_id: string;
+  station_master_id: string;
 }
 
 export interface RequireList {
