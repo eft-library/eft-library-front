@@ -1,11 +1,10 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-// import GetItem from "./data/getItem";
-import ItemClient from "./data/itemClient";
+import GetItem from "./data/getItem";
 
 export default function Item() {
   return (
     <ContentsWrapper>
-      <ItemClient />
+      <GetItem />
     </ContentsWrapper>
   );
 }
