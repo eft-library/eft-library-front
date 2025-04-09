@@ -17,11 +17,8 @@ export default function SpecialRender({ specialList }: SpecialRender) {
   const pageId = param.get("id") || "";
   useScrollMove(pageId, specialList, "WEAPON");
 
-  const shouldRenderWeapon = (itemCategory: string) => {
-    const isGeneralCategory = itemCategory === "Special weapons";
-    const isMatchingCategory =
-      itemCategory === "Special weapons" || weaponCategory === "ALL";
-    return isGeneralCategory && isMatchingCategory;
+  const shouldRenderWeapon = () => {
+    return weaponCategory === "ALL";
   };
 
   return (
@@ -29,7 +26,7 @@ export default function SpecialRender({ specialList }: SpecialRender) {
       <GetClientColumn columnLength={2} columnList={specialColumn} />
       {specialList.map(
         (special) =>
-          shouldRenderWeapon(special.info.gun_category) && (
+          shouldRenderWeapon() && (
             <DefineGrid
               cols="2"
               id={special.id}

@@ -3,7 +3,6 @@ import { useAppStore } from "@/store/provider";
 import GunRender from "./gunRender";
 import KnifeRender from "./knifeRender";
 import ThrowableRender from "./throwableRender";
-import SpecialRender from "./specialRender";
 import StationaryRender from "./stationaryRender";
 import { gunColumnDefinition } from "@/lib/consts/columnConsts";
 import type { WeaponClient } from "./weaponTypes";
@@ -26,9 +25,6 @@ export default function WeaponClient({ weapon }: WeaponClient) {
       )}
       {(weaponCategory === "ALL" || weaponCategory === "Throwable weapon") && (
         <ThrowableRender throwableList={weapon.throwable} />
-      )}
-      {(weaponCategory === "ALL" || weaponCategory === "Special weapons") && (
-        <SpecialRender specialList={weapon.gun} />
       )}
     </div>
   );

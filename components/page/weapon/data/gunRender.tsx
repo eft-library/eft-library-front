@@ -18,9 +18,7 @@ export default function GunRender({ gunList }: GunRender) {
   useScrollMove(pageId, gunList, "WEAPON");
 
   const shouldRenderWeapon = (itemCategory: string) => {
-    const isGeneralCategory =
-      itemCategory !== "Special weapons" &&
-      itemCategory !== "Stationary weapons";
+    const isGeneralCategory = itemCategory !== "Stationary weapons";
     const isMatchingCategory =
       itemCategory === weaponCategory || weaponCategory === "ALL";
     return isGeneralCategory && isMatchingCategory;

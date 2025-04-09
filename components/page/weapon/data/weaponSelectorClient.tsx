@@ -23,7 +23,6 @@ export default function WeaponSelectorClient() {
       desc_kr: "지정사수 소총",
     },
     { value: "Shotgun", desc_en: "산탄총", desc_kr: "산탄총" },
-    { value: "Grenade launcher", desc_en: "유탄발사기", desc_kr: "유탄발사기" },
     { value: "Handgun", desc_en: "권총", desc_kr: "권총" },
     {
       value: "Stationary weapons",
@@ -32,7 +31,7 @@ export default function WeaponSelectorClient() {
     },
     { value: "Knife", desc_en: "근접 무기", desc_kr: "근접 무기" },
     { value: "Throwable weapon", desc_en: "투척 무기", desc_kr: "투척 무기" },
-    { value: "Special weapons", desc_en: "특수 무기", desc_kr: "특수 무기" },
+    { value: "Grenade launcher", desc_en: "특수 무기", desc_kr: "특수 무기" },
   ];
 
   return (
