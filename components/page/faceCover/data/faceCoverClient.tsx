@@ -53,8 +53,7 @@ export default function FaceCoverClient({
               </TextSpan>
             </CenterContents>
             <CenterContents>
-              {/* <TextSpan>{faceCover.info.durability}</TextSpan> */}
-              <TextSpan>0</TextSpan>
+              <TextSpan>{faceCover.info.durability}</TextSpan>
             </CenterContents>
             <CenterContents>
               <TextSpan>{faceCover.info.ricochet_str_kr}</TextSpan>

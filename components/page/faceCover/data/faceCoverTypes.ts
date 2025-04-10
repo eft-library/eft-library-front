@@ -16,6 +16,7 @@ interface FaceCoverInfo {
   ricochet_chance: number;
   ricochet_str_en: string;
   ricochet_str_kr: string;
+  durability: number;
 }
 
 interface FaceCoverDetail {
