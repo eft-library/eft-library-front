@@ -15,9 +15,6 @@ export interface ThrowableRender {
 export interface StationaryRender {
   stationaryList: GunDetail[];
 }
-export interface SpecialRender {
-  specialList: GunDetail[];
-}
 export interface KnifeRender {
   knifeList: KnifeDetail[];
 }

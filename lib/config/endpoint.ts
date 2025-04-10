@@ -39,9 +39,9 @@ export const API_ENDPOINTS = {
 export const USER_API_ENDPOINTS = {
   ADD_USER: baseUrl + "/api/user/add",
   DELETE_USER: baseUrl + "/api/user/delete",
-  GET_USER_QUEST: baseUrl + "/api/user/quest",
-  DELETE_USER_QUEST: baseUrl + "/api/user/quest/delete",
+  GET_USER_QUEST: baseUrl + "/api/planner/quest",
+  DELETE_USER_QUEST: baseUrl + "/api/planner/quest/delete",
   UPDATE_ROADMAP: baseUrl + "/api/roadmap/save_roadmap",
   UPDATE_STATION: baseUrl + "/api/hideout/save_station",
-  UPDATE_USER_QUEST: baseUrl + "/api/user/quest/update",
+  UPDATE_USER_QUEST: baseUrl + "/api/planner/quest/update",
 };
