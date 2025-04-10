@@ -48,7 +48,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
     const getItem = async () => {
       try {
         const response = await fetch(`${API_ENDPOINTS.GET_ITEM_FILTER}`, {
-          next: { revalidate: 60000 },
+          next: { revalidate: 14400 },
         });
 
         if (!response.ok) {

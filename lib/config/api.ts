@@ -10,7 +10,7 @@ interface FetchSchema {
 export async function requestData(url: string): Promise<FetchSchema | null> {
   try {
     const response = await fetch(url, {
-      next: { revalidate: 60000 },
+      next: { revalidate: 14400 },
     });
 
     if (!response.ok) {

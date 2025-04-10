@@ -26,7 +26,7 @@ export default function PriceClient() {
       const response = await fetch(
         `${API_ENDPOINTS.GET_PRICE}?page=${pageParam}&page_size=30&word=${query}`,
         {
-          next: { revalidate: 60000 },
+          next: { revalidate: 14400 },
         }
       );
 
