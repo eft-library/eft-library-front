@@ -1,7 +1,6 @@
 "use client";
 
 import { useAppStore } from "@/store/provider";
-import { formatImage } from "@/lib/func/formatImage";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 import type { QuestSelectorClient } from "./questTypes";
 
@@ -19,7 +18,7 @@ export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
                 : "outline outline-2 outline-[color:white]"
             }`}
             style={{
-              backgroundImage: `url(${formatImage(npc.image)})`,
+              backgroundImage: `url(${npc.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

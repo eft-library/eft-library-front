@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import { useRouter } from "next/navigation";
 import React from "react";
 import TextSpan from "../../../custom/gridContents/textSpan";
@@ -26,7 +25,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         <div
           className={`cursor-pointer w-[140px] h-[140px] rounded-lg outline outline-2 outline-[color:white]`}
           style={{
-            backgroundImage: `url(${formatImage(questInfo.image)})`,
+            backgroundImage: `url(${questInfo.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

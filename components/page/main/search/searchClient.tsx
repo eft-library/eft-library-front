@@ -11,7 +11,7 @@ import { handleScroll } from "@/lib/func/jsxfunction";
 import type { SearchClient, SearchData } from "../mainTypes";
 
 export default function SearchClient({ searchList }: SearchClient) {
-  const { setHideoutCategory, setNpcId } = useAppStore((state) => state);
+  const { setNpcId } = useAppStore((state) => state);
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +21,6 @@ export default function SearchClient({ searchList }: SearchClient) {
     // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함
     if (item.type === "TRADER") {
       setNpcId(item.page_value);
-    } else if (item.type === "HIDEOUT") {
-      setHideoutCategory(item.page_value);
     }
     router.push(item.link);
   };

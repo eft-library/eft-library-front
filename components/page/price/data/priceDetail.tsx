@@ -1,7 +1,6 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { PriceDetail } from "./priceTypes";
 import Image from "next/image";
-import { formatImage } from "@/lib/func/formatImage";
 import CenterContents from "@/components/custom/gridContents/centerContents";
 
 export default function PriceDetail({ item, viewType }: PriceDetail) {
@@ -52,7 +51,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                   className={`flex justify-center items-center relative`}
                 >
                   <Image
-                    src={formatImage(pvp.trader.npc_image || "")}
+                    src={pvp.trader.npc_image || ""}
                     alt={pvp.trader.npc_name_en || ""}
                     fill
                     sizes={"70px"}
@@ -86,7 +85,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
                   className={`flex justify-center items-center relative`}
                 >
                   <Image
-                    src={formatImage(pve.trader.npc_image || "")}
+                    src={pve.trader.npc_image || ""}
                     alt={pve.trader.npc_name_en || ""}
                     fill
                     sizes={"70px"}

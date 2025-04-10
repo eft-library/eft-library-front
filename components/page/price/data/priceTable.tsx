@@ -3,7 +3,6 @@
 import CenterContents from "@/components/custom/gridContents/centerContents";
 import type { PriceTable, TradeOption } from "./priceTypes";
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import { formatImage } from "@/lib/func/formatImage";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -96,7 +95,7 @@ export default function PriceTable({
             className={`flex justify-center items-center relative cursor-pointer`}
           >
             <Image
-              src={formatImage(expensiveTrader.trader.npc_image || "")}
+              src={expensiveTrader.trader.npc_image || ""}
               fill
               sizes={"40px"}
               style={{ objectFit: "contain" }}

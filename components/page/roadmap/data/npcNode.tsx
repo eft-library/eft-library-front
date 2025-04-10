@@ -1,7 +1,6 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
 import Image from "next/image";
-import { formatImage } from "@/lib/func/formatImage";
 
 export default function NpcNode(props: any) {
   return (
@@ -16,7 +15,7 @@ export default function NpcNode(props: any) {
         <div className="flex-col items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full mb-4">
             <Image
-              src={formatImage(props.data.image)}
+              src={props.data.image}
               width={120}
               height={120}
               placeholder="blur"

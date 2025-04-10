@@ -11,10 +11,10 @@ export const MAIN_IMAGE_SLIDER_OPTION = {
 
 export const previewData = [
   {
-    npc_id: "PRAPOR",
+    npc_id: "54cb50c76803fa8b248b4571",
     npc_name_kr: "프라퍼",
     npc_name_en: "Prapor",
-    npc_image: "/eftlibrary/tkl_quest/npc/prapor.webp",
+    npc_image: "https://assets.tarkov.dev/54cb50c76803fa8b248b4571.webp",
     quest_info: [
       {
         next: [],
@@ -65,10 +65,10 @@ export const previewData = [
     ],
   },
   {
-    npc_id: "THERAPIST",
+    npc_id: "54cb57776803fa99248b456e",
     npc_name_kr: "테라피스트",
     npc_name_en: "Therapist",
-    npc_image: "/eftlibrary/tkl_quest/npc/therapist.webp",
+    npc_image: "https://assets.tarkov.dev/54cb57776803fa99248b456e.webp",
     quest_info: [
       {
         next: [

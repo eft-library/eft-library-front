@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import { requestUserData } from "@/lib/config/api";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
@@ -235,7 +234,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                     >
                       <div className={"flex gap-2 items-center"}>
                         <Image
-                          src={formatImage(npc.npc_image)}
+                          src={npc.npc_image}
                           alt={npc.npc_name_en}
                           width={40}
                           height={40}
@@ -324,7 +323,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                 >
                   <div className={"flex gap-2 items-center"}>
                     <Image
-                      src={formatImage(npc.npc_image)}
+                      src={npc.npc_image}
                       alt={npc.npc_name_en}
                       width={40}
                       height={40}

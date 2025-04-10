@@ -23,7 +23,6 @@ export type AppStateType = {
   medicalCategory: string;
   ammoCategory: string;
   lootCategory: string;
-  hideoutCategory: string;
   eventNum: number;
   noticeNum: number;
   patchNotesNum: number;
@@ -37,7 +36,6 @@ export type AppActionsType = {
   setMedicalCategory: (value: string) => void;
   setAmmoCategory: (value: string) => void;
   setLootCategory: (value: string) => void;
-  setHideoutCategory: (value: string) => void;
   setEventNum: (value: number) => void;
   setNoticeNum: (value: number) => void;
   setPatchNotesNum: (value: number) => void;
@@ -48,11 +46,10 @@ export type AppStoreType = AppStateType & AppActionsType;
 export const defaultInitState: AppStateType = {
   weaponCategory: "ALL",
   keyCategory: "CUSTOMS",
-  npcId: "PRAPOR",
+  npcId: "54cb50c76803fa8b248b4571",
   medicalCategory: "ALL",
   ammoCategory: "ALL",
   lootCategory: "ALL",
-  hideoutCategory: "5d388e97081959000a123acf",
   itemFilter: [],
   noticeNum: 1,
   eventNum: 1,
@@ -73,8 +70,6 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
             set({ medicalCategory: value }),
           setAmmoCategory: (value: string) => set({ ammoCategory: value }),
           setLootCategory: (value: string) => set({ lootCategory: value }),
-          setHideoutCategory: (value: string) =>
-            set({ hideoutCategory: value }),
           setEventNum: (value: number) => set({ eventNum: value }),
           setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
           setNoticeNum: (value: number) => set({ noticeNum: value }),
