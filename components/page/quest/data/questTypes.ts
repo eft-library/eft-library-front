@@ -49,7 +49,7 @@ interface RelatedQuests {
 
 interface Require {
   id: string;
-  name: string;
+  name_en: string;
   name_kr: string;
   is_other: boolean;
   url_mapping: string;
