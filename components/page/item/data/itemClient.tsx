@@ -24,6 +24,7 @@ import KnifeView from "./itemDetail/knifeView";
 import ThrowableView from "./itemDetail/throwableView";
 import StationaryView from "./itemDetail/stationaryView";
 import { formatImage } from "@/lib/func/formatImage";
+import RelatedInfo from "./itemDetail/relatedInfo";
 
 export default function ItemClient({ itemInfo }: ItemClient) {
   return (
@@ -101,6 +102,8 @@ export default function ItemClient({ itemInfo }: ItemClient) {
             <MedicalItemView item={itemInfo} />
           )}
       </div>
+
+      <RelatedInfo item={itemInfo} />
     </div>
   );
 }
