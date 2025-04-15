@@ -108,9 +108,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                       />
                     </div>
                     <div className="flex justify-center items-center col-span-2">
-                      <TextSpan hoverColor="PaleYellow">
-                        {item.item_name_kr}
-                      </TextSpan>
+                      <TextSpan>{item.item_name_kr}</TextSpan>
                     </div>
                     <div className="flex justify-center items-center">
                       <TextSpan>{item.count}</TextSpan>
