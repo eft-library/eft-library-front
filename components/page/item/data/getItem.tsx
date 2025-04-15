@@ -17,7 +17,6 @@ export default function GetItem() {
       const data = await requestData(
         `${API_ENDPOINTS.GET_ITEM_DETAIL}/${param.id}`
       );
-      console.log(`${API_ENDPOINTS.GET_ITEM_DETAIL}/${param.id}`);
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch item data:",

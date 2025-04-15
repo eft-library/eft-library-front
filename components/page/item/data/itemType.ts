@@ -132,6 +132,7 @@ interface UsedInCraft {
   duration: number;
   level_id: string;
   quantity: number;
+  req_item: InventoryEntry[];
   reward_item_id: string;
   master_id: string;
   master_name_en: string;
@@ -140,4 +141,17 @@ interface UsedInCraft {
 
 export interface RelatedInfo {
   item: ItemDetail;
+}
+
+interface CraftItem {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  gridImageLink: string;
+}
+
+interface InventoryEntry {
+  item: CraftItem;
+  quantity: number;
 }
