@@ -32,7 +32,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
     }
   };
   return (
-    <div className="min-h-screen p-6">
+    <div className="p-6">
       {item.rewarded_by_npcs.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-2">상인 교환</h2>
@@ -44,7 +44,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
           <div className=" rounded-lg border-2 border-white">
             {item.rewarded_by_npcs.map((trader) => (
               <div
-                className="grid grid-cols-3 p-4 gap-2"
+                className="grid grid-cols-3 border-b border-white p-4 gap-2"
                 key={`trader-${trader.barter_info.level}`}
               >
                 <div className="flex flex-col items-center justify-center">
@@ -68,7 +68,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 items-center justify-center">
                   {trader.barter_info.requiredItems.map((reqItem) => (
                     <div
                       className="flex flex-col items-center justify-center"
@@ -139,7 +139,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
           <div className="border-2 border-white rounded-lg">
             {item.hideout_items.map((hideout) => (
               <div
-                className="grid grid-cols-2 p-4 gap-2"
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`hideout-${hideout.level_id}`}
               >
                 <div className="flex flex-col  justify-center items-center">
@@ -199,7 +199,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
           <div className="border-2 border-white rounded">
             {item.used_in_crafts.map((craft) => (
               <div
-                className="grid grid-cols-4 p-4 gap-2"
+                className="grid grid-cols-4 p-4 gap-2 border-b border-white"
                 key={`craft-${craft.id}`}
               >
                 <div className="flex flex-col items-center justify-center">
@@ -296,7 +296,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
           <div className="border-2 border-white rounded">
             {item.required_by_quest_item.map((questItem) => (
               <div
-                className="grid grid-cols-2 p-4 gap-2"
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`required_by_quest_item-${questItem.objective.id}`}
               >
                 <div className="flex flex-col items-center">
@@ -358,7 +358,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
             ))}
             {item.required_by_quest_item_array.map((questItem) => (
               <div
-                className="grid grid-cols-2 p-4 gap-2"
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`required_by_quest_item-${questItem.objective.id}`}
               >
                 <div className="flex flex-col items-center">
@@ -444,7 +444,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
           <div className="border-2 border-white rounded">
             {item.rewarded_by_quests.map((reward) => (
               <div
-                className="grid grid-cols-2 p-4 gap-2"
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`reward-${reward.quest_id}`}
               >
                 <div className="flex flex-col items-center">
