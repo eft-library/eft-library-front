@@ -1,4 +1,5 @@
 import type { ItemView } from "../itemType";
+import Image from "next/image";
 
 export default function GunView({ item }: ItemView) {
   return (
@@ -87,6 +88,41 @@ export default function GunView({ item }: ItemView) {
           </div>
         </div>
       </div>
+
+      {item.info.allowed_ammo && item.info.allowed_ammo.length > 0 && (
+        <div className="w-full">
+          <div className="flex w-full">
+            <h3 className="text-2xl font-bold mb-2">탄약</h3>
+          </div>
+          <div className="w-full grid grid-cols-5 border-2 border-white rounded-sm mb-6 gap-4 pt-4 pb-4">
+            {item.info.allowed_ammo.map(
+              (ammo: { name: string; gridImageLink: string }) => (
+                <div
+                  key={`allowed-ammo-${ammo.name}`}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <Image
+                    src={ammo.gridImageLink}
+                    alt={ammo.name}
+                    sizes={"80"}
+                    width={80}
+                    height={80}
+                    style={{ objectFit: "contain" }}
+                    placeholder="blur"
+                    blurDataURL={
+                      "data:image/jpeg;base64," +
+                      "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                    }
+                  />
+                  <div className="py-2 px-2 bg-black text-center font-bold ">
+                    {ammo.name}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

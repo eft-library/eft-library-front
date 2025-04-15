@@ -32,10 +32,10 @@ export default function RelatedInfo({ item }: RelatedInfo) {
     }
   };
   return (
-    <div className="p-6">
+    <div>
       {item.rewarded_by_npcs.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2">상인 교환</h2>
+          <h2 className="text-2xl font-bold mb-2">상인 교환</h2>
           <div className="grid grid-cols-3 border-2 border-white py-1 px-2 rounded-lg mb-2">
             <div className="text-center font-bold">상인</div>
             <div className="text-center font-bold">재료</div>
@@ -131,7 +131,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.hideout_items.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2">은신처 건설</h2>
+          <h2 className="text-2xl font-bold mb-2">은신처 건설</h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 rounded-lg mb-2">
             <div className="text-center font-bold">은신처</div>
             <div className="text-center font-bold">재료</div>
@@ -189,7 +189,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.used_in_crafts.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2">은신처 제작</h2>
+          <h2 className="text-2xl font-bold mb-2">은신처 제작</h2>
           <div className="grid grid-cols-4 border-2 border-white py-1 px-2 mb-2 rounded-lg">
             <div className="text-center font-bold">요건</div>
             <div className="text-center font-bold">재료</div>
@@ -288,7 +288,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
       {(item.required_by_quest_item.length > 0 ||
         item.required_by_quest_item_array.length > 0) && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2">퀘스트 필요</h2>
+          <h2 className="text-2xl font-bold mb-2">퀘스트 필요</h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
             <div className="text-center font-bold">퀘스트</div>
             <div className="text-center font-bold">재료</div>
@@ -327,8 +327,8 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   </Link>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center">
+                <div className="flex flex-col items-center justify-center ">
+                  <div className="flex items-center justify-center ">
                     <div className="rounded flex items-center justify-center mb-1">
                       <div className="relative mb-1">
                         <Image
@@ -361,7 +361,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                 className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`required_by_quest_item-${questItem.objective.id}`}
               >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center ">
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={questItem.npc_image}
@@ -389,8 +389,8 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   </Link>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center">
+                <div className="flex flex-col items-center justify-center ">
+                  <div className="flex items-center justify-center ">
                     <div className="rounded flex items-center justify-center mb-1">
                       <div className="relative mb-1">
                         <Image
@@ -436,7 +436,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.rewarded_by_quests.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2">퀘스트 보상</h2>
+          <h2 className="text-2xl font-bold mb-2">퀘스트 보상</h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
             <div className="text-center font-bold">퀘스트</div>
             <div className="text-center font-bold">보상</div>
