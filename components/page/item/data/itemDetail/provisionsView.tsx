@@ -1,6 +1,11 @@
-import { filterStimEffects, getPlusMinus } from "@/lib/func/jsxfunction";
+import {
+  checkPlus,
+  filterStimEffects,
+  getPlusMinus,
+} from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
 import EffectText from "@/components/page/provisions/data/effectText";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function ProvisionsView({ item }: ItemView) {
   return (
@@ -22,7 +27,9 @@ export default function ProvisionsView({ item }: ItemView) {
             에너지
           </div>
           <div className="py-2 px-2 text-center font-bold ">
-            {getPlusMinus(item.info.energy)}
+            <TextSpan textColor={checkPlus(item.info.energy)}>
+              {getPlusMinus(item.info.energy)}
+            </TextSpan>
           </div>
         </div>
 
@@ -31,7 +38,9 @@ export default function ProvisionsView({ item }: ItemView) {
             수분
           </div>
           <div className="py-2 px-2 text-center font-bold ">
-            {getPlusMinus(item.info.hydration)}
+            <TextSpan textColor={checkPlus(item.info.hydration)}>
+              {getPlusMinus(item.info.hydration)}
+            </TextSpan>
           </div>
         </div>
 
@@ -57,7 +66,7 @@ export default function ProvisionsView({ item }: ItemView) {
           <div className="py-2 px-2 text-GoldenYellow font-bold flex flex-col justify-center items-center">
             효과
           </div>
-          <div className="py-2 px-2 font-bold flex flex-col justify-center items-center">
+          <div className="py-2 px-2 font-bold flex flex-col justify-center">
             {item.info.stim_effects.length > 0 ? (
               filterStimEffects(item.info.stim_effects).map((effect, index) => (
                 <EffectText

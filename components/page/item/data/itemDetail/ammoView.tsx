@@ -1,5 +1,6 @@
+import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { ItemView } from "../itemType";
-import { floatToPercent, getPlusMinus } from "@/lib/func/jsxfunction";
+import { floatToPercent, getColor, getPlusMinus } from "@/lib/func/jsxfunction";
 
 export default function AmmoView({ item }: ItemView) {
   return (
@@ -41,7 +42,7 @@ export default function AmmoView({ item }: ItemView) {
             방어구 피해량
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {item.info.accuracy_modifier} %
+            {item.info.armor_damage} %
           </div>
         </div>
 
@@ -49,8 +50,16 @@ export default function AmmoView({ item }: ItemView) {
           <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
             정확성
           </div>
+
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {getPlusMinus(floatToPercent(item.info.accuracy_modifier))} %
+            <TextSpan
+              textColor={getColor(
+                floatToPercent(item.info.accuracy_modifier),
+                "check"
+              )}
+            >
+              {getPlusMinus(floatToPercent(item.info.accuracy_modifier))} %
+            </TextSpan>
           </div>
         </div>
 
@@ -59,7 +68,14 @@ export default function AmmoView({ item }: ItemView) {
             반동
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {getPlusMinus(floatToPercent(item.info.recoil_modifier))}
+            <TextSpan
+              textColor={getColor(
+                floatToPercent(item.info.recoil_modifier),
+                "recoil"
+              )}
+            >
+              {getPlusMinus(floatToPercent(item.info.recoil_modifier))}
+            </TextSpan>
           </div>
         </div>
 
@@ -68,7 +84,14 @@ export default function AmmoView({ item }: ItemView) {
             가벼운 출혈
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}%
+            <TextSpan
+              textColor={getColor(
+                floatToPercent(item.info.light_bleed_modifier),
+                "check"
+              )}
+            >
+              {getPlusMinus(floatToPercent(item.info.light_bleed_modifier))}%
+            </TextSpan>
           </div>
         </div>
 
@@ -77,7 +100,14 @@ export default function AmmoView({ item }: ItemView) {
             깊은 출혈
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}%
+            <TextSpan
+              textColor={getColor(
+                floatToPercent(item.info.heavy_bleed_modifier),
+                "check"
+              )}
+            >
+              {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}%
+            </TextSpan>
           </div>
         </div>
       </div>

@@ -75,25 +75,16 @@ export default function StimulantView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
           <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
-            사용시간
-          </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
-            {item.info.use_time} 초
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
             버프
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold flex flex-col justify-center items-center">
+          <div className="py-2 px-2 bg-black font-bold flex flex-col">
             <div className="flex justify-center flex-col col-span-2">
               {item.info.buff.length > 0 ? (
                 filterStimEffects(item.info.buff).map(
                   (buff: any, index: number) => (
                     <div key={`${index}-buff-${buff.skillName}`}>
                       {buff.delay != null && buff.duration != null && (
-                        <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
+                        <span className="font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
                           {item.id === "5ed5166ad380ab312177c100"
                             ? `25% 확률 / ${buff.delay}초 지연 / ${buff.duration}초 지속`
                             : buff.delay === 0
@@ -127,13 +118,13 @@ export default function StimulantView({ item }: ItemView) {
           <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
             디버프
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold flex flex-col justify-center items-center">
-            <div className="flex justify-center flex-col col-span-2">
+          <div className="py-2 px-2 bg-black font-bold flex flex-col">
+            <div className="flex flex-col">
               {item.info.debuff.length > 0 ? (
                 filterStimEffects(item.info.debuff).map((debuff, index) => (
                   <div key={`${index}-debuff-${debuff.skillName}`}>
                     {debuff.delay != null && debuff.duration != null && (
-                      <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
+                      <span className="font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
                         {item.id === "5ed5166ad380ab312177c100"
                           ? `25% 확률 / ${debuff.delay}초 지연 / ${debuff.duration}초 지속`
                           : debuff.delay === 0

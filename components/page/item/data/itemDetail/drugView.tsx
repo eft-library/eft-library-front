@@ -59,8 +59,8 @@ export default function DrugView({ item }: ItemView) {
           <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
             버프
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
-            <div className="flex flex-col justify-center items-center col-span-2">
+          <div className="py-2 px-2 bg-black font-bold">
+            <div className="flex flex-col col-span-2">
               <span className="font-bold text-base text-PaleYellow mt-[4px]">
                 {item.info.painkiller_duration}초 지속
               </span>
@@ -82,7 +82,7 @@ export default function DrugView({ item }: ItemView) {
           <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
             디버프
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold flex flex-col justify-center items-center">
+          <div className="py-2 px-2 bg-black text-center font-bold flex flex-col">
             {item.info.hydration_impact < 0 &&
               drugText("수분", item.info.hydration_impact, false)}
             {item.info.energy_impact < 0 &&

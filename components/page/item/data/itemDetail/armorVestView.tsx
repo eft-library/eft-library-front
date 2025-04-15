@@ -1,3 +1,4 @@
+import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
 
 export default function ArmorVestView({ item }: ItemView) {
@@ -83,7 +84,7 @@ export default function ArmorVestView({ item }: ItemView) {
             이동속도 페널티
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {item.info.speed_penalty} %
+            {floatToPercent(item.info.speed_penalty)} %
           </div>
         </div>
 
@@ -92,7 +93,7 @@ export default function ArmorVestView({ item }: ItemView) {
             회전속도 페널티
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold ">
-            {item.info.turn_penalty} %
+            {floatToPercent(item.info.turn_penalty)} %
           </div>
         </div>
       </div>

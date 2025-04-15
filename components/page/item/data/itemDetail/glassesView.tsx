@@ -1,3 +1,4 @@
+import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
 
 export default function GlassesView({ item }: ItemView) {
@@ -49,7 +50,7 @@ export default function GlassesView({ item }: ItemView) {
               실명 보호
             </div>
             <div className="py-2 px-2 bg-black text-center font-bold ">
-              {item.info.blindness_protection}
+              {floatToPercent(item.info.blindness_protection)} %
             </div>
           </div>
 
@@ -87,7 +88,7 @@ export default function GlassesView({ item }: ItemView) {
               실명 보호
             </div>
             <div className="py-2 px-2 bg-black text-center font-bold ">
-              {item.info.blindness_protection}
+              {floatToPercent(item.info.blindness_protection)} %
             </div>
           </div>
 
