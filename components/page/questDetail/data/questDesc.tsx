@@ -2,7 +2,6 @@
 
 import { Separator } from "@/components/ui/separator";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
-import Link from "next/link";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
@@ -109,14 +108,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                       />
                     </div>
                     <div className="flex justify-center items-center col-span-2">
-                      <Link
-                        href={`${item.item_link}${item.item_id}`}
-                        scroll={false}
-                      >
-                        <TextSpan hoverColor="PaleYellow">
-                          {item.item_name_kr}
-                        </TextSpan>
-                      </Link>
+                      <TextSpan hoverColor="PaleYellow">
+                        {item.item_name_kr}
+                      </TextSpan>
                     </div>
                     <div className="flex justify-center items-center">
                       <TextSpan>{item.count}</TextSpan>
