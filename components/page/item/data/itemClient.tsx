@@ -33,8 +33,8 @@ export default function ItemClient({ itemInfo }: ItemClient) {
         <div className="flex flex-col items-center mb-4">
           <div
             style={{
-              width: `${180}px`,
-              height: `${160}px`,
+              width: `${itemInfo.image_width * 80}px`,
+              height: `${itemInfo.image_height * 80}px`,
             }}
             className={`flex justify-center items-center relative`}
           >
@@ -47,7 +47,7 @@ export default function ItemClient({ itemInfo }: ItemClient) {
               }
               alt={itemInfo.name_en || ""}
               fill
-              sizes={"180"}
+              sizes={`${itemInfo.image_width * 80}`}
               style={{ objectFit: "contain" }}
               placeholder="blur"
               blurDataURL={

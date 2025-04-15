@@ -9,22 +9,22 @@ export default function StationaryView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             발사모드
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.modes_kr.map((mode: string, index: number) => (
               <div
-                className="py-2 px-2 bg-black text-center font-bold "
+                className="py-2 px-2  text-center font-bold "
                 key={`modes-${mode}-${index}`}
               >
                 {mode}
@@ -34,19 +34,19 @@ export default function StationaryView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             발사속도
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.fire_rate}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             기본탄약
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.default_ammo}
           </div>
         </div>

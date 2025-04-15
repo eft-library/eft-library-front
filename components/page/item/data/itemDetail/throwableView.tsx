@@ -11,19 +11,19 @@ export default function ThrowableView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             폭발 지연
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             <TextSpan>
               {detailThrowable.includes(item.name_kr) ? (
                 <div className="flex flex-col">
@@ -40,29 +40,29 @@ export default function ThrowableView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             폭발 거리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.min_explosion_distance} ~&nbsp;
             {item.info.max_explosion_distance} m
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             파편 반경
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.fragments}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             무게
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.weight} kg
           </div>
         </div>

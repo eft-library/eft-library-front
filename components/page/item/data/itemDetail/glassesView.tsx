@@ -10,55 +10,55 @@ export default function GlassesView({ item }: ItemView) {
       {item.info.class_value ? (
         <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
           <div className="grid grid-cols-2 border-b border-NeutralGray ">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               카테고리
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold">
+            <div className="py-2 px-2  text-center font-bold">
               {item.category}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               보호 등급
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.class_value}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               재료
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.material.name}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               내구성
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.durability}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               실명 보호
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.blindness_protection)} %
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               무게
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.weight} kg
             </div>
           </div>
@@ -66,37 +66,37 @@ export default function GlassesView({ item }: ItemView) {
       ) : (
         <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
           <div className="grid grid-cols-2 border-b border-NeutralGray ">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               카테고리
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold">
+            <div className="py-2 px-2  text-center font-bold">
               {item.category}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               재료
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.material.name}
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               실명 보호
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.blindness_protection)} %
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
-            <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+            <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
               무게
             </div>
-            <div className="py-2 px-2 bg-black text-center font-bold ">
+            <div className="py-2 px-2  text-center font-bold ">
               {item.info.weight} kg
             </div>
           </div>

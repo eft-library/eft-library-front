@@ -44,13 +44,11 @@ export default function FaceCoverClient({
               <TextSpan>{faceCover.info.class_value}</TextSpan>
             </CenterContents>
             <CenterContents isCol>
-              <TextSpan>
-                {faceCover.info.areas_kr.map((area, index) => (
-                  <TextSpan key={`${index}-area-${faceCover.id}`}>
-                    {area}
-                  </TextSpan>
-                ))}
-              </TextSpan>
+              {faceCover.info.areas_kr.map((area, index) => (
+                <TextSpan key={`${index}-area-${faceCover.id}`}>
+                  {area}
+                </TextSpan>
+              ))}
             </CenterContents>
             <CenterContents>
               <TextSpan>{faceCover.info.durability}</TextSpan>

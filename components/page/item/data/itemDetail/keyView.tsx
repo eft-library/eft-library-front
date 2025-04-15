@@ -9,22 +9,22 @@ export default function KeyView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             사용 맵
           </div>
           <div className="flex flex-col w-full">
             {item.info.use_map_kr.map((area: string, index: number) => (
               <div
-                className="py-2 px-2 bg-black text-center font-bold "
+                className="py-2 px-2  text-center font-bold "
                 key={`area-use-${area}-${index}`}
               >
                 {area}
@@ -34,19 +34,19 @@ export default function KeyView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             사용 횟수
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.uses}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             무게
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.weight} kg
           </div>
         </div>

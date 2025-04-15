@@ -487,5 +487,5 @@ export const rigClassTableColumn = {
 
 export const rigNoClassTableColumn = {
   value_en: ["사진", "이름", "슬롯", "무게"],
-  value_kr: ["사진", "이름", "슬롯", "무게"],
+  value_kr: ["사진", "이름", "무게"],
 };

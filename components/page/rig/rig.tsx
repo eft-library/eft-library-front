@@ -20,7 +20,7 @@ export default function Rig() {
       </div>
       <TableColumn columnDesign={7} columnData={rigClassTableColumn} />
       <GetRig isClass />
-      <TableColumn columnDesign={4} columnData={rigNoClassTableColumn} />
+      <TableColumn columnDesign={3} columnData={rigNoClassTableColumn} />
       <GetRig isClass={false} />
     </ContentsWrapper>
   );

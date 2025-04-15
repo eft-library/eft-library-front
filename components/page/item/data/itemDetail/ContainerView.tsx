@@ -9,37 +9,37 @@ export default function ContainerView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             슬롯
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.capacity}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             그리드
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.grids[0].width} X {item.info.grids[0].height}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             무게
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.weight} kg
           </div>
         </div>

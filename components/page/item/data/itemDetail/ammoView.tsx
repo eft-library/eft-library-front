@@ -11,47 +11,47 @@ export default function AmmoView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             데미지
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.damage}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             관통력
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.penetration_power}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             방어구 피해량
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             {item.info.armor_damage} %
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             정확성
           </div>
 
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
               textColor={getColor(
                 floatToPercent(item.info.accuracy_modifier),
@@ -64,10 +64,10 @@ export default function AmmoView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             반동
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
               textColor={getColor(
                 floatToPercent(item.info.recoil_modifier),
@@ -80,10 +80,10 @@ export default function AmmoView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             가벼운 출혈
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
               textColor={getColor(
                 floatToPercent(item.info.light_bleed_modifier),
@@ -96,10 +96,10 @@ export default function AmmoView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             깊은 출혈
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold ">
+          <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
               textColor={getColor(
                 floatToPercent(item.info.heavy_bleed_modifier),

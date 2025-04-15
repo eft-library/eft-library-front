@@ -56,28 +56,28 @@ export default function StimulantView({ item }: ItemView) {
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             카테고리
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.category}
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             무게
           </div>
-          <div className="py-2 px-2 bg-black text-center font-bold">
+          <div className="py-2 px-2  text-center font-bold">
             {item.info.weight} kg
           </div>
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             버프
           </div>
-          <div className="py-2 px-2 bg-black font-bold flex flex-col">
+          <div className="py-2 px-2  font-bold flex flex-col">
             <div className="flex justify-center flex-col col-span-2">
               {item.info.buff.length > 0 ? (
                 filterStimEffects(item.info.buff).map(
@@ -115,10 +115,10 @@ export default function StimulantView({ item }: ItemView) {
         </div>
 
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
-          <div className="py-2 px-2 bg-black text-GoldenYellow font-bold flex justify-center items-center">
+          <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
             디버프
           </div>
-          <div className="py-2 px-2 bg-black font-bold flex flex-col">
+          <div className="py-2 px-2  font-bold flex flex-col">
             <div className="flex flex-col">
               {item.info.debuff.length > 0 ? (
                 filterStimEffects(item.info.debuff).map((debuff, index) => (

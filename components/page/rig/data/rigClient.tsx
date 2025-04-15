@@ -68,7 +68,7 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             key={rig.id}
             isDetail
             detailLink={`/item/${rig.url_mapping}`}
-            cols="4"
+            cols="3"
           >
             <CenterContents>
               <ImageView
@@ -83,9 +83,6 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             </CenterContents>
             <CenterContents>
               <TextSpan>{rig.name_kr}</TextSpan>
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{rig.info.capacity}</TextSpan>
             </CenterContents>
             <CenterContents>
               <TextSpan>{rig.info.weight} kg</TextSpan>
