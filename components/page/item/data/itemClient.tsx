@@ -14,7 +14,7 @@ import BackpackView from "./itemDetail/backpackView";
 import FaceCoverView from "./itemDetail/faceCoverView";
 import KeyView from "./itemDetail/keyView";
 import GunView from "./itemDetail/gunView";
-import ContainerView from "./itemDetail/containerView";
+import ContainerView from "./itemDetail/contView";
 import ProvisionsView from "./itemDetail/provisionsView";
 import DrugView from "./itemDetail/drugView";
 import StimulantView from "./itemDetail/stimulantView";
