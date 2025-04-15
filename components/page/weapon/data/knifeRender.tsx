@@ -2,7 +2,6 @@
 
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -13,13 +12,19 @@ import type { KnifeRender } from "./weaponTypes";
 export default function KnifeRender({ knifeList }: KnifeRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, knifeList, "WEAPON");
 
   return (
     <div className="flex flex-col gap-4 w-full">
       <GetClientColumn columnLength={5} columnList={knifeColumn} />
       {knifeList.map((knife) => (
-        <DefineGrid cols="5" id={knife.id} pageId={pageId} key={knife.id}>
+        <DefineGrid
+          cols="5"
+          id={knife.id}
+          pageId={pageId}
+          key={knife.id}
+          isDetail
+          detailLink={`/item/${knife.url_mapping}`}
+        >
           <CenterContents>
             <ImageView
               src={knife.image}

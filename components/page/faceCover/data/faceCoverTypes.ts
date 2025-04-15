@@ -29,4 +29,5 @@ interface FaceCoverDetail {
   image_height: number;
   info: FaceCoverInfo;
   update_time: string;
+  url_mapping: string;
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -12,13 +11,19 @@ import type { GlassesClient } from "./glassesTypes";
 export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, glassesData);
 
   return (
     <div className="w-full">
       {isClass &&
         glassesData.class_glasses.map((glasses) => (
-          <DefineGrid id={glasses.id} pageId={pageId} cols="5" key={glasses.id}>
+          <DefineGrid
+            id={glasses.id}
+            pageId={pageId}
+            cols="5"
+            key={glasses.id}
+            isDetail
+            detailLink={`/item/${glasses.url_mapping}`}
+          >
             <CenterContents>
               <ImageView
                 src={glasses.image}
@@ -48,7 +53,14 @@ export default function GlassesClient({ glassesData, isClass }: GlassesClient) {
         ))}
       {!isClass &&
         glassesData.no_class_glasses.map((glasses) => (
-          <DefineGrid id={glasses.id} pageId={pageId} cols="3" key={glasses.id}>
+          <DefineGrid
+            id={glasses.id}
+            pageId={pageId}
+            cols="3"
+            key={glasses.id}
+            isDetail
+            detailLink={`/item/${glasses.url_mapping}`}
+          >
             <CenterContents>
               <ImageView
                 src={glasses.image}

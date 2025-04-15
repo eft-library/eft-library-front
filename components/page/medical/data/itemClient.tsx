@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -14,7 +13,6 @@ export default function ItemClient({ medicalList }: ItemClient) {
   const { medicalCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, medicalList, "MEDICAL");
 
   if (medicalCategory !== "ALL" && medicalCategory !== "Medical item")
     return null;
@@ -28,7 +26,14 @@ export default function ItemClient({ medicalList }: ItemClient) {
             item.info.medical_category,
             "Medical item"
           ) && (
-            <DefineGrid cols="10" id={item.id} pageId={pageId} key={item.id}>
+            <DefineGrid
+              cols="10"
+              id={item.id}
+              pageId={pageId}
+              key={item.id}
+              isDetail
+              detailLink={`/item/${item.url_mapping}`}
+            >
               <CenterContents>
                 <ImageView
                   src={item.image}

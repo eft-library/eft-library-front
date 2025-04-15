@@ -3,7 +3,6 @@
 import { useAppStore } from "@/store/provider";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -15,7 +14,6 @@ export default function GunRender({ gunList }: GunRender) {
   const { weaponCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, gunList, "WEAPON");
 
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory !== "Stationary weapons";
@@ -48,7 +46,14 @@ export default function GunRender({ gunList }: GunRender) {
       {gunList.map(
         (gun) =>
           shouldRenderWeapon(gun.info.gun_category) && (
-            <DefineGrid cols="9" id={gun.id} pageId={pageId} key={gun.id}>
+            <DefineGrid
+              cols="9"
+              id={gun.id}
+              pageId={pageId}
+              key={gun.id}
+              isDetail
+              detailLink={`/item/${gun.url_mapping}`}
+            >
               <CenterContents colSpan="2">
                 <ImageView
                   src={gun.image}

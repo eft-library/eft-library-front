@@ -16,7 +16,14 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
   return (
     <div className="w-full">
       {armBandList.map((armBand) => (
-        <DefineGrid id={armBand.id} cols="2" pageId={pageId} key={armBand.id}>
+        <DefineGrid
+          id={armBand.id}
+          cols="2"
+          pageId={pageId}
+          key={armBand.id}
+          isDetail
+          detailLink={`/item/${armBand.url_mapping}`}
+        >
           <CenterContents>
             <ImageView
               src={armBand.image}

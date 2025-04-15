@@ -4,7 +4,6 @@ import { useAppStore } from "@/store/provider";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { formatImage } from "@/lib/func/formatImage";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -16,7 +15,6 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
   const { weaponCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, stationaryList, "WEAPON");
 
   const shouldRenderWeapon = (itemCategory: string) => {
     const isGeneralCategory = itemCategory === "Stationary weapons";
@@ -36,6 +34,8 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
               id={stationary.id}
               pageId={pageId}
               key={stationary.id}
+              isDetail
+              detailLink={`/item/${stationary.url_mapping}`}
             >
               <CenterContents>
                 <ImageView

@@ -27,4 +27,5 @@ interface RigDetail {
   image_height: number;
   info: RigInfo;
   update_time: string;
+  url_mapping: string;
 }

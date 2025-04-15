@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -19,7 +18,6 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
   const { ammoCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, ammoList, "AMMO");
 
   const getEfficiencyColor = (val: number) => {
     switch (val) {
@@ -45,7 +43,14 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
       {ammoList.map(
         (item) =>
           checkCategory(item.info.ammo_category, ammoCategory) && (
-            <DefineGrid cols="12" pageId={pageId} id={item.id} key={item.id}>
+            <DefineGrid
+              cols="12"
+              pageId={pageId}
+              id={item.id}
+              key={item.id}
+              isDetail
+              detailLink={`/item/${item.url_mapping}`}
+            >
               <CenterContents>
                 <ImageView
                   src={item.image}

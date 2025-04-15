@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -13,7 +12,6 @@ export default function KeyClient({ keyList }: KeyClient) {
   const { keyCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, keyList, "KEY");
 
   const checkKeyCategory = (mapValue: Array<string>, keyCategory: string) => {
     return keyCategory === "ALL" || mapValue.includes(keyCategory);
@@ -24,7 +22,14 @@ export default function KeyClient({ keyList }: KeyClient) {
       {keyList.map(
         (key) =>
           checkKeyCategory(key.info.map_value, keyCategory) && (
-            <DefineGrid cols="4" id={key.id} pageId={pageId} key={key.id}>
+            <DefineGrid
+              cols="4"
+              id={key.id}
+              pageId={pageId}
+              key={key.id}
+              isDetail
+              detailLink={`/item/${key.url_mapping}`}
+            >
               <CenterContents>
                 <ImageView
                   src={key.image}

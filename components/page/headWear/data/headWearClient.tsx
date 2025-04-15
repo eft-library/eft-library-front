@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -14,7 +13,6 @@ export default function HeadWearClient({
 }: HeadWearClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, headWearData);
 
   return (
     <div className="w-full">
@@ -25,6 +23,8 @@ export default function HeadWearClient({
             pageId={pageId}
             cols="7"
             key={headWear.id}
+            isDetail
+            detailLink={`/item/${headWear.url_mapping}`}
           >
             <CenterContents>
               <ImageView
@@ -66,6 +66,8 @@ export default function HeadWearClient({
             pageId={pageId}
             cols="2"
             key={headWear.id}
+            isDetail
+            detailLink={`/item/${headWear.url_mapping}`}
           >
             <CenterContents>
               <ImageView

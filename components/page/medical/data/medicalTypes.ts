@@ -38,6 +38,7 @@ interface DrugDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }
 
 interface MedicalInfo {
@@ -64,6 +65,7 @@ interface MedicalDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }
 
 interface MedikitInfo {
@@ -90,6 +92,7 @@ interface MedikitDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }
 
 export interface Buff {
@@ -136,4 +139,5 @@ interface StimulantDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }

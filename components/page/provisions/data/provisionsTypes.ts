@@ -32,4 +32,5 @@ interface ProvisionsDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }

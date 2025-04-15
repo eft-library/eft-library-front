@@ -17,7 +17,7 @@ export default function Ammo() {
         />
       </div>
       <AmmoSelectorClient />
-      <TableColumn columnDesign={12} columnData={ammoTableColumn} />
+      <TableColumn columnDesign={12} columnData={ammoTableColumn} isAmmo />
       <GetAmmo />
     </ContentsWrapper>
   );

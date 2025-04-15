@@ -31,14 +31,15 @@ export default function HeadWearView({ item }: ItemView) {
             보호 부위
           </div>
           <div className="flex flex-col w-full">
-            {item.info.areas_kr.map((area: string, index: number) => (
-              <div
-                className="py-2 px-2 bg-black text-center font-bold "
-                key={`area-protect-${area}-${index}`}
-              >
-                {area}
-              </div>
-            ))}
+            {item.info.areas_kr &&
+              item.info.areas_kr.map((area: string, index: number) => (
+                <div
+                  className="py-2 px-2 bg-black text-center font-bold "
+                  key={`area-protect-${area}-${index}`}
+                >
+                  {area}
+                </div>
+              ))}
           </div>
         </div>
 
@@ -47,7 +48,7 @@ export default function HeadWearView({ item }: ItemView) {
             재료
           </div>
           <div className="py-2 px-2 bg-black text-center font-bold">
-            {item.info.material.name}
+            {item.info.material ? item.info.material.name : "-"}
           </div>
         </div>
 

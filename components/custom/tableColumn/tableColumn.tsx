@@ -11,6 +11,7 @@ interface TableColumnProps {
   columnDesign: number;
   isProvision?: boolean;
   isMedical?: boolean;
+  isAmmo?: boolean;
   columnData: TableColumn;
 }
 
@@ -19,14 +20,17 @@ export default async function TableColumn({
   columnDesign,
   isProvision = false,
   isMedical = false,
+  isAmmo = false,
 }: TableColumnProps) {
   const colSpanMapping = {
+    isAmmo: (index: number) => ([1, 9].includes(index) ? 2 : 1),
     isProvision: (index: number) => (index === 1 || index === 4 ? 2 : 1),
     isMedical: (index: number) => ([1, 3, 4].includes(index) ? 2 : 1),
     default: () => 1,
   };
 
   const checkColSpan = (index: number) => {
+    if (isAmmo) return colSpanMapping.isAmmo(index);
     if (isProvision) return colSpanMapping.isProvision(index);
     if (isMedical) return colSpanMapping.isMedical(index);
     return colSpanMapping.default();

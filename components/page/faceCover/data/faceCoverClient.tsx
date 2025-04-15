@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -14,7 +13,6 @@ export default function FaceCoverClient({
 }: FaceCoverClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, face_cover_data);
 
   return (
     <div className="w-full">
@@ -25,6 +23,8 @@ export default function FaceCoverClient({
             pageId={pageId}
             cols="7"
             key={faceCover.id}
+            isDetail
+            detailLink={`/item/${faceCover.url_mapping}`}
           >
             <CenterContents>
               <ImageView
@@ -71,6 +71,8 @@ export default function FaceCoverClient({
             pageId={pageId}
             cols="2"
             key={faceCover.id}
+            isDetail
+            detailLink={`/item/${faceCover.url_mapping}`}
           >
             <CenterContents>
               <ImageView

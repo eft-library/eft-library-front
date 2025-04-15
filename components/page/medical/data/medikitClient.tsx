@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -14,7 +13,6 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
   const { medicalCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, medicalList, "MEDICAL");
 
   if (medicalCategory !== "ALL" && medicalCategory !== "Medikit") return null;
 
@@ -32,6 +30,8 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
               id={medikit.id}
               cols="10"
               pageId={pageId}
+              isDetail
+              detailLink={`/item/${medikit.url_mapping}`}
             >
               <CenterContents>
                 <ImageView

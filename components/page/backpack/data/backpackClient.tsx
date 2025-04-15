@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -11,12 +10,18 @@ import type { BackpackList } from "./backpackTypes";
 export default function BackpackClient({ backpackList }: BackpackList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, backpackList);
 
   return (
     <div className="w-full">
       {backpackList.map((backpack) => (
-        <DefineGrid cols="5" id={backpack.id} pageId={pageId} key={backpack.id}>
+        <DefineGrid
+          cols="5"
+          id={backpack.id}
+          pageId={pageId}
+          key={backpack.id}
+          isDetail
+          detailLink={`/item/${backpack.url_mapping}`}
+        >
           <CenterContents>
             <ImageView
               src={backpack.image}

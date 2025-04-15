@@ -2,7 +2,6 @@
 
 import EffectText from "./effectText";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -17,7 +16,6 @@ import type { ProvisionsList } from "./provisionsTypes";
 export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, provisionsList);
 
   return (
     <div className="w-full">
@@ -27,6 +25,8 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           id={provisions.id}
           cols="7"
           pageId={pageId}
+          isDetail
+          detailLink={`/item/${provisions.url_mapping}`}
         >
           <CenterContents>
             <ImageView

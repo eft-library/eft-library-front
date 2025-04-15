@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -11,7 +10,6 @@ import type { ArmorVestList } from "./armorVestTypes";
 export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, armorVestList);
 
   return (
     <div className="w-full">
@@ -21,6 +19,8 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
           id={armorVest.id}
           pageId={pageId}
           key={armorVest.id}
+          isDetail
+          detailLink={`/item/${armorVest.url_mapping}`}
         >
           <CenterContents>
             <ImageView

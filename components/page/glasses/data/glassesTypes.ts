@@ -24,4 +24,5 @@ interface GlassesDetail {
   image_height: number;
   info: GlassesInfo;
   update_time: string;
+  url_mapping: string;
 }

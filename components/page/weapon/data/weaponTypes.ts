@@ -45,6 +45,7 @@ interface GunDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }
 
 interface KnifeInfo {
@@ -64,6 +65,7 @@ interface KnifeDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }
 
 interface ThrowableInfo {
@@ -85,4 +87,5 @@ interface ThrowableDetail {
   name_en: string;
   image_width: number;
   update_time: string;
+  url_mapping: string;
 }

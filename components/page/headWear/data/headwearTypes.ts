@@ -29,4 +29,5 @@ interface HeadWearDetail {
   image_height: number;
   info: HeadWearInfo;
   update_time: string;
+  url_mapping: string;
 }

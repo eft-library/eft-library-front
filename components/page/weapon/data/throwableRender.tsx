@@ -2,7 +2,6 @@
 
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -14,7 +13,6 @@ import type { ThrowableRender } from "./weaponTypes";
 export default function ThrowableRender({ throwableList }: ThrowableRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, throwableList, "WEAPON");
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -25,6 +23,8 @@ export default function ThrowableRender({ throwableList }: ThrowableRender) {
           id={throwable.id}
           pageId={pageId}
           key={throwable.id}
+          isDetail
+          detailLink={`/item/${throwable.url_mapping}`}
         >
           <CenterContents>
             <ImageView

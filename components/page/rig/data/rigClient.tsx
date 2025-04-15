@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -11,7 +10,6 @@ import type { RigClient } from "./rigTypes";
 export default function RigClient({ rig_data, isClass }: RigClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, rig_data);
 
   return (
     <div className="w-full">
@@ -22,6 +20,8 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             gap="8px"
             pageId={pageId}
             key={rig.id}
+            isDetail
+            detailLink={`/item/${rig.url_mapping}`}
             cols="7"
           >
             <CenterContents>
@@ -66,6 +66,8 @@ export default function RigClient({ rig_data, isClass }: RigClient) {
             gap="8px"
             pageId={pageId}
             key={rig.id}
+            isDetail
+            detailLink={`/item/${rig.url_mapping}`}
             cols="4"
           >
             <CenterContents>

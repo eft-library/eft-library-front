@@ -1,6 +1,5 @@
 "use client";
 
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -11,7 +10,6 @@ import type { ContainerList } from "./containerTypes";
 export default function ContainerClient({ containerList }: ContainerList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, containerList);
 
   return (
     <div className="w-full">
@@ -21,6 +19,8 @@ export default function ContainerClient({ containerList }: ContainerList) {
           pageId={pageId}
           cols="4"
           key={container.id}
+          isDetail
+          detailLink={`/item/${container.url_mapping}`}
         >
           <CenterContents>
             <ImageView

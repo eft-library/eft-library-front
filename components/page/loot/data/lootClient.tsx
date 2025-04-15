@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -14,14 +13,20 @@ export default function LootClient({ lootList }: LootClient) {
   const { lootCategory } = useAppStore((state) => state);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, lootList, "LOOT");
 
   return (
     <div className="w-full">
       {lootList.map(
         (loot) =>
           checkCategory(loot.info.loot_category, lootCategory) && (
-            <DefineGrid id={loot.id} pageId={pageId} cols="2" key={loot.id}>
+            <DefineGrid
+              id={loot.id}
+              pageId={pageId}
+              cols="2"
+              key={loot.id}
+              isDetail
+              detailLink={`/item/${loot.url_mapping}`}
+            >
               <CenterContents>
                 <ImageView
                   src={loot.image}
