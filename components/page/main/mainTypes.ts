@@ -10,16 +10,6 @@ export interface SearchClient {
   searchList: SearchData[];
 }
 
-interface News {
-  game_version: string;
-  arena_version: string;
-  patch_link: string;
-  event_link: string;
-  youtube_id: string;
-  next_update: string[];
-  user_function: NewsUserFunction[];
-}
-
 export interface NewsUserFunction {
   link: string;
   name_en: string;
@@ -29,7 +19,22 @@ export interface NewsUserFunction {
 }
 
 export interface NewsClient {
-  news: News;
+  news: NewsMapColumn;
+}
+
+export interface NewsMapColumn {
+  id: string;
+  json_value: JsonValue;
+}
+
+interface JsonValue {
+  game_version: string;
+  arena_version: string;
+  patch_link: string;
+  event_link: string;
+  youtube_id: string;
+  next_update: string[];
+  user_function: NewsUserFunction[];
 }
 
 interface NavItem {

@@ -53,7 +53,7 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
 
           <div className="flex flex-col">
-            {news.user_function.map((func) =>
+            {news.json_value.user_function.map((func) =>
               func.use_yn ? (
                 newText(func)
               ) : (
@@ -74,7 +74,7 @@ export default function NewsClient({ news }: NewsClient) {
             </TextSpan>
           </div>
           <TextSpan isCenter={false} size="lg">
-            - {news.game_version}
+            - {news.json_value.game_version}
           </TextSpan>
         </div>
 
@@ -87,7 +87,7 @@ export default function NewsClient({ news }: NewsClient) {
             </TextSpan>
           </div>
           <div className="flex flex-col">
-            {news.next_update.map((patch) => (
+            {news.json_value.next_update.map((patch) => (
               <TextSpan isCenter={false} key={patch} size="lg">
                 - {patch}
               </TextSpan>
@@ -105,7 +105,7 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
 
           <div className="flex flex-col">
-            <Link href={news.event_link}>
+            <Link href={news.json_value.event_link}>
               <TextSpan
                 textColor="CreamYellow"
                 isCursor
@@ -115,7 +115,7 @@ export default function NewsClient({ news }: NewsClient) {
                 - 이벤트
               </TextSpan>
             </Link>
-            <Link href={news.patch_link}>
+            <Link href={news.json_value.patch_link}>
               <TextSpan
                 textColor="CreamYellow"
                 isCursor
@@ -152,7 +152,7 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
           &nbsp;
           <TextSpan isCenter={false} size="lg">
-            - {news.arena_version}
+            - {news.json_value.arena_version}
           </TextSpan>
         </div>
       </div>
