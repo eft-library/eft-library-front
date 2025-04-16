@@ -1,6 +1,4 @@
 "use client";
-
-import { formatImage } from "@/lib/func/formatImage";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
@@ -26,7 +24,7 @@ export default function BossClient({ bossList }: BossClient) {
               <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
                 <CenterContents>
                   <ImageView
-                    src={formatImage(boss.image)}
+                    src={boss.image}
                     alt={boss.name_en}
                     popWidth={120}
                     popHeight={120}

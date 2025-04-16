@@ -1,6 +1,5 @@
 import MapDetail from "@/components/page/mapDetail/mapDetail";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { formatImage } from "@/lib/func/formatImage";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -30,14 +29,14 @@ export async function generateMetadata({
     openGraph: {
       title: `타르코프 ${res.name_kr} - EFT Library`,
       description: `Escape from Tarkov (타르코프) 대화형 지도. ${res.name_kr} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
-      images: [formatImage(res.mot_image)],
+      images: [res.mot_image],
       url: `https://eftlibrary.com/map/${id}`,
       siteName: "EFT Library",
     },
     twitter: {
       title: `타르코프 ${res.name_kr} - EFT Library`,
       description: `Escape from Tarkov (타르코프) 대화형 지도. ${res.name_kr} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
-      images: [formatImage(res.mot_image)],
+      images: [res.mot_image],
     },
   };
 }

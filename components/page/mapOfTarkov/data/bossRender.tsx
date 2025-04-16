@@ -1,7 +1,6 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import { formatImage } from "@/lib/func/formatImage";
 import React from "react";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -14,7 +13,7 @@ export default function BossRender({ bossInfo }: BossClient) {
     <DefineGrid cols="7" id={bossInfo.id} pageId="bossInfo">
       <CenterContents>
         <ImageView
-          src={formatImage(bossInfo.image)}
+          src={bossInfo.image}
           alt={bossInfo.name_en}
           popWidth={180}
           popHeight={180}

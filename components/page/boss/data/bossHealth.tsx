@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { formatImage } from "@/lib/func/formatImage";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { BossHealth } from "./bossTypes";
@@ -44,7 +43,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                 follower.id === healthId && (
                   <ImageView
                     key={`${follower.id}-health-image`}
-                    src={formatImage(follower.health_image)}
+                    src={follower.health_image}
                     alt={follower.name_en}
                     popWidth={580}
                     popHeight={600}

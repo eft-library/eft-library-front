@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useGLTF } from "@react-three/drei";
-import { formatImage } from "@/lib/func/formatImage";
 // import dynamic from "next/dynamic";
 import type { ThreeModel } from "@/components/page/mapDetail/data/mapType";
 import Loading from "@/components/custom/loading/loading";
@@ -17,7 +16,7 @@ export default function ThreeModel({
 // viewItemList,
 // zoomLevel,
 ThreeModel) {
-  const { nodes, materials } = useGLTF(formatImage(map.three_image)) as any;
+  const { nodes, materials } = useGLTF(map.three_image) as any;
   if (!nodes || !materials) return <Loading />;
 
   return (

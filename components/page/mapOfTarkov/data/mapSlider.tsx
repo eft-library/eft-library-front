@@ -3,7 +3,6 @@
 import { Separator } from "@/components/ui/separator";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
-import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapSlider } from "./mapOfTarkovType";
@@ -23,7 +22,7 @@ export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
             map.id === imageSelect && (
               <Item
                 key={map.id}
-                original={formatImage(map.mot_image)}
+                original={map.mot_image}
                 width="1600"
                 height="900"
               >
@@ -34,7 +33,7 @@ export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
                     className="flex justify-center items-center cursor-pointer min-h-[600px] relative"
                   >
                     <Image
-                      src={formatImage(map.mot_image)}
+                      src={map.mot_image}
                       alt={map.name_en}
                       width={1100}
                       height={600}

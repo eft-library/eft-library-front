@@ -2,7 +2,6 @@
 
 import { useAppStore } from "@/store/provider";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
-import { formatImage } from "@/lib/func/formatImage";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -39,7 +38,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
             >
               <CenterContents>
                 <ImageView
-                  src={formatImage(stationary.image)}
+                  src={stationary.image}
                   alt={stationary.name_en}
                   popWidth={1200}
                   popHeight={800}

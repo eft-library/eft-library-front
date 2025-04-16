@@ -2,7 +2,6 @@
 
 import { TextureLoader } from "three";
 import { useState, useEffect } from "react";
-import { formatImage } from "@/lib/func/formatImage";
 import * as THREE from "three";
 import type { ThreeItemPath } from "../mapType";
 
@@ -35,7 +34,7 @@ export default function ItemBox({
     }
   };
 
-  const imageUrl = formatImage(checkItem(childValue));
+  const imageUrl = checkItem(childValue);
 
   // Texture 상태에 대한 타입을 명시적으로 지정합니다.
   const [texture, setTexture] = useState<THREE.Texture | null>(null);

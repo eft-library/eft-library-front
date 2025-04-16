@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import Link from "next/link";
 import Slider from "react-slick";
@@ -24,7 +23,7 @@ export default function MainSliderClient({ sliderList }: MainSlider) {
                 key={sliderImg.value}
               >
                 <Image
-                  src={formatImage(sliderImg.main_image)}
+                  src={sliderImg.main_image}
                   className="mx-auto"
                   alt={sliderImg.kr_name}
                   width={1100}

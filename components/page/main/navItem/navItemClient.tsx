@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import Image from "next/image";
 import Link from "next/link";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
@@ -18,7 +17,7 @@ export default function NavItemClient({ navItemList }: NavItemList) {
               onMouseLeave={handleHoverExit}
             >
               <Image
-                src={formatImage(nav.image)}
+                src={nav.image}
                 alt={nav.en_name}
                 fill
                 sizes="120px"

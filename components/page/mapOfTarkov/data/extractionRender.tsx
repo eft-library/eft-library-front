@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -22,7 +21,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
     <DefineGrid cols="11" id={extractionInfo.id} pageId="extraction">
       <CenterContents colSpan="2">
         <ImageView
-          src={formatImage(extractionInfo.image)}
+          src={extractionInfo.image}
           alt={extractionInfo.name}
           popWidth={1600}
           popHeight={900}
@@ -62,7 +61,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
             <CenterContents key={`${require.image}-${index}`} isCol>
               {require.image && (
                 <ImageView
-                  src={formatImage(require.image)}
+                  src={require.image}
                   alt={require.desc}
                   popWidth={1600}
                   popHeight={900}
@@ -84,7 +83,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
             <CenterContents key={`${tip.image}-${index}`} isCol>
               {tip.image && (
                 <ImageView
-                  src={formatImage(tip.image)}
+                  src={tip.image}
                   alt={tip.desc}
                   popWidth={1600}
                   popHeight={900}

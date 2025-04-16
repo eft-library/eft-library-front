@@ -1,6 +1,5 @@
 "use client";
 
-import { formatImage } from "@/lib/func/formatImage";
 import type {
   RequireList,
   ItemRequire,
@@ -108,11 +107,7 @@ export default function DetailRequire({ items, type }: RequireList) {
                   <TooltipTrigger>
                     {type !== "station" && (
                       <Image
-                        src={
-                          type === "skill"
-                            ? formatImage(item.image || "")
-                            : item.image || ""
-                        }
+                        src={item.image || ""}
                         onMouseEnter={() => onHoverItem(item, index)}
                         onMouseLeave={() => setOpenTooltipIndex(null)}
                         onFocus={() => onHoverItem(item, index)}

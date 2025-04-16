@@ -1,7 +1,6 @@
 "use client";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { formatImage } from "@/lib/func/formatImage";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type {
@@ -77,11 +76,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
               fill={ALL_COLOR.DarkBluishGray}
               onClick={handleClick}
             >
-              <image
-                xlinkHref={formatImage(map.jpg_image)}
-                width="100%"
-                height="100%"
-              />
+              <image xlinkHref={map.jpg_image} width="100%" height="100%" />
               {map.jpg_item_path.map(
                 (item, index) =>
                   viewItemList.includes(item.childValue) && (

@@ -23,7 +23,6 @@ import MedicalItemView from "./itemDetail/medicalItemView";
 import KnifeView from "./itemDetail/knifeView";
 import ThrowableView from "./itemDetail/throwableView";
 import StationaryView from "./itemDetail/stationaryView";
-import { formatImage } from "@/lib/func/formatImage";
 import RelatedInfo from "./itemDetail/relatedInfo";
 
 export default function ItemClient({ itemInfo }: ItemClient) {
@@ -39,12 +38,7 @@ export default function ItemClient({ itemInfo }: ItemClient) {
             className={`flex justify-center items-center relative`}
           >
             <Image
-              src={
-                itemInfo.category === "Gun" &&
-                itemInfo.info.gun_category === "Stationary weapons"
-                  ? formatImage(itemInfo.image)
-                  : itemInfo.image
-              }
+              src={itemInfo.image}
               alt={itemInfo.name_en || ""}
               fill
               sizes={`${itemInfo.image_width * 80}`}
