@@ -1,5 +1,3 @@
-"use server";
-
 import { cn } from "@/lib/utils";
 
 interface TableColumn {
@@ -15,7 +13,7 @@ interface TableColumnProps {
   columnData: TableColumn;
 }
 
-export default async function TableColumn({
+export default function TableColumn({
   columnData,
   columnDesign,
   isProvision = false,
@@ -25,7 +23,7 @@ export default async function TableColumn({
   const colSpanMapping = {
     isAmmo: (index: number) => ([1, 9].includes(index) ? 2 : 1),
     isProvision: (index: number) => (index === 1 || index === 4 ? 2 : 1),
-    isMedical: (index: number) => ([1, 3, 4].includes(index) ? 2 : 1),
+    isMedical: (index: number) => ([1].includes(index) ? 2 : 1),
     default: () => 1,
   };
 

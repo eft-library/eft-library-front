@@ -330,27 +330,6 @@ export const lootTableColumn = {
   value_kr: ["사진", "이름"],
 };
 
-export const medicalTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "회복량",
-    "버프",
-    "디버프",
-    "사용 횟수",
-    "사용 시간",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "회복량",
-    "버프",
-    "디버프",
-    "사용 횟수",
-    "사용 시간",
-  ],
-};
-
 export const provisionsTableColumn = {
   value_en: ["사진", "이름", "에너지", "수분", "효과"],
   value_kr: ["사진", "이름", "에너지", "수분", "효과"],
@@ -489,4 +468,24 @@ export const rigClassTableColumn = {
 export const rigNoClassTableColumn = {
   value_en: ["사진", "이름", "슬롯", "무게"],
   value_kr: ["사진", "이름", "무게"],
+};
+
+export const drugTableColumn = {
+  value_en: ["사진", "이름", "버프", "디버프", "사용 횟수", "사용 시간"],
+  value_kr: ["사진", "이름", "버프", "디버프", "사용 횟수", "사용 시간"],
+};
+
+export const stimulantTableColumn = {
+  value_en: ["사진", "이름", "버프", "디버프"],
+  value_kr: ["사진", "이름", "버프", "디버프"],
+};
+
+export const medicalItemTableColumn = {
+  value_en: ["사진", "이름", "버프", "사용 횟수", "사용 시간"],
+  value_kr: ["사진", "이름", "버프", "사용 횟수", "사용 시간"],
+};
+
+export const medikitTableColumn = {
+  value_en: ["사진", "이름", "회복량", "버프", "사용 시간"],
+  value_kr: ["사진", "이름", "회복량", "버프", "사용 시간"],
 };
