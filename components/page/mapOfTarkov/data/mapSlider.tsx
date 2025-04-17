@@ -1,9 +1,9 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import { Gallery, Item } from "react-photoswipe-gallery";
+// import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
+// import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapSlider } from "./mapOfTarkovType";
 import { useState } from "react";
@@ -13,12 +13,18 @@ import "leaflet/dist/leaflet.css";
 
 const MouseMoveEvent = ({ onMove }: { onMove: (latlng: any) => void }) => {
   useMapEvent("mousemove", (e) => {
-    onMove(e.latlng); // 마우스 위치 좌표 업데이트
+    // X좌표를 반전시키고, Y좌표는 그대로 두거나 반전시킬 수도 있음
+    const reversedLatLng = {
+      lat: -e.latlng.lat, // Y 좌표는 그대로 두거나 반전 (반전 원할 시 -e.latlng.lat)
+      lng: -e.latlng.lng, // X 좌표는 반전
+    };
+    onMove(reversedLatLng); // 마우스 위치 좌표 업데이트
   });
   return null;
 };
 
-export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
+// imageSelect
+export default function MapSlider({ mapInfo }: MapSlider) {
   const [mousePosition, setMousePosition] = useState<{
     lat: number;
     lng: number;
@@ -35,11 +41,11 @@ export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
       </div>
       <Separator className="bg-white" />
       <div>
-        <p>Latitude: {mousePosition.lat.toFixed(2)}</p>
-        <p>Longitude: {mousePosition.lng.toFixed(2)}</p>
+        <p>x: {mousePosition.lng.toFixed(2)}</p>
+        <p>y: {mousePosition.lat.toFixed(2)}</p>
       </div>
       <MapContainer
-        center={[387.5, 692.5]}
+        center={[0, 0]}
         zoom={0}
         minZoom={-1}
         maxZoom={4}
@@ -50,8 +56,8 @@ export default function MapSlider({ mapInfo, imageSelect }: MapSlider) {
         <ImageOverlay
           url={imageSrc}
           bounds={[
-            [0, 0],
-            [778, 1385],
+            [0 - 377, 0 - 878],
+            [778 - 377, 1385 - 878],
           ]}
         />
       </MapContainer>
