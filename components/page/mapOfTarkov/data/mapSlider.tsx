@@ -30,7 +30,7 @@ export default function MapSlider({ mapInfo }: MapSlider) {
     lng: number;
   }>({ lat: 0, lng: 0 });
   const imageSrc =
-    "https://image.eftlibrary.com/eftlibrary/tkl_map/completed_map/customs.webp";
+    "https://image.eftlibrary.com/eftlibrary/tkl_map/customs/main/customs.svg";
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -56,8 +56,8 @@ export default function MapSlider({ mapInfo }: MapSlider) {
         <ImageOverlay
           url={imageSrc}
           bounds={[
-            [0 - 377, 0 - 878],
-            [778 - 377, 1385 - 878],
+            [0 - 272, 0 - 792],
+            [589 - 272, 1350 - 792],
           ]}
         />
       </MapContainer>
