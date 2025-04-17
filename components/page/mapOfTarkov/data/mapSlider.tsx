@@ -30,7 +30,7 @@ export default function MapSlider({ mapInfo }: MapSlider) {
     lng: number;
   }>({ lat: 0, lng: 0 });
   const imageSrc =
-    "https://image.eftlibrary.com/eftlibrary/tkl_map/customs/main/customs.svg";
+    "https://raw.githubusercontent.com/TarkovTracker/tarkovdata/1b9bc2acbea0e873244d1819cba9d9fe0f14e26c/maps/Customs.svg";
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -56,8 +56,8 @@ export default function MapSlider({ mapInfo }: MapSlider) {
         <ImageOverlay
           url={imageSrc}
           bounds={[
-            [0 - 272, 0 - 792],
-            [589 - 272, 1350 - 792],
+            [0 - 230, 0 - 700],
+            [535.17401 - 230, 1062.4827 - 700],
           ]}
         />
       </MapContainer>
