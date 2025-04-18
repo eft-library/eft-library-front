@@ -1,9 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import MapSlider from "./mapSlider";
 import BossRender from "./bossRender";
 import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
@@ -12,6 +12,8 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 import { checkIdCategory } from "@/lib/func/jsxfunction";
 import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
 import { extractionColumn, motBossColumn } from "@/lib/consts/gridContsts";
+
+const MapInfo = dynamic(() => import("./mapInfo"), { ssr: false });
 
 export default function MapOfTarkovClient({
   mapOfTarkovList,
@@ -43,7 +45,7 @@ export default function MapOfTarkovClient({
               key={mapOfTarkov.map_id}
               className="flex flex-col gap-6 items-center"
             >
-              <MapSlider
+              <MapInfo
                 mapInfo={mapOfTarkov.map_info}
                 imageSelect={imageSelect}
               />
