@@ -112,7 +112,7 @@ export default function StationDetail({
           </h3>
           <div className="w-full flex flex-col gap-4">
             {levelItem && levelItem.trader_require && (
-              <DetailRequire items={levelItem?.trader_require} type="trader" />
+              <DetailRequire items={levelItem.trader_require} type="trader" />
             )}
             {levelItem && levelItem.station_require && (
               <DetailRequire items={levelItem.station_require} type="station" />

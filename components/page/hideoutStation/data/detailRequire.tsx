@@ -94,55 +94,51 @@ export default function DetailRequire({ items, type }: RequireList) {
             key={("id" in item && item.id) || index}
             className={"flex flex-col items-center gap-2"}
           >
-            {item.image && (
-              <TooltipProvider>
-                <Tooltip
-                  open={openTooltipIndex === index}
-                  onOpenChange={(open) =>
-                    open
-                      ? setOpenTooltipIndex(index)
-                      : setOpenTooltipIndex(null)
-                  }
+            <TooltipProvider>
+              <Tooltip
+                open={openTooltipIndex === index}
+                onOpenChange={(open) =>
+                  open ? setOpenTooltipIndex(index) : setOpenTooltipIndex(null)
+                }
+              >
+                <TooltipTrigger>
+                  {type !== "station" && (
+                    <Image
+                      src={item.image || ""}
+                      onMouseEnter={() => onHoverItem(item, index)}
+                      onMouseLeave={() => setOpenTooltipIndex(null)}
+                      onFocus={() => onHoverItem(item, index)}
+                      onBlur={() => setOpenTooltipIndex(null)}
+                      alt={item.name_en || ""}
+                      width={60}
+                      height={60}
+                    />
+                  )}
+                  {type === "station" && (
+                    <div
+                      onMouseEnter={() => onHoverItem(item, index)}
+                      onMouseLeave={() => setOpenTooltipIndex(null)}
+                    >
+                      {getStationSVG(
+                        getMaster(item),
+                        60,
+                        60,
+                        getMaxSuffix(item)
+                      )}
+                    </div>
+                  )}
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  align="center"
+                  className="bg-Background border-solid border-white border-2"
                 >
-                  <TooltipTrigger>
-                    {type !== "station" && (
-                      <Image
-                        src={item.image || ""}
-                        onMouseEnter={() => onHoverItem(item, index)}
-                        onMouseLeave={() => setOpenTooltipIndex(null)}
-                        onFocus={() => onHoverItem(item, index)}
-                        onBlur={() => setOpenTooltipIndex(null)}
-                        alt={item.name_en || ""}
-                        width={60}
-                        height={60}
-                      />
-                    )}
-                    {type === "station" && (
-                      <div
-                        onMouseEnter={() => onHoverItem(item, index)}
-                        onMouseLeave={() => setOpenTooltipIndex(null)}
-                      >
-                        {getStationSVG(
-                          getMaster(item),
-                          60,
-                          60,
-                          getMaxSuffix(item)
-                        )}
-                      </div>
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    align="center"
-                    className="bg-Background border-solid border-white border-2"
-                  >
-                    <TextSpan size="base" textColor="GoldenYellow">
-                      {hoverItem?.name_kr || hoverItem?.name_en}
-                    </TextSpan>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+                  <TextSpan size="base" textColor="GoldenYellow">
+                    {hoverItem?.name_kr || hoverItem?.name_en}
+                  </TextSpan>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             {type === "item" ? (
               <div className="relative">
                 <div className="absolute bottom-1 left-2">
