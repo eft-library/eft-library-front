@@ -2,8 +2,6 @@ import MapOfTarkov from "@/components/page/mapOfTarkov/mapOfTarkov";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-
 type paramsType = Promise<{ id: string }>;
 
 type MetaProps = {
