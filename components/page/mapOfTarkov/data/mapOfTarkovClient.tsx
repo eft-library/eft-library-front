@@ -47,6 +47,7 @@ export default function MapOfTarkovClient({
             >
               <MapInfo
                 mapInfo={mapOfTarkov.map_info}
+                findInfo={mapOfTarkov.find_info}
                 imageSelect={imageSelect}
               />
 

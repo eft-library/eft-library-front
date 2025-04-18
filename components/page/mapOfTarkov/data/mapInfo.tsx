@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CRS, DivIcon } from "leaflet";
 import MapController from "./mapController";
+import { MouseMoveEvent } from "@/lib/func/leafletFunction";
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
 
 const CustomSvgIcon = new DivIcon({
@@ -22,13 +23,14 @@ const CustomSvgIcon = new DivIcon({
   iconAnchor: [10, 10], // 중심 정렬
 });
 
-// imageSelect
-export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
+export default function MapInfo({ mapInfo, imageSelect, findInfo }: MapSlider) {
   const [where, setWhere] = useState<string>("");
   const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
   const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
-  const imageSrc =
-    "https://image.eftlibrary.com/eftlibrary/tkl_map/customs/main/customs.svg";
+  const [mousePosition, setMousePosition] = useState<{
+    lat: number;
+    lng: number;
+  }>({ lat: 0, lng: 0 });
 
   const onClickWhere = () => {
     if (where.length > 0) {
@@ -104,6 +106,12 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
         <TextSpan isCenter={false} size="3xl">
           내 위치 찾기
         </TextSpan>
+
+        <div className="flex gap-4 border-2 border-white rounded-lg p-2">
+          <span className="font-bold">X: {mousePosition.lng.toFixed(2)}</span>
+          <br />
+          <span className="font-bold">Z: {mousePosition.lat.toFixed(2)}</span>
+        </div>
         <div className="flex gap-2">
           <Input
             className="text-base font-bold border-white placeholder:text-SilverGray w-[400px]"
@@ -130,14 +138,11 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
         crs={CRS.Simple}
         className="w-full h-[800px]"
         style={{ backgroundColor: ALL_COLOR.DarkBluishGray }}
-        maxBounds={[
-          [0 - 232, 0 - 698],
-          [535.17401 - 232, 1062.4827 - 698],
-        ]}
+        maxBounds={findInfo[0].map_bounds}
         maxBoundsViscosity={1.0}
       >
         <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
-
+        <MouseMoveEvent onMove={setMousePosition} />
         {isViewWhere && (
           <Marker
             position={[-imageCoord.y, -imageCoord.x]}
@@ -146,11 +151,8 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
         )}
 
         <ImageOverlay
-          url={imageSrc}
-          bounds={[
-            [0 - 232, 0 - 698],
-            [535.17401 - 232, 1062.4827 - 698],
-          ]}
+          url={findInfo[0].image}
+          bounds={findInfo[0].image_bounds}
         />
       </MapContainer>
     </div>

@@ -112,8 +112,18 @@ interface MapOfTarkov {
   map_info: Map;
   extraction_info: Extraction[];
   transits_info: Extraction[];
+  find_info: FindInfo[];
   map_id: string;
 }
+
+interface FindInfo {
+  id: string;
+  map_bounds: [number, number][];
+  image_bounds: [number, number][];
+  name: string;
+  image: string;
+}
+
 interface Requirement {
   desc: string;
   image: string;
@@ -161,6 +171,7 @@ interface SubMap {
 export interface MapSlider {
   mapInfo: Map;
   imageSelect: string;
+  findInfo: FindInfo[];
 }
 
 export type CoordPx = [number, number, number, number];
