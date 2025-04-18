@@ -96,7 +96,6 @@ interface ImageJson {
   id: string;
   name_en: string;
   name_kr: string;
-  image: string;
 }
 
 export interface MapOfTarkovClient {

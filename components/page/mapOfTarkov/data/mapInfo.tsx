@@ -1,9 +1,9 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-// import { Gallery, Item } from "react-photoswipe-gallery";
+import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
-// import Image from "next/image";
+import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapSlider } from "./mapOfTarkovType";
 import { useState } from "react";
@@ -11,7 +11,6 @@ import "leaflet/dist/leaflet.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MouseMoveEvent } from "@/lib/func/leafletFunction";
 import { CRS, DivIcon } from "leaflet";
 import MapController from "./mapController";
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
@@ -24,14 +23,10 @@ const CustomSvgIcon = new DivIcon({
 });
 
 // imageSelect
-export default function MapInfo({ mapInfo }: MapSlider) {
+export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
   const [where, setWhere] = useState<string>("");
   const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
   const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
-  const [mousePosition, setMousePosition] = useState<{
-    lat: number;
-    lng: number;
-  }>({ lat: 0, lng: 0 });
   const imageSrc =
     "https://image.eftlibrary.com/eftlibrary/tkl_map/customs/main/customs.svg";
 
@@ -63,63 +58,11 @@ export default function MapInfo({ mapInfo }: MapSlider) {
         <TextSpan isCenter={false} size="3xl">
           {mapInfo.name_kr}
         </TextSpan>
-        <div className="flex gap-2">
-          <Button
-            onClick={() => onClickWhere()}
-            className={
-              "rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
-            }
-          >
-            현재 내 위치
-          </Button>
-          <Input
-            className="text-base font-bold border-white placeholder:text-SilverGray w-[400px]"
-            value={where}
-            placeholder="현재 내 위치 붙여넣기"
-            onChange={(e) => setWhere(e.currentTarget.value)}
-          />
-        </div>
-        <span>x: {imageCoord.x}</span>
-        <span>y: {imageCoord.y}</span>
       </div>
+
       <Separator className="bg-white" />
-      <div>
-        <p>x: {mousePosition.lng.toFixed(2)}</p>
-        <p>y: {mousePosition.lat.toFixed(2)}</p>
-      </div>
-      <MapContainer
-        center={[0, 0]}
-        zoom={0}
-        minZoom={0}
-        maxZoom={4}
-        crs={CRS.Simple}
-        className="w-full h-[800px]"
-        style={{ backgroundColor: ALL_COLOR.VeryDarkGray }}
-        maxBounds={[
-          [0 - 232, 0 - 698],
-          [535.17401 - 232, 1062.4827 - 698],
-        ]}
-        maxBoundsViscosity={1.0}
-      >
-        <MouseMoveEvent onMove={setMousePosition} />
-        <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
 
-        {isViewWhere && (
-          <Marker
-            position={[-imageCoord.y, -imageCoord.x]}
-            icon={CustomSvgIcon}
-          />
-        )}
-
-        <ImageOverlay
-          url={imageSrc}
-          bounds={[
-            [0 - 232, 0 - 698],
-            [535.17401 - 232, 1062.4827 - 698],
-          ]}
-        />
-      </MapContainer>
-      {/* <Gallery>
+      <Gallery>
         {mapInfo.sub.map(
           (map) =>
             map.id === imageSelect && (
@@ -153,7 +96,63 @@ export default function MapInfo({ mapInfo }: MapSlider) {
               </Item>
             )
         )}
-      </Gallery> */}
+      </Gallery>
+
+      <Separator className="bg-white" />
+
+      <div className="flex justify-between items-center">
+        <TextSpan isCenter={false} size="3xl">
+          내 위치 찾기
+        </TextSpan>
+        <div className="flex gap-2">
+          <Input
+            className="text-base font-bold border-white placeholder:text-SilverGray w-[400px]"
+            value={where}
+            placeholder="좌표를 입력하세요"
+            onChange={(e) => setWhere(e.currentTarget.value)}
+          />
+          <Button
+            onClick={() => onClickWhere()}
+            className={
+              "rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
+            }
+          >
+            검색
+          </Button>
+        </div>
+      </div>
+
+      <MapContainer
+        center={[0, 0]}
+        zoom={0}
+        minZoom={0}
+        maxZoom={4}
+        crs={CRS.Simple}
+        className="w-full h-[800px]"
+        style={{ backgroundColor: ALL_COLOR.DarkBluishGray }}
+        maxBounds={[
+          [0 - 232, 0 - 698],
+          [535.17401 - 232, 1062.4827 - 698],
+        ]}
+        maxBoundsViscosity={1.0}
+      >
+        <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
+
+        {isViewWhere && (
+          <Marker
+            position={[-imageCoord.y, -imageCoord.x]}
+            icon={CustomSvgIcon}
+          />
+        )}
+
+        <ImageOverlay
+          url={imageSrc}
+          bounds={[
+            [0 - 232, 0 - 698],
+            [535.17401 - 232, 1062.4827 - 698],
+          ]}
+        />
+      </MapContainer>
     </div>
   );
 }
