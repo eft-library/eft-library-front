@@ -6,53 +6,53 @@ import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapSlider } from "./mapOfTarkovType";
-// import { useState } from "react";
-// import "leaflet/dist/leaflet.css";
-// import { ALL_COLOR } from "@/lib/consts/colorConsts";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { CRS, DivIcon } from "leaflet";
-// import MapController from "./mapController";
-// import { MouseMoveEvent } from "@/lib/func/leafletFunction";
-// import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
+import { useState } from "react";
+import "leaflet/dist/leaflet.css";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CRS, DivIcon } from "leaflet";
+import MapController from "./mapController";
+import { MouseMoveEvent } from "@/lib/func/leafletFunction";
+import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
 
-// const CustomSvgIcon = new DivIcon({
-//   className: "",
-//   html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
-//   iconSize: [20, 20],
-//   iconAnchor: [10, 10], // 중심 정렬
-// });
+const CustomSvgIcon = new DivIcon({
+  className: "",
+  html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10], // 중심 정렬
+});
 
-export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
-  // const [where, setWhere] = useState<string>("");
-  // const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
-  // const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
-  // const [mousePosition, setMousePosition] = useState<{
-  //   lat: number;
-  //   lng: number;
-  // }>({ lat: 0, lng: 0 });
+export default function MapInfo({ mapInfo, imageSelect, findInfo }: MapSlider) {
+  const [where, setWhere] = useState<string>("");
+  const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
+  const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<{
+    lat: number;
+    lng: number;
+  }>({ lat: 0, lng: 0 });
 
-  // const onClickWhere = () => {
-  //   if (where.length > 0) {
-  //     const splitStr = where.split("]_")[1];
+  const onClickWhere = () => {
+    if (where.length > 0) {
+      const splitStr = where.split("]_")[1];
 
-  //     if (splitStr) {
-  //       const matches = splitStr.match(/[-+]?\d*\.\d+/g);
+      if (splitStr) {
+        const matches = splitStr.match(/[-+]?\d*\.\d+/g);
 
-  //       if (matches && matches.length >= 3) {
-  //         const x = parseFloat(matches[0]);
-  //         const y = parseFloat(matches[2]);
-  //         setImageCoord({ x: x, y: y });
-  //       } else {
-  //         setImageCoord({ x: 0, y: 0 });
-  //       }
+        if (matches && matches.length >= 3) {
+          const x = parseFloat(matches[0]);
+          const y = parseFloat(matches[2]);
+          setImageCoord({ x: x, y: y });
+        } else {
+          setImageCoord({ x: 0, y: 0 });
+        }
 
-  //       setIsViewWhere(true);
-  //     } else {
-  //       setImageCoord({ x: 0, y: 0 });
-  //     }
-  //   }
-  // };
+        setIsViewWhere(true);
+      } else {
+        setImageCoord({ x: 0, y: 0 });
+      }
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -100,7 +100,7 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
         )}
       </Gallery>
 
-      {/* <Separator className="bg-white" />
+      <Separator className="bg-white" />
 
       <div className="flex justify-between items-center">
         <TextSpan isCenter={false} size="3xl">
@@ -154,7 +154,7 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
           url={findInfo[0].image}
           bounds={findInfo[0].image_bounds}
         />
-      </MapContainer> */}
+      </MapContainer>
     </div>
   );
 }
