@@ -3,17 +3,24 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DefaultAlert from "../../../custom/alert/defaultAlert";
-import { Bell, CalendarCheck, Download, Star } from "lucide-react";
+import {
+  Bell,
+  CalendarCheck,
+  Star,
+  Wrench,
+  PartyPopper,
+  Megaphone,
+} from "lucide-react";
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import type { NewsClient, NewsUserFunction } from "../mainTypes";
+import type { NewsClient, LinkInfo } from "../mainTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NewsClient({ news }: NewsClient) {
   const router = useRouter();
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
 
-  const newText = (text: NewsUserFunction) => {
+  const newText = (text: LinkInfo) => {
     const blinkStyle = {
       animation: "fade 1.5s infinite", // 애니메이션 이름과 설정
     };
@@ -51,31 +58,38 @@ export default function NewsClient({ news }: NewsClient) {
               추천 기능
             </TextSpan>
           </div>
-
           <div className="flex flex-col">
-            {news.json_value.user_function.map((func) =>
-              func.use_yn ? (
-                newText(func)
-              ) : (
-                <TextSpan key={func.name_en} isCenter={false} size="lg">
-                  - {func.name_kr}
-                </TextSpan>
-              )
-            )}
+            {news.json_value.recommend.map((func) => newText(func))}
           </div>
         </div>
 
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
-            <Download />
+            <PartyPopper />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              타르코프 버전
+              이벤트
             </TextSpan>
           </div>
-          <TextSpan isCenter={false} size="lg">
-            - {news.json_value.game_version}
-          </TextSpan>
+          <div className="flex flex-col">
+            {news.json_value.event.map((event) => (
+              <Link
+                target="_blank"
+                key={event.name_en}
+                rel="noopener noreferrer"
+                href={event.link}
+              >
+                <TextSpan
+                  textColor="CreamYellow"
+                  isCursor
+                  hoverColor="SoftPink"
+                  size="lg"
+                >
+                  - {event.name_kr}
+                </TextSpan>
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="text-lg w-full">
@@ -103,57 +117,83 @@ export default function NewsClient({ news }: NewsClient) {
               타르코프 정보
             </TextSpan>
           </div>
-
           <div className="flex flex-col">
-            <Link href={news.json_value.event_link}>
-              <TextSpan
-                textColor="CreamYellow"
-                isCursor
-                hoverColor="SoftPink"
-                size="lg"
+            {news.json_value.tarkov_info.map((info) => (
+              <Link
+                target="_blank"
+                key={info.name_en}
+                rel="noopener noreferrer"
+                href={info.link}
               >
-                - 이벤트
-              </TextSpan>
-            </Link>
-            <Link href={news.json_value.patch_link}>
-              <TextSpan
-                textColor="CreamYellow"
-                isCursor
-                hoverColor="SoftPink"
-                size="lg"
-              >
-                - 패치노트
-              </TextSpan>
-            </Link>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={process.env.NEXT_PUBLIC_DISCORD || ""}
-            >
-              <TextSpan
-                textColor="CreamYellow"
-                isCursor
-                hoverColor="SoftPink"
-                size="lg"
-              >
-                - Discord 🔥
-              </TextSpan>
-            </a>
+                <TextSpan
+                  textColor="CreamYellow"
+                  isCursor
+                  hoverColor="SoftPink"
+                  size="lg"
+                >
+                  - {info.name_kr}
+                </TextSpan>
+              </Link>
+            ))}
           </div>
         </div>
 
         <div className="text-lg w-full">
           <div className="flex items-center mb-0.5">
-            <Download />
+            <Wrench />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              아레나 버전
+              패치노트
             </TextSpan>
           </div>
-          &nbsp;
-          <TextSpan isCenter={false} size="lg">
-            - {news.json_value.arena_version}
-          </TextSpan>
+          <div className="flex flex-col">
+            {news.json_value.patch.map((patch) => (
+              <Link
+                target="_blank"
+                key={patch.name_en}
+                rel="noopener noreferrer"
+                href={patch.link}
+              >
+                <TextSpan
+                  textColor="CreamYellow"
+                  isCursor
+                  hoverColor="SoftPink"
+                  size="lg"
+                >
+                  - {patch.name_kr}
+                </TextSpan>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="text-lg w-full">
+          <div className="flex items-center mb-0.5">
+            <Megaphone />
+            &nbsp;
+            <TextSpan isCenter={false} size="lg">
+              공지사항
+            </TextSpan>
+          </div>
+          <div className="flex flex-col">
+            {news.json_value.notice.map((notice) => (
+              <Link
+                target="_blank"
+                key={notice.name_en}
+                rel="noopener noreferrer"
+                href={notice.link}
+              >
+                <TextSpan
+                  textColor="CreamYellow"
+                  isCursor
+                  hoverColor="SoftPink"
+                  size="lg"
+                >
+                  - {notice.name_kr}
+                </TextSpan>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 

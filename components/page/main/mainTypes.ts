@@ -10,11 +10,10 @@ export interface SearchClient {
   searchList: SearchData[];
 }
 
-export interface NewsUserFunction {
+export interface LinkInfo {
   link: string;
   name_en: string;
   name_kr: string;
-  use_yn: boolean;
   is_new: boolean;
 }
 
@@ -28,13 +27,12 @@ export interface NewsMapColumn {
 }
 
 interface JsonValue {
-  game_version: string;
-  arena_version: string;
-  patch_link: string;
-  event_link: string;
-  youtube_id: string;
   next_update: string[];
-  user_function: NewsUserFunction[];
+  recommend: LinkInfo[];
+  event: LinkInfo[];
+  patch: LinkInfo[];
+  notice: LinkInfo[];
+  tarkov_info: LinkInfo[];
 }
 
 interface NavItem {
