@@ -18,7 +18,7 @@ export default function SearchClient({ searchList }: SearchClient) {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const onClickItem = (item: SearchData) => {
-    // 상인, 보스, 하이드 아웃은 상태를 변경 후 이동해야 함
+    // 상인은 상태를 변경 후 이동해야 함
     if (item.type === "TRADER") {
       setNpcId(item.page_value);
     }
