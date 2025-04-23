@@ -1,6 +1,5 @@
 "use client";
 
-import { useScrollMove } from "@/lib/hooks/useScrollMove";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -11,7 +10,6 @@ import type { ArmBandList } from "./armBandType";
 export default function ArmBandClient({ armBandList }: ArmBandList) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-  useScrollMove(pageId, armBandList);
 
   return (
     <div className="w-full">
