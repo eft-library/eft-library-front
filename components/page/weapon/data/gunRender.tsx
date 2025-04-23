@@ -1,26 +1,22 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
-import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { gunColumn } from "@/lib/consts/gridContsts";
 import type { GunRender } from "./weaponTypes";
+import {
+  filteringData,
+  hasMatchInList,
+  highlightMatchedText,
+} from "@/lib/func/jsxfunction";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { gunTableColumn } from "@/lib/consts/columnConsts";
 
-export default function GunRender({ gunList }: GunRender) {
-  const { weaponCategory } = useAppStore((state) => state);
+export default function GunRender({ gunList, searchWord }: GunRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-
-  const shouldRenderWeapon = (itemCategory: string) => {
-    const isGeneralCategory = itemCategory !== "Stationary weapons";
-    const isMatchingCategory =
-      itemCategory === weaponCategory || weaponCategory === "ALL";
-    return isGeneralCategory && isMatchingCategory;
-  };
 
   const sliceDefaultAmmo = (defaultAmmo: string) => {
     if (!defaultAmmo) return "";
@@ -42,10 +38,12 @@ export default function GunRender({ gunList }: GunRender) {
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <GetClientColumn columnLength={9} columnList={gunColumn} />
+      {hasMatchInList(gunList, searchWord) && (
+        <TableColumn columnData={gunTableColumn} isGun columnDesign={9} />
+      )}
       {gunList.map(
         (gun) =>
-          shouldRenderWeapon(gun.info.gun_category) && (
+          filteringData(searchWord, gun.name_en, gun.name_kr, gun.name_kr) && (
             <DefineGrid
               cols="9"
               id={gun.id}
@@ -66,7 +64,7 @@ export default function GunRender({ gunList }: GunRender) {
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{gun.name_kr}</TextSpan>
+                {highlightMatchedText(gun.name_kr, searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{sliceDefaultAmmo(gun.info.default_ammo)}</TextSpan>

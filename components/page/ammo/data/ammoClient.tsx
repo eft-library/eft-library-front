@@ -1,21 +1,20 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import {
-  getPlusMinus,
-  checkCategory,
-  getColor,
-  floatToPercent,
-} from "@/lib/func/jsxfunction";
+import { getPlusMinus, getColor, floatToPercent } from "@/lib/func/jsxfunction";
 import type { AmmoClient } from "./ammoTypes";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { ammoTableColumn } from "@/lib/consts/columnConsts";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 
 export default function AmmoClient({ ammoList }: AmmoClient) {
-  const { ammoCategory } = useAppStore((state) => state);
+  const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
@@ -39,12 +38,21 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder="이름을 최소 2글자 입력하세요"
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      <TableColumn columnDesign={13} columnData={ammoTableColumn} isAmmo />
       {ammoList.map(
         (item) =>
-          checkCategory(item.info.ammo_category, ammoCategory) && (
+          filteringData(word, item.name_en, item.name_kr, item.name_kr) && (
             <DefineGrid
-              cols="12"
+              cols="13"
               pageId={pageId}
               id={item.id}
               key={item.id}
@@ -62,9 +70,10 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                   size={(item.image_width * 64).toString()}
                 />
               </CenterContents>
-              <CenterContents colSpan="2">
-                <TextSpan>{item.name_kr}</TextSpan>
-              </CenterContents>
+              <div className="flex col-span-3 justify-center">
+                {highlightMatchedText(item.name_kr, word)}
+              </div>
+
               <CenterContents>
                 <TextSpan>{item.info.damage}</TextSpan>
               </CenterContents>

@@ -1,15 +1,15 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { relatedQuestColumn } from "@/lib/consts/gridContsts";
 import type { QuestDesc } from "../../quest/data/questTypes";
 import { SquareCheckBig, SquareX } from "lucide-react";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   return (
@@ -87,9 +87,10 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                 관련 퀘스트 아이템
               </TextSpan>
               <div className="flex flex-col justify-center items-center gap-2">
-                <GetClientColumn
-                  columnLength={8}
-                  columnList={relatedQuestColumn}
+                <TableColumn
+                  columnDesign={8}
+                  columnData={relatedQuestTableColumn}
+                  isRelatedQuest
                 />
                 {questInfo.sub.map((item) => (
                   <div

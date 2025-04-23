@@ -1,34 +1,37 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkViewMedical } from "@/lib/func/jsxfunction";
 import type { ItemClient } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { medicalItemTableColumn } from "@/lib/consts/columnConsts";
+import {
+  filteringData,
+  highlightMatchedText,
+  hasMatchInList,
+} from "@/lib/func/jsxfunction";
 
-export default function ItemClient({ medicalList }: ItemClient) {
-  const { medicalCategory } = useAppStore((state) => state);
+export default function ItemClient({ medicalList, searchWord }: ItemClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
-  if (medicalCategory !== "ALL" && medicalCategory !== "Medical item")
-    return null;
-
   return (
     <>
-      <TableColumn columnDesign={5} columnData={medicalItemTableColumn} />
+      {hasMatchInList(medicalList, searchWord) && (
+        <TableColumn columnDesign={5} columnData={medicalItemTableColumn} />
+      )}
+
       <div className="w-full">
         {medicalList.map(
           (item) =>
-            checkViewMedical(
-              medicalCategory,
-              item.info.medical_category,
-              "Medical item"
+            filteringData(
+              searchWord,
+              item.name_en,
+              item.name_kr,
+              item.name_kr
             ) && (
               <DefineGrid
                 cols="5"
@@ -51,7 +54,7 @@ export default function ItemClient({ medicalList }: ItemClient) {
                 </CenterContents>
 
                 <CenterContents>
-                  <TextSpan size="sm">{item.name_kr}</TextSpan>
+                  {highlightMatchedText(item.name_kr, searchWord)}
                 </CenterContents>
 
                 <CenterContents isCol>

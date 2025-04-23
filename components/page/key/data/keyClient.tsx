@@ -1,29 +1,38 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import type { KeyClient } from "./keyTypes";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { keyTableColumn } from "@/lib/consts/columnConsts";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 
 export default function KeyClient({ keyList }: KeyClient) {
-  const { keyCategory } = useAppStore((state) => state);
+  const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
-  const checkKeyCategory = (mapValue: Array<string>, keyCategory: string) => {
-    return keyCategory === "ALL" || mapValue.includes(keyCategory);
-  };
-
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder="이름을 최소 2글자 입력하세요"
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      <TableColumn columnDesign={5} columnData={keyTableColumn} isKey />
       {keyList.map(
         (key) =>
-          checkKeyCategory(key.info.map_value, keyCategory) && (
+          filteringData(word, key.name_en, key.name_kr, key.name_kr) && (
             <DefineGrid
-              cols="4"
+              cols="5"
               id={key.id}
               pageId={pageId}
               key={key.id}
@@ -41,8 +50,8 @@ export default function KeyClient({ keyList }: KeyClient) {
                   wrapHeight={key.image_height * 64}
                 />
               </CenterContents>
-              <CenterContents>
-                <TextSpan>{key.name_kr}</TextSpan>
+              <CenterContents colSpan="2">
+                {highlightMatchedText(key.name_kr, word)}
               </CenterContents>
               <CenterContents isCol>
                 {key.info.use_map_kr.map((area, index) => (

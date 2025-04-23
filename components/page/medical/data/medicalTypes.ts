@@ -1,17 +1,32 @@
+export interface MedicalClient {
+  medical: MedicalData;
+}
+
+export interface MedicalData {
+  Drug: DrugDetail[];
+  Medicalitem: MedicalDetail[];
+  Medikit: MedikitDetail[];
+  Stimulant: StimulantDetail[];
+}
+
 export interface StimulantClient {
   medicalList: StimulantDetail[];
+  searchWord: string;
 }
 
 export interface MediKitClient {
   medicalList: MedikitDetail[];
+  searchWord: string;
 }
 
 export interface ItemClient {
   medicalList: MedicalDetail[];
+  searchWord: string;
 }
 
 export interface DrugClient {
   medicalList: DrugDetail[];
+  searchWord: string;
 }
 
 interface DrugInfo {

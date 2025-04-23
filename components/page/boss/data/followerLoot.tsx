@@ -3,11 +3,11 @@
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { follwerColumn } from "@/lib/consts/gridContsts";
 import type { FollowerLoot, FollowersLoot } from "./bossTypes";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { follwerTableColumn } from "@/lib/consts/columnConsts";
 
 export default function FollowerLoot({ follower }: FollowerLoot) {
   const [lootType, setLootType] = useState<string>();
@@ -51,7 +51,7 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
             ))}
           </div>
           <div className="flex flex-col justify-center items-center w-full gap-2">
-            <GetClientColumn columnLength={2} columnList={follwerColumn} />
+            <TableColumn columnDesign={2} columnData={follwerTableColumn} />
             {follower.loot.map(
               (loot) =>
                 lootType === loot.item_type && (

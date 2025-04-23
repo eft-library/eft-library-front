@@ -1,24 +1,35 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import { checkCategory } from "@/lib/func/jsxfunction";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { lootTableColumn } from "@/lib/consts/columnConsts";
 import type { LootClient } from "./lootTypes";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 
 export default function LootClient({ lootList }: LootClient) {
-  const { lootCategory } = useAppStore((state) => state);
+  const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder="이름을 최소 2글자 입력하세요"
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      <TableColumn columnDesign={2} columnData={lootTableColumn} />
       {lootList.map(
         (loot) =>
-          checkCategory(loot.info.loot_category, lootCategory) && (
+          filteringData(word, loot.name_en, loot.name_kr, loot.name_kr) && (
             <DefineGrid
               id={loot.id}
               pageId={pageId}
@@ -39,7 +50,7 @@ export default function LootClient({ lootList }: LootClient) {
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{loot.name_kr}</TextSpan>
+                {highlightMatchedText(loot.name_kr, word)}
               </CenterContents>
             </DefineGrid>
           )

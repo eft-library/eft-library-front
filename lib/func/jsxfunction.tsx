@@ -8,6 +8,59 @@ export const getPlusMinus = (text: number | string) => {
   return "";
 };
 
+export const highlightMatchedText = (text: string, keyword: string) => {
+  if (keyword.length < 2)
+    return <span className="text-white font-bold">{text}</span>;
+
+  const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${safeKeyword})`, "gi");
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.toLowerCase() === keyword.toLowerCase() ? (
+          <span key={index} className="text-GoldenYellow font-bold">
+            {part}
+          </span>
+        ) : (
+          <span key={index} className="text-white font-bold">
+            {part}
+          </span>
+        )
+      )}
+    </>
+  );
+};
+
+export const hasMatchInList = (list: any[], searchWord: string): boolean => {
+  if (searchWord.length < 1) return true;
+
+  const safeWord = searchWord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(safeWord, "i");
+
+  return list.some(
+    (item) =>
+      regex.test(item.name_en) ||
+      regex.test(item.name_kr) ||
+      regex.test(item.name_ja || item.name_kr)
+  );
+};
+export const filteringData = (
+  userSearch: string,
+  name_en: string,
+  name_ko: string,
+  name_ja: string
+) => {
+  if (userSearch.length < 2) {
+    return true;
+  }
+  const safeWord = userSearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(safeWord, "i");
+
+  return regex.test(name_en) || regex.test(name_ko) || regex.test(name_ja);
+};
+
 export const checkCategory = (newCategory: string, existCategory: string) => {
   return existCategory === "ALL" || existCategory === newCategory;
 };

@@ -1,6 +1,5 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetMedical from "./data/getMedical";
-import MedicalSelectorClient from "./data/medicalSelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
 
 export default function Medical() {
@@ -14,11 +13,7 @@ export default function Medical() {
           dataAdSlot="2690838054"
         />
       </div>
-      <MedicalSelectorClient />
-      <GetMedical medicalType="Drug" />
-      <GetMedical medicalType="Stimulant" />
-      <GetMedical medicalType="Medical item" />
-      <GetMedical medicalType="Medikit" />
+      <GetMedical />
     </ContentsWrapper>
   );
 }

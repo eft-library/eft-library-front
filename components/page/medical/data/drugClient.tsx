@@ -1,22 +1,22 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkViewMedical } from "@/lib/func/jsxfunction";
 import type { DrugClient } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { drugTableColumn } from "@/lib/consts/columnConsts";
+import {
+  filteringData,
+  highlightMatchedText,
+  hasMatchInList,
+} from "@/lib/func/jsxfunction";
 
-export default function DrugClient({ medicalList }: DrugClient) {
-  const { medicalCategory } = useAppStore((state) => state);
+export default function DrugClient({ medicalList, searchWord }: DrugClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-
-  if (medicalCategory !== "ALL" && medicalCategory !== "Drug") return null;
 
   const drugText = (label: string, value: number, positive: boolean) => {
     return (
@@ -31,14 +31,18 @@ export default function DrugClient({ medicalList }: DrugClient) {
 
   return (
     <>
-      <TableColumn columnDesign={7} columnData={drugTableColumn} isMedical />
+      {hasMatchInList(medicalList, searchWord) && (
+        <TableColumn columnDesign={7} columnData={drugTableColumn} isMedical />
+      )}
+
       <div className="w-full">
         {medicalList.map(
           (drug) =>
-            checkViewMedical(
-              medicalCategory,
-              drug.info.medical_category,
-              "Drug"
+            filteringData(
+              searchWord,
+              drug.name_en,
+              drug.name_kr,
+              drug.name_kr
             ) && (
               <DefineGrid
                 cols="7"
@@ -60,7 +64,7 @@ export default function DrugClient({ medicalList }: DrugClient) {
                   />
                 </CenterContents>
                 <CenterContents colSpan="2">
-                  <TextSpan size="sm">{drug.name_kr}</TextSpan>
+                  {highlightMatchedText(drug.name_kr, searchWord)}
                 </CenterContents>
 
                 <div className="flex flex-col justify-center ">

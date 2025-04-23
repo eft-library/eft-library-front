@@ -1,33 +1,39 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkViewMedical } from "@/lib/func/jsxfunction";
 import type { MediKitClient } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { medikitTableColumn } from "@/lib/consts/columnConsts";
+import {
+  filteringData,
+  hasMatchInList,
+  highlightMatchedText,
+} from "@/lib/func/jsxfunction";
 
-export default function MediKitClient({ medicalList }: MediKitClient) {
-  const { medicalCategory } = useAppStore((state) => state);
+export default function MediKitClient({
+  medicalList,
+  searchWord,
+}: MediKitClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
-  if (medicalCategory !== "ALL" && medicalCategory !== "Medikit") return null;
-
   return (
     <>
-      <TableColumn columnDesign={5} columnData={medikitTableColumn} />
+      {hasMatchInList(medicalList, searchWord) && (
+        <TableColumn columnDesign={5} columnData={medikitTableColumn} />
+      )}
       <div className="w-full">
         {medicalList.map(
           (medikit) =>
-            checkViewMedical(
-              medicalCategory,
-              medikit.info.medical_category,
-              "Medikit"
+            filteringData(
+              searchWord,
+              medikit.name_en,
+              medikit.name_kr,
+              medikit.name_kr
             ) && (
               <DefineGrid
                 key={medikit.id}
@@ -49,7 +55,7 @@ export default function MediKitClient({ medicalList }: MediKitClient) {
                   />
                 </CenterContents>
                 <CenterContents>
-                  <TextSpan size="sm">{medikit.name_kr}</TextSpan>
+                  {highlightMatchedText(medikit.name_kr, searchWord)}
                 </CenterContents>
                 <CenterContents>
                   <TextSpan>{medikit.info.hitpoints}</TextSpan>

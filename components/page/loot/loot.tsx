@@ -1,9 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { lootTableColumn } from "@/lib/consts/columnConsts";
 import GetLoot from "./data/getLoot";
-import LootSelectorClient from "./data/lootSelectorClient";
 import AdBanner from "../../custom/adsense/adBanner";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Loot() {
   return (
@@ -16,8 +13,6 @@ export default function Loot() {
           dataAdSlot="2690838054"
         />
       </div>
-      <LootSelectorClient />
-      <TableColumn columnDesign={2} columnData={lootTableColumn} />
       <GetLoot />
     </ContentsWrapper>
   );

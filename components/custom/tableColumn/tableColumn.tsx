@@ -10,6 +10,10 @@ interface TableColumnProps {
   isProvision?: boolean;
   isMedical?: boolean;
   isAmmo?: boolean;
+  isKey?: boolean;
+  isGun?: boolean;
+  isExtraction?: boolean;
+  isRelatedQuest?: boolean;
   columnData: TableColumn;
 }
 
@@ -19,11 +23,19 @@ export default function TableColumn({
   isProvision = false,
   isMedical = false,
   isAmmo = false,
+  isKey = false,
+  isExtraction = false,
+  isGun = false,
+  isRelatedQuest = false,
 }: TableColumnProps) {
   const colSpanMapping = {
-    isAmmo: (index: number) => ([1, 9].includes(index) ? 2 : 1),
+    isAmmo: (index: number) => (index === 1 ? 3 : index === 9 ? 2 : 1),
     isProvision: (index: number) => (index === 1 || index === 4 ? 2 : 1),
     isMedical: (index: number) => ([1].includes(index) ? 2 : 1),
+    isKey: (index: number) => ([1].includes(index) ? 2 : 1),
+    isGun: (index: number) => ([0].includes(index) ? 2 : 1),
+    isRelatedQuest: (index: number) => ([0, 1, 4].includes(index) ? 2 : 1),
+    isExtraction: (index: number) => ([0, 1, 5, 6].includes(index) ? 2 : 1),
     default: () => 1,
   };
 
@@ -31,13 +43,17 @@ export default function TableColumn({
     if (isAmmo) return colSpanMapping.isAmmo(index);
     if (isProvision) return colSpanMapping.isProvision(index);
     if (isMedical) return colSpanMapping.isMedical(index);
+    if (isKey) return colSpanMapping.isKey(index);
+    if (isGun) return colSpanMapping.isGun(index);
+    if (isRelatedQuest) return colSpanMapping.isRelatedQuest(index);
+    if (isExtraction) return colSpanMapping.isExtraction(index);
     return colSpanMapping.default();
   };
 
   return (
     <div
       className={cn(
-        `grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-Background z-10`
+        `grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-Background z-10 mb-2`
       )}
     >
       {columnData.value_kr.map((val, index) => (

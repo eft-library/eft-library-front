@@ -1,9 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { ammoTableColumn } from "@/lib/consts/columnConsts";
 import GetAmmo from "./data/getAmmo";
 import AdBanner from "../../custom/adsense/adBanner";
-import AmmoSelectorClient from "./data/ammoSelectorClient";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Ammo() {
   return (
@@ -16,8 +13,6 @@ export default function Ammo() {
           dataAdSlot="2690838054"
         />
       </div>
-      <AmmoSelectorClient />
-      <TableColumn columnDesign={12} columnData={ammoTableColumn} isAmmo />
       <GetAmmo />
     </ContentsWrapper>
   );

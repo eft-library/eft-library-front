@@ -39,7 +39,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            방어구 피해량
+            방어구 피해
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             {item.info.armor_damage} %

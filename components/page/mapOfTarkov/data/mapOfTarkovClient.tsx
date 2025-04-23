@@ -5,13 +5,16 @@ import { useParams } from "next/navigation";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import BossRender from "./bossRender";
-import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import ExtractionRender from "./extractionRender";
 import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import { checkIdCategory } from "@/lib/func/jsxfunction";
 import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
-import { extractionColumn, motBossColumn } from "@/lib/consts/gridContsts";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import {
+  extractionTableColumn,
+  motBossTableColumn,
+} from "@/lib/consts/columnConsts";
 
 const MapInfo = dynamic(() => import("./mapInfo"), { ssr: false });
 
@@ -63,7 +66,7 @@ export default function MapOfTarkovClient({
                   보스
                 </TextSpan>
                 <Separator className="bg-white" />
-                <GetClientColumn columnList={motBossColumn} columnLength={7} />
+                <TableColumn columnDesign={7} columnData={motBossTableColumn} />
                 {sortBossList(mapOfTarkov.boss_list).map((boss, index) => (
                   <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
                 ))}
@@ -73,9 +76,10 @@ export default function MapOfTarkovClient({
                   탈출구
                 </TextSpan>
                 <Separator className="bg-white" />
-                <GetClientColumn
-                  columnList={extractionColumn}
-                  columnLength={11}
+                <TableColumn
+                  columnDesign={11}
+                  columnData={extractionTableColumn}
+                  isExtraction
                 />
                 {sortExtractionList(mapOfTarkov.extraction_info).map(
                   (extraction) => (
@@ -91,9 +95,10 @@ export default function MapOfTarkovClient({
                   Transits
                 </TextSpan>
                 <Separator className="bg-white" />
-                <GetClientColumn
-                  columnList={extractionColumn}
-                  columnLength={11}
+                <TableColumn
+                  columnDesign={11}
+                  columnData={extractionTableColumn}
+                  isExtraction
                 />
                 {sortExtractionList(mapOfTarkov.transits_info).map(
                   (transits) => (

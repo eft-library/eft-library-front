@@ -10,17 +10,21 @@ interface WeaponData {
 
 export interface ThrowableRender {
   throwableList: ThrowableDetail[];
+  searchWord: string;
 }
 
 export interface StationaryRender {
   stationaryList: GunDetail[];
+  searchWord: string;
 }
 export interface KnifeRender {
   knifeList: KnifeDetail[];
+  searchWord: string;
 }
 
 export interface GunRender {
   gunList: GunDetail[];
+  searchWord: string;
 }
 
 interface GunInfo {

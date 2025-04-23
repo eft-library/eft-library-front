@@ -1,22 +1,22 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkViewMedical, filterStimEffects } from "@/lib/func/jsxfunction";
+import { filterStimEffects, hasMatchInList } from "@/lib/func/jsxfunction";
 import type { StimulantClient, Buff, Debuff } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { stimulantTableColumn } from "@/lib/consts/columnConsts";
+import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 
-export default function StimulantClient({ medicalList }: StimulantClient) {
-  const { medicalCategory } = useAppStore((state) => state);
+export default function StimulantClient({
+  medicalList,
+  searchWord,
+}: StimulantClient) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-
-  if (medicalCategory !== "ALL" && medicalCategory !== "Stimulant") return null;
 
   const getSkillColor = (text: string) => {
     const blue = ["진통제", "해독제"];
@@ -64,14 +64,18 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
 
   return (
     <>
-      <TableColumn columnDesign={4} columnData={stimulantTableColumn} />
+      {hasMatchInList(medicalList, searchWord) && (
+        <TableColumn columnDesign={4} columnData={stimulantTableColumn} />
+      )}
+
       <div className="w-full">
         {medicalList.map(
           (stimulant) =>
-            checkViewMedical(
-              medicalCategory,
-              stimulant.info.medical_category,
-              "Stimulant"
+            filteringData(
+              searchWord,
+              stimulant.name_en,
+              stimulant.name_kr,
+              stimulant.name_kr
             ) && (
               <DefineGrid
                 id={stimulant.id}
@@ -93,7 +97,7 @@ export default function StimulantClient({ medicalList }: StimulantClient) {
                   />
                 </CenterContents>
                 <CenterContents>
-                  <TextSpan size="sm">{stimulant.name_kr}</TextSpan>
+                  {highlightMatchedText(stimulant.name_kr, searchWord)}
                 </CenterContents>
 
                 <div className="flex justify-center flex-col">

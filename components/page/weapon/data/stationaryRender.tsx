@@ -1,33 +1,39 @@
 "use client";
 
-import { useAppStore } from "@/store/provider";
-import GetClientColumn from "../../../custom/getColumn/getClientColumn";
 import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { stationaryColumn } from "@/lib/consts/gridContsts";
 import type { StationaryRender } from "./weaponTypes";
+import {
+  filteringData,
+  hasMatchInList,
+  highlightMatchedText,
+} from "@/lib/func/jsxfunction";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { stationaryTableColumn } from "@/lib/consts/columnConsts";
 
-export default function StationaryRender({ stationaryList }: StationaryRender) {
-  const { weaponCategory } = useAppStore((state) => state);
+export default function StationaryRender({
+  stationaryList,
+  searchWord,
+}: StationaryRender) {
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
-  const shouldRenderWeapon = (itemCategory: string) => {
-    const isGeneralCategory = itemCategory === "Stationary weapons";
-    const isMatchingCategory =
-      itemCategory === "Stationary weapons" || weaponCategory === "ALL";
-    return isGeneralCategory && isMatchingCategory;
-  };
-
   return (
     <div className="flex flex-col gap-4 w-full">
-      <GetClientColumn columnLength={5} columnList={stationaryColumn} />
+      {hasMatchInList(stationaryList, searchWord) && (
+        <TableColumn columnData={stationaryTableColumn} columnDesign={5} />
+      )}
       {stationaryList.map(
         (stationary) =>
-          shouldRenderWeapon(stationary.info.gun_category) && (
+          filteringData(
+            searchWord,
+            stationary.name_en,
+            stationary.name_kr,
+            stationary.name_kr
+          ) && (
             <DefineGrid
               cols="5"
               id={stationary.id}
@@ -48,7 +54,7 @@ export default function StationaryRender({ stationaryList }: StationaryRender) {
                 />
               </CenterContents>
               <CenterContents>
-                <TextSpan>{stationary.name_kr}</TextSpan>
+                {highlightMatchedText(stationary.name_kr, searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{stationary.info.carliber}</TextSpan>
