@@ -1,8 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { containerTableColumn } from "@/lib/consts/columnConsts";
 import GetContainer from "./data/getContainer";
 import AdBanner from "../../custom/adsense/adBanner";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Container() {
   return (
@@ -15,7 +13,6 @@ export default function Container() {
           dataAdSlot="2690838054"
         />
       </div>
-      <TableColumn columnDesign={4} columnData={containerTableColumn} />
       <GetContainer />
     </ContentsWrapper>
   );

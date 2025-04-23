@@ -4,11 +4,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import RigClient from "./rigClient";
 
-interface GetRig {
-  isClass: boolean;
-}
-
-export default async function GetRig({ isClass = true }: GetRig) {
+export default async function GetRig() {
   const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/rig");
 
   if (!data || data.status !== 200) {
@@ -16,5 +12,5 @@ export default async function GetRig({ isClass = true }: GetRig) {
     return null;
   }
 
-  return <RigClient isClass={isClass} rig_data={data.data} />;
+  return <RigClient rig_data={data.data} />;
 }

@@ -1,8 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { armorVestTableColumn } from "@/lib/consts/columnConsts";
 import GetArmorVest from "./data/getArmorVest";
 import AdBanner from "../../custom/adsense/adBanner";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function ArmorVest() {
   return (
@@ -15,7 +13,6 @@ export default function ArmorVest() {
           dataAdSlot="2690838054"
         />
       </div>
-      <TableColumn columnDesign={6} columnData={armorVestTableColumn} />
       <GetArmorVest />
     </ContentsWrapper>
   );

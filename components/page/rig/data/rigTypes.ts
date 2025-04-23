@@ -1,6 +1,5 @@
 export interface RigClient {
   rig_data: RigData;
-  isClass: boolean;
 }
 
 interface RigData {

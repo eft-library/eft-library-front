@@ -4,11 +4,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import FaceCoverClient from "./faceCoverClient";
 
-interface GetFaceCover {
-  isClass: boolean;
-}
-
-export default async function GetFaceCover({ isClass }: GetFaceCover) {
+export default async function GetFaceCover() {
   const data = await requestData(API_ENDPOINTS.GET_ITEM_LIST + "/face-cover");
 
   if (!data || data.status !== 200) {
@@ -19,5 +15,5 @@ export default async function GetFaceCover({ isClass }: GetFaceCover) {
     return null;
   }
 
-  return <FaceCoverClient face_cover_data={data.data} isClass={isClass} />;
+  return <FaceCoverClient face_cover_data={data.data} />;
 }

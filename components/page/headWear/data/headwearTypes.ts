@@ -1,6 +1,5 @@
 export interface HeadWearClient {
   headWearData: HeadWearData;
-  isClass: boolean;
 }
 
 interface HeadWearData {

@@ -6,85 +6,133 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { HeadWearClient } from "./headwearTypes";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { useState } from "react";
+import {
+  filteringData,
+  hasMatchInList,
+  highlightMatchedText,
+} from "@/lib/func/jsxfunction";
+import { Input } from "@/components/ui/input";
+import {
+  headwearClassTableColumn,
+  faceCoverNoClassTableColumn,
+} from "@/lib/consts/columnConsts";
 
-export default function HeadWearClient({
-  headWearData,
-  isClass,
-}: HeadWearClient) {
+export default function HeadWearClient({ headWearData }: HeadWearClient) {
+  const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
   return (
-    <div className="w-full">
-      {isClass &&
-        headWearData.class_headwear.map((headWear) => (
-          <DefineGrid
-            id={headWear.id}
-            pageId={pageId}
-            cols="7"
-            key={headWear.id}
-            isDetail
-            detailLink={`/item/${headWear.url_mapping}`}
-          >
-            <CenterContents>
-              <ImageView
-                src={headWear.image}
-                alt={headWear.name_en}
-                popWidth={headWear.image_width * 128}
-                popHeight={headWear.image_height * 128}
-                size={(headWear.image_width * 64).toString()}
-                wrapWidth={headWear.image_width * 64}
-                wrapHeight={headWear.image_height * 64}
-              />
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.name_kr}</TextSpan>
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.info.class_value}</TextSpan>
-            </CenterContents>
-            <CenterContents isCol>
-              {headWear.info.areas_kr.map((area, index) => (
-                <TextSpan key={`${index}-area-${headWear.id}`}>{area}</TextSpan>
-              ))}
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.info.durability}</TextSpan>
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.info.ricochet_str_kr}</TextSpan>
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.info.weight} kg</TextSpan>
-            </CenterContents>
-          </DefineGrid>
-        ))}
-      {!isClass &&
-        headWearData.no_class_headwear.map((headWear) => (
-          <DefineGrid
-            id={headWear.id}
-            pageId={pageId}
-            cols="2"
-            key={headWear.id}
-            isDetail
-            detailLink={`/item/${headWear.url_mapping}`}
-          >
-            <CenterContents>
-              <ImageView
-                src={headWear.image}
-                alt={headWear.name_en}
-                popWidth={headWear.image_width * 128}
-                popHeight={headWear.image_height * 128}
-                size={(headWear.image_width * 64).toString()}
-                wrapWidth={headWear.image_width * 64}
-                wrapHeight={headWear.image_height * 64}
-              />
-            </CenterContents>
-            <CenterContents>
-              <TextSpan>{headWear.name_kr}</TextSpan>
-            </CenterContents>
-          </DefineGrid>
-        ))}
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder="이름을 최소 2글자 입력하세요"
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      {hasMatchInList(headWearData.class_headwear, word) && (
+        <TableColumn
+          columnDesign={10}
+          columnData={headwearClassTableColumn}
+          isFaceCover
+        />
+      )}
+      {headWearData.class_headwear.map(
+        (headWear) =>
+          filteringData(
+            word,
+            headWear.name_en,
+            headWear.name_kr,
+            headWear.name_kr
+          ) && (
+            <DefineGrid
+              id={headWear.id}
+              pageId={pageId}
+              cols="10"
+              key={headWear.id}
+              isDetail
+              detailLink={`/item/${headWear.url_mapping}`}
+            >
+              <CenterContents>
+                <ImageView
+                  src={headWear.image}
+                  alt={headWear.name_en}
+                  popWidth={headWear.image_width * 128}
+                  popHeight={headWear.image_height * 128}
+                  size={(headWear.image_width * 64).toString()}
+                  wrapWidth={headWear.image_width * 64}
+                  wrapHeight={headWear.image_height * 64}
+                />
+              </CenterContents>
+              <CenterContents colSpan="4">
+                {highlightMatchedText(headWear.name_kr, word)}
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{headWear.info.class_value}</TextSpan>
+              </CenterContents>
+              <CenterContents isCol>
+                {headWear.info.areas_kr.map((area, index) => (
+                  <TextSpan key={`${index}-area-${headWear.id}`}>
+                    {area}
+                  </TextSpan>
+                ))}
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{headWear.info.durability}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{headWear.info.ricochet_str_kr}</TextSpan>
+              </CenterContents>
+              <CenterContents>
+                <TextSpan>{headWear.info.weight} kg</TextSpan>
+              </CenterContents>
+            </DefineGrid>
+          )
+      )}
+
+      {hasMatchInList(headWearData.no_class_headwear, word) && (
+        <TableColumn
+          columnDesign={2}
+          columnData={faceCoverNoClassTableColumn}
+        />
+      )}
+      {headWearData.no_class_headwear.map(
+        (headWear) =>
+          filteringData(
+            word,
+            headWear.name_en,
+            headWear.name_kr,
+            headWear.name_kr
+          ) && (
+            <DefineGrid
+              id={headWear.id}
+              pageId={pageId}
+              cols="2"
+              key={headWear.id}
+              isDetail
+              detailLink={`/item/${headWear.url_mapping}`}
+            >
+              <CenterContents>
+                <ImageView
+                  src={headWear.image}
+                  alt={headWear.name_en}
+                  popWidth={headWear.image_width * 128}
+                  popHeight={headWear.image_height * 128}
+                  size={(headWear.image_width * 64).toString()}
+                  wrapWidth={headWear.image_width * 64}
+                  wrapHeight={headWear.image_height * 64}
+                />
+              </CenterContents>
+              <CenterContents>
+                {highlightMatchedText(headWear.name_kr, word)}
+              </CenterContents>
+            </DefineGrid>
+          )
+      )}
     </div>
   );
 }

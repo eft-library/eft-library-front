@@ -1,6 +1,5 @@
 export interface FaceCoverClient {
   face_cover_data: FaceCoverData;
-  isClass: boolean;
 }
 
 interface FaceCoverData {

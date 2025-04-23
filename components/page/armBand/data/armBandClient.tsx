@@ -4,40 +4,62 @@ import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import type { ArmBandList } from "./armBandType";
+import { useState } from "react";
+import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
+import { Input } from "@/components/ui/input";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { armBandTableColumn } from "@/lib/consts/columnConsts";
 
 export default function ArmBandClient({ armBandList }: ArmBandList) {
+  const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
   return (
-    <div className="w-full">
-      {armBandList.map((armBand) => (
-        <DefineGrid
-          id={armBand.id}
-          cols="2"
-          pageId={pageId}
-          key={armBand.id}
-          isDetail
-          detailLink={`/item/${armBand.url_mapping}`}
-        >
-          <CenterContents>
-            <ImageView
-              src={armBand.image}
-              alt={armBand.name_en}
-              popWidth={armBand.image_width * 128}
-              popHeight={armBand.image_height * 128}
-              wrapWidth={armBand.image_width * 64}
-              wrapHeight={armBand.image_height * 64}
-              size={(armBand.image_width * 64).toString()}
-            />
-          </CenterContents>
-          <CenterContents>
-            <TextSpan>{armBand.name_kr}</TextSpan>
-          </CenterContents>
-        </DefineGrid>
-      ))}
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder="이름을 최소 2글자 입력하세요"
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      <TableColumn columnData={armBandTableColumn} columnDesign={2} />
+      {armBandList.map(
+        (armBand) =>
+          filteringData(
+            word,
+            armBand.name_en,
+            armBand.name_kr,
+            armBand.name_kr
+          ) && (
+            <DefineGrid
+              id={armBand.id}
+              cols="2"
+              pageId={pageId}
+              key={armBand.id}
+              isDetail
+              detailLink={`/item/${armBand.url_mapping}`}
+            >
+              <CenterContents>
+                <ImageView
+                  src={armBand.image}
+                  alt={armBand.name_en}
+                  popWidth={armBand.image_width * 128}
+                  popHeight={armBand.image_height * 128}
+                  wrapWidth={armBand.image_width * 64}
+                  wrapHeight={armBand.image_height * 64}
+                  size={(armBand.image_width * 64).toString()}
+                />
+              </CenterContents>
+              <CenterContents>
+                {highlightMatchedText(armBand.name_kr, word)}
+              </CenterContents>
+            </DefineGrid>
+          )
+      )}
     </div>
   );
 }

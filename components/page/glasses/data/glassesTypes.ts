@@ -1,6 +1,5 @@
 export interface GlassesClient {
   glassesData: RigData;
-  isClass: boolean;
 }
 
 interface RigData {

@@ -14,6 +14,8 @@ interface TableColumnProps {
   isGun?: boolean;
   isExtraction?: boolean;
   isRelatedQuest?: boolean;
+  isFaceCover?: boolean;
+  isArmorVest?: boolean;
   columnData: TableColumn;
 }
 
@@ -26,7 +28,9 @@ export default function TableColumn({
   isKey = false,
   isExtraction = false,
   isGun = false,
+  isArmorVest = false,
   isRelatedQuest = false,
+  isFaceCover = false,
 }: TableColumnProps) {
   const colSpanMapping = {
     isAmmo: (index: number) => (index === 1 ? 3 : index === 9 ? 2 : 1),
@@ -36,6 +40,8 @@ export default function TableColumn({
     isGun: (index: number) => ([0].includes(index) ? 2 : 1),
     isRelatedQuest: (index: number) => ([0, 1, 4].includes(index) ? 2 : 1),
     isExtraction: (index: number) => ([0, 1, 5, 6].includes(index) ? 2 : 1),
+    isArmorVest: (index: number) => ([1].includes(index) ? 3 : 1),
+    isFaceCover: (index: number) => ([1].includes(index) ? 4 : 1),
     default: () => 1,
   };
 
@@ -47,6 +53,8 @@ export default function TableColumn({
     if (isGun) return colSpanMapping.isGun(index);
     if (isRelatedQuest) return colSpanMapping.isRelatedQuest(index);
     if (isExtraction) return colSpanMapping.isExtraction(index);
+    if (isArmorVest) return colSpanMapping.isArmorVest(index);
+    if (isFaceCover) return colSpanMapping.isFaceCover(index);
     return colSpanMapping.default();
   };
 

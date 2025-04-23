@@ -1,8 +1,6 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { headsetTableColumn } from "@/lib/consts/columnConsts";
 import GetHeadset from "./data/getHeadset";
 import AdBanner from "../../custom/adsense/adBanner";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
 
 export default function Headset() {
   return (
@@ -15,7 +13,6 @@ export default function Headset() {
           dataAdSlot="2690838054"
         />
       </div>
-      <TableColumn columnDesign={2} columnData={headsetTableColumn} />
       <GetHeadset />
     </ContentsWrapper>
   );
