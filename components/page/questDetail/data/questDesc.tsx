@@ -12,6 +12,7 @@ import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { useLocale } from "next-intl";
+import Link from "next/link";
 import {
   getDescriptionLocaleKey,
   getLocaleKey,
@@ -69,7 +70,11 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
       <div className="w-full flex flex-col gap-2">
         {questInfo.objectives.some(
           (item) =>
-            (item.type === "giveItem" || item.type === "findItem") && item.items
+            (item.type === "giveItem" ||
+              item.type === "findItem" ||
+              item.type === "findQuestItem" ||
+              item.type === "giveQuestItem") &&
+            item.items
         ) && (
           <>
             <TableColumn
@@ -98,9 +103,14 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                       />
                     </div>
                     <div className="flex justify-center items-center col-span-2">
-                      <TextSpan>
-                        {subItem[getOtherLocalizedKey(locale)]}
-                      </TextSpan>
+                      <Link
+                        href={`/item/${subItem.normalizedName}`}
+                        target="_blank"
+                      >
+                        <TextSpan hoverColor="GoldenYellow">
+                          {subItem[getOtherLocalizedKey(locale)]}
+                        </TextSpan>
+                      </Link>
                     </div>
                     <div className="flex justify-center items-center">
                       <TextSpan>{item.count}</TextSpan>
@@ -133,6 +143,68 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                     </div>
                   </div>
                 ))
+            )}
+            {questInfo.objectives.map(
+              (item) =>
+                (item.type === "findQuestItem" ||
+                  item.type === "giveQuestItem") &&
+                item.questItem && (
+                  <div
+                    key={`quest-item-${item.id}`}
+                    className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
+                  >
+                    <div className="flex justify-center items-center col-span-2">
+                      <ImageView
+                        src={item.questItem.gridImageLink}
+                        alt={item.questItem.name_en}
+                        popWidth={200}
+                        popHeight={180}
+                        size="170px"
+                        wrapWidth={170}
+                        wrapHeight={100}
+                      />
+                    </div>
+                    <div className="flex justify-center items-center col-span-2">
+                      <Link
+                        href={`/item/${item.questItem.normalizedName}`}
+                        target="_blank"
+                      >
+                        <TextSpan hoverColor="GoldenYellow">
+                          {item.questItem[getOtherLocalizedKey(locale)]}
+                        </TextSpan>
+                      </Link>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <TextSpan>{item.count}</TextSpan>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <span className="text-base flex justify-center items-center">
+                        {item.foundInRaid ? (
+                          <SquareCheckBig
+                            color={ALL_COLOR.ScreaminGreen}
+                            strokeWidth={3}
+                            size={23}
+                          />
+                        ) : (
+                          <SquareX
+                            color={ALL_COLOR.Red}
+                            strokeWidth={3}
+                            size={25}
+                          />
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-center items-center col-span-2">
+                      {item[getDescriptionLocaleKey(locale)] && (
+                        <div className="flex justify-center items-center">
+                          <TextSpan>
+                            {item[getDescriptionLocaleKey(locale)]}
+                          </TextSpan>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
             )}
           </>
         )}

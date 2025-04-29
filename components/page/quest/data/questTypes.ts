@@ -52,6 +52,7 @@ interface Objective {
   description_ko: string;
   count?: number;
   items?: RewardItemDetails[];
+  questItem?: RewardItemDetails;
   foundInRaid?: boolean;
 }
 
