@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ExitDialog from "./exitDialog";
 import type { MenuButton } from "./headerTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function UserMenu({
   menuData,
@@ -12,6 +14,8 @@ export default function UserMenu({
   setSelectedMenu,
 }: MenuButton) {
   const { data: session } = useSession();
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   return (
     <div
@@ -39,7 +43,7 @@ export default function UserMenu({
             ) : (
               <Link key={sub.value} href={sub.link}>
                 <Button className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60">
-                  {sub.kr_name}
+                  {sub.name[localeKey]}
                 </Button>
               </Link>
             )

@@ -13,11 +13,15 @@ import {
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { stationaryTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getModesLocaleKey } from "@/lib/func/localeFunction";
 
 export default function StationaryRender({
   stationaryList,
   searchWord,
 }: StationaryRender) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
@@ -30,9 +34,9 @@ export default function StationaryRender({
         (stationary) =>
           filteringData(
             searchWord,
-            stationary.name_en,
-            stationary.name_kr,
-            stationary.name_kr
+            stationary.name.en,
+            stationary.name.ko,
+            stationary.name.ja
           ) && (
             <DefineGrid
               cols="5"
@@ -45,7 +49,7 @@ export default function StationaryRender({
               <CenterContents>
                 <ImageView
                   src={stationary.image}
-                  alt={stationary.name_en}
+                  alt={stationary.name.en}
                   popWidth={1200}
                   popHeight={800}
                   size="240px"
@@ -54,17 +58,20 @@ export default function StationaryRender({
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(stationary.name_kr, searchWord)}
+                {highlightMatchedText(stationary.name[localeKey], searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{stationary.info.carliber}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {stationary.info.modes_kr.map((mode, index) => (
-                  <TextSpan key={`mode-${mode}-${index}`} isCenter={false}>
-                    {mode}
-                  </TextSpan>
-                ))}
+                {stationary.info.modes &&
+                  stationary.info.modes[getModesLocaleKey(locale)].map(
+                    (area, index) => (
+                      <TextSpan key={`${index}-area-${stationary.id}`}>
+                        {area}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{stationary.info.fire_rate}</TextSpan>

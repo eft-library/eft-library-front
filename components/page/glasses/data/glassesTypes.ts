@@ -15,8 +15,7 @@ interface GlassesInfo {
 
 interface GlassesDetail {
   id: string;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   category: string;
   image: string;
   image_width: number;
@@ -24,4 +23,10 @@ interface GlassesDetail {
   info: GlassesInfo;
   update_time: string;
   url_mapping: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

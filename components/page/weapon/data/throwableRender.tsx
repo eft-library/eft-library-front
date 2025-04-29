@@ -16,11 +16,15 @@ import {
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ThrowableRender({
   throwableList,
   searchWord,
 }: ThrowableRender) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
@@ -33,9 +37,9 @@ export default function ThrowableRender({
         (throwable) =>
           filteringData(
             searchWord,
-            throwable.name_en,
-            throwable.name_kr,
-            throwable.name_kr
+            throwable.name.en,
+            throwable.name.ko,
+            throwable.name.ja
           ) && (
             <DefineGrid
               cols="5"
@@ -48,7 +52,7 @@ export default function ThrowableRender({
               <CenterContents>
                 <ImageView
                   src={throwable.image}
-                  alt={throwable.name_en}
+                  alt={throwable.name.en}
                   popWidth={throwable.image_width * 128}
                   popHeight={throwable.image_height * 128}
                   size={(throwable.image_width * 64).toString()}
@@ -57,15 +61,15 @@ export default function ThrowableRender({
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(throwable.name_kr, searchWord)}
+                {highlightMatchedText(throwable.name[localeKey], searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>
-                  {detailThrowable.includes(throwable.name_kr) ? (
+                  {detailThrowable.includes(throwable.name.ko) ? (
                     <div className="flex flex-col">
                       <TextSpan>충격시 {throwable.info.min_fuse} 초</TextSpan>
                       <TextSpan size="sm">
-                        (충격 신관이 발동되지 않은 경우 {throwable.info.fuse}{" "}
+                        (충격 신관이 발동되지 않은 경우 {throwable.info.fuse}
                         초)
                       </TextSpan>
                     </div>

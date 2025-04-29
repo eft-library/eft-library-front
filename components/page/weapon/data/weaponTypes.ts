@@ -29,8 +29,7 @@ export interface GunRender {
 
 interface GunInfo {
   carliber: string;
-  modes_en: string[];
-  modes_kr: string[];
+  modes: ModesLocaleName;
   fire_rate: number;
   ergonomics: number;
   default_ammo: string;
@@ -44,9 +43,8 @@ interface GunDetail {
   id: string;
   info: GunInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
   update_time: string;
   url_mapping: string;
@@ -64,9 +62,8 @@ interface KnifeDetail {
   id: string;
   info: KnifeInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
   update_time: string;
   url_mapping: string;
@@ -86,10 +83,21 @@ interface ThrowableDetail {
   id: string;
   info: ThrowableInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
   update_time: string;
   url_mapping: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
+}
+
+interface ModesLocaleName {
+  modes_en: string[];
+  modes_ja: string[];
+  modes_ko: string[];
 }

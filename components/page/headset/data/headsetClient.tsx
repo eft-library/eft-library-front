@@ -10,8 +10,12 @@ import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { headsetTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function HeadsetClient({ headsetList }: HeadsetList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -31,9 +35,9 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
         (headset) =>
           filteringData(
             word,
-            headset.name_en,
-            headset.name_kr,
-            headset.name_kr
+            headset.name.en,
+            headset.name.ko,
+            headset.name.ja
           ) && (
             <DefineGrid
               cols="2"
@@ -46,7 +50,7 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
               <CenterContents>
                 <ImageView
                   src={headset.image}
-                  alt={headset.name_en}
+                  alt={headset.name.en}
                   popWidth={headset.image_width * 128}
                   popHeight={headset.image_height * 128}
                   size={(headset.image_width * 64).toString()}
@@ -55,7 +59,7 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(headset.name_kr, word)}
+                {highlightMatchedText(headset.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

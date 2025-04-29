@@ -11,12 +11,15 @@ import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { armorVestTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getZonesLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex gap-2 mb-2 justify-end">
@@ -36,9 +39,9 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
         (armorVest) =>
           filteringData(
             word,
-            armorVest.name_en,
-            armorVest.name_kr,
-            armorVest.name_kr
+            armorVest.name.en,
+            armorVest.name.ko,
+            armorVest.name.ja
           ) && (
             <DefineGrid
               cols="8"
@@ -51,7 +54,7 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
               <CenterContents>
                 <ImageView
                   src={armorVest.image}
-                  alt={armorVest.name_en}
+                  alt={armorVest.name.en}
                   popWidth={armorVest.image_width * 96}
                   popHeight={armorVest.image_height * 96}
                   wrapWidth={armorVest.image_width * 48}
@@ -60,7 +63,7 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
                 />
               </CenterContents>
               <CenterContents colSpan="3">
-                {highlightMatchedText(armorVest.name_kr, word)}
+                {highlightMatchedText(armorVest.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{armorVest.info.durability}</TextSpan>
@@ -69,11 +72,14 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
                 <TextSpan>{armorVest.info.class_value}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {armorVest.info.areas_kr.map((area, index) => (
-                  <TextSpan key={`${index}-area-${armorVest.id}`}>
-                    {area}
-                  </TextSpan>
-                ))}
+                {armorVest.info.zones &&
+                  armorVest.info.zones[getZonesLocaleKey(locale)].map(
+                    (zone, index) => (
+                      <TextSpan key={`${index}-zone-${armorVest.id}`}>
+                        {zone}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{armorVest.info.weight} kg</TextSpan>

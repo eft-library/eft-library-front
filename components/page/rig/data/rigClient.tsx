@@ -18,8 +18,12 @@ import {
   rigClassTableColumn,
   rigNoClassTableColumn,
 } from "@/lib/consts/columnConsts";
+import { getLocaleKey, getZonesLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 
 export default function RigClient({ rig_data }: RigClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -43,7 +47,7 @@ export default function RigClient({ rig_data }: RigClient) {
       )}
       {rig_data.class_rig.map(
         (rig) =>
-          filteringData(word, rig.name_en, rig.name_kr, rig.name_kr) && (
+          filteringData(word, rig.name.en, rig.name.ko, rig.name.ja) && (
             <DefineGrid
               id={rig.id}
               gap="8px"
@@ -56,7 +60,7 @@ export default function RigClient({ rig_data }: RigClient) {
               <CenterContents>
                 <ImageView
                   src={rig.image}
-                  alt={rig.name_en}
+                  alt={rig.name.en}
                   popWidth={rig.image_width * 96}
                   popHeight={rig.image_height * 96}
                   size={(rig.image_width * 48).toString()}
@@ -65,7 +69,7 @@ export default function RigClient({ rig_data }: RigClient) {
                 />
               </CenterContents>
               <CenterContents colSpan="4">
-                {highlightMatchedText(rig.name_kr, word)}
+                {highlightMatchedText(rig.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{rig.info.durability}</TextSpan>
@@ -77,11 +81,14 @@ export default function RigClient({ rig_data }: RigClient) {
                 <TextSpan>{rig.info.class_value}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {rig.info.areas_kr.map((area, index) => (
-                  <TextSpan isCenter={false} key={`${index}-area-${rig.id}`}>
-                    {area}
-                  </TextSpan>
-                ))}
+                {rig.info.zones &&
+                  rig.info.zones[getZonesLocaleKey(locale)].map(
+                    (area, index) => (
+                      <TextSpan key={`${index}-area-${rig.id}`}>
+                        {area}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{rig.info.weight} kg</TextSpan>
@@ -99,7 +106,7 @@ export default function RigClient({ rig_data }: RigClient) {
       )}
       {rig_data.no_class_rig.map(
         (rig) =>
-          filteringData(word, rig.name_en, rig.name_kr, rig.name_kr) && (
+          filteringData(word, rig.name.en, rig.name.ko, rig.name.ja) && (
             <DefineGrid
               id={rig.id}
               gap="8px"
@@ -112,7 +119,7 @@ export default function RigClient({ rig_data }: RigClient) {
               <CenterContents>
                 <ImageView
                   src={rig.image}
-                  alt={rig.name_en}
+                  alt={rig.name.en}
                   popWidth={rig.image_width * 96}
                   popHeight={rig.image_height * 96}
                   size={(rig.image_width * 48).toString()}
@@ -121,7 +128,7 @@ export default function RigClient({ rig_data }: RigClient) {
                 />
               </CenterContents>
               <CenterContents colSpan="2">
-                {highlightMatchedText(rig.name_kr, word)}
+                {highlightMatchedText(rig.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{rig.info.weight} kg</TextSpan>

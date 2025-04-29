@@ -19,8 +19,12 @@ import {
   glassesClassColumn,
   glassesNoClassColumn,
 } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function GlassesClient({ glassesData }: GlassesClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -43,9 +47,9 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
         (glasses) =>
           filteringData(
             word,
-            glasses.name_en,
-            glasses.name_kr,
-            glasses.name_kr
+            glasses.name.en,
+            glasses.name.ko,
+            glasses.name.ja
           ) && (
             <DefineGrid
               id={glasses.id}
@@ -58,7 +62,7 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
               <CenterContents>
                 <ImageView
                   src={glasses.image}
-                  alt={glasses.name_en}
+                  alt={glasses.name.en}
                   popWidth={glasses.image_width * 128}
                   popHeight={glasses.image_height * 128}
                   wrapWidth={glasses.image_width * 64}
@@ -67,7 +71,7 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(glasses.name_kr, word)}
+                {highlightMatchedText(glasses.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{glasses.info.class_value}</TextSpan>
@@ -91,9 +95,9 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
         (glasses) =>
           filteringData(
             word,
-            glasses.name_en,
-            glasses.name_kr,
-            glasses.name_kr
+            glasses.name.en,
+            glasses.name.ko,
+            glasses.name.ja
           ) && (
             <DefineGrid
               id={glasses.id}
@@ -106,7 +110,7 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
               <CenterContents>
                 <ImageView
                   src={glasses.image}
-                  alt={glasses.name_en}
+                  alt={glasses.name.en}
                   popWidth={glasses.image_width * 128}
                   popHeight={glasses.image_height * 128}
                   wrapWidth={glasses.image_width * 64}
@@ -115,7 +119,7 @@ export default function GlassesClient({ glassesData }: GlassesClient) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(glasses.name_kr, word)}
+                {highlightMatchedText(glasses.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>

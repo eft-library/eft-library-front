@@ -10,8 +10,12 @@ import type { LootClient } from "./lootTypes";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function LootClient({ lootList }: LootClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -29,7 +33,7 @@ export default function LootClient({ lootList }: LootClient) {
       <TableColumn columnDesign={2} columnData={lootTableColumn} />
       {lootList.map(
         (loot) =>
-          filteringData(word, loot.name_en, loot.name_kr, loot.name_kr) && (
+          filteringData(word, loot.name.en, loot.name.ko, loot.name.ja) && (
             <DefineGrid
               id={loot.id}
               pageId={pageId}
@@ -41,7 +45,7 @@ export default function LootClient({ lootList }: LootClient) {
               <CenterContents>
                 <ImageView
                   src={loot.image}
-                  alt={loot.name_en}
+                  alt={loot.name.en}
                   popWidth={loot.image_width * 128}
                   popHeight={loot.image_height * 128}
                   size={(loot.image_width * 64).toString()}
@@ -50,7 +54,7 @@ export default function LootClient({ lootList }: LootClient) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(loot.name_kr, word)}
+                {highlightMatchedText(loot.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

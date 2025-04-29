@@ -10,12 +10,15 @@ import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { armBandTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ArmBandClient({ armBandList }: ArmBandList) {
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
-
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex gap-2 mb-2 justify-end">
@@ -31,9 +34,9 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
         (armBand) =>
           filteringData(
             word,
-            armBand.name_en,
-            armBand.name_kr,
-            armBand.name_kr
+            armBand.name.en,
+            armBand.name.ko,
+            armBand.name.ja
           ) && (
             <DefineGrid
               id={armBand.id}
@@ -46,7 +49,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
               <CenterContents>
                 <ImageView
                   src={armBand.image}
-                  alt={armBand.name_en}
+                  alt={armBand.name.en}
                   popWidth={armBand.image_width * 128}
                   popHeight={armBand.image_height * 128}
                   wrapWidth={armBand.image_width * 64}
@@ -55,7 +58,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(armBand.name_kr, word)}
+                {highlightMatchedText(armBand.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

@@ -11,11 +11,15 @@ import { backpackTableColumn } from "@/lib/consts/columnConsts";
 import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function BackpackClient({ backpackList }: BackpackList) {
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   return (
     <div className="w-full flex flex-col">
@@ -36,9 +40,9 @@ export default function BackpackClient({ backpackList }: BackpackList) {
         (backpack) =>
           filteringData(
             word,
-            backpack.name_en,
-            backpack.name_kr,
-            backpack.name_kr
+            backpack.name.en,
+            backpack.name.ko,
+            backpack.name.ja
           ) && (
             <DefineGrid
               cols="7"
@@ -51,7 +55,7 @@ export default function BackpackClient({ backpackList }: BackpackList) {
               <CenterContents>
                 <ImageView
                   src={backpack.image}
-                  alt={backpack.name_en}
+                  alt={backpack.name.en}
                   popWidth={backpack.image_width * 72}
                   popHeight={backpack.image_height * 72}
                   wrapWidth={backpack.image_width * 36}
@@ -60,14 +64,14 @@ export default function BackpackClient({ backpackList }: BackpackList) {
                 />
               </CenterContents>
               <CenterContents colSpan="3">
-                {highlightMatchedText(backpack.name_kr, word)}
+                {highlightMatchedText(backpack.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{backpack.info.capacity}</TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>
-                  {backpack.info.grids[0].width} X{" "}
+                  {backpack.info.grids[0].width} X
                   {backpack.info.grids[0].height}
                 </TextSpan>
               </CenterContents>

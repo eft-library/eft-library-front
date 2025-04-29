@@ -11,8 +11,12 @@ import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { containerTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ContainerClient({ containerList }: ContainerList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -32,9 +36,9 @@ export default function ContainerClient({ containerList }: ContainerList) {
         (container) =>
           filteringData(
             word,
-            container.name_en,
-            container.name_kr,
-            container.name_kr
+            container.name.en,
+            container.name.ko,
+            container.name.ja
           ) && (
             <DefineGrid
               id={container.id}
@@ -47,7 +51,7 @@ export default function ContainerClient({ containerList }: ContainerList) {
               <CenterContents>
                 <ImageView
                   src={container.image}
-                  alt={container.name_en}
+                  alt={container.name.en}
                   popWidth={container.image_width * 128}
                   popHeight={container.image_height * 128}
                   wrapWidth={container.image_width * 64}
@@ -56,14 +60,14 @@ export default function ContainerClient({ containerList }: ContainerList) {
                 />
               </CenterContents>
               <CenterContents colSpan="2">
-                {highlightMatchedText(container.name_kr, word)}
+                {highlightMatchedText(container.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{container.info.capacity}</TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>
-                  {container.info.grids[0].width} X{" "}
+                  {container.info.grids[0].width} X
                   {container.info.grids[0].height}
                 </TextSpan>
               </CenterContents>

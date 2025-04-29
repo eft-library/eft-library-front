@@ -4,8 +4,7 @@ export interface ArmorVestList {
 
 interface ArmorVestInfo {
   weight: number;
-  areas_en: string[];
-  areas_kr: string[];
+  zones: ZonesLocaleName;
   durability: number;
   class_value: number;
 }
@@ -15,10 +14,20 @@ interface ArmorVestDetail {
   id: string;
   info: ArmorVestInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
   update_time: string;
   url_mapping: string;
+}
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
+}
+
+interface ZonesLocaleName {
+  zones_en: string[];
+  zones_ja: string[];
+  zones_ko: string[];
 }

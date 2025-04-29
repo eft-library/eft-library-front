@@ -19,10 +19,14 @@ interface ContainerDetail {
   id: string;
   info: ContainerInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
   update_time: string;
   url_mapping: string;
+}
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

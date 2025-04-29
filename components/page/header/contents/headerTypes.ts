@@ -1,9 +1,8 @@
 interface MenuData {
-  en_name: string;
+  name: LocaleName;
   link: string;
   order: number;
   value: string;
-  kr_name: string;
   image: string | null;
 }
 
@@ -26,4 +25,10 @@ export interface DefaultMenuButton {
   selectedMenu: string | null;
   setSelectedMenu: (menu: string | null) => void;
   setQuest: (parent: string, value: string) => void;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

@@ -12,8 +12,12 @@ import { ammoTableColumn } from "@/lib/consts/columnConsts";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function AmmoClient({ ammoList }: AmmoClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -50,7 +54,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
       <TableColumn columnDesign={13} columnData={ammoTableColumn} isAmmo />
       {ammoList.map(
         (item) =>
-          filteringData(word, item.name_en, item.name_kr, item.name_kr) && (
+          filteringData(word, item.name.en, item.name.ko, item.name.ja) && (
             <DefineGrid
               cols="13"
               pageId={pageId}
@@ -62,7 +66,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
               <CenterContents>
                 <ImageView
                   src={item.image}
-                  alt={item.name_en}
+                  alt={item.name.en}
                   popWidth={140}
                   popHeight={140}
                   wrapHeight={item.image_height * 64}
@@ -71,7 +75,7 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                 />
               </CenterContents>
               <div className="flex col-span-3 justify-center">
-                {highlightMatchedText(item.name_kr, word)}
+                {highlightMatchedText(item.name[localeKey], word)}
               </div>
 
               <CenterContents>

@@ -9,19 +9,15 @@ interface FaceCoverData {
 
 interface FaceCoverInfo {
   weight: number;
-  areas_en: string[];
-  areas_kr: string[];
+  zones: ZonesLocaleName;
   class_value: number;
-  ricochet_chance: number;
-  ricochet_str_en: string;
-  ricochet_str_kr: string;
+  ricochet_chance: RicochetChanceLocaleName;
   durability: number;
 }
 
 interface FaceCoverDetail {
   id: string;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   category: string;
   image: string;
   image_width: number;
@@ -29,4 +25,22 @@ interface FaceCoverDetail {
   info: FaceCoverInfo;
   update_time: string;
   url_mapping: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
+}
+
+interface ZonesLocaleName {
+  zones_en: string[];
+  zones_ja: string[];
+  zones_ko: string[];
+}
+
+interface RicochetChanceLocaleName {
+  ricochet_chance_en: string;
+  ricochet_chance_ja: string;
+  ricochet_chance_ko: string;
 }

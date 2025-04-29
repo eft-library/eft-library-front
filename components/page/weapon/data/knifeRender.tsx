@@ -13,8 +13,12 @@ import {
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { knifeTableColumn } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function KnifeRender({ knifeList, searchWord }: KnifeRender) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
@@ -28,9 +32,9 @@ export default function KnifeRender({ knifeList, searchWord }: KnifeRender) {
         (knife) =>
           filteringData(
             searchWord,
-            knife.name_en,
-            knife.name_kr,
-            knife.name_kr
+            knife.name.en,
+            knife.name.ko,
+            knife.name.ja
           ) && (
             <DefineGrid
               cols="5"
@@ -43,7 +47,7 @@ export default function KnifeRender({ knifeList, searchWord }: KnifeRender) {
               <CenterContents>
                 <ImageView
                   src={knife.image}
-                  alt={knife.name_en}
+                  alt={knife.name.en}
                   popWidth={knife.image_width * 128}
                   popHeight={knife.image_height * 128}
                   size={(knife.image_width * 64).toString()}
@@ -52,7 +56,7 @@ export default function KnifeRender({ knifeList, searchWord }: KnifeRender) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(knife.name_kr, searchWord)}
+                {highlightMatchedText(knife.name[localeKey], searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{knife.info.slash_damage}</TextSpan>

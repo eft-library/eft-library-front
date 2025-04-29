@@ -18,8 +18,16 @@ import {
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "next-intl";
+import {
+  getLocaleKey,
+  getZonesLocaleKey,
+  getRicochetChanceLocaleKey,
+} from "@/lib/func/localeFunction";
 
 export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -46,9 +54,9 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
         (faceCover) =>
           filteringData(
             word,
-            faceCover.name_en,
-            faceCover.name_kr,
-            faceCover.name_kr
+            faceCover.name.en,
+            faceCover.name.ko,
+            faceCover.name.ja
           ) && (
             <DefineGrid
               id={faceCover.id}
@@ -61,7 +69,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
               <CenterContents>
                 <ImageView
                   src={faceCover.image}
-                  alt={faceCover.name_en}
+                  alt={faceCover.name.en}
                   popWidth={faceCover.image_width * 128}
                   popHeight={faceCover.image_height * 128}
                   size={(faceCover.image_width * 64).toString()}
@@ -70,23 +78,32 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
                 />
               </CenterContents>
               <CenterContents colSpan="4">
-                {highlightMatchedText(faceCover.name_kr, word)}
+                {highlightMatchedText(faceCover.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{faceCover.info.class_value}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {faceCover.info.areas_kr.map((area, index) => (
-                  <TextSpan key={`${index}-area-${faceCover.id}`}>
-                    {area}
-                  </TextSpan>
-                ))}
+                {faceCover.info.zones &&
+                  faceCover.info.zones[getZonesLocaleKey(locale)].map(
+                    (area, index) => (
+                      <TextSpan key={`${index}-area-${faceCover.id}`}>
+                        {area}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{faceCover.info.durability}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{faceCover.info.ricochet_str_kr}</TextSpan>
+                <TextSpan>
+                  {
+                    faceCover.info.ricochet_chance[
+                      getRicochetChanceLocaleKey(locale)
+                    ]
+                  }
+                </TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>{faceCover.info.weight} kg</TextSpan>
@@ -105,9 +122,9 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
         (faceCover) =>
           filteringData(
             word,
-            faceCover.name_en,
-            faceCover.name_kr,
-            faceCover.name_kr
+            faceCover.name.en,
+            faceCover.name.ko,
+            faceCover.name.ja
           ) && (
             <DefineGrid
               id={faceCover.id}
@@ -120,7 +137,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
               <CenterContents>
                 <ImageView
                   src={faceCover.image}
-                  alt={faceCover.name_en}
+                  alt={faceCover.name.en}
                   popWidth={faceCover.image_width * 128}
                   popHeight={faceCover.image_height * 128}
                   size={(faceCover.image_width * 64).toString()}
@@ -129,7 +146,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(faceCover.name_kr, word)}
+                {highlightMatchedText(faceCover.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

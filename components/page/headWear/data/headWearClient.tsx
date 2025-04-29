@@ -18,8 +18,16 @@ import {
   headwearClassTableColumn,
   faceCoverNoClassTableColumn,
 } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import {
+  getLocaleKey,
+  getZonesLocaleKey,
+  getRicochetChanceLocaleKey,
+} from "@/lib/func/localeFunction";
 
 export default function HeadWearClient({ headWearData }: HeadWearClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   const param = useSearchParams();
   const pageId = param.get("id") || "";
@@ -45,9 +53,9 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
         (headWear) =>
           filteringData(
             word,
-            headWear.name_en,
-            headWear.name_kr,
-            headWear.name_kr
+            headWear.name.en,
+            headWear.name.ko,
+            headWear.name.ja
           ) && (
             <DefineGrid
               id={headWear.id}
@@ -60,7 +68,7 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
               <CenterContents>
                 <ImageView
                   src={headWear.image}
-                  alt={headWear.name_en}
+                  alt={headWear.name.en}
                   popWidth={headWear.image_width * 128}
                   popHeight={headWear.image_height * 128}
                   size={(headWear.image_width * 64).toString()}
@@ -69,23 +77,32 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
                 />
               </CenterContents>
               <CenterContents colSpan="4">
-                {highlightMatchedText(headWear.name_kr, word)}
+                {highlightMatchedText(headWear.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{headWear.info.class_value}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {headWear.info.areas_kr.map((area, index) => (
-                  <TextSpan key={`${index}-area-${headWear.id}`}>
-                    {area}
-                  </TextSpan>
-                ))}
+                {headWear.info.zones &&
+                  headWear.info.zones[getZonesLocaleKey(locale)].map(
+                    (area, index) => (
+                      <TextSpan key={`${index}-area-${headWear.id}`}>
+                        {area}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{headWear.info.durability}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{headWear.info.ricochet_str_kr}</TextSpan>
+                <TextSpan>
+                  {
+                    headWear.info.ricochet_chance[
+                      getRicochetChanceLocaleKey(locale)
+                    ]
+                  }
+                </TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>{headWear.info.weight} kg</TextSpan>
@@ -104,9 +121,9 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
         (headWear) =>
           filteringData(
             word,
-            headWear.name_en,
-            headWear.name_kr,
-            headWear.name_kr
+            headWear.name.en,
+            headWear.name.ko,
+            headWear.name.ja
           ) && (
             <DefineGrid
               id={headWear.id}
@@ -119,7 +136,7 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
               <CenterContents>
                 <ImageView
                   src={headWear.image}
-                  alt={headWear.name_en}
+                  alt={headWear.name.en}
                   popWidth={headWear.image_width * 128}
                   popHeight={headWear.image_height * 128}
                   size={(headWear.image_width * 64).toString()}
@@ -128,7 +145,7 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(headWear.name_kr, word)}
+                {highlightMatchedText(headWear.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

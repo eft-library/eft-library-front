@@ -13,8 +13,12 @@ import {
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { gunTableColumn } from "@/lib/consts/columnConsts";
+import { getLocaleKey, getModesLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 
 export default function GunRender({ gunList, searchWord }: GunRender) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useSearchParams();
   const pageId = param.get("id") || "";
 
@@ -43,7 +47,7 @@ export default function GunRender({ gunList, searchWord }: GunRender) {
       )}
       {gunList.map(
         (gun) =>
-          filteringData(searchWord, gun.name_en, gun.name_kr, gun.name_kr) && (
+          filteringData(searchWord, gun.name.en, gun.name.ko, gun.name.ja) && (
             <DefineGrid
               cols="9"
               id={gun.id}
@@ -55,7 +59,7 @@ export default function GunRender({ gunList, searchWord }: GunRender) {
               <CenterContents colSpan="2">
                 <ImageView
                   src={gun.image}
-                  alt={gun.name_en}
+                  alt={gun.name.en}
                   popWidth={gun.image_width * 128}
                   popHeight={gun.image_height * 128}
                   size={(gun.image_width * 64).toString()}
@@ -64,15 +68,20 @@ export default function GunRender({ gunList, searchWord }: GunRender) {
                 />
               </CenterContents>
               <CenterContents>
-                {highlightMatchedText(gun.name_kr, searchWord)}
+                {highlightMatchedText(gun.name[localeKey], searchWord)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{sliceDefaultAmmo(gun.info.default_ammo)}</TextSpan>
               </CenterContents>
               <CenterContents isCol>
-                {gun.info.modes_kr.map((mode, index) => (
-                  <TextSpan key={`mode-${mode}-${index}`}>{mode}</TextSpan>
-                ))}
+                {gun.info.modes &&
+                  gun.info.modes[getModesLocaleKey(locale)].map(
+                    (area, index) => (
+                      <TextSpan key={`${index}-area-${gun.id}`}>
+                        {area}
+                      </TextSpan>
+                    )
+                  )}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{gun.info.fire_rate}</TextSpan>
