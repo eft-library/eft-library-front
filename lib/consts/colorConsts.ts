@@ -51,6 +51,7 @@ export const ALL_COLOR = {
   CrystalBlue: "#07bdff",
   EmeraldGreen: "#009b00",
   NeonGreen: "#00ff6d",
+  ScreaminGreen: "#5EFF5E",
   LightSilver: "#eaeaea",
   EbonyShade: "#221f20",
   ShadowGray: "#3d3b3a",

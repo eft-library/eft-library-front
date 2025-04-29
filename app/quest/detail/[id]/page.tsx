@@ -22,18 +22,18 @@ export async function generateMetadata({
   const res = product.data;
 
   return {
-    title: `${res.title_kr} - EFT Library`,
-    description: `Escape from Tarkov (타르코프) ${res.title_kr} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
+    title: `${res.name.ko} - EFT Library`,
+    description: `Escape from Tarkov (타르코프) ${res.name.ko} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
     openGraph: {
-      title: `타르코프 ${res.title_kr} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) ${res.title_kr} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
+      title: `타르코프 ${res.name.ko} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) ${res.name.ko} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
       images: [res.image],
       url: `https://eftlibrary.com/quest/detail/${id}`,
       siteName: "EFT Library",
     },
     twitter: {
-      title: `타르코프 ${res.title_kr} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) ${res.title_kr} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
+      title: `타르코프 ${res.name.ko} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) ${res.name.ko} 퀘스트 목표, 보상, 카파, 이전 & 다음, 가이드에 대한 정보를 자세히 제공합니다.`,
       images: [res.image],
     },
   };

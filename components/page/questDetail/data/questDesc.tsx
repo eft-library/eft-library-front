@@ -1,72 +1,63 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-// import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
+import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
-// import ImageView from "../../../custom/imageView/imageView";
+import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { QuestDesc } from "../../quest/data/questTypes";
-// import { SquareCheckBig, SquareX } from "lucide-react";
-// import TableColumn from "@/components/custom/tableColumn/tableColumn";
-// import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
+import { SquareCheckBig, SquareX } from "lucide-react";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { useLocale } from "next-intl";
+import {
+  getDescriptionLocaleKey,
+  getLocaleKey,
+  getOtherLocalizedKey,
+} from "@/lib/func/localeFunction";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full flex flex-col gap-10 items-center">
-      {questInfo.requirements_kr && (
-        <div className="w-full flex flex-col gap-2">
-          <TextSpan size="3xl" isCenter={false}>
-            요구사항
-          </TextSpan>
-          <Separator className="bg-white" />
-          {questInfo.requirements_kr.map((requirements, index) => (
-            <div
-              key={`${index}-requirements`}
-              className="font-bold text-base text-white"
-              dangerouslySetInnerHTML={{
-                __html: `*&nbsp;&nbsp;${requirements}`,
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      {questInfo.objectives_kr && (
+      {questInfo.objectives && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
             목표
           </TextSpan>
           <Separator className="bg-white" />
-          {questInfo.objectives_kr.map((objectives, index) => (
+          {questInfo.objectives.map((objective, index) => (
             <div
-              key={`${index}-objectives`}
+              key={`${index}-objective`}
               className="font-bold text-base text-white"
-              dangerouslySetInnerHTML={{
-                __html: `*&nbsp;&nbsp;${objectives}`,
-              }}
-            />
+            >
+              *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
+            </div>
           ))}
         </div>
       )}
 
-      {questInfo.rewards_kr && (
+      {questInfo.finish_rewards && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
             보상
           </TextSpan>
           <Separator className="bg-white" />
-          {questInfo.rewards_kr.map((rewards, index) => (
+          {questInfo.finish_rewards.items.map((rewards, index) => (
             <div
               key={`${index}-rewards`}
               className="font-bold text-base text-white"
-              dangerouslySetInnerHTML={{
-                __html: `*&nbsp;&nbsp;${rewards}`,
-              }}
-            />
+            >
+              *&nbsp;{rewards.item[getOtherLocalizedKey(locale)]} x&nbsp;
+              {rewards.quantity}
+            </div>
           ))}
         </div>
       )}
+
       <div className="w-[1200px]">
         <AdBanner
           dataAdFormat={"auto"}
@@ -75,32 +66,30 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         />
       </div>
 
-      {/* {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
-        <div className="w-full flex flex-col gap-2">
-          <TextSpan size="3xl" isCenter={false}>
-            가이드
-          </TextSpan>
-          <Separator className="bg-white" />
-          {questInfo.sub && questInfo.sub.length > 0 && (
-            <div className="w-full flex flex-col gap-4">
-              <TextSpan size="xl" isCenter={false}>
-                관련 퀘스트 아이템
-              </TextSpan>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <TableColumn
-                  columnDesign={8}
-                  columnData={relatedQuestTableColumn}
-                  isRelatedQuest
-                />
-                {questInfo.sub.map((item) => (
+      <div className="w-full flex flex-col gap-2">
+        {questInfo.objectives.some(
+          (item) =>
+            (item.type === "giveItem" || item.type === "findItem") && item.items
+        ) && (
+          <>
+            <TableColumn
+              columnDesign={8}
+              columnData={relatedQuestTableColumn}
+              isRelatedQuest
+            />
+            {questInfo.objectives.map(
+              (item) =>
+                (item.type === "giveItem" || item.type === "findItem") &&
+                item.items &&
+                item.items.map((subItem, idx) => (
                   <div
-                    key={item.item_id}
+                    key={`${item.id}-${idx}`}
                     className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
                   >
                     <div className="flex justify-center items-center col-span-2">
                       <ImageView
-                        src={item.item_image}
-                        alt={item.item_name_en}
+                        src={subItem.gridImageLink}
+                        alt={subItem.name_en}
                         popWidth={200}
                         popHeight={180}
                         size="170px"
@@ -109,45 +98,55 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
                       />
                     </div>
                     <div className="flex justify-center items-center col-span-2">
-                      <TextSpan>{item.item_name_kr}</TextSpan>
+                      <TextSpan>
+                        {subItem[getOtherLocalizedKey(locale)]}
+                      </TextSpan>
                     </div>
                     <div className="flex justify-center items-center">
                       <TextSpan>{item.count}</TextSpan>
                     </div>
                     <div className="flex justify-center items-center">
-                      <span
-                        className={`text-base flex justify-center items-center`}
-                      >
-                        {item.in_raid ? (
+                      <span className="text-base flex justify-center items-center">
+                        {item.foundInRaid ? (
                           <SquareCheckBig
-                            color="#5EFF5E"
+                            color={ALL_COLOR.ScreaminGreen}
                             strokeWidth={3}
                             size={23}
                           />
                         ) : (
-                          <SquareX color="#FF0000" strokeWidth={3} size={25} />
+                          <SquareX
+                            color={ALL_COLOR.Red}
+                            strokeWidth={3}
+                            size={25}
+                          />
                         )}
                       </span>
                     </div>
                     <div className="flex justify-center items-center col-span-2">
-                      {item.desc_text &&
-                        item.desc_text.map((desc, index) => (
-                          <div
-                            key={`${index}-desc`}
-                            className="flex justify-center items-center"
-                          >
-                            <TextSpan>{desc}</TextSpan>
-                          </div>
-                        ))}
+                      {item.description_en && (
+                        <div className="flex justify-center items-center">
+                          <TextSpan>
+                            {item[getDescriptionLocaleKey(locale)]}
+                          </TextSpan>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-          <HtmlWithImage contents={questInfo.guide} />
+                ))
+            )}
+          </>
+        )}
+      </div>
+
+      {questInfo.guide && (
+        <div className="w-full flex flex-col gap-2">
+          <TextSpan size="3xl" isCenter={false}>
+            가이드
+          </TextSpan>
+          <Separator className="bg-white" />
+          <HtmlWithImage contents={questInfo.guide[localeKey]} />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

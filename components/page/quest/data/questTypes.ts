@@ -12,30 +12,21 @@ interface QuestJson {
 
 export interface Quest {
   id: string;
+  wiki_url: string;
   name: LocaleName;
   image: string;
-  npc_value: string;
-  title_kr: string;
-  title_en: string;
-  required_kappa: boolean;
-  objectives_kr: string[];
-  objectives_en: string[];
-  requirements_en: string[];
-  requirements_kr: string[];
-  rewards_kr: string[];
-  guide: string;
-  requires: Require[] | null;
-  next: Require[] | null;
+  npc_id: string;
+  npc_image: string;
+  npc_name: string;
+  objectives: Objective[];
+  guide: LocaleName;
   update_time: string;
   url_mapping: string;
-}
-
-interface Require {
-  id: string;
-  name_en: string;
-  name_kr: string;
-  is_other: boolean;
-  url_mapping: string;
+  kappa_required: boolean;
+  finish_rewards: FinishRewards;
+  barter_info: BarterInfo[];
+  task_next: TaskWrapper[];
+  task_requirements: TaskWrapper[];
 }
 
 export interface QuestClient {
@@ -53,8 +44,61 @@ export interface NpcDetail {
   questInfo: Quest;
 }
 
+interface Objective {
+  id: string;
+  type: string;
+  description_en: string;
+  description_ja: string;
+  description_ko: string;
+  count?: number;
+  items?: RewardItemDetails[];
+  foundInRaid?: boolean;
+}
+
+interface BarterInfo {
+  level: number;
+  rewardItems: BarterItem[];
+  requiredItems: BarterItem[];
+}
+
+interface BarterItem {
+  item: RewardItemDetails;
+  quantity: number;
+}
+
 interface LocaleName {
   en: string;
   ja: string;
   ko: string;
+}
+
+interface FinishRewards {
+  items: RewardItem[];
+}
+
+interface RewardItem {
+  item: RewardItemDetails;
+  count: number;
+  quantity: number;
+}
+
+interface RewardItemDetails {
+  id: string;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+  gridImageLink: string;
+  normalizedName: string;
+}
+
+interface TaskWrapper {
+  task: Task;
+}
+
+interface Task {
+  id: string;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+  normalizedName: string;
 }

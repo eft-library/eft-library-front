@@ -9,13 +9,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getQuestTitle } from "@/lib/func/jsxfunction";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
 import type { QuestClient } from "./questTypes";
 import { SquareCheckBig, SquareX } from "lucide-react";
+import { useLocale } from "next-intl";
+import {
+  getDescriptionLocaleKey,
+  getLocaleKey,
+  getOtherLocalizedKey,
+} from "@/lib/func/localeFunction";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function QuestClient({ questList }: QuestClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { npcId } = useAppStore((state) => state);
 
   return (
@@ -23,13 +31,13 @@ export default function QuestClient({ questList }: QuestClient) {
       <Table className="border-2 border-white border-solid">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[280px] font-bold text-base text-white text-center">
+            <TableHead className="w-[240px] font-bold text-base text-white text-center">
               제목
             </TableHead>
-            <TableHead className="font-bold text-base text-white text-center">
+            <TableHead className="font-bold min-w-[400px] text-base text-white text-center">
               목표
             </TableHead>
-            <TableHead className="font-bold text-base text-white text-center">
+            <TableHead className="font-bold min-w-[400px] text-base text-white text-center">
               보상
             </TableHead>
             <TableHead className="w-[80px] text-center font-bold text-base text-white">
@@ -41,51 +49,52 @@ export default function QuestClient({ questList }: QuestClient) {
           {questList.map(
             (quest) =>
               npcId === null ||
-              (npcId === quest.npc_value && (
+              (npcId === quest.npc_id && (
                 <TableRow key={quest.id} className="hover:bg-NeutralGray">
                   <TableCell>
                     <Link href={`/quest/detail/${quest.url_mapping}`}>
                       <span className="text-sm font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
-                        {getQuestTitle(quest.title_kr, "kr")}
-                        <br />
-                        {getQuestTitle(quest.title_kr, "en")}
+                        {quest.name[localeKey]}
                       </span>
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {quest.objectives_kr.map((obj, oIndex) => (
+                    {quest.objectives.map((obj, oIndex) => (
                       <div
+                        className="font-bold text-base p-[1px]"
                         key={`${oIndex}-objectives-${quest.id}`}
-                        className="font-bold text-sm"
-                        dangerouslySetInnerHTML={{
-                          __html: `*&nbsp;&nbsp;${obj}`,
-                        }}
-                      />
+                      >
+                        * {obj[getDescriptionLocaleKey(locale)]}
+                      </div>
                     ))}
                   </TableCell>
                   <TableCell>
-                    {quest.rewards_kr.map((rewards, rIndex) => (
+                    {quest.finish_rewards.items.map((rewards, rIndex) => (
                       <div
                         key={`${rIndex}-rewards-${quest.id}`}
-                        className="font-bold text-sm"
-                        dangerouslySetInnerHTML={{
-                          __html: `*&nbsp;&nbsp;${rewards}`,
-                        }}
-                      />
+                        className="font-bold text-base p-[1px]"
+                      >
+                        * {rewards.item[getOtherLocalizedKey(locale)]} x&nbsp;
+                        {rewards.quantity}
+                      </div>
                     ))}
                   </TableCell>
                   <TableCell>
                     <span
                       className={`text-lg flex justify-center items-center font-bold`}
                     >
-                      {quest.required_kappa ? (
+                      {quest.kappa_required ? (
                         <SquareCheckBig
-                          color="#5EFF5E"
+                          color={ALL_COLOR.ScreaminGreen}
                           strokeWidth={3}
                           size={23}
                         />
                       ) : (
-                        <SquareX color="#FF0000" strokeWidth={3} size={25} />
+                        <SquareX
+                          color={ALL_COLOR.Red}
+                          strokeWidth={3}
+                          size={25}
+                        />
                       )}
                     </span>
                   </TableCell>

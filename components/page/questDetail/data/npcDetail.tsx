@@ -3,16 +3,17 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import {
-  getQuestTitle,
-  handleHover,
-  handleHoverExit,
-} from "@/lib/func/jsxfunction";
+import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 import type { NpcDetail } from "../../quest/data/questTypes";
 import Link from "next/link";
 import { SquareCheckBig, SquareX } from "lucide-react";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 
 export default function NpcDetail({ questInfo }: NpcDetail) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const router = useRouter();
 
   const onClickNPC = () => {
@@ -25,7 +26,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         <div
           className={`cursor-pointer w-[140px] h-[140px] rounded-lg outline outline-2 outline-[color:white]`}
           style={{
-            backgroundImage: `url(${questInfo.image})`,
+            backgroundImage: `url(${questInfo.npc_image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -34,16 +35,18 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           onClick={() => onClickNPC()}
         />
         <h1 className="text-xl font-bold text-white flex text-center flex items-center justify-center">
-          {getQuestTitle(questInfo.title_kr, "kr")}
-          <br />
-          {getQuestTitle(questInfo.title_kr, "en")}
+          {questInfo.name[getLocaleKey(localeKey)]}
         </h1>
         <div className="flex justify-between items-center gap-4">
           <TextSpan size="lg">Kappa</TextSpan>
-          {questInfo.required_kappa ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
+          {questInfo.kappa_required ? (
+            <SquareCheckBig
+              color={ALL_COLOR.ScreaminGreen}
+              strokeWidth={3}
+              size={23}
+            />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={25} />
+            <SquareX color={ALL_COLOR.Red} strokeWidth={3} size={25} />
           )}
         </div>
       </div>
@@ -53,35 +56,20 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
             이전
           </TextSpan>
 
-          {!questInfo.requires || questInfo.requires.length <= 0 ? (
+          {!questInfo.task_requirements ||
+          questInfo.task_requirements.length <= 0 ? (
             <TextSpan>-</TextSpan>
           ) : (
-            questInfo.requires.map((item) => {
-              const others = questInfo.requires
-                ? questInfo.requires.filter((i) => i.is_other)
-                : [];
-              const isLastOther =
-                item.is_other && others.indexOf(item) === others.length - 1;
-
+            questInfo.task_requirements.map((item) => {
               return (
-                <React.Fragment key={item.id}>
-                  {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow ">
-                      <Link href={`/quest/detail/${item.url_mapping}`}>
-                        {item.name_kr}
-                      </Link>
-                    </span>
-                  ) : (
-                    <>
-                      <span className="text-white font-bold text-center cursor-pointer hover:text-SoftPink mt-[2px]">
-                        <Link href={`/quest/detail/${item.url_mapping}`}>
-                          {item.name_kr}
-                        </Link>
-                      </span>
-                      {!isLastOther && <TextSpan size="lg">or</TextSpan>}
-                    </>
-                  )}
-                </React.Fragment>
+                <span
+                  className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow "
+                  key={item.task.id}
+                >
+                  <Link href={`/quest/detail/${item.task.normalizedName}`}>
+                    {item.task[getOtherLocalizedKey(localeKey)]}
+                  </Link>
+                </span>
               );
             })
           )}
@@ -90,35 +78,19 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
           <TextSpan size="lg" textColor="GoldenYellow">
             다음
           </TextSpan>
-          {!questInfo.next || questInfo.next.length <= 0 ? (
+          {!questInfo.task_next || questInfo.task_next.length <= 0 ? (
             <TextSpan>-</TextSpan>
           ) : (
-            questInfo.next.map((item) => {
-              const isLastOther =
-                item.is_other &&
-                questInfo.next &&
-                questInfo.next.filter((i) => i.is_other).length - 1 ===
-                  questInfo.next.filter((i) => i.is_other).indexOf(item);
-
+            questInfo.task_next.map((item) => {
               return (
-                <React.Fragment key={item.id}>
-                  {item.is_other === false ? (
-                    <span className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow">
-                      <Link href={`/quest/detail/${item.url_mapping}`}>
-                        {item.name_kr}
-                      </Link>
-                    </span>
-                  ) : (
-                    <>
-                      <span className="text-white font-bold text-center cursor-pointer hover:text-SoftPink mt-[1px]">
-                        <Link href={`/quest/detail/${item.url_mapping}`}>
-                          {item.name_kr}
-                        </Link>
-                      </span>
-                      {!isLastOther && <TextSpan size="lg">or</TextSpan>}
-                    </>
-                  )}
-                </React.Fragment>
+                <span
+                  className="text-white font-bold text-center cursor-pointer hover:text-PaleYellow "
+                  key={item.task.id}
+                >
+                  <Link href={`/quest/detail/${item.task.normalizedName}`}>
+                    {item.task[getOtherLocalizedKey(localeKey)]}
+                  </Link>
+                </span>
               );
             })
           )}

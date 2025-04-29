@@ -57,3 +57,27 @@ export const getModesLocaleKey = (locale: string) => {
       return "modes_en";
   }
 };
+
+export const getDescriptionLocaleKey = (locale: string) => {
+  switch (locale) {
+    case "ja":
+      return "description_ja";
+    case "ko":
+      return "description_ko";
+    case "en":
+    default:
+      return "description_en";
+  }
+};
+
+export const getOtherLocalizedKey = (locale: string) => {
+  switch (locale) {
+    case "ja":
+      return "name_ja";
+    case "ko":
+      return "name_ko";
+    case "en":
+    default:
+      return "name_en";
+  }
+};
