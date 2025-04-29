@@ -5,6 +5,8 @@ import type { PriceTable, TradeOption } from "./priceTypes";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function PriceTable({
   price,
@@ -12,6 +14,9 @@ export default function PriceTable({
   setSelectItem,
   selectItem,
 }: PriceTable) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   // 가장 비싼 트레이더 찾는 함수
   const findExpensiveTrader = (traders: TradeOption[]) => {
     if (!traders) return null;
@@ -64,8 +69,8 @@ export default function PriceTable({
           className={`flex justify-center items-center relative cursor-pointer`}
         >
           <Image
-            src={price.item_image}
-            alt={price.item_name_en}
+            src={price.image}
+            alt={price.name.en}
             fill
             sizes={"160px"}
             style={{ objectFit: "contain" }}
@@ -80,9 +85,7 @@ export default function PriceTable({
       </CenterContents>
 
       <CenterContents colSpan="2">
-        <TextSpan size="sm">
-          {price.item_name_kr || price.item_name_en}
-        </TextSpan>
+        <TextSpan size="sm">{price.name[localeKey]}</TextSpan>
       </CenterContents>
 
       {expensiveTrader ? (

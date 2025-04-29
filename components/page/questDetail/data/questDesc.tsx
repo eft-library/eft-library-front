@@ -1,15 +1,15 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
+// import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
 import "../../../../assets/quest.css";
-import ImageView from "../../../custom/imageView/imageView";
+// import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { QuestDesc } from "../../quest/data/questTypes";
-import { SquareCheckBig, SquareX } from "lucide-react";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
+// import { SquareCheckBig, SquareX } from "lucide-react";
+// import TableColumn from "@/components/custom/tableColumn/tableColumn";
+// import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   return (
@@ -75,7 +75,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         />
       </div>
 
-      {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
+      {/* {((questInfo.sub && questInfo.sub.length > 0) || questInfo.guide) && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
             가이드
@@ -147,7 +147,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           )}
           <HtmlWithImage contents={questInfo.guide} />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

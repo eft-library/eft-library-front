@@ -2,8 +2,12 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { PriceDetail } from "./priceTypes";
 import Image from "next/image";
 import CenterContents from "@/components/custom/gridContents/centerContents";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function PriceDetail({ item, viewType }: PriceDetail) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   if (!item) return null;
 
   return (
@@ -17,8 +21,8 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
           className={`flex justify-center items-center relative`}
         >
           <Image
-            src={item.item_image || ""}
-            alt={item.item_name_en || ""}
+            src={item.image || ""}
+            alt={item.name.en || ""}
             fill
             sizes={(item.width * 64).toString()}
             style={{ objectFit: "contain" }}
@@ -32,7 +36,7 @@ export default function PriceDetail({ item, viewType }: PriceDetail) {
       </CenterContents>
 
       <CenterContents colSpan="2">
-        <TextSpan size="lg">{item.item_name_kr || item.item_name_en}</TextSpan>
+        <TextSpan size="lg">{item.name[localeKey]}</TextSpan>
       </CenterContents>
 
       <div className="col-span-3 flex justify-center items-center gap-4">

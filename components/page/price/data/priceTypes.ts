@@ -9,7 +9,8 @@ export interface TraderInfo {
   npc_id: string;
   npc_image: string;
   npc_name_en: string;
-  npc_name_kr: string;
+  npc_name_ko: string;
+  npc_name_ja: string;
 }
 
 export interface TradeOption {
@@ -18,9 +19,8 @@ export interface TradeOption {
 }
 
 export interface Price {
-  item_image: string;
-  item_name_en: string;
-  item_name_kr: string | null;
+  image: string;
+  name: LocaleName;
   update_time: string;
   trader: {
     pve_trader: TradeOption[];
@@ -53,4 +53,10 @@ export interface HistoryDefine {
 export interface PriceChart {
   item: Price | undefined;
   viewType: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

@@ -13,12 +13,16 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function InventoryGrid({
   topList,
   viewType,
   searchWord,
 }: InventoryGrid) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [openTooltipIndex, setOpenTooltipIndex] = useState<number | null>(null);
   const [hoverItem, setHoverItem] = useState<TopListDetailData>();
 
@@ -33,17 +37,19 @@ export default function InventoryGrid({
         {topList.map((topImage, index) => {
           const isHighlighted =
             searchWord.length > 0 &&
-            (topImage.item_name_en
+            (topImage.name.en
               .toLowerCase()
               .includes(searchWord.toLowerCase()) ||
-              (topImage.item_name_kr &&
-                topImage.item_name_kr
-                  .toLowerCase()
-                  .includes(searchWord.toLowerCase())));
+              topImage.name.ko
+                .toLowerCase()
+                .includes(searchWord.toLowerCase()) ||
+              topImage.name.ja
+                .toLowerCase()
+                .includes(searchWord.toLowerCase()));
 
           const imgStyle =
             searchWord.length < 1
-              ? undefined // searchWord가 빈 문자열이면 스타일을 적용하지 않음
+              ? undefined
               : {
                   boxShadow: isHighlighted
                     ? "0px 0px 10px rgba(255, 255, 255, 0.8)"
@@ -63,7 +69,7 @@ export default function InventoryGrid({
               <TooltipTrigger className="mr-4">
                 <Gallery>
                   <Item
-                    original={topImage.item_image}
+                    original={topImage.image}
                     width={topImage.width * 128}
                     height={topImage.height * 128}
                   >
@@ -71,12 +77,12 @@ export default function InventoryGrid({
                       <Image
                         ref={ref}
                         onClick={open}
-                        src={topImage.item_image}
+                        src={topImage.image}
                         onMouseEnter={() => onHoverItem(topImage, index)}
                         onMouseLeave={() => setOpenTooltipIndex(null)}
                         onFocus={() => onHoverItem(topImage, index)}
                         onBlur={() => setOpenTooltipIndex(null)}
-                        alt={topImage.item_name_en}
+                        alt={topImage.name.en}
                         width={topImage.width * 64}
                         height={topImage.height * 64}
                         style={imgStyle}
@@ -91,7 +97,7 @@ export default function InventoryGrid({
                 className="bg-Background border-solid border-white border-2"
               >
                 <TextSpan size="xl" textColor="GoldenYellow">
-                  {hoverItem?.item_name_kr || hoverItem?.item_name_en}
+                  {hoverItem?.name[localeKey]}
                 </TextSpan>
                 <br />
                 <TextSpan size="base">플리마켓 가격&nbsp;:&nbsp;</TextSpan>
