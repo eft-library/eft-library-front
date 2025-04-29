@@ -10,6 +10,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import AdBlockAlert from "@/components/custom/adBlockAlert/adBlockAlert";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/store/queryProvider";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "EFT Library",
@@ -43,13 +45,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script
           async
@@ -63,26 +67,28 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <AdBlockAlert />
-        <Toaster />
-        <AuthContext>
-          <ThemeProvider
-            attribute={"class"}
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Suspense>
-              <AppStoreProvider>
-                <QueryProvider>
-                  <Header />
-                  {children}
-                  <Footer />
-                </QueryProvider>
-              </AppStoreProvider>
-            </Suspense>
-          </ThemeProvider>
-        </AuthContext>
+        <NextIntlClientProvider locale={locale}>
+          <AdBlockAlert />
+          <Toaster />
+          <AuthContext>
+            <ThemeProvider
+              attribute={"class"}
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Suspense>
+                <AppStoreProvider>
+                  <QueryProvider>
+                    <Header />
+                    {children}
+                    <Footer />
+                  </QueryProvider>
+                </AppStoreProvider>
+              </Suspense>
+            </ThemeProvider>
+          </AuthContext>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

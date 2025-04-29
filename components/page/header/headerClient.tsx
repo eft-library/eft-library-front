@@ -8,6 +8,7 @@ import { useAppStore } from "@/store/provider";
 import { useSession, signIn } from "next-auth/react";
 import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import UserMenu from "./contents/userMenu";
+import LocalSwitcher from "@/components/custom/localeSwitcher/localSwitcher";
 import type { Menu } from "./contents/headerTypes";
 
 export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
@@ -64,7 +65,9 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
             </Button>
           )}
         </div>
-        <div />
+        <div className="flex items-center">
+          <LocalSwitcher />
+        </div>
       </div>
     </div>
   );
