@@ -16,9 +16,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function DetailRequire({ items, type }: RequireList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [openTooltipIndex, setOpenTooltipIndex] = useState<number | null>(null);
   const [hoverItem, setHoverItem] = useState<
     ItemRequire | SkillRequire | TraderRequire
@@ -72,7 +76,7 @@ export default function DetailRequire({ items, type }: RequireList) {
     } else if (type === "trader" && isTraderRequire(item)) {
       return `LV ${item.value || ""}`;
     } else if (type === "skill" && isSkillRequire(item)) {
-      return `${item.name_kr} ${item.level || ""}`;
+      return `${item.name[localeKey]} ${item.level || ""}`;
     }
     return `LV ${"level" in item ? item.level : ""}`;
   };
@@ -109,7 +113,7 @@ export default function DetailRequire({ items, type }: RequireList) {
                       onMouseLeave={() => setOpenTooltipIndex(null)}
                       onFocus={() => onHoverItem(item, index)}
                       onBlur={() => setOpenTooltipIndex(null)}
-                      alt={item.name_en || ""}
+                      alt={item.name.en || ""}
                       width={60}
                       height={60}
                     />
@@ -134,7 +138,7 @@ export default function DetailRequire({ items, type }: RequireList) {
                   className="bg-Background border-solid border-white border-2"
                 >
                   <TextSpan size="base" textColor="GoldenYellow">
-                    {hoverItem?.name_kr || hoverItem?.name_en}
+                    {hoverItem?.name[localeKey]}
                   </TextSpan>
                 </TooltipContent>
               </Tooltip>

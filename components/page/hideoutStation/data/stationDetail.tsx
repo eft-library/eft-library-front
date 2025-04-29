@@ -7,6 +7,8 @@ import DetailBonus from "./detailBonus";
 import DetailCraft from "./detailCraft";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function StationDetail({
   levelId,
@@ -14,6 +16,8 @@ export default function StationDetail({
   complete_list,
   onClickSave,
 }: StationDetail) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const splitLevel = levelId.split("-");
 
   const getMaxSuffix = (id: string) => {
@@ -76,7 +80,7 @@ export default function StationDetail({
             </div>
             <div>
               <p className="text-3xl font-medium font-bold">
-                {masterInfo ? masterInfo.master_name_kr : ""}
+                {masterInfo ? masterInfo.master_name[localeKey] : ""}
               </p>
               <p className="text-2xl font-bold">LV {splitLevel[1]}</p>
             </div>

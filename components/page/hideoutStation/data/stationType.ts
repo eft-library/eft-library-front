@@ -1,9 +1,7 @@
 interface Bonus {
   value: number;
-  name_en: string;
-  name_kr: string | null;
-  skill_name_en: string | null;
-  skill_name_kr: string | null;
+  name: LocaleName;
+  skill_name: LocaleName;
 }
 
 export interface BonusItem {
@@ -25,16 +23,14 @@ interface HideoutData {
 
 interface Hideout {
   master_id: string;
-  master_name_en: string;
-  master_name_kr: string | null;
+  master_name: LocaleName;
   image: string;
   data: HideoutLevel[];
 }
 
 export interface Craft {
   level: number | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
   height: number;
   width: number;
   duration: number;
@@ -52,7 +48,10 @@ interface CraftItemDetail {
   gridImageLink: string;
   height: number;
   width: number;
-  name: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  normalizedName: string;
 }
 
 interface LevelInfo {
@@ -65,14 +64,14 @@ export interface ItemRequire {
   count: number;
   image: string;
   name_en: string;
-  name_kr: string | null;
+  name_ko: string;
+  name_ja: string;
   quantity: number;
 }
 
 export interface SkillRequire {
   level: number | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
   image: string | null;
 }
 
@@ -80,24 +79,20 @@ export interface TraderRequire {
   image: string | null;
   value: number | null;
   compare: string | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
   require_type: string | null;
 }
 
 interface StationRequire {
   image: string | null;
   level: number | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
 }
 
 interface Bonus {
   value: number;
-  name_en: string;
-  name_kr: string | null;
-  skill_name_en: string | null;
-  skill_name_kr: string | null;
+  name: LocaleName;
+  skill_name: LocaleName;
 }
 
 interface HideoutLevel {
@@ -174,8 +169,7 @@ export interface ItemRequire {
   id: string;
   count: number;
   image: string;
-  name_en: string;
-  name_kr: string | null;
+  name: LocaleName;
   quantity: number;
   level_id: string;
   station_master_id: string;
@@ -183,8 +177,7 @@ export interface ItemRequire {
 
 export interface SkillRequire {
   level: number | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
   image: string | null;
   level_id: string;
   station_master_id: string;
@@ -194,9 +187,7 @@ export interface TraderRequire {
   image: string | null;
   value: number | null;
   compare: string | null;
-  name_en: string | null;
-  name_kr: string | null;
-  require_type: string | null;
+  name: LocaleName;
   level_id: string;
   station_master_id: string;
 }
@@ -204,8 +195,7 @@ export interface TraderRequire {
 interface StationRequire {
   image: string | null;
   level: number | null;
-  name_en: string | null;
-  name_kr: string | null;
+  name: LocaleName;
   level_id: string;
   station_master_id: string;
 }
@@ -217,10 +207,8 @@ export interface RequireList {
 
 interface Bonus {
   value: number;
-  name_en: string;
-  name_kr: string | null;
-  skill_name_en: string | null;
-  skill_name_kr: string | null;
+  name: LocaleName;
+  skill_name: LocaleName;
 }
 
 export interface BonusItem {
@@ -233,4 +221,10 @@ export interface BonusList {
 
 export interface DetailCraft {
   crafts: Craft[];
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

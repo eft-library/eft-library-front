@@ -2,8 +2,12 @@
 
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { BonusItem, BonusList } from "./stationType";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function DetailBonus({ bonuses }: BonusList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const checkNoPercent = (value: string) => {
     const noPercentList = [
       "Unlocks armor repair via repair kits",
@@ -63,15 +67,18 @@ export default function DetailBonus({ bonuses }: BonusList) {
   const BonusItem = ({ bonus }: BonusItem) => {
     return (
       <div className={"flex items-center"}>
-        <TextSpan size="lg">{bonus.name_kr}</TextSpan>
-        {checkNoPercent(bonus.name_en) && (
-          <TextSpan size="lg">{bonus.skill_name_kr}</TextSpan>
+        <TextSpan size="lg">{bonus.name[localeKey]}</TextSpan>
+        {checkNoPercent(bonus.name[localeKey]) && (
+          <TextSpan size="lg">{bonus.skill_name[localeKey]}</TextSpan>
         )}
-        {bonus.skill_name_kr && (
-          <TextSpan size="lg">&nbsp;{bonus.skill_name_kr}</TextSpan>
+        {bonus.skill_name[localeKey] && (
+          <TextSpan size="lg">&nbsp;{bonus.skill_name[localeKey]}</TextSpan>
         )}
-        {!checkNoPercent(bonus.name_en) && (
-          <TextSpan size="lg" textColor={checkPlus(bonus.value, bonus.name_en)}>
+        {!checkNoPercent(bonus.skill_name[localeKey]) && (
+          <TextSpan
+            size="lg"
+            textColor={checkPlus(bonus.value, bonus.skill_name[localeKey])}
+          >
             &nbsp;{addPlusMinus(bonus.value)}
           </TextSpan>
         )}

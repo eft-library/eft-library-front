@@ -11,8 +11,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 
 export default function DetailCraft({ crafts }: DetailCraft) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [openTooltipIndex, setOpenTooltipIndex] = useState<string | null>(null);
   const [hoverItem, setHoverItem] = useState<CraftItem>();
 
@@ -46,20 +50,22 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                 : ""
             }`}
           >
-            <span className="font-bold text-lg">{craft.name_kr} 제작</span>
+            <span className="font-bold text-lg">
+              {craft.name[localeKey]} 제작
+            </span>
             <div className="flex gap-2 items-center">
               {craft.req_item.map((req, sIndex) => (
-                <div key={`${craft.name_en}-${req.item.name}-${sIndex}`}>
+                <div key={`${craft.name.en}-${req.item.name_en}-${sIndex}`}>
                   <TooltipProvider>
                     <Tooltip
                       open={
                         openTooltipIndex ===
-                        `${craft.name_en}-${req.item.name}-${sIndex}`
+                        `${craft.name.en}-${req.item.name_en}-${sIndex}`
                       }
                       onOpenChange={(open) =>
                         open
                           ? setOpenTooltipIndex(
-                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                              `${craft.name.en}-${req.item.name_en}-${sIndex}`
                             )
                           : setOpenTooltipIndex(null)
                       }
@@ -68,19 +74,19 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                         <Image
                           width={req.item.width * 60}
                           height={req.item.height * 60}
-                          alt={req.item.name}
-                          key={`${craft.name_en}-${req.item.name}-${sIndex}`}
+                          alt={req.item.name_en}
+                          key={`${craft.name.en}-${req.item.name_en}-${sIndex}`}
                           onMouseEnter={() =>
                             onHoverItem(
                               req,
-                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                              `${craft.name.en}-${req.item.name_en}-${sIndex}`
                             )
                           }
                           onMouseLeave={() => setOpenTooltipIndex(null)}
                           onFocus={() =>
                             onHoverItem(
                               req,
-                              `${craft.name_en}-${req.item.name}-${sIndex}`
+                              `${craft.name.en}-${req.item.name_en}-${sIndex}`
                             )
                           }
                           onBlur={() => setOpenTooltipIndex(null)}
@@ -93,7 +99,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                         className="bg-Background border-solid border-white border-2"
                       >
                         <TextSpan size="base" textColor="GoldenYellow">
-                          {hoverItem?.item.name}
+                          {hoverItem?.item[getOtherLocalizedKey(localeKey)]}
                         </TextSpan>
                       </TooltipContent>
                     </Tooltip>
@@ -116,7 +122,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
                 <Image
                   width={craft.width * 60}
                   height={craft.height * 60}
-                  alt={craft.name_en || ""}
+                  alt={craft.name.en || ""}
                   src={craft.image || ""}
                   placeholder="blur"
                   blurDataURL={
