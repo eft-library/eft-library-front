@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLocale } from "next-intl";
 import DefaultAlert from "../../../custom/alert/defaultAlert";
 import {
   Bell,
@@ -14,11 +15,13 @@ import {
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { NewsClient, LinkInfo } from "../mainTypes";
+import { getLocalizedKey } from "@/lib/func/localeFunction";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function NewsClient({ news }: NewsClient) {
   const router = useRouter();
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
+  const locale = useLocale();
 
   const newText = (text: LinkInfo) => {
     const blinkStyle = {
@@ -31,7 +34,8 @@ export default function NewsClient({ news }: NewsClient) {
         className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
         onClick={() => router.push(text.link)}
       >
-        - {text.name_kr} &nbsp;
+        -{text[getLocalizedKey(locale)]}
+        &nbsp;
         <style>
           {`
           @keyframes fade {
@@ -85,7 +89,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {event.name_kr}
+                  - {event[getLocalizedKey(locale)]}
                 </TextSpan>
               </Link>
             ))}
@@ -102,8 +106,8 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
           <div className="flex flex-col">
             {news.json_value.next_update.map((patch) => (
-              <TextSpan isCenter={false} key={patch} size="lg">
-                - {patch}
+              <TextSpan isCenter={false} key={patch.name_en} size="lg">
+                - {patch[getLocalizedKey(locale)]}
               </TextSpan>
             ))}
           </div>
@@ -131,7 +135,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {info.name_kr}
+                  - {info[getLocalizedKey(locale)]}
                 </TextSpan>
               </Link>
             ))}
@@ -160,7 +164,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {patch.name_kr}
+                  - {patch[getLocalizedKey(locale)]}
                 </TextSpan>
               </Link>
             ))}
@@ -189,7 +193,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {notice.name_kr}
+                  - {notice[getLocalizedKey(locale)]}
                 </TextSpan>
               </Link>
             ))}

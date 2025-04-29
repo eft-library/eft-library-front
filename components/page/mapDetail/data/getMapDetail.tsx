@@ -34,7 +34,7 @@ export default function GetMapDetail() {
 
     const getMapSelector = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.map}`
+        `${API_ENDPOINTS.GET_DYNAMIC_INFO}/${COLUMN_KEY.map}`
       );
 
       if (!data || data.status !== 200) {

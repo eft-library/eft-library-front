@@ -7,7 +7,7 @@ import NewsClient from "./newsClient";
 
 export default async function News() {
   const data = await requestData(
-    `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.news}`
+    `${API_ENDPOINTS.GET_DYNAMIC_INFO}/${COLUMN_KEY.news}`
   );
 
   if (!data || data.status !== 200) {

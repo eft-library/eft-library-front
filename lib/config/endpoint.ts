@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   GET_ALL_QUEST: baseUrl + "/api/quest/all",
   GET_BOSS: baseUrl + "/api/boss/info",
-  GET_COLUMN: baseUrl + "/api/table_column/info",
+  GET_DYNAMIC_INFO: baseUrl + "/api/dynamic_info/info",
   GET_EVENT: baseUrl + "/api/event/board",
   GET_EVENT_BY_ID: baseUrl + "/api/event/detail",
   GET_ITEM_FILTER: baseUrl + "/api/item_filter/all",

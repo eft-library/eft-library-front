@@ -14,6 +14,7 @@ export interface LinkInfo {
   link: string;
   name_en: string;
   name_kr: string;
+  name_ja: string;
   is_new: boolean;
 }
 
@@ -27,7 +28,7 @@ export interface NewsMapColumn {
 }
 
 interface JsonValue {
-  next_update: string[];
+  next_update: LinkInfo[];
   recommend: LinkInfo[];
   event: LinkInfo[];
   patch: LinkInfo[];
@@ -36,11 +37,10 @@ interface JsonValue {
 }
 
 interface NavItem {
-  en_name: string;
+  name: LocaleName;
   link: string;
   order: number;
   value: string;
-  kr_name: string;
   image: string;
   parent_value: string;
 }
@@ -50,10 +50,16 @@ export interface NavItemList {
 }
 
 interface SliderData extends NavItem {
-  main_image: string;
+  slide_image: string;
   use_slide: true;
 }
 
 export interface MainSlider {
   sliderList: SliderData[];
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

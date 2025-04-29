@@ -23,7 +23,7 @@ export default function StationMap({
   useEffect(() => {
     const getStationMap = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.stationType}`
+        `${API_ENDPOINTS.GET_DYNAMIC_INFO}/${COLUMN_KEY.stationType}`
       );
       if (data && data.status === 200) {
         setStationMapData(data.data);

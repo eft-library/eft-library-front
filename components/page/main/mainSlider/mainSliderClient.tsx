@@ -23,9 +23,9 @@ export default function MainSliderClient({ sliderList }: MainSlider) {
                 key={sliderImg.value}
               >
                 <Image
-                  src={sliderImg.main_image}
+                  src={sliderImg.slide_image}
                   className="mx-auto"
-                  alt={sliderImg.kr_name}
+                  alt={sliderImg.name.en}
                   width={1100}
                   height={400}
                   style={{ width: "auto", height: "auto" }}

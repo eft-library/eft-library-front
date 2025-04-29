@@ -4,8 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 import type { NavItemList } from "../mainTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function NavItemClient({ navItemList }: NavItemList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   return (
     <div className="flex justify-center items-center">
       <div className="grid grid-cols-5 gap-12">
@@ -18,7 +23,7 @@ export default function NavItemClient({ navItemList }: NavItemList) {
             >
               <Image
                 src={nav.image}
-                alt={nav.en_name}
+                alt={nav.name.en}
                 fill
                 sizes="120px"
                 className="rounded-lg object-cover"
@@ -30,7 +35,7 @@ export default function NavItemClient({ navItemList }: NavItemList) {
               />
             </div>
             <span className="text-white font-bold text-center mt-0.5">
-              {nav.kr_name}
+              {nav.name[localeKey]}
             </span>
           </Link>
         ))}

@@ -23,7 +23,7 @@ export default function MapOfTarkovSelectorClient({
   useEffect(() => {
     const getSubMapById = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_COLUMN}/${COLUMN_KEY.mapOfTarkov}`
+        `${API_ENDPOINTS.GET_DYNAMIC_INFO}/${COLUMN_KEY.mapOfTarkov}`
       );
 
       if (!data || data.status !== 200) {
