@@ -1,38 +1,44 @@
 interface Boss {
-  health_total: number;
-  spawn: string[];
   faction: string;
-  location_spawn_chance_en: SpawnChance[];
-  location_spawn_chance_kr: SpawnChance[];
-  followers_en: string[];
-  followers_kr: string[];
   id: string;
-  location_guide: string;
-  sub: BossLoot[];
-  sub_followers: Followers[];
-  name_kr: string;
-  name_en: string;
-  image: string;
-}
-
-interface SpawnChance {
+  health_total: number;
+  spawn_chance: SpawnChance[];
   order: number;
-  chance: number;
-  location: string;
+  update_time: string;
+  name: LocaleName;
+  parent_id: string;
+  image: string;
+  item_info: ItemInfo[];
+  location_guide: LocaleName;
+  url_mapping: string;
+  is_boss: boolean;
 }
 
-interface BossLoot {
-  boss_name_en: string;
-  boss_name_kr: string;
-  item_id: string;
-  boss_id: string;
-  item_type: string;
-  item_type_en: string;
-  item_type_kr: string;
-  item_name_en: string;
-  item_name_kr: string;
-  item_image: string;
-  link: string;
+interface BossDefine {
+  parent_id: string;
+  boss_url_mappings: string;
+  children: Boss[];
+}
+
+export interface SpawnChance {
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+  spawnChance: number;
+}
+
+interface ItemInfo {
+  item: ItemDetail;
+  count: number;
+  quantity: number;
+}
+
+interface ItemDetail {
+  id: string;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+  gridImageLink: string;
 }
 
 interface Followers {
@@ -60,7 +66,7 @@ export interface FollowersLoot {
 }
 
 export interface BossClient {
-  bossList: Boss[];
+  bossList: BossDefine[];
 }
 
 export interface BossHealth {
@@ -69,4 +75,10 @@ export interface BossHealth {
 
 export interface FollowerLoot {
   follower: Followers;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

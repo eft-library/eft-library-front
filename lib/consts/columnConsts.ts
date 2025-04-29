@@ -6,21 +6,41 @@ export const COLUMN_KEY = {
 } as const;
 
 export const bossColumn = [
-  { id: "RESHALA", link: "/boss/RESHALA", order: 1, name_kr: "르샬라" },
-  { id: "KOLLONTAY", link: "/boss/KOLLONTAY", order: 2, name_kr: "콜론테이" },
-  { id: "KILLA", link: "/boss/KILLA", order: 3, name_kr: "킬라" },
-  { id: "KABAN", link: "/boss/KABAN", order: 4, name_kr: "카반" },
-  { id: "TAGILLA", link: "/boss/TAGILLA", order: 5, name_kr: "타길라" },
-  { id: "ZRYACHIY", link: "/boss/ZRYACHIY", order: 6, name_kr: "지랴키" },
-  { id: "SHTURMAN", link: "/boss/SHTURMAN", order: 7, name_kr: "슈트르만" },
-  { id: "SANITAR", link: "/boss/SANITAR", order: 8, name_kr: "세니타" },
-  { id: "GLUKHAR", link: "/boss/GLUKHAR", order: 9, name_kr: "글루하" },
-  { id: "BIG_PIPE", link: "/boss/BIG_PIPE", order: 10, name_kr: "빅파이프" },
-  { id: "BIRDEYE", link: "/boss/BIRDEYE", order: 11, name_kr: "버드아이" },
-  { id: "KNIGHT", link: "/boss/KNIGHT", order: 12, name_kr: "나이트" },
-  { id: "CULTISTS", link: "/boss/CULTISTS", order: 13, name_kr: "컬티스트" },
-  { id: "PARTISAN", link: "/boss/PARTISAN", order: 14, name_kr: "파르티잔" },
+  { id: "reshala", link: "/boss/reshala", order: 1, name_kr: "르샬라" },
+  { id: "kollontay", link: "/boss/kollontay", order: 2, name_kr: "콜론테이" },
+  { id: "killa", link: "/boss/killa", order: 3, name_kr: "킬라" },
+  { id: "kaban", link: "/boss/kaban", order: 4, name_kr: "카반" },
+  { id: "tagilla", link: "/boss/tagilla", order: 5, name_kr: "타길라" },
+  { id: "zryachiy", link: "/boss/zryachiy", order: 6, name_kr: "지랴키" },
+  { id: "shturman", link: "/boss/shturman", order: 7, name_kr: "슈트르만" },
+  { id: "sanitar", link: "/boss/sanitar", order: 8, name_kr: "세니타" },
+  { id: "glukhar", link: "/boss/glukhar", order: 9, name_kr: "글루하" },
+  { id: "big-pipe", link: "/boss/big-pipe", order: 10, name_kr: "빅파이프" },
+  { id: "birdeye", link: "/boss/birdeye", order: 11, name_kr: "버드아이" },
+  { id: "knight", link: "/boss/knight", order: 12, name_kr: "나이트" },
+  {
+    id: "cultist-priest",
+    link: "/boss/cultist-priest",
+    order: 13,
+    name_kr: "컬티스트",
+  },
+  { id: "partisan", link: "/boss/partisan", order: 14, name_kr: "파르티잔" },
+  { id: "raider", link: "/boss/raider", order: 14, name_kr: "파르티잔" },
+  { id: "rogue", link: "/boss/rogue", order: 14, name_kr: "rogue" },
+  {
+    id: "shadow-of-tagilla",
+    link: "/boss/shadow-of-tagilla",
+    order: 14,
+    name_kr: "shadow-of-tagilla",
+  },
+  {
+    id: "vengeful-killa",
+    link: "/boss/vengeful-killa",
+    order: 14,
+    name_kr: "vengeful-killa",
+  },
 ];
+
 export const footerColumn = {
   icon: [
     {
