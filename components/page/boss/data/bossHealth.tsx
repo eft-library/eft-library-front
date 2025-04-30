@@ -5,8 +5,13 @@ import { useEffect, useState } from "react";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { BossHealth } from "./bossTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { Separator } from "@/components/ui/separator";
 
 export default function BossHealth({ subFollowers }: BossHealth) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [healthId, setHealthId] = useState<string>("");
 
   const clickHealth = (health: string) => {
@@ -14,13 +19,19 @@ export default function BossHealth({ subFollowers }: BossHealth) {
   };
 
   useEffect(() => {
-    if (subFollowers.length > 0) {
+    if (subFollowers && subFollowers.length > 0) {
       setHealthId(subFollowers[0].id);
     }
   }, [subFollowers]);
 
+  if (!subFollowers) {
+    return null;
+  }
+
   return (
-    <div>
+    <div className="w-full flex flex-col gap-2">
+      <span className="font-bold text-3xl">피통</span>
+      <Separator className="bg-white" />
       {subFollowers && (
         <div className="flex flex-col justify-center items-center w-full gap-4">
           <div className="flex justify-center w-full flex-wrap gap-4">
@@ -33,7 +44,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                   { "bg-NeutralGray": healthId === follower.id }
                 )}
               >
-                <TextSpan size="sm">{follower.name_kr}</TextSpan>
+                <TextSpan size="sm">{follower.name[localeKey]}</TextSpan>
               </div>
             ))}
           </div>
@@ -44,7 +55,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
                   <ImageView
                     key={`${follower.id}-health-image`}
                     src={follower.health_image}
-                    alt={follower.name_en}
+                    alt={follower.name.en}
                     popWidth={580}
                     popHeight={600}
                     size="580px"

@@ -10,13 +10,9 @@ interface Boss {
   image: string;
   item_info: ItemInfo[];
   location_guide: LocaleName;
+  health_image: string;
   url_mapping: string;
   is_boss: boolean;
-}
-
-interface BossDefine {
-  parent_id: string;
-  boss_url_mappings: string;
   children: Boss[];
 }
 
@@ -38,43 +34,20 @@ interface ItemDetail {
   name_en: string;
   name_ja: string;
   name_ko: string;
+  normalizedName: string;
   gridImageLink: string;
 }
 
-interface Followers {
-  id: string;
-  name_kr: string;
-  name_en: string;
-  boss_id: string;
-  health_image: string;
-  loot: FollowersLoot[];
-}
-
-export interface FollowersLoot {
-  follower_name_en: string;
-  follower_name_kr: string;
-  follower_id: string;
-  item_id: string;
-  boss_id: string;
-  item_type: string;
-  item_type_en: string;
-  item_type_kr: string;
-  item_name_en: string;
-  item_name_kr: string;
-  item_image: string;
-  link: string;
-}
-
 export interface BossClient {
-  bossList: BossDefine[];
+  bossList: Boss[];
 }
 
 export interface BossHealth {
-  subFollowers: Followers[];
+  subFollowers: Boss[];
 }
 
 export interface FollowerLoot {
-  follower: Followers;
+  follower: Boss;
 }
 
 interface LocaleName {

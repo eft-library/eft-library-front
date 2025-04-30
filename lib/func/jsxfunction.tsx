@@ -10,7 +10,11 @@ export const getPlusMinus = (text: number | string) => {
 
 export const highlightMatchedText = (text: string, keyword: string) => {
   if (keyword.length < 2)
-    return <span className="text-white font-bold">{text}</span>;
+    return (
+      <span className="text-white font-bold hover:text-GoldenYellow">
+        {text}
+      </span>
+    );
 
   const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(${safeKeyword})`, "gi");
@@ -20,11 +24,17 @@ export const highlightMatchedText = (text: string, keyword: string) => {
     <>
       {parts.map((part, index) =>
         part.toLowerCase() === keyword.toLowerCase() ? (
-          <span key={index} className="text-GoldenYellow font-bold">
+          <span
+            key={index}
+            className="text-GoldenYellow font-bold hover:text-GoldenYellow"
+          >
             {part}
           </span>
         ) : (
-          <span key={index} className="text-white font-bold">
+          <span
+            key={index}
+            className="text-white font-bold hover:text-GoldenYellow"
+          >
             {part}
           </span>
         )
