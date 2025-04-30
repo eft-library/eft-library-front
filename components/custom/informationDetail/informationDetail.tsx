@@ -6,11 +6,15 @@ import Link from "next/link";
 import AdBanner from "../adsense/adBanner";
 import TextSpan from "../gridContents/textSpan";
 import type { InformationDetailClient } from "./informationDetailTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function InformationDetailClient({
   informationInfo,
   routeLink,
 }: InformationDetailClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className={"w-full flex flex-col gap-4 items-center"}>
       <div
@@ -20,7 +24,7 @@ export default function InformationDetailClient({
       >
         <div className={"flex justify-center items-center w-full"}>
           <span className={"font-bold text-xl text-white mb-6"}>
-            {informationInfo.information.name_kr}&nbsp;(
+            {informationInfo.information.name[localeKey]}&nbsp;(
             {formatISODate(informationInfo.information.update_time)})
           </span>
         </div>
@@ -28,7 +32,7 @@ export default function InformationDetailClient({
           <div
             className={"font-bold text-white text-base"}
             dangerouslySetInnerHTML={{
-              __html: `${informationInfo.information.notes_kr}`,
+              __html: `${informationInfo.information.description[localeKey]}`,
             }}
           />
         </div>
@@ -62,7 +66,7 @@ export default function InformationDetailClient({
               }
             >
               <TextSpan isCenter={false} size="lg">
-                {info.name_kr}
+                {info.name[localeKey]}
               </TextSpan>
               <TextSpan isCenter={false}>
                 {formatISODate(info.update_time)}

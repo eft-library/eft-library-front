@@ -7,11 +7,15 @@ import PaginationCustom from "../pagination/paginationCustom";
 import { useSearchParams } from "next/navigation";
 import { getFirstParagraph } from "@/lib/func/jsxfunction";
 import type { InformationClient } from "./informationTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function Information({
   informationData,
   routeLink,
 }: InformationClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useSearchParams();
 
   return (
@@ -27,7 +31,7 @@ export default function Information({
             >
               <div className={"flex justify-between items-center"}>
                 <span className={"text-2xl font-bold text-white p-4"}>
-                  {notes.name_kr}
+                  {notes.name[localeKey]}
                 </span>
                 <span className={"text-base font-semibold text-white p-4"}>
                   {formatISODate(notes.update_time)}
@@ -37,7 +41,7 @@ export default function Information({
                 <div
                   className={"truncate text-base font-semibold text-white"}
                   dangerouslySetInnerHTML={{
-                    __html: getFirstParagraph(notes.notes_kr),
+                    __html: getFirstParagraph(notes.description[localeKey]),
                   }}
                 ></div>
               </div>

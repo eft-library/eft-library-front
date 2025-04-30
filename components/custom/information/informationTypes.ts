@@ -1,9 +1,7 @@
 export interface InformationInfo {
   id: string;
-  name_en: string[];
-  name_kr: string[];
-  notes_en: string;
-  notes_kr: string;
+  name: LocaleName;
+  description: LocaleName;
   update_time: string;
 }
 export interface InformationData {
@@ -16,4 +14,10 @@ export interface InformationData {
 export interface InformationClient {
   informationData: InformationData;
   routeLink: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }
