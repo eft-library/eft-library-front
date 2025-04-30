@@ -10,8 +10,12 @@ import type {
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { ItemSVG } from "@/components/custom/getIcon/getSVG";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function JpgViewDetail({ map, viewItemList }: JPGView) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const transformWrapperRef = useRef(null);
   const [scale, setScale] = useState(1);
   const popoverRef = useRef<HTMLDivElement | null>(null); // 팝오버 참조
@@ -119,7 +123,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
                           key={quest.id}
                         >
                           <TextSpan isCenter={false} hoverColor="GoldenYellow">
-                            {quest.name_kr}
+                            {quest.name[localeKey]}
                           </TextSpan>
                         </Link>
                       ))

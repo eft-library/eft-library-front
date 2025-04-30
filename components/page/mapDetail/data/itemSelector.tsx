@@ -7,6 +7,8 @@ import { Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { ItemSelector } from "./mapType";
 import Loading from "@/components/custom/loading/loading";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ItemSelector({
   viewItemList,
@@ -14,6 +16,8 @@ export default function ItemSelector({
   onClickAllItemAction,
   originItemList,
 }: ItemSelector) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { itemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
@@ -106,7 +110,7 @@ export default function ItemSelector({
                         }`}
                         onClick={() => onClickItemAction(item.value)}
                       >
-                        {item.kr}
+                        {item.name[localeKey]}
                       </span>
 
                       {/* 서브 아이템들 */}
@@ -136,7 +140,7 @@ export default function ItemSelector({
                                   : "text-white opacity-50"
                               }`}
                             >
-                              {childItem.kr}
+                              {childItem.name[localeKey]}
                             </span>
                           </div>
                         ))}

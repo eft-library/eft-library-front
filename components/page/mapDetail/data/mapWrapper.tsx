@@ -10,8 +10,8 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 
 export default function MapWrapper({
   mapData,
+  mapSelector,
   onClickMapAction,
-  mapType,
 }: MapWrapper) {
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
     mapData.jpg_item_path
@@ -28,7 +28,7 @@ export default function MapWrapper({
       <SubMapSelector
         onClickMapAction={onClickMapAction}
         mapId={mapData.id}
-        mapType={mapType}
+        mapSelector={mapSelector}
       />
       <div className={"flex flex-col gap-4 items-center"}>
         <div className="w-full">

@@ -1,23 +1,11 @@
 // store.ts
 import { createStore } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface SubItem {
-  value: string;
-  kr: string;
-  en: string;
-}
-
-interface Item {
-  value: string;
-  kr: string;
-  en: string;
-  sub: SubItem[];
-}
+import type { ItemType } from "@/lib/func/itemFilterUtils";
 
 export type AppStateType = {
   npcId: string;
-  itemFilter: Item[];
+  itemFilter: ItemType[];
   eventNum: number;
   noticeNum: number;
   patchNotesNum: number;
@@ -25,7 +13,7 @@ export type AppStateType = {
 
 export type AppActionsType = {
   setNpcId: (value: string) => void;
-  setItemFilter: (value: Item[]) => void;
+  setItemFilter: (value: ItemType[]) => void;
   setEventNum: (value: number) => void;
   setNoticeNum: (value: number) => void;
   setPatchNotesNum: (value: number) => void;
@@ -48,7 +36,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
         ({
           ...initState,
           setNpcId: (value: string) => set({ npcId: value }),
-          setItemFilter: (value: Item[]) => set({ itemFilter: value }),
+          setItemFilter: (value: ItemType[]) => set({ itemFilter: value }),
           setEventNum: (value: number) => set({ eventNum: value }),
           setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
           setNoticeNum: (value: number) => set({ noticeNum: value }),

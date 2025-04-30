@@ -1,30 +1,34 @@
-interface Item {
+export interface ItemType {
   value: string;
-  kr: string;
-  en: string;
-  sub: SubItem[];
+  name: LocaleName;
+  sub: SubItemType[];
 }
 
-interface SubItem {
-  value: string;
-  kr: string;
+interface LocaleName {
   en: string;
+  ja: string;
+  ko: string;
+}
+
+export interface SubItemType {
+  value: string;
+  name: LocaleName;
 }
 
 /**
  * child 있는지 확인
  */
-export const isItem = (obj: Item | SubItem): obj is Item => {
-  return (obj as Item).sub !== undefined;
+export const isItem = (obj: ItemType | SubItemType): obj is ItemType => {
+  return (obj as ItemType).sub !== undefined;
 };
 
 /**
  * child의 value로 root 찾기
  */
 export const findObjectWithValue = (
-  obj: Item | SubItem,
+  obj: ItemType | SubItemType,
   value: string
-): Item | SubItem | undefined => {
+): ItemType | SubItemType | undefined => {
   // 현재 객체의 value가 주어진 값과 일치하면 현재 객체를 반환
   if (obj.value === value) {
     return obj;
@@ -65,7 +69,7 @@ export const checkSomeChild = (itemList: string[], childList: string[]) => {
 /**
  * valueList 추출
  */
-export const extractValues = (data: Item[]) => {
+export const extractValues = (data: ItemType[]) => {
   const values: string[] = [];
 
   if (!data || data.length == 0) return [];

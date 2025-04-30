@@ -16,21 +16,19 @@ export interface ThreeItemPath {
   zoomLevel: number;
 }
 interface SubFilter {
-  en: string;
   parent_value: string;
-  kr: string;
+  name: LocaleName;
   image: string;
   value: string;
 }
 
 export interface MapData {
   id: string;
-  name_en: string;
   three_image: string;
   jpg_image: string;
   depth: number;
   link: string;
-  name_kr: string;
+  name: LocaleName;
   map_json: MapJson[];
   three_item_path: ThreeItemPath[];
   mot_image: string;
@@ -66,8 +64,7 @@ export interface JpgItemPath {
 interface UserNextQuest {
   url_mapping: string;
   id: string;
-  name: string;
-  name_kr: string;
+  name: LocaleName;
 }
 
 export interface ThreeviewDetail {
@@ -77,7 +74,7 @@ export interface ThreeviewDetail {
 export interface SubMapSelector {
   onClickMapAction: (val: MapData) => void;
   mapId: string;
-  mapType: MapType;
+  mapSelector: MapSelector[];
 }
 export interface ThreeModel {
   filterInfo: SubFilter[];
@@ -85,7 +82,7 @@ export interface ThreeModel {
   map: SubMap | Map;
   zoomLevel: number;
 }
-interface Map extends MapData {
+export interface Map extends MapData {
   sub: SubMap[];
 }
 export interface JPGView {
@@ -93,14 +90,25 @@ export interface JPGView {
   viewItemList: string[];
 }
 
-export interface MapDetailClient {
-  mapInfo: MapData;
-  mapType: MapType;
+export interface MapInfoData {
+  map: Map;
+  map_selector: MapSelector[];
 }
+
+export interface MapDetailClient {
+  mapInfo: MapInfoData;
+}
+
+interface MapSelector {
+  id: string;
+  link: string;
+  name: LocaleName;
+}
+
 export interface MapWrapper {
   mapData: Map;
+  mapSelector: MapSelector[];
   onClickMapAction: (val: MapData) => void;
-  mapType: MapType;
 }
 
 export interface MapSelectorClient {
@@ -116,7 +124,7 @@ interface MapJson {
   id: string;
   link: string;
   order: number;
-  name_kr: string;
+  name: LocaleName;
   sub_list: SubMapJson[];
 }
 
@@ -124,5 +132,11 @@ interface SubMapJson {
   id: string;
   order: number;
   depth: number;
-  name_kr: string;
+  name: LocaleName;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

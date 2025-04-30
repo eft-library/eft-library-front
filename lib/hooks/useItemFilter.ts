@@ -8,6 +8,8 @@ import {
   checkSomeChild,
 } from "@/lib/func/itemFilterUtils";
 
+import type { ItemType } from "@/lib/func/itemFilterUtils";
+
 interface JpgItemPath {
   childValue: string;
   motherValue: string;
@@ -15,23 +17,11 @@ interface JpgItemPath {
   y: number;
   scale: number;
 }
-interface Item {
-  value: string;
-  kr: string;
-  en: string;
-  sub: SubItem[];
-}
-
-interface SubItem {
-  value: string;
-  kr: string;
-  en: string;
-}
 
 interface FetchSchema {
   status: number;
   msg: string;
-  data: Item[];
+  data: ItemType[];
 }
 
 /**
@@ -123,7 +113,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
    */
   const handleRootItemClick = (clickValue: string) => {
-    const rootList: Item = itemFilter.find(
+    const rootList: ItemType = itemFilter.find(
       (item) => item.value === clickValue
     )!;
     const childList = rootList.sub.map((childItem) => childItem.value);
@@ -140,7 +130,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * root의 모든 아이템 제거 시 root 제거, 모두 추가될 경우 root 추가
    */
   const handleChildItemClick = (clickValue: string) => {
-    const rootList: Item = itemFilter.find((item) =>
+    const rootList: ItemType = itemFilter.find((item) =>
       findObjectWithValue(item, clickValue)
     )!;
 

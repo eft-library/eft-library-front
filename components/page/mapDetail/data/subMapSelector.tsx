@@ -7,17 +7,20 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type {
   SubMapSelector,
   SubMap,
-  MapType,
 } from "@/components/page/mapDetail/data/mapType";
 import Loading from "@/components/custom/loading/loading";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function SubMapSelector({
   onClickMapAction,
   mapId,
-  mapType,
+  mapSelector,
 }: SubMapSelector) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const param = useParams<{ id: string }>();
   const [subMap, setSubMap] = useState<SubMap[]>();
 
@@ -41,18 +44,12 @@ export default function SubMapSelector({
     getSubMapById();
   }, [param.id]);
 
-  const sortList = (columnList: MapType) => {
-    return columnList.json_value.sort((a, b) => {
-      return a.order - b.order;
-    });
-  };
-
-  if (!subMap || !mapType) return <Loading />;
+  if (!subMap || !mapSelector) return <Loading />;
 
   return (
     <div className="mb-6">
       <div className="flex justify-between w-full flex-wrap rounded-t-lg border-solid border-2 border-white p-1">
-        {sortList(mapType).map((mapInfo) => (
+        {mapSelector.map((mapInfo) => (
           <Link href={mapInfo.link} key={mapInfo.id}>
             <div
               className={cn(
@@ -61,7 +58,9 @@ export default function SubMapSelector({
                 { "text-Background": param.id === mapInfo.id }
               )}
             >
-              <span className="text-center font-bold">{mapInfo.name_kr}</span>
+              <span className="text-center font-bold">
+                {mapInfo.name[localeKey]}
+              </span>
             </div>
           </Link>
         ))}
@@ -77,7 +76,7 @@ export default function SubMapSelector({
               { "bg-DeepSlate": mapId === sub.id }
             )}
           >
-            <span className="text-center font-bold">{sub.name_kr}</span>
+            <span className="text-center font-bold">{sub.name[localeKey]}</span>
           </div>
         ))}
       </div>
