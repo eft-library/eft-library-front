@@ -6,7 +6,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type {
   SubMapSelector,
-  SubMap,
+  MapData,
 } from "@/components/page/mapDetail/data/mapType";
 import Loading from "@/components/custom/loading/loading";
 import Link from "next/link";
@@ -16,13 +16,13 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function SubMapSelector({
   onClickMapAction,
-  mapId,
+  mapData,
   mapSelector,
 }: SubMapSelector) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const param = useParams<{ id: string }>();
-  const [subMap, setSubMap] = useState<SubMap[]>();
+  const [subMap, setSubMap] = useState<MapData[]>();
 
   useEffect(() => {
     const getSubMapById = async () => {
@@ -73,7 +73,7 @@ export default function SubMapSelector({
             onClick={() => onClickMapAction(sub)}
             className={cn(
               "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
-              { "bg-DeepSlate": mapId === sub.id }
+              { "bg-DeepSlate": mapData.id === sub.id }
             )}
           >
             <span className="text-center font-bold">{sub.name[localeKey]}</span>

@@ -104,10 +104,10 @@ export interface MapOfTarkovClient {
 }
 
 export interface MapOfTarkovWrapper {
-  mapOfTarkovList: MapOfTarkov[];
+  mapData: MapOfTarkov;
 }
 
-interface MapOfTarkov {
+export interface MapOfTarkov {
   boss_list: Boss[];
   map_info: Map;
   extraction_info: Extraction[];

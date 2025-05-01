@@ -34,13 +34,11 @@ export interface MapData {
   mot_image: string;
   jpg_item_path: JpgItemPath[];
   order: number;
+  parent_value: string;
   main_image: string;
-  sub: SubMap[];
+  children: MapData[];
 }
 
-export interface SubMap extends MapData {
-  parent_value: string;
-}
 interface MapJson {
   geometry: string;
   material: string;
@@ -73,25 +71,22 @@ export interface ThreeviewDetail {
 }
 export interface SubMapSelector {
   onClickMapAction: (val: MapData) => void;
-  mapId: string;
+  mapData: MapData;
   mapSelector: MapSelector[];
 }
 export interface ThreeModel {
   filterInfo: SubFilter[];
   viewItemList: string[];
-  map: SubMap | Map;
+  map: MapData;
   zoomLevel: number;
 }
-export interface Map extends MapData {
-  sub: SubMap[];
-}
 export interface JPGView {
-  map: Map;
+  map: MapData;
   viewItemList: string[];
 }
 
 export interface MapInfoData {
-  map: Map;
+  map: MapData;
   map_selector: MapSelector[];
 }
 
@@ -106,18 +101,9 @@ interface MapSelector {
 }
 
 export interface MapWrapper {
-  mapData: Map;
+  mapData: MapData;
   mapSelector: MapSelector[];
   onClickMapAction: (val: MapData) => void;
-}
-
-export interface MapSelectorClient {
-  mapType: MapType;
-}
-
-export interface MapType {
-  id: string;
-  json_value: MapJson[];
 }
 
 interface MapJson {

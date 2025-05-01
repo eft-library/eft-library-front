@@ -6,9 +6,7 @@ import MapOfTarkovSelectorClient from "./mapOfTarkovSelectorClient";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
-export default function MapOfTarkovWrapper({
-  mapOfTarkovList,
-}: MapOfTarkovWrapper) {
+export default function MapOfTarkovWrapper({ mapData }: MapOfTarkovWrapper) {
   const param = useParams<{ id: string }>();
   const [imageSelect, setImageSelect] = useState<string>(param.id);
 

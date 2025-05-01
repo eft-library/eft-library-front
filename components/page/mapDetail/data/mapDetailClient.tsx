@@ -3,14 +3,14 @@
 import { useState } from "react";
 import type {
   MapDetailClient,
-  Map,
+  MapData,
 } from "@/components/page/mapDetail/data/mapType";
 import MapWrapper from "@/components/page/mapDetail/data/mapWrapper";
 
 export default function MapDetailClient({ mapInfo }: MapDetailClient) {
-  const [mapData, setMapData] = useState<Map>(mapInfo.map);
+  const [mapData, setMapData] = useState<MapData>(mapInfo.map);
 
-  const onClickMap = (value: Map) => {
+  const onClickMap = (value: MapData) => {
     setMapData(value);
   };
   if (!mapData) return null;

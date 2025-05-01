@@ -27,7 +27,7 @@ export default function MapWrapper({
       />
       <SubMapSelector
         onClickMapAction={onClickMapAction}
-        mapId={mapData.id}
+        mapData={mapData}
         mapSelector={mapSelector}
       />
       <div className={"flex flex-col gap-4 items-center"}>

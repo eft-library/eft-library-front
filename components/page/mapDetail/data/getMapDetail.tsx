@@ -9,7 +9,7 @@ import type { MapInfoData } from "@/components/page/mapDetail/data/mapType";
 import Loading from "@/components/custom/loading/loading";
 
 export default function GetMapDetail() {
-  const [allMapInfo, setAllMapInfo] = useState<MapInfoData>();
+  const [mapData, setMapData] = useState<MapInfoData>();
   const param = useParams<{ id: string }>();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function GetMapDetail() {
         return null;
       }
 
-      setAllMapInfo(data.data);
+      setMapData(data.data);
     };
 
     if (param.id) {
@@ -32,7 +32,7 @@ export default function GetMapDetail() {
     }
   }, [param.id]);
 
-  if (!allMapInfo) return <Loading />;
+  if (!mapData) return <Loading />;
 
-  return <MapDetailClient mapInfo={allMapInfo} />;
+  return <MapDetailClient mapInfo={mapData} />;
 }
