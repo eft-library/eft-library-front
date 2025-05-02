@@ -15,11 +15,9 @@ export default function MapOfTarkovWrapper({ mapData }: MapOfTarkovWrapper) {
       <MapOfTarkovSelectorClient
         setImageSelect={setImageSelect}
         imageSelect={imageSelect}
+        mapData={mapData}
       />
-      <MapOfTarkovClient
-        mapOfTarkovList={mapOfTarkovList}
-        imageSelect={imageSelect}
-      />
+      <MapOfTarkovClient mapData={mapData} imageSelect={imageSelect} />
     </>
   );
 }

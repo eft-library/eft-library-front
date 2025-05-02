@@ -1,117 +1,78 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useParams } from "next/navigation";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import BossRender from "./bossRender";
+// import BossRender from "./bossRender";
 import ExtractionRender from "./extractionRender";
 import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { checkIdCategory } from "@/lib/func/jsxfunction";
-import type { MapOfTarkovClient, Extraction, Boss } from "./mapOfTarkovType";
+import type { MapOfTarkovClient } from "./mapOfTarkovType";
+import MapInfo from "./mapInfo";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import {
   extractionTableColumn,
   motBossTableColumn,
 } from "@/lib/consts/columnConsts";
 
-const MapInfo = dynamic(() => import("./mapInfo"), { ssr: false });
-
 export default function MapOfTarkovClient({
-  mapOfTarkovList,
+  mapData,
   imageSelect,
 }: MapOfTarkovClient) {
-  const param = useParams<{ id: string }>();
-
-  const sortBossList = (bossList: Boss[]) => {
-    bossList.sort((a, b) => {
-      return a.order - b.order;
-    });
-    return bossList;
-  };
-
-  const sortExtractionList = (extractionList: Extraction[]) => {
-    const order = ["ALL", "PMC", "Scav"];
-    extractionList.sort((a, b) => {
-      return order.indexOf(a.faction) - order.indexOf(b.faction);
-    });
-    return extractionList;
-  };
-
   return (
     <div className="w-full">
-      {mapOfTarkovList.map(
-        (mapOfTarkov) =>
-          checkIdCategory(param.id, mapOfTarkov.map_id) && (
-            <div
-              key={mapOfTarkov.map_id}
-              className="flex flex-col gap-6 items-center"
-            >
-              <MapInfo
-                mapInfo={mapOfTarkov.map_info}
-                findInfo={mapOfTarkov.find_info}
-                imageSelect={imageSelect}
-              />
+      <div key={mapData.map_id} className="flex flex-col gap-6 items-center">
+        <MapInfo
+          mapData={mapData.map_info}
+          findInfo={mapData.find_info}
+          imageSelect={imageSelect}
+        />
 
-              <div className="w-[1200px]">
-                <AdBanner
-                  dataAdFormat={"auto"}
-                  dataFullWidthResponsive={true}
-                  dataAdSlot="2690838054"
-                />
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <TextSpan isCenter={false} size="3xl">
-                  보스
-                </TextSpan>
-                <Separator className="bg-white" />
-                <TableColumn columnDesign={7} columnData={motBossTableColumn} />
-                {sortBossList(mapOfTarkov.boss_list).map((boss, index) => (
-                  <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
-                ))}
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <TextSpan isCenter={false} size="3xl">
-                  탈출구
-                </TextSpan>
-                <Separator className="bg-white" />
-                <TableColumn
-                  columnDesign={11}
-                  columnData={extractionTableColumn}
-                  isExtraction
-                />
-                {sortExtractionList(mapOfTarkov.extraction_info).map(
-                  (extraction) => (
-                    <ExtractionRender
-                      key={extraction.id}
-                      extractionInfo={extraction}
-                    />
-                  )
-                )}
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <TextSpan isCenter={false} size="3xl">
-                  Transits
-                </TextSpan>
-                <Separator className="bg-white" />
-                <TableColumn
-                  columnDesign={11}
-                  columnData={extractionTableColumn}
-                  isExtraction
-                />
-                {sortExtractionList(mapOfTarkov.transits_info).map(
-                  (transits) => (
-                    <ExtractionRender
-                      key={transits.id}
-                      extractionInfo={transits}
-                    />
-                  )
-                )}
-              </div>
-            </div>
-          )
-      )}
+        <div className="w-[1200px]">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
+        <div className="w-full flex flex-col gap-2">
+          <TextSpan isCenter={false} size="3xl">
+            보스
+          </TextSpan>
+          <Separator className="bg-white" />
+          <TableColumn columnDesign={7} columnData={motBossTableColumn} />
+          {/* {mapData.boss_list.map((boss, index) => (
+            <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
+          ))} */}
+        </div>
+        <div className="w-full flex flex-col gap-2">
+          <TextSpan isCenter={false} size="3xl">
+            탈출구
+          </TextSpan>
+          <Separator className="bg-white" />
+          <TableColumn
+            columnDesign={11}
+            columnData={extractionTableColumn}
+            isExtraction
+          />
+          {mapData.extraction_info.map((extraction) => (
+            <ExtractionRender key={extraction.id} extractionInfo={extraction} />
+          ))}
+        </div>
+        <div className="w-full flex flex-col gap-2">
+          <TextSpan isCenter={false} size="3xl">
+            Transits
+          </TextSpan>
+          <Separator className="bg-white" />
+          <TableColumn
+            columnDesign={11}
+            columnData={extractionTableColumn}
+            isExtraction
+          />
+          {mapData.transits_info.map((transits) => (
+            <ExtractionRender key={transits.id} extractionInfo={transits} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -94,7 +94,7 @@ export interface MapDetailClient {
   mapInfo: MapInfoData;
 }
 
-interface MapSelector {
+export interface MapSelector {
   id: string;
   link: string;
   name: LocaleName;

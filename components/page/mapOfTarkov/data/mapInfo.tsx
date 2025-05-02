@@ -5,7 +5,9 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import type { MapSlider } from "./mapOfTarkovType";
+import type { MapInfo } from "./mapOfTarkovType";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 // import { useState } from "react";
 // import "leaflet/dist/leaflet.css";
 // import { ALL_COLOR } from "@/lib/consts/colorConsts";
@@ -23,7 +25,9 @@ import type { MapSlider } from "./mapOfTarkovType";
 //   iconAnchor: [10, 10], // 중심 정렬
 // });
 
-export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
+export default function MapInfo({ mapData, imageSelect }: MapInfo) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   // const [where, setWhere] = useState<string>("");
   // const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
   // const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
@@ -58,14 +62,14 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
     <div className="w-full flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <TextSpan isCenter={false} size="3xl">
-          {mapInfo.name_kr}
+          {mapData.name[localeKey]}
         </TextSpan>
       </div>
 
       <Separator className="bg-white" />
 
       <Gallery>
-        {mapInfo.sub.map(
+        {mapData.children.map(
           (map) =>
             map.id === imageSelect && (
               <Item
@@ -82,7 +86,7 @@ export default function MapInfo({ mapInfo, imageSelect }: MapSlider) {
                   >
                     <Image
                       src={map.mot_image}
-                      alt={map.name_en}
+                      alt={map.name.en}
                       width={1100}
                       height={600}
                       style={{ width: "auto", height: "auto" }}

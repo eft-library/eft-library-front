@@ -1,4 +1,4 @@
-interface Boss {
+export interface Boss {
   faction: string;
   id: string;
   health_total: number;
