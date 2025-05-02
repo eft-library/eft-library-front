@@ -1,4 +1,6 @@
+import { SpawnChance } from "@/components/page/boss/data/bossTypes";
 import { Buff, Debuff } from "@/components/page/medical/data/medicalTypes";
+import { getOtherLocalizedKey } from "./localeFunction";
 
 export const getPlusMinus = (text: number | string) => {
   if (typeof text === "number") {
@@ -180,4 +182,38 @@ export const getQuestTitle = (title: string, type: "en" | "kr") => {
     return title.substring(title.indexOf("(")).trim();
   }
   return title.substring(0, title.indexOf("(")).trim();
+};
+
+export const groupAndSummarizeChances = (
+  spawnChances: SpawnChance[],
+  localeKey: string
+) => {
+  const grouped = new Map<string, number[]>();
+
+  for (const spawn of spawnChances) {
+    const list = grouped.get(spawn[getOtherLocalizedKey(localeKey)]) ?? [];
+    list.push(spawn.spawnChance);
+    grouped.set(spawn[getOtherLocalizedKey(localeKey)], list);
+  }
+  const summarized = Array.from(grouped.entries()).map(([name_en, chances]) => {
+    const min = Math.min(...chances);
+    const max = Math.max(...chances);
+    return { name_en, min, max };
+  });
+
+  return summarized;
+};
+
+export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
+  const seen = new Set<string>();
+  const uniqueList: typeof spawnChances = [];
+
+  for (const item of spawnChances) {
+    if (!seen.has(item.name_en)) {
+      seen.add(item.name_en);
+      uniqueList.push(item);
+    }
+  }
+
+  return uniqueList;
 };

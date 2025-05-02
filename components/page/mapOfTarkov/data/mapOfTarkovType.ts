@@ -50,7 +50,7 @@ export interface MapInfo {
 export type CoordPx = [number, number, number, number];
 
 export interface MapOfTarkov {
-  boss_list: Boss[];
+  boss_info: Boss[];
   map_info: MapData;
   extraction_info: Extraction[];
   transits_info: Extraction[];
@@ -63,4 +63,8 @@ interface LocaleName {
   en: string;
   ja: string;
   ko: string;
+}
+
+export interface BossClient {
+  bossData: Boss;
 }

@@ -7,14 +7,23 @@ import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { BossClient } from "./mapOfTarkovType";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
+import {
+  groupSpawnAreas,
+  groupAndSummarizeChances,
+} from "@/lib/func/jsxfunction";
 
-export default function BossRender({ bossInfo }: BossClient) {
+export default function BossRender({ bossData }: BossClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   return (
-    <DefineGrid cols="7" id={bossInfo.id} pageId="bossInfo">
+    <DefineGrid cols="7" id={bossData.id} pageId="bossData">
       <CenterContents>
         <ImageView
-          src={bossInfo.image}
-          alt={bossInfo.name_en}
+          src={bossData.image}
+          alt={bossData.name.en}
           popWidth={180}
           popHeight={180}
           size="120px"
@@ -23,40 +32,60 @@ export default function BossRender({ bossInfo }: BossClient) {
         />
       </CenterContents>
       <CenterContents>
-        <TextSpan>{bossInfo.name_kr}</TextSpan>
+        <TextSpan>{bossData.name[localeKey]}</TextSpan>
       </CenterContents>
       <CenterContents>
-        <TextSpan>{bossInfo.faction}</TextSpan>
+        <TextSpan>{bossData.faction}</TextSpan>
       </CenterContents>
       <CenterContents isCol>
-        {bossInfo.location_spawn_chance_kr.map((location, index) => (
-          <React.Fragment key={`${location.location}-${index}`}>
-            <TextSpan>{location.location}</TextSpan>
-            {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
-              <Separator className="my-[3px] bg-white w-[60%]" />
-            )}
-          </React.Fragment>
-        ))}
+        {bossData.spawn_chance &&
+          groupSpawnAreas(bossData.spawn_chance).map((spawn, index) => (
+            <React.Fragment key={`${spawn.name_en}-${index}-area`}>
+              <TextSpan>{spawn[getOtherLocalizedKey(localeKey)]}</TextSpan>
+              {groupSpawnAreas(bossData.spawn_chance).length !== index + 1 && (
+                <Separator className="my-[3px] bg-white w-[60%]" />
+              )}
+            </React.Fragment>
+          ))}
       </CenterContents>
       <CenterContents isCol>
-        {bossInfo.location_spawn_chance_kr.map((spawn, index) => (
-          <React.Fragment key={`${spawn.chance}-${index}`}>
-            <TextSpan>{spawn.chance} %</TextSpan>
-            {bossInfo.location_spawn_chance_kr.length !== index + 1 && (
-              <Separator className="my-[3px] bg-white w-[60%]" />
-            )}
-          </React.Fragment>
-        ))}
+        {bossData.spawn_chance &&
+          groupAndSummarizeChances(bossData.spawn_chance, localeKey).map(
+            (spawn, index) => (
+              <React.Fragment key={`${spawn.name_en}-${index}`}>
+                <TextSpan>
+                  {spawn.min === spawn.max
+                    ? `${Math.round(spawn.min * 100)} %`
+                    : `${Math.round(spawn.min * 100)} ~ ${Math.round(
+                        spawn.max * 100
+                      )} %`}
+                </TextSpan>
+                {groupAndSummarizeChances(bossData.spawn_chance, localeKey)
+                  .length !==
+                  index + 1 && (
+                  <Separator className="my-[3px] bg-white w-[60%]" />
+                )}
+              </React.Fragment>
+            )
+          )}
       </CenterContents>
       <CenterContents>
-        <TextSpan>{bossInfo.health_total}</TextSpan>
+        <TextSpan>{bossData.health_total}</TextSpan>
       </CenterContents>
       <CenterContents isCol>
-        {bossInfo.followers_kr.map((follower, index) => (
-          <TextSpan isCenter={false} key={`${index}-follower-${bossInfo.id}`}>
-            {follower}
-          </TextSpan>
-        ))}
+        {bossData.children &&
+        bossData.children.some((child) => !child.is_boss) ? (
+          bossData.children.map(
+            (childData, index) =>
+              !childData.is_boss && (
+                <TextSpan key={`${index}-follower-${childData.id}`}>
+                  {childData.name[localeKey]}
+                </TextSpan>
+              )
+          )
+        ) : (
+          <TextSpan>-</TextSpan>
+        )}
       </CenterContents>
     </DefineGrid>
   );

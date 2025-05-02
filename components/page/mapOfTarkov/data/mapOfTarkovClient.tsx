@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-// import BossRender from "./bossRender";
+import BossRender from "./bossRender";
 import ExtractionRender from "./extractionRender";
 import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
@@ -40,9 +40,9 @@ export default function MapOfTarkovClient({
           </TextSpan>
           <Separator className="bg-white" />
           <TableColumn columnDesign={7} columnData={motBossTableColumn} />
-          {/* {mapData.boss_list.map((boss, index) => (
-            <BossRender key={`${boss.id}-${index}`} bossInfo={boss} />
-          ))} */}
+          {mapData.boss_info.map((boss, index) => (
+            <BossRender key={`${boss.id}-${index}`} bossData={boss} />
+          ))}
         </div>
         <div className="w-full flex flex-col gap-2">
           <TextSpan isCenter={false} size="3xl">

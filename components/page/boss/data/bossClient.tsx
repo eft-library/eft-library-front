@@ -9,50 +9,18 @@ import AdBanner from "../../../custom/adsense/adBanner";
 import ImageView from "../../../custom/imageView/imageView";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import type { BossClient, SpawnChance } from "./bossTypes";
+import type { BossClient } from "./bossTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import {
+  groupSpawnAreas,
+  groupAndSummarizeChances,
+} from "@/lib/func/jsxfunction";
 
 export default function BossClient({ bossList }: BossClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const param = useParams<{ id: string }>();
-
-  const groupAndSummarizeChances = (spawnChances: SpawnChance[]) => {
-    const grouped = new Map<string, number[]>();
-
-    // 1. 이름별로 그룹화
-    for (const spawn of spawnChances) {
-      const list = grouped.get(spawn[getOtherLocalizedKey(localeKey)]) ?? [];
-      list.push(spawn.spawnChance);
-      grouped.set(spawn[getOtherLocalizedKey(localeKey)], list);
-    }
-
-    // 2. 그룹 결과를 [{ name_en, min, max }] 형태로 변환
-    const summarized = Array.from(grouped.entries()).map(
-      ([name_en, chances]) => {
-        const min = Math.min(...chances);
-        const max = Math.max(...chances);
-        return { name_en, min, max };
-      }
-    );
-
-    return summarized;
-  };
-
-  const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
-    const seen = new Set<string>();
-    const uniqueList: typeof spawnChances = [];
-
-    for (const item of spawnChances) {
-      if (!seen.has(item.name_en)) {
-        seen.add(item.name_en);
-        uniqueList.push(item);
-      }
-    }
-
-    return uniqueList;
-  };
 
   const filterData = bossList.find((boss) => boss.url_mapping === param.id);
 
@@ -96,7 +64,7 @@ export default function BossClient({ bossList }: BossClient) {
           </CenterContents>
           <CenterContents isCol>
             {filterData.spawn_chance &&
-              groupAndSummarizeChances(filterData.spawn_chance).map(
+              groupAndSummarizeChances(filterData.spawn_chance, localeKey).map(
                 (spawn, index) => (
                   <React.Fragment key={`${spawn.name_en}-${index}`}>
                     <TextSpan>
@@ -106,8 +74,10 @@ export default function BossClient({ bossList }: BossClient) {
                             spawn.max * 100
                           )} %`}
                     </TextSpan>
-                    {groupAndSummarizeChances(filterData.spawn_chance)
-                      .length !==
+                    {groupAndSummarizeChances(
+                      filterData.spawn_chance,
+                      localeKey
+                    ).length !==
                       index + 1 && (
                       <Separator className="my-[3px] bg-white w-[60%]" />
                     )}

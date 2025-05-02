@@ -6,8 +6,14 @@ import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { ExtractionRender } from "./mapOfTarkovType";
 import { SquareCheckBig, SquareX } from "lucide-react";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const formatTextWithLineBreaks = (text: string) => {
     return text.split("\n").map((line) => (
       <span key={line}>
@@ -22,7 +28,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
       <CenterContents colSpan="2">
         <ImageView
           src={extractionInfo.image}
-          alt={extractionInfo.name}
+          alt={extractionInfo.name.en}
           popWidth={1600}
           popHeight={900}
           size="240px"
@@ -31,7 +37,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
         />
       </CenterContents>
       <CenterContents colSpan="2">
-        <TextSpan>{extractionInfo.name}</TextSpan>
+        <TextSpan>{extractionInfo.name[localeKey]}</TextSpan>
       </CenterContents>
       <CenterContents>
         <TextSpan>{extractionInfo.faction}</TextSpan>
@@ -39,18 +45,26 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
       <CenterContents>
         <TextSpan>
           {extractionInfo.always_available ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
+            <SquareCheckBig
+              color={ALL_COLOR.ScreaminGreen}
+              strokeWidth={3}
+              size={23}
+            />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={25} />
+            <SquareX color={ALL_COLOR.Red} strokeWidth={3} size={25} />
           )}
         </TextSpan>
       </CenterContents>
       <CenterContents>
         <TextSpan>
           {extractionInfo.single_use ? (
-            <SquareCheckBig color="#5EFF5E" strokeWidth={3} size={23} />
+            <SquareCheckBig
+              color={ALL_COLOR.ScreaminGreen}
+              strokeWidth={3}
+              size={23}
+            />
           ) : (
-            <SquareX color="#FF0000" strokeWidth={3} size={25} />
+            <SquareX color={ALL_COLOR.Red} strokeWidth={3} size={25} />
           )}
         </TextSpan>
       </CenterContents>
