@@ -54,9 +54,9 @@ export default function MapOfTarkovClient({
             columnData={extractionTableColumn}
             isExtraction
           />
-          {mapData.extraction_info.map((extraction) => (
+          {/* {mapData.extraction_info.map((extraction) => (
             <ExtractionRender key={extraction.id} extractionInfo={extraction} />
-          ))}
+          ))} */}
         </div>
         <div className="w-full flex flex-col gap-2">
           <TextSpan isCenter={false} size="3xl">
@@ -68,9 +68,9 @@ export default function MapOfTarkovClient({
             columnData={extractionTableColumn}
             isExtraction
           />
-          {mapData.transits_info.map((transits) => (
+          {/* {mapData.transits_info.map((transits) => (
             <ExtractionRender key={transits.id} extractionInfo={transits} />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

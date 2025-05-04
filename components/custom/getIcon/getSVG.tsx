@@ -1,7 +1,4 @@
-import Chzzk from "@/assets/footer/chzzk";
-import Github from "@/assets/footer/github";
 import ItemSvg from "@/assets/filter/itemSvg";
-import Discord from "@/assets/footer/discord";
 
 interface DynamicSVG {
   svgValue: string;
@@ -9,10 +6,6 @@ interface DynamicSVG {
   x: number;
   y: number;
   scale: number;
-}
-
-interface FooterSVG {
-  svgValue: string;
 }
 
 const svgComponents = {
@@ -85,18 +78,4 @@ export const ItemSVG = ({ x, y, svgValue, isEnable }: DynamicSVG) => {
       opacity={isEnable ? "1" : "0.5"}
     />
   );
-};
-
-export const FooterSVG = ({ svgValue }: FooterSVG) => {
-  const footerHeigth = 40;
-  const footerWidth = 40;
-
-  switch (svgValue) {
-    case "HJ":
-      return <Chzzk height={footerHeigth} width={footerWidth} />;
-    case "SY":
-      return <Github height={footerHeigth} width={footerWidth} />;
-    case "JY":
-      return <Discord height={footerHeigth} width={footerWidth} />;
-  }
 };

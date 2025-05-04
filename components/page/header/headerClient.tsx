@@ -6,10 +6,10 @@ import DeafultMenu from "./contents/defaultMenu";
 import Link from "next/link";
 import { useAppStore } from "@/store/provider";
 import { useSession, signIn } from "next-auth/react";
-import TopNaviLogo from "@/assets/navi/topNaviLogo";
 import UserMenu from "./contents/userMenu";
 import LocalSwitcher from "@/components/custom/localeSwitcher/localSwitcher";
 import type { Menu } from "./contents/headerTypes";
+import NaviLogo from "@/assets/navi/NaviLogo";
 
 export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
   const { setNpcId } = useAppStore((state) => state);
@@ -32,7 +32,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
         <div />
         <div className="flex justify-center items-center">
           <Link href="/" aria-label="EFT Library">
-            <TopNaviLogo />
+            <NaviLogo />
           </Link>
         </div>
         <div className="flex justify-center items-center">
