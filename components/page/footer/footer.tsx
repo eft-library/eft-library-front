@@ -2,127 +2,94 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { FooterSVG } from "../../custom/getIcon/getSVG";
 import TextSpan from "../../custom/gridContents/textSpan";
-import { footerColumn } from "@/lib/consts/columnConsts";
+import { footerData } from "@/lib/consts/columnConsts";
 
 export default function Footer() {
   return (
-    <div className="bg-cover bg-Background bg-center flex flex-col items-center justify-center w-full h-auto pt-10">
-      <div className="grid grid-cols-4 gap-16">
-        <div className="col-span-3">
-          <div className="flex flex-col justify-center">
-            <div className="flex m-1">
-              <TextSpan
-                isCursor
-                textColor="SunsetYellow"
-                hoverColor="CreamYellow"
-              >
-                <Link
-                  href="https://eftlibrary.com/privacy-policy-kr"
-                  target="_blank"
-                >
-                  개인정보처리방침&nbsp;
-                </Link>
-              </TextSpan>
-
-              <TextSpan
-                isCursor
-                textColor="SunsetYellow"
-                hoverColor="CreamYellow"
-              >
-                <Link
-                  href="https://eftlibrary.com/privacy-policy-en"
-                  target="_blank"
-                >
-                  (Privacy Policy), &nbsp;
-                </Link>
-              </TextSpan>
-
-              <TextSpan
-                isCursor
-                textColor="SunsetYellow"
-                hoverColor="CreamYellow"
-              >
-                <Link href="https://eftlibrary.com/terms" target="_blank">
-                  이용 약관
-                </Link>
-              </TextSpan>
-            </div>
-            {footerColumn.text.map((item) => (
-              <span key={item.value} className="text-white m-1 font-bold">
-                {item.value}
-              </span>
-            ))}
-            <div className="flex m-1">
-              <TextSpan
-                isCursor
-                textColor="SunsetYellow"
-                hoverColor="CreamYellow"
-              >
-                <Link href="https://eftlibrary.com/" target="_blank">
-                  EFT Library
-                </Link>
-              </TextSpan>
-              <TextSpan isCenter={false}>
-                &nbsp;by&nbsp;TKL&nbsp;is licensed under&nbsp;
-              </TextSpan>
-              <TextSpan
-                isCursor
-                textColor="SunsetYellow"
-                hoverColor="CreamYellow"
-              >
-                <Link
-                  href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
-                  target="_blank"
-                  rel="license noopener noreferrer"
-                >
-                  CC BY-NC-ND 4.0
-                </Link>
-              </TextSpan>
-            </div>
-            <Link
-              href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
-              target="_blank"
-              rel="license noopener noreferrer"
-              style={{ display: "inline-block", width: "146px" }}
+    <div className="flex flex-col max-w-[1300px] pt-2 mx-[16%] bg-Background justify-center">
+      <div className="flex flex-col w-full gap-[2px]">
+        {footerData.text.map((desc, index) => (
+          <TextSpan isCenter={false} key={`footerText-${index}`}>
+            {desc}
+          </TextSpan>
+        ))}
+        <div className="flex">
+          <Link href={footerData.info.privacyLink}>
+            <TextSpan
+              hoverColor="GoldenYellow"
+              textColor="CreamYellow"
+              isCenter={false}
             >
-              <Image
-                src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
-                alt="ND"
-                priority
-                width={142}
-                height={50}
-                style={{ width: "auto", height: "auto" }}
-                placeholder="blur"
-                blurDataURL={
-                  "data:image/jpeg;base64," +
-                  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                }
-              />
-            </Link>
-          </div>
+              🔗 Privacy
+            </TextSpan>
+          </Link>
+          <TextSpan isCenter={false}>&nbsp;|&nbsp;</TextSpan>
+          <Link href={footerData.info.termsLink}>
+            <TextSpan
+              hoverColor="GoldenYellow"
+              textColor="CreamYellow"
+              isCenter={false}
+            >
+              Terms
+            </TextSpan>
+          </Link>
         </div>
-        <div className="col-span-1">
-          <div className="flex flex-col m-1">
-            <span className="text-white m-1 font-bold">
-              Team TKL - HJ, SY, JY
-            </span>
-            <div className="flex">
-              {footerColumn.icon.map((item, index) => {
-                return (
-                  <div
-                    key={item.name}
-                    className={cn("cursor-pointer", { "ml-4": index !== 0 })}
-                    onClick={() => window.open(item.link, "_blank")}
-                  >
-                    <FooterSVG svgValue={item.name} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+        <div className="flex">
+          <TextSpan isCenter={false}>
+            👨‍💻 Team TKL : HJ, SY, JY | 🌐&nbsp;
+          </TextSpan>
+          <Link href={footerData.manager.gitLink}>
+            <TextSpan
+              hoverColor="GoldenYellow"
+              textColor="CreamYellow"
+              isCenter={false}
+            >
+              GitHub
+            </TextSpan>
+          </Link>
+          <TextSpan isCenter={false}>&nbsp;·&nbsp;</TextSpan>
+          <Link href={footerData.manager.chzzkLink}>
+            <TextSpan
+              hoverColor="GoldenYellow"
+              textColor="CreamYellow"
+              isCenter={false}
+            >
+              Chzzk
+            </TextSpan>
+          </Link>
+          <TextSpan isCenter={false}>&nbsp;·&nbsp;</TextSpan>
+          <Link href={footerData.manager.discordLink}>
+            <TextSpan
+              hoverColor="GoldenYellow"
+              textColor="CreamYellow"
+              isCenter={false}
+            >
+              Discord
+            </TextSpan>
+          </Link>
+        </div>
+        <div className="flex">
+          <Link
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
+            target="_blank"
+            rel="license noopener noreferrer"
+            style={{ display: "inline-block", width: "146px" }}
+          >
+            <Image
+              src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
+              alt="ND"
+              priority
+              width={142}
+              height={50}
+              style={{ width: "auto", height: "auto" }}
+              placeholder="blur"
+              blurDataURL={
+                "data:image/jpeg;base64," +
+                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              }
+            />
+          </Link>
         </div>
       </div>
     </div>

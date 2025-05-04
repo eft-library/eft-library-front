@@ -3,23 +3,22 @@ export const COLUMN_KEY = {
   news: "NEWS_COLUMN",
 } as const;
 
-export const footerColumn = {
-  icon: [
-    {
-      link: "https://chzzk.naver.com/9f015658fd7b36976be2e849ac14f197",
-      name: "HJ",
-    },
-    { link: "https://github.com/eft-library", name: "SY" },
-    { link: "https://discord.gg/U39nmwB4ba", name: "JY" },
-  ],
+export const footerData = {
   text: [
-    { value: "문의: tarkovlibrary@gmail.com" },
-    { value: "Handcrafted Tarkov maps are Copyright 2024. TKL." },
-    {
-      value:
-        "Game content and materials are trademarks and copyrights of Battlestate Games and its licensors. All rights reserved.",
-    },
+    "📌 Maps © 2024-2025 TKL | CC BY-NC-ND 4.0",
+    "🔄 The automated data API is sourced from tarkov.dev, with additional content by TKL.",
+    "🎮 Escape from Tarkov content © Battlestate Games. All rights reserved.",
+    "📧 tarkovlibrary@gmail.com",
   ],
+  info: {
+    privacyLink: "https://eftlibrary.com/privacy-policy",
+    termsLink: "https://eftlibrary.com/terms",
+  },
+  manager: {
+    gitLink: "https://github.com/eft-library",
+    chzzkLink: "https://chzzk.naver.com/9f015658fd7b36976be2e849ac14f197",
+    discordLink: "https://discord.gg/U39nmwB4ba",
+  },
 };
 
 export const detailThrowable = ["RGN", "RGO"];
