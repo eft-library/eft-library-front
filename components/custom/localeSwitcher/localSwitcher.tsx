@@ -51,7 +51,7 @@ export default function LocalSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className={`flex items-center justify-between w-36 rounded-lg border border-white bg-Background px-4 py-2 hover:NeutralGray ${
+        className={`flex items-center justify-between w-32 rounded-lg border border-white bg-Background px-4 py-2 hover:NeutralGray ${
           isPending && ""
         }`}
         aria-expanded={isOpen}
@@ -68,7 +68,7 @@ export default function LocalSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-20 mt-2 w-36 origin-top-right rounded-lg bg-Background border border-white shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 w-32 origin-top-right rounded-lg bg-Background border border-white shadow-lg">
           <div className="py-1" role="menu" aria-orientation="vertical">
             {menuItems.map((item) => (
               <button
