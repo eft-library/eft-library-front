@@ -21,7 +21,6 @@ export async function generateMetadata({
 
   const res = product.data;
 
-  console.log(res);
   return {
     title: `타르코프 ${res.boss.name.kr} - EFT Library`,
     description: `Escape from Tarkov (타르코프) 보스 ${res.boss.name.kr}  스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
