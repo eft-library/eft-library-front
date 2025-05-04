@@ -1,7 +1,5 @@
 export const COLUMN_KEY = {
   stationType: "STATION_TYPE",
-  map: "MAP_COLUMN",
-  mapOfTarkov: "MAP_OF_TARKOV_COLUMN",
   news: "NEWS_COLUMN",
 } as const;
 
