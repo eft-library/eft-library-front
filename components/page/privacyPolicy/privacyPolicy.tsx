@@ -1,7 +1,7 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import Link from "next/link";
 
-export default function PrivacyPolicyEn() {
+export default function PrivacyPolicy() {
   return (
     <ContentsWrapper>
       <h1 className="text-white text-4xl font-bold text-center">
