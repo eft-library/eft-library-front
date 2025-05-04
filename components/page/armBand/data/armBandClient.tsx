@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -15,8 +14,6 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ArmBandClient({ armBandList }: ArmBandList) {
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
@@ -41,7 +38,6 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
             <DefineGrid
               id={armBand.id}
               cols="2"
-              pageId={pageId}
               key={armBand.id}
               isDetail
               detailLink={`/item/${armBand.url_mapping}`}

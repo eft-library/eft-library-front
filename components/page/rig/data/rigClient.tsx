@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -18,15 +17,13 @@ import {
   rigClassTableColumn,
   rigNoClassTableColumn,
 } from "@/lib/consts/columnConsts";
-import { getLocaleKey, getZonesLocaleKey } from "@/lib/func/localeFunction";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 
 export default function RigClient({ rig_data }: RigClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -40,9 +37,9 @@ export default function RigClient({ rig_data }: RigClient) {
       </div>
       {hasMatchInList(rig_data.class_rig, word) && (
         <TableColumn
-          columnDesign={10}
+          columnDesign={6}
           columnData={rigClassTableColumn}
-          isFaceCover
+          isNameLarge
         />
       )}
       {rig_data.class_rig.map(
@@ -51,11 +48,10 @@ export default function RigClient({ rig_data }: RigClient) {
             <DefineGrid
               id={rig.id}
               gap="8px"
-              pageId={pageId}
               key={rig.id}
               isDetail
               detailLink={`/item/${rig.url_mapping}`}
-              cols="10"
+              cols="6"
             >
               <CenterContents>
                 <ImageView
@@ -68,41 +64,21 @@ export default function RigClient({ rig_data }: RigClient) {
                   wrapHeight={rig.image_height * 48}
                 />
               </CenterContents>
-              <CenterContents colSpan="4">
+              <CenterContents colSpan="3">
                 {highlightMatchedText(rig.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{rig.info.durability}</TextSpan>
               </CenterContents>
               <CenterContents>
-                <TextSpan>{rig.info.capacity}</TextSpan>
-              </CenterContents>
-              <CenterContents>
                 <TextSpan>{rig.info.class_value}</TextSpan>
-              </CenterContents>
-              <CenterContents isCol>
-                {rig.info.zones &&
-                  rig.info.zones[getZonesLocaleKey(locale)].map(
-                    (area, index) => (
-                      <TextSpan key={`${index}-area-${rig.id}`}>
-                        {area}
-                      </TextSpan>
-                    )
-                  )}
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{rig.info.weight} kg</TextSpan>
               </CenterContents>
             </DefineGrid>
           )
       )}
 
       {hasMatchInList(rig_data.no_class_rig, word) && (
-        <TableColumn
-          columnDesign={4}
-          columnData={rigNoClassTableColumn}
-          isKey
-        />
+        <TableColumn columnDesign={2} columnData={rigNoClassTableColumn} />
       )}
       {rig_data.no_class_rig.map(
         (rig) =>
@@ -110,11 +86,10 @@ export default function RigClient({ rig_data }: RigClient) {
             <DefineGrid
               id={rig.id}
               gap="8px"
-              pageId={pageId}
               key={rig.id}
               isDetail
               detailLink={`/item/${rig.url_mapping}`}
-              cols="4"
+              cols="2"
             >
               <CenterContents>
                 <ImageView
@@ -127,11 +102,8 @@ export default function RigClient({ rig_data }: RigClient) {
                   wrapHeight={rig.image_height * 48}
                 />
               </CenterContents>
-              <CenterContents colSpan="2">
-                {highlightMatchedText(rig.name[localeKey], word)}
-              </CenterContents>
               <CenterContents>
-                <TextSpan>{rig.info.weight} kg</TextSpan>
+                {highlightMatchedText(rig.name[localeKey], word)}
               </CenterContents>
             </DefineGrid>
           )

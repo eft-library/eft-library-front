@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -15,9 +14,6 @@ export default function StimulantClient({
   medicalList,
   searchWord,
 }: StimulantClient) {
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
   const getSkillColor = (text: string) => {
     const blue = ["진통제", "해독제"];
     const red = ["손 떨림", "터널 효과"];
@@ -79,7 +75,6 @@ export default function StimulantClient({
             ) && (
               <DefineGrid
                 id={stimulant.id}
-                pageId={pageId}
                 cols="4"
                 key={stimulant.id}
                 isDetail

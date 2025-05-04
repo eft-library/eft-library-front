@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -15,9 +14,6 @@ import {
 } from "@/lib/func/jsxfunction";
 
 export default function DrugClient({ medicalList, searchWord }: DrugClient) {
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
   const drugText = (label: string, value: number, positive: boolean) => {
     return (
       <div className={"flex mb-[4px]"}>
@@ -32,7 +28,11 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
-        <TableColumn columnDesign={7} columnData={drugTableColumn} isMedical />
+        <TableColumn
+          columnDesign={8}
+          columnData={drugTableColumn}
+          isNameLarge
+        />
       )}
 
       <div className="w-full">
@@ -45,9 +45,8 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
               drug.name_kr
             ) && (
               <DefineGrid
-                cols="7"
+                cols="8"
                 id={drug.id}
-                pageId={pageId}
                 key={drug.id}
                 isDetail
                 detailLink={`/item/${drug.url_mapping}`}
@@ -63,7 +62,7 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
                     wrapHeight={drug.image_height * 64}
                   />
                 </CenterContents>
-                <CenterContents colSpan="2">
+                <CenterContents colSpan="3">
                   {highlightMatchedText(drug.name_kr, searchWord)}
                 </CenterContents>
 

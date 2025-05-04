@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -16,8 +15,6 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function BackpackClient({ backpackList }: BackpackList) {
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -32,9 +29,9 @@ export default function BackpackClient({ backpackList }: BackpackList) {
         />
       </div>
       <TableColumn
-        columnDesign={7}
+        columnDesign={6}
         columnData={backpackTableColumn}
-        isArmorVest
+        isNameLarge
       />
       {backpackList.map(
         (backpack) =>
@@ -45,9 +42,8 @@ export default function BackpackClient({ backpackList }: BackpackList) {
             backpack.name.ja
           ) && (
             <DefineGrid
-              cols="7"
+              cols="6"
               id={backpack.id}
-              pageId={pageId}
               key={backpack.id}
               isDetail
               detailLink={`/item/${backpack.url_mapping}`}
@@ -74,9 +70,6 @@ export default function BackpackClient({ backpackList }: BackpackList) {
                   {backpack.info.grids[0].width} X
                   {backpack.info.grids[0].height}
                 </TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{backpack.info.weight} kg</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

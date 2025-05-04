@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -18,8 +17,6 @@ export default function ContainerClient({ containerList }: ContainerList) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -31,7 +28,11 @@ export default function ContainerClient({ containerList }: ContainerList) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnDesign={5} columnData={containerTableColumn} isKey />
+      <TableColumn
+        columnDesign={6}
+        columnData={containerTableColumn}
+        isNameLarge
+      />
       {containerList.map(
         (container) =>
           filteringData(
@@ -42,8 +43,7 @@ export default function ContainerClient({ containerList }: ContainerList) {
           ) && (
             <DefineGrid
               id={container.id}
-              pageId={pageId}
-              cols="5"
+              cols="6"
               key={container.id}
               isDetail
               detailLink={`/item/${container.url_mapping}`}
@@ -59,7 +59,7 @@ export default function ContainerClient({ containerList }: ContainerList) {
                   size={(container.image_width * 64).toString()}
                 />
               </CenterContents>
-              <CenterContents colSpan="2">
+              <CenterContents colSpan="3">
                 {highlightMatchedText(container.name[localeKey], word)}
               </CenterContents>
               <CenterContents>

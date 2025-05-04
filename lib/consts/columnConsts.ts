@@ -88,30 +88,8 @@ export const provisionsTableColumn = {
 };
 
 export const ammoTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "데미지",
-    "관통력",
-    "방어구 피해",
-    "정확성",
-    "반동",
-    "가벼운 출혈",
-    "깊은 출혈",
-    "방탄 등급별 총알 효율성",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "데미지",
-    "관통력",
-    "방어구 피해",
-    "정확성",
-    "반동",
-    "가벼운 출혈",
-    "깊은 출혈",
-    "방탄 등급별 총알 효율성",
-  ],
+  value_en: ["사진", "이름", "데미지", "관통력", "방탄 등급별 총알 효율성"],
+  value_kr: ["사진", "이름", "데미지", "관통력", "방탄 등급별 총알 효율성"],
 };
 
 export const armBandTableColumn = {
@@ -120,13 +98,13 @@ export const armBandTableColumn = {
 };
 
 export const armorVestTableColumn = {
-  value_en: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
-  value_kr: ["사진", "이름", "내구성", "보호 등급", "보호 부위", "무게"],
+  value_en: ["사진", "이름", "내구성", "보호 등급"],
+  value_kr: ["사진", "이름", "내구성", "보호 등급"],
 };
 
 export const backpackTableColumn = {
-  value_en: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
-  value_kr: ["사진", "이름", "슬롯", "그리드 크기", "무게"],
+  value_en: ["사진", "이름", "슬롯", "그리드 크기"],
+  value_kr: ["사진", "이름", "슬롯", "그리드 크기"],
 };
 
 export const bossTableColumn = {
@@ -140,24 +118,8 @@ export const containerTableColumn = {
 };
 
 export const faceCoverClassTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "보호 등급",
-    "보호 부위",
-    "내구성",
-    "도탄 기회",
-    "무게",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "보호 등급",
-    "보호 부위",
-    "내구성",
-    "도탄 기회",
-    "무게",
-  ],
+  value_en: ["사진", "이름", "보호 등급", "내구성"],
+  value_kr: ["사진", "이름", "보호 등급", "내구성"],
 };
 
 export const faceCoverNoClassTableColumn = {
@@ -171,24 +133,8 @@ export const headsetTableColumn = {
 };
 
 export const headwearClassTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "보호 등급",
-    "보호 부위",
-    "내구성",
-    "도탄 기회",
-    "무게",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "보호 등급",
-    "보호 부위",
-    "내구성",
-    "도탄 기회",
-    "무게",
-  ],
+  value_en: ["사진", "이름", "보호 등급", "내구성"],
+  value_kr: ["사진", "이름", "보호 등급", "내구성"],
 };
 
 export const headwearNoClassTableColumn = {
@@ -197,29 +143,13 @@ export const headwearNoClassTableColumn = {
 };
 
 export const rigClassTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "내구성",
-    "슬롯",
-    "보호 등급",
-    "보호 부위",
-    "무게",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "내구성",
-    "슬롯",
-    "보호 등급",
-    "보호 부위",
-    "무게",
-  ],
+  value_en: ["사진", "이름", "내구성", "보호 등급"],
+  value_kr: ["사진", "이름", "내구성", "보호 등급"],
 };
 
 export const rigNoClassTableColumn = {
-  value_en: ["사진", "이름", "슬롯", "무게"],
-  value_kr: ["사진", "이름", "무게"],
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
 };
 
 export const drugTableColumn = {
@@ -243,46 +173,28 @@ export const medikitTableColumn = {
 };
 
 export const gunTableColumn = {
-  value_en: [
-    "사진",
-    "이름",
-    "기본 탄약",
-    "발사모드",
-    "발사속도",
-    "인체공학",
-    "수평반동",
-    "수직반동",
-  ],
-  value_kr: [
-    "사진",
-    "이름",
-    "기본 탄약",
-    "발사모드",
-    "발사속도",
-    "인체공학",
-    "수평반동",
-    "수직반동",
-  ],
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
 };
 
 export const knifeTableColumn = {
-  value_en: ["사진", "이름", "기본 데미지", "찌르기", "기본 공격 범위"],
-  value_kr: ["사진", "이름", "기본 데미지", "찌르기", "기본 공격 범위"],
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
 };
 
 export const stationaryTableColumn = {
-  value_en: ["사진", "이름", "탄약통", "발사모드", "발사속도"],
-  value_kr: ["사진", "이름", "탄약통", "발사모드", "발사속도"],
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
 };
 
 export const throwableTableColumn = {
-  value_en: ["사진", "이름", "폭발 지연", "폭발 거리", "파편 반경"],
-  value_kr: ["사진", "이름", "폭발 지연", "폭발 거리", "파편 반경"],
+  value_en: ["사진", "이름"],
+  value_kr: ["사진", "이름"],
 };
 
 export const relatedQuestTableColumn = {
-  value_en: ["사진", "이름", "수량", "인레이드", "노트"],
-  value_kr: ["사진", "이름", "수량", "인레이드", "노트"],
+  value_en: ["사진", "이름", "수량", "인레이드"],
+  value_kr: ["사진", "이름", "수량", "인레이드"],
 };
 
 export const follwerTableColumn = {

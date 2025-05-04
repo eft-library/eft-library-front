@@ -24,7 +24,7 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   };
 
   return (
-    <DefineGrid cols="11" id={extractionInfo.id} pageId="extraction">
+    <DefineGrid cols="11" id={extractionInfo.id}>
       <CenterContents colSpan="2">
         <ImageView
           src={extractionInfo.image}

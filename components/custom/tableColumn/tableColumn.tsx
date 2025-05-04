@@ -7,54 +7,31 @@ interface TableColumn {
 
 interface TableColumnProps {
   columnDesign: number;
-  isProvision?: boolean;
-  isMedical?: boolean;
-  isAmmo?: boolean;
-  isKey?: boolean;
-  isGun?: boolean;
+  isAmmoProvisions?: boolean;
   isExtraction?: boolean;
-  isRelatedQuest?: boolean;
-  isFaceCover?: boolean;
-  isArmorVest?: boolean;
   columnData: TableColumn;
+  isNameLarge?: boolean;
+  isImageLarge?: boolean;
 }
 
 export default function TableColumn({
   columnData,
   columnDesign,
-  isProvision = false,
-  isMedical = false,
-  isAmmo = false,
-  isKey = false,
+  isAmmoProvisions = false,
   isExtraction = false,
-  isGun = false,
-  isArmorVest = false,
-  isRelatedQuest = false,
-  isFaceCover = false,
+  isNameLarge = false,
 }: TableColumnProps) {
   const colSpanMapping = {
-    isAmmo: (index: number) => (index === 1 ? 3 : index === 9 ? 2 : 1),
-    isProvision: (index: number) => (index === 1 || index === 4 ? 2 : 1),
-    isMedical: (index: number) => ([1].includes(index) ? 2 : 1),
-    isKey: (index: number) => ([1].includes(index) ? 2 : 1),
-    isGun: (index: number) => ([0].includes(index) ? 2 : 1),
-    isRelatedQuest: (index: number) => ([0, 1, 4].includes(index) ? 2 : 1),
+    isAmmoProvisions: (index: number) => ([1, 4].includes(index) ? 2 : 1),
     isExtraction: (index: number) => ([0, 1, 5, 6].includes(index) ? 2 : 1),
-    isArmorVest: (index: number) => ([1].includes(index) ? 3 : 1),
-    isFaceCover: (index: number) => ([1].includes(index) ? 4 : 1),
+    isNameLarge: (index: number) => ([1].includes(index) ? 3 : 1),
     default: () => 1,
   };
 
   const checkColSpan = (index: number) => {
-    if (isAmmo) return colSpanMapping.isAmmo(index);
-    if (isProvision) return colSpanMapping.isProvision(index);
-    if (isMedical) return colSpanMapping.isMedical(index);
-    if (isKey) return colSpanMapping.isKey(index);
-    if (isGun) return colSpanMapping.isGun(index);
-    if (isRelatedQuest) return colSpanMapping.isRelatedQuest(index);
+    if (isAmmoProvisions) return colSpanMapping.isAmmoProvisions(index);
     if (isExtraction) return colSpanMapping.isExtraction(index);
-    if (isArmorVest) return colSpanMapping.isArmorVest(index);
-    if (isFaceCover) return colSpanMapping.isFaceCover(index);
+    if (isNameLarge) return colSpanMapping.isNameLarge(index);
     return colSpanMapping.default();
   };
 
@@ -71,7 +48,7 @@ export default function TableColumn({
             `col-span-${checkColSpan(index)} flex justify-center items-center`
           )}
         >
-          <span className={`font-bold p-1 text-sm`}>{val}</span>
+          <span className={`font-bold p-1 text-lg`}>{val}</span>
         </div>
       ))}
     </div>

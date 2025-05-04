@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -12,12 +11,10 @@ import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { armorVestTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
-import { getLocaleKey, getZonesLocaleKey } from "@/lib/func/localeFunction";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
@@ -31,9 +28,9 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
         />
       </div>
       <TableColumn
-        columnDesign={8}
+        columnDesign={6}
         columnData={armorVestTableColumn}
-        isArmorVest
+        isNameLarge
       />
       {armorVestList.map(
         (armorVest) =>
@@ -44,9 +41,8 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
             armorVest.name.ja
           ) && (
             <DefineGrid
-              cols="8"
+              cols="6"
               id={armorVest.id}
-              pageId={pageId}
               key={armorVest.id}
               isDetail
               detailLink={`/item/${armorVest.url_mapping}`}
@@ -70,19 +66,6 @@ export default function ArmorVestClient({ armorVestList }: ArmorVestList) {
               </CenterContents>
               <CenterContents>
                 <TextSpan>{armorVest.info.class_value}</TextSpan>
-              </CenterContents>
-              <CenterContents isCol>
-                {armorVest.info.zones &&
-                  armorVest.info.zones[getZonesLocaleKey(locale)].map(
-                    (zone, index) => (
-                      <TextSpan key={`${index}-zone-${armorVest.id}`}>
-                        {zone}
-                      </TextSpan>
-                    )
-                  )}
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{armorVest.info.weight} kg</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

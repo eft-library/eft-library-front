@@ -18,10 +18,46 @@ import {
   getLocaleKey,
   getOtherLocalizedKey,
 } from "@/lib/func/localeFunction";
+import DefineGrid from "@/components/custom/gridContents/defineGrid";
+import CenterContents from "@/components/custom/gridContents/centerContents";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+
+  const mergedItems = questInfo.objectives.flatMap((item) => {
+    if ((item.type === "giveItem" || item.type === "findItem") && item.items) {
+      return item.items.map((subItem) => ({
+        id: subItem.id,
+        type: item.type,
+        count: item.count,
+        foundInRaid: item.foundInRaid,
+        itemData: subItem,
+      }));
+    }
+
+    if (
+      (item.type === "findQuestItem" || item.type === "giveQuestItem") &&
+      item.questItem
+    ) {
+      return [
+        {
+          id: item.questItem.id,
+          type: item.type,
+          count: item.count,
+          foundInRaid: item.foundInRaid,
+          itemData: item.questItem,
+        },
+      ];
+    }
+
+    return [];
+  });
+
+  const questItems = Array.from(
+    new Map(mergedItems.map((entry) => [entry.itemData.id, entry])).values()
+  );
+
   return (
     <div className="w-full flex flex-col gap-10 items-center">
       {questInfo.objectives && (
@@ -67,145 +103,72 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         />
       </div>
 
-      <div className="w-full flex flex-col gap-2">
-        {questInfo.objectives.some(
-          (item) =>
-            (item.type === "giveItem" ||
-              item.type === "findItem" ||
-              item.type === "findQuestItem" ||
-              item.type === "giveQuestItem") &&
-            item.items
-        ) && (
+      <div className="w-full flex flex-col">
+        {questItems.length > 0 && (
           <>
             <TableColumn
-              columnDesign={8}
+              columnDesign={6}
               columnData={relatedQuestTableColumn}
-              isRelatedQuest
+              isNameLarge
             />
-            {questInfo.objectives.map(
-              (item) =>
-                (item.type === "giveItem" || item.type === "findItem") &&
-                item.items &&
-                item.items.map((subItem, idx) => (
-                  <div
-                    key={`${item.id}-${idx}`}
-                    className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
-                  >
-                    <div className="flex justify-center items-center col-span-2">
-                      <ImageView
-                        src={subItem.gridImageLink}
-                        alt={subItem.name_en}
-                        popWidth={200}
-                        popHeight={180}
-                        size="170px"
-                        wrapWidth={170}
-                        wrapHeight={100}
+            {questItems.map((qItem) => (
+              <DefineGrid
+                id={qItem.id}
+                cols="6"
+                key={qItem.id}
+                isDetail
+                detailLink={`/item/${qItem.itemData.normalizedName}`}
+              >
+                <CenterContents>
+                  <ImageView
+                    src={qItem.itemData.gridImageLink}
+                    alt={qItem.itemData.name_en}
+                    popWidth={200}
+                    popHeight={180}
+                    size="170px"
+                    wrapWidth={170}
+                    wrapHeight={100}
+                  />
+                </CenterContents>
+                <CenterContents colSpan="3">
+                  {qItem.type === "findQuestItem" ||
+                  qItem.type === "giveQuestItem" ? (
+                    <Link
+                      href={`/item/${qItem.itemData.normalizedName}`}
+                      target="_blank"
+                    >
+                      <TextSpan hoverColor="GoldenYellow">
+                        {qItem.itemData[getOtherLocalizedKey(locale)]}
+                      </TextSpan>
+                    </Link>
+                  ) : (
+                    <TextSpan hoverColor="GoldenYellow">
+                      {qItem.itemData[getOtherLocalizedKey(locale)]}
+                    </TextSpan>
+                  )}
+                </CenterContents>
+                <CenterContents>
+                  <TextSpan>{qItem.count}</TextSpan>
+                </CenterContents>
+                <CenterContents>
+                  <span className="text-base flex justify-center items-center">
+                    {qItem.foundInRaid ? (
+                      <SquareCheckBig
+                        color={ALL_COLOR.ScreaminGreen}
+                        strokeWidth={3}
+                        size={23}
                       />
-                    </div>
-                    <div className="flex justify-center items-center col-span-2">
-                      <Link
-                        href={`/item/${subItem.normalizedName}`}
-                        target="_blank"
-                      >
-                        <TextSpan hoverColor="GoldenYellow">
-                          {subItem[getOtherLocalizedKey(locale)]}
-                        </TextSpan>
-                      </Link>
-                    </div>
-                    <div className="flex justify-center items-center">
-                      <TextSpan>{item.count}</TextSpan>
-                    </div>
-                    <div className="flex justify-center items-center">
-                      <span className="text-base flex justify-center items-center">
-                        {item.foundInRaid ? (
-                          <SquareCheckBig
-                            color={ALL_COLOR.ScreaminGreen}
-                            strokeWidth={3}
-                            size={23}
-                          />
-                        ) : (
-                          <SquareX
-                            color={ALL_COLOR.Red}
-                            strokeWidth={3}
-                            size={25}
-                          />
-                        )}
-                      </span>
-                    </div>
-                    <div className="flex justify-center items-center col-span-2">
-                      {item.description_en && (
-                        <div className="flex justify-center items-center">
-                          <TextSpan>
-                            {item[getDescriptionLocaleKey(locale)]}
-                          </TextSpan>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))
-            )}
-            {questInfo.objectives.map(
-              (item) =>
-                (item.type === "findQuestItem" ||
-                  item.type === "giveQuestItem") &&
-                item.questItem && (
-                  <div
-                    key={`quest-item-${item.id}`}
-                    className="w-full grid grid-cols-8 gap-2 border-solid border-white border-2 mb-2 rounded-lg p-3"
-                  >
-                    <div className="flex justify-center items-center col-span-2">
-                      <ImageView
-                        src={item.questItem.gridImageLink}
-                        alt={item.questItem.name_en}
-                        popWidth={200}
-                        popHeight={180}
-                        size="170px"
-                        wrapWidth={170}
-                        wrapHeight={100}
+                    ) : (
+                      <SquareX
+                        color={ALL_COLOR.Red}
+                        strokeWidth={3}
+                        size={25}
                       />
-                    </div>
-                    <div className="flex justify-center items-center col-span-2">
-                      <Link
-                        href={`/item/${item.questItem.normalizedName}`}
-                        target="_blank"
-                      >
-                        <TextSpan hoverColor="GoldenYellow">
-                          {item.questItem[getOtherLocalizedKey(locale)]}
-                        </TextSpan>
-                      </Link>
-                    </div>
-                    <div className="flex justify-center items-center">
-                      <TextSpan>{item.count}</TextSpan>
-                    </div>
-                    <div className="flex justify-center items-center">
-                      <span className="text-base flex justify-center items-center">
-                        {item.foundInRaid ? (
-                          <SquareCheckBig
-                            color={ALL_COLOR.ScreaminGreen}
-                            strokeWidth={3}
-                            size={23}
-                          />
-                        ) : (
-                          <SquareX
-                            color={ALL_COLOR.Red}
-                            strokeWidth={3}
-                            size={25}
-                          />
-                        )}
-                      </span>
-                    </div>
-                    <div className="flex justify-center items-center col-span-2">
-                      {item[getDescriptionLocaleKey(locale)] && (
-                        <div className="flex justify-center items-center">
-                          <TextSpan>
-                            {item[getDescriptionLocaleKey(locale)]}
-                          </TextSpan>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-            )}
+                    )}
+                  </span>
+                </CenterContents>
+              </DefineGrid>
+            ))}
           </>
         )}
       </div>

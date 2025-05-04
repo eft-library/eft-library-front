@@ -1,14 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import TextSpan from "../../../custom/gridContents/textSpan";
-import {
-  detailThrowable,
-  throwableTableColumn,
-} from "@/lib/consts/columnConsts";
+import { throwableTableColumn } from "@/lib/consts/columnConsts";
 import type { ThrowableRender } from "./weaponTypes";
 import {
   filteringData,
@@ -25,13 +20,11 @@ export default function ThrowableRender({
 }: ThrowableRender) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(throwableList, searchWord) && (
-        <TableColumn columnData={throwableTableColumn} columnDesign={5} />
+        <TableColumn columnData={throwableTableColumn} columnDesign={2} />
       )}
       {throwableList.map(
         (throwable) =>
@@ -42,9 +35,8 @@ export default function ThrowableRender({
             throwable.name.ja
           ) && (
             <DefineGrid
-              cols="5"
+              cols="2"
               id={throwable.id}
-              pageId={pageId}
               key={throwable.id}
               isDetail
               detailLink={`/item/${throwable.url_mapping}`}
@@ -62,30 +54,6 @@ export default function ThrowableRender({
               </CenterContents>
               <CenterContents>
                 {highlightMatchedText(throwable.name[localeKey], searchWord)}
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>
-                  {detailThrowable.includes(throwable.name.ko) ? (
-                    <div className="flex flex-col">
-                      <TextSpan>충격시 {throwable.info.min_fuse} 초</TextSpan>
-                      <TextSpan size="sm">
-                        (충격 신관이 발동되지 않은 경우 {throwable.info.fuse}
-                        초)
-                      </TextSpan>
-                    </div>
-                  ) : (
-                    <TextSpan>{throwable.info.fuse} 초</TextSpan>
-                  )}
-                </TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>
-                  {throwable.info.min_explosion_distance} ~&nbsp;
-                  {throwable.info.max_explosion_distance} m
-                </TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{throwable.info.fragments} m</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

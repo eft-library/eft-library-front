@@ -18,7 +18,7 @@ export default function Provisions() {
       <TableColumn
         columnDesign={7}
         columnData={provisionsTableColumn}
-        isProvision
+        isAmmoProvisions
       />
       <GetProvisions />
     </ContentsWrapper>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -18,9 +17,6 @@ export default function MediKitClient({
   medicalList,
   searchWord,
 }: MediKitClient) {
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
@@ -39,7 +35,6 @@ export default function MediKitClient({
                 key={medikit.id}
                 id={medikit.id}
                 cols="5"
-                pageId={pageId}
                 isDetail
                 detailLink={`/item/${medikit.url_mapping}`}
               >

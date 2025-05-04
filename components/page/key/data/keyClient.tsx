@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -18,8 +17,6 @@ export default function KeyClient({ keyList }: KeyClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -31,14 +28,13 @@ export default function KeyClient({ keyList }: KeyClient) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnDesign={5} columnData={keyTableColumn} isKey />
+      <TableColumn columnDesign={6} columnData={keyTableColumn} isNameLarge />
       {keyList.map(
         (key) =>
           filteringData(word, key.name.en, key.name.ko, key.name.ja) && (
             <DefineGrid
-              cols="5"
+              cols="6"
               id={key.id}
-              pageId={pageId}
               key={key.id}
               isDetail
               detailLink={`/item/${key.url_mapping}`}
@@ -54,7 +50,7 @@ export default function KeyClient({ keyList }: KeyClient) {
                   wrapHeight={key.image_height * 64}
                 />
               </CenterContents>
-              <CenterContents colSpan="2">
+              <CenterContents colSpan="3">
                 {highlightMatchedText(key.name[localeKey], word)}
               </CenterContents>
               <CenterContents isCol>

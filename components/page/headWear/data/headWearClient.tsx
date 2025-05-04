@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -19,18 +18,12 @@ import {
   faceCoverNoClassTableColumn,
 } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
-import {
-  getLocaleKey,
-  getZonesLocaleKey,
-  getRicochetChanceLocaleKey,
-} from "@/lib/func/localeFunction";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function HeadWearClient({ headWearData }: HeadWearClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -44,9 +37,9 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
       </div>
       {hasMatchInList(headWearData.class_headwear, word) && (
         <TableColumn
-          columnDesign={10}
+          columnDesign={6}
           columnData={headwearClassTableColumn}
-          isFaceCover
+          isNameLarge
         />
       )}
       {headWearData.class_headwear.map(
@@ -59,8 +52,7 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
           ) && (
             <DefineGrid
               id={headWear.id}
-              pageId={pageId}
-              cols="10"
+              cols="6"
               key={headWear.id}
               isDetail
               detailLink={`/item/${headWear.url_mapping}`}
@@ -76,36 +68,14 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
                   wrapHeight={headWear.image_height * 64}
                 />
               </CenterContents>
-              <CenterContents colSpan="4">
+              <CenterContents colSpan="3">
                 {highlightMatchedText(headWear.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{headWear.info.class_value}</TextSpan>
               </CenterContents>
-              <CenterContents isCol>
-                {headWear.info.zones &&
-                  headWear.info.zones[getZonesLocaleKey(locale)].map(
-                    (area, index) => (
-                      <TextSpan key={`${index}-area-${headWear.id}`}>
-                        {area}
-                      </TextSpan>
-                    )
-                  )}
-              </CenterContents>
               <CenterContents>
                 <TextSpan>{headWear.info.durability}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>
-                  {
-                    headWear.info.ricochet_chance[
-                      getRicochetChanceLocaleKey(locale)
-                    ]
-                  }
-                </TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{headWear.info.weight} kg</TextSpan>
               </CenterContents>
             </DefineGrid>
           )
@@ -127,7 +97,6 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
           ) && (
             <DefineGrid
               id={headWear.id}
-              pageId={pageId}
               cols="2"
               key={headWear.id}
               isDetail

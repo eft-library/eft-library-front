@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -17,8 +16,6 @@ export default function LootClient({ lootList }: LootClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -36,7 +33,6 @@ export default function LootClient({ lootList }: LootClient) {
           filteringData(word, loot.name.en, loot.name.ko, loot.name.ja) && (
             <DefineGrid
               id={loot.id}
-              pageId={pageId}
               cols="2"
               key={loot.id}
               isDetail

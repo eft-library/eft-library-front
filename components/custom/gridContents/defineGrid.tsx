@@ -3,7 +3,6 @@ import Link from "next/link";
 interface DefineGrid {
   id: string;
   gap?: string;
-  pageId: string;
   cols: string;
   isDetail?: boolean;
   detailLink?: string;
@@ -13,7 +12,6 @@ interface DefineGrid {
 export default function DefineGrid({
   id,
   gap = "2",
-  pageId,
   cols,
   children,
   isDetail = false,
@@ -25,9 +23,7 @@ export default function DefineGrid({
         <div
           key={id}
           id={id}
-          className={`${
-            id === pageId && "bg-NeutralGray"
-          } w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
+          className={`${"bg-NeutralGray"} w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
       ${isDetail && "hover:bg-NeutralGray"} ${isDetail && "cursor-pointer"}
       `}
           style={{
@@ -44,9 +40,7 @@ export default function DefineGrid({
     <div
       key={id}
       id={id}
-      className={`${
-        id === pageId && "bg-NeutralGray"
-      } w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
+      className={`${"bg-NeutralGray"} w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
     `}
       style={{
         gap,

@@ -1,7 +1,6 @@
 "use client";
 
 import EffectText from "./effectText";
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
@@ -14,9 +13,6 @@ import {
 import type { ProvisionsList } from "./provisionsTypes";
 
 export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
   return (
     <div className="w-full">
       {provisionsList.map((provisions) => (
@@ -24,7 +20,6 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           key={provisions.id}
           id={provisions.id}
           cols="7"
-          pageId={pageId}
           isDetail
           detailLink={`/item/${provisions.url_mapping}`}
         >

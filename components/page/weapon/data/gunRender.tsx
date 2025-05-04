@@ -1,10 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import TextSpan from "../../../custom/gridContents/textSpan";
 import type { GunRender } from "./weaponTypes";
 import {
   filteringData,
@@ -13,50 +11,28 @@ import {
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { gunTableColumn } from "@/lib/consts/columnConsts";
-import { getLocaleKey, getModesLocaleKey } from "@/lib/func/localeFunction";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 
 export default function GunRender({ gunList, searchWord }: GunRender) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
-  const sliceDefaultAmmo = (defaultAmmo: string) => {
-    if (!defaultAmmo) return "";
-
-    const pattern = "mm";
-    const handGunPattern = "ACP";
-
-    const index = defaultAmmo.indexOf(pattern);
-    const handGunIndex = defaultAmmo.indexOf(handGunPattern);
-
-    if (index !== -1) {
-      return defaultAmmo.substring(0, index + pattern.length);
-    } else if (handGunIndex !== -1) {
-      return defaultAmmo.substring(0, handGunIndex + handGunPattern.length);
-    } else {
-      return defaultAmmo;
-    }
-  };
-
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(gunList, searchWord) && (
-        <TableColumn columnData={gunTableColumn} isGun columnDesign={9} />
+        <TableColumn columnData={gunTableColumn} columnDesign={2} />
       )}
       {gunList.map(
         (gun) =>
           filteringData(searchWord, gun.name.en, gun.name.ko, gun.name.ja) && (
             <DefineGrid
-              cols="9"
+              cols="2"
               id={gun.id}
-              pageId={pageId}
               key={gun.id}
               isDetail
               detailLink={`/item/${gun.url_mapping}`}
             >
-              <CenterContents colSpan="2">
+              <CenterContents>
                 <ImageView
                   src={gun.image}
                   alt={gun.name.en}
@@ -69,31 +45,6 @@ export default function GunRender({ gunList, searchWord }: GunRender) {
               </CenterContents>
               <CenterContents>
                 {highlightMatchedText(gun.name[localeKey], searchWord)}
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{sliceDefaultAmmo(gun.info.default_ammo)}</TextSpan>
-              </CenterContents>
-              <CenterContents isCol>
-                {gun.info.modes &&
-                  gun.info.modes[getModesLocaleKey(locale)].map(
-                    (area, index) => (
-                      <TextSpan key={`${index}-area-${gun.id}`}>
-                        {area}
-                      </TextSpan>
-                    )
-                  )}
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{gun.info.fire_rate}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{gun.info.ergonomics}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{gun.info.recoil_horizontal}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{gun.info.recoil_vertical}</TextSpan>
               </CenterContents>
             </DefineGrid>
           )

@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -15,9 +14,6 @@ import {
 } from "@/lib/func/jsxfunction";
 
 export default function ItemClient({ medicalList, searchWord }: ItemClient) {
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
-
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
@@ -36,7 +32,6 @@ export default function ItemClient({ medicalList, searchWord }: ItemClient) {
               <DefineGrid
                 cols="5"
                 id={item.id}
-                pageId={pageId}
                 key={item.id}
                 isDetail
                 detailLink={`/item/${item.url_mapping}`}

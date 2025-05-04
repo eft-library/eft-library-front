@@ -19,7 +19,7 @@ export default function BossRender({ bossData }: BossClient) {
   const localeKey = getLocaleKey(locale);
 
   return (
-    <DefineGrid cols="7" id={bossData.id} pageId="bossData">
+    <DefineGrid cols="7" id={bossData.id}>
       <CenterContents>
         <ImageView
           src={bossData.image}

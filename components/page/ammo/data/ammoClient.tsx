@@ -1,11 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TextSpan from "../../../custom/gridContents/textSpan";
-import { getPlusMinus, getColor, floatToPercent } from "@/lib/func/jsxfunction";
 import type { AmmoClient } from "./ammoTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { ammoTableColumn } from "@/lib/consts/columnConsts";
@@ -19,8 +17,6 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   const getEfficiencyColor = (val: number) => {
     switch (val) {
@@ -51,13 +47,16 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnDesign={13} columnData={ammoTableColumn} isAmmo />
+      <TableColumn
+        columnDesign={7}
+        columnData={ammoTableColumn}
+        isAmmoProvisions
+      />
       {ammoList.map(
         (item) =>
           filteringData(word, item.name.en, item.name.ko, item.name.ja) && (
             <DefineGrid
-              cols="13"
-              pageId={pageId}
+              cols="7"
               id={item.id}
               key={item.id}
               isDetail
@@ -74,64 +73,16 @@ export default function AmmoClient({ ammoList }: AmmoClient) {
                   size={(item.image_width * 64).toString()}
                 />
               </CenterContents>
-              <div className="flex col-span-3 justify-center">
+
+              <CenterContents colSpan="2">
                 {highlightMatchedText(item.name[localeKey], word)}
-              </div>
+              </CenterContents>
 
               <CenterContents>
                 <TextSpan>{item.info.damage}</TextSpan>
               </CenterContents>
               <CenterContents>
                 <TextSpan>{item.info.penetration_power}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{item.info.armor_damage} %</TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={getColor(
-                    floatToPercent(item.info.accuracy_modifier),
-                    "check"
-                  )}
-                >
-                  {getPlusMinus(floatToPercent(item.info.accuracy_modifier))} %
-                </TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={getColor(
-                    floatToPercent(item.info.recoil_modifier),
-                    "recoil"
-                  )}
-                >
-                  {getPlusMinus(floatToPercent(item.info.recoil_modifier))}
-                </TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={getColor(
-                    floatToPercent(item.info.light_bleed_modifier),
-                    "check"
-                  )}
-                >
-                  {getPlusMinus(floatToPercent(item.info.light_bleed_modifier))}
-                  %
-                </TextSpan>
-              </CenterContents>
-
-              <CenterContents>
-                <TextSpan
-                  textColor={getColor(
-                    floatToPercent(item.info.heavy_bleed_modifier),
-                    "check"
-                  )}
-                >
-                  {getPlusMinus(floatToPercent(item.info.heavy_bleed_modifier))}
-                  %
-                </TextSpan>
               </CenterContents>
 
               <CenterContents colSpan="2">

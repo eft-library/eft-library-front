@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
@@ -19,18 +18,12 @@ import {
 } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import { useLocale } from "next-intl";
-import {
-  getLocaleKey,
-  getZonesLocaleKey,
-  getRicochetChanceLocaleKey,
-} from "@/lib/func/localeFunction";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
-  const param = useSearchParams();
-  const pageId = param.get("id") || "";
 
   return (
     <div className="w-full flex flex-col">
@@ -44,9 +37,9 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
       </div>
       {hasMatchInList(face_cover_data.class_face_cover, word) && (
         <TableColumn
-          columnDesign={10}
+          columnDesign={6}
           columnData={faceCoverClassTableColumn}
-          isFaceCover
+          isNameLarge
         />
       )}
 
@@ -60,8 +53,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
           ) && (
             <DefineGrid
               id={faceCover.id}
-              pageId={pageId}
-              cols="10"
+              cols="6"
               key={faceCover.id}
               isDetail
               detailLink={`/item/${faceCover.url_mapping}`}
@@ -77,36 +69,15 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
                   wrapHeight={faceCover.image_height * 64}
                 />
               </CenterContents>
-              <CenterContents colSpan="4">
+              <CenterContents colSpan="3">
                 {highlightMatchedText(faceCover.name[localeKey], word)}
               </CenterContents>
               <CenterContents>
                 <TextSpan>{faceCover.info.class_value}</TextSpan>
               </CenterContents>
-              <CenterContents isCol>
-                {faceCover.info.zones &&
-                  faceCover.info.zones[getZonesLocaleKey(locale)].map(
-                    (area, index) => (
-                      <TextSpan key={`${index}-area-${faceCover.id}`}>
-                        {area}
-                      </TextSpan>
-                    )
-                  )}
-              </CenterContents>
+
               <CenterContents>
                 <TextSpan>{faceCover.info.durability}</TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>
-                  {
-                    faceCover.info.ricochet_chance[
-                      getRicochetChanceLocaleKey(locale)
-                    ]
-                  }
-                </TextSpan>
-              </CenterContents>
-              <CenterContents>
-                <TextSpan>{faceCover.info.weight} kg</TextSpan>
               </CenterContents>
             </DefineGrid>
           )
@@ -128,7 +99,6 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
           ) && (
             <DefineGrid
               id={faceCover.id}
-              pageId={pageId}
               cols="2"
               key={faceCover.id}
               isDetail
