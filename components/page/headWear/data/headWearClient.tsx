@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   headwearClassTableColumn,
-  faceCoverNoClassTableColumn,
+  imageNameTableColumn,
 } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
@@ -82,10 +82,7 @@ export default function HeadWearClient({ headWearData }: HeadWearClient) {
       )}
 
       {hasMatchInList(headWearData.no_class_headwear, word) && (
-        <TableColumn
-          columnDesign={2}
-          columnData={faceCoverNoClassTableColumn}
-        />
+        <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
       )}
       {headWearData.no_class_headwear.map(
         (headWear) =>

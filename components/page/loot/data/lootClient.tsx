@@ -4,7 +4,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { lootTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import type { LootClient } from "./lootTypes";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -27,7 +27,7 @@ export default function LootClient({ lootList }: LootClient) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnDesign={2} columnData={lootTableColumn} />
+      <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
       {lootList.map(
         (loot) =>
           filteringData(word, loot.name.en, loot.name.ko, loot.name.ja) && (

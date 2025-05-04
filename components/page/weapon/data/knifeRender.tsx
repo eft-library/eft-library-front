@@ -10,7 +10,7 @@ import {
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { knifeTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 
@@ -21,7 +21,7 @@ export default function KnifeRender({ knifeList, searchWord }: KnifeRender) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(knifeList, searchWord) && (
-        <TableColumn columnData={knifeTableColumn} columnDesign={2} />
+        <TableColumn columnData={imageNameTableColumn} columnDesign={2} />
       )}
 
       {knifeList.map(

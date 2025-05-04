@@ -10,7 +10,7 @@ import {
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { gunTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 
@@ -20,7 +20,7 @@ export default function GunRender({ gunList, searchWord }: GunRender) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(gunList, searchWord) && (
-        <TableColumn columnData={gunTableColumn} columnDesign={2} />
+        <TableColumn columnData={imageNameTableColumn} columnDesign={2} />
       )}
       {gunList.map(
         (gun) =>

@@ -23,7 +23,7 @@ export default function DefineGrid({
         <div
           key={id}
           id={id}
-          className={`${"bg-NeutralGray"} w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
+          className={`w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
       ${isDetail && "hover:bg-NeutralGray"} ${isDetail && "cursor-pointer"}
       `}
           style={{
@@ -40,7 +40,7 @@ export default function DefineGrid({
     <div
       key={id}
       id={id}
-      className={`${"bg-NeutralGray"} w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
+      className={`w-full grid grid-cols-${cols} border-solid border-white border-2 mb-2 rounded-lg p-3
     `}
       style={{
         gap,

@@ -3,7 +3,7 @@
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import { throwableTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import type { ThrowableRender } from "./weaponTypes";
 import {
   filteringData,
@@ -24,7 +24,7 @@ export default function ThrowableRender({
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(throwableList, searchWord) && (
-        <TableColumn columnData={throwableTableColumn} columnDesign={2} />
+        <TableColumn columnData={imageNameTableColumn} columnDesign={2} />
       )}
       {throwableList.map(
         (throwable) =>

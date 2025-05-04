@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   rigClassTableColumn,
-  rigNoClassTableColumn,
+  imageNameTableColumn,
 } from "@/lib/consts/columnConsts";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
@@ -78,7 +78,7 @@ export default function RigClient({ rig_data }: RigClient) {
       )}
 
       {hasMatchInList(rig_data.no_class_rig, word) && (
-        <TableColumn columnDesign={2} columnData={rigNoClassTableColumn} />
+        <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
       )}
       {rig_data.no_class_rig.map(
         (rig) =>

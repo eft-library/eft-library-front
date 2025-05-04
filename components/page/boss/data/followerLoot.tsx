@@ -5,7 +5,7 @@ import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { FollowerLoot } from "./bossTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { follwerTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
           </div>
           <Separator className="bg-white" />
           <div className="flex flex-col justify-center items-center w-full gap-2">
-            <TableColumn columnDesign={2} columnData={follwerTableColumn} />
+            <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
             {uniqueItemInfo.map(
               (loot, index) =>
                 filteringData(

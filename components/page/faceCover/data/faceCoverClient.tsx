@@ -7,7 +7,7 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 import type { FaceCoverClient } from "./faceCoverTypes";
 import {
   faceCoverClassTableColumn,
-  faceCoverNoClassTableColumn,
+  imageNameTableColumn,
 } from "@/lib/consts/columnConsts";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { useState } from "react";
@@ -84,10 +84,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
       )}
 
       {hasMatchInList(face_cover_data.no_class_face_cover, word) && (
-        <TableColumn
-          columnDesign={2}
-          columnData={faceCoverNoClassTableColumn}
-        />
+        <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
       )}
       {face_cover_data.no_class_face_cover.map(
         (faceCover) =>

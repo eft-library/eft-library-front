@@ -8,7 +8,7 @@ import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { armBandTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 
@@ -26,7 +26,7 @@ export default function ArmBandClient({ armBandList }: ArmBandList) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnData={armBandTableColumn} columnDesign={2} />
+      <TableColumn columnData={imageNameTableColumn} columnDesign={2} />
       {armBandList.map(
         (armBand) =>
           filteringData(

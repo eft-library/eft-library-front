@@ -1,8 +1,11 @@
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 interface TableColumn {
-  value_kr: string[];
-  value_en: string[];
+  en: string[];
+  ja: string[];
+  ko: string[];
 }
 
 interface TableColumnProps {
@@ -21,6 +24,9 @@ export default function TableColumn({
   isExtraction = false,
   isNameLarge = false,
 }: TableColumnProps) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const colSpanMapping = {
     isAmmoProvisions: (index: number) => ([1, 4].includes(index) ? 2 : 1),
     isExtraction: (index: number) => ([0, 1, 5, 6].includes(index) ? 2 : 1),
@@ -41,7 +47,7 @@ export default function TableColumn({
         `grid grid-cols-${columnDesign} gap-2 w-full border-solid border-2 border-white rounded-lg sticky top-16 bg-Background z-10 mb-2`
       )}
     >
-      {columnData.value_kr.map((val, index) => (
+      {columnData[localeKey].map((val, index) => (
         <div
           key={val}
           className={cn(

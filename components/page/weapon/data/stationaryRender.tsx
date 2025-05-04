@@ -10,7 +10,7 @@ import {
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { stationaryTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 
@@ -24,7 +24,7 @@ export default function StationaryRender({
   return (
     <div className="flex flex-col gap-4 w-full">
       {hasMatchInList(stationaryList, searchWord) && (
-        <TableColumn columnData={stationaryTableColumn} columnDesign={2} />
+        <TableColumn columnData={imageNameTableColumn} columnDesign={2} />
       )}
       {stationaryList.map(
         (stationary) =>

@@ -25,151 +25,145 @@ export const footerColumn = {
 export const detailThrowable = ["RGN", "RGO"];
 
 export const glassesClassColumn = {
-  value_en: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
-  value_kr: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
+  en: ["Photo", "Name", "Armor Class", "Durability", "Flash Protection"],
+  ko: ["사진", "이름", "보호 등급", "내구성", "실명 보호"],
+  ja: ["写真", "名前", "防御等級", "耐久値", "閃光保護"],
 };
 
 export const glassesNoClassColumn = {
-  value_en: ["사진", "이름", "실명 보호"],
-  value_kr: ["사진", "이름", "실명 보호"],
+  en: ["Photo", "Name", "Flash Protection"],
+  ko: ["사진", "이름", "실명 보호"],
+  ja: ["写真", "名前", "閃光保護"],
 };
 
 export const keyTableColumn = {
-  value_en: ["사진", "이름", "사용 맵", "사용 횟수"],
-  value_kr: ["사진", "이름", "사용 맵", "사용 횟수"],
-};
-
-export const lootTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Map Used", "Usage Count"],
+  ko: ["사진", "이름", "사용 맵", "사용 횟수"],
+  ja: ["写真", "名前", "使用マップ", "使用回数"],
 };
 
 export const provisionsTableColumn = {
-  value_en: ["사진", "이름", "에너지", "수분", "효과"],
-  value_kr: ["사진", "이름", "에너지", "수분", "효과"],
+  en: ["Photo", "Name", "Energy", "Hydration", "Effect"],
+  ko: ["사진", "이름", "에너지", "수분", "효과"],
+  ja: ["写真", "名前", "エネルギー", "水分", "効果"],
 };
 
 export const ammoTableColumn = {
-  value_en: ["사진", "이름", "데미지", "관통력", "방탄 등급별 총알 효율성"],
-  value_kr: ["사진", "이름", "데미지", "관통력", "방탄 등급별 총알 효율성"],
-};
-
-export const armBandTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Damage", "Penetration", "Armor Class Effectiveness"],
+  ko: ["사진", "이름", "데미지", "관통력", "방탄 등급별 총알 효율성"],
+  ja: ["写真", "名前", "ダメージ", "貫通力", "アーマークラス別弾丸効率"],
 };
 
 export const armorVestTableColumn = {
-  value_en: ["사진", "이름", "내구성", "보호 등급"],
-  value_kr: ["사진", "이름", "내구성", "보호 등급"],
+  en: ["Photo", "Name", "Durability", "Armor Class"],
+  ko: ["사진", "이름", "내구성", "보호 등급"],
+  ja: ["写真", "名前", "耐久値", "防御等級"],
 };
 
 export const backpackTableColumn = {
-  value_en: ["사진", "이름", "슬롯", "그리드 크기"],
-  value_kr: ["사진", "이름", "슬롯", "그리드 크기"],
+  en: ["Photo", "Name", "Slots", "Grid Size"],
+  ko: ["사진", "이름", "슬롯", "그리드 크기"],
+  ja: ["写真", "名前", "スロット", "グリッドサイズ"],
 };
 
 export const bossTableColumn = {
-  value_en: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
-  value_kr: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
+  en: [
+    "Photo",
+    "Name",
+    "Affiliation",
+    "Location",
+    "Spawn Rate",
+    "HP",
+    "Followers",
+  ],
+  ko: ["사진", "이름", "소속", "위치", "스폰 확률", "피통", "추종자"],
+  ja: ["写真", "名前", "所属", "位置", "出現率", "体力", "フォロワー"],
 };
 
 export const containerTableColumn = {
-  value_en: ["사진", "이름", "슬롯", "내부 크기"],
-  value_kr: ["사진", "이름", "슬롯", "내부 크기"],
+  en: ["Photo", "Name", "Slots", "Inner Size"],
+  ko: ["사진", "이름", "슬롯", "내부 크기"],
+  ja: ["写真", "名前", "スロット", "内部サイズ"],
 };
 
 export const faceCoverClassTableColumn = {
-  value_en: ["사진", "이름", "보호 등급", "내구성"],
-  value_kr: ["사진", "이름", "보호 등급", "내구성"],
-};
-
-export const faceCoverNoClassTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
-};
-
-export const headsetTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Armor Class", "Durability"],
+  ko: ["사진", "이름", "보호 등급", "내구성"],
+  ja: ["写真", "名前", "防御等級", "耐久値"],
 };
 
 export const headwearClassTableColumn = {
-  value_en: ["사진", "이름", "보호 등급", "내구성"],
-  value_kr: ["사진", "이름", "보호 등급", "내구성"],
-};
-
-export const headwearNoClassTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Armor Class", "Durability"],
+  ko: ["사진", "이름", "보호 등급", "내구성"],
+  ja: ["写真", "名前", "防御等級", "耐久値"],
 };
 
 export const rigClassTableColumn = {
-  value_en: ["사진", "이름", "내구성", "보호 등급"],
-  value_kr: ["사진", "이름", "내구성", "보호 등급"],
-};
-
-export const rigNoClassTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Durability", "Armor Class"],
+  ko: ["사진", "이름", "내구성", "보호 등급"],
+  ja: ["写真", "名前", "耐久値", "防御等級"],
 };
 
 export const drugTableColumn = {
-  value_en: ["사진", "이름", "버프", "디버프", "사용 횟수", "사용 시간"],
-  value_kr: ["사진", "이름", "버프", "디버프", "사용 횟수", "사용 시간"],
+  en: ["Photo", "Name", "Buff", "Debuff", "Usage Count", "Duration"],
+  ko: ["사진", "이름", "버프", "디버프", "사용 횟수", "사용 시간"],
+  ja: ["写真", "名前", "バフ", "デバフ", "使用回数", "使用時間"],
 };
 
 export const stimulantTableColumn = {
-  value_en: ["사진", "이름", "버프", "디버프"],
-  value_kr: ["사진", "이름", "버프", "디버프"],
+  en: ["Photo", "Name", "Buff", "Debuff"],
+  ko: ["사진", "이름", "버프", "디버프"],
+  ja: ["写真", "名前", "バフ", "デバフ"],
 };
 
 export const medicalItemTableColumn = {
-  value_en: ["사진", "이름", "버프", "사용 횟수", "사용 시간"],
-  value_kr: ["사진", "이름", "버프", "사용 횟수", "사용 시간"],
+  en: ["Photo", "Name", "Buff", "Usage Count", "Duration"],
+  ko: ["사진", "이름", "버프", "사용 횟수", "사용 시간"],
+  ja: ["写真", "名前", "バフ", "使用回数", "使用時間"],
 };
 
 export const medikitTableColumn = {
-  value_en: ["사진", "이름", "회복량", "버프", "사용 시간"],
-  value_kr: ["사진", "이름", "회복량", "버프", "사용 시간"],
+  en: ["Photo", "Name", "Heal Amount", "Buff", "Duration"],
+  ko: ["사진", "이름", "회복량", "버프", "사용 시간"],
+  ja: ["写真", "名前", "回復量", "バフ", "使用時間"],
 };
 
-export const gunTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
-};
-
-export const knifeTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
-};
-
-export const stationaryTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
-};
-
-export const throwableTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+export const imageNameTableColumn = {
+  en: ["Photo", "Name"],
+  ko: ["사진", "이름"],
+  ja: ["写真", "名前"],
 };
 
 export const relatedQuestTableColumn = {
-  value_en: ["사진", "이름", "수량", "인레이드"],
-  value_kr: ["사진", "이름", "수량", "인레이드"],
-};
-
-export const follwerTableColumn = {
-  value_en: ["사진", "이름"],
-  value_kr: ["사진", "이름"],
+  en: ["Photo", "Name", "Quantity", "In Raid"],
+  ko: ["사진", "이름", "수량", "인레이드"],
+  ja: ["写真", "名前", "数量", "レイド中"],
 };
 
 export const motBossTableColumn = {
-  value_en: ["사진", "이름", "소속", "위치", "스폰확률", "피통", "추종자"],
-  value_kr: ["사진", "이름", "소속", "위치", "스폰확률", "피통", "추종자"],
+  en: [
+    "Photo",
+    "Name",
+    "Affiliation",
+    "Location",
+    "Spawn Rate",
+    "HP",
+    "Followers",
+  ],
+  ko: ["사진", "이름", "소속", "위치", "스폰확률", "피통", "추종자"],
+  ja: ["写真", "名前", "所属", "位置", "出現率", "体力", "フォロワー"],
 };
 
 export const extractionTableColumn = {
-  value_en: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
-  value_kr: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
+  en: [
+    "Photo",
+    "Name",
+    "Affiliation",
+    "Always Open",
+    "One-time Use",
+    "Requirements",
+    "Tip",
+  ],
+  ko: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
+  ja: ["写真", "名前", "所属", "常時開放", "使い捨て", "必要条件", "ヒント"],
 };

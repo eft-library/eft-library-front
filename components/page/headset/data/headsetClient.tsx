@@ -8,7 +8,7 @@ import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { Input } from "@/components/ui/input";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
-import { headsetTableColumn } from "@/lib/consts/columnConsts";
+import { imageNameTableColumn } from "@/lib/consts/columnConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 
@@ -27,7 +27,7 @@ export default function HeadsetClient({ headsetList }: HeadsetList) {
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>
-      <TableColumn columnDesign={2} columnData={headsetTableColumn} />
+      <TableColumn columnDesign={2} columnData={imageNameTableColumn} />
       {headsetList.map(
         (headset) =>
           filteringData(
