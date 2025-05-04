@@ -7,7 +7,7 @@ import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { QuestDesc } from "../../quest/data/questTypes";
-import { SquareCheckBig, SquareX } from "lucide-react";
+import { Redo2, SquareCheckBig, SquareX } from "lucide-react";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
@@ -175,9 +175,26 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
 
       {questInfo.guide && (
         <div className="w-full flex flex-col gap-2">
-          <TextSpan size="3xl" isCenter={false}>
-            가이드
-          </TextSpan>
+          <div className="flex justify-between">
+            <TextSpan size="3xl" isCenter={false}>
+              가이드
+            </TextSpan>
+            <div className="flex gap-2 items-center">
+              <Redo2 />
+              <Link target="_blank" href={questInfo.wiki_url}>
+                <TextSpan
+                  size="3xl"
+                  isCenter={false}
+                  hoverColor="GoldenYellow"
+                  textColor="CreamYellow"
+                  isCursor
+                >
+                  Wiki Quest Page
+                </TextSpan>
+              </Link>
+            </div>
+          </div>
+
           <Separator className="bg-white" />
           <HtmlWithImage contents={questInfo.guide[localeKey]} />
         </div>
