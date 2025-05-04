@@ -39,7 +39,17 @@ interface ItemDetail {
 }
 
 export interface BossClient {
-  bossList: Boss[];
+  bossData: BossData;
+}
+
+export interface BossData {
+  boss_selector: BossSelector[];
+  boss: Boss;
+}
+
+interface BossSelector {
+  url_mapping: string;
+  name: LocaleName;
 }
 
 export interface BossHealth {

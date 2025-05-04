@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
@@ -16,27 +16,49 @@ import {
   groupSpawnAreas,
   groupAndSummarizeChances,
 } from "@/lib/func/jsxfunction";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { bossTableColumn } from "@/lib/consts/columnConsts";
 
-export default function BossClient({ bossList }: BossClient) {
+export default function BossClient({ bossData }: BossClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const param = useParams<{ id: string }>();
-
-  const filterData = bossList.find((boss) => boss.url_mapping === param.id);
-
-  if (!filterData) return null;
 
   return (
-    <div className="w-full">
-      <div
-        key={filterData.parent_id}
-        className="flex flex-col gap-6 items-center"
-      >
+    <div className="w-full flex flex-col gap-4">
+      <div className="flex w-full flex-wrap rounded-lg border-solid border-2 border-white p-1">
+        {bossData.boss_selector.map((selector) => (
+          <Link href={`/boss/${selector.url_mapping}`} key={selector.name.en}>
+            <div
+              className={cn(
+                "rounded-lg flex justify-center items-center p-[8px] px-6 h-[40px] cursor-pointer hover:bg-NeutralGray",
+                {
+                  "bg-CloudGray":
+                    bossData.boss.url_mapping === selector.url_mapping,
+                },
+                {
+                  "text-Background":
+                    bossData.boss.url_mapping === selector.url_mapping,
+                }
+              )}
+            >
+              <span className="text-center font-bold">
+                {selector.name[localeKey]}
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <TableColumn columnDesign={7} columnData={bossTableColumn} />
+
+      <div key={bossData.boss.id} className="flex flex-col gap-6 items-center">
         <div className="w-full grid grid-cols-7 gap-2 border-solid border-white border-2 rounded-lg p-3">
           <CenterContents>
             <ImageView
-              src={filterData.image}
-              alt={filterData.name.en}
+              src={bossData.boss.image}
+              alt={bossData.boss.name.en}
               popWidth={120}
               popHeight={120}
               wrapWidth={120}
@@ -45,39 +67,20 @@ export default function BossClient({ bossList }: BossClient) {
             />
           </CenterContents>
           <CenterContents>
-            <TextSpan>{filterData.name[localeKey]}</TextSpan>
+            <TextSpan>{bossData.boss.name[localeKey]}</TextSpan>
           </CenterContents>
           <CenterContents>
-            <TextSpan>{filterData.faction}</TextSpan>
+            <TextSpan>{bossData.boss.faction}</TextSpan>
           </CenterContents>
           <CenterContents isCol>
-            {filterData.spawn_chance &&
-              groupSpawnAreas(filterData.spawn_chance).map((spawn, index) => (
-                <React.Fragment key={`${spawn.name_en}-${index}-area`}>
-                  <TextSpan>{spawn[getOtherLocalizedKey(localeKey)]}</TextSpan>
-                  {groupSpawnAreas(filterData.spawn_chance).length !==
-                    index + 1 && (
-                    <Separator className="my-[3px] bg-white w-[60%]" />
-                  )}
-                </React.Fragment>
-              ))}
-          </CenterContents>
-          <CenterContents isCol>
-            {filterData.spawn_chance &&
-              groupAndSummarizeChances(filterData.spawn_chance, localeKey).map(
+            {bossData.boss.spawn_chance &&
+              groupSpawnAreas(bossData.boss.spawn_chance).map(
                 (spawn, index) => (
-                  <React.Fragment key={`${spawn.name_en}-${index}`}>
+                  <React.Fragment key={`${spawn.name_en}-${index}-area`}>
                     <TextSpan>
-                      {spawn.min === spawn.max
-                        ? `${Math.round(spawn.min * 100)} %`
-                        : `${Math.round(spawn.min * 100)} ~ ${Math.round(
-                            spawn.max * 100
-                          )} %`}
+                      {spawn[getOtherLocalizedKey(localeKey)]}
                     </TextSpan>
-                    {groupAndSummarizeChances(
-                      filterData.spawn_chance,
-                      localeKey
-                    ).length !==
+                    {groupSpawnAreas(bossData.boss.spawn_chance).length !==
                       index + 1 && (
                       <Separator className="my-[3px] bg-white w-[60%]" />
                     )}
@@ -85,13 +88,37 @@ export default function BossClient({ bossList }: BossClient) {
                 )
               )}
           </CenterContents>
+          <CenterContents isCol>
+            {bossData.boss.spawn_chance &&
+              groupAndSummarizeChances(
+                bossData.boss.spawn_chance,
+                localeKey
+              ).map((spawn, index) => (
+                <React.Fragment key={`${spawn.name_en}-${index}`}>
+                  <TextSpan>
+                    {spawn.min === spawn.max
+                      ? `${Math.round(spawn.min * 100)} %`
+                      : `${Math.round(spawn.min * 100)} ~ ${Math.round(
+                          spawn.max * 100
+                        )} %`}
+                  </TextSpan>
+                  {groupAndSummarizeChances(
+                    bossData.boss.spawn_chance,
+                    localeKey
+                  ).length !==
+                    index + 1 && (
+                    <Separator className="my-[3px] bg-white w-[60%]" />
+                  )}
+                </React.Fragment>
+              ))}
+          </CenterContents>
           <CenterContents>
-            <TextSpan>{filterData.health_total}</TextSpan>
+            <TextSpan>{bossData.boss.health_total}</TextSpan>
           </CenterContents>
           <CenterContents isCol>
-            {filterData.children &&
-            filterData.children.some((child) => !child.is_boss) ? (
-              filterData.children.map(
+            {bossData.boss.children &&
+            bossData.boss.children.some((child) => !child.is_boss) ? (
+              bossData.boss.children.map(
                 (childData, index) =>
                   !childData.is_boss && (
                     <TextSpan key={`${index}-follower-${childData.id}`}>
@@ -111,15 +138,15 @@ export default function BossClient({ bossList }: BossClient) {
             dataAdSlot="2690838054"
           />
         </div>
-        {filterData.location_guide && (
+        {bossData.boss.location_guide && (
           <div className="w-full flex flex-col gap-2">
             <span className="font-bold text-3xl">위치</span>
             <Separator className="bg-white" />
-            <HtmlWithImage contents={filterData.location_guide[localeKey]} />
+            <HtmlWithImage contents={bossData.boss.location_guide[localeKey]} />
           </div>
         )}
-        <BossHealth subFollowers={filterData.children} />
-        <FollowerLoot follower={filterData} />
+        <BossHealth subFollowers={bossData.boss.children} />
+        <FollowerLoot follower={bossData.boss} />
       </div>
     </div>
   );
