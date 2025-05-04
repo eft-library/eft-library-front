@@ -13,7 +13,7 @@ export default function GetMapOfTarkov() {
   const param = useParams<{ id: string }>();
 
   useEffect(() => {
-    const getAllMap = async () => {
+    const getMap = async () => {
       const data = await requestData(
         `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${param.id}`
       );
@@ -30,7 +30,7 @@ export default function GetMapOfTarkov() {
     };
 
     if (param.id) {
-      getAllMap();
+      getMap();
     }
   }, [param.id]);
 
