@@ -9,22 +9,14 @@ import { SquareCheckBig, SquareX } from "lucide-react";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 
 export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
-  const formatTextWithLineBreaks = (text: string) => {
-    return text.split("\n").map((line) => (
-      <span key={line}>
-        {line}
-        <br />
-      </span>
-    ));
-  };
-
   return (
-    <DefineGrid cols="11" id={extractionInfo.id}>
+    <DefineGrid cols="13" id={extractionInfo.id}>
       <CenterContents colSpan="2">
         <ImageView
           src={extractionInfo.image}
@@ -68,51 +60,20 @@ export default function ExtractionRender({ extractionInfo }: ExtractionRender) {
           )}
         </TextSpan>
       </CenterContents>
-      <div className="flex justify-center flex-col items-center col-span-2 gap-8">
-        {extractionInfo.requirements &&
-        extractionInfo.requirements.length > 0 ? (
-          extractionInfo.requirements.map((require, index) => (
-            <CenterContents key={`${require.image}-${index}`} isCol>
-              {require.image && (
-                <ImageView
-                  src={require.image}
-                  alt={require.desc}
-                  popWidth={1600}
-                  popHeight={900}
-                  size="240px"
-                  wrapWidth={200}
-                  wrapHeight={120}
-                />
-              )}
-              <TextSpan>{formatTextWithLineBreaks(require.desc)}</TextSpan>
-            </CenterContents>
-          ))
+      <CenterContents colSpan="3">
+        {extractionInfo.requirements ? (
+          <HtmlWithImage contents={extractionInfo.requirements[localeKey]} />
         ) : (
           <TextSpan>-</TextSpan>
         )}
-      </div>
-      <div className="flex justify-center flex-col items-center col-span-2 gap-8">
-        {extractionInfo.tip && extractionInfo.tip.length > 0 ? (
-          extractionInfo.tip.map((tip, index) => (
-            <CenterContents key={`${tip.image}-${index}`} isCol>
-              {tip.image && (
-                <ImageView
-                  src={tip.image}
-                  alt={tip.desc}
-                  popWidth={1600}
-                  popHeight={900}
-                  size="240px"
-                  wrapWidth={200}
-                  wrapHeight={120}
-                />
-              )}
-              <TextSpan>{formatTextWithLineBreaks(tip.desc)}</TextSpan>
-            </CenterContents>
-          ))
+      </CenterContents>
+      <CenterContents colSpan="3">
+        {extractionInfo.tip ? (
+          <HtmlWithImage contents={extractionInfo.tip[localeKey]} />
         ) : (
           <TextSpan>-</TextSpan>
         )}
-      </div>
+      </CenterContents>
     </DefineGrid>
   );
 }

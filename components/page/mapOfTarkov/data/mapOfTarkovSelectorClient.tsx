@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { MapOfTarkovSelectorClient } from "./mapOfTarkovType";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 
 export default function MapOfTarkovSelectorClient({
   setImageSelect,
@@ -11,6 +13,8 @@ export default function MapOfTarkovSelectorClient({
   mapData,
 }: MapOfTarkovSelectorClient) {
   const param = useParams<{ id: string }>();
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   return (
     <div className="w-full">
@@ -26,7 +30,7 @@ export default function MapOfTarkovSelectorClient({
               )}
             >
               <span className="text-center font-bold">
-                {mapOfTarkov.name.ko}
+                {mapOfTarkov.name[localeKey]}
               </span>
             </Link>
           </div>
@@ -42,7 +46,7 @@ export default function MapOfTarkovSelectorClient({
               { "bg-DeepSlate": imageSelect === sub.id }
             )}
           >
-            <span className="text-center font-bold">{sub.name.ko}</span>
+            <span className="text-center font-bold">{sub.name[localeKey]}</span>
           </div>
         ))}
       </div>

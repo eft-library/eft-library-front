@@ -29,7 +29,11 @@ export default function TableColumn({
 
   const colSpanMapping = {
     isAmmoProvisions: (index: number) => ([1, 4].includes(index) ? 2 : 1),
-    isExtraction: (index: number) => ([0, 1, 5, 6].includes(index) ? 2 : 1),
+    isExtraction: (index: number) => {
+      if ([0, 1].includes(index)) return 2;
+      if ([5, 6].includes(index)) return 3;
+      return 1;
+    },
     isNameLarge: (index: number) => ([1].includes(index) ? 3 : 1),
     default: () => 1,
   };

@@ -124,12 +124,18 @@ export default {
     "grid-cols-11",
     "grid-cols-12",
     "grid-cols-13",
+    "grid-cols-14",
+    "grid-cols-15",
+    "grid-cols-16",
     "col-span-8",
     "col-span-9",
     "col-span-10",
     "col-span-11",
     "col-span-12",
     "col-span-13",
+    "col-span-14",
+    "col-span-15",
+    "col-span-16",
   ],
 
   theme: {
