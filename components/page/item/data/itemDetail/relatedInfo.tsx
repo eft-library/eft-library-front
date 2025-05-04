@@ -2,12 +2,16 @@ import type { RelatedInfo } from "../itemType";
 import Image from "next/image";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import { getQuestTitle } from "@/lib/func/jsxfunction";
 import { MoveRight } from "lucide-react";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import Link from "next/link";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 
 export default function RelatedInfo({ item }: RelatedInfo) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const getMaxSuffix = (id: number) => {
     if (id === 1) return ALL_COLOR.SandyOchre;
     if (id === 2) return ALL_COLOR.BurningOrange;
@@ -50,7 +54,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                 <div className="flex flex-col items-center justify-center">
                   <Image
                     src={trader.npc_image}
-                    alt={trader.npc_name_en}
+                    alt={trader.npc_name.en}
                     sizes={"80"}
                     width={80}
                     height={80}
@@ -62,7 +66,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     }
                   />
                   <div className="text-center font-bold">
-                    {trader.npc_name_kr}
+                    {trader.npc_name[localeKey]}
                     <br />
                     LV {trader.barter_info.level}
                   </div>
@@ -77,7 +81,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       <div className="relative mb-1">
                         <Image
                           src={reqItem.item.gridImageLink}
-                          alt={reqItem.item.name}
+                          alt={reqItem.item.name.en}
                           sizes="80px"
                           width={80}
                           height={80}
@@ -92,7 +96,9 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                           x {reqItem.quantity}
                         </div>
                       </div>
-                      <div className="font-bold">{reqItem.item.name}</div>
+                      <div className="font-bold">
+                        {reqItem.item.name[localeKey]}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -104,7 +110,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   >
                     <Image
                       src={trader.barter_info.rewardItems.item.gridImageLink}
-                      alt={trader.barter_info.rewardItems.item.name}
+                      alt={trader.barter_info.rewardItems.item.name.en}
                       sizes={"80"}
                       width={80}
                       height={80}
@@ -119,7 +125,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       x {trader.barter_info.rewardItems.quantity}
                     </div>
                     <div className="font-bold">
-                      {trader.barter_info.rewardItems.item.name}
+                      {trader.barter_info.rewardItems.item.name[localeKey]}
                     </div>
                   </div>
                 </div>
@@ -152,7 +158,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     )}
                   </div>
                   <div className="text-center font-bold">
-                    {hideout.master_name_kr}
+                    {hideout.master_name[localeKey]}
                     <br />
                     LV {parseInt(hideout.level_id.split("-")[1], 10)}
                   </div>
@@ -163,7 +169,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     <div className="relative mb-1">
                       <Image
                         src={hideout.image}
-                        alt={hideout.name_en}
+                        alt={hideout.name.en}
                         sizes="80px"
                         width={80}
                         height={80}
@@ -179,7 +185,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       </div>
                     </div>
                   </div>
-                  <div className="font-bold">{hideout.name_kr}</div>
+                  <div className="font-bold">{hideout.name[localeKey]}</div>
                 </div>
               </div>
             ))}
@@ -212,7 +218,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     )}
                   </div>
                   <div className=" font-bold text-center">
-                    {craft.master_name_kr}
+                    {craft.master_name[localeKey]}
                     <br />
                     LV {craft.level}
                   </div>
@@ -228,7 +234,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                         <div className="relative mb-1">
                           <Image
                             src={reqItem.item.gridImageLink}
-                            alt={reqItem.item.name}
+                            alt={reqItem.item.name_en}
                             sizes="80px"
                             width={80}
                             height={80}
@@ -244,7 +250,9 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                           </div>
                         </div>
                       </div>
-                      <div className=" font-bold">{reqItem.item.name}</div>
+                      <div className=" font-bold">
+                        {reqItem.item[getOtherLocalizedKey(localeKey)]}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -262,7 +270,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="relative mb-1">
                     <Image
                       src={craft.image}
-                      alt={craft.name_en}
+                      alt={craft.name.en}
                       sizes="80px"
                       width={80}
                       height={80}
@@ -277,7 +285,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       x {craft.quantity}
                     </div>
                   </div>
-                  <div className="font-bold">{craft.name_kr}</div>
+                  <div className="font-bold">{craft.name[localeKey]}</div>
                 </div>
               </div>
             ))}
@@ -303,7 +311,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={questItem.npc_image}
-                      alt={questItem.npc_name_en}
+                      alt={questItem.npc_name.en}
                       sizes={"80"}
                       width={80}
                       height={80}
@@ -320,9 +328,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     target="_blank"
                   >
                     <div className="font-bold text-center hover:text-GoldenYellow">
-                      {getQuestTitle(questItem.name_kr, "kr")}
-                      <br />
-                      {getQuestTitle(questItem.name_kr, "en")}
+                      {questItem.name[localeKey]}
                     </div>
                   </Link>
                 </div>
@@ -333,7 +339,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       <div className="relative mb-1">
                         <Image
                           src={questItem.objective.questItem.gridImageLink}
-                          alt={questItem.objective.questItem.name}
+                          alt={questItem.objective.questItem.name_en}
                           sizes="80px"
                           width={80}
                           height={80}
@@ -351,7 +357,11 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     </div>
                   </div>
                   <div className="font-bold">
-                    {questItem.objective.questItem.name}
+                    {
+                      questItem.objective.questItem[
+                        getOtherLocalizedKey(localeKey)
+                      ]
+                    }
                   </div>
                 </div>
               </div>
@@ -365,7 +375,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={questItem.npc_image}
-                      alt={questItem.npc_name_en}
+                      alt={questItem.npc_name.en}
                       sizes={"80"}
                       width={80}
                       height={80}
@@ -382,9 +392,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     target="_blank"
                   >
                     <div className="font-bold text-center hover:text-GoldenYellow">
-                      {getQuestTitle(questItem.name_kr, "kr")}
-                      <br />
-                      {getQuestTitle(questItem.name_kr, "en")}
+                      {questItem.name[localeKey]}
                     </div>
                   </Link>
                 </div>
@@ -402,7 +410,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                           alt={
                             questItem.objective.items.find(
                               (qItem) => qItem.id === item.id
-                            )?.name || ""
+                            )?.name_en || ""
                           }
                           sizes="80px"
                           width={80}
@@ -424,7 +432,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     {
                       questItem.objective.items.find(
                         (qItem) => qItem.id === item.id
-                      )?.name
+                      )?.name_en
                     }
                   </div>
                 </div>
@@ -451,7 +459,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={reward.npc_image}
-                      alt={reward.npc_name_en}
+                      alt={reward.npc_name.en}
                       sizes={"80"}
                       width={80}
                       height={80}
@@ -468,9 +476,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     target="_blank"
                   >
                     <div className="font-bold text-center hover:text-GoldenYellow">
-                      {getQuestTitle(reward.name_kr, "kr")}
-                      <br />
-                      {getQuestTitle(reward.name_kr, "en")}
+                      {reward.name[localeKey]}
                     </div>
                   </Link>
                 </div>
@@ -481,7 +487,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       <div className="relative mb-1">
                         <Image
                           src={reward.reward.item.gridImageLink}
-                          alt={reward.reward.item.name}
+                          alt={reward.reward.item.name_en}
                           sizes="80px"
                           width={80}
                           height={80}
@@ -498,7 +504,9 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       </div>
                     </div>
                   </div>
-                  <div className="font-bold">{reward.reward.item.name}</div>
+                  <div className="font-bold">
+                    {reward.reward.item[getOtherLocalizedKey(localeKey)]}
+                  </div>
                 </div>
               </div>
             ))}

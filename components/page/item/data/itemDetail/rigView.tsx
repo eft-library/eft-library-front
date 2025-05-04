@@ -1,7 +1,11 @@
 import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
+import { useLocale } from "next-intl";
+import TextSpan from "@/components/custom/gridContents/textSpan";
+import { getZonesLocaleKey } from "@/lib/func/localeFunction";
 
 export default function RigView({ item }: ItemView) {
+  const locale = useLocale();
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -41,15 +45,12 @@ export default function RigView({ item }: ItemView) {
               보호 부위
             </div>
             <div className="flex flex-col w-full">
-              {item.info.areas_kr &&
-                item.info.areas_kr.map((area: string, index: number) => (
-                  <div
-                    className="py-2 px-2  text-center font-bold "
-                    key={`area-protect-${area}-${index}`}
-                  >
-                    {area}
-                  </div>
-                ))}
+              {item.info.zones &&
+                item.info.zones[getZonesLocaleKey(locale)].map(
+                  (area: string, index: number) => (
+                    <TextSpan key={`${index}-area-${item.id}`}>{area}</TextSpan>
+                  )
+                )}
             </div>
           </div>
 

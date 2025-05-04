@@ -1,6 +1,10 @@
+import TextSpan from "@/components/custom/gridContents/textSpan";
+import { getModesLocaleKey } from "@/lib/func/localeFunction";
 import type { ItemView } from "../itemType";
+import { useLocale } from "next-intl";
 
 export default function StationaryView({ item }: ItemView) {
+  const locale = useLocale();
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -22,14 +26,12 @@ export default function StationaryView({ item }: ItemView) {
             발사모드
           </div>
           <div className="py-2 px-2  text-center font-bold ">
-            {item.info.modes_kr.map((mode: string, index: number) => (
-              <div
-                className="py-2 px-2  text-center font-bold "
-                key={`modes-${mode}-${index}`}
-              >
-                {mode}
-              </div>
-            ))}
+            {item.info.modes &&
+              item.info.modes[getModesLocaleKey(locale)].map(
+                (area: string, index: number) => (
+                  <TextSpan key={`${index}-area-${item.id}`}>{area}</TextSpan>
+                )
+              )}
           </div>
         </div>
 

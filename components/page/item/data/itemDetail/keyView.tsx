@@ -1,6 +1,10 @@
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { ItemView } from "../itemType";
+import { useLocale } from "next-intl";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function KeyView({ item }: ItemView) {
+  const locale = useLocale();
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -22,14 +26,12 @@ export default function KeyView({ item }: ItemView) {
             사용 맵
           </div>
           <div className="flex flex-col w-full">
-            {item.info.use_map_kr.map((area: string, index: number) => (
-              <div
-                className="py-2 px-2  text-center font-bold "
-                key={`area-use-${area}-${index}`}
-              >
-                {area}
-              </div>
-            ))}
+            {item.info.use_map.en &&
+              item.info.use_map[getLocaleKey(locale)].map(
+                (area: string, index: number) => (
+                  <TextSpan key={`${index}-area-${item.id}`}>{area}</TextSpan>
+                )
+              )}
           </div>
         </div>
 

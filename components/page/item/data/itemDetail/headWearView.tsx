@@ -1,7 +1,14 @@
 import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
+import TextSpan from "@/components/custom/gridContents/textSpan";
+import {
+  getRicochetChanceLocaleKey,
+  getZonesLocaleKey,
+} from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 
 export default function HeadWearView({ item }: ItemView) {
+  const locale = useLocale();
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -32,15 +39,12 @@ export default function HeadWearView({ item }: ItemView) {
               보호 부위
             </div>
             <div className="flex flex-col w-full">
-              {item.info.areas_kr &&
-                item.info.areas_kr.map((area: string, index: number) => (
-                  <div
-                    className="py-2 px-2  text-center font-bold "
-                    key={`area-protect-${area}-${index}`}
-                  >
-                    {area}
-                  </div>
-                ))}
+              {item.info.zones &&
+                item.info.zones[getZonesLocaleKey(locale)].map(
+                  (area: string, index: number) => (
+                    <TextSpan key={`${index}-area-${item.id}`}>{area}</TextSpan>
+                  )
+                )}
             </div>
           </div>
 
@@ -67,7 +71,7 @@ export default function HeadWearView({ item }: ItemView) {
               도탄 기회
             </div>
             <div className="py-2 px-2  text-center font-bold ">
-              {item.info.ricochet_str_kr}
+              {item.info.ricochet_chance[getRicochetChanceLocaleKey(locale)]}
             </div>
           </div>
 

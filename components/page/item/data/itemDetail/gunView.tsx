@@ -1,7 +1,12 @@
+import TextSpan from "@/components/custom/gridContents/textSpan";
+import { getLocaleKey, getModesLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
 import type { ItemView } from "../itemType";
 import Image from "next/image";
 
 export default function GunView({ item }: ItemView) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -50,14 +55,12 @@ export default function GunView({ item }: ItemView) {
             발사모드
           </div>
           <div className="flex flex-col w-full">
-            {item.info.modes_kr.map((mode: string, index: number) => (
-              <div
-                className="py-2 px-2  text-center font-bold "
-                key={`modes-${mode}-${index}`}
-              >
-                {mode}
-              </div>
-            ))}
+            {item.info.modes &&
+              item.info.modes[getModesLocaleKey(locale)].map(
+                (area: string, index: number) => (
+                  <TextSpan key={`${index}-area-${item.id}`}>{area}</TextSpan>
+                )
+              )}
           </div>
         </div>
 
@@ -96,14 +99,14 @@ export default function GunView({ item }: ItemView) {
           </div>
           <div className="w-full grid grid-cols-5 border-2 border-white rounded-sm mb-6 gap-4 pt-4 pb-4">
             {item.info.allowed_ammo.map(
-              (ammo: { name: string; gridImageLink: string }) => (
+              (ammo: { name: any; gridImageLink: string }) => (
                 <div
-                  key={`allowed-ammo-${ammo.name}`}
+                  key={`allowed-ammo-${ammo.name.en}`}
                   className="flex flex-col items-center justify-center"
                 >
                   <Image
                     src={ammo.gridImageLink}
-                    alt={ammo.name}
+                    alt={ammo.name.en}
                     sizes={"80"}
                     width={80}
                     height={80}
@@ -115,7 +118,7 @@ export default function GunView({ item }: ItemView) {
                     }
                   />
                   <div className="py-2 px-2  text-center font-bold ">
-                    {ammo.name}
+                    {ammo.name[localeKey]}
                   </div>
                 </div>
               )

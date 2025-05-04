@@ -2,7 +2,7 @@ export interface ItemDetail {
   category: string;
   id: string;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
   info: any;
   name_en: string;
@@ -16,6 +16,12 @@ export interface ItemDetail {
   required_by_quest_item_array: RequiredByQuestItem[];
 }
 
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
+}
+
 export interface ItemClient {
   itemInfo: ItemDetail;
 }
@@ -26,8 +32,18 @@ export interface ItemView {
 
 interface Item {
   id: string;
-  name: string;
+  name: LocaleName;
   gridImageLink: string;
+  normalizedName: string;
+}
+
+interface OtherTypeItem {
+  id: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  gridImageLink: string;
+  normalizedName: string;
 }
 
 interface RequiredItem {
@@ -49,64 +65,57 @@ interface BarterInfo {
 interface RewardedByNpc {
   npc_id: string;
   barter_info: BarterInfo;
-  npc_name_en: string;
-  npc_name_kr: string;
+  npc_name: LocaleName;
   npc_image: string;
 }
 
 interface QuestRewardItem {
-  item: Item;
+  item: OtherTypeItem;
   count: number;
   quantity: number;
 }
 
 interface RewardedByQuest {
   reward: QuestRewardItem;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   quest_id: string;
   url_mapping: string;
   npc_image: string;
-  npc_name_en: string;
-  npc_name_kr: string;
+  npc_name: LocaleName;
 }
 
 interface Objective {
   id: string;
   type: string;
   count: number;
-  items: Item[];
+  items: OtherTypeItem[];
   description: string;
   foundInRaid: boolean;
 }
 
 interface RequiredByQuestItem {
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   quest_id: string;
   objective: Objective;
   url_mapping: string;
   npc_image: string;
-  npc_name_en: string;
-  npc_name_kr: string;
+  npc_name: LocaleName;
 }
 interface ObjectiveWithQuestItem {
   id: string;
   type: string;
   count: number;
-  questItem: Item;
+  questItem: OtherTypeItem;
   description: string;
 }
 
 interface RequiredByQuestSingleItem {
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   quest_id: string;
   objective: ObjectiveWithQuestItem;
   url_mapping: string;
   npc_image: string;
-  npc_name_en: string;
-  npc_name_kr: string;
+  npc_name: LocaleName;
 }
 
 interface HideoutItem {
@@ -114,29 +123,25 @@ interface HideoutItem {
   count: number;
   image: string;
   item_id: string;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   level_id: string;
   quantity: number;
   master_id: string;
-  master_name_en: string;
-  master_name_kr: string;
+  master_name: LocaleName;
 }
 
 interface UsedInCraft {
   id: string;
   image: string;
   level: number;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   duration: number;
   level_id: string;
   quantity: number;
   req_item: InventoryEntry[];
   reward_item_id: string;
   master_id: string;
-  master_name_en: string;
-  master_name_kr: string;
+  master_name: LocaleName;
 }
 
 export interface RelatedInfo {
@@ -145,7 +150,9 @@ export interface RelatedInfo {
 
 interface CraftItem {
   id: string;
-  name: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
   width: number;
   height: number;
   gridImageLink: string;

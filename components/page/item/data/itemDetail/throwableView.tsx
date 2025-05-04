@@ -25,7 +25,7 @@ export default function ThrowableView({ item }: ItemView) {
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             <TextSpan>
-              {detailThrowable.includes(item.name_kr) ? (
+              {detailThrowable.includes(item.name.kr) ? (
                 <div className="flex flex-col">
                   <TextSpan>충격시 {item.info.min_fuse} 초</TextSpan>
                   <TextSpan size="sm">

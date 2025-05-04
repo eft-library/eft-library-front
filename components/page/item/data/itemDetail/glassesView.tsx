@@ -32,7 +32,7 @@ export default function GlassesView({ item }: ItemView) {
               재료
             </div>
             <div className="py-2 px-2  text-center font-bold ">
-              {item.info.material.name}
+              {item.info.material ? item.info.material.name : "-"}
             </div>
           </div>
 
@@ -79,7 +79,7 @@ export default function GlassesView({ item }: ItemView) {
               재료
             </div>
             <div className="py-2 px-2  text-center font-bold ">
-              {item.info.material.name}
+              {item.info.material ? item.info.material.name : "-"}
             </div>
           </div>
 

@@ -24,8 +24,12 @@ import KnifeView from "./itemDetail/knifeView";
 import ThrowableView from "./itemDetail/throwableView";
 import StationaryView from "./itemDetail/stationaryView";
 import RelatedInfo from "./itemDetail/relatedInfo";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ItemClient({ itemInfo }: ItemClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full">
       <div className="w-full flex flex-col justify-center items-center">
@@ -39,7 +43,7 @@ export default function ItemClient({ itemInfo }: ItemClient) {
           >
             <Image
               src={itemInfo.image}
-              alt={itemInfo.name_en || ""}
+              alt={itemInfo.name.en || ""}
               fill
               sizes={`${itemInfo.image_width * 80}`}
               style={{ objectFit: "contain" }}
@@ -51,7 +55,7 @@ export default function ItemClient({ itemInfo }: ItemClient) {
             />
           </div>
           <h1 className="text-xl font-bold text-center mt-4">
-            {itemInfo.name_kr}
+            {itemInfo.name[localeKey]}
           </h1>
         </div>
         {itemInfo.category === "Headwear" && <HeadWearView item={itemInfo} />}
