@@ -3,60 +3,64 @@
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-import TextSpan from "../../../custom/gridContents/textSpan";
-import { filterStimEffects, hasMatchInList } from "@/lib/func/jsxfunction";
-import type { StimulantClient, Buff, Debuff } from "./medicalTypes";
+// import TextSpan from "../../../custom/gridContents/textSpan";
+import { hasMatchInList } from "@/lib/func/jsxfunction";
+import type { StimulantClient } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { stimulantTableColumn } from "@/lib/consts/columnConsts";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function StimulantClient({
   medicalList,
   searchWord,
 }: StimulantClient) {
-  const getSkillColor = (text: string) => {
-    const blue = ["진통제", "해독제"];
-    const red = ["손 떨림", "터널 효과"];
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+  // const getSkillColor = (text: string) => {
+  //   const blue = ["진통제", "해독제"];
+  //   const red = ["손 떨림", "터널 효과"];
 
-    if (blue.includes(text)) {
-      return "BrightCyan";
-    } else if (red.includes(text)) {
-      return "Red";
-    } else {
-      return "white";
-    }
-  };
+  //   if (blue.includes(text)) {
+  //     return "BrightCyan";
+  //   } else if (red.includes(text)) {
+  //     return "Red";
+  //   } else {
+  //     return "white";
+  //   }
+  // };
 
-  const getPlusMinusValue = (text: number | string) => {
-    if (typeof text === "number") {
-      if (text === 0) return "";
-      return text > 0 ? `+${text}` : `${text}`;
-    }
-    return "";
-  };
+  // const getPlusMinusValue = (text: number | string) => {
+  //   if (typeof text === "number") {
+  //     if (text === 0) return "";
+  //     return text > 0 ? `+${text}` : `${text}`;
+  //   }
+  //   return "";
+  // };
 
-  const checkPlus = (effect: Buff | Debuff) => {
-    const red = ["BodyTemperature", "DamageModifier"];
-    if (red.includes(effect.type)) {
-      if (effect.value == 0) {
-        return "white";
-      } else if (effect.value > 0) {
-        return "Red";
-      } else {
-        return "BrightCyan";
-      }
-    }
+  // const checkPlus = (effect: Buff | Debuff) => {
+  //   const red = ["BodyTemperature", "DamageModifier"];
+  //   if (red.includes(effect.type)) {
+  //     if (effect.value == 0) {
+  //       return "white";
+  //     } else if (effect.value > 0) {
+  //       return "Red";
+  //     } else {
+  //       return "BrightCyan";
+  //     }
+  //   }
 
-    if (typeof effect.value === "number") {
-      if (effect.value == 0) {
-        return "white";
-      } else if (effect.value > 0) {
-        return "BrightCyan";
-      } else {
-        return "Red";
-      }
-    }
-  };
+  //   if (typeof effect.value === "number") {
+  //     if (effect.value == 0) {
+  //       return "white";
+  //     } else if (effect.value > 0) {
+  //       return "BrightCyan";
+  //     } else {
+  //       return "Red";
+  //     }
+  //   }
+  // };
 
   return (
     <>
@@ -69,9 +73,9 @@ export default function StimulantClient({
           (stimulant) =>
             filteringData(
               searchWord,
-              stimulant.name_en,
-              stimulant.name_kr,
-              stimulant.name_kr
+              stimulant.name.en,
+              stimulant.name.ko,
+              stimulant.name.ja
             ) && (
               <DefineGrid
                 id={stimulant.id}
@@ -83,7 +87,7 @@ export default function StimulantClient({
                 <CenterContents>
                   <ImageView
                     src={stimulant.image}
-                    alt={stimulant.name_en}
+                    alt={stimulant.name.en}
                     popWidth={stimulant.image_width * 128}
                     popHeight={stimulant.image_height * 128}
                     size={(stimulant.image_width * 64).toString()}
@@ -92,11 +96,11 @@ export default function StimulantClient({
                   />
                 </CenterContents>
                 <CenterContents>
-                  {highlightMatchedText(stimulant.name_kr, searchWord)}
+                  {highlightMatchedText(stimulant.name[localeKey], searchWord)}
                 </CenterContents>
 
                 <div className="flex justify-center flex-col">
-                  {stimulant.info.buff.length > 0 ? (
+                  {/* {stimulant.info.buff.length > 0 ? (
                     filterStimEffects(stimulant.info.buff).map(
                       (buff, index) => (
                         <div key={`${index}-buff-${buff.skillName}`}>
@@ -126,10 +130,10 @@ export default function StimulantClient({
                     )
                   ) : (
                     <TextSpan>-</TextSpan>
-                  )}
+                  )} */}
                 </div>
                 <div className="flex justify-center flex-col">
-                  {stimulant.info.debuff.length > 0 ? (
+                  {/* {stimulant.info.debuff.length > 0 ? (
                     filterStimEffects(stimulant.info.debuff).map(
                       (debuff, index) => (
                         <div key={`${index}-debuff-${debuff.skillName}`}>
@@ -159,7 +163,7 @@ export default function StimulantClient({
                     )
                   ) : (
                     <TextSpan>-</TextSpan>
-                  )}
+                  )} */}
                 </div>
               </DefineGrid>
             )

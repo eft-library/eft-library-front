@@ -11,8 +11,12 @@ import {
   filterStimEffects,
 } from "@/lib/func/jsxfunction";
 import type { ProvisionsList } from "./provisionsTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full">
       {provisionsList.map((provisions) => (
@@ -26,7 +30,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           <CenterContents>
             <ImageView
               src={provisions.image}
-              alt={provisions.name_en}
+              alt={provisions.name.en}
               popWidth={provisions.image_width * 128}
               popHeight={provisions.image_height * 128}
               size={(provisions.image_width * 64).toString()}
@@ -36,7 +40,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           </CenterContents>
 
           <CenterContents colSpan="2">
-            <TextSpan>{provisions.name_kr}</TextSpan>
+            <TextSpan>{provisions.name[localeKey]}</TextSpan>
           </CenterContents>
 
           <CenterContents>
@@ -57,7 +61,7 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
                 (effect, index) => (
                   <EffectText
                     effect={effect}
-                    key={`${effect.krSkill}-${index}-${provisions.id}`}
+                    key={`${index}-${provisions.id}`}
                   />
                 )
               )

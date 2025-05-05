@@ -12,11 +12,15 @@ import {
   hasMatchInList,
   highlightMatchedText,
 } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function MediKitClient({
   medicalList,
   searchWord,
 }: MediKitClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
@@ -27,9 +31,9 @@ export default function MediKitClient({
           (medikit) =>
             filteringData(
               searchWord,
-              medikit.name_en,
-              medikit.name_kr,
-              medikit.name_kr
+              medikit.name.en,
+              medikit.name.ko,
+              medikit.name.ja
             ) && (
               <DefineGrid
                 key={medikit.id}
@@ -41,7 +45,7 @@ export default function MediKitClient({
                 <CenterContents>
                   <ImageView
                     src={medikit.image}
-                    alt={medikit.name_en}
+                    alt={medikit.name.en}
                     popWidth={medikit.image_width * 128}
                     popHeight={medikit.image_height * 128}
                     size={(medikit.image_width * 64).toString()}
@@ -50,14 +54,14 @@ export default function MediKitClient({
                   />
                 </CenterContents>
                 <CenterContents>
-                  {highlightMatchedText(medikit.name_kr, searchWord)}
+                  {highlightMatchedText(medikit.name[localeKey], searchWord)}
                 </CenterContents>
                 <CenterContents>
                   <TextSpan>{medikit.info.hitpoints}</TextSpan>
                 </CenterContents>
                 <CenterContents isCol>
-                  {medikit.info.cures_kr && medikit.info.cures_kr.length > 0 ? (
-                    medikit.info.cures_kr.map((cures, index) => (
+                  {medikit.info.cures ? (
+                    medikit.info.cures[localeKey].map((cures, index) => (
                       <TextSpan
                         key={`${medikit.id}-cures-${index}`}
                         isCenter={false}

@@ -1,3 +1,5 @@
+import type { StimEffect } from "../../provisions/data/provisionsTypes";
+
 export interface MedicalClient {
   medical: MedicalData;
 }
@@ -30,11 +32,9 @@ export interface DrugClient {
 }
 
 interface DrugInfo {
-  buff: string | null;
+  stim_effects: StimEffect[] | [];
   uses: number;
-  debuff: string | null;
-  cures_en: string[];
-  cures_kr: string[];
+  cures: LocaleNameArray;
   use_time: number;
   hitpoints: number | null;
   energy_impact: number;
@@ -48,20 +48,16 @@ interface DrugDetail {
   id: string;
   info: DrugInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
-  update_time: string;
   url_mapping: string;
 }
 
 interface MedicalInfo {
-  buff: string | null;
+  stim_effects: StimEffect[] | [];
   uses: number;
-  debuff: string | null;
-  cures_en: string[];
-  cures_kr: string[];
+  cures: LocaleNameArray;
   use_time: number;
   hitpoints: number | null;
   energy_impact: number | null;
@@ -75,20 +71,16 @@ interface MedicalDetail {
   id: string;
   info: MedicalInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
-  update_time: string;
   url_mapping: string;
 }
 
 interface MedikitInfo {
-  buff: string | null;
+  stim_effects: StimEffect[] | [];
   uses: number | null;
-  debuff: string | null;
-  cures_en: string[];
-  cures_kr: string[];
+  cures: LocaleNameArray;
   use_time: number;
   hitpoints: number | null;
   energy_impact: number | null;
@@ -102,40 +94,16 @@ interface MedikitDetail {
   id: string;
   info: MedikitInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
-  update_time: string;
   url_mapping: string;
 }
 
-export interface Buff {
-  type: string;
-  delay?: number;
-  value: number;
-  chance: number;
-  krSkill: string;
-  duration?: number;
-  skillName: string | null;
-}
-
-export interface Debuff {
-  type: string;
-  delay?: number;
-  value: number;
-  chance: number;
-  krSkill: string;
-  duration?: number;
-  skillName: string | null;
-}
-
 interface StimulantInfo {
-  buff: Buff[];
+  stim_effects: StimEffect[] | [];
   uses: number | null;
-  debuff: Debuff[];
-  cures_en: string | null;
-  cures_kr: string | null;
+  cures: LocaleNameArray;
   use_time: number | null;
   hitpoints: number | null;
   energy_impact: number | null;
@@ -149,10 +117,20 @@ interface StimulantDetail {
   id: string;
   info: StimulantInfo;
   image_height: number;
-  name_kr: string;
   image: string;
-  name_en: string;
+  name: LocaleName;
   image_width: number;
-  update_time: string;
   url_mapping: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
+}
+
+interface LocaleNameArray {
+  en: string[];
+  ja: string[];
+  ko: string[];
 }

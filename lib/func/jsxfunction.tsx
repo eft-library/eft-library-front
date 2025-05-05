@@ -1,5 +1,5 @@
 import { SpawnChance } from "@/components/page/boss/data/bossTypes";
-import { Buff, Debuff } from "@/components/page/medical/data/medicalTypes";
+import type { StimEffect } from "@/components/page/provisions/data/provisionsTypes";
 import { getOtherLocalizedKey } from "./localeFunction";
 
 export const getPlusMinus = (text: number | string) => {
@@ -108,13 +108,13 @@ export const checkViewMedical = (
   );
 };
 
-export const filterStimEffects = (effects: Buff[] | Debuff[]) => {
+export const filterStimEffects = (effects: StimEffect[]) => {
   const seen = new Set();
   for (const effect of effects) {
     const key = `${effect.delay}-${effect.duration}`;
     if (!seen.has(key)) {
       seen.add(key);
-    } else if (effect.skillName !== "Painkiller") {
+    } else if (effect.skill_name_en !== "Painkiller") {
       delete effect.delay;
       delete effect.duration;
     }
@@ -122,7 +122,11 @@ export const filterStimEffects = (effects: Buff[] | Debuff[]) => {
   return effects;
 };
 
-export const checkPlus = (effect: number | string) => {
+export const checkPlus = (effect: number | string | null) => {
+  if (effect === null) {
+    return "white";
+  }
+
   if (typeof effect === "number") {
     if (effect == 0) {
       return "white";

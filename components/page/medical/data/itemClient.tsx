@@ -12,8 +12,12 @@ import {
   highlightMatchedText,
   hasMatchInList,
 } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function ItemClient({ medicalList, searchWord }: ItemClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
@@ -25,9 +29,9 @@ export default function ItemClient({ medicalList, searchWord }: ItemClient) {
           (item) =>
             filteringData(
               searchWord,
-              item.name_en,
-              item.name_kr,
-              item.name_kr
+              item.name.en,
+              item.name.ko,
+              item.name.ja
             ) && (
               <DefineGrid
                 cols="5"
@@ -39,7 +43,7 @@ export default function ItemClient({ medicalList, searchWord }: ItemClient) {
                 <CenterContents>
                   <ImageView
                     src={item.image}
-                    alt={item.name_en}
+                    alt={item.name.en}
                     popWidth={item.image_width * 128}
                     popHeight={item.image_height * 128}
                     size={(item.image_width * 64).toString()}
@@ -49,15 +53,17 @@ export default function ItemClient({ medicalList, searchWord }: ItemClient) {
                 </CenterContents>
 
                 <CenterContents>
-                  {highlightMatchedText(item.name_kr, searchWord)}
+                  {highlightMatchedText(item.name[localeKey], searchWord)}
                 </CenterContents>
 
                 <CenterContents isCol>
-                  {item.info.cures_kr.map((cures, index) => (
-                    <TextSpan key={`${index}-cures`} isCenter={false}>
-                      {cures}
-                    </TextSpan>
-                  ))}
+                  {item.info.cures &&
+                    item.info.cures[localeKey] &&
+                    item.info.cures[localeKey].map((cures, index) => (
+                      <TextSpan key={`${index}-cures`} isCenter={false}>
+                        {cures}
+                      </TextSpan>
+                    ))}
                 </CenterContents>
 
                 <CenterContents>

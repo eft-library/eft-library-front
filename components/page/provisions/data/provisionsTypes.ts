@@ -2,14 +2,15 @@ export interface ProvisionsList {
   provisionsList: ProvisionsDetail[];
 }
 
-interface StimEffect {
+export interface StimEffect {
   type: string;
   delay?: number;
   value: number;
   chance: number;
-  krSkill: string;
   duration?: number;
-  skillName: string | null;
+  skill_name_en: string | null;
+  skill_name_ja: string | null;
+  skill_name_ko: string | null;
 }
 
 export interface EffectText {
@@ -27,10 +28,14 @@ interface ProvisionsDetail {
   id: string;
   info: ProvisionsInfo;
   image_height: number;
-  name_kr: string;
+  name: LocaleName;
   image: string;
-  name_en: string;
   image_width: number;
-  update_time: string;
   url_mapping: string;
+}
+
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

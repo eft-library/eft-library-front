@@ -12,8 +12,13 @@ import {
   highlightMatchedText,
   hasMatchInList,
 } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function DrugClient({ medicalList, searchWord }: DrugClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const drugText = (label: string, value: number, positive: boolean) => {
     return (
       <div className={"flex mb-[4px]"}>
@@ -40,9 +45,9 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
           (drug) =>
             filteringData(
               searchWord,
-              drug.name_en,
-              drug.name_kr,
-              drug.name_kr
+              drug.name.en,
+              drug.name.ko,
+              drug.name.ja
             ) && (
               <DefineGrid
                 cols="8"
@@ -54,7 +59,7 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
                 <CenterContents>
                   <ImageView
                     src={drug.image}
-                    alt={drug.name_en}
+                    alt={drug.name.en}
                     popWidth={drug.image_width * 128}
                     popHeight={drug.image_height * 128}
                     size={(drug.image_width * 64).toString()}
@@ -63,7 +68,7 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
                   />
                 </CenterContents>
                 <CenterContents colSpan="3">
-                  {highlightMatchedText(drug.name_kr, searchWord)}
+                  {highlightMatchedText(drug.name[localeKey], searchWord)}
                 </CenterContents>
 
                 <div className="flex flex-col justify-center ">
