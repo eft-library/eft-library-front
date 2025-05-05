@@ -1,6 +1,8 @@
 export const COLUMN_KEY = {
   stationType: "STATION_TYPE",
   news: "NEWS_COLUMN",
+  terms: "TERMS_COLUMN",
+  privacyPolicy: "PRIVACY_POLICY_COLUMN",
 } as const;
 
 export const footerData = {
@@ -11,8 +13,8 @@ export const footerData = {
     "📧 tarkovlibrary@gmail.com",
   ],
   info: {
-    privacyLink: "https://eftlibrary.com/privacy-policy",
-    termsLink: "https://eftlibrary.com/terms",
+    privacyLink: "/privacy-policy",
+    termsLink: "/terms",
   },
   manager: {
     gitLink: "https://github.com/eft-library",

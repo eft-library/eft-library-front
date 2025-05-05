@@ -39,7 +39,7 @@ export default function Footer() {
           <TextSpan isCenter={false}>
             👨‍💻 Team TKL : HJ, SY, JY | 🌐&nbsp;
           </TextSpan>
-          <Link href={footerData.manager.gitLink}>
+          <Link href={footerData.manager.gitLink} target="_blank">
             <TextSpan
               hoverColor="GoldenYellow"
               textColor="CreamYellow"
@@ -49,7 +49,7 @@ export default function Footer() {
             </TextSpan>
           </Link>
           <TextSpan isCenter={false}>&nbsp;·&nbsp;</TextSpan>
-          <Link href={footerData.manager.chzzkLink}>
+          <Link href={footerData.manager.chzzkLink} target="_blank">
             <TextSpan
               hoverColor="GoldenYellow"
               textColor="CreamYellow"
@@ -59,7 +59,7 @@ export default function Footer() {
             </TextSpan>
           </Link>
           <TextSpan isCenter={false}>&nbsp;·&nbsp;</TextSpan>
-          <Link href={footerData.manager.discordLink}>
+          <Link href={footerData.manager.discordLink} target="_blank">
             <TextSpan
               hoverColor="GoldenYellow"
               textColor="CreamYellow"
