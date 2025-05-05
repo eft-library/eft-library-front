@@ -21,6 +21,7 @@ export interface Quest {
   objectives: Objective[];
   guide: LocaleName;
   update_time: string;
+  min_player_level: number;
   url_mapping: string;
   kappa_required: boolean;
   finish_rewards: FinishRewards;
@@ -44,7 +45,7 @@ export interface NpcDetail {
   questInfo: Quest;
 }
 
-interface Objective {
+export interface Objective {
   id: string;
   type: string;
   description_en: string;
@@ -92,7 +93,7 @@ interface RewardItemDetails {
   normalizedName: string;
 }
 
-interface TaskWrapper {
+export interface TaskWrapper {
   task: Task;
 }
 

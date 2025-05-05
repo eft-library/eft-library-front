@@ -4,8 +4,9 @@ import "../../../../assets/quest.css";
 import { useState } from "react";
 import type { PlannerPopOver } from "./plannerType";
 import { CircleAlert } from "lucide-react";
+import TextSpan from "@/components/custom/gridContents/textSpan";
 
-export default function PlannerPopOver({ quest }: PlannerPopOver) {
+export default function PlannerPopOver({ min_player_level }: PlannerPopOver) {
   const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
 
   const changePopoverState = (condition: boolean) => {
@@ -29,16 +30,7 @@ export default function PlannerPopOver({ quest }: PlannerPopOver) {
           onMouseEnter={() => changePopoverState(true)}
           onMouseLeave={() => changePopoverState(false)}
         >
-          <div className="bg-white border-t border-l rotate-45 absolute top-full left-1/2 transform -translate-x-1/2"></div>
-          {quest.requirements_kr.map((require, index) => (
-            <div
-              key={`${quest.quest_id}-${index}`}
-              className="text-sm font-bold"
-              dangerouslySetInnerHTML={{
-                __html: `*&nbsp;&nbsp;${require}`,
-              }}
-            />
-          ))}
+          <TextSpan>{min_player_level} 이후 부터 가능합니다.</TextSpan>
         </div>
       )}
     </div>

@@ -1,13 +1,18 @@
 "use client";
-import type { PlannerSelector, Quest } from "./plannerType";
+import type { PlannerSelector } from "./plannerType";
+import type { Quest } from "../../quest/data/questTypes";
 import Downshift from "downshift";
 import { useState, useEffect, useRef } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import React from "react";
 import { handleScroll } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function PlannerSelector({ updateQuest }: PlannerSelector) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [inputValue, setInputValue] = useState("");
   const [searchList, setSearchList] = useState<Quest[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +101,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
               key={quest.id}
               className="text-sm flex items-center bg-black text-white border border-white px-2 py-1 rounded-lg mt-1 ml-1"
             >
-              <span className="font-semibold">{quest.title_kr}</span>
+              <span className="font-semibold">{quest.name[localeKey]}</span>
               <button
                 onClick={() => removeSelected(quest)}
                 className="ml-2 text-white hover:text-red-500 transition"
@@ -112,7 +117,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
         id="main-search"
         selectedItem={null} // 다중 선택이므로 null로 설정
         onChange={(selection: any) => onClickQuest(selection)}
-        itemToString={(item) => (item ? item.title_kr : "")}
+        itemToString={(item) => (item ? item.name[localeKey] : "")}
         inputValue={inputValue}
         onInputValueChange={(inputValue) => setInputValue(inputValue || "")} // 빈 문자열로 설정
         isOpen={isOpen}
@@ -138,7 +143,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
                 {...getInputProps({
                   placeholder: "퀘스트를 선택해주세요",
                   className:
-                    "font-semibold text-[18px] w-full h-[50px] rounded-[10px] pl-5 placeholder:text-SilverGray",
+                    "font-bold text-[18px] w-full h-[50px] rounded-[10px] pl-5 placeholder:text-SilverGray",
                   onClick: () => {
                     setIsOpen(true);
                     setInputValue("");
@@ -157,7 +162,13 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
                     .filter(
                       (item) =>
                         !inputValue ||
-                        item.title_kr
+                        item.name.en
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase()) ||
+                        item.name.ko
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase()) ||
+                        item.name.ja
                           .toLowerCase()
                           .includes(inputValue.toLowerCase())
                     )
@@ -174,7 +185,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
                             }`,
                           })}
                         >
-                          {item.title_kr}
+                          {item.name[localeKey]}
                         </div>
                       </React.Fragment>
                     ))}

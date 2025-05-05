@@ -3,7 +3,11 @@
 import type { PlannerList } from "./plannerType";
 import { Button } from "@/components/ui/button";
 import PlannerPopOver from "./plannerPopover";
-import { getQuestTitle } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import {
+  getDescriptionLocaleKey,
+  getLocaleKey,
+} from "@/lib/func/localeFunction";
 
 export default function PlannerList({
   userQuest,
@@ -12,6 +16,8 @@ export default function PlannerList({
   checkedBox,
   isPreview = false,
 }: PlannerList) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full">
       {userQuest.quest_info.map((quest, index) => (
@@ -29,8 +35,8 @@ export default function PlannerList({
           </div>
 
           <div className="flex flex-col justify-center items-center">
-            {quest.requirements_kr && quest.requirements_kr.length > 0 && (
-              <PlannerPopOver quest={quest} />
+            {quest.min_player_level && (
+              <PlannerPopOver min_player_level={quest.min_player_level} />
             )}
           </div>
 
@@ -42,24 +48,22 @@ export default function PlannerList({
                 href={`/quest/detail/${quest.url_mapping}`}
               >
                 <span className="text-sm font-bold text-LightOrange hover:text-Beige flex text-center flex items-center justify-center">
-                  {getQuestTitle(quest.quest_name_kr, "kr")}
-                  <br />
-                  {getQuestTitle(quest.quest_name_kr, "en")}
+                  {quest.quest_name[localeKey]}
                 </span>
               </a>
             </div>
           </div>
 
           <div className="flex flex-col justify-center col-span-4">
-            {quest.objectives_kr.map((objective, index) => (
-              <div
-                key={index}
-                className="font-bold text-sm"
-                dangerouslySetInnerHTML={{
-                  __html: `*&nbsp;&nbsp;${objective}`,
-                }}
-              />
-            ))}
+            {quest.objectives &&
+              quest.objectives.map((objective, index) => (
+                <div
+                  key={`${index}-objective`}
+                  className="font-bold text-base text-white"
+                >
+                  *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
+                </div>
+              ))}
           </div>
 
           <div className="flex flex-col justify-center items-center col-span-3">

@@ -5,21 +5,21 @@ import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useRouter } from "next/navigation";
-import type {
-  Planner,
-  PlannerClientQuest,
-  FetchSchema,
-  Quest,
-  Require,
-} from "./plannerType";
+import type { Planner, PlannerClientQuest, FetchSchema } from "./plannerType";
+import type { TaskWrapper } from "../../quest/data/questTypes";
+import type { Quest } from "../../quest/data/questTypes";
 import Image from "next/image";
 import PlannerList from "./plannerList";
 import PlannerSelector from "./plannerSelector";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefaultAlert from "@/components/custom/alert/defaultAlert";
 import { previewData } from "@/lib/consts/libraryConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [checkedQuest, setCheckedQuest] = useState<string[]>([]);
   const [previewCheckedQuest, setPreviewCheckedQuest] = useState<string[]>([]);
   const router = useRouter();
@@ -55,12 +55,12 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
     }
   };
   // success
-  const successUserQuest = async (quest_id: string, next: Require[]) => {
+  const successUserQuest = async (quest_id: string, next: TaskWrapper[]) => {
     if (session && session.email) {
       const onlyQuestIdList = makeOnlyQuestIds();
       const newQuestList = [
         ...onlyQuestIdList.filter((quest) => quest !== quest_id),
-        ...next.map((quest) => quest.id),
+        ...next.map((quest) => quest.task.id),
       ];
       const uniqueQuestList = [...new Set(newQuestList)];
 
@@ -198,7 +198,6 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
             </TextSpan>
           ) : (
             <div>
-              {/* 상단 전체 선택 및 삭제 버튼 */}
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2">
                   <input
@@ -218,7 +217,6 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                   삭제
                 </button>
               </div>
-              {/* 아코디언 리스트 */}
               <div className={"flex flex-col gap-2"}>
                 {userQuest.map((npc, index) => (
                   <div key={npc.npc_id} className="border-b-0">
@@ -235,7 +233,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                       <div className={"flex gap-2 items-center"}>
                         <Image
                           src={npc.npc_image}
-                          alt={npc.npc_name_en}
+                          alt={npc.npc_name.en}
                           width={40}
                           height={40}
                           className={"rounded-lg"}
@@ -246,7 +244,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                           }
                         />
                         <span className="flex-1 text-left font-bold">
-                          {npc.npc_name_kr}
+                          {npc.npc_name[localeKey]}
                         </span>
                       </div>
                       <svg
@@ -307,7 +305,6 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
             </button>
           </div>
 
-          {/* 아코디언 리스트 */}
           <div className={"flex flex-col gap-2"}>
             {previewData.map((npc, index) => (
               <div key={npc.npc_id} className="border-b-0">
@@ -324,7 +321,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                   <div className={"flex gap-2 items-center"}>
                     <Image
                       src={npc.npc_image}
-                      alt={npc.npc_name_en}
+                      alt={npc.npc_name.en}
                       width={40}
                       height={40}
                       className={"rounded-lg"}
@@ -335,7 +332,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                       }
                     />
                     <span className="flex-1 text-left font-bold">
-                      {npc.npc_name_kr}
+                      {npc.npc_name[localeKey]}
                     </span>
                   </div>
                   <svg
