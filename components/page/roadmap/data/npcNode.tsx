@@ -1,8 +1,12 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function NpcNode(props: any) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div
       className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[200px] shadow-NeutralGray shadow-md rounded-lg"
@@ -23,20 +27,12 @@ export default function NpcNode(props: any) {
                 "data:image/jpeg;base64," +
                 "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
               }
-              alt={props.data.title_kr
-                .substring(props.data.title_kr.indexOf("("))
-                .trim()}
+              alt={props.data.name.en}
             />
           </div>
           <div className="flex items-center justify-center w-full">
             <span className="text-center font-black cursor-pointer text-white text-xl">
-              {props.data.title_kr
-                .substring(0, props.data.title_kr.indexOf("("))
-                .trim()}
-              <br />
-              {props.data.title_kr
-                .substring(props.data.title_kr.indexOf("("))
-                .trim()}
+              {props.data.name[localeKey]}
             </span>
           </div>
         </div>

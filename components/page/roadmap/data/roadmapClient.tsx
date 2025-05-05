@@ -54,23 +54,22 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (tabState !== "all" && npc.id !== tabState) {
         return [];
       }
-      return npc.all_quest.map((quest) => ({
+      return npc.quests.map((quest) => ({
         id: quest.id,
         type: npcIdList.includes(quest.id) ? "npcNode" : "questNode",
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
         data: {
-          title_en: quest.title_en,
-          title_kr: quest.title_kr,
+          name: quest.name,
           id: quest.id,
           type: npcIdList.includes(quest.id) ? "npc" : "quest",
           image: npcIdList.includes(quest.id) ? npc.image : "none",
-          iskappa: quest.is_kappa,
-          urlMapping: quest.url_mapping,
+          kappa_required: quest.kappa_required,
+          url_mapping: quest.url_mapping,
           isCheck: questList.includes(quest.id),
-          prev_list: quest.prev_list || [],
-          next_list: quest.next_list || [],
-          npc_value: quest.npc_value,
+          task_requirements: quest.task_requirements,
+          task_next: quest.task_next,
+          npc_id: quest.npc_id,
           node_color: quest.node_color,
         },
         position: {
@@ -144,10 +143,10 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           data: { ...node.data, isCheck: checkStatus },
         });
 
-        if (checkStatus && node.data.prev_list) {
-          node.data.prev_list.forEach(updateNode);
-        } else if (!checkStatus && node.data.next_list) {
-          node.data.next_list.forEach(updateNode);
+        if (checkStatus && node.data.task_requirements) {
+          node.data.task_requirements.forEach(updateNode);
+        } else if (!checkStatus && node.data.task_next) {
+          node.data.task_next.forEach(updateNode);
         }
       };
 
@@ -185,7 +184,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         return [];
       }
 
-      return npc.all_quest
+      return npc.quests
         .filter(
           (quest) => !roadmapInfo.node_info.some((node) => node.id === quest.id)
         ) // 조건 추가
@@ -200,7 +199,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       if (tabState !== "all" && npc.id !== tabState) {
         return [];
       }
-      return npc.all_quest.map((quest) => quest.id);
+      return npc.quests.map((quest) => quest.id);
     });
 
     setQuestList((prevQuestList) =>
@@ -265,8 +264,11 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       return;
     }
 
-    const matchingNodes = nodes.filter((node) =>
-      node.data.title_kr.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchingNodes = nodes.filter(
+      (node) =>
+        node.data.name.ko.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        node.data.name.ja.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        node.data.name.en.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (matchingNodes.length > 0) {
@@ -292,12 +294,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   };
 
   const getAllKappaCount = () => {
-    return nodes.filter((item) => item.data.iskappa === true).length;
+    return nodes.filter((item) => item.data.kappa_required === true).length;
   };
 
   const getKappaCompleteCount = () => {
     return nodes.filter(
-      (item) => questList.includes(item.id) && item.data.iskappa === true
+      (item) => questList.includes(item.id) && item.data.kappa_required === true
     ).length;
   };
 
@@ -315,9 +317,8 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
       <RoadmapTab
         npcList={roadmapInfo.node_info.map((npc) => ({
           id: npc.id,
-          name_kr: npc.name_kr,
-          name_en: npc.name_en,
-          color: npc.all_quest[0].node_color,
+          name: npc.name,
+          color: npc.quests[0].node_color,
         }))}
         setTabState={onChangeNpcTab}
         tabState={tabState}

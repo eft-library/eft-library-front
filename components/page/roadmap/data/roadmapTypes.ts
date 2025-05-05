@@ -16,24 +16,21 @@ interface Edge {
 
 // 최상위 인터페이스
 interface NPCData {
-  name_en: string;
+  name: LocaleName;
   image: string;
-  order: number;
   id: string;
-  name_kr: string;
-  all_quest: Quest[];
+  quests: Quest[];
 }
 
 // 퀘스트 인터페이스
 export interface Quest {
-  title_en: string;
+  name: LocaleName;
   id: string;
-  is_kappa: boolean;
-  next_list: string[] | null;
-  prev_list: string[] | null;
+  kappa_required: boolean;
+  task_next: string[];
+  task_requirements: string[];
   url_mapping: string;
-  npc_value: string;
-  title_kr: string;
+  npc_id: string;
   node_color: string;
   single_x_coordinate: number;
   single_y_coordinate: number;
@@ -49,7 +46,11 @@ export interface RoadmapTab {
 
 interface TabNpc {
   id: string;
-  name_en: string;
-  name_kr: string;
+  name: LocaleName;
   color: string;
+}
+interface LocaleName {
+  en: string;
+  ja: string;
+  ko: string;
 }

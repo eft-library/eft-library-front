@@ -2,19 +2,23 @@
 import { useCallback } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function QuestNode(props: any) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const onClickTitle = useCallback((urlMapping: string) => {
     window.open(`/quest/detail/${urlMapping}`, "_blank");
   }, []);
 
   return (
     <div
-      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[90px] shadow-NeutralGray shadow-md"
+      className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[120px] shadow-NeutralGray shadow-md"
       style={{ backgroundColor: props.data.node_color }}
     >
       <div
-        className="w-full h-full  border-solid border-4 rounded-lg"
+        className="w-full h-full  border-solid border-4 rounded-lg min-h-[120px]"
         style={{
           borderColor: props.data.isCheck ? ALL_COLOR.LimeGreen : ALL_COLOR.Red,
         }}
@@ -30,22 +34,16 @@ export default function QuestNode(props: any) {
         <div className="flex items-center justify-center h-full w-full p-3">
           <div className="flex items-center justify-center w-full">
             <span
-              className="text-center font-black cursor-pointer text-white hover:text-Beige text-base"
-              onClick={() => onClickTitle(props.data.urlMapping)}
+              className="text-center font-black cursor-pointer text-white hover:text-Beige text-lg"
+              onClick={() => onClickTitle(props.data.url_mapping)}
             >
-              {props.data.title_kr
-                .substring(0, props.data.title_kr.indexOf("("))
-                .trim()}
-              <br />
-              {props.data.title_kr
-                .substring(props.data.title_kr.indexOf("("))
-                .trim()}
+              {props.data.name[localeKey]}
             </span>
           </div>
         </div>
         <div className="w-full flex justify-end p-1">
-          {props.data.iskappa && (
-            <span className="text-Red font-bold text-[13px]">Kappa</span>
+          {props.data.kappa_required && (
+            <span className="text-Red font-bold text-base">Kappa</span>
           )}
         </div>
       </div>
