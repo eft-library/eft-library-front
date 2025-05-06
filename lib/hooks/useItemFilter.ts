@@ -28,9 +28,9 @@ interface FetchSchema {
  * 3D 맵에서 화면에 표시할 아이템을 필터링 해주는 함수
  */
 export const useItemFilter = (mapItem: JpgItemPath[]) => {
-  const { itemFilter, setItemFilter } = useAppStore((state) => state);
+  const { newItemFilter, setItemFilter } = useAppStore((state) => state);
   const [viewItemList, setViewItemList] = useState<string[]>(
-    extractValues(itemFilter)
+    extractValues(newItemFilter)
   );
 
   // itemFilter가 비어있을 때만 데이터를 가져옵니다.
@@ -54,10 +54,10 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
       }
     };
 
-    if (itemFilter.length === 0) {
+    if (newItemFilter.length === 0) {
       getItem();
     }
-  }, [itemFilter, setItemFilter]);
+  }, [newItemFilter, setItemFilter]);
 
   // mapItem이 변경될 때마다 viewItemList를 업데이트합니다.
   const valuesList = useMemo(() => {
@@ -91,7 +91,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 아이템 클릭 이벤트
    */
   const onClickItem = (clickValue: string) => {
-    const rootValueList = itemFilter.map((item) => item.value);
+    const rootValueList = newItemFilter.map((item) => item.value);
 
     if (rootValueList.includes(clickValue)) {
       handleRootItemClick(clickValue);
@@ -113,7 +113,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 전부 있으면 모두 제거, 전부 있지 않으면 모두 추가
    */
   const handleRootItemClick = (clickValue: string) => {
-    const rootList: ItemType = itemFilter.find(
+    const rootList: ItemType = newItemFilter.find(
       (item) => item.value === clickValue
     )!;
     const childList = rootList.sub.map((childItem) => childItem.value);
@@ -130,7 +130,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * root의 모든 아이템 제거 시 root 제거, 모두 추가될 경우 root 추가
    */
   const handleChildItemClick = (clickValue: string) => {
-    const rootList: ItemType = itemFilter.find((item) =>
+    const rootList: ItemType = newItemFilter.find((item) =>
       findObjectWithValue(item, clickValue)
     )!;
 

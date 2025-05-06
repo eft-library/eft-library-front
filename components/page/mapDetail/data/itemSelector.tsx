@@ -18,7 +18,7 @@ export default function ItemSelector({
 }: ItemSelector) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { itemFilter } = useAppStore((state) => state);
+  const { newItemFilter } = useAppStore((state) => state);
   const [isOpen, setIsOpen] = useState(true);
   const [originalItem, setOriginalItem] = useState<string[]>();
 
@@ -46,7 +46,7 @@ export default function ItemSelector({
     return true;
   };
 
-  if (!originalItem || !itemFilter) return <Loading />;
+  if (!originalItem || !newItemFilter) return <Loading />;
 
   return (
     <div className="relative z-20">
@@ -98,7 +98,7 @@ export default function ItemSelector({
 
             {/* 아이템 목록 */}
             <div className="space-y-4">
-              {itemFilter.map(
+              {newItemFilter.map(
                 (item) =>
                   originalItem.includes(item.value) && (
                     <div key={item.value} className="space-y-1">

@@ -5,7 +5,7 @@ import type { ItemType } from "@/lib/func/itemFilterUtils";
 
 export type AppStateType = {
   npcId: string;
-  itemFilter: ItemType[];
+  newItemFilter: ItemType[];
   eventNum: number;
   noticeNum: number;
   patchNotesNum: number;
@@ -23,7 +23,7 @@ export type AppStoreType = AppStateType & AppActionsType;
 
 export const defaultInitState: AppStateType = {
   npcId: "54cb50c76803fa8b248b4571",
-  itemFilter: [],
+  newItemFilter: [],
   noticeNum: 1,
   eventNum: 1,
   patchNotesNum: 1,
@@ -36,7 +36,7 @@ export const createAppStore = (initState: AppStateType = defaultInitState) => {
         ({
           ...initState,
           setNpcId: (value: string) => set({ npcId: value }),
-          setItemFilter: (value: ItemType[]) => set({ itemFilter: value }),
+          setItemFilter: (value: ItemType[]) => set({ newItemFilter: value }),
           setEventNum: (value: number) => set({ eventNum: value }),
           setPatchNotesNum: (value: number) => set({ patchNotesNum: value }),
           setNoticeNum: (value: number) => set({ noticeNum: value }),
