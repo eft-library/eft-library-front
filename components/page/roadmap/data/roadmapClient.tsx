@@ -30,6 +30,7 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   const { data: session } = useSession();
+  const [onlyKappa, setOnlyKappa] = useState<boolean>(false);
   const [questList, setQuestList] = useState<string[]>([]);
   const [tabState, setTabState] = useState<string>("all");
   const [alertDesc, setAlertDesc] = useState<string>("");
@@ -71,21 +72,28 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           task_next: quest.task_next,
           npc_id: quest.npc_id,
           node_color: quest.node_color,
+          view_only_kappa: onlyKappa,
         },
         position: {
-          x:
-            tabState === "all"
-              ? quest.total_x_coordinate
-              : quest.single_x_coordinate,
-          y:
-            tabState === "all"
-              ? quest.total_y_coordinate
-              : quest.single_y_coordinate,
+          x: onlyKappa
+            ? tabState === "all"
+              ? quest.total_kappa_x_coordinate
+              : quest.single_kappa_x_coordinate
+            : tabState === "all"
+            ? quest.total_x_coordinate
+            : quest.single_x_coordinate,
+          y: onlyKappa
+            ? tabState === "all"
+              ? quest.total_kappa_y_coordinate
+              : quest.single_kappa_y_coordinate
+            : tabState === "all"
+            ? quest.total_y_coordinate
+            : quest.single_y_coordinate,
         },
         draggable: false,
       }));
     });
-  }, [roadmapInfo, questList, tabState]);
+  }, [roadmapInfo, questList, tabState, onlyKappa]);
 
   const processEdge = useCallback(() => {
     return roadmapInfo.edge_info.map((edge) => ({
@@ -125,6 +133,13 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
     (params: any) => setEdges((els) => addEdge(params, els)),
     []
   );
+
+  const onClickKappaFilter = () => {
+    setOnlyKappa(!onlyKappa);
+    setTimeout(() => {
+      fitView();
+    }, 500);
+  };
 
   const onNodeChange = (data: Quest, isCheck: boolean) => {
     const updateNodeCheckStatus = (
@@ -308,12 +323,12 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
   };
 
   const getAllCount = () => {
-    const roadmapIds = new Set(roadmapInfo.node_info.map((npc) => npc.id)); // roadmapInfo.node_info의 id를 Set으로 저장
+    const roadmapIds = new Set(roadmapInfo.node_info.map((npc) => npc.id));
     return nodes.filter((node) => !roadmapIds.has(node.id)).length;
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <RoadmapTab
         npcList={roadmapInfo.node_info.map((npc) => ({
           id: npc.id,
@@ -323,7 +338,46 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         setTabState={onChangeNpcTab}
         tabState={tabState}
       />
-
+      <div className="flex justify-end gap-2">
+        <div className="flex gap-2 items-center justify-center flex-end">
+          <Input
+            id="name"
+            className="col-span-3 text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
+            placeholder="퀘스트 검색"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+          />
+          <Button
+            onClick={handleSearch}
+            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
+          >
+            <Search />
+          </Button>
+        </div>
+        <Button
+          className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
+          onClick={checkAllNodes}
+        >
+          전체 선택
+        </Button>
+        <Button
+          className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
+          onClick={uncheckAllNodes}
+        >
+          전체 해제
+        </Button>
+        <Button
+          className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
+          onClick={() => onClickSave()}
+        >
+          저장
+        </Button>
+      </div>
       <div
         className="w-full border-white border-2 border-solid rounded-lg relative"
         style={{ height: "80vh" }}
@@ -360,12 +414,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             <TextSpan size="lg">퀘스트 현황판</TextSpan>
           </div>
 
-          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
-            <span className="text-sm font-bold text-right block">
-              {getAllCount()}
-            </span>
-          </div>
+          {!onlyKappa && (
+            <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
+              <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
+              <span className="text-sm font-bold text-right block">
+                {getAllCount()}
+              </span>
+            </div>
+          )}
 
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">카파 퀘스트:</span>
@@ -384,62 +440,31 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             </span>
           </div>
 
-          <div className="grid grid-cols-3 p-1">
-            <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
-            <span className="text-sm font-bold text-LimeGreen text-right block">
-              {getCompleteCount()}
-            </span>
-          </div>
+          {!onlyKappa && (
+            <div className="grid grid-cols-3 p-1">
+              <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
+              <span className="text-sm font-bold text-LimeGreen text-right block">
+                {getCompleteCount()}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="absolute top-2 right-2 flex gap-2">
-          <div className="flex gap-2 items-center justify-center flex-end">
-            <Input
-              id="name"
-              className="col-span-3 text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
-              placeholder="퀘스트 검색"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-            />
-            <Button
-              onClick={handleSearch}
-              className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
-            >
-              <Search />
-            </Button>
-          </div>
           <Button
             className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
-            onClick={checkAllNodes}
+            onClick={() => onClickKappaFilter()}
           >
-            전체 선택
-          </Button>
-          <Button
-            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
-            onClick={uncheckAllNodes}
-          >
-            전체 해제
-          </Button>
-          <Button
-            className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
-            onClick={() => onClickSave()}
-          >
-            저장
+            카파 퀘스트
           </Button>
         </div>
       </div>
-
       <DefaultAlert
         open={alertStatus}
         setOpen={setAlertStatus}
         title="알림"
         description={alertDesc}
       />
-    </>
+    </div>
   );
 }

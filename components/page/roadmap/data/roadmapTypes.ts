@@ -36,6 +36,10 @@ export interface Quest {
   single_y_coordinate: number;
   total_x_coordinate: number;
   total_y_coordinate: number;
+  single_kappa_x_coordinate: number;
+  single_kappa_y_coordinate: number;
+  total_kappa_x_coordinate: number;
+  total_kappa_y_coordinate: number;
 }
 
 export interface RoadmapTab {

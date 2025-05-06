@@ -12,6 +12,10 @@ export default function QuestNode(props: any) {
     window.open(`/quest/detail/${urlMapping}`, "_blank");
   }, []);
 
+  if (props.data.view_only_kappa && !props.data.kappa_required) {
+    return null;
+  }
+
   return (
     <div
       className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[120px] shadow-NeutralGray shadow-md"
