@@ -27,7 +27,7 @@ export default function UserMenu({
       </Button>
       {selectedMenu === menuData.value && (
         <div
-          className="absolute top-12 left-[-30px] z-40 flex flex-col font-semibold justify-center items-center p-4 bg-MidnightBlack rounded-lg shadow-lg min-w-[150px]"
+          className="absolute top-12 left-[-30px] z-40 flex flex-col font-semibold justify-center items-center p-4 bg-Background rounded-lg shadow-lg min-w-[150px] border-white border-2"
           onMouseEnter={() => setSelectedMenu(menuData.value)}
           onMouseLeave={() => setSelectedMenu(null)}
         >

@@ -455,7 +455,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={() => onClickKappaFilter()}
           >
-            카파 퀘스트
+            {onlyKappa ? "전체 퀘스트 보기" : "카파 퀘스트 보기"}
           </Button>
         </div>
       </div>

@@ -27,8 +27,8 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
   };
 
   return (
-    <div className="fixed w-full z-20 bg-transparent backdrop-blur-md backdrop-contrast-60">
-      <div className="grid grid-cols-4 h-14">
+    <div className="fixed w-full z-20 bg-Background">
+      <div className="grid grid-cols-4">
         <div />
         <div className="flex justify-center items-center">
           <Link href="/" aria-label="EFT Library">
@@ -64,8 +64,6 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
               로그인
             </Button>
           )}
-        </div>
-        <div className="flex items-center">
           <LocalSwitcher />
         </div>
       </div>
