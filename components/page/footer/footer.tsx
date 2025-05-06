@@ -7,8 +7,9 @@ import { footerData } from "@/lib/consts/columnConsts";
 
 export default function Footer() {
   return (
-    <div className="flex flex-col max-w-[1300px] pt-2 mx-[16%] bg-Background justify-center">
-      <div className="flex flex-col w-full gap-[2px]">
+    <div className="w-full grid grid-cols-4 bg-Background">
+      <div />
+      <div className="flex flex-col w-full gap-[2px] col-span-2">
         {footerData.text.map((desc, index) => (
           <TextSpan isCenter={false} key={`footerText-${index}`}>
             {desc}
@@ -92,6 +93,7 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+      <div />
     </div>
   );
 }
