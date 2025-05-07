@@ -110,9 +110,7 @@ export default function JpgViewDetail({ map, viewItemList }: JPGView) {
                 }}
               >
                 <div className="space-y-2">
-                  <h4 className="font-bold text-center text-Beige">
-                    연관 퀘스트
-                  </h4>
+                  <h4 className="font-bold text-center text-Beige">Quest</h4>
                   <div className={"flex flex-col justify-center"}>
                     {popoverItem.quest_info &&
                     popoverItem.quest_info.length > 0 ? (

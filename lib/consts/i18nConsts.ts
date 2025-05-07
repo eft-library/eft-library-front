@@ -76,6 +76,8 @@ export const itemI18N = {
   backpack: { title: { en: "Backpack", ja: "バックパック", ko: "가방" } },
   container: { title: { en: "Container", ja: "コンテナ", ko: "컨테이너" } },
   rig: { title: { en: "Rig", ja: "リグ", ko: "전술 조끼" } },
+  key: { title: { en: "Key", ja: "鍵類", ko: "열쇠" } },
+  loot: { title: { en: "Loot", ja: "ルート", ko: "전리품" } },
   faceCover: {
     title: { en: "Face Cover", ja: "フェイスカバー", ko: "얼굴 커버" },
   },
@@ -102,7 +104,6 @@ export const itemI18N = {
 
 export const roadmapI18N = {
   title: { en: "Quest Roadmap", ja: "Quest Roadmap", ko: "퀘스트 로드맵" },
-  tab: { en: "All", ja: "全体", ko: "전체" },
   placeHolder: { en: "Quest Search", ja: "クエスト検索", ko: "퀘스트 검색" },
   selectAll: { en: "Select All", ja: "すべて選択", ko: "전체 선택" },
   unSelectAll: { en: "Deselect All", ja: "すべて選択解除", ko: "전체 해제" },
@@ -134,4 +135,36 @@ export const roadmapI18N = {
 
 export const rankI18N = {
   title: { en: "Item Rank", ja: "アイテムランク", ko: "아이템 랭크" },
+};
+
+export const interactiveMapI18N = {
+  title: { en: "Interactive Maps", ja: "Interactive Maps", ko: "대화형 지도" },
+  control: {
+    en: "Left-click Drag - Move / Right-click Drag - Rotate / Wheel - Zoom In, Zoom Out",
+    ja: "左クリックドラッグ - 移動 / 右クリックドラッグ - 回転 / ホイール - ズームイン、ズームアウト",
+    ko: "좌클릭 드래그 - 이동 / 우클릭 드래그 - 회전 / 휠 - 확대, 축소",
+  },
+};
+
+export const mapOfTarkovI18n = {
+  title: {
+    en: "Streets of Tarkov",
+    ja: "Streets of Tarkov",
+    ko: "타르코프 시내",
+  },
+  extraction: {
+    en: "Extraction",
+    ja: "脱出ポイント", // 탈출구
+    ko: "탈출구",
+  },
+  boss: {
+    en: "Boss",
+    ja: "ボス", // 보스
+    ko: "보스",
+  },
+  transit: {
+    en: "Transits",
+    ja: "Transits", // 교통 수단, 이동 경로 등 의미에 따라 조정 가능
+    ko: "Transits",
+  },
 };

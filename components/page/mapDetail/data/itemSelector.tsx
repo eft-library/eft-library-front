@@ -92,7 +92,7 @@ export default function ItemSelector({
                   checkAll() ? "" : "opacity-50"
                 }`}
               >
-                전체
+                ALL
               </span>
             </div>
 

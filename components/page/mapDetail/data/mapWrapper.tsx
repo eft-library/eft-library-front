@@ -7,12 +7,17 @@ import { useItemFilter } from "@/lib/hooks/useItemFilter";
 import type { MapWrapper } from "@/components/page/mapDetail/data/mapType";
 import AdBanner from "../../../custom/adsense/adBanner";
 import TextSpan from "../../../custom/gridContents/textSpan";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 
 export default function MapWrapper({
   mapData,
   mapSelector,
   onClickMapAction,
 }: MapWrapper) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
     mapData.jpg_item_path
   );
@@ -49,7 +54,7 @@ export default function MapWrapper({
             3D Map
           </TextSpan>
           <TextSpan textColor="GoldenYellow">
-            좌클릭 드래그 - 이동 / 우클릭 드래그 - 회전 / 휠 - 확대, 축소
+            {interactiveMapI18N.control[localeKey]}
           </TextSpan>
         </div>
         <ThreeViewDetail

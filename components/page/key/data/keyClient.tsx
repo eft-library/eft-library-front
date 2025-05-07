@@ -12,6 +12,7 @@ import { useState } from "react";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
+import { placeHolderText } from "@/lib/consts/i18nConsts";
 
 export default function KeyClient({ keyList }: KeyClient) {
   const locale = useLocale();
@@ -24,7 +25,7 @@ export default function KeyClient({ keyList }: KeyClient) {
         <Input
           className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
           value={word}
-          placeholder="이름을 최소 2글자 입력하세요"
+          placeholder={placeHolderText.search[localeKey]}
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>

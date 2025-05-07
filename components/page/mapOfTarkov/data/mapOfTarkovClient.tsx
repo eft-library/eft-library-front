@@ -13,11 +13,16 @@ import {
   extractionTableColumn,
   motBossTableColumn,
 } from "@/lib/consts/columnConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 
 export default function MapOfTarkovClient({
   mapData,
   imageSelect,
 }: MapOfTarkovClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full">
       <div key={mapData.map_id} className="flex flex-col gap-6 items-center">
@@ -36,7 +41,7 @@ export default function MapOfTarkovClient({
         </div>
         <div className="w-full flex flex-col gap-2">
           <TextSpan isCenter={false} size="3xl">
-            보스
+            {mapOfTarkovI18n.boss[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
           <TableColumn columnDesign={7} columnData={motBossTableColumn} />
@@ -46,7 +51,7 @@ export default function MapOfTarkovClient({
         </div>
         <div className="w-full flex flex-col gap-2">
           <TextSpan isCenter={false} size="3xl">
-            탈출구
+            {mapOfTarkovI18n.extraction[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
           <TableColumn
@@ -60,7 +65,7 @@ export default function MapOfTarkovClient({
         </div>
         <div className="w-full flex flex-col gap-2">
           <TextSpan isCenter={false} size="3xl">
-            Transits
+            {mapOfTarkovI18n.transit[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
           <TableColumn
