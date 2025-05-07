@@ -1,13 +1,18 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
-import { provisionsTableColumn } from "@/lib/consts/columnConsts";
 import GetProvisions from "./data/getProvisions";
 import AdBanner from "../../custom/adsense/adBanner";
-import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { itemI18N } from "@/lib/consts/i18nConsts";
 
 export default function Provisions() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <ContentsWrapper>
-      <h1 className="text-white text-4xl font-bold text-center">식량</h1>
+      <h1 className="text-white text-4xl font-bold text-center">
+        {itemI18N.provisions.title[localeKey]}
+      </h1>
       <div className="w-[1200px]">
         <AdBanner
           dataAdFormat={"auto"}
@@ -15,11 +20,6 @@ export default function Provisions() {
           dataAdSlot="2690838054"
         />
       </div>
-      <TableColumn
-        columnDesign={7}
-        columnData={provisionsTableColumn}
-        isAmmoProvisions
-      />
       <GetProvisions />
     </ContentsWrapper>
   );

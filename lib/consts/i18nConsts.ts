@@ -78,6 +78,7 @@ export const itemI18N = {
   rig: { title: { en: "Rig", ja: "リグ", ko: "전술 조끼" } },
   key: { title: { en: "Key", ja: "鍵類", ko: "열쇠" } },
   loot: { title: { en: "Loot", ja: "ルート", ko: "전리품" } },
+  provisions: { title: { en: "Provisions", ja: "食料品", ko: "식량" } },
   faceCover: {
     title: { en: "Face Cover", ja: "フェイスカバー", ko: "얼굴 커버" },
   },
@@ -340,5 +341,28 @@ export const planner18N = {
     en: "Delete",
     ja: "削除",
     ko: "삭제",
+  },
+};
+
+export const effectI18N = {
+  duration: {
+    en: "Duration",
+    ja: "持続時間",
+    ko: "초 지속",
+  },
+  delay: {
+    en: "Delay",
+    ja: "遅延",
+    ko: "초 지연",
+  },
+  handsTremor: {
+    en: "Hand Tremor",
+    ja: "手の震え",
+    ko: "손떨림",
+  },
+  painKiller: {
+    en: "Painkiller",
+    ja: "鎮痛剤",
+    ko: "진통제",
   },
 };

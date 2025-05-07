@@ -1,8 +1,14 @@
 import { checkPlus, getPlusMinus } from "@/lib/func/jsxfunction";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { EffectText } from "./provisionsTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { effectI18N } from "@/lib/consts/i18nConsts";
 
 export default function EffectText({ effect }: EffectText) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const fixStr = (value: string | null) => {
     const fixList = ["손 떨림", "진통제"];
     if (value) {
@@ -16,8 +22,8 @@ export default function EffectText({ effect }: EffectText) {
       {effect.delay && effect.duration && (
         <TextSpan isCenter={false} textColor="PaleYellow">
           {effect.skill_name_en === "Painkiller"
-            ? `${effect.duration}초 지속`
-            : `${effect.delay}초 지연 / ${effect.duration}초 지속`}
+            ? `${effect.duration} ${effectI18N.duration[localeKey]}`
+            : `${effect.delay} ${effectI18N.delay[localeKey]} / ${effect.duration} ${effectI18N.duration[localeKey]}`}
         </TextSpan>
       )}
       <div className="flex">

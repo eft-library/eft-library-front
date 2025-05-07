@@ -5,20 +5,40 @@ import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
+import TableColumn from "@/components/custom/tableColumn/tableColumn";
+import { provisionsTableColumn } from "@/lib/consts/columnConsts";
 import {
   checkPlus,
   getPlusMinus,
   filterStimEffects,
+  highlightMatchedText,
 } from "@/lib/func/jsxfunction";
 import type { ProvisionsList } from "./provisionsTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { placeHolderText } from "@/lib/consts/i18nConsts";
 
 export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const [word, setWord] = useState<string>("");
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
+      <div className="w-full flex gap-2 mb-2 justify-end">
+        <Input
+          className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
+          value={word}
+          placeholder={placeHolderText.search[localeKey]}
+          onChange={(e) => setWord(e.currentTarget.value)}
+        />
+      </div>
+      <TableColumn
+        columnDesign={7}
+        columnData={provisionsTableColumn}
+        isAmmoProvisions
+      />
       {provisionsList.map((provisions) => (
         <DefineGrid
           key={provisions.id}
@@ -40,7 +60,9 @@ export default function ProvisionsClient({ provisionsList }: ProvisionsList) {
           </CenterContents>
 
           <CenterContents colSpan="2">
-            <TextSpan>{provisions.name[localeKey]}</TextSpan>
+            <TextSpan>
+              {highlightMatchedText(provisions.name[localeKey], word)}
+            </TextSpan>
           </CenterContents>
 
           <CenterContents>
