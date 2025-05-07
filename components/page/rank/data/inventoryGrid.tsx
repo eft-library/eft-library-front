@@ -15,6 +15,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { rankI18N } from "@/lib/consts/i18nConsts";
 
 export default function InventoryGrid({
   topList,
@@ -100,7 +101,9 @@ export default function InventoryGrid({
                   {hoverItem?.name[localeKey]}
                 </TextSpan>
                 <br />
-                <TextSpan size="base">플리마켓 가격&nbsp;:&nbsp;</TextSpan>
+                <TextSpan size="base">
+                  {rankI18N.fleaMarketPrice[localeKey]}&nbsp;:&nbsp;
+                </TextSpan>
                 <TextSpan
                   size="base"
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
@@ -108,7 +111,9 @@ export default function InventoryGrid({
                   {hoverItem?.flea_market_price.toLocaleString()}&nbsp;₽
                 </TextSpan>
                 <br />
-                <TextSpan size="base">슬롯당 가격&nbsp;:&nbsp;</TextSpan>
+                <TextSpan size="base">
+                  {rankI18N.slotPerPrice[localeKey]}&nbsp;:&nbsp;
+                </TextSpan>
                 <TextSpan
                   size="base"
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}
@@ -116,7 +121,9 @@ export default function InventoryGrid({
                   {hoverItem?.per_slot.toLocaleString()}&nbsp;₽
                 </TextSpan>
                 <br />
-                <TextSpan size="base">슬롯 크기&nbsp;:&nbsp;</TextSpan>
+                <TextSpan size="base">
+                  {rankI18N.slotSize[localeKey]}&nbsp;:&nbsp;
+                </TextSpan>
                 <TextSpan
                   size="base"
                   textColor={viewType === "PVP" ? "PeachCream" : "SkyBloom"}

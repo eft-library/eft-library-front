@@ -13,8 +13,14 @@ import InventoryGrid from "./inventoryGrid";
 import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import DefaultAlert from "@/components/custom/alert/defaultAlert";
+import { rankI18N, placeHolderText } from "@/lib/consts/i18nConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { rankCategoryList } from "@/lib/consts/columnConsts";
 
 export default function RankClient() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [priceType, setPriceType] = useState<string>("PVP");
   const [searchWord, setSearchWord] = useState<string>("");
@@ -93,7 +99,7 @@ export default function RankClient() {
         <TextSpan>&nbsp;/&nbsp;</TextSpan>
         <TextSpan textColor="PeachCream">PVP</TextSpan>
         <TextSpan textColor="GoldenYellow">
-          &nbsp;시세를 확인하려면 버튼을 클릭하세요!
+          &nbsp;{rankI18N.notice[localeKey]}
         </TextSpan>
       </div>
       <div className="flex gap-2 w-full">
@@ -111,7 +117,7 @@ export default function RankClient() {
           id="name"
           className="text-base font-bold border-white placeholder:text-SilverGray"
           value={searchWord}
-          placeholder="검색어"
+          placeholder={placeHolderText.search[localeKey]}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               setSearchRealWord(searchWord);
@@ -127,17 +133,7 @@ export default function RankClient() {
         </Button>
       </div>
       <div className="flex flex-wrap gap-2">
-        {[
-          { value: "Keys", kr_name: "열쇠" },
-          { value: "Meds", kr_name: "치료품" },
-          { value: "Weapon", kr_name: "무기" },
-          { value: "Ammo", kr_name: "탄약" },
-          { value: "Provisions", kr_name: "식량" },
-          { value: "Container", kr_name: "컨테이너" },
-          { value: "Wearables", kr_name: "장비" },
-          { value: "LOOT", kr_name: "전리품" },
-          { value: "Mods", kr_name: "부품" },
-        ].map((category) => (
+        {rankCategoryList.map((category) => (
           <Button
             key={category.value}
             onClick={() => onChangeCategory(category.value)}
@@ -147,7 +143,7 @@ export default function RankClient() {
                 : "bg-Background hover:bg-NeutralGray opacity-50"
             }`}
           >
-            {category.kr_name}
+            {category[localeKey]}
             {listCategory.includes(category.value) && <X strokeWidth={5} />}
           </Button>
         ))}
@@ -196,8 +192,8 @@ export default function RankClient() {
       <DefaultAlert
         open={alertStatus}
         setOpen={setAlertStatus}
-        title="알림"
-        description={"카테고리는 최소 1개가 존재해야 합니다."}
+        title="Notice"
+        description={rankI18N.alertMsg[localeKey]}
       />
     </div>
   );

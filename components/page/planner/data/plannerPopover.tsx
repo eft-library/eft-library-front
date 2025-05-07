@@ -5,8 +5,13 @@ import { useState } from "react";
 import type { PlannerPopOver } from "./plannerType";
 import { CircleAlert } from "lucide-react";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { planner18N } from "@/lib/consts/i18nConsts";
 
 export default function PlannerPopOver({ min_player_level }: PlannerPopOver) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
 
   const changePopoverState = (condition: boolean) => {
@@ -30,7 +35,9 @@ export default function PlannerPopOver({ min_player_level }: PlannerPopOver) {
           onMouseEnter={() => changePopoverState(true)}
           onMouseLeave={() => changePopoverState(false)}
         >
-          <TextSpan>{min_player_level} 이후 부터 가능합니다.</TextSpan>
+          <TextSpan>
+            {min_player_level}&nbsp;{planner18N.minLevel[localeKey]}
+          </TextSpan>
         </div>
       )}
     </div>

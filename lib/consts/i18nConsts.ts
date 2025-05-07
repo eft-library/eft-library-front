@@ -135,6 +135,31 @@ export const roadmapI18N = {
 
 export const rankI18N = {
   title: { en: "Item Rank", ja: "アイテムランク", ko: "아이템 랭크" },
+  fleaMarketPrice: {
+    en: "Flea Market Price",
+    ja: "フリーマーケット価格",
+    ko: "플리마켓 가격",
+  },
+  slotPerPrice: {
+    en: "Price per Slot",
+    ja: "スロット単価",
+    ko: "슬롯당 가격",
+  },
+  slotSize: {
+    en: "Slot Size",
+    ja: "スロットサイズ",
+    ko: "슬롯 크기",
+  },
+  notice: {
+    en: "Click the button to check the price!",
+    ja: "価格を確認するにはボタンをクリックしてください！",
+    ko: "시세를 확인하려면 버튼을 클릭하세요!",
+  },
+  alertMsg: {
+    en: "At least one category must exist.",
+    ja: "カテゴリは少なくとも1つ必要です。",
+    ko: "카테고리는 최소 1개가 존재해야 합니다.",
+  },
 };
 
 export const interactiveMapI18N = {
@@ -166,5 +191,154 @@ export const mapOfTarkovI18n = {
     en: "Transits",
     ja: "Transits", // 교통 수단, 이동 경로 등 의미에 따라 조정 가능
     ko: "Transits",
+  },
+};
+
+export const questI18N = {
+  title: { en: "Quest", ja: "Quest", ko: "퀘스트" },
+  next: {
+    en: "Next",
+    ja: "次へ",
+    ko: "다음",
+  },
+  prev: {
+    en: "Previous",
+    ja: "前へ",
+    ko: "이전",
+  },
+  objectives: {
+    en: "Objectives",
+    ja: "目標",
+    ko: "목표",
+  },
+  reward: {
+    en: "Reward",
+    ja: "報酬",
+    ko: "보상",
+  },
+  guide: {
+    en: "Guide",
+    ja: "ガイド",
+    ko: "가이드",
+  },
+  name: {
+    en: "Title",
+    ja: "タイトル",
+    ko: "제목",
+  },
+  kappa: {
+    en: "Kappa",
+    ja: "Kappa",
+    ko: "카파",
+  },
+};
+
+export const price18N = {
+  title: { en: "Item Price", ja: "アイテム価格", ko: "아이템 시세" },
+  fleaMarketPrice: {
+    en: "Flea Market Price",
+    ja: "フリーマーケット価格",
+    ko: "플리마켓 가격",
+  },
+  checkLatestPriceAfterClick: {
+    en: "Click an item to check the latest price!",
+    ja: "アイテムをクリックして最新の価格を確認してください！",
+    ko: "아이템 클릭 후 최신 시세를 확인하세요!",
+  },
+  checkPriceByButton: {
+    en: "Click the button to check the price!",
+    ja: "価格を確認するにはボタンをクリックしてください！",
+    ko: "시세를 확인하려면 버튼을 클릭하세요!",
+  },
+  image: {
+    en: "Image",
+    ja: "画像",
+    ko: "사진",
+  },
+  name: {
+    en: "Name",
+    ja: "名前",
+    ko: "이름",
+  },
+  traderPrice: {
+    en: "Sell to Trader",
+    ja: "トレーダーに売却",
+    ko: "상인에게 판매",
+  },
+};
+
+export const buttonI18N = {
+  search: {
+    en: "Search",
+    ja: "検索",
+    ko: "검색",
+  },
+};
+
+export const timeI18N = {
+  year: {
+    en: "year",
+    ja: "年",
+    ko: "년",
+  },
+  month: {
+    en: "month",
+    ja: "月",
+    ko: "월",
+  },
+  day: {
+    en: "day",
+    ja: "日",
+    ko: "일",
+  },
+  hour: {
+    en: "hour",
+    ja: "時",
+    ko: "시",
+  },
+  minute: {
+    en: "minute",
+    ja: "分",
+    ko: "분",
+  },
+};
+
+export const planner18N = {
+  title: { en: "Quest Planner", ja: "Quest Planner", ko: "퀘스트 플래너" },
+  add: {
+    en: "Add",
+    ja: "追加",
+    ko: "추가",
+  },
+  truncate: {
+    en: "Clear",
+    ja: "クリア",
+    ko: "비우기",
+  },
+  selectQuest: {
+    en: "Please select a quest",
+    ja: "クエストを選択してください",
+    ko: "퀘스트를 선택해주세요",
+  },
+  minLevel: {
+    en: "Available from this level onwards",
+    ja: "このレベルから利用可能です",
+    ko: "이후 부터 가능합니다.",
+  },
+  notice: {
+    en: "Please search for a quest to register in the Quest Planner and click the add button.",
+    ja: "クエストプランナーに登録するクエストを検索し、追加ボタンをクリックしてください。",
+    ko: "퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.",
+  },
+  sample: {
+    en: "The quests added below are samples, and all actions require login.",
+    ja: "下に追加されたクエストはサンプルであり、すべての操作にはログインが必要です。",
+    ko: "아래에 추가된 퀘스트는 예시이며, 모든 동작은 로그인이 필요합니다.",
+  },
+  selectAll: { en: "Select All", ja: "すべて選択", ko: "전체 선택" },
+  delete: {
+    en: "Delete",
+    ja: "削除",
+    ko: "삭제",
   },
 };

@@ -11,8 +11,13 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import type { PriceChart } from "./priceTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { timeI18N, price18N } from "@/lib/consts/i18nConsts";
 
 export default function PriceChart({ viewType, item }: PriceChart) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   if (!item) return null;
 
   const CustomTooltip = ({
@@ -24,7 +29,7 @@ export default function PriceChart({ viewType, item }: PriceChart) {
   }) => {
     if (active && payload && payload.length) {
       const formattedDate = dayjs(payload[0].payload.price_time).format(
-        "YYYY년 MM월 DD일 HH시 mm분 ss초"
+        `YYYY${timeI18N.year[localeKey]} MM${timeI18N.month[localeKey]} DD${timeI18N.day[localeKey]} HH${timeI18N.hour[localeKey]} mm${timeI18N.minute[localeKey]}`
       );
 
       return (
@@ -38,7 +43,9 @@ export default function PriceChart({ viewType, item }: PriceChart) {
           }}
         >
           <p style={{ margin: 0, fontWeight: "bold" }}>{formattedDate}</p>
-          <span style={{ margin: 0, fontWeight: "bold" }}>플리마켓 시세:</span>
+          <span style={{ margin: 0, fontWeight: "bold" }}>
+            {price18N.fleaMarketPrice[localeKey]}:
+          </span>
           <span
             style={
               viewType === "PVP"
@@ -77,7 +84,11 @@ export default function PriceChart({ viewType, item }: PriceChart) {
             dataKey="price_time"
             tick={{ fill: "white", fontWeight: "bold" }}
             tickFormatter={(value, index) => {
-              return index === 0 ? "" : dayjs(value).format("M월 D일 H시");
+              return index === 0
+                ? ""
+                : dayjs(value).format(
+                    `M${timeI18N.month[localeKey]} D${timeI18N.day[localeKey]} H${timeI18N.hour[localeKey]}`
+                  );
             }}
             interval={Math.floor(
               viewType === "PVP"

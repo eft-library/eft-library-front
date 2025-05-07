@@ -14,8 +14,13 @@ import { cn } from "@/lib/utils";
 import type { Price } from "./priceTypes";
 import PriceChart from "./priceChart";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { buttonI18N, placeHolderText, price18N } from "@/lib/consts/i18nConsts";
 
 export default function PriceClient() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [search, setSearch] = useState<string>("");
   const [fetchWord, setFetchWord] = useState<string>("");
   const [priceType, setPriceType] = useState<string>("PVP");
@@ -78,7 +83,7 @@ export default function PriceClient() {
         <TextSpan>&nbsp;/&nbsp;</TextSpan>
         <TextSpan textColor="PeachCream">PVP</TextSpan>
         <TextSpan textColor="GoldenYellow">
-          &nbsp;시세를 확인하려면 버튼을 클릭하세요!
+          &nbsp;{price18N.checkPriceByButton[localeKey]}
         </TextSpan>
       </div>
       <div className="flex gap-2 w-full">
@@ -96,7 +101,7 @@ export default function PriceClient() {
           value={search}
           className="text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="검색어 입력"
+          placeholder={placeHolderText.search[localeKey]}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               setFetchWord(search);
@@ -107,7 +112,7 @@ export default function PriceClient() {
           className="border-2 font-bold border-white px-4 py-2 bg-transparent text-white rounded-lg hover:bg-NeutralGray transition"
           onClick={() => setFetchWord(search)}
         >
-          검색
+          {buttonI18N.search[localeKey]}
         </Button>
       </div>
 
@@ -118,7 +123,7 @@ export default function PriceClient() {
       <div className="w-full">
         <div className="w-full flex justify-end">
           <TextSpan textColor="GoldenYellow">
-            아이템 클릭 후 최신 시세를 확인하세요!
+            {price18N.checkLatestPriceAfterClick[localeKey]}
           </TextSpan>
         </div>
         <PriceHeader />

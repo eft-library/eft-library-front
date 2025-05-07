@@ -20,6 +20,7 @@ import {
 } from "@/lib/func/localeFunction";
 import DefineGrid from "@/components/custom/gridContents/defineGrid";
 import CenterContents from "@/components/custom/gridContents/centerContents";
+import { questI18N } from "@/lib/consts/i18nConsts";
 
 export default function QuestDesc({ questInfo }: QuestDesc) {
   const locale = useLocale();
@@ -63,7 +64,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
       {questInfo.objectives && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
-            목표
+            {questI18N.objectives[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
           {questInfo.objectives.map((objective, index) => (
@@ -80,7 +81,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
       {questInfo.finish_rewards && (
         <div className="w-full flex flex-col gap-2">
           <TextSpan size="3xl" isCenter={false}>
-            보상
+            {questI18N.reward[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
           {questInfo.finish_rewards.items.map((rewards, index) => (
@@ -177,7 +178,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
         <div className="w-full flex flex-col gap-2">
           <div className="flex justify-between">
             <TextSpan size="3xl" isCenter={false}>
-              가이드
+              {questI18N.guide[localeKey]}
             </TextSpan>
             <div className="flex gap-2 items-center">
               <Redo2 />

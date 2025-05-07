@@ -16,6 +16,7 @@ import DefaultAlert from "@/components/custom/alert/defaultAlert";
 import { previewData } from "@/lib/consts/libraryConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { alertMessageI18N, planner18N } from "@/lib/consts/i18nConsts";
 
 export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
   const locale = useLocale();
@@ -72,7 +73,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
 
       checkResponse(response);
     } else {
-      setAlertDesc("완료는 로그인 사용자만 가능합니다.");
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -95,7 +96,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
 
       checkResponse(response);
     } else {
-      setAlertDesc("삭제는 로그인 사용자만 가능합니다.");
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -118,7 +119,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
 
       checkResponse(response);
     } else {
-      setAlertDesc("추가는 로그인 사용자만 가능합니다.");
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -194,7 +195,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
         <>
           {userQuest.length < 1 || !userQuest[0].npc_id ? (
             <TextSpan size="lg" isCenter={false}>
-              퀘스트 플래너에 등록할 퀘스트를 검색하여 추가 버튼을 눌러주세요.
+              {planner18N.notice[localeKey]}
             </TextSpan>
           ) : (
             <div>
@@ -207,14 +208,14 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                     onChange={() => allCheck(false)}
                   />
                   <TextSpan isCenter={false} size="lg">
-                    전체 선택
+                    {planner18N.selectAll[localeKey]}
                   </TextSpan>
                 </div>
                 <button
                   className="px-4 font-bold py-2 border-2 bg-Background border-white text-white rounded-lg hover:bg-DeepBurgundy"
                   onClick={() => deleteUserQuest(checkedQuest)}
                 >
-                  삭제
+                  {planner18N.delete[localeKey]}
                 </button>
               </div>
               <div className={"flex flex-col gap-2"}>
@@ -282,7 +283,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
         <div>
           <div className="mb-8">
             <span className="font-bold text-xl text-SoftPink">
-              아래에 추가된 퀘스트는 예시이며, 모든 동작은 로그인이 필요합니다.
+              {planner18N.sample[localeKey]}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
@@ -294,14 +295,14 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
                 onChange={() => allCheck(true)}
               />
               <TextSpan isCenter={false} size="lg">
-                전체 선택
+                {planner18N.selectAll[localeKey]}
               </TextSpan>
             </div>
             <button
               className="px-4 font-bold py-2 border-2 bg-Background border-white text-white rounded-lg hover:bg-DeepBurgundy"
               onClick={() => deleteUserQuest(checkedQuest)}
             >
-              삭제
+              {planner18N.delete[localeKey]}
             </button>
           </div>
 
@@ -369,7 +370,7 @@ export default function PlannerClient({ userQuestList }: PlannerClientQuest) {
       <DefaultAlert
         open={alertStatus}
         setOpen={setAlertStatus}
-        title="알림"
+        title="Notice"
         description={alertDesc}
       />
     </div>

@@ -10,6 +10,7 @@ import { SquareCheckBig, SquareX } from "lucide-react";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { questI18N } from "@/lib/consts/i18nConsts";
 
 export default function NpcDetail({ questInfo }: NpcDetail) {
   const locale = useLocale();
@@ -53,7 +54,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
       <div className="flex w-full justify-between">
         <div className="flex flex-col w-[50%]">
           <TextSpan size="lg" textColor="GoldenYellow">
-            이전
+            {questI18N.prev[localeKey]}
           </TextSpan>
 
           {!questInfo.task_requirements ||
@@ -76,7 +77,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         </div>
         <div className="flex flex-col w-1/2">
           <TextSpan size="lg" textColor="GoldenYellow">
-            다음
+            {questI18N.next[localeKey]}
           </TextSpan>
           {!questInfo.task_next || questInfo.task_next.length <= 0 ? (
             <TextSpan>-</TextSpan>

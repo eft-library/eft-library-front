@@ -20,6 +20,7 @@ import {
   getOtherLocalizedKey,
 } from "@/lib/func/localeFunction";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { questI18N } from "@/lib/consts/i18nConsts";
 
 export default function QuestClient({ questList }: QuestClient) {
   const locale = useLocale();
@@ -32,16 +33,16 @@ export default function QuestClient({ questList }: QuestClient) {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[240px] font-bold text-base text-white text-center">
-              제목
+              {questI18N.name[localeKey]}
             </TableHead>
             <TableHead className="font-bold min-w-[400px] text-base text-white text-center">
-              목표
+              {questI18N.objectives[localeKey]}
             </TableHead>
             <TableHead className="font-bold min-w-[400px] text-base text-white text-center">
-              보상
+              {questI18N.reward[localeKey]}
             </TableHead>
             <TableHead className="w-[80px] text-center font-bold text-base text-white">
-              카파
+              {questI18N.kappa[localeKey]}
             </TableHead>
           </TableRow>
         </TableHeader>

@@ -9,6 +9,7 @@ import React from "react";
 import { handleScroll } from "@/lib/func/jsxfunction";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { planner18N } from "@/lib/consts/i18nConsts";
 
 export default function PlannerSelector({ updateQuest }: PlannerSelector) {
   const locale = useLocale();
@@ -81,7 +82,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
           }}
           className="border-2 font-bold border-white px-4 py-2 bg-transparent text-white rounded-lg hover:bg-NeutralGray transition"
         >
-          추가
+          {planner18N.add[localeKey]}
         </button>
         <button
           onClick={() => {
@@ -89,7 +90,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
           }}
           className="border-2 font-bold border-white px-4 py-2 bg-transparent text-white rounded-lg hover:bg-DeepBurgundy transition"
         >
-          비우기
+          {planner18N.truncate[localeKey]}
         </button>
       </div>
 
@@ -141,7 +142,7 @@ export default function PlannerSelector({ updateQuest }: PlannerSelector) {
               {/* Input */}
               <input
                 {...getInputProps({
-                  placeholder: "퀘스트를 선택해주세요",
+                  placeholder: planner18N.selectQuest[localeKey],
                   className:
                     "font-bold text-[18px] w-full h-[50px] rounded-[10px] pl-5 placeholder:text-SilverGray",
                   onClick: () => {
