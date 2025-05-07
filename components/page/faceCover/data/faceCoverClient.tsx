@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { placeHolderText } from "@/lib/consts/i18nConsts";
 
 export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
   const locale = useLocale();
@@ -31,7 +32,7 @@ export default function FaceCoverClient({ face_cover_data }: FaceCoverClient) {
         <Input
           className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
           value={word}
-          placeholder="이름을 최소 2글자 입력하세요"
+          placeholder={placeHolderText.search[localeKey]}
           onChange={(e) => setWord(e.currentTarget.value)}
         />
       </div>

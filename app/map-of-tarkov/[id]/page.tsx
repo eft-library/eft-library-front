@@ -20,20 +20,21 @@ export async function generateMetadata({
   );
 
   const res = product.data.map_info;
+  console.log(res);
 
   return {
-    title: `타르코프 지도 ${res.name_kr} - EFT Library`,
-    description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name_kr} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+    title: `타르코프 지도 ${res.name.ko} - EFT Library`,
+    description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
     openGraph: {
-      title: `타르코프 지도 ${res.name_kr} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name_kr} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+      title: `타르코프 지도 ${res.name.ko} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
       images: [res.mot_image],
       url: `https://eftlibrary.com/map-of-tarkov/${id}`,
       siteName: "EFT Library",
     },
     twitter: {
-      title: `타르코프 지도 ${res.name_kr} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name_kr} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+      title: `타르코프 지도 ${res.name.ko} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
       images: [res.mot_image],
     },
   };

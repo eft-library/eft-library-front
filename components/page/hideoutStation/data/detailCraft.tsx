@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { hideoutI18n } from "@/lib/consts/i18nConsts";
 
 export default function DetailCraft({ crafts }: DetailCraft) {
   const locale = useLocale();
@@ -24,20 +25,22 @@ export default function DetailCraft({ crafts }: DetailCraft) {
     setOpenTooltipIndex(index);
     setHoverItem(itemInfo);
   };
+
   const changeTime = (sec: number | undefined) => {
-    if (!sec) return "0 분";
+    if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
 
     const hours = Math.floor(sec / 3600);
     const minutes = Math.floor((sec % 3600) / 60);
 
     if (hours > 0 && minutes > 0) {
-      return `${hours}시간 ${minutes}분`;
+      return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
     } else if (hours > 0) {
-      return `${hours}시간`;
+      return `${hours} ${hideoutI18n.hour[localeKey]}`;
     } else {
-      return `${minutes}분`;
+      return `${minutes} ${hideoutI18n.min[localeKey]}`;
     }
   };
+
   return (
     crafts && (
       <div className="flex flex-col justify-center w-full gap-6">
@@ -51,7 +54,7 @@ export default function DetailCraft({ crafts }: DetailCraft) {
             }`}
           >
             <span className="font-bold text-lg">
-              {craft.name[localeKey]} 제작
+              {craft.name[localeKey]} {hideoutI18n.craft[localeKey]}
             </span>
             <div className="flex gap-2 items-center">
               {craft.req_item.map((req, sIndex) => (

@@ -12,7 +12,6 @@ import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export const dynamic = "force-dynamic";
 
-// TODO: 사용자 완료 리스트 받아서 테두리 색깔 구분을 해야함
 export default function StationMap({
   onChangeMaster,
   masterId,

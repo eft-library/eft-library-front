@@ -8,6 +8,7 @@ import type { BossHealth } from "./bossTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { Separator } from "@/components/ui/separator";
+import { boss18N } from "@/lib/consts/i18nConsts";
 
 export default function BossHealth({ subFollowers }: BossHealth) {
   const locale = useLocale();
@@ -30,7 +31,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <span className="font-bold text-3xl">피통</span>
+      <span className="font-bold text-3xl">{boss18N.health[localeKey]}</span>
       <Separator className="bg-white" />
       {subFollowers && (
         <div className="flex flex-col justify-center items-center w-full gap-4">

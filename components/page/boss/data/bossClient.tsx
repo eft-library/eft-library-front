@@ -20,6 +20,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { bossTableColumn } from "@/lib/consts/columnConsts";
+import { boss18N } from "@/lib/consts/i18nConsts";
 
 export default function BossClient({ bossData }: BossClient) {
   const locale = useLocale();
@@ -140,7 +141,9 @@ export default function BossClient({ bossData }: BossClient) {
         </div>
         {bossData.boss.location_guide && (
           <div className="w-full flex flex-col gap-2">
-            <span className="font-bold text-3xl">위치</span>
+            <span className="font-bold text-3xl">
+              {boss18N.location[localeKey]}
+            </span>
             <Separator className="bg-white" />
             <HtmlWithImage contents={bossData.boss.location_guide[localeKey]} />
           </div>

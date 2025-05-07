@@ -1,11 +1,18 @@
 import ContentsWrapper from "@/components/custom/contentsWrapper/contentsWrapper";
 import GetGlasses from "./data/getGlasses";
 import AdBanner from "../../custom/adsense/adBanner";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { itemI18N } from "@/lib/consts/i18nConsts";
 
 export default function Glasses() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <ContentsWrapper>
-      <h1 className="text-white text-4xl font-bold text-center">안경</h1>
+      <h1 className="text-white text-4xl font-bold text-center">
+        {itemI18N.glasses.title[localeKey]}
+      </h1>
       <div className="w-[1200px]">
         <AdBanner
           dataAdFormat={"auto"}

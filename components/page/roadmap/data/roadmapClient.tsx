@@ -27,8 +27,13 @@ import NpcNode from "./npcNode";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { alertMessageI18N, roadmapI18N } from "@/lib/consts/i18nConsts";
 
 export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { data: session } = useSession();
   const [onlyKappa, setOnlyKappa] = useState<boolean>(false);
   const [questList, setQuestList] = useState<string[]>([]);
@@ -248,13 +253,13 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
       if (response.status === 200) {
         setQuestList(response.data);
-        setAlertDesc("저장 되었습니다.");
+        setAlertDesc(alertMessageI18N.save[localeKey]);
 
         setTimeout(() => {
           setAlertStatus(true);
         }, 500);
       } else {
-        setAlertDesc("로그인을 다시 해주세요.");
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
 
         setTimeout(() => {
           setAlertStatus(true);
@@ -263,7 +268,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
         window.location.reload();
       }
     } else {
-      setAlertDesc("퀘스트 로드맵은 로그인 사용자만 저장 가능합니다.");
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -272,7 +277,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
   const handleSearch = () => {
     if (searchQuery.length < 1) {
-      setAlertDesc("검색어를 입력해주세요.");
+      setAlertDesc(alertMessageI18N.inputWord[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -301,7 +306,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
       reactFlowInstance.fitBounds(bounds);
     } else {
-      setAlertDesc("일치하는 노드를 찾을 수 없습니다.");
+      setAlertDesc(alertMessageI18N.notFound[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -343,7 +348,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           <Input
             id="name"
             className="col-span-3 text-base font-bold border-white border-2 border-solid placeholder:text-SilverGray"
-            placeholder="퀘스트 검색"
+            placeholder={roadmapI18N.placeHolder[localeKey]}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {
@@ -363,19 +368,19 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
           onClick={checkAllNodes}
         >
-          전체 선택
+          {roadmapI18N.selectAll[localeKey]}
         </Button>
         <Button
           className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
           onClick={uncheckAllNodes}
         >
-          전체 해제
+          {roadmapI18N.unSelectAll[localeKey]}
         </Button>
         <Button
           className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
           onClick={() => onClickSave()}
         >
-          저장
+          {roadmapI18N.save[localeKey]}
         </Button>
       </div>
       <div
@@ -411,12 +416,14 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
         <div className="absolute top-2 left-2 flex-col gap-2 min-w-[200px] max-w-[200px] border-white border-solid border-2 rounded-lg p-2 bg-NodeBackground">
           <div className="p-2">
-            <TextSpan size="lg">퀘스트 현황판</TextSpan>
+            <TextSpan size="lg">{roadmapI18N.status[localeKey]}</TextSpan>
           </div>
 
           {!onlyKappa && (
             <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-              <span className="text-sm font-bold col-span-2">전체 퀘스트:</span>
+              <span className="text-sm font-bold col-span-2">
+                {roadmapI18N.allQuest[localeKey]}:
+              </span>
               <span className="text-sm font-bold text-right block">
                 {getAllCount()}
               </span>
@@ -424,7 +431,9 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           )}
 
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">카파 퀘스트:</span>
+            <span className="text-sm font-bold col-span-2">
+              {roadmapI18N.kappaQuest[localeKey]}:
+            </span>
 
             <span className="text-sm font-bold text-SoftPink text-right block">
               {getAllKappaCount()}
@@ -433,7 +442,7 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
           <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
             <span className="text-sm font-bold col-span-2">
-              카파 완료 퀘스트:
+              {roadmapI18N.kappaSuccessQuest[localeKey]}:
             </span>
             <span className="text-sm font-bold text-SunsetYellow text-right block">
               {getKappaCompleteCount()}
@@ -442,7 +451,9 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
 
           {!onlyKappa && (
             <div className="grid grid-cols-3 p-1">
-              <span className="text-sm font-bold col-span-2">완료 퀘스트:</span>
+              <span className="text-sm font-bold col-span-2">
+                {roadmapI18N.allSuccessQuest[localeKey]}:
+              </span>
               <span className="text-sm font-bold text-LimeGreen text-right block">
                 {getCompleteCount()}
               </span>
@@ -455,14 +466,16 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
             className="border-2 border-white border-solid bg-Background text-white text-sm rounded-lg hover:bg-NeutralGray font-bold"
             onClick={() => onClickKappaFilter()}
           >
-            {onlyKappa ? "전체 퀘스트 보기" : "카파 퀘스트 보기"}
+            {onlyKappa
+              ? roadmapI18N.viewAllQuest[localeKey]
+              : roadmapI18N.viewKappaQuest[localeKey]}
           </Button>
         </div>
       </div>
       <DefaultAlert
         open={alertStatus}
         setOpen={setAlertStatus}
-        title="알림"
+        title="Notice"
         description={alertDesc}
       />
     </div>

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
 import Link from "next/link";
+import { boss18N, placeHolderText } from "@/lib/consts/i18nConsts";
 
 export default function FollowerLoot({ follower }: FollowerLoot) {
   const locale = useLocale();
@@ -35,11 +36,13 @@ export default function FollowerLoot({ follower }: FollowerLoot) {
       {uniqueItemInfo.length > 0 && (
         <div className="w-full flex flex-col gap-4">
           <div className="w-full flex gap-2 mb-2 justify-between">
-            <span className="font-bold text-3xl">전리품</span>
+            <span className="font-bold text-3xl">
+              {boss18N.loot[localeKey]}
+            </span>
             <Input
               className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
               value={word}
-              placeholder="이름을 최소 2글자 입력하세요"
+              placeholder={placeHolderText.search[localeKey]}
               onChange={(e) => setWord(e.currentTarget.value)}
             />
           </div>

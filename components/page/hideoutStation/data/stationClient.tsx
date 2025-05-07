@@ -11,8 +11,13 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import DefaultAlert from "@/components/custom/alert/defaultAlert";
 import Loading from "@/components/custom/loading/loading";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { alertMessageI18N, hideoutI18n } from "@/lib/consts/i18nConsts";
 
 export default function StationClient({ hideoutData }: StationClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { data: session } = useSession();
   const [completeList, setCompleteList] = useState<string[]>(
     hideoutData.complete_list
@@ -70,7 +75,7 @@ export default function StationClient({ hideoutData }: StationClient) {
 
       if (response.status === 200) {
         setCompleteList(changeList);
-        setAlertDesc("저장 되었습니다.");
+        setAlertDesc(alertMessageI18N.save[localeKey]);
 
         setTimeout(() => {
           setAlertStatus(true);
@@ -90,7 +95,7 @@ export default function StationClient({ hideoutData }: StationClient) {
         }
       } else {
         setCompleteList([]);
-        setAlertDesc("로그인을 다시 해주세요.");
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
 
         setTimeout(() => {
           setAlertStatus(true);
@@ -100,7 +105,7 @@ export default function StationClient({ hideoutData }: StationClient) {
         window.location.reload();
       }
     } else {
-      setAlertDesc("은신처는 로그인 사용자만 저장 가능합니다.");
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -147,14 +152,14 @@ export default function StationClient({ hideoutData }: StationClient) {
     setLevel("5d484fe3654e76006657e0ac-1");
     if (response.status === 200) {
       setCompleteList([]);
-      setAlertDesc("저장 되었습니다.");
+      setAlertDesc(alertMessageI18N.save[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
       setLoading(false);
     } else {
       setCompleteList([]);
-      setAlertDesc("로그인을 다시 해주세요.");
+      setAlertDesc(alertMessageI18N.reLogin[localeKey]);
       setTimeout(() => {
         setAlertStatus(true);
       }, 500);
@@ -185,7 +190,7 @@ export default function StationClient({ hideoutData }: StationClient) {
               onClick={() => onClickReset()}
               className="rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
             >
-              은신처 초기화
+              {hideoutI18n.reset[localeKey]}
             </Button>
           </div>
         )}

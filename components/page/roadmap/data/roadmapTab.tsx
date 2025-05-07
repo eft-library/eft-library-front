@@ -3,6 +3,7 @@
 import type { RoadmapTab } from "./roadmapTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { roadmapI18N } from "@/lib/consts/i18nConsts";
 
 export default function RoadmapTab({
   npcList,
@@ -20,7 +21,7 @@ export default function RoadmapTab({
           }`}
           onClick={() => setTabState("all")}
         >
-          전체
+          {roadmapI18N.tab[localeKey]}
         </button>
         {npcList.length > 0 &&
           npcList.map((npc) => (

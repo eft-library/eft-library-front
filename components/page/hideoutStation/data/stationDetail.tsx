@@ -9,6 +9,7 @@ import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { hideoutI18n } from "@/lib/consts/i18nConsts";
 
 export default function StationDetail({
   levelId,
@@ -38,17 +39,16 @@ export default function StationDetail({
   const levelItem = masterInfo?.data.find((sub) => sub.level_id === levelId);
 
   const changeTime = (sec: number | undefined) => {
-    if (!sec) return "0 분";
+    if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
 
     const hours = Math.floor(sec / 3600);
     const minutes = Math.floor((sec % 3600) / 60);
-
     if (hours > 0 && minutes > 0) {
-      return `${hours}시간 ${minutes}분`;
+      return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
     } else if (hours > 0) {
-      return `${hours}시간`;
+      return `${hours} ${hideoutI18n.hour[localeKey]}`;
     } else {
-      return `${minutes}분`;
+      return `${minutes} ${hideoutI18n.min[localeKey]}`;
     }
   };
 
@@ -91,20 +91,22 @@ export default function StationDetail({
               disabled={checkBuild()}
               className="px-4 font-bold py-2 border-2 bg-Background border-LimeGreen text-white rounded-lg hover:bg-NeutralGray text-lg"
             >
-              건설
+              {hideoutI18n.userFunc.build[localeKey]}
             </Button>
             <Button
               onClick={() => onClickSave(levelId, "broken")}
               disabled={checkBroken()}
               className="px-4 font-bold py-2 border-2 bg-Background border-Red text-white rounded-lg hover:bg-NeutralGray text-lg"
             >
-              파괴
+              {hideoutI18n.userFunc.destroy[localeKey]}
             </Button>
           </div>
         </div>
 
         <div>
-          <p className="text-2xl font-bold mb-2 text-GoldenYellow">건설 시간</p>
+          <p className="text-2xl font-bold mb-2 text-GoldenYellow">
+            {hideoutI18n.constructionTime[localeKey]}
+          </p>
           <p className="text-white text-lg font-bold">
             {changeTime(levelItem?.level_info[0].construction_time)}
           </p>
@@ -112,7 +114,7 @@ export default function StationDetail({
 
         <div>
           <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">
-            요구 사항
+            {hideoutI18n.require[localeKey]}
           </h3>
           <div className="w-full flex flex-col gap-4">
             {levelItem && levelItem.trader_require && (
@@ -133,7 +135,7 @@ export default function StationDetail({
         {levelItem && levelItem.bonus && levelItem.bonus.length > 0 && (
           <div>
             <h3 className="text-2xl font-bold mb-2 text-GoldenYellow">
-              보너스
+              {hideoutI18n.bonus[localeKey]}
             </h3>
             <div className="w-full flex flex-col gap-2">
               {levelItem && levelItem.bonus && (
@@ -145,7 +147,9 @@ export default function StationDetail({
 
         {levelItem && levelItem.crafts && levelItem.crafts.length > 0 && (
           <div>
-            <h3 className="text-2xl mb-2 font-bold text-GoldenYellow">제작</h3>
+            <h3 className="text-2xl mb-2 font-bold text-GoldenYellow">
+              {hideoutI18n.craft[localeKey]}
+            </h3>
             <div className="w-full flex flex-col gap-2">
               {levelItem && levelItem.crafts && (
                 <DetailCraft crafts={levelItem.crafts} />

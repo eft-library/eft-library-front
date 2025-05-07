@@ -59,14 +59,15 @@ export default function QuestClient({ questList }: QuestClient) {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {quest.objectives.map((obj, oIndex) => (
-                      <div
-                        className="font-bold text-base p-[1px]"
-                        key={`${oIndex}-objectives-${quest.id}`}
-                      >
-                        * {obj[getDescriptionLocaleKey(locale)]}
-                      </div>
-                    ))}
+                    {quest.objectives &&
+                      quest.objectives.map((obj, oIndex) => (
+                        <div
+                          className="font-bold text-base p-[1px]"
+                          key={`${oIndex}-objectives-${quest.id}`}
+                        >
+                          * {obj[getDescriptionLocaleKey(locale)]}
+                        </div>
+                      ))}
                   </TableCell>
                   <TableCell>
                     {quest.finish_rewards.items.map((rewards, rIndex) => (

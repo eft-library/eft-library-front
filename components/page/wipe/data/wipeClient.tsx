@@ -12,8 +12,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { itemI18N } from "@/lib/consts/i18nConsts";
 
 export default function WipeClient({ wipeList }: WipeClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const calculateProgress = (dateNumber: number) => {
     const durations = wipeList.map((wipe) =>
       getDateRange(wipe.season_start, wipe.season_end)
@@ -33,16 +38,16 @@ export default function WipeClient({ wipeList }: WipeClient) {
         <TableHeader>
           <TableRow>
             <TableHead className="font-bold text-base text-white text-center">
-              패치
+              {itemI18N.wipe.version[localeKey]}
             </TableHead>
             <TableHead className="font-bold text-base text-white text-center">
-              시즌 시작
+              {itemI18N.wipe.start[localeKey]}
             </TableHead>
             <TableHead className="font-bold text-base text-white text-center">
-              시즌 끝
+              {itemI18N.wipe.end[localeKey]}
             </TableHead>
             <TableHead className="w-[400px] text-center font-bold text-base text-white">
-              시즌 기간
+              {itemI18N.wipe.day[localeKey]}
             </TableHead>
           </TableRow>
         </TableHeader>

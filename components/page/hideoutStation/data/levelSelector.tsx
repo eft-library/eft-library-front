@@ -4,6 +4,9 @@ import type { LevelSelector } from "./stationType";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import TextSpan from "@/components/custom/gridContents/textSpan";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { hideoutI18n } from "@/lib/consts/i18nConsts";
 
 export default function LevelSelector({
   masterId,
@@ -11,6 +14,8 @@ export default function LevelSelector({
   selectLevelId,
   onChangeLevel,
 }: LevelSelector) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
   );
@@ -28,13 +33,13 @@ export default function LevelSelector({
   return (
     <div className="w-[450px] absolute bottom-10 right-60">
       <TextSpan textColor="GoldenYellow">
-        LV를 눌러 상세 정보를 확인하세요!
+        {hideoutI18n.levelSelector[localeKey]}
       </TextSpan>
       <div className="w-full max-w-md rounded-lg bg-NodeBackground p-8">
         <div className="flex items-center justify-center mb-4 gap-4">
           {getStationSVG(masterId, 60, 60, ALL_COLOR.SoftAlloy)}
           <div className="flex justify-center font-bold text-xl">
-            {masterInfo?.master_name_kr || ""}
+            {masterInfo?.master_name[localeKey] || ""}
           </div>
         </div>
 
