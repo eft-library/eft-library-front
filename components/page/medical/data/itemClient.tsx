@@ -58,16 +58,24 @@ export default function ItemClient({ medicalList, searchWord }: ItemClient) {
 
                 <CenterContents isCol>
                   {item.info.cures &&
-                    item.info.cures[localeKey] &&
+                  item.info.cures[localeKey] &&
+                  item.info.cures[localeKey].length > 0 ? (
                     item.info.cures[localeKey].map((cures, index) => (
                       <TextSpan key={`${index}-cures`} isCenter={false}>
                         {cures}
                       </TextSpan>
-                    ))}
+                    ))
+                  ) : (
+                    <TextSpan>-</TextSpan>
+                  )}
                 </CenterContents>
 
                 <CenterContents>
-                  <TextSpan>{item.info.uses}</TextSpan>
+                  {item.info.uses ? (
+                    <TextSpan>{item.info.uses}</TextSpan>
+                  ) : (
+                    <TextSpan>-</TextSpan>
+                  )}
                 </CenterContents>
 
                 <CenterContents>

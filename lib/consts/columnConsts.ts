@@ -112,9 +112,9 @@ export const drugTableColumn = {
 };
 
 export const stimulantTableColumn = {
-  en: ["Photo", "Name", "Buff", "Debuff"],
-  ko: ["사진", "이름", "버프", "디버프"],
-  ja: ["写真", "名前", "バフ", "デバフ"],
+  en: ["Photo", "Name", "Buff/Debuff"],
+  ko: ["사진", "이름", "버프/디버프"],
+  ja: ["写真", "名前", "バフ/デバフ"],
 };
 
 export const medicalItemTableColumn = {

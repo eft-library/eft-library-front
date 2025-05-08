@@ -20,7 +20,6 @@ export async function generateMetadata({
   );
 
   const res = product.data.map_info;
-  console.log(res);
 
   return {
     title: `타르코프 지도 ${res.name.ko} - EFT Library`,

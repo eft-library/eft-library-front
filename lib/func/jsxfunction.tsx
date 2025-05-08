@@ -2,12 +2,16 @@ import { SpawnChance } from "@/components/page/boss/data/bossTypes";
 import type { StimEffect } from "@/components/page/provisions/data/provisionsTypes";
 import { getOtherLocalizedKey } from "./localeFunction";
 
-export const getPlusMinus = (text: number | string) => {
-  if (typeof text === "number") {
-    if (text === 0) return "0";
-    return text > 0 ? `+${text}` : `${text}`;
-  }
-  return "";
+export const noReturnSkill = [
+  "Painkiller",
+  "HandsTremor",
+  "Removeallbloodlosses",
+  "QuantumTunnelling",
+];
+
+export const getPlusMinus = (text: number) => {
+  if (text === 0) return "0";
+  return text > 0 ? ` +${text}` : `${text}`;
 };
 
 export const highlightMatchedText = (text: string, keyword: string) => {
@@ -105,6 +109,30 @@ export const filterStimEffects = (effects: StimEffect[]) => {
     }
   }
   return effects;
+};
+export const checkSkillPlus = (skill_name_en: string) => {
+  switch (skill_name_en) {
+    case "HandsTremor":
+      return "Red";
+    case "QuantumTunnelling":
+      return "Red";
+    case "Painkiller":
+      return "BrightCyan";
+    case "Removeallbloodlosses":
+      return "BrightCyan";
+    default:
+      return "white";
+  }
+};
+
+export const checkValuePlus = (effect: number) => {
+  if (effect == 0) {
+    return "white";
+  } else if (effect > 0) {
+    return "BrightCyan";
+  } else {
+    return "Red";
+  }
 };
 
 export const checkPlus = (effect: number | string | null) => {

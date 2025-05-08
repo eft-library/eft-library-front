@@ -3,14 +3,22 @@
 import ImageView from "../../../custom/imageView/imageView";
 import DefineGrid from "../../../custom/gridContents/defineGrid";
 import CenterContents from "../../../custom/gridContents/centerContents";
-// import TextSpan from "../../../custom/gridContents/textSpan";
+import TextSpan from "../../../custom/gridContents/textSpan";
 import { hasMatchInList } from "@/lib/func/jsxfunction";
 import type { StimulantClient } from "./medicalTypes";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { stimulantTableColumn } from "@/lib/consts/columnConsts";
-import { filteringData, highlightMatchedText } from "@/lib/func/jsxfunction";
+import {
+  filteringData,
+  highlightMatchedText,
+  checkSkillPlus,
+  checkValuePlus,
+  noReturnSkill,
+  getPlusMinus,
+} from "@/lib/func/jsxfunction";
 import { useLocale } from "next-intl";
-import { getLocaleKey } from "@/lib/func/localeFunction";
+import { getEffectLocalizedKey, getLocaleKey } from "@/lib/func/localeFunction";
+import type { StimEffect } from "../../provisions/data/provisionsTypes";
 
 export default function StimulantClient({
   medicalList,
@@ -18,54 +26,11 @@ export default function StimulantClient({
 }: StimulantClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  // const getSkillColor = (text: string) => {
-  //   const blue = ["진통제", "해독제"];
-  //   const red = ["손 떨림", "터널 효과"];
-
-  //   if (blue.includes(text)) {
-  //     return "BrightCyan";
-  //   } else if (red.includes(text)) {
-  //     return "Red";
-  //   } else {
-  //     return "white";
-  //   }
-  // };
-
-  // const getPlusMinusValue = (text: number | string) => {
-  //   if (typeof text === "number") {
-  //     if (text === 0) return "";
-  //     return text > 0 ? `+${text}` : `${text}`;
-  //   }
-  //   return "";
-  // };
-
-  // const checkPlus = (effect: Buff | Debuff) => {
-  //   const red = ["BodyTemperature", "DamageModifier"];
-  //   if (red.includes(effect.type)) {
-  //     if (effect.value == 0) {
-  //       return "white";
-  //     } else if (effect.value > 0) {
-  //       return "Red";
-  //     } else {
-  //       return "BrightCyan";
-  //     }
-  //   }
-
-  //   if (typeof effect.value === "number") {
-  //     if (effect.value == 0) {
-  //       return "white";
-  //     } else if (effect.value > 0) {
-  //       return "BrightCyan";
-  //     } else {
-  //       return "Red";
-  //     }
-  //   }
-  // };
 
   return (
     <>
       {hasMatchInList(medicalList, searchWord) && (
-        <TableColumn columnDesign={4} columnData={stimulantTableColumn} />
+        <TableColumn columnDesign={3} columnData={stimulantTableColumn} />
       )}
 
       <div className="w-full">
@@ -79,7 +44,7 @@ export default function StimulantClient({
             ) && (
               <DefineGrid
                 id={stimulant.id}
-                cols="4"
+                cols="3"
                 key={stimulant.id}
                 isDetail
                 detailLink={`/item/${stimulant.url_mapping}`}
@@ -100,70 +65,62 @@ export default function StimulantClient({
                 </CenterContents>
 
                 <div className="flex justify-center flex-col">
-                  {/* {stimulant.info.buff.length > 0 ? (
-                    filterStimEffects(stimulant.info.buff).map(
-                      (buff, index) => (
-                        <div key={`${index}-buff-${buff.skillName}`}>
-                          {buff.delay != null && buff.duration != null && (
-                            <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
-                              {stimulant.id === "5ed5166ad380ab312177c100"
-                                ? `25% 확률 / ${buff.delay}초 지연 / ${buff.duration}초 지속`
-                                : buff.delay === 0
-                                ? `${buff.duration}초 지속`
-                                : `${buff.delay}초 지연 / ${buff.duration}초 지속`}
+                  {(() => {
+                    const groupedEffects = stimulant.info.stim_effects.reduce<
+                      Record<string, StimEffect[]>
+                    >((acc, effect) => {
+                      const key = `${effect.delay}-${effect.duration}`; // delay-duration 기준 그룹화
+                      if (!acc[key]) acc[key] = [];
+                      acc[key].push(effect);
+                      return acc;
+                    }, {} as Record<string, typeof stimulant.info.stim_effects>);
+
+                    const entries = Object.entries(groupedEffects);
+
+                    return entries.length > 0 ? (
+                      entries.map(([key, effects]) => {
+                        const [delay, duration] = key.split("-");
+
+                        return (
+                          <div key={`group-${key}`}>
+                            <span className="font-bold text-base text-PaleYellow mt-[4px]">
+                              {delay}초 지연 / {duration}초 지속
                             </span>
-                          )}
-                          <div className={"flex ml-[4px] mt-[2px]"}>
-                            <TextSpan size="sm">-&nbsp;</TextSpan>
-                            <TextSpan
-                              size="sm"
-                              textColor={getSkillColor(buff.krSkill)}
-                            >
-                              {buff.krSkill}
-                            </TextSpan>
-                            <TextSpan size="sm" textColor={checkPlus(buff)}>
-                              &nbsp;{getPlusMinusValue(buff.value)}
-                            </TextSpan>
+                            {effects.map((effect, index) => (
+                              <div
+                                key={`effect-${effect.type}-${stimulant.id}-${index}`}
+                                className="flex mb-[4px]"
+                              >
+                                <TextSpan isCenter={false}>-&nbsp;</TextSpan>
+                                <TextSpan
+                                  isCenter={false}
+                                  textColor={checkSkillPlus(
+                                    effect.skill_name_en || ""
+                                  )}
+                                >
+                                  {effect[getEffectLocalizedKey(localeKey)]}
+                                  &nbsp;
+                                </TextSpan>
+                                {effect.skill_name_en &&
+                                  !noReturnSkill.includes(
+                                    effect.skill_name_en
+                                  ) && (
+                                    <TextSpan
+                                      isCenter={false}
+                                      textColor={checkValuePlus(effect.value)}
+                                    >
+                                      {` ${getPlusMinus(effect.value)}`}
+                                    </TextSpan>
+                                  )}
+                              </div>
+                            ))}
                           </div>
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <TextSpan>-</TextSpan>
-                  )} */}
-                </div>
-                <div className="flex justify-center flex-col">
-                  {/* {stimulant.info.debuff.length > 0 ? (
-                    filterStimEffects(stimulant.info.debuff).map(
-                      (debuff, index) => (
-                        <div key={`${index}-debuff-${debuff.skillName}`}>
-                          {debuff.delay != null && debuff.duration != null && (
-                            <span className="text-center font-bold text-sm text-PaleYellow mt-4 ml-[4px]">
-                              {stimulant.id === "5ed5166ad380ab312177c100"
-                                ? `25% 확률 / ${debuff.delay}초 지연 / ${debuff.duration}초 지속`
-                                : debuff.delay === 0
-                                ? `${debuff.duration}초 지속`
-                                : `${debuff.delay}초 지연 / ${debuff.duration}초 지속`}
-                            </span>
-                          )}
-                          <div className={"flex ml-[4px] mt-[2px]"}>
-                            <TextSpan size="sm">-&nbsp;</TextSpan>
-                            <TextSpan
-                              size="sm"
-                              textColor={getSkillColor(debuff.krSkill)}
-                            >
-                              {debuff.krSkill}
-                            </TextSpan>
-                            <TextSpan size="sm" textColor={checkPlus(debuff)}>
-                              &nbsp;{getPlusMinusValue(debuff.value)}
-                            </TextSpan>
-                          </div>
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <TextSpan>-</TextSpan>
-                  )} */}
+                        );
+                      })
+                    ) : (
+                      <TextSpan>-</TextSpan>
+                    );
+                  })()}
                 </div>
               </DefineGrid>
             )

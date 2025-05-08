@@ -60,7 +60,9 @@ export default function MediKitClient({
                   <TextSpan>{medikit.info.hitpoints}</TextSpan>
                 </CenterContents>
                 <CenterContents isCol>
-                  {medikit.info.cures ? (
+                  {medikit.info.cures &&
+                  medikit.info.cures[localeKey] &&
+                  medikit.info.cures[localeKey].length > 0 ? (
                     medikit.info.cures[localeKey].map((cures, index) => (
                       <TextSpan
                         key={`${medikit.id}-cures-${index}`}
