@@ -19,7 +19,15 @@ export default function QuestNode(props: any) {
   return (
     <div
       className="flex flex-col items-center rounded-lg min-w-[220px] min-h-[120px] shadow-NeutralGray shadow-md"
-      style={{ backgroundColor: props.data.node_color }}
+      style={{
+        backgroundColor: props.data.node_color,
+        opacity:
+          props.data.view_only_kappa && !props.data.kappa_required ? 0 : 1,
+        pointerEvents:
+          props.data.view_only_kappa && !props.data.kappa_required
+            ? "none"
+            : "auto",
+      }}
     >
       <div
         className="w-full h-full  border-solid border-4 rounded-lg min-h-[120px]"
