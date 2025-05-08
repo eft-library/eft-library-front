@@ -73,10 +73,6 @@ export const filteringData = (
   return regex.test(name_en) || regex.test(name_ko) || regex.test(name_ja);
 };
 
-export const checkCategory = (newCategory: string, existCategory: string) => {
-  return existCategory === "ALL" || existCategory === newCategory;
-};
-
 export const getColor = (value: number, mode: "check" | "recoil") => {
   if (value === 0) {
     return "white";
@@ -95,17 +91,6 @@ export const floatToPercent = (value: number) => {
   } else {
     return value;
   }
-};
-
-export const checkViewMedical = (
-  standard: string,
-  itemCatagory: string,
-  successCateogry: string
-) => {
-  return (
-    (standard === "ALL" || standard === successCateogry) &&
-    itemCatagory === successCateogry
-  );
 };
 
 export const filterStimEffects = (effects: StimEffect[]) => {
@@ -179,13 +164,6 @@ export const getFirstParagraph = (htmlString: string) => {
   const firstParagraph = doc.querySelector("p");
 
   return firstParagraph ? firstParagraph.outerHTML : "";
-};
-
-export const getQuestTitle = (title: string, type: "en" | "kr") => {
-  if (type === "en") {
-    return title.substring(title.indexOf("(")).trim();
-  }
-  return title.substring(0, title.indexOf("(")).trim();
 };
 
 export const groupAndSummarizeChances = (

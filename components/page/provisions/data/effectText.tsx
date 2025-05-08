@@ -1,20 +1,41 @@
-import { checkPlus, getPlusMinus } from "@/lib/func/jsxfunction";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { EffectText } from "./provisionsTypes";
 import { useLocale } from "next-intl";
-import { getLocaleKey } from "@/lib/func/localeFunction";
+import { getLocaleKey, getEffectLocalizedKey } from "@/lib/func/localeFunction";
 import { effectI18N } from "@/lib/consts/i18nConsts";
 
 export default function EffectText({ effect }: EffectText) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const noReturnSkill = ["Painkiller", "HandsTremor"];
 
-  const fixStr = (value: string | null) => {
-    const fixList = ["손 떨림", "진통제"];
-    if (value) {
-      return fixList.includes(value) ? value : `${value} :`;
+  const getPlusMinus = (text: number | string) => {
+    if (typeof text === "number") {
+      if (text === 0) return "0";
+      return text > 0 ? `+${text}` : `${text}`;
     }
     return "";
+  };
+
+  const checkSkillPlus = (skill_name_en: string) => {
+    switch (skill_name_en) {
+      case "HandsTremor":
+        return "Red";
+      case "Painkiller":
+        return "BrightCyan";
+      default:
+        return "white";
+    }
+  };
+
+  const checkValuePlus = (effect: number) => {
+    if (effect == 0) {
+      return "white";
+    } else if (effect > 0) {
+      return "BrightCyan";
+    } else {
+      return "Red";
+    }
   };
 
   return (
@@ -28,16 +49,21 @@ export default function EffectText({ effect }: EffectText) {
       )}
       <div className="flex">
         <TextSpan isCenter={false}>-&nbsp;</TextSpan>
-        <TextSpan isCenter={false} textColor={checkPlus(effect.skill_name_en)}>
-          {fixStr(effect.skill_name_en)}&nbsp;
-        </TextSpan>
-        <TextSpan isCenter={false} textColor={checkPlus(effect.value)}>
-          {effect.skill_name_en === "Painkiller" ||
-          effect.type === "HandsTremor"
-            ? ""
-            : ` ${getPlusMinus(effect.value)}`}
-          &nbsp;
-        </TextSpan>
+        {effect.skill_name_en && (
+          <TextSpan
+            isCenter={false}
+            textColor={checkSkillPlus(effect.skill_name_en)}
+          >
+            {effect[getEffectLocalizedKey(localeKey)]}&nbsp;
+          </TextSpan>
+        )}
+
+        {effect.skill_name_en &&
+          !noReturnSkill.includes(effect.skill_name_en) && (
+            <TextSpan isCenter={false} textColor={checkValuePlus(effect.value)}>
+              {` ${getPlusMinus(effect.value)}`}
+            </TextSpan>
+          )}
       </div>
     </div>
   );

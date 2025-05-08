@@ -81,3 +81,15 @@ export const getOtherLocalizedKey = (locale: string) => {
       return "name_en";
   }
 };
+
+export const getEffectLocalizedKey = (locale: string) => {
+  switch (locale) {
+    case "ja":
+      return "skill_name_ja";
+    case "ko":
+      return "skill_name_ko";
+    case "en":
+    default:
+      return "skill_name_en";
+  }
+};
