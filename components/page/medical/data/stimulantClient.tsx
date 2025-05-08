@@ -19,6 +19,7 @@ import {
 import { useLocale } from "next-intl";
 import { getEffectLocalizedKey, getLocaleKey } from "@/lib/func/localeFunction";
 import type { StimEffect } from "../../provisions/data/provisionsTypes";
+import { effectI18N } from "@/lib/consts/i18nConsts";
 
 export default function StimulantClient({
   medicalList,
@@ -84,7 +85,9 @@ export default function StimulantClient({
                         return (
                           <div key={`group-${key}`}>
                             <span className="font-bold text-base text-PaleYellow mt-[4px]">
-                              {delay}초 지연 / {duration}초 지속
+                              {delay}
+                              &nbsp;{effectI18N.delay[localeKey]} / {duration}
+                              &nbsp;{effectI18N.duration[localeKey]}
                             </span>
                             {effects.map((effect, index) => (
                               <div

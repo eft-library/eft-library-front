@@ -94,6 +94,9 @@ export const itemI18N = {
   weapon: {
     title: { en: "Weapon", ja: "ガンズ", ko: "무기" },
   },
+  medical: {
+    title: { en: "Medical", ja: "医療品", ko: "의료품" },
+  },
   wipe: {
     title: { en: "Wipe", ja: "シーズン初期化", ko: "시즌 초기화" },
     version: { en: "Patch", ja: "パッチ", ko: "패치" },

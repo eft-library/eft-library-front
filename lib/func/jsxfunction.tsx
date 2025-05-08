@@ -7,7 +7,28 @@ export const noReturnSkill = [
   "HandsTremor",
   "Removeallbloodlosses",
   "QuantumTunnelling",
+  "Pain",
+  "Antidote",
 ];
+
+export const checkSkillPlus = (skill_name_en: string) => {
+  switch (skill_name_en) {
+    case "HandsTremor":
+      return "Red";
+    case "QuantumTunnelling":
+      return "Red";
+    case "Painkiller":
+      return "BrightCyan";
+    case "Removeallbloodlosses":
+      return "BrightCyan";
+    case "Pain":
+      return "BrightCyan";
+    case "Antidote":
+      return "BrightCyan";
+    default:
+      return "white";
+  }
+};
 
 export const getPlusMinus = (text: number) => {
   if (text === 0) return "0";
@@ -109,20 +130,6 @@ export const filterStimEffects = (effects: StimEffect[]) => {
     }
   }
   return effects;
-};
-export const checkSkillPlus = (skill_name_en: string) => {
-  switch (skill_name_en) {
-    case "HandsTremor":
-      return "Red";
-    case "QuantumTunnelling":
-      return "Red";
-    case "Painkiller":
-      return "BrightCyan";
-    case "Removeallbloodlosses":
-      return "BrightCyan";
-    default:
-      return "white";
-  }
 };
 
 export const checkValuePlus = (effect: number) => {
