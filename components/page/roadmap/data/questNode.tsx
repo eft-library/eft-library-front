@@ -12,9 +12,9 @@ export default function QuestNode(props: any) {
     window.open(`/quest/detail/${urlMapping}`, "_blank");
   }, []);
 
-  if (props.data.view_only_kappa && !props.data.kappa_required) {
-    return null;
-  }
+  const shouldRenderHandle = !(
+    props.data.view_only_kappa && !props.data.kappa_required
+  );
 
   return (
     <div
@@ -74,30 +74,38 @@ export default function QuestNode(props: any) {
 
       {["top", "bottom"].includes(props.sourcePosition) ? (
         <>
-          <Handle
-            type="target"
-            position={Position.Top}
-            isConnectable={props.isConnectable}
-          />
-          <Handle
-            type="source"
-            position={Position.Bottom}
-            id="b"
-            isConnectable={props.isConnectable}
-          />
+          {shouldRenderHandle && (
+            <Handle
+              type="target"
+              position={Position.Top}
+              isConnectable={props.isConnectable}
+            />
+          )}
+          {shouldRenderHandle && (
+            <Handle
+              type="source"
+              position={Position.Bottom}
+              id="b"
+              isConnectable={props.isConnectable}
+            />
+          )}
         </>
       ) : (
         <>
-          <Handle
-            type="target"
-            position={Position.Left}
-            isConnectable={props.isConnectable}
-          />
-          <Handle
-            type="source"
-            position={Position.Right}
-            isConnectable={props.isConnectable}
-          />
+          {shouldRenderHandle && (
+            <Handle
+              type="target"
+              position={Position.Left}
+              isConnectable={props.isConnectable}
+            />
+          )}
+          {shouldRenderHandle && (
+            <Handle
+              type="source"
+              position={Position.Right}
+              isConnectable={props.isConnectable}
+            />
+          )}
         </>
       )}
     </div>
