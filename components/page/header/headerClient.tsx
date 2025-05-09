@@ -28,7 +28,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
 
   return (
     <div className="fixed w-full z-20 bg-Background">
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-3">
         <div />
         <div className="flex justify-center items-center">
           <Link href="/" aria-label="EFT Library">

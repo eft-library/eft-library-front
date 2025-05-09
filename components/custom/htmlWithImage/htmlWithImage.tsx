@@ -31,7 +31,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImage) {
   return (
     <div>
       <div
-        className="ql-editor font-bold text-lg"
+        className="font-bold text-lg"
         dangerouslySetInnerHTML={{ __html: contents }}
         onClick={handleImageClick}
       />
