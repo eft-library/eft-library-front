@@ -13,7 +13,7 @@ export async function GET() {
     title: "eftlibrary",
     description: "eftlibrary",
     generator: "RSS for Node and Next.js",
-    feed_url: "https://www.eftlibrary.kr/feed.xml",
+    feed_url: "https://www.eftlibrary.com/feed.xml",
     site_url: "https://www.eftlibrary.com",
     copyright: `Copyright ${new Date().getFullYear().toString()}`,
     language: "ko-KR",
@@ -25,8 +25,8 @@ export async function GET() {
   if (allQuests) {
     allQuests.map((quest: Quest) => {
       feed.item({
-        title: quest.title_kr,
-        description: quest.guide,
+        title: quest.name.ko,
+        description: quest.guide.ko,
         url: `https://eftlibrary.com/quest/detail/${quest.url_mapping}`,
         date: quest.update_time,
       });
