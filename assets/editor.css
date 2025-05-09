@@ -1,115 +1,26 @@
-/*글 쓰기*/
-.write-quill-editor .ql-container {
-  min-height: 60vh;
-}
-
-/*글 수정*/
-.detail-rewrite-quill-editor .ql-container {
-  min-height: 100vh;
-}
-
-/*댓글 작성 및 수정*/
-.comment-quill-editor .ql-container {
-  min-height: 20vh;
-}
-
-.ql-editor a {
+.quest-editor a {
   color: #ffd700; /* 원하는 색상으로 변경 */
   text-decoration: none; /* 밑줄 제거 */
 }
-.ql-editor a:hover {
+.quest-editor a:hover {
   color: #efbe85; /* 마우스를 올렸을 때 색상 변경 */
 }
 
-.ql-editor {
-  border-radius: 0px 0px 15px 15px;
-  padding: 0;
-}
-
-.ql-editor img {
+.quest-editor img {
   display: block;
   margin: 0 auto;
-  cursor: pointer;
 }
 
-.ql-toolbar {
-  border-radius: 15px 15psx 0px 0px;
+.quest-image-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.ql-container.ql-snow {
+.quest-image {
+  max-width: 100%;
+  width: 48%;
+  height: auto;
   border-radius: 8px;
-  border-width: 2px 2px 2px 2px;
-}
-
-.ql-toolbar.ql-snow {
-  border-radius: 8px;
-  border-width: 2px 2px 2px 2px;
-}
-
-.ql-fill {
-  color: #fff !important;
-}
-
-.ql-toolbar .ql-stroke {
-  fill: none;
-  stroke: #fff;
-}
-
-.ql-toolbar .ql-fill {
-  fill: #fff;
-  stroke: none;
-}
-
-.ql-toolbar .ql-picker {
-  color: #fff;
-}
-
-button:hover .ql-stroke,
-.ql-picker-label:hover .ql-stroke {
-  fill: none;
-  stroke: #ffd700 !important;
-}
-
-.ql-active .ql-stroke {
-  fill: none;
-  stroke: #ffd700 !important;
-}
-
-button:hover .ql-fill,
-.ql-picker-label:hover .ql-fill {
-  fill: #ffd700 !important;
-  stroke: none;
-}
-
-.ql-active .ql-fill {
-  fill: #ffd700 !important;
-  stroke: none;
-}
-.ql-toolbar .ql-formats button,
-.ql-toolbar .ql-formats .ql-picker-label,
-.ql-toolbar .ql-formats .ql-picker-item {
-  color: white !important; /* 버튼 텍스트 색상 흰색으로 변경 */
-}
-
-.ql-toolbar .ql-formats button:hover,
-.ql-toolbar .ql-formats .ql-picker-label:hover,
-.ql-toolbar .ql-formats .ql-picker-item:hover {
-  color: #ffd700 !important; /* 버튼 텍스트 색상 흰색으로 유지 */
-}
-
-.ql-toolbar .ql-formats .ql-picker-options {
-  background-color: black; /* 드롭다운 배경 색상 변경 */
-}
-
-/* 추가된 버튼 선택자 */
-.ql-toolbar .ql-formats button.ql-bold::before,
-.ql-toolbar .ql-formats button.ql-italic::before,
-.ql-toolbar .ql-formats button.ql-underline::before,
-.ql-toolbar .ql-formats button.ql-link::before,
-.ql-toolbar .ql-formats button.ql-image::before {
-  color: white !important; /* 아이콘 텍스트 색상 흰색으로 변경 */
-}
-input::placeholder {
-  color: #ffffff; /* placeholder 색상 */
-  opacity: 0.5;
 }

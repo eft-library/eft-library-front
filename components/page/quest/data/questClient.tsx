@@ -54,7 +54,7 @@ export default function QuestClient({ questList }: QuestClient) {
                 <TableRow key={quest.id} className="hover:bg-NeutralGray">
                   <TableCell>
                     <Link href={`/quest/detail/${quest.url_mapping}`}>
-                      <span className="text-sm font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
+                      <span className="text-base font-bold text-Orange hover:text-Beige flex text-center flex items-center justify-center">
                         {quest.name[localeKey]}
                       </span>
                     </Link>
