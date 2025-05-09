@@ -20,8 +20,9 @@
 }
 
 .quest-image {
-  max-width: 100%;
-  width: 48%;
+  flex: 1 1 calc(33.333% - 8px); /* gap 감안 */
+  max-width: calc(33.333% - 8px);
   height: auto;
   border-radius: 8px;
+  object-fit: cover;
 }
