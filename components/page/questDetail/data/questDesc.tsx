@@ -75,7 +75,12 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
               *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
               {objective.type === "shoot" && (
                 <span className="flex items-center ml-2">
-                  [<Skull className="inline-block w-4 h-4" />
+                  [
+                  <Skull
+                    className="inline-block w-4 h-4"
+                    color={ALL_COLOR.Red}
+                    strokeWidth={3}
+                  />
                   x&nbsp;{objective.count}]
                 </span>
               )}
