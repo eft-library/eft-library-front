@@ -9,6 +9,7 @@
 .quest-editor img {
   display: block;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .quest-image-wrapper {

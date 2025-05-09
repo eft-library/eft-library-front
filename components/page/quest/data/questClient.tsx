@@ -12,7 +12,7 @@ import {
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
 import type { QuestClient } from "./questTypes";
-import { SquareCheckBig, SquareX } from "lucide-react";
+import { Skull, SquareCheckBig, SquareX } from "lucide-react";
 import { useLocale } from "next-intl";
 import {
   getDescriptionLocaleKey,
@@ -68,7 +68,10 @@ export default function QuestClient({ questList }: QuestClient) {
                         >
                           * {obj[getDescriptionLocaleKey(locale)]}
                           {obj.type === "shoot" && (
-                            <span>&nbsp;x&nbsp;{obj.count}</span>
+                            <span className="flex items-center ml-2">
+                              [<Skull className="inline-block w-4 h-4" />
+                              x&nbsp;{obj.count}]
+                            </span>
                           )}
                         </div>
                       ))}

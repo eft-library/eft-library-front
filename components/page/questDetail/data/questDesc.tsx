@@ -7,7 +7,7 @@ import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { QuestDesc } from "../../quest/data/questTypes";
-import { Redo2, SquareCheckBig, SquareX } from "lucide-react";
+import { Redo2, Skull, SquareCheckBig, SquareX } from "lucide-react";
 import TableColumn from "@/components/custom/tableColumn/tableColumn";
 import { relatedQuestTableColumn } from "@/lib/consts/columnConsts";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
@@ -70,11 +70,14 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
           {questInfo.objectives.map((objective, index) => (
             <div
               key={`${index}-objective`}
-              className="font-bold text-base text-white"
+              className="font-bold text-base text-white flex items-center flex-nowrap"
             >
               *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
               {objective.type === "shoot" && (
-                <span>&nbsp;x&nbsp;{objective.count}</span>
+                <span className="flex items-center ml-2">
+                  [<Skull className="inline-block w-4 h-4" />
+                  x&nbsp;{objective.count}]
+                </span>
               )}
             </div>
           ))}

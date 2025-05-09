@@ -38,6 +38,7 @@ export default function NpcDetail({ questInfo }: NpcDetail) {
         <h1 className="text-xl font-bold text-white flex text-center flex items-center justify-center">
           {questInfo.name[getLocaleKey(localeKey)]}
         </h1>
+        <TextSpan size="lg">LV. {questInfo.min_player_level}</TextSpan>
         <div className="flex justify-between items-center gap-4">
           <TextSpan size="lg">Kappa</TextSpan>
           {questInfo.kappa_required ? (
