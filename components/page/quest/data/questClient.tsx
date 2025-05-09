@@ -67,6 +67,9 @@ export default function QuestClient({ questList }: QuestClient) {
                           key={`${oIndex}-objectives-${quest.id}`}
                         >
                           * {obj[getDescriptionLocaleKey(locale)]}
+                          {obj.type === "shoot" && (
+                            <span>&nbsp;x&nbsp;{obj.count}</span>
+                          )}
                         </div>
                       ))}
                   </TableCell>

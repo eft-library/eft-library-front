@@ -73,6 +73,9 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
               className="font-bold text-base text-white"
             >
               *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
+              {objective.type === "shoot" && (
+                <span>&nbsp;x&nbsp;{objective.count}</span>
+              )}
             </div>
           ))}
         </div>
