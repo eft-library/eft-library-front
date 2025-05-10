@@ -1,9 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useLocale } from "next-intl";
-import DefaultAlert from "../../../custom/alert/defaultAlert";
 import {
   Bell,
   CalendarCheck,
@@ -17,11 +15,13 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 import type { NewsClient, LinkInfo } from "../mainTypes";
 import { getLocalizedKey } from "@/lib/func/localeFunction";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { newsI18N } from "@/lib/consts/i18nConsts";
 
 export default function NewsClient({ news }: NewsClient) {
   const router = useRouter();
-  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   const newText = (text: LinkInfo) => {
     const blinkStyle = {
@@ -59,7 +59,7 @@ export default function NewsClient({ news }: NewsClient) {
             <Star color={ALL_COLOR.Yellow} />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              추천 기능
+              {newsI18N.recommendationFeature[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -72,7 +72,7 @@ export default function NewsClient({ news }: NewsClient) {
             <PartyPopper />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              이벤트
+              {newsI18N.event[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -101,7 +101,7 @@ export default function NewsClient({ news }: NewsClient) {
             <CalendarCheck />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              업데이트 예정
+              {newsI18N.comingSoon[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -118,7 +118,7 @@ export default function NewsClient({ news }: NewsClient) {
             <Bell />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              타르코프 정보
+              {newsI18N.tarkovInfo[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -147,7 +147,7 @@ export default function NewsClient({ news }: NewsClient) {
             <Wrench />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              패치노트
+              {newsI18N.patchNote[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -176,7 +176,7 @@ export default function NewsClient({ news }: NewsClient) {
             <Megaphone />
             &nbsp;
             <TextSpan isCenter={false} size="lg">
-              공지사항
+              {newsI18N.notice[localeKey]}
             </TextSpan>
           </div>
           <div className="flex flex-col">
@@ -200,13 +200,6 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
         </div>
       </div>
-
-      <DefaultAlert
-        open={alertStatus}
-        setOpen={setAlertStatus}
-        title="알림"
-        description="퀘스트 플래너는 로그인 사용자만 사용 가능합니다."
-      />
     </div>
   );
 }

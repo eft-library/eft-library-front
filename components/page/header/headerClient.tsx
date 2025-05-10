@@ -10,11 +10,16 @@ import UserMenu from "./contents/userMenu";
 import LocalSwitcher from "@/components/custom/localeSwitcher/localSwitcher";
 import type { Menu } from "./contents/headerTypes";
 import NaviLogo from "@/assets/navi/NaviLogo";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { headerI18N } from "@/lib/consts/i18nConsts";
 
 export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
   const { setNpcId } = useAppStore((state) => state);
   const { data: session } = useSession();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   const setQuest = (parent: string, value: string) => {
     if (parent === "QUEST") {
@@ -61,7 +66,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
               className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
               onClick={() => signIn()}
             >
-              로그인
+              {headerI18N.login[localeKey]}
             </Button>
           )}
           <LocalSwitcher />

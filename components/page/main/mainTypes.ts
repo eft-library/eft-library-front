@@ -4,6 +4,7 @@ export interface SearchData {
   type: string;
   value: string;
   order: number;
+  lang: string;
 }
 
 export interface SearchClient {

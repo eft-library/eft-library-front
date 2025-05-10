@@ -9,8 +9,12 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { handleScroll } from "@/lib/func/jsxfunction";
 import type { SearchClient, SearchData } from "../mainTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function SearchClient({ searchList }: SearchClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { setNpcId } = useAppStore((state) => state);
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
@@ -70,7 +74,7 @@ export default function SearchClient({ searchList }: SearchClient) {
               >
                 <input
                   {...getInputProps({
-                    placeholder: "검색어를 입력해주세요",
+                    placeholder: "Search",
                     className:
                       "font-bold text-base w-full h-12 rounded-lg pl-5 box-border border-2 border-solid border-white placeholder:text-SilverGray",
                     onClick: () => {
@@ -90,9 +94,10 @@ export default function SearchClient({ searchList }: SearchClient) {
                       .filter(
                         (item) =>
                           !inputValue ||
-                          item.value
+                          (item.value
                             .toLowerCase()
-                            .includes(inputValue.toLowerCase())
+                            .includes(inputValue.toLowerCase()) &&
+                            item.lang === localeKey)
                       )
                       .map((item, index) => (
                         <React.Fragment key={item.value}>

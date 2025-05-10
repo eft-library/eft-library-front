@@ -7,6 +7,7 @@ import ExitDialog from "./exitDialog";
 import type { MenuButton } from "./headerTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { headerI18N } from "@/lib/consts/i18nConsts";
 
 export default function UserMenu({
   menuData,
@@ -35,7 +36,7 @@ export default function UserMenu({
             onClick={() => signOut()}
             className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
           >
-            로그아웃
+            {headerI18N.logout[localeKey]}
           </Button>
           {menuData.sub_menus.map((sub) =>
             sub.value === "USER_DELETE" ? (

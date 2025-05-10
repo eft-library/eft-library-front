@@ -675,3 +675,115 @@ export const itemRelatedInfo = {
     ko: "퀘스트 보상",
   },
 };
+
+export const headerI18N = {
+  login: {
+    en: "Login",
+    ja: "ログイン",
+    ko: "로그인",
+  },
+  logout: {
+    en: "Logout",
+    ja: "ログアウト",
+    ko: "로그아웃",
+  },
+  withdrawal: {
+    en: "Withdraw Account",
+    ja: "アカウント削除",
+    ko: "회원 탈퇴",
+  },
+};
+
+export const exitI18N = {
+  emailMismatch: {
+    en: "The email address does not match.",
+    ja: "メールアドレスが一致しません。",
+    ko: "이메일이 다릅니다.",
+  },
+  tryAgainLater: {
+    en: "Please try again later.",
+    ja: "後ほどもう一度お試しください。",
+    ko: "잠시후 다시 시도해주세요.",
+  },
+  withdrawComplete: {
+    en: "Account deletion complete. Thank you for using our service.",
+    ja: "退会が完了しました。ご利用ありがとうございました。",
+    ko: "회원 탈퇴가 완료 되었습니다. 그동안 감사했습니다.",
+  },
+  confirmWithdrawalEmail: {
+    en: "Please enter your email to confirm withdrawal.",
+    ja: "退会を確認するためにメールアドレスを入力してください。",
+    ko: "회원 탈퇴를 원하시면 이메일을 입력해주세요",
+  },
+  withdrawInfoRetention: {
+    en: "Your data will be recoverable for 30 days after withdrawal.",
+    ja: "退会後30日間は情報の復旧が可能です。",
+    ko: "탈퇴 시점으로 30일간 회원정보는 복구 가능합니다.",
+  },
+  email: {
+    en: "Email",
+    ja: "メールアドレス",
+    ko: "이메일",
+  },
+  withdraw: {
+    en: "Withdraw",
+    ja: "退会",
+    ko: "탈퇴",
+  },
+  cancel: {
+    en: "Cancel",
+    ja: "キャンセル",
+    ko: "취소",
+  },
+};
+
+export const adBlockI18N = {
+  adblockDetected: {
+    en: "Ad blocker detected.",
+    ja: "広告ブロッカーが検出されました。",
+    ko: "광고 차단이 감지되었습니다.",
+  },
+  adSupportNotice: {
+    en: "EFT Library is maintained through ads.",
+    ja: "EFTライブラリは広告で運営されています。",
+    ko: "EFT Library는 광고로 유지됩니다.",
+  },
+  adUnblockRequest: {
+    en: "Unblocking would help us a lot!",
+    ja: "広告を解除していただけると助かります！",
+    ko: "차단을 해제해 주시면 많은 도움이 됩니다!",
+  },
+};
+
+export const newsI18N = {
+  recommendationFeature: {
+    en: "Recommendation",
+    ja: "おすすめ機能",
+    ko: "추천 기능",
+  },
+  event: {
+    en: "Event",
+    ja: "イベント",
+    ko: "이벤트",
+  },
+  comingSoon: {
+    en: "Coming Soon",
+    ja: "近日公開",
+    ko: "업데이트 예정",
+  },
+  tarkovInfo: {
+    en: "Tarkov Info",
+    ja: "タルコフ情報",
+    ko: "타르코프 정보",
+  },
+  patchNote: {
+    en: "Patch Note",
+    ja: "パッチノート",
+    ko: "패치노트",
+  },
+  notice: {
+    en: "Notice",
+    ja: "お知らせ",
+    ko: "공지사항",
+  },
+};
