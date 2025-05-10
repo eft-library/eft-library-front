@@ -93,21 +93,23 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                     className="flex flex-col items-center justify-center"
                     key={`trader-req-${trader.barter_info.rewardItems.item.id}`}
                   >
-                    <Image
-                      src={trader.barter_info.rewardItems.item.gridImageLink}
-                      alt={trader.barter_info.rewardItems.item.name_en}
-                      sizes={"80"}
-                      width={80}
-                      height={80}
-                      style={{ objectFit: "contain" }}
-                      placeholder="blur"
-                      blurDataURL={
-                        "data:image/jpeg;base64," +
-                        "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-                      }
-                    />
-                    <div className="font-bold">
-                      x {trader.barter_info.rewardItems.quantity}
+                    <div className="relative mb-1">
+                      <Image
+                        src={trader.barter_info.rewardItems.item.gridImageLink}
+                        alt={trader.barter_info.rewardItems.item.name_en}
+                        sizes="80px"
+                        width={80}
+                        height={80}
+                        style={{ objectFit: "contain" }}
+                        placeholder="blur"
+                        blurDataURL={
+                          "data:image/jpeg;base64," +
+                          "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                        }
+                      />
+                      <div className="absolute bottom-0 right-0 text-white text-sm px-1 font-bold">
+                        x {trader.barter_info.rewardItems.quantity}
+                      </div>
                     </div>
                     <div className="font-bold">
                       {
