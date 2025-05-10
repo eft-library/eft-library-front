@@ -8,55 +8,57 @@ import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapInfo } from "./mapOfTarkovType";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-// import { useState } from "react";
-// import "leaflet/dist/leaflet.css";
-// import { ALL_COLOR } from "@/lib/consts/colorConsts";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { CRS, DivIcon } from "leaflet";
-// import MapController from "./mapController";
-// import { MouseMoveEvent } from "@/lib/func/leafletFunction";
-// import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
+import { useState } from "react";
+import "leaflet/dist/leaflet.css";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CRS, DivIcon } from "leaflet";
+import MapController from "./mapController";
+import { MouseMoveEvent } from "@/lib/func/leafletFunction";
+import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
+import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
+import { Search } from "lucide-react";
 
-// const CustomSvgIcon = new DivIcon({
-//   className: "",
-//   html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
-//   iconSize: [20, 20],
-//   iconAnchor: [10, 10], // 중심 정렬
-// });
+const CustomSvgIcon = new DivIcon({
+  className: "",
+  html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10], // 중심 정렬
+});
 
-export default function MapInfo({ mapData, imageSelect }: MapInfo) {
+export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  // const [where, setWhere] = useState<string>("");
-  // const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
-  // const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
-  // const [mousePosition, setMousePosition] = useState<{
-  //   lat: number;
-  //   lng: number;
-  // }>({ lat: 0, lng: 0 });
+  const [where, setWhere] = useState<string>("");
+  const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
+  const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<{
+    lat: number;
+    lng: number;
+  }>({ lat: 0, lng: 0 });
 
-  // const onClickWhere = () => {
-  //   if (where.length > 0) {
-  //     const splitStr = where.split("]_")[1];
+  const onClickWhere = () => {
+    if (where.length > 0) {
+      const splitStr = where.split("]_")[1];
 
-  //     if (splitStr) {
-  //       const matches = splitStr.match(/[-+]?\d*\.\d+/g);
+      if (splitStr) {
+        const matches = splitStr.match(/[-+]?\d*\.\d+/g);
 
-  //       if (matches && matches.length >= 3) {
-  //         const x = parseFloat(matches[0]);
-  //         const y = parseFloat(matches[2]);
-  //         setImageCoord({ x: x, y: y });
-  //       } else {
-  //         setImageCoord({ x: 0, y: 0 });
-  //       }
+        if (matches && matches.length >= 3) {
+          const x = parseFloat(matches[0]);
+          const y = parseFloat(matches[2]);
+          setImageCoord({ x: x, y: y });
+        } else {
+          setImageCoord({ x: 0, y: 0 });
+        }
 
-  //       setIsViewWhere(true);
-  //     } else {
-  //       setImageCoord({ x: 0, y: 0 });
-  //     }
-  //   }
-  // };
+        setIsViewWhere(true);
+      } else {
+        setImageCoord({ x: 0, y: 0 });
+      }
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -104,8 +106,8 @@ export default function MapInfo({ mapData, imageSelect }: MapInfo) {
         )}
       </Gallery>
 
-      {/* <TextSpan isCenter={false} size="3xl">
-        내 위치 찾기
+      <TextSpan isCenter={false} size="3xl">
+        {mapOfTarkovI18n.findLocation[localeKey]}
       </TextSpan>
 
       <Separator className="bg-white" />
@@ -120,7 +122,7 @@ export default function MapInfo({ mapData, imageSelect }: MapInfo) {
           <Input
             className="text-base font-bold border-white placeholder:text-SilverGray w-[400px]"
             value={where}
-            placeholder="좌표를 입력하세요"
+            placeholder={mapOfTarkovI18n.pasteValue[localeKey]}
             onChange={(e) => setWhere(e.currentTarget.value)}
           />
           <Button
@@ -129,7 +131,7 @@ export default function MapInfo({ mapData, imageSelect }: MapInfo) {
               "rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
             }
           >
-            검색
+            <Search />
           </Button>
         </div>
       </div>
@@ -142,7 +144,7 @@ export default function MapInfo({ mapData, imageSelect }: MapInfo) {
         crs={CRS.Simple}
         className="w-full h-[800px]"
         style={{ backgroundColor: ALL_COLOR.DarkBluishGray }}
-        maxBounds={findInfo[0].map_bounds}
+        maxBounds={findInfo.map_bounds}
         maxBoundsViscosity={1.0}
       >
         <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
@@ -154,11 +156,8 @@ export default function MapInfo({ mapData, imageSelect }: MapInfo) {
           />
         )}
 
-        <ImageOverlay
-          url={findInfo[0].image}
-          bounds={findInfo[0].image_bounds}
-        />
-      </MapContainer> */}
+        <ImageOverlay url={findInfo.image} bounds={findInfo.image_bounds} />
+      </MapContainer>
     </div>
   );
 }

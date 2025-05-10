@@ -177,9 +177,19 @@ export const interactiveMapI18N = {
 
 export const mapOfTarkovI18n = {
   title: {
-    en: "Streets of Tarkov",
-    ja: "Streets of Tarkov",
-    ko: "타르코프 시내",
+    en: "Tarkov Map",
+    ja: "タルコフの地図",
+    ko: "타르코프 지도",
+  },
+  findLocation: {
+    en: "Find My Location",
+    ja: "私の位置を探す",
+    ko: "내 위치 찾기",
+  },
+  pasteValue: {
+    en: "Paste the Copied Value",
+    ja: "コピーした値を貼り付けてください",
+    ko: "복사한 값을 입력하세요",
   },
   extraction: {
     en: "Extraction",
