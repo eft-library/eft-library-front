@@ -6,10 +6,10 @@ import DetailRequire from "./detailRequire";
 import DetailBonus from "./detailBonus";
 import DetailCraft from "./detailCraft";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { hideoutI18n } from "@/lib/consts/i18nConsts";
+import { changeTime, getMaxSuffix } from "@/lib/func/jsxfunction";
 
 export default function StationDetail({
   levelId,
@@ -21,36 +21,11 @@ export default function StationDetail({
   const localeKey = getLocaleKey(locale);
   const splitLevel = levelId.split("-");
 
-  const getMaxSuffix = (id: string) => {
-    const nowLevel = parseInt(id.split("-")[1], 10);
-    if (nowLevel === 1) return ALL_COLOR.SandyOchre;
-    if (nowLevel === 2) return ALL_COLOR.BurningOrange;
-    if (nowLevel === 3) return ALL_COLOR.OliveTeal;
-    if (nowLevel === 4) return ALL_COLOR.CobaltBlue;
-    if (nowLevel === 5) return ALL_COLOR.IndigoViolet;
-    if (nowLevel === 6) return ALL_COLOR.RoyalPurple;
-    return ALL_COLOR.SoftAlloy;
-  };
-
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === splitLevel[0]
   );
 
   const levelItem = masterInfo?.data.find((sub) => sub.level_id === levelId);
-
-  const changeTime = (sec: number | undefined) => {
-    if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
-
-    const hours = Math.floor(sec / 3600);
-    const minutes = Math.floor((sec % 3600) / 60);
-    if (hours > 0 && minutes > 0) {
-      return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
-    } else if (hours > 0) {
-      return `${hours} ${hideoutI18n.hour[localeKey]}`;
-    } else {
-      return `${minutes} ${hideoutI18n.min[localeKey]}`;
-    }
-  };
 
   const checkBuild = () => {
     return complete_list.includes(levelId);
@@ -108,7 +83,7 @@ export default function StationDetail({
             {hideoutI18n.constructionTime[localeKey]}
           </p>
           <p className="text-white text-lg font-bold">
-            {changeTime(levelItem?.level_info[0].construction_time)}
+            {changeTime(levelItem?.level_info[0].construction_time, localeKey)}
           </p>
         </div>
 

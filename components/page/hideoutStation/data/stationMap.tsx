@@ -8,7 +8,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { requestData } from "@/lib/config/api";
 import type { StationMapColumn, StationMap } from "./stationType";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { getMaxSuffix } from "@/lib/func/jsxfunction";
 
 export const dynamic = "force-dynamic";
 
@@ -39,22 +39,6 @@ export default function StationMap({
 
   if (!stationMapData) return <Loading />;
 
-  const getMaxSuffix = (id: string) => {
-    const filteredList = completeList
-      .filter((item) => item.startsWith(id + "-"))
-      .map((item) => parseInt(item.split("-")[1], 10));
-
-    const maxDepth = filteredList.length > 0 ? Math.max(...filteredList) : -1; // 기본값 -1
-
-    if (maxDepth === 1) return ALL_COLOR.SandyOchre;
-    if (maxDepth === 2) return ALL_COLOR.BurningOrange;
-    if (maxDepth === 3) return ALL_COLOR.OliveTeal;
-    if (maxDepth === 4) return ALL_COLOR.CobaltBlue;
-    if (maxDepth === 5) return ALL_COLOR.IndigoViolet;
-    if (maxDepth === 6) return ALL_COLOR.RoyalPurple;
-    return ALL_COLOR.SoftAlloy; // maxDepth === -1일 경우 기본값
-  };
-
   return (
     <div className="relative w-[800px] mb-4">
       <StationBackground />
@@ -74,7 +58,7 @@ export default function StationMap({
             station.id,
             stationMapData.json_value.width,
             stationMapData.json_value.height,
-            getMaxSuffix(station.id)
+            getMaxSuffix(station.id, completeList)
           )}
         </div>
       ))}

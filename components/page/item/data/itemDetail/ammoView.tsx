@@ -1,18 +1,25 @@
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import type { ItemView } from "../itemType";
 import { floatToPercent, getColor, getPlusMinus } from "@/lib/func/jsxfunction";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { itemDetailI18N } from "@/lib/consts/i18nConsts";
 
 export default function AmmoView({ item }: ItemView) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
-        <h3 className="text-2xl max-w-2xl font-bold mb-2">정보</h3>
+        <h3 className="text-2xl max-w-2xl font-bold mb-2">
+          {itemDetailI18N.info[localeKey]}
+        </h3>
       </div>
 
       <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
         <div className="grid grid-cols-2 border-b border-NeutralGray ">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            카테고리
+            {itemDetailI18N.category[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold">
             {item.category}
@@ -21,7 +28,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            데미지
+            {itemDetailI18N.damage[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             {item.info.damage}
@@ -30,7 +37,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            관통력
+            {itemDetailI18N.penetration[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             {item.info.penetration_power}
@@ -39,7 +46,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            방어구 피해
+            {itemDetailI18N.armorDamage[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             {item.info.armor_damage} %
@@ -48,7 +55,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            정확성
+            {itemDetailI18N.accuracy[localeKey]}
           </div>
 
           <div className="py-2 px-2  text-center font-bold ">
@@ -65,7 +72,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            반동
+            {itemDetailI18N.recoil[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
@@ -81,7 +88,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            가벼운 출혈
+            {itemDetailI18N.lightBleeding[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             <TextSpan
@@ -97,7 +104,7 @@ export default function AmmoView({ item }: ItemView) {
 
         <div className="grid grid-cols-2 border-b border-NeutralGray">
           <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-            깊은 출혈
+            {itemDetailI18N.heavyBleeding[localeKey]}
           </div>
           <div className="py-2 px-2  text-center font-bold ">
             <TextSpan

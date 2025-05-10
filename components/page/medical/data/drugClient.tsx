@@ -11,24 +11,15 @@ import {
   filteringData,
   highlightMatchedText,
   hasMatchInList,
+  drugText,
 } from "@/lib/func/jsxfunction";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { effectI18N, itemDetailI18N } from "@/lib/consts/i18nConsts";
 
 export default function DrugClient({ medicalList, searchWord }: DrugClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
-  const drugText = (label: string, value: number, positive: boolean) => {
-    return (
-      <div className={"flex mb-[4px]"}>
-        <TextSpan isCenter={false}>{label} :&nbsp;</TextSpan>
-        <TextSpan isCenter={false} textColor={positive ? "BrightCyan" : "Red"}>
-          {value}
-        </TextSpan>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -73,12 +64,13 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
 
                 <div className="flex flex-col justify-center ">
                   <span className="font-bold text-base text-PaleYellow mt-[4px]">
-                    {drug.info.painkiller_duration}초 지속
+                    {drug.info.painkiller_duration}
+                    {effectI18N.duration[localeKey]}
                   </span>
                   <div className={"flex mb-[4px]"}>
                     <TextSpan isCenter={false}>-&nbsp;</TextSpan>
                     <TextSpan isCenter={false} textColor="BrightCyan">
-                      진통제
+                      {effectI18N.painKiller[localeKey]}
                     </TextSpan>
                   </div>
                   {drug.info.hydration_impact > 0 &&
@@ -99,7 +91,9 @@ export default function DrugClient({ medicalList, searchWord }: DrugClient) {
                 </CenterContents>
 
                 <CenterContents>
-                  <TextSpan>{drug.info.use_time} 초</TextSpan>
+                  <TextSpan>
+                    {drug.info.use_time} {itemDetailI18N.sec[localeKey]}
+                  </TextSpan>
                 </CenterContents>
               </DefineGrid>
             )

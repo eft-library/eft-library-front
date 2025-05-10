@@ -68,7 +68,7 @@ export default function QuestClient({ questList }: QuestClient) {
                         >
                           * {obj[getDescriptionLocaleKey(locale)]}
                           {obj.type === "shoot" && (
-                            <span className="flex items-center ml-2">
+                            <span className="ml-2 whitespace-nowrap">
                               [
                               <Skull
                                 className="inline-block w-4 h-4"

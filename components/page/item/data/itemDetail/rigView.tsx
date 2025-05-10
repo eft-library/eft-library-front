@@ -1,11 +1,14 @@
 import { floatToPercent } from "@/lib/func/jsxfunction";
 import type { ItemView } from "../itemType";
 import { useLocale } from "next-intl";
+import { getLocaleKey, getZonesLocaleKey } from "@/lib/func/localeFunction";
+import { itemDetailI18N } from "@/lib/consts/i18nConsts";
 import TextSpan from "@/components/custom/gridContents/textSpan";
-import { getZonesLocaleKey } from "@/lib/func/localeFunction";
 
 export default function RigView({ item }: ItemView) {
   const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full max-w-2xl">
@@ -15,7 +18,7 @@ export default function RigView({ item }: ItemView) {
         <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
           <div className="grid grid-cols-2 border-b border-NeutralGray ">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              카테고리
+              {itemDetailI18N.info[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold">
               {item.category}
@@ -24,7 +27,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              슬롯
+              {itemDetailI18N.slot[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.capacity}
@@ -33,7 +36,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              보호 등급
+              {itemDetailI18N.armorClass[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.class_value}
@@ -42,7 +45,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              보호 부위
+              {itemDetailI18N.armorZone[localeKey]}
             </div>
             <div className="flex flex-col w-full">
               {item.info.zones &&
@@ -56,7 +59,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              내구성
+              {itemDetailI18N.durability[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.durability}
@@ -65,7 +68,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              재료
+              {itemDetailI18N.material[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold">
               {item.info.material ? item.info.material.name : "-"}
@@ -74,7 +77,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              무게
+              {itemDetailI18N.weight[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.weight} kg
@@ -83,7 +86,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              인체공학 페널티
+              {itemDetailI18N.ergonomicsPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.ergo_penalty}
@@ -92,7 +95,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              이동속도 페널티
+              {itemDetailI18N.moveSpeedPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.speed_penalty)} %
@@ -101,7 +104,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              회전속도 페널티
+              {itemDetailI18N.turnSpeedPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.turn_penalty)} %
@@ -112,7 +115,7 @@ export default function RigView({ item }: ItemView) {
         <div className="w-full max-w-2xl border-2 border-white rounded-sm overflow-hidden mb-6">
           <div className="grid grid-cols-2 border-b border-NeutralGray ">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              카테고리
+              {itemDetailI18N.category[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold">
               {item.category}
@@ -121,7 +124,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              무게
+              {itemDetailI18N.weight[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.weight} kg
@@ -130,7 +133,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              인체공학 페널티
+              {itemDetailI18N.ergonomicsPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {item.info.ergo_penalty}
@@ -139,7 +142,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2 border-b border-NeutralGray">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              이동속도 페널티
+              {itemDetailI18N.moveSpeedPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.speed_penalty)} %
@@ -148,7 +151,7 @@ export default function RigView({ item }: ItemView) {
 
           <div className="grid grid-cols-2">
             <div className="py-2 px-2  text-GoldenYellow font-bold flex justify-center items-center">
-              회전속도 페널티
+              {itemDetailI18N.turnSpeedPenalty[localeKey]}
             </div>
             <div className="py-2 px-2  text-center font-bold ">
               {floatToPercent(item.info.turn_penalty)} %

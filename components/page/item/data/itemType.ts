@@ -32,13 +32,6 @@ export interface ItemView {
 
 interface Item {
   id: string;
-  name: LocaleName;
-  gridImageLink: string;
-  normalizedName: string;
-}
-
-interface OtherTypeItem {
-  id: string;
   name_en: string;
   name_ko: string;
   name_ja: string;
@@ -70,7 +63,7 @@ interface RewardedByNpc {
 }
 
 interface QuestRewardItem {
-  item: OtherTypeItem;
+  item: Item;
   count: number;
   quantity: number;
 }
@@ -88,7 +81,7 @@ interface Objective {
   id: string;
   type: string;
   count: number;
-  items: OtherTypeItem[];
+  items: Item[];
   description: string;
   foundInRaid: boolean;
 }
@@ -105,7 +98,7 @@ interface ObjectiveWithQuestItem {
   id: string;
   type: string;
   count: number;
-  questItem: OtherTypeItem;
+  questItem: Item;
   description: string;
 }
 

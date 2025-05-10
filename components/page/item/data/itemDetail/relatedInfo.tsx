@@ -1,49 +1,34 @@
 import type { RelatedInfo } from "../itemType";
 import Image from "next/image";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { MoveRight } from "lucide-react";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { changeTime, getMaxSuffix } from "@/lib/func/jsxfunction";
+import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 
 export default function RelatedInfo({ item }: RelatedInfo) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
-  const getMaxSuffix = (id: number) => {
-    if (id === 1) return ALL_COLOR.SandyOchre;
-    if (id === 2) return ALL_COLOR.BurningOrange;
-    if (id === 3) return ALL_COLOR.OliveTeal;
-    if (id === 4) return ALL_COLOR.CobaltBlue;
-    if (id === 5) return ALL_COLOR.IndigoViolet;
-    if (id === 6) return ALL_COLOR.RoyalPurple;
-    return ALL_COLOR.SoftAlloy; // maxDepth === -1일 경우 기본값
-  };
-  const changeTime = (sec: number | undefined) => {
-    if (!sec) return "0 분";
-
-    const hours = Math.floor(sec / 3600);
-    const minutes = Math.floor((sec % 3600) / 60);
-
-    if (hours > 0 && minutes > 0) {
-      return `${hours}시간 ${minutes}분`;
-    } else if (hours > 0) {
-      return `${hours}시간`;
-    } else {
-      return `${minutes}분`;
-    }
-  };
   return (
     <div>
       {item.rewarded_by_npcs.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">상인 교환</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.traderExchange[localeKey]}
+          </h2>
           <div className="grid grid-cols-3 border-2 border-white py-1 px-2 rounded-lg mb-2">
-            <div className="text-center font-bold">상인</div>
-            <div className="text-center font-bold">재료</div>
-            <div className="text-center font-bold">보상</div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.trader[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.material[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.reward[localeKey]}
+            </div>
           </div>
           <div className=" rounded-lg border-2 border-white">
             {item.rewarded_by_npcs.map((trader) => (
@@ -81,7 +66,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       <div className="relative mb-1">
                         <Image
                           src={reqItem.item.gridImageLink}
-                          alt={reqItem.item.name.en}
+                          alt={reqItem.item.name_en}
                           sizes="80px"
                           width={80}
                           height={80}
@@ -97,7 +82,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                         </div>
                       </div>
                       <div className="font-bold">
-                        {reqItem.item.name[localeKey]}
+                        {reqItem.item[getOtherLocalizedKey(localeKey)]}
                       </div>
                     </div>
                   ))}
@@ -110,7 +95,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   >
                     <Image
                       src={trader.barter_info.rewardItems.item.gridImageLink}
-                      alt={trader.barter_info.rewardItems.item.name.en}
+                      alt={trader.barter_info.rewardItems.item.name_en}
                       sizes={"80"}
                       width={80}
                       height={80}
@@ -125,7 +110,11 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                       x {trader.barter_info.rewardItems.quantity}
                     </div>
                     <div className="font-bold">
-                      {trader.barter_info.rewardItems.item.name[localeKey]}
+                      {
+                        trader.barter_info.rewardItems.item[
+                          getOtherLocalizedKey(localeKey)
+                        ]
+                      }
                     </div>
                   </div>
                 </div>
@@ -137,10 +126,16 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.hideout_items.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">은신처 건설</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.hideoutConstruction[localeKey]}
+          </h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 rounded-lg mb-2">
-            <div className="text-center font-bold">은신처</div>
-            <div className="text-center font-bold">재료</div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.hideout[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.material[localeKey]}
+            </div>
           </div>
           <div className="border-2 border-white rounded-lg">
             {item.hideout_items.map((hideout) => (
@@ -195,12 +190,22 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.used_in_crafts.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">은신처 제작</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.hideoutCrafting[localeKey]}
+          </h2>
           <div className="grid grid-cols-4 border-2 border-white py-1 px-2 mb-2 rounded-lg">
-            <div className="text-center font-bold">요건</div>
-            <div className="text-center font-bold">재료</div>
-            <div className="text-center font-bold">시간</div>
-            <div className="text-center font-bold">보상</div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.requirement[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.material[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.time[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.reward[localeKey]}
+            </div>
           </div>
           <div className="border-2 border-white rounded">
             {item.used_in_crafts.map((craft) => (
@@ -261,7 +266,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="flex flex-col w-[100px] justify-center items-center">
                     <MoveRight strokeWidth={1} size={60} />
                     <TextSpan size="base">
-                      {changeTime(craft.duration)}
+                      {changeTime(craft.duration, localeKey)}
                     </TextSpan>
                   </div>
                 </div>
@@ -296,10 +301,16 @@ export default function RelatedInfo({ item }: RelatedInfo) {
       {(item.required_by_quest_item.length > 0 ||
         item.required_by_quest_item_array.length > 0) && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">퀘스트 필요</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.questRequired[localeKey]}
+          </h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
-            <div className="text-center font-bold">퀘스트</div>
-            <div className="text-center font-bold">재료</div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.quest[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.material[localeKey]}
+            </div>
           </div>
           <div className="border-2 border-white rounded">
             {item.required_by_quest_item.map((questItem) => (
@@ -444,10 +455,16 @@ export default function RelatedInfo({ item }: RelatedInfo) {
 
       {item.rewarded_by_quests.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">퀘스트 보상</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.questReward[localeKey]}
+          </h2>
           <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
-            <div className="text-center font-bold">퀘스트</div>
-            <div className="text-center font-bold">보상</div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.quest[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.reward[localeKey]}
+            </div>
           </div>
           <div className="border-2 border-white rounded">
             {item.rewarded_by_quests.map((reward) => (

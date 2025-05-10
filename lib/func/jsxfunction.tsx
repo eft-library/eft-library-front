@@ -1,6 +1,9 @@
 import { SpawnChance } from "@/components/page/boss/data/bossTypes";
 import type { StimEffect } from "@/components/page/provisions/data/provisionsTypes";
 import { getOtherLocalizedKey } from "./localeFunction";
+import TextSpan from "@/components/custom/gridContents/textSpan";
+import { ALL_COLOR } from "../consts/colorConsts";
+import { hideoutI18n } from "../consts/i18nConsts";
 
 export const noReturnSkill = [
   "Painkiller",
@@ -233,4 +236,64 @@ export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
   }
 
   return uniqueList;
+};
+
+export const drugText = (label: string, value: number, positive: boolean) => {
+  return (
+    <div className={"flex mb-[4px]"}>
+      <TextSpan isCenter={false}>{label} :&nbsp;</TextSpan>
+      <TextSpan isCenter={false} textColor={positive ? "BrightCyan" : "Red"}>
+        {value}
+      </TextSpan>
+    </div>
+  );
+};
+export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
+  let level: number;
+
+  if (typeof id === "number") {
+    level = id;
+  } else if (completeList) {
+    const filteredList = completeList
+      .filter((item) => item.startsWith(id + "-"))
+      .map((item) => parseInt(item.split("-")[1], 10));
+    level = filteredList.length > 0 ? Math.max(...filteredList) : -1;
+  } else {
+    level = parseInt(id.split("-")[1], 10);
+  }
+
+  switch (level) {
+    case 1:
+      return ALL_COLOR.SandyOchre;
+    case 2:
+      return ALL_COLOR.BurningOrange;
+    case 3:
+      return ALL_COLOR.OliveTeal;
+    case 4:
+      return ALL_COLOR.CobaltBlue;
+    case 5:
+      return ALL_COLOR.IndigoViolet;
+    case 6:
+      return ALL_COLOR.RoyalPurple;
+    default:
+      return ALL_COLOR.SoftAlloy;
+  }
+};
+
+export const changeTime = (
+  sec: number | undefined,
+  localeKey: "ja" | "en" | "ko"
+) => {
+  if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
+
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec % 3600) / 60);
+
+  if (hours > 0 && minutes > 0) {
+    return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
+  } else if (hours > 0) {
+    return `${hours} ${hideoutI18n.hour[localeKey]}`;
+  } else {
+    return `${minutes} ${hideoutI18n.min[localeKey]}`;
+  }
 };

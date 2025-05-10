@@ -7,6 +7,7 @@ import TextSpan from "@/components/custom/gridContents/textSpan";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { hideoutI18n } from "@/lib/consts/i18nConsts";
+import { getMaxSuffix } from "@/lib/func/jsxfunction";
 
 export default function LevelSelector({
   masterId,
@@ -19,16 +20,6 @@ export default function LevelSelector({
   const masterInfo = hideoutData.hideout_info.find(
     (station) => station.master_id === masterId
   );
-
-  const getLevelColor = (index: number) => {
-    if (index === 1) return "text-SandyOchre";
-    if (index === 2) return "text-BurningOrange";
-    if (index === 3) return "text-MossGreen";
-    if (index === 4) return "text-CobaltBlue";
-    if (index === 5) return "text-IndigoViolet";
-    if (index === 6) return "text-RoyalPurple";
-    return "text-AshGray";
-  };
 
   return (
     <div className="w-[450px] absolute bottom-10 right-60">
@@ -53,7 +44,10 @@ export default function LevelSelector({
                 "border-2 border-solid border-white rounded-lg"
               }`}
             >
-              <span className={`text-lg font-bold ${getLevelColor(index + 1)}`}>
+              <span
+                className={`text-lg font-bold`}
+                style={{ color: getMaxSuffix(index + 1) }}
+              >
                 LV {index + 1}
               </span>
             </button>

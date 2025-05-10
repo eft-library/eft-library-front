@@ -369,3 +369,309 @@ export const effectI18N = {
     ko: "진통제",
   },
 };
+
+export const itemDetailI18N = {
+  info: {
+    en: "Info",
+    ja: "情報",
+    ko: "정보",
+  },
+  category: {
+    en: "Category",
+    ja: "カテゴリ",
+    ko: "카테고리",
+  },
+  weight: {
+    en: "Weight",
+    ja: "重量",
+    ko: "무게",
+  },
+  effect: {
+    en: "Buff/Debuff",
+    ja: "バフ／デバフ",
+    ko: "버프/디버프",
+  },
+  explosionDelay: {
+    en: "Explosion Delay",
+    ja: "爆発遅延",
+    ko: "폭발 지연",
+  },
+  noImpactTrigger: {
+    en: "When Impact Trigger Does Not Activate",
+    ja: "衝撃信管が作動しない場合",
+    ko: "충격 신관이 발동되지 않은 경우",
+  },
+  onImpact: {
+    en: "On Impact",
+    ja: "衝撃時",
+    ko: "충격시",
+  },
+  explosionRange: {
+    en: "Explosion Range",
+    ja: "爆発範囲",
+    ko: "폭발 거리",
+  },
+  fragmentRadius: {
+    en: "Fragment Radius",
+    ja: "破片半径",
+    ko: "파편 반경",
+  },
+  sec: {
+    en: "Seconds",
+    ja: "秒",
+    ko: "초",
+  },
+  defaultAmmo: {
+    en: "Default Ammo",
+    ja: "初期弾薬",
+    ko: "기본탄약",
+  },
+  shootRate: {
+    en: "Fire Rate",
+    ja: "発射速度",
+    ko: "발사속도",
+  },
+  shootMode: {
+    en: "Fire Mode",
+    ja: "発射モード",
+    ko: "발사모드",
+  },
+  slot: {
+    en: "Slot",
+    ja: "スロット",
+    ko: "슬롯",
+  },
+  armorClass: {
+    en: "Armor Class",
+    ja: "防御等級",
+    ko: "보호 등급",
+  },
+  armorZone: {
+    en: "Protected Area",
+    ja: "保護部位",
+    ko: "보호 부위",
+  },
+  durability: {
+    en: "Durability",
+    ja: "耐久性",
+    ko: "내구성",
+  },
+  material: {
+    en: "Material",
+    ja: "素材",
+    ko: "재료",
+  },
+  ergonomicsPenalty: {
+    en: "Ergonomics Penalty",
+    ja: "エルゴノミクスペナルティ",
+    ko: "인체공학 페널티",
+  },
+  moveSpeedPenalty: {
+    en: "Movement Speed Penalty",
+    ja: "移動速度ペナルティ",
+    ko: "이동속도 페널티",
+  },
+  turnSpeedPenalty: {
+    en: "Turn Speed Penalty",
+    ja: "回転速度ペナルティ",
+    ko: "회전속도 페널티",
+  },
+  energy: {
+    en: "Energy",
+    ja: "エネルギー",
+    ko: "에너지",
+  },
+  hydration: {
+    en: "Hydration",
+    ja: "水分",
+    ko: "수분",
+  },
+  capacity: {
+    en: "Capacity",
+    ja: "容量",
+    ko: "용량",
+  },
+  usageTime: {
+    en: "Usage Time",
+    ja: "使用時間",
+    ko: "사용시간",
+  },
+  recoveryAmount: {
+    en: "Recovery Amount",
+    ja: "回復量",
+    ko: "회복량",
+  },
+  usageCount: {
+    en: "Usage Count",
+    ja: "使用回数",
+    ko: "사용횟수",
+  },
+  baseDamage: {
+    en: "Base Damage",
+    ja: "基本ダメージ",
+    ko: "기본 데미지",
+  },
+  stabbing: {
+    en: "Stabbing",
+    ja: "突き刺し",
+    ko: "찌르기",
+  },
+  baseAttackRange: {
+    en: "Base Attack Range",
+    ja: "基本攻撃範囲",
+    ko: "기본 공격 범위",
+  },
+  useMap: {
+    en: "Usage Map",
+    ja: "使用マップ",
+    ko: "사용 맵",
+  },
+  ricochetChance: {
+    en: "Ricochet Chance",
+    ja: "跳ね返りのチャンス",
+    ko: "도탄 기회",
+  },
+  distance: {
+    en: "Distance",
+    ja: "距離",
+    ko: "거리",
+  },
+  ergonomics: {
+    en: "Ergonomics",
+    ja: "人間工学",
+    ko: "인체공학",
+  },
+  horizontalRecoil: {
+    en: "Horizontal Recoil",
+    ja: "水平反動",
+    ko: "수평반동",
+  },
+  verticalRecoil: {
+    en: "Vertical Recoil",
+    ja: "垂直反動",
+    ko: "수직반동",
+  },
+  ammo: {
+    en: "Ammunition",
+    ja: "弾薬",
+    ko: "탄약",
+  },
+  eyeProtection: {
+    en: "Eye Protection",
+    ja: "目の保護",
+    ko: "눈 보호",
+  },
+  grid: {
+    en: "Grid",
+    ja: "グリッド",
+    ko: "그리드",
+  },
+  damage: {
+    en: "Damage",
+    ja: "ダメージ",
+    ko: "데미지",
+  },
+  penetration: {
+    en: "Penetration Power",
+    ja: "貫通力",
+    ko: "관통력",
+  },
+  armorDamage: {
+    en: "Armor Damage",
+    ja: "アーマーダメージ",
+    ko: "방어구 피해",
+  },
+  accuracy: {
+    en: "Accuracy",
+    ja: "精度",
+    ko: "정확성",
+  },
+  recoil: {
+    en: "Recoil",
+    ja: "反動",
+    ko: "반동",
+  },
+  lightBleeding: {
+    en: "Light Bleeding",
+    ja: "軽出血",
+    ko: "가벼운 출혈",
+  },
+  heavyBleeding: {
+    en: "Heavy Bleeding",
+    ja: "重出血",
+    ko: "깊은 출혈",
+  },
+  buff: {
+    en: "Buff",
+    ja: "バフ",
+    ko: "버프",
+  },
+  debuff: {
+    en: "Debuff",
+    ja: "デバフ",
+    ko: "디버프",
+  },
+};
+
+export const itemRelatedInfo = {
+  traderExchange: {
+    en: "Trader Exchange",
+    ja: "トレーダー交換",
+    ko: "상인 교환",
+  },
+  trader: {
+    en: "Trader",
+    ja: "トレーダー",
+    ko: "상인",
+  },
+  material: {
+    en: "Material",
+    ja: "素材",
+    ko: "재료",
+  },
+  reward: {
+    en: "Reward",
+    ja: "報酬",
+    ko: "보상",
+  },
+  hideoutConstruction: {
+    en: "Hideout Construction",
+    ja: "隠れ家建設",
+    ko: "은신처 건설",
+  },
+  hideout: {
+    en: "Hideout",
+    ja: "隠れ家",
+    ko: "은신처",
+  },
+  hideoutCrafting: {
+    en: "Hideout Crafting",
+    ja: "隠れ家製作",
+    ko: "은신처 제작",
+  },
+  requirement: {
+    en: "Requirement",
+    ja: "要件",
+    ko: "요건",
+  },
+  time: {
+    en: "Time",
+    ja: "時間",
+    ko: "시간",
+  },
+  questRequired: {
+    en: "Quest Requirement",
+    ja: "クエスト要件",
+    ko: "퀘스트 필요",
+  },
+  quest: {
+    en: "Quest",
+    ja: "クエスト",
+    ko: "퀘스트",
+  },
+  questReward: {
+    en: "Quest Reward",
+    ja: "クエスト報酬",
+    ko: "퀘스트 보상",
+  },
+};

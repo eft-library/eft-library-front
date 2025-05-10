@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import { hideoutI18n } from "@/lib/consts/i18nConsts";
+import { changeTime } from "@/lib/func/jsxfunction";
 
 export default function DetailCraft({ crafts }: DetailCraft) {
   const locale = useLocale();
@@ -24,21 +25,6 @@ export default function DetailCraft({ crafts }: DetailCraft) {
   const onHoverItem = (itemInfo: CraftItem, index: string | null) => {
     setOpenTooltipIndex(index);
     setHoverItem(itemInfo);
-  };
-
-  const changeTime = (sec: number | undefined) => {
-    if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
-
-    const hours = Math.floor(sec / 3600);
-    const minutes = Math.floor((sec % 3600) / 60);
-
-    if (hours > 0 && minutes > 0) {
-      return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
-    } else if (hours > 0) {
-      return `${hours} ${hideoutI18n.hour[localeKey]}`;
-    } else {
-      return `${minutes} ${hideoutI18n.min[localeKey]}`;
-    }
   };
 
   return (
@@ -118,7 +104,9 @@ export default function DetailCraft({ crafts }: DetailCraft) {
               ))}
               <div className="flex flex-col w-[100px] justify-center items-center">
                 <MoveRight strokeWidth={1} size={60} />
-                <TextSpan size="base">{changeTime(craft.duration)}</TextSpan>
+                <TextSpan size="base">
+                  {changeTime(craft.duration, localeKey)}
+                </TextSpan>
               </div>
 
               <div>

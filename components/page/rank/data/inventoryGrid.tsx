@@ -12,7 +12,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
-import Image from "next/image";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { rankI18N } from "@/lib/consts/i18nConsts";
@@ -75,7 +74,7 @@ export default function InventoryGrid({
                     height={topImage.height * 128}
                   >
                     {({ ref, open }) => (
-                      <Image
+                      <img
                         ref={ref}
                         onClick={open}
                         src={topImage.image}
