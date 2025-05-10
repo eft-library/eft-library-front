@@ -76,6 +76,42 @@ interface LocaleName {
 
 interface FinishRewards {
   items: RewardItem[];
+  offerUnlock: OfferUnlock[];
+  traderStanding: TraderStanding[];
+  craftUnlock: CraftUnlock[];
+}
+
+interface CraftUnlock {
+  level: number;
+  station: StationDetail;
+  rewardItems: BarterItem[];
+}
+
+interface StationDetail {
+  id: string;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+}
+
+interface TraderStanding {
+  trader: TraderDetail;
+  standing: number;
+}
+
+interface OfferUnlock {
+  item: RewardItemDetails;
+  level: number;
+  trader: TraderDetail;
+}
+
+interface TraderDetail {
+  id: string;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
+  imageLink: string;
+  normalizedName: string;
 }
 
 interface RewardItem {
