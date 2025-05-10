@@ -266,7 +266,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   <div className="flex flex-col w-[100px] justify-center items-center">
                     <MoveRight strokeWidth={1} size={60} />
                     <TextSpan size="base">
-                      {changeTime(craft.duration, localeKey)}
+                      {changeTime(craft.duration)}
                     </TextSpan>
                   </div>
                 </div>

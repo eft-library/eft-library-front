@@ -13,7 +13,7 @@ import type { PriceChart } from "./priceTypes";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { timeI18N, price18N } from "@/lib/consts/i18nConsts";
+import { price18N } from "@/lib/consts/i18nConsts";
 
 export default function PriceChart({ viewType, item }: PriceChart) {
   const locale = useLocale();
@@ -29,7 +29,7 @@ export default function PriceChart({ viewType, item }: PriceChart) {
   }) => {
     if (active && payload && payload.length) {
       const formattedDate = dayjs(payload[0].payload.price_time).format(
-        `YYYY${timeI18N.year[localeKey]} MM${timeI18N.month[localeKey]} DD${timeI18N.day[localeKey]} HH${timeI18N.hour[localeKey]} mm${timeI18N.minute[localeKey]}`
+        `YYYY/MM/DD·HH:mm`
       );
 
       return (
@@ -83,12 +83,8 @@ export default function PriceChart({ viewType, item }: PriceChart) {
           <XAxis
             dataKey="price_time"
             tick={{ fill: "white", fontWeight: "bold" }}
-            tickFormatter={(value, index) => {
-              return index === 0
-                ? ""
-                : dayjs(value).format(
-                    `M${timeI18N.month[localeKey]} D${timeI18N.day[localeKey]} H${timeI18N.hour[localeKey]}`
-                  );
+            tickFormatter={(value) => {
+              return dayjs(value).format(`M/D·H:00`);
             }}
             interval={Math.floor(
               viewType === "PVP"

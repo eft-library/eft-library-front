@@ -289,34 +289,6 @@ export const buttonI18N = {
   },
 };
 
-export const timeI18N = {
-  year: {
-    en: "year",
-    ja: "年",
-    ko: "년",
-  },
-  month: {
-    en: "month",
-    ja: "月",
-    ko: "월",
-  },
-  day: {
-    en: "day",
-    ja: "日",
-    ko: "일",
-  },
-  hour: {
-    en: "hour",
-    ja: "時",
-    ko: "시",
-  },
-  minute: {
-    en: "minute",
-    ja: "分",
-    ko: "분",
-  },
-};
-
 export const planner18N = {
   title: { en: "Quest Planner", ja: "Quest Planner", ko: "퀘스트 플래너" },
   add: {

@@ -3,7 +3,6 @@ import type { StimEffect } from "@/components/page/provisions/data/provisionsTyp
 import { getOtherLocalizedKey } from "./localeFunction";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import { ALL_COLOR } from "../consts/colorConsts";
-import { hideoutI18n } from "../consts/i18nConsts";
 
 export const noReturnSkill = [
   "Painkiller",
@@ -280,20 +279,17 @@ export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
   }
 };
 
-export const changeTime = (
-  sec: number | undefined,
-  localeKey: "ja" | "en" | "ko"
-) => {
-  if (!sec) return `${0} ${hideoutI18n.min[localeKey]}`;
+export const changeTime = (sec: number | undefined) => {
+  if (!sec) return `${0} M`;
 
   const hours = Math.floor(sec / 3600);
   const minutes = Math.floor((sec % 3600) / 60);
 
   if (hours > 0 && minutes > 0) {
-    return `${hours} ${hideoutI18n.hour[localeKey]} ${minutes} ${hideoutI18n.min[localeKey]}`;
+    return `${hours} H ${minutes} M`;
   } else if (hours > 0) {
-    return `${hours} ${hideoutI18n.hour[localeKey]}`;
+    return `${hours} H`;
   } else {
-    return `${minutes} ${hideoutI18n.min[localeKey]}`;
+    return `${minutes} M`;
   }
 };
