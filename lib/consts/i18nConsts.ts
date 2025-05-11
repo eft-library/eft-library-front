@@ -47,6 +47,11 @@ export const alertMessageI18N = {
     ja: "見つかりません。",
     ko: "찾을 수 없습니다.",
   },
+  close: {
+    en: "Close",
+    ja: "閉じる",
+    ko: "닫기",
+  },
 };
 
 export const hideoutI18n = {
@@ -789,3 +794,54 @@ export const newsI18N = {
     ko: "공지사항",
   },
 };
+
+export const findLocationI18N = [
+  {
+    step: "1",
+    ko: "게임 내에서 PrintScreen(PrtSc) 키를 눌러 스크린샷을 찍습니다.",
+    en: "Press the PrintScreen (PrtSc) key in the game to take a screenshot.",
+    ja: "ゲーム内で PrintScreen（PrtSc）キーを押してスクリーンショットを撮ります。",
+    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/game-screenshot.webp",
+    alt: "Taking a screenshot in game",
+  },
+  {
+    step: "2",
+    ko: "바탕화면 아래 작업 표시줄에서 파일 탐색기(폴더 아이콘)를 엽니다.",
+    en: "Open File Explorer (folder icon) from the taskbar at the bottom of the desktop.",
+    ja: "デスクトップ下部のタスクバーからファイルエクスプローラー（フォルダーアイコン）を開きます。",
+  },
+  {
+    step: "3",
+    ko: "왼쪽 메뉴에서 다음 경로로 이동합니다: 내 PC > 사진 > 스크린샷 (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
+    en: "In the left menu, navigate to: This PC > Pictures > Screenshots (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
+    ja: "左側のメニューから次のパスに移動します： このPC > ピクチャ > スクリーンショット (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
+    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/folder.webp",
+    alt: "Screenshot folder location",
+  },
+  {
+    step: "4",
+    ko: "가장 최근에 찍은 스크린샷 파일을 클릭한 후 이름 바꾸기 모드로 진입합니다.",
+    en: "Click the most recent screenshot file and enter rename mode.",
+    ja: "最新のスクリーンショットファイルをクリックし、名前変更モードに入ります。",
+  },
+  {
+    step: "5",
+    ko: "Ctrl + C 를 눌러 파일 이름을 복사합니다. (.png 같은 확장자 포함 가능)",
+    en: "Press Ctrl + C to copy the file name (extensions like .png can be included).",
+    ja: "Ctrl + C を押してファイル名をコピーします（.pngなどの拡張子も含めて構いません）。",
+  },
+  {
+    step: "6",
+    ko: "위치 확인 도구에 Ctrl + V로 붙여넣고 버튼을 클릭합니다.",
+    en: "Paste it into the location tool with Ctrl + V and click the button.",
+    ja: "位置確認ツールに Ctrl + V で貼り付けて、ボタンをクリックします。",
+  },
+  {
+    step: "7",
+    ko: "지도 위에 점으로 표시된 자신의 위치를 확인할 수 있습니다.",
+    en: "You can check your location marked as a dot on the map.",
+    ja: "地図上に点で表示された自分の位置を確認できます。",
+    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/find-location.webp",
+    alt: "Checking location on the map",
+  },
+];
