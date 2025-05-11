@@ -215,6 +215,26 @@ export const questI18N = {
     ja: "次へ",
     ko: "다음",
   },
+  purchaseUnlock: {
+    en: "Unlock with Purchase",
+    ja: "購入してロック解除",
+    ko: "구매 잠금 해제",
+  },
+  craftUnlock: {
+    en: "Unlock with Crafting",
+    ja: "クラフトしてロック解除",
+    ko: "제작 잠금 해제",
+  },
+  workbenchLevel: {
+    en: "Workbench Level",
+    ja: "作業台レベル",
+    ko: "작업대 레벨",
+  },
+  standing: {
+    en: "Reputation",
+    ja: "評判",
+    ko: "평판",
+  },
   prev: {
     en: "Previous",
     ja: "前へ",
