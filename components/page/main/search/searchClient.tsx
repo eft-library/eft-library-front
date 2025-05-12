@@ -91,14 +91,13 @@ export default function SearchClient({ searchList }: SearchClient) {
                     onScroll={handleScroll}
                   >
                     {searchList
-                      .filter(
-                        (item) =>
-                          !inputValue ||
-                          (item.value
-                            .toLowerCase()
-                            .includes(inputValue.toLowerCase()) &&
-                            item.lang === localeKey)
-                      )
+                      .filter((item) => item.lang === localeKey) // 언어 먼저 필터링
+                      .filter((item) => {
+                        if (!inputValue) return true; // 입력 없으면 모두 통과
+                        return item.value
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase());
+                      })
                       .map((item, index) => (
                         <React.Fragment key={item.value}>
                           <div
