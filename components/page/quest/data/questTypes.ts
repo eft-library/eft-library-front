@@ -5,8 +5,7 @@ export interface QuestSelectorClient {
 interface QuestJson {
   id: string;
   order: number;
-  name_kr: string;
-  name_en: string;
+  name: LocaleName;
   image: string;
 }
 

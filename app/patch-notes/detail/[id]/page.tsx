@@ -22,8 +22,8 @@ export async function generateMetadata({
   const res = product.data;
 
   return {
-    title: `${res.information.name_kr} - EFT Library`,
-    description: `${res.information_group.name_kr}`,
+    title: `${res.information.name.ko} - EFT Library`,
+    description: `${res.information_group.name.ko}`,
     openGraph: {
       title: "EFT Library 패치노트 상세 정보 - EFT Library",
       description:
