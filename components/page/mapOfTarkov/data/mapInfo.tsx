@@ -13,20 +13,15 @@ import "leaflet/dist/leaflet.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CRS, DivIcon } from "leaflet";
+import { CRS } from "leaflet";
 import MapController from "./mapController";
-import { MouseMoveEvent } from "@/lib/func/leafletFunction";
+import { MouseMoveEvent, FindLocationIcon } from "@/lib/func/leafletFunction";
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
 import { mapOfTarkovI18n, findLocationI18N } from "@/lib/consts/i18nConsts";
 import { CircleHelp, Search } from "lucide-react";
 import DefaultDialog from "@/components/custom/dialog/defaultDialog";
 
-const CustomSvgIcon = new DivIcon({
-  className: "",
-  html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10], // 중심 정렬
-});
+export const dynamic = "force-dynamic";
 
 export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
   const locale = useLocale();
@@ -163,7 +158,7 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
         {isViewWhere && (
           <Marker
             position={[-imageCoord.y, -imageCoord.x]}
-            icon={CustomSvgIcon}
+            icon={FindLocationIcon}
           />
         )}
 
