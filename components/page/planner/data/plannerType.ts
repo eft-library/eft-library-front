@@ -16,13 +16,6 @@ interface PlannerInfo {
   task_requirements: TaskWrapper[];
   min_player_level: number;
 }
-
-export interface PlannerNextQuest {
-  url_mapping: string;
-  id: string;
-  name: string;
-  name_kr: string;
-}
 export interface PlannerClientQuest {
   userQuestList: Planner[];
 }

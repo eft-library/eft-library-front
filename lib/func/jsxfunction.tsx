@@ -81,8 +81,8 @@ export const hasMatchInList = (list: any[], searchWord: string): boolean => {
   return list.some(
     (item) =>
       regex.test(item.name_en) ||
-      regex.test(item.name_kr) ||
-      regex.test(item.name_ja || item.name_kr)
+      regex.test(item.name_ko) ||
+      regex.test(item.name_ja || item.name_ko)
   );
 };
 export const filteringData = (

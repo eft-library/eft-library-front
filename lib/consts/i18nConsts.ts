@@ -793,6 +793,11 @@ export const newsI18N = {
     ja: "お知らせ",
     ko: "공지사항",
   },
+  list: {
+    en: "List",
+    ja: "リスト",
+    ko: "목록",
+  },
 };
 
 export const findLocationI18N = [

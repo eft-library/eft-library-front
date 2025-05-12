@@ -1,8 +1,13 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { newsI18N } from "@/lib/consts/i18nConsts";
 
 export default function InformationTab() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -21,7 +26,9 @@ export default function InformationTab() {
         )}
         onClick={() => router.push("/event?id=1")}
       >
-        <span className="text-center font-bold">이벤트</span>
+        <span className="text-center font-bold">
+          {newsI18N.event[localeKey]}
+        </span>
       </div>
       <div
         className={cn(
@@ -37,7 +44,9 @@ export default function InformationTab() {
         )}
         onClick={() => router.push("/patch-notes?id=1")}
       >
-        <span className="text-center font-bold">패치노트</span>
+        <span className="text-center font-bold">
+          {newsI18N.patchNote[localeKey]}
+        </span>
       </div>
       <div
         className={cn(
@@ -52,7 +61,9 @@ export default function InformationTab() {
         )}
         onClick={() => router.push("/notice?id=1")}
       >
-        <span className="text-center font-bold">공지사항</span>
+        <span className="text-center font-bold">
+          {newsI18N.notice[localeKey]}
+        </span>
       </div>
     </div>
   );

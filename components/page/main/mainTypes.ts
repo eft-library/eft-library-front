@@ -13,9 +13,9 @@ export interface SearchClient {
 
 export interface LinkInfo {
   link: string;
-  name_en: string;
-  name_kr: string;
-  name_ja: string;
+  en: string;
+  ko: string;
+  ja: string;
   is_new: boolean;
 }
 

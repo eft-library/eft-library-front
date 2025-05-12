@@ -22,7 +22,7 @@ export async function generateMetadata({
   const res = product.data;
   return {
     title: `${res.information.name.ko} - EFT Library`,
-    description: `${res.information_group.name.ko}`,
+    description: `${res.information.name.ko}`,
     openGraph: {
       title: "타르코프 이벤트 상세 정보 - EFT Library",
       description:
