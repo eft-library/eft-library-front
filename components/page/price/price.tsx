@@ -13,12 +13,15 @@ export default function Price() {
       <h1 className="text-white text-4xl font-bold text-center">
         {price18N.title[localeKey]}
       </h1>
-      <div className="w-[1200px]">
-        <AdBanner
-          dataAdFormat={"auto"}
-          dataFullWidthResponsive={true}
-          dataAdSlot="2690838054"
-        />
+
+      <div className="w-full flex items-center justify-center">
+        <div className="w-[1200px]">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
       </div>
       <PriceClient />
     </ContentsWrapper>

@@ -91,6 +91,43 @@ export default function QuestClient({ questList }: QuestClient) {
                         {rewards.quantity}
                       </div>
                     ))}
+                    {quest.finish_rewards.offerUnlock.map((offer, rIndex) => (
+                      <div
+                        key={`${rIndex}-offerUnlock-${quest.id}`}
+                        className="font-bold text-base p-[1px]"
+                      >
+                        * {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
+                        {offer.item[getOtherLocalizedKey(locale)]}&nbsp;
+                        {questI18N.purchaseUnlock[localeKey]}
+                      </div>
+                    ))}
+                    {quest.finish_rewards.traderStanding.map(
+                      (standing, rIndex) => (
+                        <div
+                          key={`${rIndex}-traderStanding-${quest.id}`}
+                          className="font-bold text-base p-[1px]"
+                        >
+                          * {standing.trader[getOtherLocalizedKey(locale)]}
+                          &nbsp;{questI18N.standing[localeKey]}&nbsp;
+                          {standing.standing}
+                        </div>
+                      )
+                    )}
+                    {quest.finish_rewards.craftUnlock.map((craft, rIndex) => (
+                      <div
+                        key={`${rIndex}-craftUnlock-${quest.id}`}
+                        className="font-bold text-base p-[1px]"
+                      >
+                        {craft.rewardItems.map((crReward, crIndex) => (
+                          <span key={`${crIndex}-crReward-${quest.id}`}>
+                            * {questI18N.workbenchLevel[localeKey]}&nbsp;
+                            {craft.level} &nbsp;
+                            {crReward.item[getOtherLocalizedKey(locale)]}&nbsp;
+                            {questI18N.craftUnlock[localeKey]}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
                   </TableCell>
                   <TableCell>
                     <span

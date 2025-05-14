@@ -26,6 +26,7 @@ import StationaryView from "./itemDetail/stationaryView";
 import RelatedInfo from "./itemDetail/relatedInfo";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import AdBanner from "@/components/custom/adsense/adBanner";
 
 export default function ItemClient({ itemInfo }: ItemClient) {
   const locale = useLocale();
@@ -101,6 +102,15 @@ export default function ItemClient({ itemInfo }: ItemClient) {
           )}
       </div>
 
+      <div className="w-full flex items-center justify-center">
+        <div className="w-[1200px]">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
+      </div>
       <RelatedInfo item={itemInfo} />
     </div>
   );

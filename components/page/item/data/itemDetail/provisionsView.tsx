@@ -11,7 +11,6 @@ import {
 import { itemDetailI18N } from "@/lib/consts/i18nConsts";
 
 export default function ProvisionsView({ item }: ItemView) {
-  console.log(item);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (

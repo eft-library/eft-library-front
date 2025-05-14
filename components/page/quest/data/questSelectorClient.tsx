@@ -3,8 +3,12 @@
 import { useAppStore } from "@/store/provider";
 import { handleHover, handleHoverExit } from "@/lib/func/jsxfunction";
 import type { QuestSelectorClient } from "./questTypes";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { npcId, setNpcId } = useAppStore((state) => state);
 
   return (
@@ -28,7 +32,7 @@ export default function QuestSelectorClient({ npcList }: QuestSelectorClient) {
               onMouseLeave={handleHoverExit}
             />
             <p className="text-white text-center mt-2 font-bold">
-              {npc.name_kr}
+              {npc.name[localeKey]}
             </p>
           </div>
         ))}

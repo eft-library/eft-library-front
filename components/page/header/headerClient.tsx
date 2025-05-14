@@ -33,14 +33,14 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
 
   return (
     <div className="fixed w-full z-20 bg-Background">
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-4">
         <div />
         <div className="flex justify-center items-center">
           <Link href="/" aria-label="EFT Library">
             <NaviLogo />
           </Link>
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center col-span-2">
           {headerData.map((main) =>
             main.value !== "USER" ? (
               <DeafultMenu

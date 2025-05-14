@@ -7,6 +7,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { alertMessageI18N } from "@/lib/consts/i18nConsts";
 
 interface DefaultAlert {
   open: boolean;
@@ -21,6 +24,8 @@ export default function DefaultAlert({
   title,
   description,
 }: DefaultAlert) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="sm:max-w-[600px] border-white bg-Background">
@@ -35,7 +40,7 @@ export default function DefaultAlert({
             onClick={() => setOpen(false)}
             className="text-base font-semibold text-white bg-Background border-white hover:bg-NeutralGray"
           >
-            닫기
+            {alertMessageI18N.close[localeKey]}
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

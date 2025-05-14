@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { NewsClient, LinkInfo } from "../mainTypes";
-import { getLocalizedKey } from "@/lib/func/localeFunction";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { newsI18N } from "@/lib/consts/i18nConsts";
@@ -30,11 +29,11 @@ export default function NewsClient({ news }: NewsClient) {
 
     return (
       <span
-        key={text.name_en}
+        key={text.en}
         className="font-bold text-CreamYellow cursor-pointer hover:text-SoftPink text-lg"
         onClick={() => router.push(text.link)}
       >
-        -{text[getLocalizedKey(locale)]}
+        -{text[localeKey]}
         &nbsp;
         <style>
           {`
@@ -79,7 +78,7 @@ export default function NewsClient({ news }: NewsClient) {
             {news.json_value.event.map((event) => (
               <Link
                 target="_blank"
-                key={event.name_en}
+                key={event.en}
                 rel="noopener noreferrer"
                 href={event.link}
               >
@@ -89,7 +88,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {event[getLocalizedKey(locale)]}
+                  - {event[localeKey]}
                 </TextSpan>
               </Link>
             ))}
@@ -106,8 +105,8 @@ export default function NewsClient({ news }: NewsClient) {
           </div>
           <div className="flex flex-col">
             {news.json_value.next_update.map((patch) => (
-              <TextSpan isCenter={false} key={patch.name_en} size="lg">
-                - {patch[getLocalizedKey(locale)]}
+              <TextSpan isCenter={false} key={patch.en} size="lg">
+                - {patch[localeKey]}
               </TextSpan>
             ))}
           </div>
@@ -125,7 +124,7 @@ export default function NewsClient({ news }: NewsClient) {
             {news.json_value.tarkov_info.map((info) => (
               <Link
                 target="_blank"
-                key={info.name_en}
+                key={info.en}
                 rel="noopener noreferrer"
                 href={info.link}
               >
@@ -135,7 +134,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {info[getLocalizedKey(locale)]}
+                  - {info[localeKey]}
                 </TextSpan>
               </Link>
             ))}
@@ -154,7 +153,7 @@ export default function NewsClient({ news }: NewsClient) {
             {news.json_value.patch.map((patch) => (
               <Link
                 target="_blank"
-                key={patch.name_en}
+                key={patch.en}
                 rel="noopener noreferrer"
                 href={patch.link}
               >
@@ -164,7 +163,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {patch[getLocalizedKey(locale)]}
+                  - {patch[localeKey]}
                 </TextSpan>
               </Link>
             ))}
@@ -183,7 +182,7 @@ export default function NewsClient({ news }: NewsClient) {
             {news.json_value.notice.map((notice) => (
               <Link
                 target="_blank"
-                key={notice.name_en}
+                key={notice.en}
                 rel="noopener noreferrer"
                 href={notice.link}
               >
@@ -193,7 +192,7 @@ export default function NewsClient({ news }: NewsClient) {
                   hoverColor="SoftPink"
                   size="lg"
                 >
-                  - {notice[getLocalizedKey(locale)]}
+                  - {notice[localeKey]}
                 </TextSpan>
               </Link>
             ))}

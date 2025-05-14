@@ -42,7 +42,7 @@ export default function AdBlockAlert() {
         duration: Infinity,
       });
     }
-  }, [adBlockDetected]);
+  }, [adBlockDetected, localeKey]);
 
   return null;
 }

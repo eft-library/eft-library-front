@@ -8,6 +8,7 @@ import TextSpan from "../gridContents/textSpan";
 import type { InformationDetailClient } from "./informationDetailTypes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { newsI18N } from "@/lib/consts/i18nConsts";
 
 export default function InformationDetailClient({
   informationInfo,
@@ -52,7 +53,7 @@ export default function InformationDetailClient({
               "rounded-lg font-bold text-base text-white bg-Background border-white border-solid border-2 hover:bg-NeutralGray"
             }
           >
-            목록
+            {newsI18N.list[localeKey]}
           </Button>
         </Link>
       </div>

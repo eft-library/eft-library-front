@@ -42,9 +42,9 @@ export default function LocalSwitcher() {
   }, []);
 
   const menuItems = [
-    { value: "en", label: "English" },
-    { value: "ko", label: "한국어" },
-    { value: "ja", label: "日本語" },
+    { value: "en", label: "English", img: "🇺🇸" },
+    { value: "ko", label: "한국어", img: "🇰🇷" },
+    { value: "ja", label: "日本語", img: "🇯🇵" },
   ];
 
   return (
@@ -58,6 +58,7 @@ export default function LocalSwitcher() {
         aria-haspopup="true"
       >
         <span className="text-white font-bold">
+          {menuItems.find((item) => item.value === selected)?.img}&nbsp;
           {menuItems.find((item) => item.value === selected)?.label}
         </span>
         <ChevronDown
@@ -79,6 +80,7 @@ export default function LocalSwitcher() {
                 }`}
                 role="menuitem"
               >
+                {item.img}&nbsp;
                 {item.label}
               </button>
             ))}

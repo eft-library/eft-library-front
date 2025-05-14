@@ -83,7 +83,7 @@ export default function StationDetail({
             {hideoutI18n.constructionTime[localeKey]}
           </p>
           <p className="text-white text-lg font-bold">
-            {changeTime(levelItem?.level_info[0].construction_time, localeKey)}
+            {changeTime(levelItem?.level_info[0].construction_time)}
           </p>
         </div>
 

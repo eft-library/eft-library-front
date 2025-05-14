@@ -74,7 +74,7 @@ export default function WipeClient({ wipeList }: WipeClient) {
                     />
                   </TextSpan>
                   <TextSpan size="lg" textColor="GoldenAmber">
-                    {getDateRange(wipe.season_start, wipe.season_end)} 일
+                    {getDateRange(wipe.season_start, wipe.season_end)} Days
                   </TextSpan>
                 </div>
               </TableCell>

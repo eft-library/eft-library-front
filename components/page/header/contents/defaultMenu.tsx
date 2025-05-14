@@ -25,7 +25,7 @@ export default function DeafultMenu({
       </Button>
       {selectedMenu === menuData.value && (
         <div
-          className="absolute top-12 left-[-30px] z-40 flex flex-col font-semibold justify-center items-center p-4 bg-Background rounded-lg shadow-lg min-w-[150px] border-white border-2"
+          className="absolute top-12 left-[-50px] z-40 flex flex-col font-semibold justify-center items-center p-4 bg-Background rounded-lg shadow-lg min-w-[190px] border-white border-2"
           onMouseEnter={() => setSelectedMenu(menuData.value)}
           onMouseLeave={() => setSelectedMenu(null)}
         >
@@ -35,7 +35,7 @@ export default function DeafultMenu({
               href={sub.link}
               onClick={() => setQuest(sub.parent_value, sub.value)}
             >
-              <div className="flex px-2 py-2 text-white rounded-lg cursor-pointer min-w-[100px] justify-center items-center hover:bg-NeutralGray">
+              <div className="flex px-2 py-2 text-white rounded-lg cursor-pointer justify-center items-center hover:bg-NeutralGray">
                 {sub.name[localeKey]}
               </div>
             </Link>

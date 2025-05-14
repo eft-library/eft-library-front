@@ -1,4 +1,7 @@
 import { useMapEvent } from "react-leaflet";
+import { DivIcon } from "leaflet";
+
+export const dynamic = "force-dynamic";
 
 export const MouseMoveEvent = ({
   onMove,
@@ -14,3 +17,10 @@ export const MouseMoveEvent = ({
   });
   return null;
 };
+
+export const FindLocationIcon = new DivIcon({
+  className: "",
+  html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10], // 중심 정렬
+});

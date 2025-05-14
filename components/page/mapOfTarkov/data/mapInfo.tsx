@@ -13,22 +13,19 @@ import "leaflet/dist/leaflet.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CRS, DivIcon } from "leaflet";
+import { CRS } from "leaflet";
 import MapController from "./mapController";
-import { MouseMoveEvent } from "@/lib/func/leafletFunction";
+import { MouseMoveEvent, FindLocationIcon } from "@/lib/func/leafletFunction";
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
-import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
-import { Search } from "lucide-react";
+import { mapOfTarkovI18n, findLocationI18N } from "@/lib/consts/i18nConsts";
+import { CircleHelp, Search } from "lucide-react";
+import DefaultDialog from "@/components/custom/dialog/defaultDialog";
 
-const CustomSvgIcon = new DivIcon({
-  className: "",
-  html: `<svg width="20" height="20"><circle cx="10" cy="10" r="10" fill="lime" /></svg>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10], // 중심 정렬
-});
+export const dynamic = "force-dynamic";
 
 export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
   const locale = useLocale();
+  const [popupStatus, setPopupStatus] = useState<boolean>(false);
   const localeKey = getLocaleKey(locale);
   const [where, setWhere] = useState<string>("");
   const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
@@ -119,8 +116,17 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
           <span className="font-bold">Z: {mousePosition.lat.toFixed(2)}</span>
         </div>
         <div className="flex gap-2">
+          <div className="flex items-center justify-center">
+            <CircleHelp
+              size={32}
+              color={ALL_COLOR.Yellow}
+              onClick={() => setPopupStatus(true)}
+              className="cursor-pointer"
+            />
+          </div>
+
           <Input
-            className="text-base font-bold border-white placeholder:text-SilverGray w-[400px]"
+            className="text-base font-bold border-white placeholder:text-SilverGray w-[400px] border-2"
             value={where}
             placeholder={mapOfTarkovI18n.pasteValue[localeKey]}
             onChange={(e) => setWhere(e.currentTarget.value)}
@@ -152,12 +158,42 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
         {isViewWhere && (
           <Marker
             position={[-imageCoord.y, -imageCoord.x]}
-            icon={CustomSvgIcon}
+            icon={FindLocationIcon}
           />
         )}
 
         <ImageOverlay url={findInfo.image} bounds={findInfo.image_bounds} />
       </MapContainer>
+
+      <DefaultDialog open={popupStatus} setOpen={setPopupStatus} title="Notice">
+        <div className="bg-Background p-6 max-h-[800px] overflow-y-auto space-y-6">
+          {findLocationI18N.map((info) => (
+            <div
+              key={info.step}
+              className="bg-white/5 rounded-2xl p-4 shadow-md flex flex-col md:flex-row gap-4 items-center"
+            >
+              <div className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                {info.step}
+              </div>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-4">
+                <p className="text-base text-white flex-1">{info[localeKey]}</p>
+                {info.img && (
+                  <Image
+                    src={info.img}
+                    alt={info.alt}
+                    width={500}
+                    height={300}
+                    className="rounded-lg w-full max-w-md h-auto"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                    priority
+                  />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </DefaultDialog>
     </div>
   );
 }
