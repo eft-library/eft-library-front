@@ -26,3 +26,17 @@
   border-radius: 8px;
   object-fit: cover;
 }
+.quest-image-wrapper.count-1 .quest-image {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+.quest-image-wrapper.count-2 .quest-image {
+  flex-basis: calc(50% - 6px);
+  max-width: calc(50% - 6px);
+}
+
+.quest-image-wrapper.count-3 .quest-image {
+  flex-basis: calc(33.333% - 8px);
+  max-width: calc(33.333% - 8px);
+}
