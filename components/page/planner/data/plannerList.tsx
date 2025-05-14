@@ -8,6 +8,8 @@ import {
   getDescriptionLocaleKey,
   getLocaleKey,
 } from "@/lib/func/localeFunction";
+import { Skull } from "lucide-react";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function PlannerList({
   userQuest,
@@ -56,12 +58,23 @@ export default function PlannerList({
 
           <div className="flex flex-col justify-center col-span-4">
             {quest.objectives &&
-              quest.objectives.map((objective, index) => (
+              quest.objectives.map((obj, oIndex) => (
                 <div
-                  key={`${index}-objective`}
-                  className="font-bold text-base text-white"
+                  className="font-bold text-base p-[1px]"
+                  key={`${oIndex}-objectives-${quest.quest_id}`}
                 >
-                  *&nbsp;{objective[getDescriptionLocaleKey(locale)]}
+                  * {obj[getDescriptionLocaleKey(locale)]}
+                  {obj.type === "shoot" && (
+                    <span className="ml-2 whitespace-nowrap">
+                      [
+                      <Skull
+                        className="inline-block w-4 h-4"
+                        color={ALL_COLOR.Red}
+                        strokeWidth={3}
+                      />
+                      x&nbsp;{obj.count}]
+                    </span>
+                  )}
                 </div>
               ))}
           </div>
