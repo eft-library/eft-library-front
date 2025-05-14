@@ -1,6 +1,4 @@
-import { Vector3 } from "three";
-
-type Vector3Like = [
+type BoxArgs = [
   width?: number,
   height?: number,
   depth?: number,
@@ -8,9 +6,10 @@ type Vector3Like = [
   heightSegments?: number,
   depthSegments?: number
 ];
+
 export interface ThreeItemPath {
-  boxArgs: Vector3Like;
-  position: Vector3;
+  boxArgs: BoxArgs; // 그대로 사용 가능
+  position: [number, number, number]; // Vector3 → 배열로 변경
   childValue: string;
   filterInfo: SubFilter[];
   zoomLevel: number;
