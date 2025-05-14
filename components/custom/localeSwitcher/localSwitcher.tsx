@@ -51,7 +51,7 @@ export default function LocalSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className={`flex items-center justify-between w-32 rounded-lg border border-white bg-Background px-4 py-2 hover:NeutralGray ${
+        className={`flex items-center justify-between w-32 rounded-lg border border-white bg-Background px-3 py-2 hover:NeutralGray ${
           isPending && ""
         }`}
         aria-expanded={isOpen}
@@ -75,7 +75,7 @@ export default function LocalSwitcher() {
               <button
                 key={item.value}
                 onClick={() => onChangeLanguage(item.value)}
-                className={`block w-full text-left px-4 py-2 transition hover:bg-NeutralGray font-bold ${
+                className={`block w-full text-left px-3 py-2 transition hover:bg-NeutralGray font-bold ${
                   selected === item.value ? "text-GoldenYellow" : "text-white"
                 }`}
                 role="menuitem"
