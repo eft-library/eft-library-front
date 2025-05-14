@@ -33,43 +33,42 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
 
   return (
     <div className="fixed w-full z-20 bg-Background">
-      <div className="grid grid-cols-4">
-        <div />
-        <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-16">
+        <div className="flex items-center space-x-6 gap-6">
           <Link href="/" aria-label="EFT Library">
             <NaviLogo />
           </Link>
-        </div>
-        <div className="flex justify-center items-center col-span-2">
-          {headerData.map((main) =>
-            main.value !== "USER" ? (
-              <DeafultMenu
-                key={main.value}
-                menuData={main}
-                selectedMenu={selectedMenu}
-                setSelectedMenu={onChangeMenu}
-                setQuest={setQuest}
-              />
-            ) : (
-              session && (
-                <UserMenu
+          <div className="flex items-center space-x-2">
+            {headerData.map((main) =>
+              main.value !== "USER" ? (
+                <DeafultMenu
                   key={main.value}
                   menuData={main}
                   selectedMenu={selectedMenu}
                   setSelectedMenu={onChangeMenu}
+                  setQuest={setQuest}
                 />
+              ) : (
+                session && (
+                  <UserMenu
+                    key={main.value}
+                    menuData={main}
+                    selectedMenu={selectedMenu}
+                    setSelectedMenu={onChangeMenu}
+                  />
+                )
               )
-            )
-          )}
-          {!session && (
-            <Button
-              className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
-              onClick={() => signIn()}
-            >
-              {headerI18N.login[localeKey]}
-            </Button>
-          )}
-          <LocalSwitcher />
+            )}
+            {!session && (
+              <Button
+                className="px-4 py-2 font-bold text-white bg-transparent mx-1 text-base hover:bg-NeutralGray focus:outline-none backdrop-blur-md backdrop-contrast-60"
+                onClick={() => signIn()}
+              >
+                {headerI18N.login[localeKey]}
+              </Button>
+            )}
+            <LocalSwitcher />
+          </div>
         </div>
       </div>
     </div>
