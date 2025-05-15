@@ -9,7 +9,7 @@ export default function Loader() {
   return (
     <Html center>
       <div className="flex flex-col items-center justify-center">
-        <div className="flex items-center justify-center w-[600px] h-auto">
+        <div className="flex items-center justify-center w-[600px] h-auto bg-white">
           <Image
             src="/loading.png"
             alt="3d map loading"
