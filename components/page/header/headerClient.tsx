@@ -9,7 +9,7 @@ import { useSession, signIn } from "next-auth/react";
 import UserMenu from "./contents/userMenu";
 import LocalSwitcher from "@/components/custom/localeSwitcher/localSwitcher";
 import type { Menu } from "./contents/headerTypes";
-import NaviLogo from "@/assets/navi/NaviLogo";
+import Logo from "@/assets/navi/logo";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { headerI18N } from "@/lib/consts/i18nConsts";
@@ -36,7 +36,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
       <div className="flex justify-center items-center h-16">
         <div className="flex items-center space-x-6 gap-6">
           <Link href="/" aria-label="EFT Library">
-            <NaviLogo />
+            <Logo width={400} height={200} />
           </Link>
           <div className="flex items-center space-x-2">
             {headerData.map((main) =>
