@@ -121,7 +121,7 @@ export const roadmapI18N = {
   allQuest: { en: "All Quests", ja: "すべてのクエスト", ko: "전체 퀘스트" },
   kappaQuest: { en: "Kappa Quest", ja: "カッパクエスト", ko: "카파 퀘스트" },
   kappaSuccessQuest: {
-    en: "Kappa Success Quest",
+    en: "Kappa Success",
     ja: "カッパ成功クエスト",
     ko: "카파 완료 퀘스트",
   },

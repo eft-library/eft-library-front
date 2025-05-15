@@ -420,41 +420,40 @@ export default function RoadmapClient({ roadmapInfo }: RoadmapClient) {
           </div>
 
           {!onlyKappa && (
-            <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-              <span className="text-sm font-bold col-span-2">
+            <div className="flex items-center justify-between p-1 border-b border-NeutralGray">
+              <span className="text-sm font-bold">
                 {roadmapI18N.allQuest[localeKey]}:
               </span>
-              <span className="text-sm font-bold text-right block">
+              <span className="text-sm font-bold text-right">
                 {getAllCount()}
               </span>
             </div>
           )}
 
-          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">
+          <div className="flex items-center justify-between p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold">
               {roadmapI18N.kappaQuest[localeKey]}:
             </span>
-
-            <span className="text-sm font-bold text-SoftPink text-right block">
+            <span className="text-sm font-bold text-SoftPink text-right">
               {getAllKappaCount()}
             </span>
           </div>
 
-          <div className="grid grid-cols-3 p-1 border-b border-NeutralGray">
-            <span className="text-sm font-bold col-span-2">
+          <div className="flex items-center justify-between p-1 border-b border-NeutralGray">
+            <span className="text-sm font-bold">
               {roadmapI18N.kappaSuccessQuest[localeKey]}:
             </span>
-            <span className="text-sm font-bold text-SunsetYellow text-right block">
+            <span className="text-sm font-bold text-SunsetYellow text-right">
               {getKappaCompleteCount()}
             </span>
           </div>
 
           {!onlyKappa && (
-            <div className="grid grid-cols-3 p-1">
-              <span className="text-sm font-bold col-span-2">
+            <div className="flex items-center justify-between p-1">
+              <span className="text-sm font-bold">
                 {roadmapI18N.allSuccessQuest[localeKey]}:
               </span>
-              <span className="text-sm font-bold text-LimeGreen text-right block">
+              <span className="text-sm font-bold text-LimeGreen text-right">
                 {getCompleteCount()}
               </span>
             </div>
