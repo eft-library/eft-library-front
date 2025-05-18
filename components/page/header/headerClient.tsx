@@ -36,7 +36,7 @@ export default function HeaderClient({ headerData }: { headerData: Menu[] }) {
       <div className="flex justify-center items-center h-16">
         <div className="flex items-center space-x-6 gap-6">
           <Link href="/" aria-label="EFT Library">
-            <Logo width={400} height={200} />
+            <Logo width={400} height={100} />
           </Link>
           <div className="flex items-center space-x-2">
             {headerData.map((main) =>
