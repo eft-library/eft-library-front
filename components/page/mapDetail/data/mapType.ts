@@ -30,7 +30,7 @@ export interface MapData {
   name: LocaleName;
   map_json: MapJson[];
   three_item_path: ThreeItemPath[];
-  mot_image: string;
+  mot_image: LocaleName;
   jpg_item_path: JpgItemPath[];
   order: number;
   parent_value: string;

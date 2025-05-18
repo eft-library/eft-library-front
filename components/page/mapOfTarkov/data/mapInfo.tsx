@@ -23,7 +23,7 @@ import { useLocale } from "next-intl";
 
 // export const dynamic = "force-dynamic";
 
-export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
+export default function MapInfo({ mapData, imageSelect }: MapInfo) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   // const [popupStatus, setPopupStatus] = useState<boolean>(false);
@@ -73,7 +73,7 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
             map.id === imageSelect && (
               <Item
                 key={map.id}
-                original={map.mot_image}
+                original={map.mot_image[localeKey]}
                 width="1600"
                 height="900"
               >
@@ -84,7 +84,7 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
                     className="flex justify-center items-center cursor-pointer min-h-[600px] relative"
                   >
                     <Image
-                      src={map.mot_image}
+                      src={map.mot_image[localeKey]}
                       alt={map.name.en}
                       width={1100}
                       height={600}
