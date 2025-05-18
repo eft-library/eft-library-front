@@ -17,6 +17,7 @@ export interface LinkInfo {
   ko: string;
   ja: string;
   is_new: boolean;
+  is_renewal: boolean;
 }
 
 export interface NewsClient {

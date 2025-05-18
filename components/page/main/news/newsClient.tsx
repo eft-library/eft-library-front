@@ -22,7 +22,7 @@ export default function NewsClient({ news }: NewsClient) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
-  const newText = (text: LinkInfo) => {
+  const blinkText = (text: LinkInfo) => {
     const blinkStyle = {
       animation: "fade 1.5s infinite", // 애니메이션 이름과 설정
     };
@@ -45,6 +45,7 @@ export default function NewsClient({ news }: NewsClient) {
         </style>
         <span className="text-NeonOrange" style={blinkStyle}>
           {text.is_new ? "New" : ""}
+          {text.is_renewal ? "Renewal" : ""}
         </span>
       </span>
     );
@@ -62,7 +63,7 @@ export default function NewsClient({ news }: NewsClient) {
             </TextSpan>
           </div>
           <div className="flex flex-col">
-            {news.json_value.recommend.map((func) => newText(func))}
+            {news.json_value.recommend.map((func) => blinkText(func))}
           </div>
         </div>
 
