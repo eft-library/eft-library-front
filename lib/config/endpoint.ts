@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
   GET_ALL_STATION: baseUrl + "/api/hideout/get_station",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
   GET_ALL_QUEST: baseUrl + "/api/quest/all",
+  GET_ALL_DETAIL_QUEST: baseUrl + "/api/quest/feed",
   GET_BOSS: baseUrl + "/api/boss/info",
   GET_DYNAMIC_INFO: baseUrl + "/api/dynamic_info/info",
   GET_EVENT: baseUrl + "/api/event/board",
