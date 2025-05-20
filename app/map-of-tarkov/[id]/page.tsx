@@ -15,11 +15,11 @@ export async function generateMetadata({
   const id = (await params).id;
 
   // fetch data
-  const product = await fetch(`${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${id}`).then(
-    (res) => res.json()
-  );
+  const product = await fetch(
+    `${API_ENDPOINTS.GET_MAP_OF_TARKOV_MAP}/${id}`
+  ).then((res) => res.json());
 
-  const res = product.data.map_info;
+  const res = product.data;
 
   return {
     title: `타르코프 지도 ${res.name.ko} - EFT Library`,

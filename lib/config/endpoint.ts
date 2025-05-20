@@ -32,6 +32,12 @@ export const API_ENDPOINTS = {
   GET_QUEST_LOADMAP: baseUrl + "/api/roadmap/get_quest",
   GET_PRICE: baseUrl + "/api/price/search",
   GET_TOP_PRICE: baseUrl + "/api/price/top",
+  GET_MAP_OF_TARKOV_SELECTOR: baseUrl + "/api/map_of_tarkov/selector",
+  GET_MAP_OF_TARKOV_MAP: baseUrl + "/api/map_of_tarkov/info",
+  GET_MAP_OF_TARKOV_EXTRACTIONS: baseUrl + "/api/map_of_tarkov/extraction",
+  GET_MAP_OF_TARKOV_TRANSITS: baseUrl + "/api/map_of_tarkov/transits",
+  GET_MAP_OF_TARKOV_BOSS: baseUrl + "/api/map_of_tarkov/boss",
+  GET_MAP_OF_TARKOV_FIND_INFO: baseUrl + "/api/map_of_tarkov/find",
 };
 
 export const USER_API_ENDPOINTS = {
