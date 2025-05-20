@@ -15,7 +15,6 @@ export const API_ENDPOINTS = {
   GET_ITEM_FILTER: baseUrl + "/api/item_filter/all",
   GET_ITEM_DETAIL: baseUrl + "/api/item/detail",
   GET_MAP: baseUrl + "/api/map/info",
-  GET_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/detail",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
   GET_NAVI_MENU: baseUrl + "/api/menu/navi",
   GET_ALL_SLIDE: baseUrl + "/api/menu/slide",
