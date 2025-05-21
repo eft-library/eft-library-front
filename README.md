@@ -1,3 +1,14 @@
+- [EFT Library의 Frontend 운영 방식](#eft-library의-frontend-운영-방식)
+  - [주요 사항](#주요-사항)
+  - [패키지 정보](#패키지-정보)
+  - [구조](#구조)
+  - [운영 중 발생한 문제 및 해결 과정](#운영-중-발생한-문제-및-해결-과정)
+    - [1. 3번의 Front 마이그레이션](#1-3번의-front-마이그레이션)
+    - [2. Next Auth 도입기](#2-next-auth-도입기)
+    - [3. Google Adsense, Google Analytics 도입기 및 Google Search Console 수난기](#3-google-adsense-google-analytics-도입기-및-google-search-console-수난기)
+    - [4. 3D 지도 성능 높이기 - With ThreeJS](#4-3d-지도-성능-높이기---with-threejs)
+    - [5. 다국어 지원을 위하여](#5-다국어-지원을-위하여)
+
 # EFT Library의 Frontend 운영 방식
 
 EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
