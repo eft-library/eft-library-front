@@ -13,7 +13,8 @@
 
 EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
 
-![front](https://github.com/user-attachments/assets/165161a3-35c1-4cc4-a048-de5cda87adf1)
+![architecture](https://github.com/user-attachments/assets/0aad4cb2-2a18-48e1-832c-436507af67fd)
+
 
 ## 주요 사항
 
