@@ -6,6 +6,9 @@ import { useTransition } from "react";
 import { useLocale } from "next-intl";
 import { Locale } from "@/i18n/config";
 import { setUserLocale } from "@/i18n/locale";
+import FlagEn from "@/assets/navi/en";
+import FlagJa from "@/assets/navi/ja";
+import FlagKo from "@/assets/navi/ko";
 
 export default function LocalSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,23 +45,23 @@ export default function LocalSwitcher() {
   }, []);
 
   const menuItems = [
-    { value: "en", label: "English", img: "🇺🇸" },
-    { value: "ko", label: "한국어", img: "🇰🇷" },
-    { value: "ja", label: "日本語", img: "🇯🇵" },
+    { value: "en", label: "English", img: <FlagEn /> },
+    { value: "ko", label: "한국어", img: <FlagKo /> },
+    { value: "ja", label: "日本語", img: <FlagJa /> },
   ];
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className={`flex items-center justify-between w-32 rounded-lg border border-white bg-Background px-3 py-2 hover:NeutralGray ${
+        className={`flex items-center justify-between w-40 rounded-lg border border-white bg-Background px-3 py-2 hover:NeutralGray ${
           isPending && ""
         }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <span className="text-white font-bold">
-          {menuItems.find((item) => item.value === selected)?.img}&nbsp;
+        {menuItems.find((item) => item.value === selected)?.img}
+        <span className="text-white font-bold ml-2">
           {menuItems.find((item) => item.value === selected)?.label}
         </span>
         <ChevronDown
@@ -69,19 +72,19 @@ export default function LocalSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-20 mt-2 w-32 origin-top-right rounded-lg bg-Background border border-white shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 w-40 origin-top-right rounded-lg bg-Background border border-white shadow-lg">
           <div className="py-1" role="menu" aria-orientation="vertical">
             {menuItems.map((item) => (
               <button
                 key={item.value}
                 onClick={() => onChangeLanguage(item.value)}
-                className={`block w-full text-left px-3 py-2 transition hover:bg-NeutralGray font-bold ${
+                className={`block flex gap-2 w-full text-left px-3 py-2 transition hover:bg-NeutralGray font-bold ${
                   selected === item.value ? "text-GoldenYellow" : "text-white"
                 }`}
                 role="menuitem"
               >
-                {item.img}&nbsp;
-                {item.label}
+                {item.img}
+                <span className="text-white font-bold ml-2">{item.label}</span>
               </button>
             ))}
           </div>
