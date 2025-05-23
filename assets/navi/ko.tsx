@@ -13,7 +13,7 @@ export default function FlagKo() {
             id="a"
             d="M-6-25H6m-12 3H6m-12 3H6"
             stroke="#000"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <use xlinkHref="#a" y="44" />
         </g>
