@@ -139,6 +139,15 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
               ))}
             </div>
           ))}
+          {questInfo.finish_rewards.skillLevelReward.map((skill, rIndex) => (
+            <div
+              key={`${rIndex}-skillLevelReward-${questInfo.id}`}
+              className="font-bold text-base p-[1px]"
+            >
+              * {skill[getOtherLocalizedKey(locale)]}&nbsp;LV&nbsp;
+              {skill.level}
+            </div>
+          ))}
         </div>
       )}
 

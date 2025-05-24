@@ -121,6 +121,15 @@ export default function QuestClient({ questList }: QuestClient) {
                     ))}
                   </div>
                 ))}
+                {quest.finish_rewards.skillLevelReward.map((skill, rIndex) => (
+                  <div
+                    key={`${rIndex}-skillLevelReward-${quest.id}`}
+                    className="font-bold text-base p-[1px]"
+                  >
+                    * {skill[getOtherLocalizedKey(locale)]}&nbsp;LV&nbsp;
+                    {skill.level}
+                  </div>
+                ))}
               </TableCell>
               <TableCell>
                 <span

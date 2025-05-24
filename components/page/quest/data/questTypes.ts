@@ -78,6 +78,14 @@ interface FinishRewards {
   offerUnlock: OfferUnlock[];
   traderStanding: TraderStanding[];
   craftUnlock: CraftUnlock[];
+  skillLevelReward: SkillLevelReward[];
+}
+
+interface SkillLevelReward {
+  level: number;
+  name_en: string;
+  name_ja: string;
+  name_ko: string;
 }
 
 interface CraftUnlock {
