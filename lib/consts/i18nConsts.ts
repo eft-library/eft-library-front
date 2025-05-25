@@ -681,6 +681,22 @@ export const itemRelatedInfo = {
     ja: "クエスト報酬",
     ko: "퀘스트 보상",
   },
+  questCraftUnlock: {
+    en: "Craft Unlock",
+    ja: "クラフト解除",
+    ko: "제작 잠금 해제",
+  },
+  questOfferUnlock: {
+    en: "Purchase Unlock",
+    ja: "購入解除",
+    ko: "구매 잠금 해제",
+  },
+  craft: { en: "Craft", ja: "製作", ko: "제작" },
+  purchase: {
+    en: "Purchase",
+    ja: "購入",
+    ko: "구매",
+  },
 };
 
 export const headerI18N = {

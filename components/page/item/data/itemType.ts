@@ -14,6 +14,8 @@ export interface ItemDetail {
   rewarded_by_quests: RewardedByQuest[];
   required_by_quest_item: RequiredByQuestSingleItem[];
   required_by_quest_item_array: RequiredByQuestItem[];
+  rewarded_by_quests_craft_unlock: RewardedByQuestsCraftUnlock[];
+  rewarded_by_quests_offer_unlock: RewardedByQuestsOfferUnlock[];
 }
 
 interface LocaleName {
@@ -49,6 +51,37 @@ interface RewardItem {
   quantity: number;
 }
 
+interface RewardedByQuestsOfferUnlock {
+  name: LocaleName;
+  reward: RewardItem;
+  level: number;
+  trader: Trader;
+  url_mapping: string;
+  npc_image: string;
+  npc_name: LocaleName;
+}
+
+interface Trader {
+  id: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  imageLink: string;
+  quest_id: string;
+  npc_image: string;
+  url_mapping: string;
+}
+
+interface RewardedByQuestsCraftUnlock {
+  name: LocaleName;
+  reward: RewardItem;
+  quantity: number;
+  npc_name: LocaleName;
+  quest_id: string;
+  npc_image: string;
+  url_mapping: string;
+}
+
 interface BarterInfo {
   level: string;
   rewardItems: RewardItem;
@@ -60,6 +93,10 @@ interface RewardedByNpc {
   barter_info: BarterInfo;
   npc_name: LocaleName;
   npc_image: string;
+}
+
+interface RewardItem {
+  item: Item;
 }
 
 interface QuestRewardItem {

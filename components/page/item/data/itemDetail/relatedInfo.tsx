@@ -320,7 +320,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                 className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`required_by_quest_item-${questItem.objective.id}`}
               >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center">
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={questItem.npc_image}
@@ -474,7 +474,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                 className="grid grid-cols-2 border-b border-white p-4 gap-2"
                 key={`reward-${reward.quest_id}`}
               >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center">
                   <div className="rounded flex items-center justify-center mb-1">
                     <Image
                       src={reward.npc_image}
@@ -500,7 +500,7 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   </Link>
                 </div>
 
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center">
                   <div className="flex items-center">
                     <div className="rounded flex items-center justify-center mb-1">
                       <div className="relative mb-1">
@@ -525,6 +525,164 @@ export default function RelatedInfo({ item }: RelatedInfo) {
                   </div>
                   <div className="font-bold">
                     {reward.reward.item[getOtherLocalizedKey(localeKey)]}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {(item.rewarded_by_quests_craft_unlock.length > 0 ||
+        item.rewarded_by_quests_craft_unlock.length > 0) && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.questCraftUnlock[localeKey]}
+          </h2>
+          <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
+            <div className="text-center font-bold">
+              {itemRelatedInfo.quest[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.craft[localeKey]}
+            </div>
+          </div>
+          <div className="border-2 border-white rounded">
+            {item.rewarded_by_quests_craft_unlock.map((questItem) => (
+              <div
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
+                key={`rewarded_by_quests_craft_unlock-${questItem.reward.item.id}`}
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <div className="rounded flex items-center justify-center mb-1">
+                    <Image
+                      src={questItem.npc_image}
+                      alt={questItem.npc_name.en}
+                      sizes={"80"}
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "contain" }}
+                      placeholder="blur"
+                      blurDataURL={
+                        "data:image/jpeg;base64," +
+                        "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                      }
+                    />
+                  </div>
+                  <Link
+                    href={`/quest/detail/${questItem.url_mapping}`}
+                    target="_blank"
+                  >
+                    <div className="font-bold text-center hover:text-GoldenYellow">
+                      {questItem.name[localeKey]}
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="flex flex-col items-center justify-center ">
+                  <div className="flex items-center justify-center ">
+                    <div className="rounded flex items-center justify-center mb-1">
+                      <div className="relative mb-1">
+                        <Image
+                          src={questItem.reward.item.gridImageLink}
+                          alt={questItem.reward.item.name_en}
+                          sizes="80px"
+                          width={80}
+                          height={80}
+                          style={{ objectFit: "contain" }}
+                          placeholder="blur"
+                          blurDataURL={
+                            "data:image/jpeg;base64," +
+                            "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                          }
+                        />
+                        <div className="absolute bottom-0 right-0 text-white text-sm px-1 font-bold">
+                          x {questItem.quantity}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="font-bold">
+                    {questItem.reward.item[getOtherLocalizedKey(localeKey)]}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {(item.rewarded_by_quests_offer_unlock.length > 0 ||
+        item.rewarded_by_quests_offer_unlock.length > 0) && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">
+            {itemRelatedInfo.questOfferUnlock[localeKey]}
+          </h2>
+          <div className="grid grid-cols-2 border-2 border-white py-1 px-2 mb-2 rounded-lg">
+            <div className="text-center font-bold">
+              {itemRelatedInfo.quest[localeKey]}
+            </div>
+            <div className="text-center font-bold">
+              {itemRelatedInfo.purchase[localeKey]}
+            </div>
+          </div>
+          <div className="border-2 border-white rounded">
+            {item.rewarded_by_quests_offer_unlock.map((questItem) => (
+              <div
+                className="grid grid-cols-2 border-b border-white p-4 gap-2"
+                key={`rewarded_by_quests_craft_unlock-${questItem.reward.item.id}`}
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <div className="rounded flex items-center justify-center mb-1">
+                    <Image
+                      src={questItem.npc_image}
+                      alt={questItem.npc_name.en}
+                      sizes={"80"}
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "contain" }}
+                      placeholder="blur"
+                      blurDataURL={
+                        "data:image/jpeg;base64," +
+                        "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                      }
+                    />
+                  </div>
+                  <Link
+                    href={`/quest/detail/${questItem.url_mapping}`}
+                    target="_blank"
+                  >
+                    <div className="font-bold text-center hover:text-GoldenYellow">
+                      {questItem.name[localeKey]}
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="flex flex-col items-center justify-center ">
+                  <div className="flex items-center justify-center ">
+                    <div className="rounded flex items-center justify-center mb-1">
+                      <div className="relative mb-1">
+                        <Image
+                          src={questItem.reward.item.gridImageLink}
+                          alt={questItem.reward.item.name_en}
+                          sizes="80px"
+                          width={80}
+                          height={80}
+                          style={{ objectFit: "contain" }}
+                          placeholder="blur"
+                          blurDataURL={
+                            "data:image/jpeg;base64," +
+                            "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                          }
+                        />
+                        <div className="absolute bottom-0 right-0 text-white text-sm px-1 font-bold">
+                          x {questItem.reward.quantity}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="font-bold">
+                    {questItem.reward.item[getOtherLocalizedKey(localeKey)]}
                   </div>
                 </div>
               </div>
