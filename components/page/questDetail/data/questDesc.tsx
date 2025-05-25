@@ -95,57 +95,84 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
             {questI18N.reward[localeKey]}
           </TextSpan>
           <Separator className="bg-white" />
-          {questInfo.finish_rewards.items.map((rewards, index) => (
+          {questInfo.finish_rewards.items.map((rewards, rIndex) => (
             <div
-              key={`${index}-rewards`}
-              className="font-bold text-base text-white"
+              key={`${rIndex}-rewards-${questInfo.id}`}
+              className="font-bold p-[1px]"
             >
-              *&nbsp;{rewards.item[getOtherLocalizedKey(locale)]} x&nbsp;
+              *{" "}
+              <Link
+                href={`/item/${rewards.item.normalizedName}`}
+                className="text-GoldenYellow hover:text-Beige"
+                target="_blank"
+              >
+                {rewards.item[getOtherLocalizedKey(locale)]}
+              </Link>
+              &nbsp;x&nbsp;
               {rewards.quantity}
             </div>
           ))}
           {questInfo.finish_rewards.offerUnlock.map((offer, rIndex) => (
             <div
               key={`${rIndex}-offerUnlock-${questInfo.id}`}
-              className="font-bold text-base p-[1px]"
+              className="font-bold p-[1px]"
             >
-              * {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
-              {offer.item[getOtherLocalizedKey(locale)]}&nbsp;
-              {questI18N.purchaseUnlock[localeKey]}
+              * {offer.trader[getOtherLocalizedKey(locale)]}
+              &nbsp;
+              <Link
+                href={`/item/${offer.item.normalizedName}`}
+                className="text-GoldenYellow hover:text-Beige"
+                target="_blank"
+              >
+                {offer.item[getOtherLocalizedKey(locale)]}
+              </Link>
+              &nbsp;
+              <span className="text-SkyBloom">
+                {questI18N.purchaseUnlock[localeKey]}
+              </span>
             </div>
           ))}
           {questInfo.finish_rewards.traderStanding.map((standing, rIndex) => (
             <div
               key={`${rIndex}-traderStanding-${questInfo.id}`}
-              className="font-bold text-base p-[1px]"
+              className="font-bold p-[1px]"
             >
-              * {standing.trader[getOtherLocalizedKey(locale)]}
+              *&nbsp;
+              {standing.trader[getOtherLocalizedKey(locale)]}
               &nbsp;{questI18N.standing[localeKey]}&nbsp;
-              {standing.standing}
+              <span className="text-SoftRed">{standing.standing}</span>
             </div>
           ))}
           {questInfo.finish_rewards.craftUnlock.map((craft, rIndex) => (
             <div
               key={`${rIndex}-craftUnlock-${questInfo.id}`}
-              className="font-bold text-base p-[1px]"
+              className="font-bold p-[1px]"
             >
               {craft.rewardItems.map((crReward, crIndex) => (
-                <span key={`${crIndex}-crReward-${questInfo.id}`}>
-                  * {questI18N.workbenchLevel[localeKey]}&nbsp;
-                  {craft.level} &nbsp;
-                  {crReward.item[getOtherLocalizedKey(locale)]}&nbsp;
-                  {questI18N.craftUnlock[localeKey]}
-                </span>
+                <div key={`${crIndex}-crReward-${questInfo.id}`}>
+                  <span>* {questI18N.workbenchLevel[localeKey]}&nbsp;</span>
+                  <span>{craft.level}&nbsp;</span>
+                  <Link
+                    href={`/item/${crReward.item.normalizedName}`}
+                    className="text-GoldenYellow hover:text-Beige"
+                    target="_blank"
+                  >
+                    {crReward.item[getOtherLocalizedKey(locale)]}
+                  </Link>
+                  <span className="text-LimeGreen">
+                    &nbsp;{questI18N.craftUnlock[localeKey]}
+                  </span>
+                </div>
               ))}
             </div>
           ))}
           {questInfo.finish_rewards.skillLevelReward.map((skill, rIndex) => (
             <div
               key={`${rIndex}-skillLevelReward-${questInfo.id}`}
-              className="font-bold text-base p-[1px]"
+              className="font-bold p-[1px]"
             >
-              * {skill[getOtherLocalizedKey(locale)]}&nbsp;LV&nbsp;
-              {skill.level}
+              * {skill[getOtherLocalizedKey(locale)]}
+              <span className="text-SoftRed">&nbsp;LV&nbsp;{skill.level}</span>
             </div>
           ))}
         </div>
