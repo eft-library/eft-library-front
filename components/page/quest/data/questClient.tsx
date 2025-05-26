@@ -109,9 +109,7 @@ export default function QuestClient({ questList }: QuestClient) {
                       {offer.item[getOtherLocalizedKey(locale)]}
                     </Link>
                     &nbsp;
-                    <span className="text-SkyBloom">
-                      {questI18N.purchaseUnlock[localeKey]}
-                    </span>
+                    <span>{questI18N.purchaseUnlock[localeKey]}</span>
                   </div>
                 ))}
                 {quest.finish_rewards.traderStanding.map((standing, rIndex) => (
@@ -143,9 +141,7 @@ export default function QuestClient({ questList }: QuestClient) {
                         >
                           {crReward.item[getOtherLocalizedKey(locale)]}
                         </Link>
-                        <span className="text-LimeGreen">
-                          &nbsp;{questI18N.craftUnlock[localeKey]}
-                        </span>
+                        <span>&nbsp;{questI18N.craftUnlock[localeKey]}</span>
                       </div>
                     ))}
                   </div>
