@@ -2,7 +2,8 @@
   - [주요 사항](#주요-사항)
   - [패키지 정보](#패키지-정보)
   - [구조](#구조)
-  - [운영 중 발생한 문제 및 해결 과정](#운영-중-발생한-문제-및-해결-과정)
+  - [개발 History](#개발-history)
+    - 🎗️ [폐지된 커뮤니티 기능](https://github.com/eft-library/eft-library-history/blob/main/frontend/community.md)
     - [1. 3번의 Front 마이그레이션](#1-3번의-front-마이그레이션)
     - [2. Next Auth 도입기](#2-next-auth-도입기)
     - [3. Google Adsense, Google Analytics 도입기 및 Google Search Console 수난기](#3-google-adsense-google-analytics-도입기-및-google-search-console-수난기)
@@ -14,7 +15,6 @@
 EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
 
 ![architecture](https://github.com/user-attachments/assets/0aad4cb2-2a18-48e1-832c-436507af67fd)
-
 
 ## 주요 사항
 
