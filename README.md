@@ -60,6 +60,7 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 - 🎗️ [폐지된 커뮤니티 기능](https://github.com/eft-library/eft-library-history/blob/main/frontend/community.md)
 - 🎨 [디자인 리뉴얼 이슈 및 요청](https://github.com/eft-library/eft-library-history/blob/main/frontend/design.md)
 - 👍 [로드맵 - 최고의 컨텐츠](https://github.com/eft-library/eft-library-history/blob/main/frontend/roadmap.md)
+- 🍱 [다국어 지원을 위하여](https://github.com/eft-library/eft-library-history/blob/main/frontend/i18n.md)
 
 ### 1. 3번의 Front 마이그레이션
 
@@ -76,9 +77,5 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 서치 콘솔은 아직도 해결을 못했음 ㅠㅠ
 
 ### 4. 3D 지도 성능 높이기 - With ThreeJS
-
-개발 및 인프라 구성 History - 아직 작성중
-
-### 5. 다국어 지원을 위하여
 
 개발 및 인프라 구성 History - 아직 작성중
