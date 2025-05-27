@@ -56,7 +56,7 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 - **i18n** : 다국어 지원을 위한 설정
 - **lib** : api, package 등 관련 설정 및 함수들
 
-## 운영 중 발생한 문제 및 해결 과정
+## 개발 History
 
 ### 1. 3번의 Front 마이그레이션
 
