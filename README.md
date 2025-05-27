@@ -59,6 +59,7 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 
 - 🎗️ [폐지된 커뮤니티 기능](https://github.com/eft-library/eft-library-history/blob/main/frontend/community.md)
 - 🎨 [디자인 리뉴얼 이슈 및 요청](https://github.com/eft-library/eft-library-history/blob/main/frontend/design.md)
+- 👍 [로드맵 - 최고의 컨텐츠](https://github.com/eft-library/eft-library-history/blob/main/frontend/roadmap.md)
 
 ### 1. 3번의 Front 마이그레이션
 
