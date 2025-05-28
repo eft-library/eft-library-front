@@ -61,21 +61,19 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 - 🎨 [디자인 리뉴얼 이슈 및 요청](https://github.com/eft-library/eft-library-history/blob/main/frontend/design.md)
 - 👍 [로드맵 - 최고의 컨텐츠](https://github.com/eft-library/eft-library-history/blob/main/frontend/roadmap.md)
 - 🍱 [다국어 지원을 위하여](https://github.com/eft-library/eft-library-history/blob/main/frontend/i18n.md)
+- 🗺️ [3D Map 도입 및 성능 개선 과정](https://github.com/eft-library/eft-library-history/blob/main/frontend/3dmap.md)
+- 📊 [Analytics, Search Console, AdSense 도입기 및 경험 공유](https://github.com/eft-library/eft-library-history/blob/main/frontend/google.md)
 
-### 1. 3번의 Front 마이그레이션
-
-개발 및 인프라 구성 History - 아직 작성중
-
-### 2. Next Auth 도입기
+3번의 Front 마이그레이션
 
 개발 및 인프라 구성 History - 아직 작성중
 
-### 3. Google Adsense, Google Analytics 도입기 및 Google Search Console 수난기
+Next Auth 도입기
+
+개발 및 인프라 구성 History - 아직 작성중
+
+Google Adsense, Google Analytics 도입기 및 Google Search Console 수난기
 
 개발 및 인프라 구성 History - 아직 작성중
 
 서치 콘솔은 아직도 해결을 못했음 ㅠㅠ
-
-### 4. 3D 지도 성능 높이기 - With ThreeJS
-
-개발 및 인프라 구성 History - 아직 작성중
