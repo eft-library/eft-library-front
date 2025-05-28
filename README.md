@@ -63,11 +63,6 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 - 🍱 [다국어 지원을 위하여](https://github.com/eft-library/eft-library-history/blob/main/frontend/i18n.md)
 - 🗺️ [3D Map 도입 및 성능 개선 과정](https://github.com/eft-library/eft-library-history/blob/main/frontend/3dmap.md)
 - 📊 [Analytics, Search Console, AdSense 도입기 및 경험 공유](https://github.com/eft-library/eft-library-history/blob/main/frontend/google.md)
+- 🔐 [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
 
 3번의 Front 마이그레이션
-
-개발 및 인프라 구성 History - 아직 작성중
-
-Next Auth 도입기
-
-개발 및 인프라 구성 History - 아직 작성중
