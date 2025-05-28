@@ -71,9 +71,3 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 Next Auth 도입기
 
 개발 및 인프라 구성 History - 아직 작성중
-
-Google Adsense, Google Analytics 도입기 및 Google Search Console 수난기
-
-개발 및 인프라 구성 History - 아직 작성중
-
-서치 콘솔은 아직도 해결을 못했음 ㅠㅠ
