@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+// app/layout.tsx
+
+import { type Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/themeProvider/themeProvider";
 import Header from "@/components/page/header/header";
@@ -47,10 +49,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  searchParams,
 }: Readonly<{
   children: React.ReactNode;
+  params: any;
+  searchParams?: { [key: string]: string };
 }>) {
   const locale = await getLocale();
+  const hasQuery = searchParams && Object.keys(searchParams).length > 0;
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -61,10 +67,11 @@ export default async function RootLayout({
             process.env.NEXT_PUBLIC_ADSENSE || ""
           }`}
         />
-        {/* <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} /> */}
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""}
         />
+        {/* 쿼리 파라미터가 있을 경우 noindex 추가 */}
+        {hasQuery && <meta name="robots" content="noindex, nofollow" />}
       </head>
       <body>
         <NextIntlClientProvider locale={locale}>
