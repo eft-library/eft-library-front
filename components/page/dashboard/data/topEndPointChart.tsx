@@ -1,0 +1,115 @@
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+import { Activity, BarChart as BarChartIcon } from "lucide-react";
+import type { TopEndpointsChart } from "./dashboardTypes";
+
+export default function TopEndpointsChart({
+  endpoint,
+  getMethodColor,
+}: TopEndpointsChart) {
+  const totalTopRequests = endpoint.reduce(
+    (sum, item) => sum + item.request_count,
+    0
+  );
+
+  return (
+    <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700">
+      <div className="p-6 pb-2">
+        <h3 className="text-lg font-semibold text-white flex items-center space-x-2">
+          <BarChartIcon className="h-5 w-5 text-blue-400" />
+          <span>상위 10개 엔드포인트</span>
+        </h3>
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm text-gray-300">
+            요청 수가 많은 상위 10개 API 엔드포인트
+          </p>
+          <div className="flex items-center space-x-2 bg-blue-900/30 px-3 py-1 rounded-lg border border-blue-700/50">
+            <Activity className="h-4 w-4 text-blue-300" />
+            <span className="text-sm font-medium text-blue-300">
+              총 요청수:
+            </span>
+            <span className="text-sm font-bold text-white">
+              {totalTopRequests.toLocaleString()}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="p-6 pt-0">
+        <div className="h-96">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={endpoint}
+              layout="vertical"
+              margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#374151"
+                horizontal={false}
+              />
+              <XAxis type="number" tick={{ fill: "#d1d5db" }} />
+              <YAxis
+                dataKey="link"
+                type="category"
+                tick={{ fill: "#d1d5db", fontSize: 12 }}
+                width={150}
+                tickFormatter={(value) =>
+                  value.length > 20 ? value.substring(0, 20) + "..." : value
+                }
+              />
+              <Tooltip
+                formatter={(value) => [
+                  `${value.toLocaleString()} 요청`,
+                  "요청 수",
+                ]}
+                labelFormatter={(label) => `엔드포인트: ${label}`}
+                contentStyle={{
+                  backgroundColor: "#1f2937",
+                  border: "1px solid #374151",
+                  borderRadius: "8px",
+                  color: "#ffffff",
+                  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
+                }}
+              />
+              <Bar dataKey="requests" radius={[0, 4, 4, 0]} fill="#60a5fa">
+                {endpoint.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getMethodColor(entry.request)}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* 범례 */}
+        <div className="flex flex-wrap gap-3 mt-4">
+          {["GET", "POST", "PUT", "DELETE"].map((method) => (
+            <div
+              key={method}
+              className="flex items-center space-x-2 bg-gray-700/50 px-3 py-1 rounded-lg border border-gray-600"
+            >
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{
+                  backgroundColor: getMethodColor(method),
+                  boxShadow: `0 0 10px ${getMethodColor(method)}40`,
+                }}
+              />
+              <span className="text-sm text-gray-300">{method}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
