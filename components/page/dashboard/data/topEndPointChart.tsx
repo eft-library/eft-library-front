@@ -79,7 +79,7 @@ export default function TopEndpointsChart({
                   boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
                 }}
               />
-              <Bar dataKey="requests" radius={[0, 4, 4, 0]} fill="#60a5fa">
+              <Bar dataKey="request_count" radius={[0, 4, 4, 0]} fill="#60a5fa">
                 {endpoint.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}

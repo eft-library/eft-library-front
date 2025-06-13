@@ -13,6 +13,9 @@ import type { HourlyDistributionChart } from "./dashboardTypes";
 export default function HourlyDistributionChart({
   time_distribution,
 }: HourlyDistributionChart) {
+  const maxRequestEntry = time_distribution.reduce((max, current) => {
+    return current.requests > max.requests ? current : max;
+  });
   return (
     <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700">
       <div className="p-6 pb-2">
@@ -21,7 +24,7 @@ export default function HourlyDistributionChart({
           <span>시간대별 요청 분포</span>
         </h3>
         <p className="text-sm text-gray-300 mt-1">
-          시간대별 API 요청 패턴 (01:15-01:17 집중)
+          시간대별 API 요청 패턴 ({maxRequestEntry.time} 집중)
         </p>
       </div>
       <div className="p-6 pt-0 h-96">
@@ -74,7 +77,8 @@ export default function HourlyDistributionChart({
             <span className="font-medium">피크 시간대</span>
           </div>
           <p className="text-sm text-blue-200 mt-1">
-            01:15 - 01:17 시간대에 요청이 집중되었습니다 (총 26,800 요청)
+            {maxRequestEntry.time} 에 요청이 집중되었습니다 (총
+            {maxRequestEntry.requests.toLocaleString()} 요청)
           </p>
         </div>
       </div>

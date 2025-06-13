@@ -13,9 +13,30 @@ export default function ApiDashboard() {
 
   const getChartData = async () => {
     try {
+      const now = new Date();
+
+      // 2일 전
+      const startDate = new Date(now);
+      startDate.setDate(startDate.getDate() - 2);
+
+      // 1일 전
+      const endDate = new Date(now);
+      endDate.setDate(endDate.getDate() - 1);
+
+      // YYYY-MM-DD 00:00:00 형식으로 포맷
+      const formatDate = (date: Date) =>
+        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(date.getDate()).padStart(2, "0")} 00:00:00`;
+
+      const start = formatDate(startDate);
+      const end = formatDate(endDate);
+
       const data = await requestData(
-        `${API_ENDPOINTS.GET_DASHBOARD_CHART}?start_date=2025-06-12 00:00:00&end_date=2025-06-13 00:00:00`
+        `${API_ENDPOINTS.GET_DASHBOARD_CHART}?start_date=${start}&end_date=${end}`
       );
+
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch quest data:",
@@ -23,6 +44,7 @@ export default function ApiDashboard() {
         );
         return null;
       }
+
       setChartData(data.data);
     } catch (error) {
       console.error(error);
@@ -48,16 +70,8 @@ export default function ApiDashboard() {
   if (!chartData) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* 헤더 */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-white">
-            API 요청 분석 대시보드
-          </h1>
-          <p className="text-gray-300">실시간 API 요청 현황 및 통계</p>
-        </div>
-
         {/* 총 요청수 - 상단 중앙 */}
         <TotalRequestCard totalRequests={2389098} />
 
