@@ -17,7 +17,7 @@ export default async function sitemap() {
     return {
       url: post.link,
       lastModified: post.update_time,
-      changefreq: post.change_freq,
+      changeFrequency: post.change_freq,
       priority: post.priority,
     };
   });
