@@ -10,6 +10,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import DatePicker from "react-datepicker";
 import StatusCard from "./statusCard";
 import Loading from "@/components/custom/loading/loading";
+import HealthCheck from "./healthCheck";
 
 // ✅ 오늘 날짜와 일주일 전 날짜 구하는 유틸 함수
 const getDefaultDates = () => {
@@ -144,6 +145,7 @@ export default function ApiDashboard() {
         </div>
 
         <StatusCard chartData={chartData} />
+        <HealthCheck health_check={chartData.health_check} />
       </div>
     </div>
   );

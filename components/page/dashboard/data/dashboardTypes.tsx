@@ -4,6 +4,7 @@ export interface ChartData {
   active_user: ActiveUser;
   total_request: TotalRequest;
   total_user: TotalUser;
+  health_check: HealthCheckInfo[];
 }
 
 interface TimeDistribution {
@@ -29,6 +30,19 @@ interface TotalRequest {
   current_requests: number;
   previous_requests: number;
   percent_change: number;
+}
+
+interface HealthCheckInfo {
+  service_name: string;
+  total: number;
+  ok_count: number;
+  fail_count: number;
+  ok_percentage: number;
+  fail_percentage: number;
+}
+
+export interface HealthCheck {
+  health_check: HealthCheckInfo[];
 }
 
 export interface TopEndpointsChart {

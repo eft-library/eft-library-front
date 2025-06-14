@@ -56,11 +56,11 @@ export default function TopEndpointsChart({
                 stroke="#374151"
                 horizontal={false}
               />
-              <XAxis type="number" tick={{ fill: "#d1d5db" }} />
+              <XAxis type="number" tick={{ fill: ALL_COLOR.White }} />
               <YAxis
                 dataKey="link"
                 type="category"
-                tick={{ fill: "#d1d5db", fontSize: 12 }}
+                tick={{ fill: ALL_COLOR.White, fontSize: 12 }}
                 width={150}
                 tickFormatter={(value) =>
                   value.length > 20 ? value.substring(0, 20) + "..." : value

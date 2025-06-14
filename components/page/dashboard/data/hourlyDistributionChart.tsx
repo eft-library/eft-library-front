@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { Clock, TrendingUp } from "lucide-react";
 import type { HourlyDistributionChart } from "./dashboardTypes";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function HourlyDistributionChart({
   time_distribution,
@@ -42,12 +43,12 @@ export default function HourlyDistributionChart({
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 12, fill: "#d1d5db" }}
+              tick={{ fontSize: 12, fill: ALL_COLOR.White }}
               angle={-45}
               textAnchor="end"
               height={60}
             />
-            <YAxis tick={{ fill: "#d1d5db" }} />
+            <YAxis tick={{ fill: ALL_COLOR.White }} />
             <Tooltip
               formatter={(value) => [
                 `${value.toLocaleString()} 요청`,
@@ -76,7 +77,7 @@ export default function HourlyDistributionChart({
             <TrendingUp className="h-4 w-4" />
             <span className="font-medium">피크 시간대</span>
           </div>
-          <p className="text-sm text-blue-200 mt-1">
+          <p className="text-sm text-white mt-1">
             {maxRequestEntry.time} 에 요청이 집중되었습니다 (총
             {maxRequestEntry.requests.toLocaleString()} 요청)
           </p>
