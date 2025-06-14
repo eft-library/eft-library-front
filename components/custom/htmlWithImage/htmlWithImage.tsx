@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import "../../../assets/editor.css";
 
 interface HtmlWithImage {
   contents: string;

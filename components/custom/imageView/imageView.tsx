@@ -1,5 +1,4 @@
 import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 
 interface ImageView {

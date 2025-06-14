@@ -93,7 +93,7 @@ export default function TopEndpointsChart({
 
         {/* 범례 */}
         <div className="flex flex-wrap gap-3 mt-4">
-          {["GET", "POST", "PUT", "DELETE"].map((method) => (
+          {["GET", "POST"].map((method) => (
             <div
               key={method}
               className="flex items-center space-x-2 bg-gray-700/50 px-3 py-1 rounded-lg border border-gray-600"

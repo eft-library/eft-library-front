@@ -1,6 +1,5 @@
 "use client";
 
-import "../../../../assets/quest.css";
 import { useState } from "react";
 import type { PlannerPopOver } from "./plannerType";
 import { CircleAlert } from "lucide-react";

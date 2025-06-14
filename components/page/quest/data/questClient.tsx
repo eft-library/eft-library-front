@@ -1,6 +1,5 @@
 "use client";
 
-import "../../../../assets/quest.css";
 import {
   Table,
   TableBody,

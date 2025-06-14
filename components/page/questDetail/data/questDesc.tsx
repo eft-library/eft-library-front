@@ -3,7 +3,6 @@
 import { Separator } from "@/components/ui/separator";
 import HtmlWithImage from "@/components/custom/htmlWithImage/htmlWithImage";
 import AdBanner from "../../../custom/adsense/adBanner";
-import "../../../../assets/quest.css";
 import ImageView from "../../../custom/imageView/imageView";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { QuestDesc } from "../../quest/data/questTypes";

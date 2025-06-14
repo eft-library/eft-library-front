@@ -2,7 +2,6 @@
 
 import { Separator } from "@/components/ui/separator";
 import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
 import Image from "next/image";
 import TextSpan from "../../../custom/gridContents/textSpan";
 import type { MapInfo } from "./mapOfTarkovType";

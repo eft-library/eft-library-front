@@ -13,7 +13,6 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import "@xyflow/react/dist/style.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import type { RoadmapClient, Quest } from "./roadmapTypes";
 import RoadmapTab from "./roadmapTab";

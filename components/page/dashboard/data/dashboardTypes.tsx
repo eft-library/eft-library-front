@@ -1,6 +1,9 @@
 export interface ChartData {
   time_distribution: TimeDistribution[];
   endpoint: Endpoint[];
+  active_user: ActiveUser;
+  total_request: TotalRequest;
+  total_user: TotalUser;
 }
 
 interface TimeDistribution {
@@ -14,11 +17,35 @@ interface Endpoint {
   request_count: number;
 }
 
+interface ActiveUser {
+  active_user: number;
+}
+
+interface TotalUser {
+  user_total_count: number;
+}
+
+interface TotalRequest {
+  current_requests: number;
+  previous_requests: number;
+  percent_change: number;
+}
+
 export interface TopEndpointsChart {
   endpoint: Endpoint[];
   getMethodColor: (method: string) => string;
 }
 
+export interface TotalRequestCard {
+  total_request: TotalRequest;
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 export interface HourlyDistributionChart {
   time_distribution: TimeDistribution[];
+}
+
+export interface StatusCard {
+  chartData: ChartData;
 }

@@ -2,7 +2,6 @@
 "use client";
 
 import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
 import type { InventoryGrid, TopListDetailData } from "./rankTypes";
 import TextSpan from "@/components/custom/gridContents/textSpan";
 import Masonry from "react-masonry-css";

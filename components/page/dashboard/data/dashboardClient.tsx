@@ -7,77 +7,133 @@ import { useEffect, useState } from "react";
 import type { ChartData } from "./dashboardTypes";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import DatePicker from "react-datepicker";
+import StatusCard from "./statusCard";
+import Loading from "@/components/custom/loading/loading";
+
+// ✅ 오늘 날짜와 일주일 전 날짜 구하는 유틸 함수
+const getDefaultDates = () => {
+  const end = new Date(); // 오늘
+  const start = new Date();
+  start.setDate(end.getDate() - 7); // 7일 전
+  return { start, end };
+};
 
 export default function ApiDashboard() {
+  const { start, end } = getDefaultDates();
+
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>();
+  const [startDate, setStartDate] = useState<Date | null>(start);
+  const [endDate, setEndDate] = useState<Date | null>(end);
 
-  const getChartData = async () => {
+  const getChartData = async (start: Date, end: Date) => {
     try {
-      const now = new Date();
-
-      // 2일 전
-      const startDate = new Date(now);
-      startDate.setDate(startDate.getDate() - 2);
-
-      // 1일 전
-      const endDate = new Date(now);
-      endDate.setDate(endDate.getDate() - 1);
-
-      // YYYY-MM-DD 00:00:00 형식으로 포맷
+      setLoading(true);
       const formatDate = (date: Date) =>
         `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
           2,
           "0"
         )}-${String(date.getDate()).padStart(2, "0")} 00:00:00`;
 
-      const start = formatDate(startDate);
-      const end = formatDate(endDate);
+      const startStr = formatDate(start);
+      const endStr = formatDate(end);
 
-      const data = await requestData(
-        `${API_ENDPOINTS.GET_DASHBOARD_CHART}?start_date=${start}&end_date=${end}`
-      );
+      const url = `${API_ENDPOINTS.GET_DASHBOARD_ANALYSIS}?start_date=${startStr}&end_date=${endStr}`;
+      const data = await requestData(url);
 
       if (!data || data.status !== 200) {
         console.error(
-          "Failed to fetch quest data:",
+          "Failed to fetch chart data:",
           data?.msg || "Unknown error"
         );
-        return null;
+        return;
       }
 
       setChartData(data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
 
+  // ✅ 초기 로딩 시에도 데이터 불러오도록 useEffect 한 번 실행
   useEffect(() => {
-    getChartData();
-  }, []);
+    if (startDate && endDate) {
+      getChartData(startDate, endDate);
+    }
+  }, [startDate, endDate]);
 
-  // HTTP 메서드별 색상 매핑 (다크모드에 최적화된 밝은 색상)
   const getMethodColor = (method: string) => {
     const colors = {
-      GET: "#34d399", // 더 밝은 초록
-      POST: "#60a5fa", // 더 밝은 파랑
-      // PUT: "#fbbf24", // 더 밝은 주황
-      // DELETE: "#f87171", // 더 밝은 빨강
-      // PATCH: "#a78bfa", // 더 밝은 보라
+      GET: "#34d399",
+      POST: "#60a5fa",
     };
     return colors[method as keyof typeof colors] || "#9ca3af";
+  };
+
+  const getYesterday = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // 시/분/초 제거
   };
 
   if (!chartData) return null;
 
   return (
     <div className="min-h-screen p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* 총 요청수 - 상단 중앙 */}
-        <TotalRequestCard totalRequests={2389098} />
+      {isLoading && <Loading />}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-end gap-4 mb-4">
+        <div className="flex items-center gap-2">
+          <span className="text-white">시작일:</span>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date ?? null)}
+            dateFormat="yyyy-MM-dd"
+            className="text-black px-2 py-1 rounded"
+            placeholderText="날짜 선택"
+            maxDate={
+              endDate
+                ? new Date(
+                    endDate.getFullYear(),
+                    endDate.getMonth(),
+                    endDate.getDate() - 1
+                  )
+                : undefined
+            }
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-white">종료일:</span>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date ?? null)}
+            dateFormat="yyyy-MM-dd"
+            className="text-black px-2 py-1 rounded"
+            placeholderText="날짜 선택"
+            minDate={
+              startDate
+                ? new Date(
+                    startDate.getFullYear(),
+                    startDate.getMonth(),
+                    startDate.getDate() + 1
+                  )
+                : undefined
+            }
+            maxDate={getYesterday()}
+          />
+        </div>
+      </div>
 
-        {/* 차트 섹션 */}
+      <div className="max-w-7xl mx-auto space-y-6">
+        <TotalRequestCard
+          total_request={chartData.total_request}
+          startDate={startDate}
+          endDate={endDate}
+        />
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* 상위 10개 엔드포인트 막대 차트 */}
           <TopEndpointsChart
             endpoint={chartData.endpoint}
             getMethodColor={getMethodColor}
@@ -87,56 +143,7 @@ export default function ApiDashboard() {
           />
         </div>
 
-        {/* 추가 통계 정보 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 hover:border-green-500/50 transition-colors duration-300">
-            <div className="p-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full shadow-lg shadow-green-400/50"></div>
-                <span className="text-sm font-medium text-gray-300">
-                  서버 통신 상태
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-green-400 mt-2">100%</div>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 hover:border-blue-500/50 transition-colors duration-300">
-            <div className="p-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"></div>
-                <span className="text-sm font-medium text-gray-300">
-                  평균 응답시간
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-blue-400 mt-2">645ms</div>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 hover:border-yellow-500/50 transition-colors duration-300">
-            <div className="p-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/50"></div>
-                <span className="text-sm font-medium text-gray-300">
-                  1일간 활성 사용자
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-yellow-400 mt-2">10</div>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 hover:border-purple-500/50 transition-colors duration-300">
-            <div className="p-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50"></div>
-                <span className="text-sm font-medium text-gray-300">
-                  총 사용자
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-purple-400 mt-2">600</div>
-            </div>
-          </div>
-        </div>
+        <StatusCard chartData={chartData} />
       </div>
     </div>
   );

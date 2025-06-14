@@ -14,6 +14,11 @@ import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/store/queryProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import "react-datepicker/dist/react-datepicker.css";
+import "@xyflow/react/dist/style.css";
+import "photoswipe/dist/photoswipe.css";
+import "../assets/editor.css";
+import "../assets/quest.css";
 
 export const metadata: Metadata = {
   title: "EFT Library",
