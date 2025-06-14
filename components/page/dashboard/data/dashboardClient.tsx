@@ -86,7 +86,7 @@ export default function ApiDashboard() {
       {isLoading && <Loading />}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-end gap-4 mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-white">시작일:</span>
+          <span className="text-white font-bold">시작일:</span>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date ?? null)}
@@ -105,7 +105,7 @@ export default function ApiDashboard() {
           />
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-white">종료일:</span>
+          <span className="text-white font-bold">종료일:</span>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date ?? null)}

@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { Activity, BarChart as BarChartIcon } from "lucide-react";
 import type { TopEndpointsChart } from "./dashboardTypes";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
 
 export default function TopEndpointsChart({
   endpoint,
@@ -79,7 +80,11 @@ export default function TopEndpointsChart({
                   boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
                 }}
               />
-              <Bar dataKey="request_count" radius={[0, 4, 4, 0]} fill="#60a5fa">
+              <Bar
+                dataKey="request_count"
+                radius={[0, 4, 4, 0]}
+                fill={ALL_COLOR.CrystalBlue}
+              >
                 {endpoint.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}

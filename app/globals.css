@@ -49,6 +49,12 @@
   }
 }
 
+.react-datepicker-wrapper input {
+  color: white; /* 날짜 글자 색상 */
+  background-color: #1f1f1f; /* 배경이 너무 어두우면 이걸로 조절 */
+  border: 2px solid white;
+}
+
 @layer base {
   * {
     @apply border-border;
