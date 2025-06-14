@@ -5,6 +5,7 @@ export interface ChartData {
   total_request: TotalRequest;
   total_user: TotalUser;
   health_check: HealthCheckInfo[];
+  response_time: ResponseTime[];
 }
 
 interface TimeDistribution {
@@ -39,6 +40,11 @@ interface HealthCheckInfo {
   fail_count: number;
   ok_percentage: number;
   fail_percentage: number;
+}
+
+interface ResponseTime {
+  service_name: string;
+  avg_response_ms: number;
 }
 
 export interface HealthCheck {

@@ -1,5 +1,5 @@
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import { Clock } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -18,7 +18,7 @@ export default function HealthCheck({ health_check }: HealthCheck) {
     <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700">
       <div className="p-6 pb-2">
         <h3 className="text-lg font-semibold text-white flex items-center space-x-2">
-          <Clock className="h-5 w-5 text-green-400" />
+          <CheckCircle2 className="h-5 w-5 text-orange-500" />
           <span>서비스 상태</span>
         </h3>
       </div>
