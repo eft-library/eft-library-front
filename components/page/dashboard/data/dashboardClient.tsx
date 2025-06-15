@@ -12,11 +12,14 @@ import StatusCard from "./statusCard";
 import Loading from "@/components/custom/loading/loading";
 import HealthCheck from "./healthCheck";
 
-// ✅ 오늘 날짜와 일주일 전 날짜 구하는 유틸 함수
+// ✅ 어제 날짜와 8일 전 날짜 구하는 함수
 const getDefaultDates = () => {
   const end = new Date(); // 오늘
+  end.setDate(end.getDate() - 1); // 어제
+
   const start = new Date();
-  start.setDate(end.getDate() - 7); // 7일 전
+  start.setDate(end.getDate() - 7); // 8일 전
+
   return { start, end };
 };
 
@@ -31,14 +34,17 @@ export default function ApiDashboard() {
   const getChartData = async (start: Date, end: Date) => {
     try {
       setLoading(true);
-      const formatDate = (date: Date) =>
-        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}-${String(date.getDate()).padStart(2, "0")} 00:00:00`;
 
-      const startStr = formatDate(start);
-      const endStr = formatDate(end);
+      const formatDate = (date: Date, isEnd = false) => {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const dd = String(date.getDate()).padStart(2, "0");
+        const time = isEnd ? "23:59:59" : "00:00:00";
+        return `${yyyy}-${mm}-${dd} ${time}`;
+      };
+
+      const startStr = formatDate(start); // 00:00:00
+      const endStr = formatDate(end, true); // 23:59:59
 
       const url = `${API_ENDPOINTS.GET_DASHBOARD_ANALYSIS}?start_date=${startStr}&end_date=${endStr}`;
       const data = await requestData(url);

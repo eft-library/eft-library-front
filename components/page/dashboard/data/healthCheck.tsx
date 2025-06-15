@@ -13,7 +13,6 @@ import {
 import type { HealthCheck } from "./dashboardTypes";
 
 export default function HealthCheck({ health_check }: HealthCheck) {
-  console.log(health_check);
   return (
     <div className="bg-gray-800 rounded-lg shadow-2xl border border-gray-700">
       <div className="p-6 pb-2">
