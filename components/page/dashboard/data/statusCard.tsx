@@ -12,7 +12,7 @@ export default function StatusCard({ chartData }: StatusCard) {
             </span>
           </div>
           <div className="text-2xl font-bold text-blue-400 mt-2">
-            {chartData.response_time[0].avg_response_ms} ms
+            {chartData.response_time[0]?.avg_response_ms ?? "-"} ms
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@ export default function StatusCard({ chartData }: StatusCard) {
             </span>
           </div>
           <div className="text-2xl font-bold text-green-400 mt-2">
-            {chartData.response_time[1].avg_response_ms} ms
+            {chartData.response_time[1]?.avg_response_ms ?? "-"} ms
           </div>
         </div>
       </div>
