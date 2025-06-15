@@ -36,6 +36,15 @@ export default function HealthCheck({ health_check }: HealthCheck) {
             tick={{ fill: ALL_COLOR.White, fontSize: 12 }}
           />
           <Tooltip
+            formatter={(value, name, entry) => {
+              const payload = entry?.payload;
+              const label = name === "정상" ? "성공률" : "실패율";
+
+              // tooltip에 보여줄 부가 정보 구성
+              const extra = ` (성공 ${payload.ok_count} / 실패 ${payload.fail_count} / 총 ${payload.total})`;
+
+              return [`${value.toLocaleString()} %${extra}`, label];
+            }}
             contentStyle={{
               backgroundColor: "#1f2937",
               border: "1px solid #374151",
@@ -45,19 +54,12 @@ export default function HealthCheck({ health_check }: HealthCheck) {
             }}
           />
           <Legend fontWeight={"bold"} />
-          <Bar
-            dataKey="ok_percentage"
-            stackId="a"
-            fill="#4caf50"
-            name="OK"
-            fontWeight={"bold"}
-          />
+          <Bar dataKey="ok_percentage" stackId="a" fill="#34d399" name="정상" />
           <Bar
             dataKey="fail_percentage"
             stackId="a"
             fill="#f44336"
-            fontWeight={"bold"}
-            name="FAIL"
+            name="이상"
           />
         </BarChart>
       </ResponsiveContainer>
