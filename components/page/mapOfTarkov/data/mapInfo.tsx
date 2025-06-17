@@ -12,13 +12,14 @@ import "leaflet/dist/leaflet.css";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CRS } from "leaflet";
-import MapController from "./mapController";
-import { MouseMoveEvent, FindLocationIcon } from "@/lib/func/leafletFunction";
-import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
+import dynamic from "next/dynamic";
 import { mapOfTarkovI18n, findLocationI18N } from "@/lib/consts/i18nConsts";
 import { CircleHelp, Search } from "lucide-react";
 import DefaultDialog from "@/components/custom/dialog/defaultDialog";
+
+const MapInfoInner = dynamic(() => import("./mapInfoInner"), {
+  ssr: false, // 클라이언트에서만 렌더링
+});
 
 export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
   const locale = useLocale();
@@ -139,28 +140,12 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
         </div>
       </div>
 
-      <MapContainer
-        center={[0, 0]}
-        zoom={0}
-        minZoom={0}
-        maxZoom={4}
-        crs={CRS.Simple}
-        className="w-full h-[800px]"
-        style={{ backgroundColor: ALL_COLOR.DarkBluishGray }}
-        maxBounds={findInfo.map_bounds}
-        maxBoundsViscosity={1.0}
-      >
-        <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
-        <MouseMoveEvent onMove={setMousePosition} />
-        {isViewWhere && (
-          <Marker
-            position={[-imageCoord.y, -imageCoord.x]}
-            icon={FindLocationIcon}
-          />
-        )}
-
-        <ImageOverlay url={findInfo.image} bounds={findInfo.image_bounds} />
-      </MapContainer>
+      <MapInfoInner
+        findInfo={findInfo}
+        imageCoord={imageCoord}
+        isViewWhere={isViewWhere}
+        setMousePosition={setMousePosition}
+      />
 
       <DefaultDialog open={popupStatus} setOpen={setPopupStatus} title="Notice">
         <div className="bg-Background p-6 max-h-[800px] overflow-y-auto space-y-6">

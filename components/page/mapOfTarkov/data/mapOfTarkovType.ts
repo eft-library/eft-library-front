@@ -68,3 +68,15 @@ interface LocaleName {
 export interface BossClient {
   bossData: Boss;
 }
+
+export interface MapInfoInner {
+  findInfo: FindInfo;
+  imageCoord: ImageCoord;
+  isViewWhere: boolean;
+  setMousePosition: (latlng: any) => void;
+}
+
+interface ImageCoord {
+  x: number;
+  y: number;
+}
