@@ -24,7 +24,7 @@ export default function MapInfoInner({
       maxBoundsViscosity={1.0}
     >
       <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
-      <MouseMoveEvent onMove={setMousePosition} />
+      <MouseMoveEvent onMove={setMousePosition} mapId={findInfo.id} />
       {isViewWhere && (
         <Marker
           position={[-imageCoord.y, -imageCoord.x]}

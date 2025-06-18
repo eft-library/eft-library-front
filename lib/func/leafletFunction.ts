@@ -5,16 +5,32 @@ export const dynamic = "force-dynamic";
 
 export const MouseMoveEvent = ({
   onMove,
+  mapId,
 }: {
   onMove: (latlng: any) => void;
+  mapId: string;
 }) => {
+  // 맵별 좌표 변환 함수 매핑
+  const transformMap: Record<
+    string,
+    (latlng: { lat: number; lng: number }) => { lat: number; lng: number }
+  > = {
+    THE_LAB: ({ lat, lng }) => ({ lat: lng, lng: -lat }),
+    FACTORY: ({ lat, lng }) => ({ lat: -lng, lng: lat }),
+  };
+
   useMapEvent("mousemove", (e) => {
-    const reversedLatLng = {
-      lat: -e.latlng.lat, // Y 좌표 반전
-      lng: -e.latlng.lng, // X 좌표 반전
-    };
-    onMove(reversedLatLng); // 마우스 위치 좌표 업데이트
+    const { lat, lng } = e.latlng;
+
+    // 변환 함수 없으면 기본 변환 (그 외)
+    const transform =
+      transformMap[mapId] ?? (({ lat, lng }) => ({ lat: -lat, lng: -lng }));
+
+    const latLng = transform({ lat, lng });
+
+    onMove(latLng); // 마우스 위치 좌표 업데이트
   });
+
   return null;
 };
 
