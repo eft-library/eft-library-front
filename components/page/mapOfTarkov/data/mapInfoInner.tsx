@@ -30,15 +30,19 @@ export default function MapInfoInner({
       case "WOODS":
         return -1;
       case "FACTORY":
-        return 2;
+        return 2.5;
       case "INTERCHANGE":
-        return -1;
+        return -0.5;
       case "LIGHT_HOUSE":
         return -1;
       case "SHORELINE":
-        return -1;
+        return -0.5;
       case "THE_LAB":
         return 2;
+      case "RESERVE":
+        return 0.5;
+      case "GROUND_ZERO":
+        return 0.5;
       default:
         return 0;
     }
@@ -48,6 +52,7 @@ export default function MapInfoInner({
     <MapContainer
       center={[0, 0]}
       zoom={getDefaultZoom(findInfo.id)}
+      zoomSnap={0.5}
       minZoom={-2}
       maxZoom={4}
       crs={CRS.Simple}
