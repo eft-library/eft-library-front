@@ -25,11 +25,30 @@ export default function MapInfoInner({
     }
   };
 
+  const getDefaultZoom = (mapId: string): number => {
+    switch (mapId) {
+      case "WOODS":
+        return -1;
+      case "FACTORY":
+        return 2;
+      case "INTERCHANGE":
+        return -1;
+      case "LIGHT_HOUSE":
+        return -1;
+      case "SHORELINE":
+        return -1;
+      case "THE_LAB":
+        return 2;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <MapContainer
       center={[0, 0]}
-      zoom={0}
-      minZoom={0}
+      zoom={getDefaultZoom(findInfo.id)}
+      minZoom={-2}
       maxZoom={4}
       crs={CRS.Simple}
       className="w-full h-[800px]"
