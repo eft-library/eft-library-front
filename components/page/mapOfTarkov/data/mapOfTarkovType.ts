@@ -22,6 +22,7 @@ interface FindInfo {
   image_bounds: [number, number][];
   name: string;
   image: string;
+  default_zoom_level: number;
 }
 
 export interface ExtractionRender {
