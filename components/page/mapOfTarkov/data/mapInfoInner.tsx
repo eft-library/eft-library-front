@@ -11,6 +11,20 @@ export default function MapInfoInner({
   isViewWhere,
   setMousePosition,
 }: MapInfoInner) {
+  const getMarkerPosition = (
+    mapId: string,
+    coord: { x: number; y: number }
+  ): [number, number] => {
+    switch (mapId) {
+      case "FACTORY":
+        return [coord.x, -coord.y];
+      case "THE_LAB":
+        return [-coord.x, coord.y];
+      default:
+        return [-coord.y, -coord.x];
+    }
+  };
+
   return (
     <MapContainer
       center={[0, 0]}
@@ -27,7 +41,7 @@ export default function MapInfoInner({
       <MouseMoveEvent onMove={setMousePosition} mapId={findInfo.id} />
       {isViewWhere && (
         <Marker
-          position={[-imageCoord.y, -imageCoord.x]}
+          position={getMarkerPosition(findInfo.id, imageCoord)}
           icon={FindLocationIcon}
         />
       )}
