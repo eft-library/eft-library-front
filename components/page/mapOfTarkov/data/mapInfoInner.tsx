@@ -38,7 +38,11 @@ export default function MapInfoInner({
       maxBounds={findInfo.map_bounds}
       maxBoundsViscosity={1.0}
     >
-      <MapController imageCoord={imageCoord} isViewWhere={isViewWhere} />
+      <MapController
+        imageCoord={imageCoord}
+        isViewWhere={isViewWhere}
+        default_zoom_level={findInfo.default_zoom_level}
+      />
       <MouseMoveEvent onMove={setMousePosition} mapId={findInfo.id} />
       {isViewWhere && (
         <Marker

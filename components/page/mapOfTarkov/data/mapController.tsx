@@ -2,22 +2,19 @@
 
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
-
-interface MapControllerProps {
-  imageCoord: { x: number; y: number };
-  isViewWhere: boolean;
-}
+import type { MapControllerProps } from "./mapOfTarkovType";
 
 export default function MapController({
   imageCoord,
   isViewWhere,
+  default_zoom_level,
 }: MapControllerProps) {
   const map = useMap();
 
   useEffect(() => {
     if (isViewWhere) {
       const newCenter: [number, number] = [-imageCoord.y, -imageCoord.x];
-      map.setView(newCenter, 0); // 줌 0으로 초기화 후 위치 이동
+      map.setView(newCenter, default_zoom_level);
     }
   }, [imageCoord, isViewWhere, map]);
 

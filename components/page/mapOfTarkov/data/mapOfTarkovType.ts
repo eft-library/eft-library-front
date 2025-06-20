@@ -81,3 +81,9 @@ interface ImageCoord {
   x: number;
   y: number;
 }
+
+export interface MapControllerProps {
+  imageCoord: { x: number; y: number };
+  isViewWhere: boolean;
+  default_zoom_level: number;
+}

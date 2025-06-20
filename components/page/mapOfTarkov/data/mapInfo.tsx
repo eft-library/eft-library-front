@@ -128,6 +128,11 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
             value={where}
             placeholder={mapOfTarkovI18n.pasteValue[localeKey]}
             onChange={(e) => setWhere(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onClickWhere();
+              }
+            }}
           />
           <Button
             onClick={() => onClickWhere()}
