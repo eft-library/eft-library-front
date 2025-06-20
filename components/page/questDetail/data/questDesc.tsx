@@ -25,8 +25,11 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
-  const mergedItems = questInfo.objectives.flatMap((item) => {
-    if ((item.type === "giveItem" || item.type === "findItem") && item.items) {
+  const mergedItems = (questInfo.objectives ?? []).flatMap((item) => {
+    if (
+      (item.type === "giveItem" || item.type === "findItem") &&
+      Array.isArray(item.items)
+    ) {
       return item.items.map((subItem) => ({
         id: subItem.id,
         type: item.type,

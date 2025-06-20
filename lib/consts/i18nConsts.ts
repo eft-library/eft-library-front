@@ -853,7 +853,7 @@ export const findLocationI18N = [
   },
   {
     step: "6",
-    ko: "위치 확인 도구에 Ctrl + V로 붙여넣고 버튼을 클릭합니다.",
+    ko: "위치 확인 도구에 Ctrl + V로 붙여넣고 엔터를 입력하거나, 오른쪽에 있는 버튼을 클릭합니다.",
     en: "Paste it into the location tool with Ctrl + V and click the button.",
     ja: "位置確認ツールに Ctrl + V で貼り付けて、ボタンをクリックします。",
   },
