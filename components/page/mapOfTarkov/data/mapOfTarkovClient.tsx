@@ -26,6 +26,13 @@ export default function MapOfTarkovClient({
   return (
     <div className="w-full">
       <div key={mapData.map_id} className="flex flex-col gap-6 items-center">
+        <div className="w-[1200px]">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+          />
+        </div>
         <MapInfo
           mapData={mapData.map_info}
           findInfo={mapData.find_info}
