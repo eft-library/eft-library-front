@@ -9,7 +9,6 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import { useState } from "react";
 import "leaflet/dist/leaflet.css";
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import dynamic from "next/dynamic";
@@ -117,9 +116,8 @@ export default function MapInfo({ mapData, imageSelect, findInfo }: MapInfo) {
           <div className="flex items-center justify-center">
             <CircleHelp
               size={32}
-              color={ALL_COLOR.Yellow}
               onClick={() => setPopupStatus(true)}
-              className="cursor-pointer"
+              className="cursor-pointer text-GoldenYellow hover:text-SoftRed"
             />
           </div>
 
