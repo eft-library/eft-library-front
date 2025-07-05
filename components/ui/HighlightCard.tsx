@@ -1,7 +1,7 @@
 "use client";
 
 import { FlameIcon as Fire } from "lucide-react";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "next-themes";
 import type { HighlightCardTypes } from "../types/HighlightsCard.types";
 
 export default function HighlightCardList({
