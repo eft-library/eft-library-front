@@ -14,9 +14,32 @@ export default function MainView() {
           : "bg-gray-50 text-gray-900"
       }`}
     >
-      <ImageBox
-        item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
-      />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+        <ImageBox
+          item={{ id: "23", title: " test", image: "asd", link: "qwe" }}
+        />
+      </div>
     </div>
   );
 }

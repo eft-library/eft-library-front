@@ -3,67 +3,20 @@
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { Button } from "../../components/ui/button";
+import type { NavBarTypes } from "./NavBar.types";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { headerI18N } from "@/lib/consts/i18nConsts";
+import { useAppStore } from "@/store/provider";
+import LocalSwitcher from "./LocaleSwitcher";
+import { useSession, signIn } from "next-auth/react";
 
-export default function NavBar() {
+export default function NavBar({ navData }: NavBarTypes) {
   const { theme, setTheme } = useTheme();
-  const navigationMenus = {
-    지도: [
-      "세관",
-      "등대",
-      "삼림",
-      "해안선",
-      "공장",
-      "리저브",
-      "연구소",
-      "인터체인지",
-      "그라운드 제로",
-      "타르코프 시내",
-      "대화형 지도",
-    ],
-    퀘스트: [
-      "퀘스트 로드맵",
-      "퀘스트 플래너",
-      "프라퍼",
-      "테라피스트",
-      "펜스",
-      "스키어",
-      "피스키퍼",
-      "메카닉",
-      "래그맨",
-      "예거",
-      "등대지기",
-      "레프",
-      "BTR 운전사",
-    ],
-    아이템: [
-      "무기",
-      "탄약",
-      "방탄모",
-      "의료품",
-      "컨테이너",
-      "전술 조끼",
-      "방탄 조끼",
-      "열쇠",
-      "헤드셋",
-      "가방",
-      "식량",
-      "전리품",
-      "얼굴 커버",
-      "안경",
-      "완장",
-    ],
-    정보: [
-      "아이템 시세",
-      "아이템 랭크",
-      "보스",
-      "은신처",
-      "이벤트",
-      "패치노트",
-      "시즌 초기화",
-      "공지사항",
-    ],
-  };
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   return (
     <nav
@@ -82,11 +35,11 @@ export default function NavBar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 relative">
-            {Object.keys(navigationMenus).map((menuKey) => (
+            {navData.map((navMain) => (
               <div
-                key={menuKey}
+                key={`nav-main-${navMain.value}`}
                 className="relative"
-                onMouseEnter={() => setActiveMenu(menuKey)}
+                onMouseEnter={() => setActiveMenu(navMain.value)}
                 onMouseLeave={() => setActiveMenu(null)}
               >
                 <a
@@ -97,11 +50,11 @@ export default function NavBar() {
                       : "text-gray-700 hover:text-orange-500"
                   }`}
                 >
-                  {menuKey}
+                  {navMain.name[localeKey]}
                 </a>
 
                 {/* Dropdown Menu */}
-                {activeMenu === menuKey && (
+                {activeMenu === navMain.value && (
                   <div
                     className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-0 w-48 border rounded-md shadow-lg z-50 ${
                       theme === "dark"
@@ -110,11 +63,9 @@ export default function NavBar() {
                     }`}
                   >
                     <div className="py-2">
-                      {navigationMenus[
-                        menuKey as keyof typeof navigationMenus
-                      ].map((item, index) => (
+                      {navMain.sub_menus.map((navSub) => (
                         <a
-                          key={index}
+                          key={`nav-sub-${navSub.value}`}
                           href="#"
                           className={`block px-4 py-2 text-sm transition-colors text-center ${
                             theme === "dark"
@@ -122,7 +73,7 @@ export default function NavBar() {
                               : "text-gray-700 hover:text-orange-500 hover:bg-gray-100"
                           }`}
                         >
-                          {item}
+                          {navSub.name[localeKey]}
                         </a>
                       ))}
                     </div>
@@ -130,22 +81,24 @@ export default function NavBar() {
                 )}
               </div>
             ))}
-            <a
-              href="#"
-              className={`transition-colors text-sm ${
-                theme === "dark"
-                  ? "text-white hover:text-orange-400"
-                  : "text-gray-700 hover:text-orange-500"
-              }`}
-            >
-              로그인
-            </a>
+            {!session && (
+              <a
+                href="#"
+                className={`transition-colors text-sm ${
+                  theme === "dark"
+                    ? "text-white hover:text-orange-400"
+                    : "text-gray-700 hover:text-orange-500"
+                }`}
+              >
+                {headerI18N.login[localeKey]}
+              </a>
+            )}
           </div>
 
           {/* Language Selector and Search Bar */}
           <div className="hidden sm:flex items-center space-x-4">
             {/* Theme Toggle Button */}
-            <button
+            <Button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               className={`p-2 rounded-md transition-colors ${
                 theme === "dark"
@@ -154,61 +107,10 @@ export default function NavBar() {
               }`}
             >
               {theme === "dark" ? "☀️" : "🌙"}
-            </button>
+            </Button>
 
             {/* Language Selector */}
-            {/* <div className="relative">
-              <button
-                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 min-w-[100px] ${
-                  theme === "dark"
-                    ? "bg-[#36393f] border-gray-600 text-white hover:border-orange-400 hover:bg-[#40444b]"
-                    : "bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50"
-                }`}
-              >
-                <span className="text-base">{getCurrentLanguage().flag}</span>
-                <span className="text-sm font-medium">
-                  {getCurrentLanguage().name}
-                </span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isLanguageMenuOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {isLanguageMenuOpen && (
-                <div
-                  className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-44 border rounded-lg shadow-xl z-50 overflow-hidden ${
-                    theme === "dark"
-                      ? "bg-[#36393f] border-gray-600"
-                      : "bg-white border-gray-200"
-                  }`}
-                >
-                  <div className="py-1">
-                    {languages.map((language) => (
-                      <button
-                        key={language.code}
-                        onClick={() => handleLanguageChange(language.code)}
-                        className={`w-full flex items-center space-x-3 px-4 py-3 text-sm transition-all duration-200 text-left ${
-                          currentLanguage === language.code
-                            ? theme === "dark"
-                              ? "bg-orange-400/20 text-orange-400 border-l-2 border-orange-400"
-                              : "bg-orange-50 text-orange-600 border-l-2 border-orange-500"
-                            : theme === "dark"
-                            ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
-                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                        }`}
-                      >
-                        <span className="text-base">{language.flag}</span>
-                        <span className="font-medium">{language.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div> */}
-
+            <LocalSwitcher />
             {/* Search Bar */}
             {/* <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
