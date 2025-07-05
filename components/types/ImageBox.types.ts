@@ -3,8 +3,7 @@ export interface ImageBoxTypes {
 }
 
 interface ImageBoxItemTypes {
-  id: string;
+  id: number;
   title: string;
   image: string;
-  link: string;
 }
