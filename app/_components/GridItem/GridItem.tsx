@@ -1,0 +1,62 @@
+"use client";
+
+import type { GridItemTypes } from "./GridItem.types";
+import { useTheme } from "next-themes";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
+
+export default function GridItem({ main_info }: GridItemTypes) {
+  const { theme } = useTheme();
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      {main_info.map((item) => (
+        <Link
+          key={`main-info-${item.value}`}
+          href={item.link}
+          className="flex flex-col"
+        >
+          <div
+            className={`group rounded-lg p-3 border transition-all duration-200 cursor-pointer hover:scale-105 ${
+              theme === "dark"
+                ? "bg-gray-800/30 border-gray-700/50 hover:border-orange-400/50 hover:bg-gray-700/30"
+                : "bg-white border-gray-200 hover:border-orange-500/50 hover:bg-gray-50 shadow-sm hover:shadow-md"
+            }`}
+          >
+            <div
+              className={`aspect-square rounded-md mb-3 overflow-hidden relative ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-100"
+              }`}
+            >
+              <Image
+                src={item.image || "/placeholder.svg"}
+                alt={item.name.en}
+                fill
+                placeholder="blur"
+                blurDataURL={
+                  "data:image/jpeg;base64," +
+                  "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                }
+                sizes="(max-width: 768px) 100vw, 25vw"
+                className="object-cover group-hover:scale-110 transition-transform duration-200"
+              />
+            </div>
+            <h3
+              className={`text-sm font-medium text-center transition-colors ${
+                theme === "dark"
+                  ? "text-gray-200 group-hover:text-orange-400"
+                  : "text-gray-700 group-hover:text-orange-500"
+              }`}
+            >
+              {item.name[localeKey]}
+            </h3>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
