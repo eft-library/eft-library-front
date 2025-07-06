@@ -19,3 +19,9 @@ export interface NavTypes extends MenuData {
 export interface NavBarTypes {
   navData: NavTypes[];
 }
+
+export interface RenderNavTypes {
+  navMain: NavTypes;
+  setActiveMenu: (val: string | null) => void;
+  activeMenu: string | null;
+}

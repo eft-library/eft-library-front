@@ -780,7 +780,7 @@ export const adBlockI18N = {
 
 export const newsI18N = {
   recommendationFeature: {
-    en: "Recommendation",
+    en: "Recommend",
     ja: "おすすめ機能",
     ko: "추천 기능",
   },

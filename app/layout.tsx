@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AuthContext from "@/store/AuthContext";
-// import { AppStoreProvider } from "@/store/provider";
-// import { Suspense } from "react";
+import { AppStoreProvider } from "@/store/provider";
+import { Suspense } from "react";
 import NavData from "./_navbar/NavData";
 import { ThemeProvider } from "@/lib/config/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
@@ -44,8 +44,12 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <NavData />
-              {children}
+              <Suspense>
+                <AppStoreProvider>
+                  <NavData />
+                  {children}
+                </AppStoreProvider>
+              </Suspense>
             </ThemeProvider>
           </AuthContext>
         </NextIntlClientProvider>
