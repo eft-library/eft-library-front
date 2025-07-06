@@ -7,9 +7,9 @@ import type { NavBarTypes } from "./NavBar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { headerI18N } from "@/lib/consts/i18nConsts";
-import { useAppStore } from "@/store/provider";
+// import { useAppStore } from "@/store/provider";
 import LocalSwitcher from "./LocaleSwitcher";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const { theme, setTheme } = useTheme();

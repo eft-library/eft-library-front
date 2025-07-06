@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { FlameIcon as Fire, Pin } from "lucide-react";
+import { Pin } from "lucide-react";
 import NewsView from "./News/NewsView";
 import GridItem from "./GridItem/GridItem";
 import type { MainViewTypes } from "./MainView.types";
