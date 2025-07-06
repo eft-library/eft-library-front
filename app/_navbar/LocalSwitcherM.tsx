@@ -7,7 +7,7 @@ import { setUserLocale } from "@/i18n/locale";
 import { useLocale } from "next-intl";
 import { Locale } from "@/i18n/config";
 
-export default function LocalSwitcher() {
+export default function LocalSwitcherM() {
   const languages = [
     { code: "ko", name: "한국어", flag: "🇰🇷" },
     { code: "en", name: "English", flag: "🇺🇸" },
@@ -32,17 +32,21 @@ export default function LocalSwitcher() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative mb-4">
       <button
         onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-        className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 min-w-[100px] ${
+        className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border transition-all duration-200 ${
           theme === "dark"
             ? "bg-[#36393f] border-gray-600 text-white hover:border-orange-400 hover:bg-[#40444b]"
             : "bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50"
         }`}
       >
-        <span className="text-base">{getCurrentLanguage().flag}</span>
-        <span className="text-sm font-medium">{getCurrentLanguage().name}</span>
+        <div className="flex items-center space-x-3">
+          <span className="text-base">{getCurrentLanguage().flag}</span>
+          <span className="text-sm font-medium">
+            {getCurrentLanguage().name}
+          </span>
+        </div>
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${
             isLanguageMenuOpen ? "rotate-180" : ""
@@ -50,9 +54,10 @@ export default function LocalSwitcher() {
         />
       </button>
 
+      {/* Mobile Language Dropdown */}
       {isLanguageMenuOpen && (
         <div
-          className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-44 border rounded-lg shadow-xl z-50 overflow-hidden ${
+          className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 border rounded-lg shadow-xl z-50 overflow-hidden ${
             theme === "dark"
               ? "bg-[#36393f] border-gray-600"
               : "bg-white border-gray-200"
