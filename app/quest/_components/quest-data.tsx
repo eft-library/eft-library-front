@@ -35,5 +35,5 @@ export default function QuestData() {
     getQuestById();
   }, [npcId]);
 
-  return questData && <QuestView questData={questData} />;
+  return !isLoading && questData && <QuestView questData={questData} />;
 }
