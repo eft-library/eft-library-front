@@ -2,17 +2,19 @@
 
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import { Button } from "../../components/ui/button";
-import type { NavBarTypes } from "./NavBar.types";
+import { Button } from "../../../components/ui/button";
+import type { NavBarTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { headerI18N } from "@/lib/consts/i18nConsts";
-import LocalSwitcher from "./LocaleSwitcher";
+import LocalSwitcher from "./locale-switcher";
 import { useSession, signIn, signOut } from "next-auth/react";
-import RenderNav from "./RenderNav";
+import RenderNav from "./render-nav";
 import { Menu, X } from "lucide-react";
-import LocalSwitcherM from "./LocalSwitcherM";
-import RenderNavM from "./RenderNavM";
+import LocalSwitcherM from "./locale-switcher-m";
+import RenderNavM from "./render-nav-m";
+import Logo from "@/assets/navi/logo";
+import Link from "next/link";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,7 +36,11 @@ export default function NavBar({ navData }: NavBarTypes) {
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="text-xl font-bold text-orange-400">EFT LIBRARY</div>
+            <div className="text-xl font-bold text-orange-400">
+              <Link href="/" aria-label="EFT Library">
+                <Logo width={200} height={100} />
+              </Link>
+            </div>
           </div>
 
           {/* Desktop Navigation */}

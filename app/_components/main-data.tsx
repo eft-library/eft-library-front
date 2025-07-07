@@ -2,7 +2,7 @@
 
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import MainView from "./MainView";
+import MainView from "./main-view";
 
 export default async function MainData() {
   const data = await requestData(`${API_ENDPOINTS.GET_HOME}`);

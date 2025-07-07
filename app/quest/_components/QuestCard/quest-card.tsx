@@ -1,0 +1,258 @@
+"use client";
+
+import { Card } from "@/components/ui/card";
+import { Check, X } from "lucide-react";
+import { useTheme } from "next-themes";
+import { questI18N } from "@/lib/consts/i18nConsts";
+import { useLocale } from "next-intl";
+import {
+  getDescriptionLocaleKey,
+  getLocaleKey,
+  getOtherLocalizedKey,
+} from "@/lib/func/localeFunction";
+import type { QuestCardTypes } from "../quest.types";
+import Link from "next/link";
+
+export default function QuestCard({ quest_list }: QuestCardTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+  const { theme } = useTheme();
+
+  return (
+    <div className="hidden md:block">
+      <Card
+        className={`${
+          theme === "dark"
+            ? "bg-[#1E1E1E] border-[#2B2B2B]"
+            : "bg-white border-gray-200"
+        } overflow-hidden`}
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr
+                className={`border-b ${
+                  theme === "dark"
+                    ? "border-[#2B2B2B] bg-[#2B2B2B]"
+                    : "border-gray-200 bg-gray-50"
+                }`}
+              >
+                <th
+                  className={`p-6 font-semibold text-lg text-center ${
+                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                  }`}
+                >
+                  {questI18N.name[localeKey]}
+                </th>
+                <th
+                  className={`p-6 font-semibold text-lg text-center ${
+                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                  }`}
+                >
+                  {questI18N.objectives[localeKey]}
+                </th>
+                <th
+                  className={`p-6 font-semibold text-lg text-center ${
+                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                  }`}
+                >
+                  {questI18N.reward[localeKey]}
+                </th>
+                <th
+                  className={`text-center p-6 font-semibold text-lg ${
+                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                  }`}
+                >
+                  {questI18N.kappa[localeKey]}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {quest_list.map((quest, index) => (
+                <tr
+                  key={quest.id}
+                  className={`border-b transition-colors ${
+                    theme === "dark"
+                      ? `border-[#2B2B2B] hover:bg-[#2B2B2B]/50 ${
+                          index % 2 === 0 ? "bg-[#1A1A1A]" : "bg-[#1E1E1E]"
+                        }`
+                      : `border-gray-200 hover:bg-gray-50 ${
+                          index % 2 === 0 ? "bg-gray-25" : "bg-white"
+                        }`
+                  }`}
+                >
+                  <td
+                    className={`p-6 font-medium text-base ${
+                      theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                    }`}
+                  >
+                    {quest.name[localeKey]}
+                  </td>
+                  <td className="p-6">
+                    <ul className="space-y-2">
+                      {quest.objectives &&
+                        quest.objectives.map((objective, idx) => (
+                          <li
+                            key={idx}
+                            className={`text-sm leading-relaxed ${
+                              theme === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            • {objective[getDescriptionLocaleKey(locale)]}
+                          </li>
+                        ))}
+                    </ul>
+                  </td>
+                  <td className="p-6">
+                    <div className="space-y-2">
+                      {quest.finish_rewards.items.map((rewards, rIndex) => (
+                        <div
+                          key={`${rIndex}-rewards-${quest.id}`}
+                          className={`text-sm font-medium transition-colors ${
+                            theme === "dark"
+                              ? "text-[#FFB82E] hover:text-yellow-200"
+                              : "text-[#FF8C00] hover:text-yellow-200"
+                          }`}
+                        >
+                          •&nbsp;
+                          <Link
+                            href={`/item/${rewards.item.normalizedName}`}
+                            target="_blank"
+                          >
+                            {rewards.item[getOtherLocalizedKey(locale)]}
+                            &nbsp;x&nbsp;
+                            {rewards.quantity}
+                          </Link>
+                        </div>
+                      ))}
+                      {quest.finish_rewards.offerUnlock.map((offer, rIndex) => (
+                        <div
+                          key={`${rIndex}-offerUnlock-${quest.id}`}
+                          className={`text-sm ${
+                            theme === "dark"
+                              ? "text-[#CCCCCC]"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          • {offer.trader[getOtherLocalizedKey(locale)]}
+                          &nbsp;
+                          <Link
+                            href={`/item/${offer.item.normalizedName}`}
+                            target="_blank"
+                          >
+                            {offer.item[getOtherLocalizedKey(locale)]}
+                          </Link>
+                          &nbsp;
+                          <span>{questI18N.purchaseUnlock[localeKey]}</span>
+                        </div>
+                      ))}
+                      {quest.finish_rewards.traderStanding.map(
+                        (standing, rIndex) => (
+                          <div
+                            key={`${rIndex}-traderStanding-${quest.id}`}
+                            className={`text-sm ${
+                              theme === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            *&nbsp;
+                            {standing.trader[getOtherLocalizedKey(locale)]}
+                            &nbsp;{questI18N.standing[localeKey]}&nbsp;
+                            <span>{standing.standing}</span>
+                          </div>
+                        )
+                      )}
+                      {quest.finish_rewards.craftUnlock.map((craft, rIndex) => (
+                        <div
+                          key={`${rIndex}-craftUnlock-${quest.id}`}
+                          className={`text-sm ${
+                            theme === "dark"
+                              ? "text-[#CCCCCC]"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {craft.rewardItems.map((crReward, crIndex) => (
+                            <div
+                              key={`${crIndex}-crReward-${quest.id}`}
+                              className={`text-sm ${
+                                theme === "dark"
+                                  ? "text-[#CCCCCC]"
+                                  : "text-gray-600"
+                              }`}
+                            >
+                              <span>
+                                * {questI18N.workbenchLevel[localeKey]}&nbsp;
+                              </span>
+                              <span>{craft.level}&nbsp;</span>
+                              <Link
+                                href={`/item/${crReward.item.normalizedName}`}
+                                target="_blank"
+                              >
+                                {crReward.item[getOtherLocalizedKey(locale)]}
+                              </Link>
+                              <span>
+                                &nbsp;{questI18N.craftUnlock[localeKey]}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                      {quest.finish_rewards.traderStanding.map(
+                        (standing, rIndex) => (
+                          <div
+                            key={`${rIndex}-traderStanding-${quest.id}`}
+                            className={`text-sm ${
+                              theme === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            *&nbsp;
+                            {standing.trader[getOtherLocalizedKey(locale)]}
+                            &nbsp;{questI18N.standing[localeKey]}&nbsp;
+                            <span>{standing.standing}</span>
+                          </div>
+                        )
+                      )}
+                      {quest.finish_rewards.skillLevelReward.map(
+                        (skill, rIndex) => (
+                          <div
+                            key={`${rIndex}-skillLevelReward-${quest.id}`}
+                            className={`text-sm ${
+                              theme === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            * {skill[getOtherLocalizedKey(locale)]}
+                            <span>&nbsp;LV&nbsp;{skill.level}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-6 text-center">
+                    <div className="flex justify-center">
+                      {quest.kappa_required ? (
+                        <div className="bg-green-600 rounded-full p-2 hover:bg-green-500 transition-colors">
+                          <Check className="w-5 h-5 text-white" />
+                        </div>
+                      ) : (
+                        <div className="bg-red-600 rounded-full p-2 hover:bg-red-500 transition-colors">
+                          <X className="w-5 h-5 text-white" />
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+}

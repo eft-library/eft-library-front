@@ -1,6 +1,6 @@
 "use server";
 
-import NavBar from "./NavBar";
+import NavBar from "./nav-bar";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 

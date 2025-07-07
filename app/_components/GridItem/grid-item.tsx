@@ -1,6 +1,6 @@
 "use client";
 
-import type { GridItemTypes } from "./GridItem.types";
+import type { GridItemTypes } from "./grid-item.types";
 import { useTheme } from "next-themes";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";

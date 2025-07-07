@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useAppStore } from "@/store/provider";
 import Link from "next/link";
-import type { RenderNavTypes } from "./NavBar.types";
+import type { RenderNavTypes } from "./nav-bar.types";
 
 export default function RenderNavM({
   navMain,
@@ -26,7 +26,9 @@ export default function RenderNavM({
   return (
     <div>
       <button
-        onClick={() => setActiveMenu(navMain.value)}
+        onClick={() =>
+          setActiveMenu(activeMenu === navMain.value ? null : navMain.value)
+        }
         className={`w-full text-left transition-colors py-2 flex justify-between items-center ${
           theme === "dark"
             ? "text-white hover:text-orange-400"
@@ -45,7 +47,7 @@ export default function RenderNavM({
 
       {/* Mobile Dropdown */}
       {activeMenu === navMain.value && (
-        <div className="ml-4 mt-2 space-y-2">
+        <div className="ml-4 mt-2 space-y-2 max-h-64 overflow-y-auto">
           {navMain.sub_menus.map((navSub) => (
             <Link
               key={`nav-sub-${navSub.value}`}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import type { RenderNavTypes } from "./NavBar.types";
+import type { RenderNavTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useAppStore } from "@/store/provider";

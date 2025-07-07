@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { Pin } from "lucide-react";
-import NewsView from "./News/NewsView";
-import GridItem from "./GridItem/GridItem";
-import type { MainViewTypes } from "./MainView.types";
+import NewsView from "./News/news-view";
+import GridItem from "./GridItem/grid-item";
+import type { MainViewTypes } from "./news-view.types";
 
 export default function MainView({ homeData }: MainViewTypes) {
   const { theme } = useTheme();
