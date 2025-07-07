@@ -59,8 +59,8 @@ export interface QuestDesc {
   questInfo: Quest;
 }
 
-export interface NpcDetail {
-  questInfo: Quest;
+export interface QuestDetailTypes {
+  quest: Quest;
 }
 
 export interface Objective {
@@ -159,4 +159,8 @@ interface Task {
   name_ja: string;
   name_ko: string;
   normalizedName: string;
+}
+
+export interface QuestDetailViewTypes {
+  quest: Quest;
 }

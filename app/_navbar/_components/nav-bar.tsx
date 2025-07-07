@@ -17,9 +17,9 @@ import Logo from "@/assets/navi/logo";
 import Link from "next/link";
 
 export default function NavBar({ navData }: NavBarTypes) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);

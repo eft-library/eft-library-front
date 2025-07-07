@@ -30,10 +30,14 @@ export default function QuestCardM({ quest_list }: QuestCardTypes) {
         <div className="flex items-center justify-between">
           <CardTitle
             className={`text-lg font-semibold ${
-              theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+              theme === "dark"
+                ? "text-[#FFB82E] hover:text-yellow-200"
+                : "text-[#FF8C00] hover:text-yellow-200"
             }`}
           >
-            {quest.name[localeKey]}
+            <Link href={`/quest/detail/${quest.url_mapping}`}>
+              {quest.name[localeKey]}
+            </Link>
           </CardTitle>
           <div className="flex justify-center">
             {quest.kappa_required ? (

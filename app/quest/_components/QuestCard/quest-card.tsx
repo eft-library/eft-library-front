@@ -83,10 +83,14 @@ export default function QuestCard({ quest_list }: QuestCardTypes) {
                 >
                   <td
                     className={`p-6 font-medium text-base ${
-                      theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+                      theme === "dark"
+                        ? "text-[#FFB82E] hover:text-yellow-200"
+                        : "text-[#FF8C00] hover:text-yellow-200"
                     }`}
                   >
-                    {quest.name[localeKey]}
+                    <Link href={`/quest/detail/${quest.url_mapping}`}>
+                      {quest.name[localeKey]}
+                    </Link>
                   </td>
                   <td className="p-6">
                     <ul className="space-y-2">
