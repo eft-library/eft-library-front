@@ -24,4 +24,5 @@ export interface RenderNavTypes {
   navMain: NavTypes;
   setActiveMenu: (val: string | null) => void;
   activeMenu: string | null;
+  setIsMobileMenuOpen: (val: boolean) => void;
 }

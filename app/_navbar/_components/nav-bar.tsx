@@ -53,6 +53,7 @@ export default function NavBar({ navData }: NavBarTypes) {
                   navMain={navMain}
                   activeMenu={activeMenu}
                   setActiveMenu={setActiveMenu}
+                  setIsMobileMenuOpen={setIsMobileMenuOpen}
                 />
               ))}
 
@@ -65,6 +66,7 @@ export default function NavBar({ navData }: NavBarTypes) {
                     navMain={navMain}
                     activeMenu={activeMenu}
                     setActiveMenu={setActiveMenu}
+                    setIsMobileMenuOpen={setIsMobileMenuOpen}
                   />
                 ))}
 
@@ -196,6 +198,7 @@ export default function NavBar({ navData }: NavBarTypes) {
                   navMain={navMain}
                   activeMenu={activeMenu}
                   setActiveMenu={setActiveMenu}
+                  setIsMobileMenuOpen={setIsMobileMenuOpen}
                 />
               ))}
 
@@ -208,6 +211,7 @@ export default function NavBar({ navData }: NavBarTypes) {
                     navMain={navMain}
                     activeMenu={activeMenu}
                     setActiveMenu={setActiveMenu}
+                    setIsMobileMenuOpen={setIsMobileMenuOpen}
                   />
                 ))}
 

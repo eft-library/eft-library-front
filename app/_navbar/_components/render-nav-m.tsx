@@ -11,6 +11,7 @@ export default function RenderNavM({
   navMain,
   activeMenu,
   setActiveMenu,
+  setIsMobileMenuOpen,
 }: RenderNavTypes) {
   const { setNpcId } = useAppStore((state) => state);
   const { theme } = useTheme();
@@ -21,6 +22,7 @@ export default function RenderNavM({
     if (parent === "QUEST") {
       setNpcId(value);
     }
+    setIsMobileMenuOpen(false);
   };
 
   return (
