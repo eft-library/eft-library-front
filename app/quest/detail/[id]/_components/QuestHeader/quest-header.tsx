@@ -44,7 +44,9 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
           LV. {quest.min_player_level}
         </Badge>
         <div className="flex items-center gap-2">
-          <span className="text-gray-600 dark:text-gray-300">Kappa</span>
+          <span className="text-gray-600 dark:text-gray-300 font-semibold">
+            Kappa
+          </span>
           <div className="w-6 h-6 bg-lime-400 rounded flex items-center justify-center">
             <Check className="w-4 h-4 text-black" />
           </div>
@@ -55,7 +57,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
       <div className="flex items-start justify-center gap-8 sm:gap-16 max-w-4xl mx-auto">
         <div className="text-center flex-1">
           <div
-            className={`text-sm leading-relaxed ${
+            className={`text-sm leading-relaxed font-semibold ${
               theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
             } cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base`}
           >
@@ -69,7 +71,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
               ).map((prev_quest, index) => (
                 <div
                   key={index}
-                  className={`text-sm ${
+                  className={`text-sm font-semibold ${
                     theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
                   } hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed`}
                 >
@@ -95,7 +97,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
 
         <div className="flex-1 text-center">
           <div
-            className={`text-sm leading-relaxed ${
+            className={`text-sm font-semibold leading-relaxed ${
               theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
             } cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base`}
           >
@@ -107,7 +109,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 (next_quest) => (
                   <div
                     key={`next-quest-${next_quest.task.normalizedName}`}
-                    className={`text-sm ${
+                    className={`text-sm font-semibold ${
                       theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
                     } hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed`}
                   >

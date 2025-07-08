@@ -29,7 +29,10 @@ export default function QuestObjectives({ quest }: QuestDetailTypes) {
                   <span className="flex items-center">
                     {objective[getDescriptionLocaleKey(locale)]}
                     [
-                    <Skull className="inline-block w-4 h-4" strokeWidth={3} />
+                    <Skull
+                      className="inline-block w-4 h-4 text-red-400"
+                      strokeWidth={3}
+                    />
                     x&nbsp;{objective.count}]
                   </span>
                 ) : (
