@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/lib/config/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
+import "../assets/editor.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

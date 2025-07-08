@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Check, X } from "lucide-react";
+import { Check, Skull, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { questI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
@@ -71,7 +71,19 @@ export default function QuestCardM({ quest_list }: QuestCardTypes) {
                     theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
                   }`}
                 >
-                  • {objective[getDescriptionLocaleKey(locale)]}
+                  {objective.type === "shoot" ? (
+                    <>
+                      • {objective[getDescriptionLocaleKey(locale)]}
+                      &nbsp;[
+                      <Skull
+                        className="inline-block w-4 h-4 text-red-400"
+                        strokeWidth={3}
+                      />
+                      x&nbsp;{objective.count}]
+                    </>
+                  ) : (
+                    <>• {objective[getDescriptionLocaleKey(locale)]}</>
+                  )}
                 </li>
               ))}
           </ul>

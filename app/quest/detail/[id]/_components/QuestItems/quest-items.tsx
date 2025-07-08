@@ -6,10 +6,13 @@ import { Check, SquareX } from "lucide-react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import Link from "next/link";
-import { getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { questI18N } from "@/lib/consts/i18nConsts";
 
 export default function QuestItems({ quest }: QuestDetailTypes) {
   const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
   const mergedItems = (quest.objectives ?? []).flatMap((item) => {
     if (
       (item.type === "giveItem" || item.type === "findItem") &&
@@ -56,16 +59,16 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th className="py-3 sm:py-4 px-2 text-gray-600 dark:text-gray-300 font-semibold text-center text-sm sm:text-base">
-                    사진
+                    {questI18N.image[localeKey]}
                   </th>
                   <th className="py-3 sm:py-4 px-2 text-gray-600 dark:text-gray-300 font-semibold text-center text-sm sm:text-base">
-                    이름
+                    {questI18N.itemName[localeKey]}
                   </th>
                   <th className="text-center py-3 sm:py-4 px-2 text-gray-600 dark:text-gray-300 font-semibold text-sm sm:text-base">
-                    수량
+                    {questI18N.quantity[localeKey]}
                   </th>
                   <th className="text-center py-3 sm:py-4 px-2 text-gray-600 dark:text-gray-300 font-semibold text-sm sm:text-base">
-                    인레이드
+                    {questI18N.inRaid[localeKey]}
                   </th>
                 </tr>
               </thead>

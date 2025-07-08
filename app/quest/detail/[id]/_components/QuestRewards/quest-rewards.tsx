@@ -22,7 +22,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
     <Card className="mb-6 sm:mb-8 mx-4 sm:mx-0 bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700/50 shadow-xl">
       <CardContent className="p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-black dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3">
-          {questI18N.objectives[localeKey]}
+          {questI18N.reward[localeKey]}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {quest.finish_rewards.items.map((rewards, rIndex) => (
@@ -34,12 +34,13 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               <Link
                 href={`/item/${rewards.item.normalizedName}`}
                 target="_blank"
+                className="hover:text-yellow-200"
               >
                 <span className="font-semibold">
                   {rewards.item[getOtherLocalizedKey(locale)]}
                 </span>
                 <span className={`font-semibold text-blue-400`}>
-                  x {rewards.quantity}
+                  &nbsp;x&nbsp;{rewards.quantity}
                 </span>
               </Link>
             </div>
@@ -53,7 +54,10 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               <span className="font-semibold">
                 {offer.trader[getOtherLocalizedKey(locale)]}
               </span>
-              <Link href={`/item/${offer.item.normalizedName}`} target="_blank">
+              <Link
+                href={`/item/${offer.item.normalizedName}`}
+                target="_blank hover:text-yellow-200"
+              >
                 <span className={`font-semibold`}>
                   {offer.item[getOtherLocalizedKey(locale)]}
                 </span>
@@ -70,7 +74,9 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
             >
               <div className={`text-lime-400`}>{<TrendingUp />}</div>
               <span className={`font-semibold`}>
-                {standing.trader[getOtherLocalizedKey(locale)]} &nbsp;
+                {standing.trader[getOtherLocalizedKey(locale)]}
+              </span>
+              <span className={`font-semibold`}>
                 {questI18N.standing[localeKey]}
               </span>
               <span className={`font-semibold text-lime-400`}>
@@ -96,6 +102,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
                   <Link
                     href={`/item/${crReward.item.normalizedName}`}
                     target="_blank"
+                    className="hover:text-yellow-200"
                   >
                     <span className={`font-semibold text-red-400`}>
                       {crReward.item[getOtherLocalizedKey(locale)]}

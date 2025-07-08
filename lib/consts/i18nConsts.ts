@@ -270,6 +270,26 @@ export const questI18N = {
     ja: "Kappa",
     ko: "카파",
   },
+  image: {
+    en: "Image",
+    ko: "사진",
+    ja: "画像",
+  },
+  itemName: {
+    en: "Name",
+    ko: "이름",
+    ja: "名前",
+  },
+  quantity: {
+    en: "Quantity",
+    ko: "수량",
+    ja: "数量",
+  },
+  inRaid: {
+    en: "In Raid",
+    ko: "In Raid",
+    ja: "In Raid",
+  },
 };
 
 export const price18N = {
