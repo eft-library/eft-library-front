@@ -8,6 +8,7 @@ import HtmlWithImage from "@/components/custom/html-with-img";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { questI18N } from "@/lib/consts/i18nConsts";
+import Link from "next/link";
 
 export default function QuestGuide({ quest }: QuestDetailTypes) {
   const locale = useLocale();
@@ -19,13 +20,15 @@ export default function QuestGuide({ quest }: QuestDetailTypes) {
           <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
             {questI18N.guide[localeKey]}
           </h2>
-          <Button
-            variant="outline"
-            className="border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 bg-transparent shrink-0 text-sm sm:text-base cursor-pointer"
-          >
-            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-            Wiki Quest Page
-          </Button>
+          <Link href={quest.wiki_url} target="_blank">
+            <Button
+              variant="outline"
+              className="border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 bg-transparent shrink-0 text-sm sm:text-base cursor-pointer"
+            >
+              <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+              Wiki Quest Page
+            </Button>
+          </Link>
         </div>
 
         {quest.guide && <HtmlWithImage contents={quest.guide[localeKey]} />}
