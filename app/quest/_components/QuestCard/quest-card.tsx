@@ -84,8 +84,8 @@ export default function QuestCard({ quest_list }: QuestCardTypes) {
                   <td
                     className={`p-6 font-medium text-base ${
                       theme === "dark"
-                        ? "text-[#FFB82E] hover:text-yellow-200"
-                        : "text-[#FF8C00] hover:text-yellow-200"
+                        ? "text-[#FFB82E] hover:text-yellow-400"
+                        : "text-[#FF8C00] hover:text-yellow-400"
                     }`}
                   >
                     <Link href={`/quest/detail/${quest.url_mapping}`}>
@@ -130,8 +130,8 @@ export default function QuestCard({ quest_list }: QuestCardTypes) {
                           key={`${rIndex}-rewards-${quest.id}`}
                           className={`text-sm font-medium transition-colors ${
                             theme === "dark"
-                              ? "text-[#FFB82E] hover:text-yellow-200"
-                              : "text-[#FF8C00] hover:text-yellow-200"
+                              ? "text-[#FFB82E] hover:text-yellow-400"
+                              : "text-[#FF8C00] hover:text-yellow-400"
                           }`}
                         >
                           •&nbsp;

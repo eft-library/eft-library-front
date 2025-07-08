@@ -34,13 +34,13 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               <Link
                 href={`/item/${rewards.item.normalizedName}`}
                 target="_blank"
-                className="hover:text-yellow-200"
+                className="hover:text-yellow-400"
               >
                 <span className="font-semibold">
                   {rewards.item[getOtherLocalizedKey(locale)]}
                 </span>
                 <span className={`font-semibold text-blue-400`}>
-                  &nbsp;x&nbsp;{rewards.quantity}
+                  {` x ${rewards.quantity}`}
                 </span>
               </Link>
             </div>
@@ -56,7 +56,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               </span>
               <Link
                 href={`/item/${offer.item.normalizedName}`}
-                target="_blank hover:text-yellow-200"
+                target="_blank hover:text-yellow-400"
               >
                 <span className={`font-semibold`}>
                   {offer.item[getOtherLocalizedKey(locale)]}
@@ -84,37 +84,34 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               </span>
             </div>
           ))}
-          {quest.finish_rewards.craftUnlock.map((craft, rIndex) => (
-            <div
-              key={`${rIndex}-craftUnlock-${quest.id}`}
-              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-100 dark:bg-gray-800/30 rounded-lg border border-gray-200 dark:border-gray-700/30"
-            >
-              {craft.rewardItems.map((crReward, crIndex) => (
-                <div
-                  key={`${crIndex}-crReward-${quest.id}`}
-                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-100 dark:bg-gray-800/30 rounded-lg border border-gray-200 dark:border-gray-700/30"
-                >
-                  <div className={`text-red-400`}>{<Pickaxe />}</div>
-                  <span className="font-semibold">
-                    {questI18N.workbenchLevel[localeKey]}
-                  </span>
-                  <span className={`font-semibold`}>{craft.level}</span>
-                  <Link
-                    href={`/item/${crReward.item.normalizedName}`}
-                    target="_blank"
-                    className="hover:text-yellow-200"
-                  >
-                    <span className={`font-semibold text-red-400`}>
-                      {crReward.item[getOtherLocalizedKey(locale)]}
-                    </span>
-                  </Link>
-                  <span className={`font-semibold text-red-400`}>
-                    {questI18N.craftUnlock[localeKey]}
-                  </span>
+          {quest.finish_rewards.craftUnlock.flatMap((craft, rIndex) =>
+            craft.rewardItems.map((crReward, crIndex) => (
+              <div
+                key={`${rIndex}-${crIndex}-craftUnlock-${quest.id}`}
+                className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-100 dark:bg-gray-800/30 rounded-lg border border-gray-200 dark:border-gray-700/30"
+              >
+                <div className="text-red-400">
+                  <Pickaxe />
                 </div>
-              ))}
-            </div>
-          ))}
+                <span className="font-semibold">
+                  {questI18N.workbenchLevel[localeKey]}
+                </span>
+                <span className="font-semibold">{craft.level}</span>
+                <Link
+                  href={`/item/${crReward.item.normalizedName}`}
+                  target="_blank"
+                >
+                  <span className="font-semibold hover:text-yellow-400">
+                    {crReward.item[getOtherLocalizedKey(locale)]}
+                  </span>
+                </Link>
+                <span className="font-semibold text-red-400">
+                  {questI18N.craftUnlock[localeKey]}
+                </span>
+              </div>
+            ))
+          )}
+
           {quest.finish_rewards.skillLevelReward.map((skill, rIndex) => (
             <div
               key={`${rIndex}-skillLevelReward-${quest.id}`}

@@ -2,7 +2,7 @@
 
 import { QuestDetailTypes } from "@/app/quest/_components/quest.types";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, SquareX } from "lucide-react";
+import { Check, X } from "lucide-react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import Link from "next/link";
@@ -94,7 +94,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
                       item.type === "giveQuestItem" ? (
                         <Link
                           href={`/item/${item.itemData.normalizedName}`}
-                          className="hover:text-yellow-200"
+                          className="hover:text-yellow-400"
                           target="_blank"
                         >
                           {item.itemData[getOtherLocalizedKey(locale)]}
@@ -113,7 +113,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
                         </div>
                       ) : (
                         <div className="w-5 h-5 sm:w-6 sm:h-6 bg-red-400 rounded mx-auto flex items-center justify-center">
-                          <SquareX className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
+                          <X className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
                         </div>
                       )}
                     </td>
