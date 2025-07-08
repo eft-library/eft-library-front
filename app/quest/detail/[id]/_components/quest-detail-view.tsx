@@ -5,6 +5,7 @@ import QuestHeader from "./QuestHeader/quest-header";
 import QuestObjectives from "./QuestObjectives/quest-objectives";
 import QuestRewards from "./QuestRewards/quest-rewards";
 import QuestItems from "./QuestItems/quest-items";
+import QuestGuide from "./QuestGuide/quest-guide";
 
 export default function QuestDetailView({ quest }: QuestDetailViewTypes) {
   return (
@@ -13,6 +14,7 @@ export default function QuestDetailView({ quest }: QuestDetailViewTypes) {
       <QuestObjectives quest={quest} />
       <QuestRewards quest={quest} />
       <QuestItems quest={quest} />
+      <QuestGuide quest={quest} />
     </div>
   );
 }
