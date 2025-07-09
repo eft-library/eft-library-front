@@ -4,6 +4,9 @@
 // import TextSpan from "@/components/custom/gridContents/textSpan";
 // import { ALL_COLOR } from "../consts/colorConsts";
 
+import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
+import { getOtherLocalizedKey } from "./localeFunction";
+
 // export const noReturnSkill = [
 //   "Painkiller",
 //   "HandsTremor",
@@ -203,39 +206,39 @@
 //   return firstParagraph ? firstParagraph.outerHTML : "";
 // };
 
-// export const groupAndSummarizeChances = (
-//   spawnChances: SpawnChance[],
-//   localeKey: string
-// ) => {
-//   const grouped = new Map<string, number[]>();
+export const groupAndSummarizeChances = (
+  spawnChances: SpawnChance[],
+  localeKey: string
+) => {
+  const grouped = new Map<string, number[]>();
 
-//   for (const spawn of spawnChances) {
-//     const list = grouped.get(spawn[getOtherLocalizedKey(localeKey)]) ?? [];
-//     list.push(spawn.spawnChance);
-//     grouped.set(spawn[getOtherLocalizedKey(localeKey)], list);
-//   }
-//   const summarized = Array.from(grouped.entries()).map(([name_en, chances]) => {
-//     const min = Math.min(...chances);
-//     const max = Math.max(...chances);
-//     return { name_en, min, max };
-//   });
+  for (const spawn of spawnChances) {
+    const list = grouped.get(spawn[getOtherLocalizedKey(localeKey)]) ?? [];
+    list.push(spawn.spawnChance);
+    grouped.set(spawn[getOtherLocalizedKey(localeKey)], list);
+  }
+  const summarized = Array.from(grouped.entries()).map(([name_en, chances]) => {
+    const min = Math.min(...chances);
+    const max = Math.max(...chances);
+    return { name_en, min, max };
+  });
 
-//   return summarized;
-// };
+  return summarized;
+};
 
-// export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
-//   const seen = new Set<string>();
-//   const uniqueList: typeof spawnChances = [];
+export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
+  const seen = new Set<string>();
+  const uniqueList: typeof spawnChances = [];
 
-//   for (const item of spawnChances) {
-//     if (!seen.has(item.name_en)) {
-//       seen.add(item.name_en);
-//       uniqueList.push(item);
-//     }
-//   }
+  for (const item of spawnChances) {
+    if (!seen.has(item.name_en)) {
+      seen.add(item.name_en);
+      uniqueList.push(item);
+    }
+  }
 
-//   return uniqueList;
-// };
+  return uniqueList;
+};
 
 // export const drugText = (label: string, value: number, positive: boolean) => {
 //   return (

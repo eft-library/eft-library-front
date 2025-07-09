@@ -16,8 +16,13 @@ export const information18N = {
 
 export const boss18N = {
   title: { en: "Boss", ja: "ボス", ko: "보스" },
+  photo: { en: "Photo", ja: "写真", ko: "사진" },
+  name: { en: "Name", ja: "名前", ko: "이름" },
+  affiliation: { en: "Affiliation", ja: "所属", ko: "소속" },
   location: { en: "Location", ja: "位置", ko: "위치" },
+  spawnRate: { en: "Spawn Rate", ja: "出現率", ko: "스폰 확률" },
   health: { en: "Health", ja: "体力", ko: "체력" },
+  followers: { en: "Followers", ja: "フォロワー", ko: "추종자" },
   loot: { en: "Loot", ja: "ルート", ko: "전리품" },
 };
 

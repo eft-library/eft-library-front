@@ -38,6 +38,10 @@ interface ItemDetail {
   gridImageLink: string;
 }
 
+export interface BossDetail {
+  bossData: BossData;
+}
+
 export interface BossViewTypes {
   bossData: BossData;
 }
