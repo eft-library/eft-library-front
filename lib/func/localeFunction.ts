@@ -10,6 +10,18 @@ export const getLocaleKey = (locale: string) => {
   }
 };
 
+export const getHealthKey = (locale: string) => {
+  switch (locale) {
+    case "ja":
+      return "bodyPart_ja";
+    case "ko":
+      return "bodyPart_ko";
+    case "en":
+    default:
+      return "bodyPart_en";
+  }
+};
+
 export const getZonesLocaleKey = (locale: string) => {
   switch (locale) {
     case "ja":

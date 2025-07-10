@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import type { BossHealth } from "../boss.types";
-import { getLocaleKey } from "@/lib/func/localeFunction";
+import { getLocaleKey, getHealthKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import { useState, useEffect } from "react";
 import { boss18N } from "@/lib/consts/i18nConsts";
@@ -86,29 +86,19 @@ export default function BossHealth({ subFollowers }: BossHealth) {
 
             {/* Health Bars - You can customize these based on your data structure */}
             <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">HP</span>
-                  <span className="text-sm text-muted-foreground">100%</span>
+              {selectedFollower?.health_detail.map((health_detail, index) => (
+                <div className="space-y-2" key={`boss-health-${index}`}>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {health_detail[getHealthKey(localeKey)]}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {health_detail.max}
+                    </span>
+                  </div>
+                  <Progress value={health_detail.max} className="h-3" />
                 </div>
-                <Progress value={100} className="h-3" />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">Shield</span>
-                  <span className="text-sm text-muted-foreground">75%</span>
-                </div>
-                <Progress value={75} className="h-3" />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">Energy</span>
-                  <span className="text-sm text-muted-foreground">50%</span>
-                </div>
-                <Progress value={50} className="h-3" />
-              </div>
+              ))}
             </div>
           </div>
         </div>

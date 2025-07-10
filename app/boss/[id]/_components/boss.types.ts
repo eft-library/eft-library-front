@@ -8,12 +8,20 @@ export interface Boss {
   name: LocaleName;
   parent_id: string;
   image: string;
+  health_detail: HealthDetail[];
   item_info: ItemInfo[];
   location_guide: LocaleName;
   health_image: string;
   url_mapping: string;
   is_boss: boolean;
   children: Boss[];
+}
+
+interface HealthDetail {
+  max: number;
+  bodyPart_en: string;
+  bodyPart_ja: string;
+  bodyPart_ko: string;
 }
 
 export interface SpawnChance {

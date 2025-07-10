@@ -68,36 +68,36 @@ export default function BossSelector({ bossData }: BossDetail) {
             <table className="w-full min-w-[600px]">
               <thead>
                 <tr className="border-b-2 bg-muted/30">
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.photo[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.name[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.affiliation[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.location[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.spawnRate[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.health[localeKey]}
                   </th>
-                  <th className="text-left p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {boss18N.followers[localeKey]}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b hover:bg-muted/20 transition-colors">
-                  <td className="p-3 sm:p-4 relative">
+                  <td className="text-center p-3 sm:p-4 relative">
                     <Image
                       src={bossData.boss.image}
                       alt={bossData.boss.name.en}
-                      className="w-16 h-16 sm:w-24 sm:h-24 rounded object-cover"
+                      className="w-16 h-16 sm:w-24 sm:h-24 rounded object-cover mx-auto"
                       placeholder="blur"
                       blurDataURL={
                         "data:image/jpeg;base64," +
@@ -108,13 +108,13 @@ export default function BossSelector({ bossData }: BossDetail) {
                       height={56}
                     />
                   </td>
-                  <td className="p-3 sm:p-4 font-semibold text-sm sm:text-base">
+                  <td className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
                     {bossData.boss.name[localeKey]}
                   </td>
-                  <td className="p-3 sm:p-4 text-sm sm:text-base">
+                  <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.faction}
                   </td>
-                  <td className="p-3 sm:p-4 text-sm sm:text-base">
+                  <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.spawn_chance &&
                       groupSpawnAreas(bossData.boss.spawn_chance).map(
                         (spawn, index) => (
@@ -133,7 +133,7 @@ export default function BossSelector({ bossData }: BossDetail) {
                         )
                       )}
                   </td>
-                  <td className="p-3 sm:p-4 text-sm sm:text-base">
+                  <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.spawn_chance &&
                       groupAndSummarizeChances(
                         bossData.boss.spawn_chance,
@@ -157,10 +157,10 @@ export default function BossSelector({ bossData }: BossDetail) {
                         </React.Fragment>
                       ))}
                   </td>
-                  <td className="p-3 sm:p-4 font-bold text-sm sm:text-base text-primary">
+                  <td className="text-center p-3 sm:p-4 font-bold text-sm sm:text-base text-primary">
                     {bossData.boss.health_total}
                   </td>
-                  <td className="p-3 sm:p-4 text-sm sm:text-base">
+                  <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.children &&
                     bossData.boss.children.some((child) => !child.is_boss) ? (
                       bossData.boss.children.map(
