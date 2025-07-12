@@ -41,7 +41,7 @@ export default async function RootLayout({
           <AuthContext>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="dark"
               enableSystem
               disableTransitionOnChange
             >

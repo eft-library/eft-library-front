@@ -7,38 +7,48 @@
 import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
 
-// export const noReturnSkill = [
-//   "Painkiller",
-//   "HandsTremor",
-//   "Removeallbloodlosses",
-//   "QuantumTunnelling",
-//   "Pain",
-//   "Antidote",
-// ];
+export const noReturnSkill = [
+  "Painkiller",
+  "HandsTremor",
+  "Removeallbloodlosses",
+  "QuantumTunnelling",
+  "Pain",
+  "Antidote",
+];
 
-// export const checkSkillPlus = (skill_name_en: string) => {
-//   switch (skill_name_en) {
-//     case "HandsTremor":
-//       return "Red";
-//     case "QuantumTunnelling":
-//       return "Red";
-//     case "Painkiller":
-//       return "BrightCyan";
-//     case "Removeallbloodlosses":
-//       return "BrightCyan";
-//     case "Pain":
-//       return "BrightCyan";
-//     case "Antidote":
-//       return "BrightCyan";
-//     default:
-//       return "white";
-//   }
-// };
+export const checkSkillPlus = (skill_name_en: string) => {
+  switch (skill_name_en) {
+    case "HandsTremor":
+      return "text-red-400";
+    case "QuantumTunnelling":
+      return "text-red-400";
+    case "Painkiller":
+      return "text-green-400";
+    case "Removeallbloodlosses":
+      return "text-green-400";
+    case "Pain":
+      return "text-green-400";
+    case "Antidote":
+      return "text-green-400";
+    default:
+      return "text-gray-900";
+  }
+};
 
-// export const getPlusMinus = (text: number) => {
-//   if (text === 0) return "0";
-//   return text > 0 ? ` +${text}` : `${text}`;
-// };
+export const checkValuePlus = (effect: number) => {
+  if (effect == 0) {
+    return "text-gray-900";
+  } else if (effect > 0) {
+    return "text-green-400";
+  } else {
+    return "text-red-400";
+  }
+};
+
+export const getPlusMinus = (text: number) => {
+  if (text === 0) return "0";
+  return text > 0 ? ` +${text}` : `${text}`;
+};
 
 // export const highlightMatchedText = (text: string, keyword: string) => {
 //   if (keyword.length < 2)
@@ -135,16 +145,6 @@ import { getOtherLocalizedKey } from "./localeFunction";
 //     }
 //   }
 //   return effects;
-// };
-
-// export const checkValuePlus = (effect: number) => {
-//   if (effect == 0) {
-//     return "white";
-//   } else if (effect > 0) {
-//     return "BrightCyan";
-//   } else {
-//     return "Red";
-//   }
 // };
 
 // export const checkPlus = (effect: number | string | null) => {

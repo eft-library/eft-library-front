@@ -105,7 +105,71 @@ export const itemI18N = {
     title: { en: "Weapon", ja: "ガンズ", ko: "무기" },
   },
   medical: {
-    title: { en: "Medical", ja: "医療品", ko: "의료품" },
+    title: {
+      en: "Medical",
+      ja: "医療品",
+      ko: "의료품",
+    },
+    sec: {
+      en: "Seconds",
+      ja: "秒",
+      ko: "초",
+    },
+    photo: {
+      en: "Photo",
+      ja: "写真",
+      ko: "사진",
+    },
+    name: {
+      en: "Name",
+      ja: "名前",
+      ko: "이름",
+    },
+    healAmount: {
+      en: "Heal Amount",
+      ja: "回復量",
+      ko: "회복량",
+    },
+    buff: {
+      en: "Buff",
+      ja: "バフ",
+      ko: "버프",
+    },
+    duration: {
+      en: "Duration",
+      ja: "使用時間",
+      ko: "사용 시간",
+    },
+    debuff: {
+      en: "Debuff",
+      ja: "デバフ",
+      ko: "디버프",
+    },
+    usageCount: {
+      en: "Usage Count",
+      ja: "使用回数",
+      ko: "사용 횟수",
+    },
+    energy: {
+      en: "Energy",
+      ja: "エネルギー",
+      ko: "에너지",
+    },
+    hydration: {
+      en: "Hydration",
+      ja: "水分",
+      ko: "수분",
+    },
+    duration_delay: {
+      en: "Duration",
+      ja: "持続時間",
+      ko: "초 지속",
+    },
+    painKiller: {
+      en: "Painkiller",
+      ja: "鎮痛剤",
+      ko: "진통제",
+    },
   },
   wipe: {
     title: { en: "Wipe", ja: "シーズン初期化", ko: "시즌 초기화" },
