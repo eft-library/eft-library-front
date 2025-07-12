@@ -197,14 +197,14 @@ export const getPlusMinus = (text: number) => {
 //   }
 // };
 
-// export const getFirstParagraph = (htmlString: string) => {
-//   const parser = new DOMParser();
-//   const doc = parser.parseFromString(htmlString, "text/html");
+export const getFirstParagraph = (htmlString: string) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
 
-//   const firstParagraph = doc.querySelector("p");
+  const firstParagraph = doc.querySelector("p");
 
-//   return firstParagraph ? firstParagraph.outerHTML : "";
-// };
+  return firstParagraph ? firstParagraph.outerHTML : "";
+};
 
 export const groupAndSummarizeChances = (
   spawnChances: SpawnChance[],
