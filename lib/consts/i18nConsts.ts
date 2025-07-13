@@ -106,6 +106,7 @@ export const itemI18N = {
       ko: "방탄 등급별 총알 효율성",
       ja: "アーマークラス別弾丸効率",
     },
+    title: { en: "Ammo", ja: "弾薬", ko: "탄약" },
   },
   armBand: { title: { en: "Arm Band", ja: "アームバンド", ko: "완장" } },
   armorVest: { title: { en: "Armor Vest", ja: "アーマー", ko: "방탄 조끼" } },
