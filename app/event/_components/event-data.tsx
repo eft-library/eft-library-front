@@ -10,42 +10,42 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { information18N } from "@/lib/consts/i18nConsts";
 
-export default function NoticeData() {
+export default function EventData() {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const [noticeData, setNoticeData] = useState<InformationData>();
+  const [eventData, setEventData] = useState<InformationData>();
   const param = useSearchParams();
 
   useEffect(() => {
-    const getNoticePage = async () => {
+    const getEventPage = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_NOTICE}?page=${Number(
+        `${API_ENDPOINTS.GET_EVENT}?page=${Number(
           param.get("id")
         )}&page_size=10`
       );
 
       if (!data || data.status !== 200) {
         console.error(
-          "Failed to fetch notice data:",
+          "Failed to fetch event data:",
           data?.msg || "Unknown error"
         );
         return null;
       }
-      setNoticeData(data.data);
+      setEventData(data.data);
     };
 
     if (param.get("id")) {
-      getNoticePage();
+      getEventPage();
     }
   }, [param]);
 
-  if (!noticeData) return null;
+  if (!eventData) return null;
 
   return (
     <Information
-      informationData={noticeData}
-      routeLink="/notice"
-      title={information18N.notice.title[localeKey]}
+      informationData={eventData}
+      routeLink="/event"
+      title={information18N.event.title[localeKey]}
     />
   );
 }

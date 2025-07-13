@@ -15,11 +15,21 @@ export interface InformationTypes {
   informationData: InformationData;
   routeLink: string;
   title: string;
-  badgeColor: string;
 }
 
 interface LocaleName {
   en: string;
   ja: string;
   ko: string;
+}
+
+export interface InformationInfoDetail {
+  information_group: InformationInfo[];
+  information: InformationInfo;
+}
+
+export interface InformationDetailTypes {
+  informationInfo: InformationInfoDetail;
+  routeLink: string;
+  title: string;
 }
