@@ -8,7 +8,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { information18N } from "@/lib/consts/i18nConsts";
 import { InformationInfoDetail } from "@/components/custom/information/information.types";
-import InformationDetail from "@/components/custom/information-detail";
+import InformationDetail from "@/components/custom/information/information-detail";
 
 export default function PatchNotesDetailData() {
   const [patchNotesInfo, setPatchNotesInfo] = useState<InformationInfoDetail>();

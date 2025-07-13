@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type { InformationData } from "@/components/custom/information/information.types";
-import Information from "@/components/custom/informaition";
+import Information from "@/components/custom/information/informaition";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { information18N } from "@/lib/consts/i18nConsts";

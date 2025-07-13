@@ -1,14 +1,14 @@
 "use client";
 
-import type { InformationTypes } from "./information/information.types";
-import { Card, CardContent } from "../ui/card";
+import type { InformationTypes } from "./information.types";
+import { Card, CardContent } from "../../ui/card";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { getFirstParagraph, returnBadgeColor } from "@/lib/func/jsxfunction";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { formatISODate } from "@/lib/func/formatTime";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 import InformationSelector from "./information-selector";
 
 export default function Information({

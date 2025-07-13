@@ -80,7 +80,33 @@ export const hideoutI18n = {
 };
 
 export const itemI18N = {
-  ammo: { title: { en: "Ammo", ja: "弾薬", ko: "탄약" } },
+  ammo: {
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    damage: {
+      en: "Damage",
+      ko: "데미지",
+      ja: "ダメージ",
+    },
+    penetration: {
+      en: "Penetration",
+      ko: "관통력",
+      ja: "貫通力",
+    },
+    armorEffectiveness: {
+      en: "Armor Class Effectiveness",
+      ko: "방탄 등급별 총알 효율성",
+      ja: "アーマークラス別弾丸効率",
+    },
+  },
   armBand: { title: { en: "Arm Band", ja: "アームバンド", ko: "완장" } },
   armorVest: { title: { en: "Armor Vest", ja: "アーマー", ko: "방탄 조끼" } },
   backpack: { title: { en: "Backpack", ja: "バックパック", ko: "가방" } },

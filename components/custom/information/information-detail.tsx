@@ -2,9 +2,9 @@
 
 import { Separator } from "@radix-ui/react-separator";
 import { ChevronLeft, Calendar } from "lucide-react";
-import { Button } from "../ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import type { InformationDetailTypes } from "./information/information.types";
+import { Button } from "../../ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "../../ui/card";
+import type { InformationDetailTypes } from "./information.types";
 import Link from "next/link";
 import { newsI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
@@ -12,7 +12,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useTheme } from "next-themes";
 import { returnBadgeColor } from "@/lib/func/jsxfunction";
 import { formatISODate } from "@/lib/func/formatTime";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 
 export default function InformationDetail({
   informationInfo,

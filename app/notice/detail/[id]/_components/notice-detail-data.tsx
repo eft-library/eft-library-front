@@ -1,6 +1,6 @@
 "use client";
 
-import InformationDetail from "@/components/custom/information-detail";
+import InformationDetail from "@/components/custom/information/information-detail";
 import { InformationInfoDetail } from "@/components/custom/information/information.types";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
