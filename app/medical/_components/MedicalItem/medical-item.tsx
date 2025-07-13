@@ -7,10 +7,7 @@ import { itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MedicalItem({
-  medicalList,
-  searchWord,
-}: MedicalItemTypes) {
+export default function MedicalItem({ medicalList }: MedicalItemTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 

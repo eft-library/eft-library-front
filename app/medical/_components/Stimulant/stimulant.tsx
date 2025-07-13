@@ -14,7 +14,7 @@ import {
 } from "@/lib/func/jsxfunction";
 import Link from "next/link";
 
-export default function Stimulant({ medicalList, searchWord }: StimulantTypes) {
+export default function Stimulant({ medicalList }: StimulantTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();

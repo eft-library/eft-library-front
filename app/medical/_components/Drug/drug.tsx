@@ -7,7 +7,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
 
-export default function Drug({ medicalList, searchWord }: DrugTypes) {
+export default function Drug({ medicalList }: DrugTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 

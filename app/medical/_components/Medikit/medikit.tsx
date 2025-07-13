@@ -7,7 +7,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
 
-export default function Medikit({ medicalList, searchWord }: MediKitTypes) {
+export default function Medikit({ medicalList }: MediKitTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
