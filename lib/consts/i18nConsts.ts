@@ -186,6 +186,16 @@ export const itemI18N = {
   },
   weapon: {
     title: { en: "Weapon", ja: "ガンズ", ko: "무기" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
   },
   medical: {
     title: {
