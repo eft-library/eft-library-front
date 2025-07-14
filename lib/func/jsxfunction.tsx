@@ -20,23 +20,15 @@ export const returnBadgeColor = (routeLink: string) => {
   }
 };
 
-export const getEffectivenessColor = (value: number, isDark: boolean) => {
+export const getEffectivenessColor = (value: number) => {
   if (value === 0) {
-    return isDark
-      ? "bg-red-900 border-red-700 text-red-300"
-      : "bg-red-100 border-red-300 text-red-700";
+    return "dark:bg-red-900 dark:border-red-700 dark:text-red-300bg-red-100 border-red-300 text-red-700";
   } else if (value <= 2) {
-    return isDark
-      ? "bg-orange-900 border-orange-700 text-orange-300"
-      : "bg-orange-100 border-orange-300 text-orange-700";
+    return "dark:bg-orange-900 dark:border-orange-700 dark:text-orange-300 bg-orange-100 border-orange-300 text-orange-700";
   } else if (value <= 4) {
-    return isDark
-      ? "bg-yellow-900 border-yellow-700 text-yellow-300"
-      : "bg-yellow-100 border-yellow-300 text-yellow-700";
+    return "dark:bg-yellow-900 dark:border-yellow-700 dark:text-yellow-300 bg-yellow-100 border-yellow-300 text-yellow-700";
   } else {
-    return isDark
-      ? "bg-green-900 border-green-700 text-green-300"
-      : "bg-green-100 border-green-300 text-green-700";
+    return "dark:bg-green-900 dark:border-green-700 dark:text-green-300 bg-green-100 border-green-300 text-green-700";
   }
 };
 

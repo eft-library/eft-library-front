@@ -2,7 +2,6 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useTheme } from "next-themes";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import type { AmmoListTypes } from "../ammo.types";
 import Image from "next/image";
@@ -13,7 +12,6 @@ import ItemTableRowWrapper from "@/components/custom/itemTable/item-table-row-wr
 export default function AmmoTable({ ammoList }: AmmoListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
   const columns = [
     { key: "photo", colSpan: 1, colText: itemI18N.ammo.photo[localeKey] },
     { key: "name", colSpan: 2, colText: itemI18N.ammo.name[localeKey] },
@@ -45,15 +43,12 @@ export default function AmmoTable({ ammoList }: AmmoListTypes) {
             dataIndex={index}
             dataLength={ammoList.length}
             key={item.id}
+            gridCols={7}
           >
             {/* Image */}
             <div className="col-span-1 flex justify-center">
               <div
-                className={`w-12 h-12 rounded border flex items-center justify-center ${
-                  theme === "dark"
-                    ? "bg-slate-600 border-slate-500"
-                    : "bg-gray-100 border-gray-300"
-                }`}
+                className={`w-12 h-12 rounded border flex items-center justify-center dark:bg-slate-600 dark:border-slate-500 bg-gray-100 border-gray-300`}
               >
                 <Image
                   src={item.image || "/placeholder.svg"}
@@ -92,8 +87,7 @@ export default function AmmoTable({ ammoList }: AmmoListTypes) {
                     <div
                       key={`ammo-efficiency-${idx}`}
                       className={`w-8 h-8 rounded border-2 flex items-center justify-center text-sm font-bold ${getEffectivenessColor(
-                        value,
-                        theme === "dark"
+                        value
                       )}`}
                     >
                       {value}

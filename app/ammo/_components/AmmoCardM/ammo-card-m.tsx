@@ -2,7 +2,6 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useTheme } from "next-themes";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import type { AmmoListTypes } from "../ammo.types";
 import Image from "next/image";
@@ -12,7 +11,6 @@ import ItemTableRowWrapperM from "@/components/custom/itemTable/item-table-row-w
 export default function AmmoCardM({ ammoList }: AmmoListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
 
   return (
     <div className="lg:hidden space-y-4">
@@ -36,11 +34,7 @@ export default function AmmoCardM({ ammoList }: AmmoListTypes) {
               </h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span
-                    className={
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }
-                  >
+                  <span className="dark:text-gray-400 text-gray-600">
                     {itemI18N.ammo.damage[localeKey]}:
                   </span>
                   <span className="text-yellow-500 font-semibold ml-2">
@@ -48,11 +42,7 @@ export default function AmmoCardM({ ammoList }: AmmoListTypes) {
                   </span>
                 </div>
                 <div>
-                  <span
-                    className={
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }
-                  >
+                  <span className="dark:text-gray-400 text-gray-600">
                     {itemI18N.ammo.penetration[localeKey]}:
                   </span>
                   <span className="text-blue-500 font-semibold ml-2">
@@ -65,9 +55,7 @@ export default function AmmoCardM({ ammoList }: AmmoListTypes) {
 
           <div className="flex items-center gap-4">
             <div
-              className={`text-sm font-medium mb-2 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
+              className={`text-sm font-medium mb-2 dark:text-gray-300 text-gray-700`}
             >
               {itemI18N.ammo.armorEffectiveness[localeKey]}
             </div>
@@ -77,8 +65,7 @@ export default function AmmoCardM({ ammoList }: AmmoListTypes) {
                   <div key={`ammo-efficiency-${idx}`} className="text-center">
                     <div
                       className={`w-8 h-8 mx-auto rounded border-2 flex items-center justify-center text-sm font-bold ${getEffectivenessColor(
-                        value,
-                        theme === "dark"
+                        value
                       )}`}
                     >
                       {value}

@@ -15,6 +15,7 @@ export interface ItemTableRowWrapperTypes {
   dataLength: number;
   dataIndex: number;
   children: React.ReactNode;
+  gridCols: number;
 }
 
 export interface ItemTableRowWrapperMTypes {

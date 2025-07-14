@@ -108,7 +108,19 @@ export const itemI18N = {
     },
     title: { en: "Ammo", ja: "弾薬", ko: "탄약" },
   },
-  armBand: { title: { en: "Arm Band", ja: "アームバンド", ko: "완장" } },
+  armBand: {
+    title: { en: "Arm Band", ja: "アームバンド", ko: "완장" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+  },
   armorVest: { title: { en: "Armor Vest", ja: "アーマー", ko: "방탄 조끼" } },
   backpack: { title: { en: "Backpack", ja: "バックパック", ko: "가방" } },
   container: { title: { en: "Container", ja: "コンテナ", ko: "컨테이너" } },
