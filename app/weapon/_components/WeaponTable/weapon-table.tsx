@@ -33,7 +33,7 @@ export default function WeaponTable({ weaponList }: WeaponListTypes) {
             gridCols={2}
           >
             {/* Image */}
-            <div className="col-span-1 flex justify-center">
+            <div className="col-span-1 flex justify-end items-center">
               <div className="flex justify-center items-center w-full md:w-auto mb-4 md:mb-0 md:border-r md:border-gray-200 dark:md:border-gray-700 md:pr-4">
                 <Image
                   src={item.image || "/placeholder.svg"}
