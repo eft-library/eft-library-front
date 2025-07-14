@@ -29,14 +29,11 @@ export default function ArmBandCardM({ armBandList }: ArmBandListTypes) {
               />
             </div>
 
-            {/* 이름들 - 왼쪽에 붙이고 약간의 간격으로 배치 */}
             <div className="flex items-center gap-8 min-w-0">
-              {/* 첫 번째 이름 - 왼쪽에 붙임 */}
               <h3 className="font-semibold text-lg break-words">
                 {itemI18N.armBand.name[localeKey]}
               </h3>
 
-              {/* 두 번째 이름 - 약간의 간격 */}
               <h3 className="font-semibold text-lg break-words text-gray-600 dark:text-gray-300">
                 {item.name[localeKey]}
               </h3>
