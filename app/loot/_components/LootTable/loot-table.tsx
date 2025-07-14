@@ -3,17 +3,17 @@
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import type { ArmBandListTypes } from "../arm-band.types";
 import Image from "next/image";
 import ItemTableHeader from "@/components/custom/itemTable/item-table-header";
 import ItemTableRowWrapper from "@/components/custom/itemTable/item-table-row-wrapper";
+import type { LootListTypes } from "../loot.types";
 
-export default function ArmBandTable({ armBandList }: ArmBandListTypes) {
+export default function LootTable({ lootList }: LootListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const columns = [
-    { key: "photo", colSpan: 1, colText: itemI18N.armBand.photo[localeKey] },
-    { key: "name", colSpan: 1, colText: itemI18N.armBand.name[localeKey] },
+    { key: "photo", colSpan: 1, colText: itemI18N.loot.photo[localeKey] },
+    { key: "name", colSpan: 1, colText: itemI18N.loot.name[localeKey] },
   ];
   return (
     <div className="hidden lg:block">
@@ -24,11 +24,11 @@ export default function ArmBandTable({ armBandList }: ArmBandListTypes) {
         <ItemTableHeader gridColSpan={2} columns={columns} />
 
         {/* Table Rows */}
-        {armBandList.map((item, index) => (
+        {lootList.map((item, index) => (
           <ItemTableRowWrapper
             urlMapping={item.url_mapping}
             dataIndex={index}
-            dataLength={armBandList.length}
+            dataLength={lootList.length}
             key={item.id}
             gridCols={2}
           >

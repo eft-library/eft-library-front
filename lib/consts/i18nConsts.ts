@@ -148,7 +148,19 @@ export const itemI18N = {
   container: { title: { en: "Container", ja: "コンテナ", ko: "컨테이너" } },
   rig: { title: { en: "Rig", ja: "リグ", ko: "전술 조끼" } },
   key: { title: { en: "Key", ja: "鍵類", ko: "열쇠" } },
-  loot: { title: { en: "Loot", ja: "ルート", ko: "전리품" } },
+  loot: {
+    title: { en: "Loot", ja: "ルート", ko: "전리품" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+  },
   provisions: { title: { en: "Provisions", ja: "食料品", ko: "식량" } },
   faceCover: {
     title: { en: "Face Cover", ja: "フェイスカバー", ko: "얼굴 커버" },
@@ -158,6 +170,16 @@ export const itemI18N = {
   },
   headset: {
     title: { en: "Headset", ja: "ヘッドセット", ko: "헤드셋" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
   },
   headWear: {
     title: { en: "Head Wear", ja: "ヘルメット", ko: "방탄모" },

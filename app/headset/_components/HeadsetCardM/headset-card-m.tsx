@@ -3,17 +3,16 @@
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import Image from "next/image";
-import type { ArmBandListTypes } from "../arm-band.types";
+import type { HeadsetListTypes } from "../headset.types";
 import Link from "next/link";
 
-export default function ArmBandCardM({ armBandList }: ArmBandListTypes) {
+export default function HeadsetCardM({ headsetList }: HeadsetListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
   return (
     <div className="lg:hidden space-y-4">
       <div className="grid gap-4 md:gap-0">
-        {armBandList.map((item) => (
+        {headsetList.map((item) => (
           <Link
             key={item.id}
             target="_blank"
