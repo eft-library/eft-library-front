@@ -24,8 +24,8 @@ export default function WeaponCardM({ weaponList }: WeaponListTypes) {
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={150}
-                  height={75}
+                  width={item.image_width * 52}
+                  height={item.image_height * 52}
                   style={{ objectFit: "contain" }}
                   className="rounded-md border border-gray-200 dark:border-gray-700"
                 />

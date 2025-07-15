@@ -38,8 +38,8 @@ export default function LootTable({ lootList }: LootListTypes) {
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={120}
-                  height={120}
+                  width={item.image_width * 64}
+                  height={item.image_height * 64}
                   style={{ objectFit: "contain" }}
                   className="rounded-md border border-gray-200 dark:border-gray-700"
                 />
