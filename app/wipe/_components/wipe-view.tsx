@@ -38,11 +38,8 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
             <div>
               <CardTitle className="text-xl sm:text-2xl font-bold">
-                EFT Wipe Timeline
+                {itemI18N.wipe.title[localeKey]}
               </CardTitle>
-              <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                Escape from Tarkov patch history and wipe durations
-              </p>
             </div>
           </CardHeader>
           <CardContent>
@@ -124,14 +121,14 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400"></div>
-                <span>Active Wipe</span>
+                <span>Active</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-gradient-to-r from-rose-400 to-pink-400"></div>
-                <span>Completed Wipe</span>
+                <span>Completed</span>
               </div>
               <div className="ml-auto">
-                <span>Total Wipes: {wipeList.length}</span>
+                <span>Total: {wipeList.length}</span>
               </div>
             </div>
           </CardContent>
