@@ -20,7 +20,6 @@ const getDefaultDates = () => {
   const start = new Date(end); // end를 기준으로 복사
   start.setDate(start.getDate() - 7); // 8일 전 (어제 기준 7일 전)
 
-  console.log(start, end);
   return { start, end };
 };
 

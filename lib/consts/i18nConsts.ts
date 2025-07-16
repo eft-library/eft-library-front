@@ -302,6 +302,21 @@ export const roadmapI18N = {
     ja: "カッパクエストを見る",
     ko: "카파 퀘스트 보기",
   },
+  overallProgress: {
+    en: "Overall Progress",
+    ko: "전체 진행률",
+    ja: "全体の進行度",
+  },
+  traderSelectTitle: {
+    en: "Select Trader",
+    ko: "상인 선택",
+    ja: "トレーダーを選択",
+  },
+  traderSelectDescription: {
+    en: "Please select a trader",
+    ko: "상인을 선택해주세요",
+    ja: "取引するトレーダーを選んでください",
+  },
 };
 
 export const rankI18N = {

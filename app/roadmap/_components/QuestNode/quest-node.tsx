@@ -8,8 +8,11 @@ import { useLocale } from "next-intl";
 import { Check, ExternalLink, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { node_color } from "@/lib/func/jsxfunction";
+import { useTheme } from "next-themes";
 
 export default function QuestNode(props: any) {
+  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -21,22 +24,6 @@ export default function QuestNode(props: any) {
     props.data.view_only_kappa && !props.data.kappa_required
   );
 
-  const getGradientClass = () => {
-    const colorMap: Record<string, string> = {
-      blue: "from-blue-500 to-purple-600",
-      green: "from-green-500 to-teal-600",
-      red: "from-red-500 to-pink-600",
-      yellow: "from-yellow-500 to-orange-600",
-      purple: "from-emerald-500 to-green-600",
-    };
-
-    const colorKey = Object.keys(colorMap).find((key) =>
-      props.data.node_color?.toLowerCase().includes(key)
-    );
-
-    return colorMap[colorKey || "primary"];
-  };
-
   return (
     <div
       className={cn(
@@ -44,13 +31,21 @@ export default function QuestNode(props: any) {
         "transition-all duration-300 ease-in-out",
         "hover:scale-105 hover:shadow-2xl"
       )}
+      style={{
+        opacity:
+          props.data.view_only_kappa && !props.data.kappa_required ? 0 : 1,
+        pointerEvents:
+          props.data.view_only_kappa && !props.data.kappa_required
+            ? "none"
+            : "auto",
+      }}
     >
       {/* Main card with gradient background */}
       <div
         className={cn(
           "relative w-full h-full rounded-xl p-1",
           "bg-gradient-to-br",
-          getGradientClass(),
+          node_color(props.data.npc_id, theme),
           "shadow-lg hover:shadow-xl transition-shadow duration-300"
         )}
       >

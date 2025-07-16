@@ -7,6 +7,63 @@
 import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
 
+export const node_color = (
+  id: string,
+  isDarkMode: string | undefined
+): string => {
+  const colorMap: Record<string, { light: string; dark: string }> = {
+    "5935c25fb3acc3127c3d8cd9": {
+      light: "from-amber-400 to-orange-500",
+      dark: "from-yellow-800 to-orange-900",
+    },
+    "579dc571d53a0658a154fbec": {
+      light: "from-green-400 to-emerald-500",
+      dark: "from-green-800 to-emerald-900",
+    },
+    "638f541a29ffd1183d187f57": {
+      light: "from-blue-400 to-indigo-500",
+      dark: "from-blue-800 to-indigo-900",
+    },
+    "6617beeaa9cfa777ca915b7c": {
+      light: "from-pink-400 to-rose-500",
+      dark: "from-pink-800 to-rose-900",
+    },
+    "5ac3b934156ae10c4430e83c": {
+      light: "from-purple-400 to-violet-500",
+      dark: "from-purple-800 to-violet-900",
+    },
+    "5c0647fdd443bc2504c2d371": {
+      light: "from-cyan-400 to-sky-500",
+      dark: "from-cyan-800 to-sky-900",
+    },
+    "656f0f98d80a697f855d34b1": {
+      light: "from-teal-400 to-green-500",
+      dark: "from-teal-800 to-green-900",
+    },
+    "54cb50c76803fa8b248b4571": {
+      light: "from-lime-400 to-green-500",
+      dark: "from-lime-800 to-green-900",
+    },
+    "54cb57776803fa99248b456e": {
+      light: "from-red-400 to-orange-500",
+      dark: "from-red-800 to-orange-900",
+    },
+    "5a7c2eca46aef81a7ca2145d": {
+      light: "from-fuchsia-400 to-pink-500",
+      dark: "from-fuchsia-800 to-pink-900",
+    },
+  };
+
+  const defaultColor =
+    isDarkMode === "dark"
+      ? "from-slate-700 to-slate-900"
+      : "from-gray-300 to-gray-400";
+
+  return (
+    colorMap[id]?.[isDarkMode === "dark" ? "dark" : "light"] ?? defaultColor
+  );
+};
+
 export const returnBadgeColor = (routeLink: string) => {
   switch (routeLink) {
     case "/notice":

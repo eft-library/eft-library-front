@@ -8,6 +8,25 @@ export interface RoadmapDataTypes {
   edge_info: Edge[];
 }
 
+export interface ControlPanelTypes {
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  handleSearch: () => void;
+  checkAllNodes: () => void;
+  uncheckAllNodes: () => void;
+  onClickSave: () => void;
+  onClickKappaFilter: () => void;
+  onlyKappa: boolean;
+}
+
+export interface StatsPanelTypes {
+  getAllCount: number;
+  getAllKappaCount: number;
+  getKappaCompleteCount: number;
+  getCompleteCount: number;
+  onlyKappa: boolean;
+}
+
 interface Edge {
   id: string;
   source_id: string;
@@ -52,6 +71,7 @@ interface TabNpc {
   id: string;
   name: LocaleName;
   color: string;
+  image: string;
 }
 interface LocaleName {
   en: string;

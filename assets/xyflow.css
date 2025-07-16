@@ -1,0 +1,10 @@
+.dark .react-flow__controls {
+  background-color: #1e1e1e; /* 다크 배경 */
+  border: 1px solid #444; /* 다크 테두리 */
+}
+
+.dark .react-flow__controls-button {
+  background-color: #2e2e2e;
+  color: #fff;
+  border-color: #555;
+}
