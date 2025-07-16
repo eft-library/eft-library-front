@@ -27,14 +27,14 @@ export interface StatsPanelTypes {
   onlyKappa: boolean;
 }
 
-interface Edge {
+export interface Edge {
   id: string;
   source_id: string;
   target_id: string;
 }
 
 // 최상위 인터페이스
-interface NPCData {
+export interface NPCData {
   name: LocaleName;
   image: string;
   id: string;

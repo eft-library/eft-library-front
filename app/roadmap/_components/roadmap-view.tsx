@@ -25,9 +25,20 @@ import ControlPanel from "./ControlPanel/control-panel";
 import { Card, CardContent } from "@/components/ui/card";
 import StatsPanel from "./StatsPanel/stats-panel";
 import TraderTabM from "./TraderTab/trader-tab-m";
-import { roadmapI18N } from "@/lib/consts/i18nConsts";
+import { alertMessageI18N, roadmapI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
+import {
+  getAllCount,
+  getAllKappaCount,
+  getKappaCompleteCount,
+  getCompleteCount,
+  checkAllNodes,
+  getUncheckUpdater,
+  onClickKappaFilter,
+  generateEdges,
+} from "./roadmap-func";
 
 export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   const locale = useLocale();
@@ -40,12 +51,15 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchIndex, setSearchIndex] = useState(0);
   const reactFlowInstance = useReactFlow();
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const npcList = roadmapInfo.node_info.map((npc) => ({
     id: npc.id,
     name: npc.name,
     image: npc.image,
     color: npc.quests[0].node_color,
   }));
+
   const nodeTypes = useMemo(
     () => ({
       questNode: QuestNode,
@@ -105,18 +119,10 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
     });
   }, [roadmapInfo.node_info, tabState, onlyKappa, npcIdList, questIdSet]);
 
-  const generateEdges = () =>
-    roadmapInfo.edge_info.map((edge) => ({
-      id: edge.id,
-      source: edge.source_id,
-      target: edge.target_id,
-      type: "smoothstep",
-      animated: false,
-      style: { stroke: "skyblue", strokeWidth: 2 },
-    }));
-
   const [nodes, setNodes, onNodesChange] = useNodesState(generateNodes());
-  const [edges, setEdges, onEdgesChange] = useEdgesState(generateEdges());
+  const [edges, setEdges, onEdgesChange] = useEdgesState(
+    generateEdges(roadmapInfo.edge_info)
+  );
 
   useEffect(() => {
     if (roadmapInfo.quest_list.length > 0) {
@@ -136,14 +142,6 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
     (params: any) => setEdges((els) => addEdge(params, els)),
     [setEdges]
   );
-
-  const onClickKappaFilter = () => {
-    setOnlyKappa((prev) => !prev);
-
-    requestAnimationFrame(() => {
-      fitView();
-    });
-  };
 
   const onNodeChange = useCallback(
     (data: any, isCheck: boolean) => {
@@ -192,30 +190,6 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
     [setNodes, setQuestList]
   );
 
-  const checkAllNodes = () => {
-    const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
-      if (tabState !== "all" && npc.id !== tabState) return [];
-
-      return npc.quests
-        .filter(
-          (quest) => !roadmapInfo.node_info.some((node) => node.id === quest.id)
-        )
-        .map((quest) => quest.id);
-    });
-
-    setQuestList(allQuestIds);
-  };
-
-  const uncheckAllNodes = () => {
-    const allQuestIds = roadmapInfo.node_info.flatMap((npc) => {
-      if (tabState !== "all" && npc.id !== tabState) return [];
-
-      return npc.quests.map((quest) => quest.id);
-    });
-
-    setQuestList((prev) => prev.filter((id) => !allQuestIds.includes(id)));
-  };
-
   const enhancedNodes = useMemo(
     () =>
       nodes.map((node) => ({
@@ -227,9 +201,9 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
   const onChangeNpcTab = (tab: string) => {
     setTabState(tab);
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       fitView();
-    }, 500);
+    });
   };
 
   const onClickSave = async () => {
@@ -243,34 +217,34 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
       if (response.status === 200) {
         setQuestList(response.data);
-        // setAlertDesc(alertMessageI18N.save[localeKey]);
+        setAlertDesc(alertMessageI18N.save[localeKey]);
 
-        setTimeout(() => {
-          //   setAlertStatus(true);
-        }, 500);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
       } else {
-        // setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
 
-        setTimeout(() => {
-          //   setAlertStatus(true);
-        }, 500);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
         signOut();
         window.location.reload();
       }
     } else {
-      //   setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
-      setTimeout(() => {
-        // setAlertStatus(true);
-      }, 500);
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
     }
   };
 
   const handleSearch = () => {
     if (searchQuery.length < 1) {
-      //   setAlertDesc(alertMessageI18N.inputWord[localeKey]);
-      setTimeout(() => {
-        // setAlertStatus(true);
-      }, 500);
+      setAlertDesc(alertMessageI18N.inputWord[localeKey]);
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
       return;
     }
 
@@ -296,30 +270,12 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
       reactFlowInstance.fitBounds(bounds);
     } else {
-      //   setAlertDesc(alertMessageI18N.notFound[localeKey]);
-      setTimeout(() => {
-        // setAlertStatus(true);
-      }, 500);
+      setAlertDesc(alertMessageI18N.notFound[localeKey]);
+
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
     }
-  };
-
-  const getAllKappaCount = () => {
-    return nodes.filter((item) => item.data.kappa_required === true).length;
-  };
-
-  const getKappaCompleteCount = () => {
-    return nodes.filter(
-      (item) => questList.includes(item.id) && item.data.kappa_required === true
-    ).length;
-  };
-
-  const getCompleteCount = () => {
-    return nodes.filter((node) => questList.includes(node.id)).length;
-  };
-
-  const getAllCount = () => {
-    const roadmapIds = new Set(roadmapInfo.node_info.map((npc) => npc.id));
-    return nodes.filter((node) => !roadmapIds.has(node.id)).length;
   };
 
   return (
@@ -353,10 +309,16 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             handleSearch={handleSearch}
-            checkAllNodes={checkAllNodes}
-            uncheckAllNodes={uncheckAllNodes}
+            checkAllNodes={() =>
+              checkAllNodes(roadmapInfo.node_info, tabState, setQuestList)
+            }
+            uncheckAllNodes={() =>
+              setQuestList(getUncheckUpdater(roadmapInfo.node_info, tabState))
+            }
             onClickSave={onClickSave}
-            onClickKappaFilter={onClickKappaFilter}
+            onClickKappaFilter={() =>
+              onClickKappaFilter(onlyKappa, setOnlyKappa, fitView)
+            }
             onlyKappa={onlyKappa}
           />
         </div>
@@ -365,11 +327,11 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
         <div className="w-full space-y-6">
           {/* 현황판을 ReactFlow 위에 배치 */}
           <StatsPanel
-            getAllCount={getAllCount()}
-            getAllKappaCount={getAllKappaCount()}
-            getKappaCompleteCount={getKappaCompleteCount()}
+            getAllCount={getAllCount(nodes, roadmapInfo.node_info)}
+            getAllKappaCount={getAllKappaCount(nodes)}
+            getKappaCompleteCount={getKappaCompleteCount(nodes, questList)}
             onlyKappa={onlyKappa}
-            getCompleteCount={getCompleteCount()}
+            getCompleteCount={getCompleteCount(nodes, questList)}
           />
 
           {/* Quest Flow */}
@@ -400,6 +362,12 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
           </Card>
         </div>
       </div>
+      <DefaultDialog
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="Notice"
+        description={alertDesc}
+      />
     </div>
   );
 }
