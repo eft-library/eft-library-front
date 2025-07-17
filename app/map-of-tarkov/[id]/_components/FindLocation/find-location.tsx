@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { MapPin, HelpCircle, Search } from "lucide-react";
 import { useTheme } from "next-themes";
-import { FindLocationTypes } from "../map-of-tarkov.types";
+import { FindLocationTypes, LatLng } from "../map-of-tarkov.types";
 import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 import FindLocationModal from "./find-location-modal";
 
@@ -25,10 +25,10 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
   const [where, setWhere] = useState<string>("");
   const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
   const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
-  const [mousePosition, setMousePosition] = useState<{
-    lat: number;
-    lng: number;
-  }>({ lat: 0, lng: 0 });
+  const [mousePosition, setMousePosition] = useState<LatLng>({
+    lat: 0,
+    lng: 0,
+  });
 
   const onClickWhere = () => {
     if (where.length > 0) {

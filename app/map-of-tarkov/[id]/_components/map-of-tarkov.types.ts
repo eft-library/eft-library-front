@@ -70,11 +70,16 @@ export interface BossClient {
   bossData: Boss;
 }
 
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
 export interface FindLocationInnerTypes {
   findInfo: FindInfo;
   imageCoord: ImageCoord;
   isViewWhere: boolean;
-  setMousePosition: (latlng: any) => void;
+  setMousePosition: (latlng: LatLng) => void;
 }
 
 export interface FindLocationTypes {

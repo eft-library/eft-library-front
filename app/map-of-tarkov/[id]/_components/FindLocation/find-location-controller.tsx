@@ -16,7 +16,7 @@ export default function FindLocationController({
       const newCenter: [number, number] = [-imageCoord.y, -imageCoord.x];
       map.setView(newCenter, default_zoom_level);
     }
-  }, [imageCoord, isViewWhere, map]);
+  }, [imageCoord, isViewWhere, default_zoom_level, map]);
 
   return null;
 }

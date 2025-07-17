@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useMapEvent } from "react-leaflet";
 import { DivIcon } from "leaflet";
 
