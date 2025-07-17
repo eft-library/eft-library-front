@@ -383,11 +383,50 @@ export const mapOfTarkovI18n = {
     ja: "ボス", // 보스
     ko: "보스",
   },
+  photo: {
+    en: "Photo",
+    ko: "사진",
+    ja: "写真",
+  },
+  name: {
+    en: "Name",
+    ko: "이름",
+    ja: "名前",
+  },
+  affiliation: {
+    en: "Affiliation",
+    ko: "소속",
+    ja: "所属",
+  },
+  location: {
+    en: "Location",
+    ko: "위치",
+    ja: "位置",
+  },
+  spawnRate: {
+    en: "Spawn Rate",
+    ko: "스폰확률",
+    ja: "出現率",
+  },
+  hp: {
+    en: "HP",
+    ko: "체력",
+    ja: "体力",
+  },
+  followers: {
+    en: "Followers",
+    ko: "추종자",
+    ja: "フォロワー",
+  },
   transit: {
     en: "Transits",
     ja: "Transits", // 교통 수단, 이동 경로 등 의미에 따라 조정 가능
     ko: "Transits",
   },
+  alwaysOpen: { en: "Always Open", ko: "항상 열림", ja: "常時開放" },
+  oneTimeUse: { en: "One-time Use", ko: "일회용", ja: "使い捨て" },
+  requirements: { en: "Requirements", ko: "필요 조건", ja: "必要条件" },
+  tip: { en: "Tip", ko: "Tip", ja: "ヒント" },
 };
 
 export const questI18N = {

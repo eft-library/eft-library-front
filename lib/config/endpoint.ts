@@ -3,6 +3,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export const API_ENDPOINTS = {
   GET_HOME: baseUrl + "/api/home/home",
   GET_ITEM_LIST: baseUrl + "/api/item/list",
+  GET_MAP_OF_TARKOV: baseUrl + "/api/map_of_tarkov/detail",
   GET_ALL_KEY: baseUrl + "/api/item/key",
   GET_ALL_STATION: baseUrl + "/api/hideout/get_station",
   GET_ALL_SITEMAP: baseUrl + "/api/search/new_sitemap",
