@@ -7,6 +7,7 @@ import NavData from "./_navbar/_components/nav-data";
 import { ThemeProvider } from "@/lib/config/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import QueryProvider from "@/store/queryProvider";
 import "./globals.css";
 import "../assets/editor.css";
 import "../assets/xyflow.css";
@@ -51,8 +52,10 @@ export default async function RootLayout({
             >
               <Suspense>
                 <AppStoreProvider>
-                  <NavData />
-                  {children}
+                  <QueryProvider>
+                    <NavData />
+                    {children}
+                  </QueryProvider>
                 </AppStoreProvider>
               </Suspense>
             </ThemeProvider>
