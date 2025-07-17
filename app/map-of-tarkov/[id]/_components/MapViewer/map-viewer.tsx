@@ -3,11 +3,11 @@ import { Map } from "lucide-react";
 import { useTheme } from "next-themes";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { MapVierwTypes } from "../map-of-tarkov.types";
+import { MapViewTypes } from "../map-of-tarkov.types";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import Image from "next/image";
 
-export default function MapViewer({ mapData, imageSelect }: MapVierwTypes) {
+export default function MapViewer({ mapData, imageSelect }: MapViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();

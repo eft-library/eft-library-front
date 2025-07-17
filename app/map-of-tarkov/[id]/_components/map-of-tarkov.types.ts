@@ -43,7 +43,7 @@ export interface ExtractionsOrTransits {
   map: string;
 }
 
-export interface MapVierwTypes {
+export interface MapViewTypes {
   mapData: MapData;
   imageSelect: string;
 }

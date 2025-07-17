@@ -89,7 +89,7 @@ export interface MapInfoData {
   map_selector: MapSelector[];
 }
 
-export interface MapDetailClient {
+export interface MapViewTypes {
   mapInfo: MapInfoData;
 }
 
