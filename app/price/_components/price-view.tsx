@@ -11,6 +11,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ControlPanel from "./ControlPanel/control-panel";
 import PriceChart from "./PriceChart/price-chart";
+import TraderPrice from "./TraderPrice/trader-price";
 
 export default function PriceView() {
   const { theme } = useTheme();
@@ -116,6 +117,7 @@ export default function PriceView() {
         <PriceChart item={selectItem} priceType={priceType} />
 
         {/* Traders Section */}
+        <TraderPrice item={selectItem} priceType={priceType} />
 
         {/* Market Items Table */}
       </div>
