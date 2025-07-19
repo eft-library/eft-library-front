@@ -15,6 +15,7 @@ export default function ControlPanel({
   setPriceType,
   search,
   setSearch,
+  setFetchWord,
 }: ControlPanelTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
@@ -72,9 +73,17 @@ export default function ControlPanel({
                 ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                 : "bg-gray-100 border-gray-300 text-gray-900 placeholder:text-gray-500"
             }`}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setFetchWord(search);
+              }
+            }}
           />
         </div>
-        <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6">
+        <Button
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6"
+          onClick={() => setFetchWord(search)}
+        >
           {buttonI18N.search[localeKey]}
         </Button>
       </div>

@@ -540,6 +540,11 @@ export const price18N = {
     ja: "トレーダーに売却",
     ko: "상인에게 판매",
   },
+  changeRate: {
+    en: "Change Rate",
+    ja: "へんどうりつ",
+    ko: "변동률",
+  },
 };
 
 export const buttonI18N = {

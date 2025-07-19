@@ -3,6 +3,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 // import { TrendingUp, TrendingDown } from "lucide-react";
 import { useTheme } from "next-themes";
+import dayjs from "dayjs";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { PriceChartTypes } from "../price.types";
@@ -15,12 +16,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { price18N } from "@/lib/consts/i18nConsts";
 
 export default function PriceChart({ item, priceType }: PriceChartTypes) {
   const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
   if (!item) return null;
 
   return (
@@ -85,13 +86,16 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
                 opacity={0.5}
               />
               <XAxis
-                dataKey="date"
+                dataKey="price_time"
                 tick={{
                   fill: theme === "dark" ? "#9CA3AF" : "#6B7280",
                   fontSize: 12,
                 }}
                 axisLine={false}
                 tickLine={false}
+                tickFormatter={(value: string) =>
+                  dayjs(value).format("MM/DD HH:mm")
+                }
               />
               <YAxis
                 tick={{
@@ -124,13 +128,15 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
                 }}
                 formatter={(value: number) => [
                   `${value.toLocaleString()} ₽`,
-                  "가격",
+                  `${price18N.fleaMarketPrice[localeKey]}`,
                 ]}
-                labelFormatter={(label) => `날짜: ${label}`}
+                labelFormatter={(label) =>
+                  dayjs(label).format(`YYYY/MM/DD·HH:mm`)
+                }
               />
               <Area
                 type="monotone"
-                dataKey="price"
+                dataKey="item_price"
                 stroke="#F97316"
                 strokeWidth={2}
                 fillOpacity={1}

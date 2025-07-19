@@ -6,6 +6,58 @@
 
 import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
+import { Price, TradeOption } from "@/app/price/_components/price.types";
+
+// 변동률 계산
+export const calcChangeRate = (
+  item: Price,
+  priceType: string
+): { raw: number; formatted: string } => {
+  const history =
+    priceType === "PVP" ? item.history_by_type.pvp : item.history_by_type.pve;
+  const beforeData = history?.[history.length - 1];
+  const beforePrice = beforeData ? beforeData.item_price : 0;
+
+  const traderList =
+    priceType === "PVP"
+      ? item.trader?.pvp_trader ?? []
+      : item.trader?.pve_trader ?? [];
+
+  if (traderList.length === 0 || !beforePrice || beforePrice === 0) {
+    return { raw: 0, formatted: "+0.00%" };
+  }
+
+  const maxPrice = Math.max(...traderList.map((t: any) => t.price));
+
+  const changeRate = ((maxPrice - beforePrice) / beforePrice) * 100;
+  const formattedRate =
+    changeRate >= 0
+      ? `+${changeRate.toFixed(2)}%`
+      : `${changeRate.toFixed(2)}%`;
+
+  return { raw: changeRate, formatted: formattedRate };
+};
+
+// 가장 비싼 트레이더 찾는 함수
+export const findExpensiveTrader = (traders: TradeOption[]) => {
+  if (!traders) return null;
+  const filteredTraders = traders.filter(
+    (t) => t.trader.npc_id !== "FLEA_MARKET"
+  );
+  if (filteredTraders.length === 0) return null;
+  const resultTrader = filteredTraders.reduce(
+    (max, current) => (current.price > max.price ? current : max),
+    filteredTraders[0]
+  );
+  return `${resultTrader.price.toLocaleString()} ₽`;
+};
+
+// 플리마켓 가격 찾는 함수
+export const findFleaMarketPrice = (traders: TradeOption[]) => {
+  if (!traders) return "-";
+  const fleaMarket = traders.find((t) => t.trader.npc_id === "FLEA_MARKET");
+  return fleaMarket?.price ? `${fleaMarket?.price.toLocaleString()} ₽` : "-";
+};
 
 export const node_color = (
   id: string,

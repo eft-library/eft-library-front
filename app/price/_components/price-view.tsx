@@ -4,14 +4,14 @@ import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { buttonI18N, placeHolderText, price18N } from "@/lib/consts/i18nConsts";
-import type { Price } from "./priceTypes";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import InfiniteScroll from "react-infinite-scroll-component";
 import ControlPanel from "./ControlPanel/control-panel";
 import PriceChart from "./PriceChart/price-chart";
 import TraderPrice from "./TraderPrice/trader-price";
+import PriceTable from "./PriceTable/price-table";
+import { Price } from "./price.types";
 
 export default function PriceView() {
   const { theme } = useTheme();
@@ -107,6 +107,7 @@ export default function PriceView() {
               setPriceType={setPriceType}
               search={search}
               setSearch={setSearch}
+              setFetchWord={setFetchWord}
             />
           </div>
         </div>
@@ -120,6 +121,14 @@ export default function PriceView() {
         <TraderPrice item={selectItem} priceType={priceType} />
 
         {/* Market Items Table */}
+        <PriceTable
+          items={items}
+          priceType={priceType}
+          setSelectItem={setSelectItem}
+          selectItem={selectItem}
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+        />
       </div>
     </div>
   );

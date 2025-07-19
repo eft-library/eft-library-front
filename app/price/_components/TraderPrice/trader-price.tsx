@@ -51,7 +51,7 @@ export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
               >
                 <Image
                   src={trader.trader.npc_image || "/placeholder.svg"}
-                  alt={trader.trader.npc_name_en}
+                  alt={trader.trader.npc_id}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 32px, 48px"

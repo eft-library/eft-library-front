@@ -1,8 +1,30 @@
-export interface PriceTable {
-  price: Price;
-  viewType: string;
+import { InfiniteQueryObserverResult } from "@tanstack/react-query";
+
+export interface PriceTableTypes {
+  items: Price[];
+  priceType: string;
   setSelectItem: (val: Price) => void;
   selectItem: Price | undefined;
+  hasNextPage: boolean;
+  fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+}
+
+export interface PriceTablePCTypes {
+  items: Price[];
+  priceType: string;
+  setSelectItem: (val: Price) => void;
+  selectItem: Price | undefined;
+  hasNextPage: boolean;
+  fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+}
+
+export interface PriceTableMTypes {
+  items: Price[];
+  priceType: string;
+  setSelectItem: (val: Price) => void;
+  selectItem: Price | undefined;
+  hasNextPage: boolean;
+  fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
 }
 
 export interface TraderInfo {
@@ -66,4 +88,5 @@ export interface ControlPanelTypes {
   setPriceType: (val: string) => void;
   search: string;
   setSearch: (val: string) => void;
+  setFetchWord: (val: string) => void;
 }
