@@ -1,5 +1,5 @@
-import type { MapData, MapSelector } from "@/app/map/[id]/map.types";
 import type { Boss } from "@/app/boss/[id]/_components/boss.types";
+import { MapData, MapSelector } from "@/app/map/[id]/_components/map.types";
 
 export interface MapOfTarkovSelectorTypes {
   setImageSelect: (val: string) => void;
