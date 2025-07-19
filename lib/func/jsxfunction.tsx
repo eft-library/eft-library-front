@@ -27,7 +27,7 @@ export const calcChangeRate = (
     return { raw: 0, formatted: "+0.00%" };
   }
 
-  const maxPrice = Math.max(...traderList.map((t: any) => t.price));
+  const maxPrice = Math.max(...traderList.map((t: TradeOption) => t.price));
 
   const changeRate = ((maxPrice - beforePrice) / beforePrice) * 100;
   const formattedRate =

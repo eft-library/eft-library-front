@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { buttonI18N, placeHolderText, price18N } from "@/lib/consts/i18nConsts";
+import { price18N } from "@/lib/consts/i18nConsts";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -42,7 +42,7 @@ export default function PriceView() {
     }
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["items", fetchWord],
     queryFn: ({ pageParam = 1 }) =>
       getItemPrice({ pageParam, query: fetchWord }),

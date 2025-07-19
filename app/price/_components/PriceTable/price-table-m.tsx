@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Image from "next/image";
 import type { PriceTableMTypes } from "../price.types";
 import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
@@ -51,9 +52,11 @@ export default function PriceTableM({
             onClick={() => setSelectItem(item)}
           >
             <div className="flex items-start gap-3">
-              <img
+              <Image
                 src={item.image || "/placeholder.svg"}
                 alt={item.name.en}
+                width={48}
+                height={48}
                 className={`w-12 h-12 rounded ${
                   theme === "dark" ? "bg-slate-700" : "bg-gray-200"
                 } flex-shrink-0`}
@@ -87,7 +90,6 @@ export default function PriceTableM({
                         : raw < 0
                         ? "bg-red-500 hover:bg-red-600 text-white"
                         : "bg-gray-400 hover:bg-gray-500 text-white";
-
                     return (
                       <Badge
                         variant="default"
