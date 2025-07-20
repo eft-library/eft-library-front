@@ -236,3 +236,88 @@ export const previewData = [
     ],
   },
 ];
+
+export const rankCategoryList = [
+  { value: "Keys", en: "Key", ja: "鍵類", ko: "열쇠" },
+  { value: "Meds", en: "Medical", ja: "医療品", ko: "의료품" },
+  { value: "Weapon", en: "Weapon", ja: "ガンズ", ko: "무기" },
+  { value: "Ammo", en: "Ammo", ja: "弾薬", ko: "탄약" },
+  { value: "Provisions", en: "Provisions", ja: "食料品", ko: "식량" },
+  {
+    value: "Container",
+    en: "Container",
+    ja: "コンテナ",
+    ko: "컨테이너",
+  },
+  { value: "Wearables", en: "Wearables", ja: "装備", ko: "장비" },
+  { value: "Loot", en: "Loot", ja: "ルート", ko: "전리품" },
+  { value: "Mods", en: "Mods", ja: "改造パーツ", ko: "부품" },
+];
+
+export const defaultRankCategory = [
+  "Keys",
+  "Weapon",
+  "Ammo",
+  "Provisions",
+  "Container",
+  "Keys",
+  "Meds",
+  "Wearables",
+  "LOOT",
+  "Mods",
+];
+
+export const rankCardTierColors = {
+  S: "border-red-500/50 bg-red-50 dark:bg-red-950/20 hover:border-red-500",
+  A: "border-orange-500/50 bg-orange-50 dark:bg-orange-950/20 hover:border-orange-500",
+  B: "border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 hover:border-yellow-500",
+  C: "border-green-500/50 bg-green-50 dark:bg-green-950/20 hover:border-green-500",
+  D: "border-blue-500/50 bg-blue-50 dark:bg-blue-950/20 hover:border-blue-500",
+  E: "border-purple-500/50 bg-purple-50 dark:bg-purple-950/20 hover:border-purple-500",
+  F: "border-gray-500/50 bg-gray-50 dark:bg-gray-950/20 hover:border-gray-500",
+};
+
+export const rankTierInfo = {
+  S: {
+    name: "S Tier",
+    color: "text-red-600 dark:text-red-400",
+    bgColor: "bg-red-100 dark:bg-red-950/30",
+    borderColor: "border-red-200 dark:border-red-800",
+  },
+  A: {
+    name: "A Tier",
+    color: "text-orange-600 dark:text-orange-400",
+    bgColor: "bg-orange-100 dark:bg-orange-950/30",
+    borderColor: "border-orange-200 dark:border-orange-800",
+  },
+  B: {
+    name: "B Tier",
+    color: "text-yellow-600 dark:text-yellow-400",
+    bgColor: "bg-yellow-100 dark:bg-yellow-950/30",
+    borderColor: "border-yellow-200 dark:border-yellow-800",
+  },
+  C: {
+    name: "C Tier",
+    color: "text-green-600 dark:text-green-400",
+    bgColor: "bg-green-100 dark:bg-green-950/30",
+    borderColor: "border-green-200 dark:border-green-800",
+  },
+  D: {
+    name: "D Tier",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-100 dark:bg-blue-950/30",
+    borderColor: "border-blue-200 dark:border-blue-800",
+  },
+  E: {
+    name: "E Tier",
+    color: "text-purple-600 dark:text-purple-400",
+    bgColor: "bg-purple-100 dark:bg-purple-950/30",
+    borderColor: "border-purple-200 dark:border-purple-800",
+  },
+  F: {
+    name: "F Tier",
+    color: "text-gray-600 dark:text-gray-400",
+    bgColor: "bg-gray-100 dark:bg-gray-950/30",
+    borderColor: "border-gray-200 dark:border-gray-800",
+  },
+} as const;

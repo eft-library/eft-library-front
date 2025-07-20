@@ -19,7 +19,7 @@ export default function PriceView() {
   const localeKey = getLocaleKey(locale);
   const [search, setSearch] = useState<string>("");
   const [fetchWord, setFetchWord] = useState<string>("");
-  const [priceType, setPriceType] = useState<string>("PVP");
+  const [priceType, setPriceType] = useState<string>("PVE");
   const [selectItem, setSelectItem] = useState<Price>();
 
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {

@@ -168,20 +168,3 @@ export const extractionTableColumn = {
   ko: ["사진", "이름", "소속", "항상 열림", "일회용", "필요 조건", "Tip"],
   ja: ["写真", "名前", "所属", "常時開放", "使い捨て", "必要条件", "ヒント"],
 };
-
-export const rankCategoryList = [
-  { value: "Keys", en: "Key", ja: "鍵類", ko: "열쇠" },
-  { value: "Meds", en: "Medical", ja: "医療品", ko: "의료품" },
-  { value: "Weapon", en: "Weapon", ja: "ガンズ", ko: "무기" },
-  { value: "Ammo", en: "Ammo", ja: "弾薬", ko: "탄약" },
-  { value: "Provisions", en: "Provisions", ja: "食料品", ko: "식량" },
-  {
-    value: "Container",
-    en: "Container",
-    ja: "コンテナ",
-    ko: "컨테이너",
-  },
-  { value: "Wearables", en: "Wearables", ja: "装備", ko: "장비" },
-  { value: "Loot", en: "Loot", ja: "ルート", ko: "전리품" },
-  { value: "Mods", en: "Mods", ja: "改造パーツ", ko: "부품" },
-];
