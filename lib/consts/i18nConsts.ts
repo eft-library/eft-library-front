@@ -593,6 +593,11 @@ export const planner18N = {
     ja: "削除",
     ko: "삭제",
   },
+  selectedQuestPreview: {
+    en: "Selected Quests Preview",
+    ja: "選択されたクエストのプレビュー",
+    ko: "선택된 퀘스트 미리보기",
+  },
 };
 
 export const effectI18N = {

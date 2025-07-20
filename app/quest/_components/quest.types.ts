@@ -35,7 +35,7 @@ export interface Quest {
   image: string;
   npc_id: string;
   npc_image: string;
-  npc_name: string;
+  npc_name: LocaleName;
   objectives: Objective[];
   guide: LocaleName;
   update_time: string;

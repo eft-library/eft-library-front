@@ -250,7 +250,7 @@ export const rankCategoryList = [
     ko: "컨테이너",
   },
   { value: "Wearables", en: "Wearables", ja: "装備", ko: "장비" },
-  { value: "Loot", en: "Loot", ja: "ルート", ko: "전리품" },
+  { value: "LOOT", en: "Loot", ja: "ルート", ko: "전리품" },
   { value: "Mods", en: "Mods", ja: "改造パーツ", ko: "부품" },
 ];
 
