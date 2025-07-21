@@ -33,7 +33,7 @@ export default function PreviewSelect({
                 variant="ghost"
                 size="icon"
                 onClick={() => removeSelected(quest)}
-                className="absolute top-2 right-2 h-6 w-6 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 z-10"
+                className="cursor-pointer absolute top-2 right-2 h-6 w-6 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 z-10"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -65,10 +65,10 @@ export default function PreviewSelect({
       <div className="flex flex-col sm:flex-row gap-4 mt-4">
         <Button
           onClick={() => {
-            updateQuest(selectedItems);
+            updateQuest();
             setSelectedItems([]);
           }}
-          className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-xl w-full sm:w-auto"
+          className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-xl w-full sm:w-auto"
         >
           <Plus className="h-4 w-4 mr-2" />
           {planner18N.add[localeKey]}
@@ -78,7 +78,7 @@ export default function PreviewSelect({
           onClick={() => {
             setSelectedItems([]);
           }}
-          className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-600 dark:text-red-400 dark:hover:bg-red-900/20 font-bold py-2 px-6 rounded-xl bg-transparent w-full sm:w-auto"
+          className="cursor-pointer border-red-300 text-red-600 hover:bg-red-50 dark:border-red-600 dark:text-red-400 dark:hover:bg-red-900/20 font-bold py-2 px-6 rounded-xl bg-transparent w-full sm:w-auto"
         >
           <Trash2 className="h-4 w-4 mr-2" />
           {planner18N.truncate[localeKey]}

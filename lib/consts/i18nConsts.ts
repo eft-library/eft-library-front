@@ -598,6 +598,26 @@ export const planner18N = {
     ja: "選択されたクエストのプレビュー",
     ko: "선택된 퀘스트 미리보기",
   },
+  noActiveQuest: {
+    en: "No active quests",
+    ja: "進行中のクエストはありません",
+    ko: "진행 중인 퀘스트가 없습니다",
+  },
+  questCountText: {
+    en: "quests",
+    ja: "件のクエスト",
+    ko: "개의 퀘스트",
+  },
+  questProgressList: {
+    en: "Quest Progress List",
+    ja: "クエスト進行リスト",
+    ko: "퀘스트 진행 목록",
+  },
+  completed: {
+    en: "Completed",
+    ja: "完了",
+    ko: "완료",
+  },
 };
 
 export const effectI18N = {

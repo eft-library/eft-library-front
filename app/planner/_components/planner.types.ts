@@ -7,9 +7,20 @@ export interface Planner {
   quest_info: PlannerInfo[];
 }
 
+export interface PlannerCardTypes {
+  npcInfo: Planner;
+  openNPCs: Record<string, boolean>;
+  toggleNPC: (npcId: string) => void;
+  allNPCSelected: boolean;
+  toggleNPCSelection: (npc: any) => void;
+  selectedActiveQuests: string[];
+  toggleActiveQuestSelection: (questId: string) => void;
+  successUserQuest: (questId: string, next: TaskWrapper[]) => void;
+}
+
 export interface PreviewSelectTypes {
   selectedItems: Quest[];
-  updateQuest: (val: Quest[]) => void;
+  updateQuest: () => void;
   removeSelected: (val: Quest) => void;
   setSelectedItems: (val: Quest[]) => void;
 }

@@ -1,4 +1,4 @@
-export const previewData = [
+export const plannerSampleData = [
   {
     npc_id: "54cb50c76803fa8b248b4571",
     npc_name: {
