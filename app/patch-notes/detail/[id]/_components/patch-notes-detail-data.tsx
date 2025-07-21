@@ -9,6 +9,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { information18N } from "@/lib/consts/i18nConsts";
 import { InformationInfoDetail } from "@/components/custom/information/information.types";
 import InformationDetail from "@/components/custom/information/information-detail";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function PatchNotesDetailData() {
   const [patchNotesInfo, setPatchNotesInfo] = useState<InformationInfoDetail>();
@@ -38,7 +39,7 @@ export default function PatchNotesDetailData() {
     }
   }, [param.id]);
 
-  if (!patchNotesInfo) return null;
+  if (!patchNotesInfo) return <Loading />;
 
   return (
     <InformationDetail

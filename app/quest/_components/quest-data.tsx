@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
 import type { QuestDataTypes } from "./quest.types";
 import QuestView from "./quest-view";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function QuestData() {
   const { npcId } = useAppStore((state) => state);
@@ -35,5 +36,10 @@ export default function QuestData() {
     getQuestById();
   }, [npcId]);
 
-  return !isLoading && questData && <QuestView questData={questData} />;
+  return (
+    <>
+      {questData && <QuestView questData={questData} />}
+      {isLoading && <Loading />}
+    </>
+  );
 }

@@ -33,6 +33,7 @@ export default function PriceTableM({
         hasMore={hasNextPage}
         loader={null}
         height={600}
+        scrollThreshold={0.9}
         className="overflow-auto"
       >
         {items.map((item, index) => (

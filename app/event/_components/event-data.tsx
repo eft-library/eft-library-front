@@ -9,6 +9,7 @@ import Information from "@/components/custom/information/informaition";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { information18N } from "@/lib/consts/i18nConsts";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function EventData() {
   const locale = useLocale();
@@ -39,7 +40,7 @@ export default function EventData() {
     }
   }, [param]);
 
-  if (!eventData) return null;
+  if (!eventData) return <Loading />;
 
   return (
     <Information

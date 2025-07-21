@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../ui/button";
 import type { NavBarTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
@@ -17,8 +17,8 @@ import Logo from "@/assets/navi/logo";
 import Link from "next/link";
 
 export default function NavBar({ navData }: NavBarTypes) {
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const { data: session } = useSession();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);

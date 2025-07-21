@@ -35,6 +35,7 @@ export default function PriceTablePC({
           hasMore={hasNextPage}
           loader={null}
           height={500}
+          scrollThreshold={0.9}
           className="overflow-auto"
         >
           <table className="w-full table-fixed min-w-[800px]">

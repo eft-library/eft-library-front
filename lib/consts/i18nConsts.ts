@@ -26,6 +26,19 @@ export const boss18N = {
   loot: { en: "Loot", ja: "ルート", ko: "전리품" },
 };
 
+export const loadingI18N = {
+  loading: {
+    en: "Loading...",
+    ja: "読み込み中です...",
+    ko: "불러오는 중입니다.",
+  },
+  pleaseWait: {
+    en: "Please wait a moment!",
+    ja: "少々お待ちください！",
+    ko: "잠시만 기다려주세요!",
+  },
+};
+
 export const alertMessageI18N = {
   save: {
     en: "Successfully saved",

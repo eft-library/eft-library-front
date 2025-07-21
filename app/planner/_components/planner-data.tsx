@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { Planner } from "./planner.types";
 import PlannerView from "./planner-view";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function PlannerData() {
   const { data: session, status } = useSession();
@@ -37,7 +38,7 @@ export default function PlannerData() {
     getUserQuest(userEmail);
   }, [status, session]);
 
-  if (!userQuestList) return null;
+  if (!userQuestList) return <Loading />;
 
   return <PlannerView userQuestList={userQuestList} />;
 }

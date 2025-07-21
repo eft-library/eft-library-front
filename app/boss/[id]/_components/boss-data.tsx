@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import type { BossData } from "./boss.types";
 import BossView from "./boss-view";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function BossData() {
   const [bossData, setBossData] = useState<BossData>();
@@ -31,7 +32,7 @@ export default function BossData() {
     }
   }, [param.id]);
 
-  if (!bossData) return null;
+  if (!bossData) return <Loading />;
 
   return <BossView bossData={bossData} />;
 }

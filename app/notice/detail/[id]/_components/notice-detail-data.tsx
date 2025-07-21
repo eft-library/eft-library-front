@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function NoticeDetailData() {
   const locale = useLocale();
@@ -38,7 +39,7 @@ export default function NoticeDetailData() {
     }
   }, [param.id]);
 
-  if (!noticeInfo) return null;
+  if (!noticeInfo) return <Loading />;
 
   return (
     <InformationDetail

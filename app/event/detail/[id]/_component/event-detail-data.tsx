@@ -9,6 +9,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { InformationInfoDetail } from "@/components/custom/information/information.types";
 import { information18N } from "@/lib/consts/i18nConsts";
 import InformationDetail from "@/components/custom/information/information-detail";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function EventDetailData() {
   const locale = useLocale();
@@ -38,7 +39,7 @@ export default function EventDetailData() {
     }
   }, [param.id]);
 
-  if (!eventInfo) return null;
+  if (!eventInfo) return <Loading />;
 
   return (
     <InformationDetail

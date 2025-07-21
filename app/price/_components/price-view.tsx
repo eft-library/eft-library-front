@@ -12,6 +12,7 @@ import PriceChart from "./PriceChart/price-chart";
 import TraderPrice from "./TraderPrice/trader-price";
 import PriceTable from "./PriceTable/price-table";
 import { Price } from "./price.types";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function PriceView() {
   const { theme } = useTheme();
@@ -42,7 +43,7 @@ export default function PriceView() {
     }
   };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["items", fetchWord],
     queryFn: ({ pageParam = 1 }) =>
       getItemPrice({ pageParam, query: fetchWord }),
@@ -130,6 +131,7 @@ export default function PriceView() {
           fetchNextPage={fetchNextPage}
         />
       </div>
+      {isFetching && <Loading />}
     </div>
   );
 }

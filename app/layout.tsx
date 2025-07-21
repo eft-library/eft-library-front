@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import AuthContext from "@/store/AuthContext";
 import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
-import NavData from "./_navbar/_components/nav-data";
+import NavData from "@/components/custom/NavBar/nav-data";
 import { ThemeProvider } from "@/lib/config/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";

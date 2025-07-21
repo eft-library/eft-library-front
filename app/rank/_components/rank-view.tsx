@@ -13,6 +13,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import SearchFilter from "./SearchFilter/search-filter";
 import TierSection from "./TierSection/tier-section";
 import ItemTooltip from "./ItemTooltip/item-tooltip";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function RankView() {
   const locale = useLocale();
@@ -77,7 +78,7 @@ export default function RankView() {
     getItemRank();
   }, [getItemRank]);
 
-  if (!topRankData) return null;
+  if (!topRankData) return <Loading />;
 
   return (
     <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 shadow-sm">

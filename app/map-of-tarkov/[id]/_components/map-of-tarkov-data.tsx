@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { MapOfTarkov } from "./map-of-tarkov.types";
 import MapOfTarkovView from "./map-of-tarkov-view";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function MapOfTarkovData() {
   const [mapData, setMapData] = useState<MapOfTarkov>();
@@ -33,7 +34,7 @@ export default function MapOfTarkovData() {
     }
   }, [param.id]);
 
-  if (!mapData) return null;
+  if (!mapData) return <Loading />;
 
   return <MapOfTarkovView mapData={mapData} />;
 }

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import type { RoadmapDataTypes } from "./roadmap.types";
 import { ReactFlowProvider } from "@xyflow/react";
 import RoadmapView from "./roadmap-view";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function RoadmapData() {
   const { data: session, status } = useSession();
@@ -38,7 +39,7 @@ export default function RoadmapData() {
     getRoadmap(userEmail);
   }, [status, session]);
 
-  if (!roadmapList) return null;
+  if (!roadmapList) return <Loading />;
 
   return (
     <ReactFlowProvider>
