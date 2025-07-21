@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { rankI18N } from "@/lib/consts/i18nConsts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CategoryFilter from "./CategoryFilter/category-filter";
 import { defaultRankCategory } from "@/lib/consts/libraryConsts";
 import { RankData, TopListDetailData } from "./rank.types";
@@ -28,9 +28,8 @@ export default function RankView() {
   const [listCategory, setListCategory] =
     useState<string[]>(defaultRankCategory);
 
-  const getItemRank = async () => {
+  const getItemRank = useCallback(async () => {
     try {
-      //   setLoading(true);
       const data = await requestPostData(API_ENDPOINTS.GET_TOP_PRICE, {
         categoryList: listCategory,
       });
@@ -43,13 +42,11 @@ export default function RankView() {
         return null;
       }
       setTopRankData(data.data);
-      //   setLoading(false);
     } catch (error) {
-      //   setLoading(false);
       console.error(error);
       return null;
     }
-  };
+  }, [listCategory]);
 
   const onChangeCategory = (clickCategory: string) => {
     setListCategory((prevCategory) => {
@@ -78,7 +75,7 @@ export default function RankView() {
 
   useEffect(() => {
     getItemRank();
-  }, [listCategory]);
+  }, [getItemRank]);
 
   if (!topRankData) return null;
 

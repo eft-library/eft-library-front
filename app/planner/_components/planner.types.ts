@@ -12,7 +12,7 @@ export interface PlannerCardTypes {
   openNPCs: Record<string, boolean>;
   toggleNPC: (npcId: string) => void;
   allNPCSelected: boolean;
-  toggleNPCSelection: (npc: any) => void;
+  toggleNPCSelection: (npc: Planner) => void;
   selectedActiveQuests: string[];
   toggleActiveQuestSelection: (questId: string) => void;
   successUserQuest: (questId: string, next: TaskWrapper[]) => void;
@@ -52,17 +52,13 @@ export interface FetchSchema {
 
 export interface PlannerList {
   userQuest: Planner;
-  successQuest: (val: string, nextVal: any) => void;
+  successQuest: (val: string, nextVal: TaskWrapper[]) => void;
   checkedQuest: string[];
   checkedBox: (val: string, pr: boolean) => void;
   isPreview?: boolean;
 }
 export interface PlannerPopOver {
   min_player_level: number;
-}
-
-export interface PlannerSelector {
-  updateQuest: Function;
 }
 
 interface LocaleName {
