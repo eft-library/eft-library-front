@@ -96,6 +96,7 @@ export const plannerSampleData = [
             description_ja:
               "ハンドグレネードを使用して PMC オペレーター を殺す",
             description_ko: "수류탄으로 PMC 사살하기",
+            count: 10,
           },
         ],
         quest_name: {

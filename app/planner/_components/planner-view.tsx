@@ -182,7 +182,9 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
         { userQuestList: newQuestList },
         session
       );
+
       if (response?.status === 200) {
+        console.log(response.data);
         setUserQuest(response.data);
       } else {
         setUserQuest([]);
@@ -227,7 +229,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
 
         {/* 퀘스트 진행 목록 */}
         {session && session.email ? (
-          userQuest.length > 0 ? (
+          userQuest.length > 0 && userQuest[0].npc_id ? (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
