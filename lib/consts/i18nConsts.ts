@@ -6,6 +6,24 @@ export const placeHolderText = {
   },
 };
 
+export const notFoundI18N = {
+  notFoundMessage: {
+    en: "The page you requested has been moved, deleted, or does not exist. Please check the URL again.",
+    ja: "リクエストされたページは移動されたか、削除されたか、存在しません。URLをご確認ください。",
+    ko: "요청하신 페이지가 이동되었거나 삭제되었거나 존재하지 않습니다. URL을 다시 확인해 주세요.",
+  },
+  notFoundTitle: {
+    en: "Page not found.",
+    ja: "ページが見つかりません。",
+    ko: "페이지를 찾을 수 없습니다.",
+  },
+  goHome: {
+    en: "Go to Home",
+    ja: "ホームに戻る",
+    ko: "홈으로 돌아가기",
+  },
+};
+
 export const information18N = {
   event: { title: { en: "Event", ja: "イベント", ko: "이벤트" } },
   notice: { title: { en: "Notice", ja: "お知らせ", ko: "공지사항" } },
