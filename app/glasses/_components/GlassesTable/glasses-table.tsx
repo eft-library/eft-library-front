@@ -6,9 +6,9 @@ import { itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { RigListTypes } from "../rig.types";
+import { GlassesListTypes } from "../glasses.types";
 
-export default function RigTable({ rig_data }: RigListTypes) {
+export default function GlassesTable({ glassesData }: GlassesListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
@@ -29,20 +29,20 @@ export default function RigTable({ rig_data }: RigListTypes) {
             : "border-gray-200 bg-gray-50 text-black"
         }`}
       >
-        <div>{itemI18N.rig.photo[localeKey]}</div>
+        <div>{itemI18N.glasses.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.name[localeKey]}
+          {itemI18N.glasses.name[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.armorClass[localeKey]}
+          {itemI18N.glasses.armorClass[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.durability[localeKey]}
+          {itemI18N.glasses.durability[localeKey]}
         </div>
       </div>
 
       {/* Items */}
-      {rig_data.class_rig.map((item) => (
+      {glassesData.class_glasses.map((item) => (
         <div
           key={item.id}
           className={`border-b last:border-b-0 ${
@@ -64,7 +64,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                   alt={item.name.en}
                   width={120}
                   height={120}
-                  className="w-34 h-30 object-contain rounded border border-gray-600"
+                  className="w-38 h-20 object-contain rounded border border-gray-600"
                 />
               </div>
               <div
@@ -98,7 +98,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                   alt={item.name.en}
                   width={120}
                   height={120}
-                  className="w-24 h-24 object-contain rounded border border-gray-600"
+                  className="w-32 h-16 object-contain rounded border border-gray-600"
                 />
                 <div className="flex-1">
                   <h3
@@ -121,7 +121,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                       theme === "dark" ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    {itemI18N.rig.armorClass[localeKey]}
+                    {itemI18N.glasses.armorClass[localeKey]}
                   </div>
                   <div
                     className={`text-lg font-bold ${
@@ -141,7 +141,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                       theme === "dark" ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    {itemI18N.rig.durability[localeKey]}
+                    {itemI18N.glasses.durability[localeKey]}
                   </div>
                   <div
                     className={`text-lg font-bold ${
@@ -163,12 +163,12 @@ export default function RigTable({ rig_data }: RigListTypes) {
             : "border-gray-200 bg-gray-50 text-black"
         }`}
       >
-        <div>{itemI18N.rig.photo[localeKey]}</div>
+        <div>{itemI18N.glasses.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.name[localeKey]}
+          {itemI18N.glasses.name[localeKey]}
         </div>
       </div>
-      {rig_data.no_class_rig.map((item) => (
+      {glassesData.no_class_glasses.map((item) => (
         <div
           key={item.id}
           className={`border-b last:border-b-0 ${
@@ -190,7 +190,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                   alt={item.name.en}
                   width={120}
                   height={120}
-                  className="w-34 h-30 object-contain rounded border border-gray-600"
+                  className="w-38 h-20 object-contain rounded border border-gray-600"
                 />
               </div>
               <div
@@ -210,7 +210,7 @@ export default function RigTable({ rig_data }: RigListTypes) {
                   alt={item.name.en}
                   width={120}
                   height={120}
-                  className="w-24 h-24 object-contain rounded border border-gray-600"
+                  className="w-32 h-16 object-contain rounded border border-gray-600"
                 />
                 <div className="flex-1">
                   <h3

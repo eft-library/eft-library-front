@@ -244,7 +244,29 @@ export const itemI18N = {
       ko: "내구성",
     },
   },
-  key: { title: { en: "Key", ja: "鍵類", ko: "열쇠" } },
+  key: {
+    title: { en: "Key", ja: "鍵類", ko: "열쇠" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    usageCount: {
+      en: "Usage Count",
+      ja: "使用回数",
+      ko: "사용 횟수",
+    },
+    useMap: {
+      en: "Usage Map",
+      ja: "使用マップ",
+      ko: "사용 맵",
+    },
+  },
   loot: {
     title: { en: "Loot", ja: "ルート", ko: "전리품" },
     photo: {
@@ -261,9 +283,49 @@ export const itemI18N = {
   provisions: { title: { en: "Provisions", ja: "食料品", ko: "식량" } },
   faceCover: {
     title: { en: "Face Cover", ja: "フェイスカバー", ko: "얼굴 커버" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    armorClass: {
+      en: "Armor Class",
+      ja: "防御等級",
+      ko: "보호 등급",
+    },
+    durability: {
+      en: "Durability",
+      ja: "耐久性",
+      ko: "내구성",
+    },
   },
   glasses: {
     title: { en: "Glasses", ja: "ガラス", ko: "안경" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    armorClass: {
+      en: "Armor Class",
+      ja: "防御等級",
+      ko: "보호 등급",
+    },
+    durability: {
+      en: "Durability",
+      ja: "耐久性",
+      ko: "내구성",
+    },
   },
   headset: {
     title: { en: "Headset", ja: "ヘッドセット", ko: "헤드셋" },

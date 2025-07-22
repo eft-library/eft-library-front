@@ -1,22 +1,21 @@
 "use client";
 
-import type { LootListTypes } from "./loot.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import LootTable from "./LootTable/loot-table";
+import { GlassesListTypes } from "./glasses.types";
+import GlassesTable from "./GlassesTable/glasses-table";
 
-export default function LootView({ lootList }: LootListTypes) {
+export default function GlassesView({ glassesData }: GlassesListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-6xl">
         <div className="text-center mb-6 md:mb-8">
           <div className="flex justify-center items-center mb-4">
             <h1 className="text-3xl md:text-4xl font-bold">
-              {itemI18N.headset.title[localeKey]}
+              {itemI18N.glasses.title[localeKey]}
             </h1>
           </div>
 
@@ -40,7 +39,7 @@ export default function LootView({ lootList }: LootListTypes) {
                 />
               </div> */}
         </div>
-        <LootTable lootList={lootList} />
+        <GlassesTable glassesData={glassesData} />
       </div>
     </div>
   );

@@ -6,9 +6,11 @@ import { itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { RigListTypes } from "../rig.types";
+import { FaceCoverListTypes } from "../face-cover.types";
 
-export default function RigTable({ rig_data }: RigListTypes) {
+export default function FaceCoverTable({
+  face_cover_data,
+}: FaceCoverListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
@@ -29,20 +31,20 @@ export default function RigTable({ rig_data }: RigListTypes) {
             : "border-gray-200 bg-gray-50 text-black"
         }`}
       >
-        <div>{itemI18N.rig.photo[localeKey]}</div>
+        <div>{itemI18N.faceCover.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.name[localeKey]}
+          {itemI18N.faceCover.name[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.armorClass[localeKey]}
+          {itemI18N.faceCover.armorClass[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.durability[localeKey]}
+          {itemI18N.faceCover.durability[localeKey]}
         </div>
       </div>
 
       {/* Items */}
-      {rig_data.class_rig.map((item) => (
+      {face_cover_data.class_face_cover.map((item) => (
         <div
           key={item.id}
           className={`border-b last:border-b-0 ${
@@ -163,12 +165,12 @@ export default function RigTable({ rig_data }: RigListTypes) {
             : "border-gray-200 bg-gray-50 text-black"
         }`}
       >
-        <div>{itemI18N.rig.photo[localeKey]}</div>
+        <div>{itemI18N.faceCover.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.rig.name[localeKey]}
+          {itemI18N.faceCover.name[localeKey]}
         </div>
       </div>
-      {rig_data.no_class_rig.map((item) => (
+      {face_cover_data.no_class_face_cover.map((item) => (
         <div
           key={item.id}
           className={`border-b last:border-b-0 ${
