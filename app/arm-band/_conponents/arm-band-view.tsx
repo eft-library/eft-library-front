@@ -1,11 +1,10 @@
 "use client";
 
 import type { ArmBandListTypes } from "./arm-band.types";
-import ArmBandTable from "./ArmBandTable/arm-band-table";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import ArmBandCardM from "./ArmBandCardM/arm-band-card-m";
+import ArmBandTable from "./ArmBandTable/arm-band-table";
 
 export default function ArmBandView({ armBandList }: ArmBandListTypes) {
   const locale = useLocale();
@@ -24,7 +23,7 @@ export default function ArmBandView({ armBandList }: ArmBandListTypes) {
           {/* <div className="relative max-w-md mx-auto mb-6 md:mb-8">
             <Search
               className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${
-                isDarkMode ? "text-gray-400" : "text-gray-500"
+                theme === "dark" ? "text-gray-400" : "text-gray-500"
               }`}
             />
             <Input
@@ -33,7 +32,7 @@ export default function ArmBandView({ armBandList }: ArmBandListTypes) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`pl-10 rounded-lg ${
-                isDarkMode
+                theme === "dark"
                   ? "bg-slate-800 border-slate-700 text-white placeholder-gray-400"
                   : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
               }`}
@@ -41,7 +40,6 @@ export default function ArmBandView({ armBandList }: ArmBandListTypes) {
           </div> */}
         </div>
         <ArmBandTable armBandList={armBandList} />
-        <ArmBandCardM armBandList={armBandList} />
       </div>
     </div>
   );

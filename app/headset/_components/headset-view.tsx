@@ -5,7 +5,6 @@ import HeadsetTable from "./HeadsetTable/headset-table";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import HeadsetCardM from "./HeadsetCardM/headset-card-m";
 
 export default function HeadsetView({ headsetList }: HeadsetListTypes) {
   const locale = useLocale();
@@ -41,7 +40,6 @@ export default function HeadsetView({ headsetList }: HeadsetListTypes) {
             </div> */}
         </div>
         <HeadsetTable headsetList={headsetList} />
-        <HeadsetCardM headsetList={headsetList} />
       </div>
     </div>
   );

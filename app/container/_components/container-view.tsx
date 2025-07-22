@@ -1,12 +1,12 @@
 "use client";
 
-import type { ArmorVestListTypes } from "./armor-vest.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import ArmorVestTable from "./ArmorVestTable/armor-vest-table";
+import { ContainerListTypes } from "./container.types";
+import ContainerTable from "./ContainerTable/container-table";
 
-export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
+export default function ContainerView({ containerList }: ContainerListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
@@ -15,7 +15,7 @@ export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
         <div className="text-center mb-6 md:mb-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl md:text-4xl font-bold">
-              {itemI18N.armorVest.title[localeKey]}
+              {itemI18N.container.title[localeKey]}
             </h1>
           </div>
 
@@ -38,7 +38,7 @@ export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
                 }`}
               />
             </div> */}
-          <ArmorVestTable armorVestList={armorVestList} />
+          <ContainerTable containerList={containerList} />
         </div>
       </div>
     </div>

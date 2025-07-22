@@ -175,9 +175,75 @@ export const itemI18N = {
       ko: "내구성",
     },
   },
-  backpack: { title: { en: "Backpack", ja: "バックパック", ko: "가방" } },
-  container: { title: { en: "Container", ja: "コンテナ", ko: "컨테이너" } },
-  rig: { title: { en: "Rig", ja: "リグ", ko: "전술 조끼" } },
+  backpack: {
+    title: { en: "Backpack", ja: "バックパック", ko: "가방" },
+    slot: {
+      en: "Slot",
+      ja: "スロット",
+      ko: "슬롯",
+    },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    grid: {
+      en: "Grid",
+      ja: "グリッド",
+      ko: "그리드",
+    },
+  },
+  container: {
+    title: { en: "Container", ja: "コンテナ", ko: "컨테이너" },
+    slot: {
+      en: "Slot",
+      ja: "スロット",
+      ko: "슬롯",
+    },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    grid: {
+      en: "Grid",
+      ja: "グリッド",
+      ko: "그리드",
+    },
+  },
+  rig: {
+    title: { en: "Rig", ja: "リグ", ko: "전술 조끼" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    armorClass: {
+      en: "Armor Class",
+      ja: "防御等級",
+      ko: "보호 등급",
+    },
+    durability: {
+      en: "Durability",
+      ja: "耐久性",
+      ko: "내구성",
+    },
+  },
   key: { title: { en: "Key", ja: "鍵類", ko: "열쇠" } },
   loot: {
     title: { en: "Loot", ja: "ルート", ko: "전리품" },
@@ -214,6 +280,26 @@ export const itemI18N = {
   },
   headWear: {
     title: { en: "Head Wear", ja: "ヘルメット", ko: "방탄모" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    armorClass: {
+      en: "Armor Class",
+      ja: "防御等級",
+      ko: "보호 등급",
+    },
+    durability: {
+      en: "Durability",
+      ja: "耐久性",
+      ko: "내구성",
+    },
   },
   weapon: {
     title: { en: "Weapon", ja: "ガンズ", ko: "무기" },

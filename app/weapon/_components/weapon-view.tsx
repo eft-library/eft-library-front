@@ -5,7 +5,6 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import WeaponTable from "./WeaponTable/weapon-table";
-import WeaponCardM from "./WeaponCardM/weapon-card-m";
 
 export default function WeaponView({ weaponList }: WeaponListTypes) {
   const locale = useLocale();
@@ -42,7 +41,6 @@ export default function WeaponView({ weaponList }: WeaponListTypes) {
                 </div> */}
         </div>
         <WeaponTable weaponList={weaponList} />
-        <WeaponCardM weaponList={weaponList} />
       </div>
     </div>
   );

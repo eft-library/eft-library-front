@@ -1,12 +1,12 @@
 "use client";
 
-import type { ArmorVestListTypes } from "./armor-vest.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import ArmorVestTable from "./ArmorVestTable/armor-vest-table";
+import { HeadWearListTypes } from "./head-wear.types";
+import HeadWearTable from "./HeadWearTable/head-wear-table";
 
-export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
+export default function HeadWearView({ headWearData }: HeadWearListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
@@ -15,7 +15,7 @@ export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
         <div className="text-center mb-6 md:mb-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl md:text-4xl font-bold">
-              {itemI18N.armorVest.title[localeKey]}
+              {itemI18N.headWear.title[localeKey]}
             </h1>
           </div>
 
@@ -38,8 +38,8 @@ export default function ArmorVestView({ armorVestList }: ArmorVestListTypes) {
                 }`}
               />
             </div> */}
-          <ArmorVestTable armorVestList={armorVestList} />
         </div>
+        <HeadWearTable headWearData={headWearData} />
       </div>
     </div>
   );

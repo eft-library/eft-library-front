@@ -3,12 +3,12 @@
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
-import type { ArmorVestListTypes } from "../armor-vest.types";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { ContainerListTypes } from "../container.types";
 
-export default function ArmorVestTable({ armorVestList }: ArmorVestListTypes) {
+export default function ContainerTable({ containerList }: ContainerListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
@@ -29,20 +29,20 @@ export default function ArmorVestTable({ armorVestList }: ArmorVestListTypes) {
             : "border-gray-200 bg-gray-50 text-black"
         }`}
       >
-        <div>{itemI18N.armorVest.photo[localeKey]}</div>
+        <div>{itemI18N.container.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.armorVest.name[localeKey]}
+          {itemI18N.container.name[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.armorVest.armorClass[localeKey]}
+          {itemI18N.container.slot[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer">
-          {itemI18N.armorVest.durability[localeKey]}
+          {itemI18N.container.grid[localeKey]}
         </div>
       </div>
 
       {/* Items */}
-      {armorVestList.map((item) => (
+      {containerList.map((item) => (
         <div
           key={item.id}
           className={`border-b last:border-b-0 ${
@@ -79,14 +79,14 @@ export default function ArmorVestTable({ armorVestList }: ArmorVestListTypes) {
                   theme === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {item.info.class_value}
+                {item.info.capacity}
               </div>
               <div
                 className={`col-span-1 text-center font-normal ${
                   theme === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {item.info.durability}
+                {item.info.grids[0].width} X {item.info.grids[0].height}
               </div>
             </div>
 
@@ -121,14 +121,14 @@ export default function ArmorVestTable({ armorVestList }: ArmorVestListTypes) {
                       theme === "dark" ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    {itemI18N.armorVest.armorClass[localeKey]}
+                    {itemI18N.container.slot[localeKey]}
                   </div>
                   <div
                     className={`text-lg font-bold ${
                       theme === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {item.info.class_value}
+                    {item.info.capacity}
                   </div>
                 </div>
                 <div
@@ -141,14 +141,14 @@ export default function ArmorVestTable({ armorVestList }: ArmorVestListTypes) {
                       theme === "dark" ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    {itemI18N.armorVest.durability[localeKey]}
+                    {itemI18N.container.grid[localeKey]}
                   </div>
                   <div
                     className={`text-lg font-bold ${
                       theme === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {item.info.durability}
+                    {item.info.grids[0].width} X {item.info.grids[0].height}
                   </div>
                 </div>
               </div>

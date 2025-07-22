@@ -4,55 +4,96 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
-import ItemTableHeader from "@/components/custom/itemTable/item-table-header";
-import ItemTableRowWrapper from "@/components/custom/itemTable/item-table-row-wrapper";
 import type { WeaponListTypes } from "../weapon.types";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export default function WeaponTable({ weaponList }: WeaponListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const columns = [
-    { key: "photo", colSpan: 1, colText: itemI18N.weapon.photo[localeKey] },
-    { key: "name", colSpan: 1, colText: itemI18N.weapon.name[localeKey] },
-  ];
+  const { theme } = useTheme();
   return (
-    <div className="hidden lg:block">
+    <div
+      className={`mb-6 border rounded-lg ${
+        theme === "dark"
+          ? "border-gray-600 bg-gray-800"
+          : "border-gray-300 bg-white"
+      }`}
+    >
+      {/* Desktop Header */}
       <div
-        className={`rounded-lg border overflow-hidden dark:bg-slate-800 border-slate-700 bg-white border-gray-200`}
+        className={`hidden md:grid grid-cols-2 gap-4 p-4 border-b font-semibold text-center ${
+          theme === "dark"
+            ? "border-gray-600 bg-gray-750 text-white"
+            : "border-gray-200 bg-gray-50 text-black"
+        }`}
       >
-        {/* Table Header */}
-        <ItemTableHeader gridColSpan={2} columns={columns} />
+        <div>{itemI18N.armBand.photo[localeKey]}</div>
+        <div className="flex items-center justify-center cursor-pointer">
+          {itemI18N.armBand.name[localeKey]}
+        </div>
+      </div>
 
-        {/* Table Rows */}
-        {weaponList.map((item, index) => (
-          <ItemTableRowWrapper
-            urlMapping={item.url_mapping}
-            dataIndex={index}
-            dataLength={weaponList.length}
+      {/* Items */}
+      {weaponList.map((item) => (
+        <div
+          key={item.id}
+          className={`border-b last:border-b-0 ${
+            theme === "dark"
+              ? "border-gray-700 hover:bg-gray-750"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <Link
             key={item.id}
-            gridCols={2}
+            target="_blank"
+            href={`/item/${item.url_mapping}`}
           >
-            {/* Image */}
-            <div className="col-span-1 flex justify-end items-center">
-              <div className="flex justify-center items-center w-full md:w-auto mb-4 md:mb-0 md:border-r md:border-gray-200 dark:md:border-gray-700 md:pr-4">
+            {/* Desktop Layout */}
+            <div className="hidden md:grid grid-cols-2 gap-4 p-4 items-center text-center">
+              <div className="col-span-1 flex justify-center">
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={item.image_width * 64}
-                  height={item.image_height * 64}
-                  style={{ objectFit: "contain" }}
-                  className="rounded-md border border-gray-200 dark:border-gray-700"
+                  width={120}
+                  height={120}
+                  className="w-44 h-22 object-contain rounded border border-gray-600"
                 />
+              </div>
+              <div
+                className={`col-span-1 text-sm font-medium text-center ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {item.name[localeKey]}
               </div>
             </div>
 
-            {/* Name */}
-            <div className="col-span-1 flex items-center justify-center">
-              <span>{item.name[localeKey]}</span>
+            {/* Mobile Layout - Same pattern */}
+            <div className="md:hidden p-4 space-y-4">
+              <div className="flex items-center space-x-4 pb-3 border-b border-gray-600">
+                <Image
+                  src={item.image || "/placeholder.svg"}
+                  alt={item.name.en}
+                  width={64}
+                  height={64}
+                  className="w-32 h-18 object-contain rounded border border-gray-600 flex-shrink-0"
+                />
+
+                <div className="flex-1">
+                  <h3
+                    className={`font-medium text-base ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.name[localeKey]}
+                  </h3>
+                </div>
+              </div>
             </div>
-          </ItemTableRowWrapper>
-        ))}
-      </div>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }
