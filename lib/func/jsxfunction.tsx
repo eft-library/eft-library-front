@@ -7,6 +7,7 @@
 import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
 import { Price, TradeOption } from "@/app/price/_components/price.types";
+import { StimEffect } from "@/app/provisions/_components/provisions.types";
 
 // 변동률 계산
 export const calcChangeRate = (
@@ -267,19 +268,19 @@ export const getPlusMinus = (text: number) => {
 //   }
 // };
 
-// export const filterStimEffects = (effects: StimEffect[]) => {
-//   const seen = new Set();
-//   for (const effect of effects) {
-//     const key = `${effect.delay}-${effect.duration}`;
-//     if (!seen.has(key)) {
-//       seen.add(key);
-//     } else if (effect.skill_name_en !== "Painkiller") {
-//       delete effect.delay;
-//       delete effect.duration;
-//     }
-//   }
-//   return effects;
-// };
+export const filterStimEffects = (effects: StimEffect[]) => {
+  const seen = new Set();
+  for (const effect of effects) {
+    const key = `${effect.delay}-${effect.duration}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+    } else if (effect.skill_name_en !== "Painkiller") {
+      delete effect.delay;
+      delete effect.duration;
+    }
+  }
+  return effects;
+};
 
 // export const checkPlus = (effect: number | string | null) => {
 //   if (effect === null) {

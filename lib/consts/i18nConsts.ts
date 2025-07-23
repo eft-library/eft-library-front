@@ -280,7 +280,34 @@ export const itemI18N = {
       ja: "名前",
     },
   },
-  provisions: { title: { en: "Provisions", ja: "食料品", ko: "식량" } },
+  provisions: {
+    title: { en: "Provisions", ja: "食料品", ko: "식량" },
+    photo: {
+      en: "Photo",
+      ko: "사진",
+      ja: "写真",
+    },
+    name: {
+      en: "Name",
+      ko: "이름",
+      ja: "名前",
+    },
+    energy: {
+      en: "Energy",
+      ja: "エネルギー",
+      ko: "에너지",
+    },
+    hydration: {
+      en: "Hydration",
+      ja: "水分",
+      ko: "수분",
+    },
+    effect: {
+      en: "Effect",
+      ja: "効果",
+      ko: "효과",
+    },
+  },
   faceCover: {
     title: { en: "Face Cover", ja: "フェイスカバー", ko: "얼굴 커버" },
     photo: {
