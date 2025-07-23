@@ -4,7 +4,7 @@ import { QuestDetailTypes } from "@/app/quest/_components/quest.types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
-import HtmlWithImage from "@/components/custom/html-with-img";
+import HtmlWithImage from "@/components/custom/HtmlWithImg/html-with-img";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { questI18N } from "@/lib/consts/i18nConsts";

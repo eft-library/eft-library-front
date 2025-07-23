@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 import { Card } from "@/components/ui/card";
 import { Navigation2Icon, Check, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import HtmlWithImage from "@/components/custom/html-with-img";
+import HtmlWithImage from "@/components/custom/HtmlWithImg/html-with-img";
 import ImageView from "@/components/custom/ImageView/image-view";
 
 export default function ExtractionsTransits({

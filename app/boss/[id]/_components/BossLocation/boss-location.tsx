@@ -5,7 +5,7 @@ import type { BossDetail } from "../boss.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { boss18N } from "@/lib/consts/i18nConsts";
-import HtmlWithImage from "@/components/custom/html-with-img";
+import HtmlWithImage from "@/components/custom/HtmlWithImg/html-with-img";
 
 export default function BossLocation({ bossData }: BossDetail) {
   const locale = useLocale();

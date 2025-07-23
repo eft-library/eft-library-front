@@ -1,7 +1,6 @@
 "use client";
 
 import type { AmmoListTypes } from "./ammo.types";
-import AmmoCardM from "./AmmoCardM/ammo-card-m";
 import AmmoTable from "./AmmoTable/ammo-table";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
@@ -41,7 +40,6 @@ export default function AmmoView({ ammoList }: AmmoListTypes) {
         </div> */}
         </div>
         <AmmoTable ammoList={ammoList} />
-        <AmmoCardM ammoList={ammoList} />
       </div>
     </div>
   );

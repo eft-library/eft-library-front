@@ -9,12 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { HtmlWithImageTypes } from "./html-with-img.types";
 
-interface HtmlWithImage {
-  contents: string;
-}
-
-export default function HtmlWithImage({ contents }: HtmlWithImage) {
+export default function HtmlWithImage({ contents }: HtmlWithImageTypes) {
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
 

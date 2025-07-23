@@ -6,82 +6,97 @@ import { itemI18N } from "@/lib/consts/i18nConsts";
 import type { AmmoListTypes } from "../ammo.types";
 import Image from "next/image";
 import { getEffectivenessColor } from "@/lib/func/jsxfunction";
-import ItemTableHeader from "@/components/custom/itemTable/item-table-header";
-import ItemTableRowWrapper from "@/components/custom/itemTable/item-table-row-wrapper";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export default function AmmoTable({ ammoList }: AmmoListTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const columns = [
-    { key: "photo", colSpan: 1, colText: itemI18N.ammo.photo[localeKey] },
-    { key: "name", colSpan: 2, colText: itemI18N.ammo.name[localeKey] },
-    { key: "damage", colSpan: 1, colText: itemI18N.ammo.damage[localeKey] },
-    {
-      key: "penetration",
-      colSpan: 1,
-      colText: itemI18N.ammo.penetration[localeKey],
-    },
-    {
-      key: "armorEffectiveness",
-      colSpan: 2,
-      colText: itemI18N.ammo.armorEffectiveness[localeKey],
-    },
-  ];
+  const { theme } = useTheme();
 
   return (
-    <div className="hidden lg:block">
+    <div
+      className={`mb-6 border rounded-lg ${
+        theme === "dark"
+          ? "border-gray-600 bg-gray-800"
+          : "border-gray-300 bg-white"
+      }`}
+    >
+      {/* Desktop Header */}
       <div
-        className={`rounded-lg border overflow-hidden dark:bg-slate-800 border-slate-700 bg-white border-gray-200`}
+        className={`hidden md:grid grid-cols-6 gap-4 p-4 border-b font-semibold text-center ${
+          theme === "dark"
+            ? "border-gray-600 bg-gray-750 text-white"
+            : "border-gray-200 bg-gray-50 text-black"
+        }`}
       >
-        {/* Table Header */}
-        <ItemTableHeader gridColSpan={7} columns={columns} />
+        <div>{itemI18N.ammo.photo[localeKey]}</div>
+        <div className="flex items-center justify-center cursor-pointer">
+          {itemI18N.ammo.name[localeKey]}
+        </div>
+        <div className="flex items-center justify-center cursor-pointer">
+          {itemI18N.ammo.damage[localeKey]}
+        </div>
+        <div className="flex items-center justify-center cursor-pointer">
+          {itemI18N.ammo.penetration[localeKey]}
+        </div>
+        <div className="flex items-center justify-center cursor-pointer col-span-2">
+          {itemI18N.ammo.armorEffectiveness[localeKey]}
+        </div>
+      </div>
 
-        {/* Table Rows */}
-        {ammoList.map((item, index) => (
-          <ItemTableRowWrapper
-            urlMapping={item.url_mapping}
-            dataIndex={index}
-            dataLength={ammoList.length}
+      {/* Items */}
+      {ammoList.map((item) => (
+        <div
+          key={item.id}
+          className={`border-b last:border-b-0 ${
+            theme === "dark"
+              ? "border-gray-700 hover:bg-gray-750"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <Link
             key={item.id}
-            gridCols={7}
+            target="_blank"
+            href={`/item/${item.url_mapping}`}
           >
-            {/* Image */}
-            <div className="col-span-1 flex justify-center">
-              <div
-                className={`w-12 h-12 rounded border flex items-center justify-center dark:bg-slate-600 dark:border-slate-500 bg-gray-100 border-gray-300`}
-              >
+            {/* Desktop Layout */}
+            <div className="hidden md:grid grid-cols-6 gap-4 p-4 items-center text-center">
+              <div className="col-span-1 flex justify-center">
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 object-cover rounded"
+                  width={120}
+                  height={120}
+                  className="w-20 h-20 object-contain rounded border border-gray-600"
                 />
               </div>
-            </div>
-
-            {/* Name */}
-            <div className="col-span-2 flex items-center">
-              <span>{item.name[localeKey]}</span>
-            </div>
-
-            {/* Damage */}
-            <div className="col-span-1 flex items-center justify-center">
-              <span className="text-yellow-500 font-semibold">
+              <div
+                className={`col-span-1 text-sm font-medium text-center ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {item.name[localeKey]}
+              </div>
+              <div
+                className={`col-span-1 text-center font-normal ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
                 {item.info.damage}
-              </span>
-            </div>
-
-            {/* Penetration */}
-            <div className="col-span-1 flex items-center justify-center">
-              <span className="text-blue-500 font-semibold">
+              </div>
+              <div
+                className={`col-span-1 text-center font-normal ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
                 {item.info.penetration_power}
-              </span>
-            </div>
-
-            {/* Effectiveness */}
-            <div className="col-span-2 flex items-center">
-              <div className="grid grid-cols-6 w-full">
+              </div>
+              <div
+                className={`col-span-2 flex items-center justify-center gap-2 text-center font-normal ${
+                  theme === "dark" ? "text-white" : "text-black"
+                }`}
+              >
                 {item.info.efficiency &&
                   item.info.efficiency.map((value, idx) => (
                     <div
@@ -95,9 +110,108 @@ export default function AmmoTable({ ammoList }: AmmoListTypes) {
                   ))}
               </div>
             </div>
-          </ItemTableRowWrapper>
-        ))}
-      </div>
+
+            {/* Mobile Layout - Improved */}
+            <div className="md:hidden p-4">
+              {/* Header with Image and Name */}
+              <div className="flex items-start space-x-4 mb-4">
+                <div className="flex-shrink-0">
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.name.en}
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 object-contain rounded border border-gray-600"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className={`font-semibold text-lg leading-tight mb-2 ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.name[localeKey]}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div
+                  className={`p-3 rounded-lg ${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+                  }`}
+                >
+                  <div
+                    className={`font-semibold text-xs uppercase tracking-wide mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-600"
+                    }`}
+                  >
+                    {itemI18N.ammo.damage[localeKey]}
+                  </div>
+                  <div
+                    className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.info.damage}
+                  </div>
+                </div>
+
+                <div
+                  className={`p-3 rounded-lg ${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+                  }`}
+                >
+                  <div
+                    className={`font-semibold text-xs uppercase tracking-wide mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-600"
+                    }`}
+                  >
+                    {itemI18N.ammo.penetration[localeKey]}
+                  </div>
+                  <div
+                    className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.info.penetration_power}
+                  </div>
+                </div>
+              </div>
+
+              {/* Armor Effectiveness */}
+              {item.info.efficiency && item.info.efficiency.length > 0 && (
+                <div
+                  className={`p-3 rounded-lg ${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+                  }`}
+                >
+                  <div
+                    className={`font-semibold text-xs uppercase tracking-wide mb-3 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-600"
+                    }`}
+                  >
+                    {itemI18N.ammo.armorEffectiveness[localeKey]}
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {item.info.efficiency.map((value, idx) => (
+                      <div
+                        key={`mobile-ammo-efficiency-${idx}`}
+                        className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-sm font-bold shadow-sm ${getEffectivenessColor(
+                          value
+                        )}`}
+                      >
+                        {value}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }
