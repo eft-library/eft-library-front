@@ -581,6 +581,16 @@ export const interactiveMapI18N = {
     ja: "すべて解除",
     ko: "모두 해제",
   },
+  map: {
+    en: "Map",
+    ja: "マップ",
+    ko: "지도",
+  },
+  subMap: {
+    en: "Sub Map",
+    ja: "サブマップ",
+    ko: "하위 지도",
+  },
   control: {
     en: "Left-click Drag - Move / Right-click Drag - Rotate / Wheel - Zoom In, Zoom Out",
     ja: "左クリックドラッグ - 移動 / 右クリックドラッグ - 回転 / ホイール - ズームイン、ズームアウト",

@@ -17,6 +17,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { MapData, MapSelectorTypes } from "../map.types";
 import Link from "next/link";
+import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 
 export default function MapSelector({
   onClickMapAction,
@@ -53,16 +54,16 @@ export default function MapSelector({
   return (
     <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 p-4 rounded-lg shadow-sm">
       <div className="flex items-center space-x-2 w-full md:w-auto">
-        <span className="text-muted-foreground whitespace-nowrap">지도:</span>
+        <span className="text-muted-foreground whitespace-nowrap">
+          {interactiveMapI18N.map[localeKey]}:
+        </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               className="w-full md:w-[150px] justify-between bg-transparent"
             >
-              {mapSelector.find((map) => map.id === mapData.id)?.name[
-                localeKey
-              ] || "Main"}
+              {mapData.name[localeKey]}
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
@@ -79,7 +80,9 @@ export default function MapSelector({
         {">"}
       </span>
       <div className="flex items-center space-x-2 w-full md:w-auto">
-        <span className="text-muted-foreground whitespace-nowrap">세부:</span>
+        <span className="text-muted-foreground whitespace-nowrap">
+          {interactiveMapI18N.subMap[localeKey]}:
+        </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
