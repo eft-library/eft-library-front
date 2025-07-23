@@ -556,6 +556,31 @@ export const rankI18N = {
 
 export const interactiveMapI18N = {
   title: { en: "Interactive Maps", ja: "Interactive Maps", ko: "대화형 지도" },
+  itemFilter: {
+    en: "Item Filter",
+    ja: "アイテムフィルター",
+    ko: "아이템 필터",
+  },
+  map2D: {
+    en: "2D Map",
+    ja: "2Dマップ",
+    ko: "2D 지도",
+  },
+  map3D: {
+    en: "3D Map",
+    ja: "3Dマップ",
+    ko: "3D 지도",
+  },
+  selectAll: {
+    en: "Select All",
+    ja: "すべて選択",
+    ko: "모두 선택",
+  },
+  deselectAll: {
+    en: "Deselect All",
+    ja: "すべて解除",
+    ko: "모두 해제",
+  },
   control: {
     en: "Left-click Drag - Move / Right-click Drag - Rotate / Wheel - Zoom In, Zoom Out",
     ja: "左クリックドラッグ - 移動 / 右クリックドラッグ - 回転 / ホイール - ズームイン、ズームアウト",

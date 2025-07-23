@@ -104,7 +104,7 @@ export const useItemFilter = (mapItem: JpgItemPath[]) => {
    * 아이템 전체 선택 또는 해제
    */
   const onClickAllItem = (isAll: boolean) => {
-    setViewItemList(isAll ? [] : valuesList);
+    setViewItemList(isAll ? valuesList : []);
   };
 
   /**

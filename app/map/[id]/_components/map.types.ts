@@ -43,11 +43,13 @@ interface MapJson {
   material: string;
 }
 
-export interface ItemSelector {
+export interface ItemFilterTypes {
   viewItemList: string[];
   onClickItemAction: (val: string) => void;
   onClickAllItemAction: (val: boolean) => void;
   originItemList: JpgItemPath[];
+  mapType: string;
+  setMapType: (val: string) => void;
 }
 
 export interface JpgItemPath {
@@ -68,7 +70,7 @@ export interface ThreeviewDetail {
   mapData: MapData;
   viewItemList: string[];
 }
-export interface SubMapSelector {
+export interface MapSelectorTypes {
   onClickMapAction: (val: MapData) => void;
   mapData: MapData;
   mapSelector: MapSelector[];

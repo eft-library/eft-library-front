@@ -1,3 +1,5 @@
+import MapData from "./_components/map-data";
+
 export default function Map() {
-  return null;
+  return <MapData />;
 }
