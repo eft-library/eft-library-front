@@ -119,7 +119,7 @@ export default function QuestNode(props: any) {
                   "flex items-center gap-1 px-2 py-1 rounded-full",
                   "bg-gradient-to-r from-yellow-400 to-orange-500",
                   "text-white font-bold text-sm",
-                  "shadow-md animate-pulse"
+                  "shadow-md"
                 )}
               >
                 <Zap className="w-3 h-3" />

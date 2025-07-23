@@ -88,8 +88,10 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 className="text-yellow-400 hover:text-yellow-300 transition-colors text-xs mt-3 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"
               >
                 {showAllPrevious
-                  ? "접기"
-                  : `+${quest.task_requirements.length - 5}개 더 보기`}
+                  ? `${questI18N.less[localeKey]}`
+                  : `+${quest.task_requirements.length - 5} ${
+                      questI18N.more[localeKey]
+                    }`}
               </button>
             )}
           </div>
@@ -127,8 +129,10 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 className="text-yellow-400 hover:text-yellow-300 transition-colors text-xs mt-3 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"
               >
                 {showAllNext
-                  ? "접기"
-                  : `+${quest.task_next.length - 5}개 더 보기`}
+                  ? `${questI18N.less[localeKey]}`
+                  : `+${quest.task_next.length - 5} ${
+                      questI18N.more[localeKey]
+                    }`}
               </button>
             )}
           </div>

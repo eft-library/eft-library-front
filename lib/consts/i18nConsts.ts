@@ -642,6 +642,16 @@ export const questI18N = {
     ja: "次へ",
     ko: "다음",
   },
+  more: {
+    en: "View more",
+    ja: "さらに表示",
+    ko: "개 더 보기",
+  },
+  less: {
+    en: "Collapse",
+    ja: "折りたたむ",
+    ko: "접기",
+  },
   purchaseUnlock: {
     en: "Unlock with Purchase",
     ja: "購入してロック解除",
