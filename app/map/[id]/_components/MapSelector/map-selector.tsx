@@ -41,7 +41,6 @@ export default function MapSelector({
         );
         return null;
       }
-      console.log(data.data);
       setSubMap(data.data);
     };
     getSubMapById();

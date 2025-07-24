@@ -184,7 +184,6 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
       );
 
       if (response?.status === 200) {
-        console.log(response.data);
         setUserQuest(response.data);
       } else {
         setUserQuest([]);
