@@ -9,8 +9,25 @@ import { Canvas } from "@react-three/fiber";
 import { MapControls, useGLTF } from "@react-three/drei";
 import Loader3D from "./loader-3d";
 
-export default function Map3D({ mapData }: Map3DTypes) {
+function Scene({ mapData }: { mapData: Map3DTypes["mapData"] }) {
   const { nodes, materials } = useGLTF(mapData.three_image) as any;
+
+  return (
+    <group onClick={(e) => console.log(e.point)}>
+      {mapData.map_json.map((data) => (
+        <mesh
+          key={data.geometry}
+          geometry={nodes[data.geometry]?.geometry}
+          material={materials[data.material]}
+        />
+      ))}
+    </group>
+  );
+}
+
+// 🟢 useGLTF는 이 내부 Scene 컴포넌트에서만 사용됨
+
+export default function Map3D({ mapData }: Map3DTypes) {
   const [filterInfo, setFilterInfo] = useState(null);
 
   useEffect(() => {
@@ -21,39 +38,37 @@ export default function Map3D({ mapData }: Map3DTypes) {
           "Failed to fetch sub map item data:",
           data?.msg || "Unknown error"
         );
-        return null;
+        return;
       }
       setFilterInfo(data.data);
     };
     getSubMapItem();
   }, []);
 
-  if (!filterInfo || !nodes || !materials)
+  if (!filterInfo) {
     return (
-      <div className="w-full flex-1 min-h-[500px] rounded-lg overflow-hidden shadow-lg bg-card"></div>
+      <div className="w-full flex-1 min-h-[720px] rounded-lg overflow-hidden shadow-lg bg-card">
+        {/* Optional loading state */}
+      </div>
     );
+  }
 
   return (
     <div className="w-full flex-1 min-h-[500px] rounded-lg overflow-hidden shadow-lg bg-card">
       <Canvas
+        style={{ width: "100%", height: "720px", display: "block" }}
         camera={{ position: [0, 60, 0] }}
-        style={{ backgroundColor: "#1e1e24", height: "100vh" }}
+        onCreated={({ gl }) => {
+          gl.setClearColor("#1e1e24");
+        }}
       >
-        <MapControls zoomSpeed={2.0} enableDamping={true} enableZoom={true} />
-        <ambientLight intensity={1} />
-        <directionalLight position={[10, 5, 5]} intensity={2} />
-        <pointLight position={[0, 0, 0]} intensity={2} />
-        <group onClick={(e) => console.log(e.point)}>
-          <Suspense fallback={<Loader3D />}>
-            {mapData.map_json.map((data) => (
-              <mesh
-                geometry={nodes[data.geometry].geometry}
-                material={materials[data.material]}
-                key={data.geometry}
-              ></mesh>
-            ))}
-          </Suspense>
-        </group>
+        <Suspense fallback={<Loader3D />}>
+          <MapControls zoomSpeed={2.0} enableDamping={true} enableZoom={true} />
+          <ambientLight intensity={1} />
+          <directionalLight position={[10, 5, 5]} intensity={2} />
+          <pointLight position={[0, 0, 0]} intensity={2} />
+          <Scene mapData={mapData} />
+        </Suspense>
       </Canvas>
     </div>
   );
