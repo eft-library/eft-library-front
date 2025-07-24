@@ -2,20 +2,20 @@
 
 import Loading from "@/components/custom/Loading/loading";
 import { Button } from "@/components/ui/button";
-import { requestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { getLocaleKey } from "@/lib/func/localeFunction";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+} from "@/components/ui/dropdown-menu";
+import { requestData } from "@/lib/config/api";
+import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { ChevronDown, Map, MapPin } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { MapData, MapSelectorTypes } from "../map.types";
+import type { MapData, MapSelectorTypes } from "../map.types";
 import Link from "next/link";
 import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 
@@ -34,7 +34,6 @@ export default function MapSelector({
       const data = await requestData(
         `${API_ENDPOINTS.GET_SUB_MAP}/${param.id}`
       );
-
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch sub map data:",
@@ -42,65 +41,102 @@ export default function MapSelector({
         );
         return null;
       }
-
+      console.log(data.data);
       setSubMap(data.data);
     };
-
     getSubMapById();
   }, [param.id]);
 
   if (!subMap || !mapSelector) return <Loading />;
 
+  const currentMainMap = subMap.find((map) => map.id === param.id);
+  const currentSubMap = subMap.find((sub) => sub.id === mapData.id);
+
   return (
-    <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 p-4 rounded-lg shadow-sm">
-      <div className="flex items-center space-x-2 w-full md:w-auto">
-        <span className="text-muted-foreground whitespace-nowrap">
-          {interactiveMapI18N.map[localeKey]}:
-        </span>
+    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 bg-card rounded-xl border shadow-sm">
+      {/* Main Map Selector */}
+      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
+        <div className="flex items-center space-x-2 text-sm font-medium text-muted-foreground">
+          <Map className="h-4 w-4" />
+          <span>{interactiveMapI18N.map[localeKey]}</span>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full md:w-[150px] justify-between bg-transparent"
+              className="w-full lg:w-[220px] justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
             >
-              {mapData.name[localeKey]}
+              <div className="flex items-center">
+                <Map className="mr-2 h-4 w-4 opacity-60" />
+                <span className="truncate font-medium">
+                  {currentMainMap?.name[localeKey] || "Main"}
+                </span>
+              </div>
+
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full md:w-[150px]">
+          <DropdownMenuContent
+            className="w-[220px] p-1"
+            align="start"
+            sideOffset={4}
+          >
             {mapSelector.map((map) => (
-              <DropdownMenuItem key={map.id}>
-                <Link href={map.link}>{map.name[localeKey]}</Link>
+              <DropdownMenuItem key={map.id} className="p-0">
+                <Link
+                  href={map.link}
+                  className="w-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors flex items-center"
+                >
+                  <Map className="mr-2 h-4 w-4 opacity-60" />
+                  <span className="truncate">{map.name[localeKey]}</span>
+                </Link>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <span className="text-muted-foreground text-xl font-light hidden md:block">
-        {">"}
-      </span>
-      <div className="flex items-center space-x-2 w-full md:w-auto">
-        <span className="text-muted-foreground whitespace-nowrap">
-          {interactiveMapI18N.subMap[localeKey]}:
-        </span>
+
+      {/* Separator */}
+      <div className="hidden lg:flex items-center">
+        <div className="w-8 h-px bg-border"></div>
+        <ChevronDown className="h-4 w-4 text-muted-foreground rotate-[-90deg]" />
+        <div className="w-8 h-px bg-border"></div>
+      </div>
+
+      {/* Sub Map Selector */}
+      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
+        <div className="flex items-center space-x-2 text-sm font-medium text-muted-foreground">
+          <MapPin className="h-4 w-4" />
+          <span>{interactiveMapI18N.subMap[localeKey]}</span>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full md:w-[150px] justify-between bg-transparent"
+              className="w-full lg:w-[220px] justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
             >
-              {subMap.find((sub) => sub.id === mapData.id)?.name[localeKey] ||
-                "Sub"}
+              <div className="flex items-center">
+                <MapPin className="mr-2 h-4 w-4 opacity-60" />
+                <span className="truncate font-medium">
+                  {currentSubMap?.name[localeKey] || "Sub"}
+                </span>
+              </div>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full md:w-[150px]">
+          <DropdownMenuContent
+            className="w-[220px] p-1"
+            align="start"
+            sideOffset={4}
+          >
             {subMap.map((sub) => (
               <DropdownMenuItem
                 key={sub.id}
                 onSelect={() => onClickMapAction(sub)}
+                className="px-3 py-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors flex items-center"
               >
-                {sub.name[localeKey]}
+                <MapPin className="mr-2 h-4 w-4 opacity-60" />
+                <span className="truncate">{sub.name[localeKey]}</span>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
