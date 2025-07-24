@@ -3,7 +3,11 @@
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import {
+  TransformWrapper,
+  TransformComponent,
+  ReactZoomPanPinchRef,
+} from "react-zoom-pan-pinch";
 import { JpgItemPath, Map2DTypes } from "../map.types";
 import { GetIcon } from "@/components/custom/GetIcon/get-icon";
 import Link from "next/link";
@@ -25,11 +29,11 @@ export default function Map2D({ mapData, viewItemList }: Map2DTypes) {
     setIsOpen(true);
   };
 
-  const handleZoom = (e: any) => {
+  const handleZoom = (e: ReactZoomPanPinchRef) => {
     setScale(e.state.scale);
   };
 
-  const handleClick = (e: any) => {
+  const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
     const svg = e.currentTarget;
     const svgRect = svg.getBoundingClientRect();
     const clientX = e.clientX;
