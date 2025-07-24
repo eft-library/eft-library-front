@@ -66,7 +66,7 @@ interface UserNextQuest {
   name: LocaleName;
 }
 
-export interface ThreeviewDetail {
+export interface Map3DTypes {
   mapData: MapData;
   viewItemList: string[];
 }
@@ -81,8 +81,8 @@ export interface ThreeModel {
   map: MapData;
   zoomLevel: number;
 }
-export interface JPGView {
-  map: MapData;
+export interface Map2DTypes {
+  mapData: MapData;
   viewItemList: string[];
 }
 

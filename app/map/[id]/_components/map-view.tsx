@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useItemFilter } from "@/lib/hooks/useItemFilter";
 import ItemFilter from "./ItemFilter/item-filter";
 import MapSelector from "./MapSelector/map-selector";
+import Map2D from "./Map2D/map-2d";
+import Map3D from "./Map3D/map-3d";
 
 export default function MapView({ mapInfo }: MapViewTypes) {
   const locale = useLocale();
@@ -47,6 +49,11 @@ export default function MapView({ mapInfo }: MapViewTypes) {
         />
 
         {/* Map View - ToggleGroup is now inside ItemFilter */}
+        {mapType === "2D" ? (
+          <Map2D viewItemList={viewItemList} mapData={mapData} />
+        ) : (
+          <Map3D viewItemList={viewItemList} mapData={mapData} />
+        )}
         {/* <MapView mapType={mapType} /> */}
       </div>
     </div>
