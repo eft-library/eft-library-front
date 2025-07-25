@@ -1,13 +1,13 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { getLocaleKey } from "@/lib/func/localeFunction";
-import { itemI18N } from "@/lib/consts/i18nConsts";
+import { getLocaleKey, getEffectLocalizedKey } from "@/lib/func/localeFunction";
+import { effectI18N, itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { ProvisionsListTypes } from "../provisions.types";
-import { filterStimEffects } from "@/lib/func/jsxfunction";
+import { ProvisionsListTypes, StimEffect } from "../provisions.types";
+import { getPlusMinus } from "@/lib/func/jsxfunction";
 
 export default function ProvisionsTable({
   provisionsList,
@@ -103,43 +103,74 @@ export default function ProvisionsTable({
                 {item.info.hydration}
               </div>
               <div className="col-span-1 text-sm space-y-1">
-                {item.info.stim_effects.length > 0 ? (
-                  filterStimEffects(item.info.stim_effects).map(
-                    (effect, index) => (
-                      <div key={`${index}-${item.id}`}>
-                        {effect.skill_name_ko}
-                      </div>
-                    )
-                  )
-                ) : (
-                  <></>
-                )}
-                {/* {item.effects.map((effect, index) => (
-                  <div
-                    key={index}
-                    className={
-                      effect.includes("+")
-                        ? "text-green-400"
-                        : effect.includes("-") && effect !== "-"
-                        ? "text-red-400"
-                        : theme === "dark"
-                        ? "text-white"
-                        : "text-black"
+                {/* 표시할 키들: 효과 종류만 추려냄 */}
+                {(["advantage", "buff", "malus", "de_buff"] as const).map(
+                  (effectKey) => {
+                    const effects = item.info[effectKey];
+                    if (!effects || effects.length === 0) return null;
+
+                    // delay-duration 조합으로 그룹화
+                    const grouped: Record<string, StimEffect[]> = {};
+                    for (const effect of effects) {
+                      const groupKey = `${effect.delay}-${effect.duration}`;
+                      if (!grouped[groupKey]) grouped[groupKey] = [];
+                      grouped[groupKey].push(effect);
                     }
-                  >
-                    {effect}
-                  </div>
-                ))} */}
+
+                    const textColor =
+                      effectKey === "de_buff"
+                        ? "text-red-400"
+                        : "text-green-400";
+
+                    return (
+                      <div key={effectKey}>
+                        {Object.entries(grouped).map(
+                          ([groupKey, groupEffects]) => {
+                            const [delay, duration] = groupKey.split("-");
+
+                            return (
+                              <div
+                                className="flex flex-col"
+                                key={`${effectKey}-${groupKey}`}
+                              >
+                                {/* 공통 delay-duration 정보 */}
+                                <div className="text-yellow-400">
+                                  {`${delay} ${effectI18N.delay[localeKey]} ${duration} ${effectI18N.duration[localeKey]}`}
+                                </div>
+
+                                {/* 그룹 내 효과 이름 + value */}
+                                {groupEffects.map((effect, i) => (
+                                  <div
+                                    className={textColor}
+                                    key={`${effectKey}-effect-${i}`}
+                                  >
+                                    {effect[getEffectLocalizedKey(localeKey)]}
+                                    {effectKey === "buff" ||
+                                    effectKey === "de_buff"
+                                      ? ` ${getPlusMinus(effect.value)}`
+                                      : ""}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </div>
 
             {/* Mobile Layout */}
-            {/* <div className="md:hidden p-4 space-y-4">
+            <div className="md:hidden p-4 space-y-4">
               <div className="flex items-center space-x-4 pb-3 border-b border-gray-600">
-                <img
+                <Image
                   src={item.image || "/placeholder.svg"}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded border border-gray-600 flex-shrink-0"
+                  alt={item.name.en}
+                  width={120}
+                  height={120}
+                  className="w-34 h-30 object-contain rounded border border-gray-600"
                 />
                 <div className="flex-1">
                   <h3
@@ -147,7 +178,7 @@ export default function ProvisionsTable({
                       theme === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {item.name}
+                    {item.name[localeKey]}
                   </h3>
                 </div>
               </div>
@@ -166,14 +197,16 @@ export default function ProvisionsTable({
                   </div>
                   <div
                     className={`text-lg font-bold ${
-                      item.energy > 0
+                      item.info.energy > 0
                         ? "text-green-400"
                         : theme === "dark"
                         ? "text-white"
                         : "text-black"
                     }`}
                   >
-                    {item.energy > 0 ? `+${item.energy}` : item.energy}
+                    {item.info.energy > 0
+                      ? `+${item.info.energy}`
+                      : item.info.energy}
                   </div>
                 </div>
                 <div
@@ -190,14 +223,14 @@ export default function ProvisionsTable({
                   </div>
                   <div
                     className={`text-lg font-bold ${
-                      item.hydration < 0
+                      item.info.hydration < 0
                         ? "text-red-400"
                         : theme === "dark"
                         ? "text-white"
                         : "text-black"
                     }`}
                   >
-                    {item.hydration}
+                    {item.info.hydration}
                   </div>
                 </div>
                 <div
@@ -213,30 +246,69 @@ export default function ProvisionsTable({
                     {itemI18N.provisions.effect[localeKey]}
                   </div>
                   <div className="space-y-1">
-                    {item.effects.map((effect, index) => (
-                      <div
-                        key={index}
-                        className={`text-sm p-2 rounded ${
-                          effect.includes("+")
-                            ? theme === "dark"
-                              ? "bg-green-900/30 text-green-400"
-                              : "bg-green-100 text-green-600"
-                            : effect.includes("-") && effect !== "-"
-                            ? theme === "dark"
-                              ? "bg-red-900/30 text-red-400"
-                              : "bg-red-100 text-red-600"
-                            : theme === "dark"
-                            ? "bg-gray-800 text-white"
-                            : "bg-gray-200 text-black"
-                        }`}
-                      >
-                        • {effect}
-                      </div>
-                    ))}
+                    {(["advantage", "buff", "malus", "de_buff"] as const).map(
+                      (effectKey) => {
+                        const effects = item.info[effectKey];
+                        if (!effects || effects.length === 0) return null;
+
+                        // delay-duration 조합으로 그룹화
+                        const grouped: Record<string, StimEffect[]> = {};
+                        for (const effect of effects) {
+                          const groupKey = `${effect.delay}-${effect.duration}`;
+                          if (!grouped[groupKey]) grouped[groupKey] = [];
+                          grouped[groupKey].push(effect);
+                        }
+
+                        const textColor =
+                          effectKey === "de_buff" || effectKey === "malus"
+                            ? "text-red-400 text-sm p-2 rounded"
+                            : "text-green-400 text-sm p-2 rounded";
+
+                        return (
+                          <div key={effectKey}>
+                            {Object.entries(grouped).map(
+                              ([groupKey, groupEffects]) => {
+                                const [delay, duration] = groupKey.split("-");
+
+                                return (
+                                  <div
+                                    className="flex flex-col"
+                                    key={`${effectKey}-${groupKey}`}
+                                  >
+                                    {/* 공통 delay-duration 정보 */}
+                                    <div className="text-yellow-400 text-sm p-2 rounded">
+                                      {`${delay} ${effectI18N.delay[localeKey]} ${duration} ${effectI18N.duration[localeKey]}`}
+                                    </div>
+
+                                    {/* 그룹 내 효과 이름 + value */}
+                                    {groupEffects.map((effect, i) => (
+                                      <div
+                                        className={textColor}
+                                        key={`${effectKey}-effect-${i}`}
+                                      >
+                                        {
+                                          effect[
+                                            getEffectLocalizedKey(localeKey)
+                                          ]
+                                        }
+                                        {effectKey === "buff" ||
+                                        effectKey === "de_buff"
+                                          ? ` ${getPlusMinus(effect.value)}`
+                                          : ""}
+                                      </div>
+                                    ))}
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
           </Link>
         </div>
       ))}

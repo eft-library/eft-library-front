@@ -21,6 +21,10 @@ interface ProvisionsInfo {
   energy: number;
   hydration: number;
   stim_effects: StimEffect[];
+  malus: StimEffect[];
+  buff: StimEffect[];
+  de_buff: StimEffect[];
+  advantage: StimEffect[];
 }
 
 interface ProvisionsDetail {
