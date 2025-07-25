@@ -1,6 +1,14 @@
-export interface HeadsetListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface HeadsetViewTypes {
   headsetList: HeadsetDetail[];
 }
+
+export interface HeadsetTableTypes {
+  headsetList: HeadsetDetail[];
+  word: string;
+}
+
 interface HeadsetDetail {
   category: string;
   id: string;
@@ -10,10 +18,4 @@ interface HeadsetDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

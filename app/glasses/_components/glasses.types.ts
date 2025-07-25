@@ -1,5 +1,12 @@
-export interface GlassesListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface GlassesViewTypes {
   glassesData: RigData;
+}
+
+export interface GlassesTableTypes {
+  glassesData: RigData;
+  word: string;
 }
 
 interface RigData {
@@ -23,10 +30,4 @@ interface GlassesDetail {
   info: GlassesInfo;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

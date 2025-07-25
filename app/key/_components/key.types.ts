@@ -1,5 +1,12 @@
-export interface KeyListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface KeyViewTypes {
   keyList: KeyDetail[];
+}
+
+export interface KeyTableTypes {
+  keyList: KeyDetail[];
+  word: string;
 }
 
 interface KeyInfo {
@@ -18,12 +25,6 @@ interface KeyDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface LocaleMapName {

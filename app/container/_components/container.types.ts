@@ -1,5 +1,12 @@
-export interface ContainerListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface ContainerViewTypes {
   containerList: ContainerDetail[];
+}
+
+export interface ContainerTableTypes {
+  containerList: ContainerDetail[];
+  word: string;
 }
 
 interface Size {
@@ -24,9 +31,4 @@ interface ContainerDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

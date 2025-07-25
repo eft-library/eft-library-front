@@ -1,5 +1,12 @@
-export interface RigListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface RigViewTypes {
   rig_data: RigData;
+}
+
+export interface RigTableTypes {
+  rig_data: RigData;
+  word: string;
 }
 
 interface RigData {
@@ -25,12 +32,6 @@ interface RigDetail {
   info: RigInfo;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface ZonesLocaleName {

@@ -1,5 +1,12 @@
-export interface ProvisionsListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface ProvisionsViewTypes {
   provisionsList: ProvisionsDetail[];
+}
+
+export interface ProvisionsTableTypes {
+  provisionsList: ProvisionsDetail[];
+  word: string;
 }
 
 export interface StimEffect {
@@ -36,10 +43,4 @@ interface ProvisionsDetail {
   image: string;
   image_width: number;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

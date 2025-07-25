@@ -1,6 +1,11 @@
 import type { LocaleName } from "@/components/types/common";
 
-export interface AmmoListTypes {
+export interface AmmoTableTypes {
+  ammoList: AmmoDetail[];
+  word: string;
+}
+
+export interface AmmoViewTypes {
   ammoList: AmmoDetail[];
 }
 

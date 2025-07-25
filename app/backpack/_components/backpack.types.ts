@@ -1,5 +1,12 @@
-export interface BackpackListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface BackpackViewTypes {
   backpackList: BackpackDetail[];
+}
+
+export interface BackpackTableTypes {
+  backpackList: BackpackDetail[];
+  word: string;
 }
 
 interface Size {
@@ -23,9 +30,4 @@ interface BackpackDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

@@ -1,7 +1,14 @@
+import { LocaleName } from "@/components/types/common";
+
 type WeaponDetail = GunDetail | KnifeDetail | ThrowableDetail;
 
-export interface WeaponListTypes {
+export interface WeaponViewTypes {
   weaponList: WeaponDetail[];
+}
+
+export interface WeaponTableTypes {
+  weaponList: WeaponDetail[];
+  word: string;
 }
 
 interface GunInfo {
@@ -65,12 +72,6 @@ interface ThrowableDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface ModesLocaleName {

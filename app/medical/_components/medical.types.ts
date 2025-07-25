@@ -1,3 +1,5 @@
+import { LocaleName } from "@/components/types/common";
+
 export interface MedicalViewTypes {
   medical: MedicalData;
 }
@@ -11,22 +13,22 @@ export interface MedicalData {
 
 export interface StimulantTypes {
   medicalList: StimulantDetail[];
-  searchWord: string;
+  word: string;
 }
 
 export interface MediKitTypes {
   medicalList: MedikitDetail[];
-  searchWord: string;
+  word: string;
 }
 
 export interface MedicalItemTypes {
   medicalList: MedicalDetail[];
-  searchWord: string;
+  word: string;
 }
 
 export interface DrugTypes {
   medicalList: DrugDetail[];
-  searchWord: string;
+  word: string;
 }
 
 interface DrugInfo {
@@ -135,12 +137,6 @@ interface StimulantDetail {
   name: LocaleName;
   image_width: number;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface LocaleNameArray {

@@ -1,7 +1,12 @@
-export interface HeadWearListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface HeadWearViewTypes {
   headWearData: HeadWearData;
 }
-
+export interface HeadWearTableTypes {
+  headWearData: HeadWearData;
+  word: string;
+}
 interface HeadWearData {
   class_headwear: HeadWearDetail[];
   no_class_headwear: HeadWearDetail[];
@@ -25,12 +30,6 @@ interface HeadWearDetail {
   info: HeadWearInfo;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface ZonesLocaleName {

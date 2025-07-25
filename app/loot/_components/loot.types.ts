@@ -1,4 +1,11 @@
-export interface LootListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface LootTableTypes {
+  lootList: LootDetail[];
+  word: string;
+}
+
+export interface LootViewTypes {
   lootList: LootDetail[];
 }
 
@@ -16,10 +23,4 @@ interface LootDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }

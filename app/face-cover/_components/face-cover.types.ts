@@ -1,5 +1,12 @@
-export interface FaceCoverListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface FaceCoverViewTypes {
   face_cover_data: FaceCoverData;
+}
+
+export interface FaceCoverTableTypes {
+  face_cover_data: FaceCoverData;
+  word: string;
 }
 
 interface FaceCoverData {
@@ -25,12 +32,6 @@ interface FaceCoverDetail {
   info: FaceCoverInfo;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface ZonesLocaleName {

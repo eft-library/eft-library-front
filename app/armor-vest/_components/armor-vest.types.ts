@@ -1,4 +1,11 @@
-export interface ArmorVestListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface ArmorVestTableTypes {
+  armorVestList: ArmorVestDetail[];
+  word: string;
+}
+
+export interface ArmorVestViewTypes {
   armorVestList: ArmorVestDetail[];
 }
 
@@ -19,11 +26,6 @@ interface ArmorVestDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
 
 interface ZonesLocaleName {

@@ -1,14 +1,18 @@
 "use client";
 
-import type { LootListTypes } from "./loot.types";
+import type { LootViewTypes } from "./loot.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { itemI18N } from "@/lib/consts/i18nConsts";
+import { itemI18N, placeHolderText } from "@/lib/consts/i18nConsts";
 import LootTable from "./LootTable/loot-table";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
-export default function LootView({ lootList }: LootListTypes) {
+export default function LootView({ lootList }: LootViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const [word, setWord] = useState<string>("");
 
   return (
     <div className="min-h-screen bg-background">
@@ -21,26 +25,20 @@ export default function LootView({ lootList }: LootListTypes) {
           </div>
 
           {/* Search Bar */}
-          {/* <div className="relative max-w-md mx-auto mb-6 md:mb-8">
-                <Search
-                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${
-                    isDarkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
-                />
-                <Input
-                  type="text"
-                  placeholder="아이템 혹은 스킬을 검색하세요"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className={`pl-10 rounded-lg ${
-                    isDarkMode
-                      ? "bg-slate-800 border-slate-700 text-white placeholder-gray-400"
-                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                  }`}
-                />
-              </div> */}
+          <div className="relative max-w-md mx-auto mb-6 md:mb-8">
+            <Search
+              className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 dark:text-gray-400 text-gray-500`}
+            />
+            <Input
+              type="text"
+              placeholder={placeHolderText.search[localeKey]}
+              value={word}
+              onChange={(e) => setWord(e.target.value)}
+              className={`pl-10 rounded-lg dark:card dark:border-slate-700 dark:text-white dark:placeholder-gray-400 bg-white border-gray-300 text-gray-900 placeholder-gray-500`}
+            />
+          </div>
         </div>
-        <LootTable lootList={lootList} />
+        <LootTable lootList={lootList} word={word} />
       </div>
     </div>
   );

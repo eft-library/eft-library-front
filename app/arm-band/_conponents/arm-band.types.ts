@@ -1,5 +1,12 @@
-export interface ArmBandListTypes {
+import { LocaleName } from "@/components/types/common";
+
+export interface ArmBandViewTypes {
   armBandList: ArmbandDetail[];
+}
+
+export interface ArmBandTableTypes {
+  armBandList: ArmbandDetail[];
+  word: string;
 }
 
 interface ArmbandDetail {
@@ -11,10 +18,4 @@ interface ArmbandDetail {
   image_width: number;
   update_time: string;
   url_mapping: string;
-}
-
-interface LocaleName {
-  en: string;
-  ja: string;
-  ko: string;
 }
