@@ -16,9 +16,15 @@ export default function RequireTab({ items, type }: RequireTabTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
-  const isItemRequire = (item: any): item is ItemRequire => "quantity" in item;
-  const isSkillRequire = (item: any): item is SkillRequire => "level" in item;
-  const isTraderRequire = (item: any): item is TraderRequire => "value" in item;
+  const isItemRequire = (
+    item: ItemRequire | SkillRequire | TraderRequire
+  ): item is ItemRequire => "quantity" in item;
+  const isSkillRequire = (
+    item: ItemRequire | SkillRequire | TraderRequire
+  ): item is SkillRequire => "level" in item;
+  const isTraderRequire = (
+    item: ItemRequire | SkillRequire | TraderRequire
+  ): item is TraderRequire => "value" in item;
 
   const checkType = (item: ItemRequire | SkillRequire | TraderRequire) => {
     if (type === "item" && isItemRequire(item)) {

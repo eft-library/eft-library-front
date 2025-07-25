@@ -46,28 +46,6 @@ export default function HideoutDetail({
     return !complete_list.includes(levelId);
   };
 
-  const checkNoPercent = (value: string) => {
-    const noPercentList = [
-      "Unlocks armor repair via repair kits",
-      "Unlocks equipment modification",
-      "Unlocks weapon repair via repair kits",
-    ];
-    return noPercentList.includes(value);
-  };
-
-  const addPlusMinus = (text: string | number) => {
-    if (typeof text === "number") {
-      if (text === 0) {
-        return "0";
-      } else if (text > 1) {
-        return `+${text}`;
-      }
-      return text > 0
-        ? `+${Math.round(text * 100)} %`
-        : `${Math.round(text * 100)} %`;
-    }
-    return "";
-  };
   const getLightGradient = (index: number) => {
     const gradients = [
       "from-blue-400 to-blue-600",
