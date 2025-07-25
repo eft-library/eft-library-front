@@ -8,8 +8,16 @@ export interface BonusItem {
   bonus: Bonus;
 }
 
-export interface BonusList {
+export interface BonusTabTypes {
   bonuses: Bonus[];
+}
+
+export interface CraftingTabTypes {
+  crafts: Craft[];
+}
+
+export interface LevelSelectorTypes {
+  masterInfo: Hideout;
 }
 
 export interface HideoutViewTypes {
@@ -122,7 +130,7 @@ interface HideoutJson {
   image: string;
 }
 
-export interface RequireList {
+export interface RequireTabTypes {
   items: ItemRequire[] | SkillRequire[] | TraderRequire[] | StationRequire[];
   type: string;
 }

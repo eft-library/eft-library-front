@@ -14,7 +14,8 @@ export default function StationBackground() {
         x2="2775"
         y2="6419"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="5448"
@@ -22,7 +23,8 @@ export default function StationBackground() {
         x2="5448"
         y2="5217"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="11712"
@@ -30,7 +32,8 @@ export default function StationBackground() {
         x2="11712"
         y2="5217"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="12292"
@@ -38,7 +41,8 @@ export default function StationBackground() {
         x2="12292"
         y2="7913"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="5437"
@@ -46,7 +50,8 @@ export default function StationBackground() {
         x2="2764"
         y2="11"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="12281"
@@ -54,7 +59,8 @@ export default function StationBackground() {
         x2="5437"
         y2="7924"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="12281"
@@ -62,7 +68,8 @@ export default function StationBackground() {
         x2="5437"
         y2="5228"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="11701"
@@ -70,7 +77,8 @@ export default function StationBackground() {
         x2="5437"
         y2="522"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="2771.78"
@@ -78,7 +86,8 @@ export default function StationBackground() {
         x2="7.77826"
         y2="9190.78"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="5444.81"
@@ -86,7 +95,8 @@ export default function StationBackground() {
         x2="2131.81"
         y2="11285.8"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="7.77817"
@@ -94,7 +104,8 @@ export default function StationBackground() {
         x2="2131.78"
         y2="11299.2"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="3276.78"
@@ -102,7 +113,8 @@ export default function StationBackground() {
         x2="4463.78"
         y2="11335.2"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="3357.13"
@@ -110,7 +122,8 @@ export default function StationBackground() {
         x2="4448.13"
         y2="11335.3"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
       <line
         x1="2159.78"
@@ -118,7 +131,8 @@ export default function StationBackground() {
         x2="3346.78"
         y2="12451.2"
         stroke="white"
-        strokeWidth="22"
+        strokeWidth="80"
+        className="dark:stroke-white stroke-black"
       />
     </svg>
   );

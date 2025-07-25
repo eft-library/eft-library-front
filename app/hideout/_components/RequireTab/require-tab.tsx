@@ -1,0 +1,102 @@
+"use client";
+
+import {
+  ItemRequire,
+  RequireTabTypes,
+  SkillRequire,
+  TraderRequire,
+} from "../hideout.types";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import Image from "next/image";
+import { getStationSVG } from "@/assets/hideout/hideoutSvg";
+import { ALL_COLOR } from "@/lib/consts/colorConsts";
+
+export default function RequireTab({ items, type }: RequireTabTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+
+  const isItemRequire = (item: any): item is ItemRequire => "quantity" in item;
+  const isSkillRequire = (item: any): item is SkillRequire => "level" in item;
+  const isTraderRequire = (item: any): item is TraderRequire => "value" in item;
+
+  const checkType = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "item" && isItemRequire(item)) {
+      return `x ${item.quantity}`;
+    } else if (type === "trader" && isTraderRequire(item)) {
+      return `LV ${item.value || ""}`;
+    } else if (type === "skill" && isSkillRequire(item)) {
+      return `${item.name[localeKey]} ${item.level || ""}`;
+    }
+    return `LV ${"level" in item ? item.level : ""}`;
+  };
+
+  const getMaxSuffix = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "station") {
+      if ("level" in item) {
+        if (item.level === 1) return ALL_COLOR.SandyOchre;
+        if (item.level === 2) return ALL_COLOR.BurningOrange;
+        if (item.level === 3) return ALL_COLOR.OliveTeal;
+        if (item.level === 4) return ALL_COLOR.CobaltBlue;
+        if (item.level === 5) return ALL_COLOR.IndigoViolet;
+        if (item.level === 6) return ALL_COLOR.RoyalPurple;
+      }
+    }
+
+    return ALL_COLOR.AshGray;
+  };
+
+  const getMaster = (item: ItemRequire | SkillRequire | TraderRequire) => {
+    if (type === "station") {
+      if ("station_master_id" in item) {
+        return item.station_master_id || "";
+      }
+    }
+    return "";
+  };
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4">
+      {items.map((item, index) => (
+        <div
+          key={("id" in item && item.id) || index}
+          className="bg-muted rounded-lg p-3 text-center m-2"
+        >
+          {type !== "station" && (
+            <Image
+              src={item.image || ""}
+              alt={item.name.en || ""}
+              width={60}
+              height={60}
+              className="w-14 h-14 mx-auto mb-2 rounded"
+            />
+          )}
+          {type === "station" && (
+            <div className="w-14 h-14 mx-auto mb-2 rounded">
+              {getStationSVG(getMaster(item), 60, 60, getMaxSuffix(item))}
+            </div>
+          )}
+          {type === "item" ? (
+            <>
+              <p className="text-sm text-muted-foreground font-medium">
+                {item.name[localeKey]}
+              </p>
+              <p className="text-yellow-400 text-xs font-medium">
+                x {"quantity" in item ? item.quantity : 1}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground font-medium">
+                {item.name[localeKey]}
+              </p>
+              <p className="text-yellow-400 text-xs font-medium">
+                {checkType(item)}
+              </p>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}

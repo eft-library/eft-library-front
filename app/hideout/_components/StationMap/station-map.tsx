@@ -43,6 +43,26 @@ export default function StationMap({
     <div className="bg-card rounded-lg p-6 border border-border">
       <div className="relative w-full h-96 overflow-hidden mb-4">
         <StationBackground />
+        {stationMapData.json_value.station_list.map((station) => (
+          <div
+            key={station.id}
+            onClick={() => onChangeMaster(station.id)}
+            className={`absolute opacity-${
+              masterId === station.id ? "100" : "70"
+            } hover:opacity-100 transition-opacity duration-100 cursor-pointer`}
+            style={{
+              top: station.top,
+              left: station.left,
+            }}
+          >
+            {getStationSVG(
+              station.id,
+              stationMapData.json_value.width,
+              stationMapData.json_value.height,
+              getMaxSuffix(station.id, completeList)
+            )}
+          </div>
+        ))}
       </div>
       {/* Mobile Facility Selector */}
       <div className="md:hidden mt-4">

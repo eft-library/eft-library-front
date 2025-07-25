@@ -108,6 +108,8 @@ export const hideoutI18n = {
     destroy: { en: "Destroy", ja: "破壊する", ko: "파괴" },
   },
   reset: { en: "Reset", ja: "初期化", ko: "초기화" },
+  material: { en: "Material", ja: "材料", ko: "재료" },
+  result: { en: "Result", ja: "結果", ko: "결과" },
 };
 
 export const itemI18N = {

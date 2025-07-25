@@ -11,6 +11,7 @@ import { alertMessageI18N } from "@/lib/consts/i18nConsts";
 import StationMap from "./StationMap/station-map";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import HideoutDetail from "./HideoutDetail/hideout-detail";
+import Loading from "@/components/custom/Loading/loading";
 
 export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const locale = useLocale();
@@ -19,8 +20,8 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const [completeList, setCompleteList] = useState<string[]>(
     hideoutData.complete_list
   );
-  const [master, setMaster] = useState<string>("5d484fe3654e76006657e0ac");
-  const [level, setLevel] = useState<string>("5d484fe3654e76006657e0ac-1");
+  const [master, setMaster] = useState<string>("5d484fcd654e7668ec2ec322");
+  const [level, setLevel] = useState<string>("5d484fcd654e7668ec2ec322-1");
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -74,9 +75,9 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
         setCompleteList(changeList);
         setAlertDesc(alertMessageI18N.save[localeKey]);
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           setAlertStatus(true);
-        }, 500);
+        });
         setLoading(false);
 
         if (type === "complete") {
@@ -94,18 +95,18 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
         setCompleteList([]);
         setAlertDesc(alertMessageI18N.reLogin[localeKey]);
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           setAlertStatus(true);
-        }, 500);
+        });
         setLoading(false);
         signOut();
         window.location.reload();
       }
     } else {
       setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         setAlertStatus(true);
-      }, 500);
+      });
       setLoading(false);
     }
   };
@@ -136,33 +137,41 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   };
 
   const onClickReset = async () => {
-    setLoading(true);
-    const response = await requestUserData(
-      USER_API_ENDPOINTS.UPDATE_STATION,
-      { complete_list: [] },
-      session
-    );
-    setLoading(false);
-    if (!response) return;
+    if (session && session.email) {
+      setLoading(true);
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_STATION,
+        { complete_list: [] },
+        session
+      );
+      setLoading(false);
+      if (!response) return;
 
-    setMaster("5d484fe3654e76006657e0ac-1");
-    setLevel("5d484fe3654e76006657e0ac-1");
-    if (response.status === 200) {
-      setCompleteList([]);
-      setAlertDesc(alertMessageI18N.save[localeKey]);
-      setTimeout(() => {
-        setAlertStatus(true);
-      }, 500);
-      setLoading(false);
+      setMaster("5d484fe3654e76006657e0ac-1");
+      setLevel("5d484fe3654e76006657e0ac-1");
+      if (response.status === 200) {
+        setCompleteList([]);
+        setAlertDesc(alertMessageI18N.save[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+      } else {
+        setCompleteList([]);
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+        signOut();
+        window.location.reload();
+      }
     } else {
-      setCompleteList([]);
-      setAlertDesc(alertMessageI18N.reLogin[localeKey]);
-      setTimeout(() => {
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      requestAnimationFrame(() => {
         setAlertStatus(true);
-      }, 500);
+      });
       setLoading(false);
-      signOut();
-      window.location.reload();
     }
   };
 
@@ -200,6 +209,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
         title="Notice"
         description={alertDesc}
       />
+      {isLoading && <Loading />}
     </div>
   );
 }
