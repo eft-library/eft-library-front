@@ -5,6 +5,7 @@ export default function StationBackground() {
       height="800"
       viewBox="0 0 12303 12459"
       fill="none"
+      className="w-full h-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <line

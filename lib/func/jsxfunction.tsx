@@ -8,6 +8,7 @@ import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
 import { Price, TradeOption } from "@/app/price/_components/price.types";
 import { StimEffect } from "@/app/provisions/_components/provisions.types";
+import { ALL_COLOR } from "../consts/colorConsts";
 
 // 변동률 계산
 export const calcChangeRate = (
@@ -385,49 +386,49 @@ export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
 //     </div>
 //   );
 // };
-// export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
-//   let level: number;
+export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
+  let level: number;
 
-//   if (typeof id === "number") {
-//     level = id;
-//   } else if (completeList) {
-//     const filteredList = completeList
-//       .filter((item) => item.startsWith(id + "-"))
-//       .map((item) => parseInt(item.split("-")[1], 10));
-//     level = filteredList.length > 0 ? Math.max(...filteredList) : -1;
-//   } else {
-//     level = parseInt(id.split("-")[1], 10);
-//   }
+  if (typeof id === "number") {
+    level = id;
+  } else if (completeList) {
+    const filteredList = completeList
+      .filter((item) => item.startsWith(id + "-"))
+      .map((item) => parseInt(item.split("-")[1], 10));
+    level = filteredList.length > 0 ? Math.max(...filteredList) : -1;
+  } else {
+    level = parseInt(id.split("-")[1], 10);
+  }
 
-//   switch (level) {
-//     case 1:
-//       return ALL_COLOR.SandyOchre;
-//     case 2:
-//       return ALL_COLOR.BurningOrange;
-//     case 3:
-//       return ALL_COLOR.OliveTeal;
-//     case 4:
-//       return ALL_COLOR.CobaltBlue;
-//     case 5:
-//       return ALL_COLOR.IndigoViolet;
-//     case 6:
-//       return ALL_COLOR.RoyalPurple;
-//     default:
-//       return ALL_COLOR.SoftAlloy;
-//   }
-// };
+  switch (level) {
+    case 1:
+      return ALL_COLOR.SandyOchre;
+    case 2:
+      return ALL_COLOR.BurningOrange;
+    case 3:
+      return ALL_COLOR.OliveTeal;
+    case 4:
+      return ALL_COLOR.CobaltBlue;
+    case 5:
+      return ALL_COLOR.IndigoViolet;
+    case 6:
+      return ALL_COLOR.RoyalPurple;
+    default:
+      return ALL_COLOR.SoftAlloy;
+  }
+};
 
-// export const changeTime = (sec: number | undefined) => {
-//   if (!sec) return `${0} M`;
+export const changeTime = (sec: number | undefined) => {
+  if (!sec) return `${0} M`;
 
-//   const hours = Math.floor(sec / 3600);
-//   const minutes = Math.floor((sec % 3600) / 60);
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec % 3600) / 60);
 
-//   if (hours > 0 && minutes > 0) {
-//     return `${hours} H ${minutes} M`;
-//   } else if (hours > 0) {
-//     return `${hours} H`;
-//   } else {
-//     return `${minutes} M`;
-//   }
-// };
+  if (hours > 0 && minutes > 0) {
+    return `${hours} H ${minutes} M`;
+  } else if (hours > 0) {
+    return `${hours} H`;
+  } else {
+    return `${minutes} M`;
+  }
+};

@@ -1,0 +1,205 @@
+"use client";
+
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { signOut, useSession } from "next-auth/react";
+import { useLocale } from "next-intl";
+import { useEffect, useState } from "react";
+import type { HideoutViewTypes } from "./hideout.types";
+import { requestUserData } from "@/lib/config/api";
+import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
+import { alertMessageI18N } from "@/lib/consts/i18nConsts";
+import StationMap from "./StationMap/station-map";
+import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
+import HideoutDetail from "./HideoutDetail/hideout-detail";
+
+export default function HideoutView({ hideoutData }: HideoutViewTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+  const { data: session } = useSession();
+  const [completeList, setCompleteList] = useState<string[]>(
+    hideoutData.complete_list
+  );
+  const [master, setMaster] = useState<string>("5d484fe3654e76006657e0ac");
+  const [level, setLevel] = useState<string>("5d484fe3654e76006657e0ac-1");
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCompleteList(hideoutData.complete_list);
+  }, [hideoutData]);
+
+  const onClickSave = async (id: string, type: string) => {
+    if (session && session.email) {
+      const masterId = id.split("-")[0];
+      const masterInfo = hideoutData.hideout_info.find(
+        (station) => station.master_id === masterId
+      );
+      const allList = masterInfo?.data.map((sub) => sub.level_id);
+      const downList = masterInfo?.data
+        .map((sub) => sub.level_id)
+        .filter((idValue) => idValue <= id);
+
+      const upList = masterInfo?.data
+        .map((sub) => sub.level_id)
+        .filter((idValue) => idValue >= id);
+
+      let changeList: string[] = [];
+
+      if (type === "complete") {
+        if (downList) {
+          changeList = [
+            ...completeList,
+            ...downList.filter((item) => !completeList.includes(item)),
+          ];
+        }
+      } else {
+        if (upList) {
+          changeList = [
+            ...completeList.filter((item) => !upList.includes(item)),
+          ];
+        }
+      }
+
+      setLoading(true);
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_STATION,
+        { complete_list: changeList },
+        session
+      );
+      setLoading(false);
+      if (!response) return;
+
+      if (response.status === 200) {
+        setCompleteList(changeList);
+        setAlertDesc(alertMessageI18N.save[localeKey]);
+
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
+        setLoading(false);
+
+        if (type === "complete") {
+          const nextValue = `${masterId}-${parseInt(id.split("-")[1], 10) + 1}`;
+          if (allList?.includes(nextValue)) {
+            setLevel(nextValue);
+          }
+        } else {
+          const prevValue = `${masterId}-${parseInt(id.split("-")[1], 10) - 1}`;
+          if (allList?.includes(prevValue)) {
+            setLevel(prevValue);
+          }
+        }
+      } else {
+        setCompleteList([]);
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+
+        setTimeout(() => {
+          setAlertStatus(true);
+        }, 500);
+        setLoading(false);
+        signOut();
+        window.location.reload();
+      }
+    } else {
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+      setLoading(false);
+    }
+  };
+
+  const onClickChangeMaster = (masterId: string) => {
+    setMaster(masterId);
+
+    const masterInfo = hideoutData.hideout_info.find(
+      (station) => station.master_id === masterId
+    );
+
+    const allList = masterInfo?.data.map((sub) => sub.level_id) || [];
+
+    const filtered = completeList
+      .filter((item) => item.startsWith(masterId + "-"))
+      .map((item) => parseInt(item.split("-")[1], 10));
+
+    if (filtered.length === 0) {
+      setLevel(masterId + "-1");
+    } else {
+      const nextValue = `${masterId}-${Math.max(...filtered) + 1}`;
+      if (allList?.includes(nextValue)) {
+        setLevel(nextValue);
+      } else {
+        setLevel(`${masterId}-${Math.max(...filtered)}`);
+      }
+    }
+  };
+
+  const onClickReset = async () => {
+    setLoading(true);
+    const response = await requestUserData(
+      USER_API_ENDPOINTS.UPDATE_STATION,
+      { complete_list: [] },
+      session
+    );
+    setLoading(false);
+    if (!response) return;
+
+    setMaster("5d484fe3654e76006657e0ac-1");
+    setLevel("5d484fe3654e76006657e0ac-1");
+    if (response.status === 200) {
+      setCompleteList([]);
+      setAlertDesc(alertMessageI18N.save[localeKey]);
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+      setLoading(false);
+    } else {
+      setCompleteList([]);
+      setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+      setTimeout(() => {
+        setAlertStatus(true);
+      }, 500);
+      setLoading(false);
+      signOut();
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex gap-8">
+          {/* Main Content Area */}
+          <div className="flex-1 max-w-6xl mx-auto">
+            {/* Hideout Tree */}
+            <div className="mb-8">
+              <StationMap
+                masterId={master}
+                onChangeMaster={onClickChangeMaster}
+                completeList={completeList}
+                onClickReset={onClickReset}
+              />
+            </div>
+
+            {/* Facility Details */}
+            <HideoutDetail
+              levelId={level}
+              hideoutData={hideoutData}
+              onClickSave={onClickSave}
+              complete_list={completeList}
+              onChangeLevel={setLevel}
+            />
+          </div>
+        </div>
+      </div>
+
+      <DefaultDialog
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="Notice"
+        description={alertDesc}
+      />
+    </div>
+  );
+}
