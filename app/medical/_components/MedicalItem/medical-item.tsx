@@ -35,9 +35,9 @@ export default function MedicalItem({ medicalList }: MedicalItemTypes) {
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 object-cover rounded border border-gray-300 dark:border-gray-600"
+                  width={120}
+                  height={120}
+                  className="w-34 h-30 object-contain rounded border border-gray-600"
                 />
               </div>
               <div className="text-sm font-medium text-gray-900 dark:text-gray-100">

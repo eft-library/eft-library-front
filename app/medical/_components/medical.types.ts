@@ -49,6 +49,10 @@ interface DrugDetail {
   name: LocaleName;
   image: string;
   image_width: number;
+  malus: StimEffect[];
+  buff: StimEffect[];
+  de_buff: StimEffect[];
+  advantage: StimEffect[];
   url_mapping: string;
 }
 
@@ -62,6 +66,10 @@ interface MedicalInfo {
   hydration_impact: number | null;
   medical_category: string;
   painkiller_duration: number | null;
+  malus: StimEffect[];
+  buff: StimEffect[];
+  de_buff: StimEffect[];
+  advantage: StimEffect[];
 }
 
 interface MedicalDetail {
@@ -85,6 +93,10 @@ interface MedikitInfo {
   hydration_impact: number | null;
   medical_category: string;
   painkiller_duration: number | null;
+  malus: StimEffect[];
+  buff: StimEffect[];
+  de_buff: StimEffect[];
+  advantage: StimEffect[];
 }
 
 interface MedikitDetail {
@@ -100,6 +112,10 @@ interface MedikitDetail {
 
 interface StimulantInfo {
   stim_effects: StimEffect[] | [];
+  malus: StimEffect[];
+  buff: StimEffect[];
+  de_buff: StimEffect[];
+  advantage: StimEffect[];
   uses: number | null;
   cures: LocaleNameArray;
   use_time: number | null;

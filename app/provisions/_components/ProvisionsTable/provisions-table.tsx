@@ -103,13 +103,11 @@ export default function ProvisionsTable({
                 {item.info.hydration}
               </div>
               <div className="col-span-1 text-sm space-y-1">
-                {/* 표시할 키들: 효과 종류만 추려냄 */}
                 {(["advantage", "buff", "malus", "de_buff"] as const).map(
                   (effectKey) => {
                     const effects = item.info[effectKey];
                     if (!effects || effects.length === 0) return null;
 
-                    // delay-duration 조합으로 그룹화
                     const grouped: Record<string, StimEffect[]> = {};
                     for (const effect of effects) {
                       const groupKey = `${effect.delay}-${effect.duration}`;
@@ -133,12 +131,19 @@ export default function ProvisionsTable({
                                 className="flex flex-col"
                                 key={`${effectKey}-${groupKey}`}
                               >
-                                {/* 공통 delay-duration 정보 */}
                                 <div className="text-yellow-400">
-                                  {`${delay} ${effectI18N.delay[localeKey]} ${duration} ${effectI18N.duration[localeKey]}`}
+                                  {[
+                                    delay !== "0"
+                                      ? `${delay} ${effectI18N.delay[localeKey]}`
+                                      : "",
+                                    duration !== "0"
+                                      ? `${duration} ${effectI18N.duration[localeKey]}`
+                                      : "",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ")}
                                 </div>
 
-                                {/* 그룹 내 효과 이름 + value */}
                                 {groupEffects.map((effect, i) => (
                                   <div
                                     className={textColor}
@@ -277,7 +282,16 @@ export default function ProvisionsTable({
                                   >
                                     {/* 공통 delay-duration 정보 */}
                                     <div className="text-yellow-400 text-sm p-2 rounded">
-                                      {`${delay} ${effectI18N.delay[localeKey]} ${duration} ${effectI18N.duration[localeKey]}`}
+                                      {[
+                                        delay !== "0"
+                                          ? `${delay} ${effectI18N.delay[localeKey]}`
+                                          : "",
+                                        duration !== "0"
+                                          ? `${duration} ${effectI18N.duration[localeKey]}`
+                                          : "",
+                                      ]
+                                        .filter(Boolean)
+                                        .join(" ")}
                                     </div>
 
                                     {/* 그룹 내 효과 이름 + value */}

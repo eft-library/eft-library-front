@@ -5,19 +5,12 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import { getEffectLocalizedKey, getLocaleKey } from "@/lib/func/localeFunction";
 import { effectI18N, itemI18N } from "@/lib/consts/i18nConsts";
-import { useTheme } from "next-themes";
-import {
-  noReturnSkill,
-  getPlusMinus,
-  checkSkillPlus,
-  checkValuePlus,
-} from "@/lib/func/jsxfunction";
+import { getPlusMinus } from "@/lib/func/jsxfunction";
 import Link from "next/link";
 
 export default function Stimulant({ medicalList }: StimulantTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
 
   return (
     <div className="mb-6 border rounded-lg border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-900/50">
@@ -41,75 +34,76 @@ export default function Stimulant({ medicalList }: StimulantTypes) {
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name.en}
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 object-cover rounded border border-gray-300 dark:border-gray-600"
+                  width={120}
+                  height={120}
+                  className="w-34 h-30 object-contain rounded border border-gray-600"
                 />
               </div>
               <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                 {item.name[localeKey]}
               </div>
               <div className="text-sm space-y-1">
-                {(() => {
-                  const groupedEffects = item.info.stim_effects.reduce<
-                    Record<string, StimEffect[]>
-                  >((acc, effect) => {
-                    const key = `${effect.delay}-${effect.duration}`;
-                    if (!acc[key]) acc[key] = [];
-                    acc[key].push(effect);
-                    return acc;
-                  }, {} as Record<string, typeof item.info.stim_effects>);
+                {(["advantage", "buff", "malus", "de_buff"] as const).map(
+                  (effectKey) => {
+                    const effects = item.info[effectKey];
+                    if (!effects || effects.length === 0) return null;
 
-                  const entries = Object.entries(groupedEffects);
+                    const grouped: Record<string, StimEffect[]> = {};
+                    for (const effect of effects) {
+                      const groupKey = `${effect.delay}-${effect.duration}`;
+                      if (!grouped[groupKey]) grouped[groupKey] = [];
+                      grouped[groupKey].push(effect);
+                    }
 
-                  return entries.length > 0 ? (
-                    entries.map(([key, effects]) => {
-                      const [delay, duration] = key.split("-");
+                    const textColor =
+                      effectKey === "de_buff"
+                        ? "text-red-400"
+                        : "text-green-400";
 
-                      return (
-                        <div key={`group-${key}`}>
-                          <span className="font-bold text-base text-yellow-400 dark:text-yellow-200 mt-[4px] block">
-                            {delay}&nbsp;{effectI18N.delay[localeKey]} /{" "}
-                            {duration}
-                            &nbsp;{effectI18N.duration[localeKey]}
-                          </span>
-                          {effects.map((effect, index) => (
-                            <div
-                              key={`effect-${effect.type}-${item.id}-${index}`}
-                              className={`text-sm ${
-                                effect.skill_name_en
-                                  ? checkSkillPlus(effect.skill_name_en)
-                                  : theme === "dark"
-                                  ? "text-gray-100"
-                                  : "text-gray-900"
-                              }`}
-                            >
-                              <span className="text-gray-900 dark:text-gray-100">
-                                -
-                              </span>
-                              &nbsp;
-                              <span className=" text-gray-900 dark:text-gray-100">
-                                {effect[getEffectLocalizedKey(localeKey)]}
-                              </span>
-                              {effect.skill_name_en &&
-                                !noReturnSkill.includes(
-                                  effect.skill_name_en
-                                ) && (
-                                  <span
-                                    className={checkValuePlus(effect.value)}
+                    return (
+                      <div key={effectKey}>
+                        {Object.entries(grouped).map(
+                          ([groupKey, groupEffects]) => {
+                            const [delay, duration] = groupKey.split("-");
+
+                            return (
+                              <div
+                                className="flex flex-col"
+                                key={`${effectKey}-${groupKey}`}
+                              >
+                                <div className="text-yellow-400">
+                                  {[
+                                    delay !== "0"
+                                      ? `${delay} ${effectI18N.delay[localeKey]}`
+                                      : "",
+                                    duration !== "0"
+                                      ? `${duration} ${effectI18N.duration[localeKey]}`
+                                      : "",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                </div>
+
+                                {groupEffects.map((effect, i) => (
+                                  <div
+                                    className={textColor}
+                                    key={`${effectKey}-effect-${i}`}
                                   >
-                                    {getPlusMinus(effect.value)}
-                                  </span>
-                                )}
-                            </div>
-                          ))}
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <span className="text-gray-400">-</span>
-                  );
-                })()}
+                                    {effect[getEffectLocalizedKey(localeKey)]}
+                                    {effectKey === "buff" ||
+                                    effectKey === "de_buff"
+                                      ? ` ${getPlusMinus(effect.value)}`
+                                      : ""}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </div>
 
@@ -136,66 +130,70 @@ export default function Stimulant({ medicalList }: StimulantTypes) {
                   {itemI18N.medical.buff[localeKey]}
                 </div>
                 <div className="space-y-2">
-                  {(() => {
-                    const groupedEffects = item.info.stim_effects.reduce<
-                      Record<string, StimEffect[]>
-                    >((acc, effect) => {
-                      const key = `${effect.delay}-${effect.duration}`;
-                      if (!acc[key]) acc[key] = [];
-                      acc[key].push(effect);
-                      return acc;
-                    }, {} as Record<string, typeof item.info.stim_effects>);
+                  {(["advantage", "buff", "malus", "de_buff"] as const).map(
+                    (effectKey) => {
+                      const effects = item.info[effectKey];
+                      if (!effects || effects.length === 0) return null;
 
-                    const entries = Object.entries(groupedEffects);
+                      // delay-duration 조합으로 그룹화
+                      const grouped: Record<string, StimEffect[]> = {};
+                      for (const effect of effects) {
+                        const groupKey = `${effect.delay}-${effect.duration}`;
+                        if (!grouped[groupKey]) grouped[groupKey] = [];
+                        grouped[groupKey].push(effect);
+                      }
 
-                    return entries.length > 0 ? (
-                      entries.map(([key, effects]) => {
-                        const [delay, duration] = key.split("-");
+                      const textColor =
+                        effectKey === "de_buff" || effectKey === "malus"
+                          ? "text-red-400 text-sm p-2 rounded"
+                          : "text-green-400 text-sm p-2 rounded";
 
-                        return (
-                          <div key={`group-${key}`}>
-                            <span className="font-bold text-base text-yellow-400 dark:text-yellow-200 mt-[4px] block">
-                              {delay}&nbsp;{effectI18N.delay[localeKey]} /{" "}
-                              {duration}
-                              &nbsp;{effectI18N.duration[localeKey]}
-                            </span>
-                            {effects.map((effect, index) => (
-                              <div
-                                key={`effect-${effect.type}-${item.id}-${index}`}
-                                className={`text-sm ${
-                                  effect.skill_name_en
-                                    ? checkSkillPlus(effect.skill_name_en)
-                                    : theme === "dark"
-                                    ? "text-gray-100"
-                                    : "text-gray-900"
-                                }`}
-                              >
-                                <span className="text-gray-900 dark:text-gray-100">
-                                  -
-                                </span>
-                                &nbsp;
-                                <span className=" text-gray-900 dark:text-gray-100">
-                                  {effect[getEffectLocalizedKey(localeKey)]}
-                                </span>
-                                {effect.skill_name_en &&
-                                  !noReturnSkill.includes(
-                                    effect.skill_name_en
-                                  ) && (
-                                    <span
-                                      className={checkValuePlus(effect.value)}
+                      return (
+                        <div key={effectKey}>
+                          {Object.entries(grouped).map(
+                            ([groupKey, groupEffects]) => {
+                              const [delay, duration] = groupKey.split("-");
+
+                              return (
+                                <div
+                                  className="flex flex-col"
+                                  key={`${effectKey}-${groupKey}`}
+                                >
+                                  {/* 공통 delay-duration 정보 */}
+                                  <div className="text-yellow-400 text-sm p-2 rounded">
+                                    {[
+                                      delay !== "0"
+                                        ? `${delay} ${effectI18N.delay[localeKey]}`
+                                        : "",
+                                      duration !== "0"
+                                        ? `${duration} ${effectI18N.duration[localeKey]}`
+                                        : "",
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                  </div>
+
+                                  {/* 그룹 내 효과 이름 + value */}
+                                  {groupEffects.map((effect, i) => (
+                                    <div
+                                      className={textColor}
+                                      key={`${effectKey}-effect-${i}`}
                                     >
-                                      {getPlusMinus(effect.value)}
-                                    </span>
-                                  )}
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <span className="text-gray-400">-</span>
-                    );
-                  })()}
+                                      {effect[getEffectLocalizedKey(localeKey)]}
+                                      {effectKey === "buff" ||
+                                      effectKey === "de_buff"
+                                        ? ` ${getPlusMinus(effect.value)}`
+                                        : ""}
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
               </div>
             </div>
