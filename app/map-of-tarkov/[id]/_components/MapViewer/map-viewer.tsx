@@ -1,34 +1,23 @@
 "use client";
 import { Map } from "lucide-react";
-import { useTheme } from "next-themes";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { MapViewTypes } from "../map-of-tarkov.types";
+import type { MapViewTypes } from "../map-of-tarkov.types";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import Image from "next/image";
 
 export default function MapViewer({ mapData, imageSelect }: MapViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
 
   return (
     <div className="container mx-auto px-4 mb-8">
       <div className="mb-4">
-        <h2
-          className={`text-xl md:text-2xl font-bold mb-2 ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}
-        >
-          <Map
-            className={`inline mr-2 h-6 w-6 ${
-              theme === "dark" ? "text-orange-400" : "text-orange-600"
-            }`}
-          />
+        <h2 className="text-xl md:text-2xl font-bold mb-2 text-foreground">
+          <Map className="inline mr-2 h-6 w-6 text-primary" />
           {mapData.name[localeKey]}
         </h2>
       </div>
-
       <Gallery>
         {mapData.children.map(
           (map) =>
@@ -46,7 +35,7 @@ export default function MapViewer({ mapData, imageSelect }: MapViewTypes) {
                     className="flex justify-center items-center cursor-pointer min-h-[600px] relative"
                   >
                     <Image
-                      src={map.mot_image[localeKey]}
+                      src={map.mot_image[localeKey] || "/placeholder.svg"}
                       alt={map.name.en}
                       width={1600}
                       height={900}

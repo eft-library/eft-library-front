@@ -33,7 +33,7 @@ export default function AmmoView({ ammoList }: AmmoViewTypes) {
               placeholder={placeHolderText.search[localeKey]}
               value={word}
               onChange={(e) => setWord(e.target.value)}
-              className={`pl-10 rounded-lg dark:bg-card dark:border-slate-700 dark:text-white dark:placeholder-gray-400 bg-white border-gray-300 text-gray-900 placeholder-gray-500`}
+              className={`pl-10 rounded-lg dark:bg-[#1a1c20] dark:border-gray-700 dark:text-white dark:placeholder-gray-400 bg-white border-gray-300 text-gray-900 placeholder-gray-500`}
             />
           </div>
         </div>

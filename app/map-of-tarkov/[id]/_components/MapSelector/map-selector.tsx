@@ -1,6 +1,4 @@
 "use client";
-
-import { useTheme } from "next-themes";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +11,8 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { MapOfTarkovSelectorTypes } from "../map-of-tarkov.types";
+import type { MapOfTarkovSelectorTypes } from "../map-of-tarkov.types";
+import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 
 export default function MapSelector({
   setImageSelect,
@@ -23,55 +22,37 @@ export default function MapSelector({
   const param = useParams<{ id: string }>();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
   const selectedMap = mapData.map_selector.find((map) => map.id === param.id);
+
   return (
     <div className="container mx-auto px-4 py-4">
       <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 lg:items-center">
         {/* Main Map Selection */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-          <span
-            className={`text-sm font-medium whitespace-nowrap ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            지도:
+          <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
+            {interactiveMapI18N.map[localeKey]}
           </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className={`${
-                  theme === "dark"
-                    ? "bg-[#0f1115] border-gray-600 text-white hover:bg-gray-800"
-                    : "bg-white border-gray-300 text-gray-900 hover:bg-gray-50"
-                } w-full sm:w-auto min-w-[140px] justify-between`}
+                className="w-full sm:w-auto min-w-[140px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
               >
                 {selectedMap?.name[localeKey] || ""}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className={`${
-                theme === "dark"
-                  ? "bg-[#0f1115] border-gray-600"
-                  : "bg-white border-gray-200"
-              } w-full min-w-[200px]`}
-            >
+            <DropdownMenuContent className="w-full min-w-[200px] bg-popover border border-border text-popover-foreground">
               {mapData.map_selector.map((map) => (
                 <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
                   <DropdownMenuItem
                     className={`
-                    ${
-                      param.id === map.id
-                        ? theme === "dark"
-                          ? "text-orange-400 bg-orange-400/10"
-                          : "text-orange-600 bg-orange-50"
-                        : theme === "dark"
-                        ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                    }
-                  `}
+                      ${
+                        param.id === map.id
+                          ? "text-primary bg-primary/10 cursor-pointer"
+                          : "text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                      }
+                    `}
                   >
                     <div className="flex items-center justify-between w-full">
                       <span>{map.name[localeKey]}</span>
@@ -82,31 +63,18 @@ export default function MapSelector({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
         {mapData.map_info.children && mapData.map_info.children.length > 0 && (
           <>
-            <ChevronRight
-              className={`h-4 w-4 ${
-                theme === "dark" ? "text-gray-500" : "text-gray-400"
-              } hidden lg:block`}
-            />
+            <ChevronRight className="h-4 w-4 text-muted-foreground hidden lg:block" />
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span
-                className={`text-sm font-medium whitespace-nowrap ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                세부:
+              <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
+                {interactiveMapI18N.subMap[localeKey]}
               </span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className={`${
-                      theme === "dark"
-                        ? "bg-[#0f1115] border-gray-600 text-white hover:bg-gray-800"
-                        : "bg-white border-gray-300 text-gray-900 hover:bg-gray-50"
-                    } w-full sm:w-auto min-w-[160px] justify-between`}
+                    className="w-full sm:w-auto min-w-[160px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
                   >
                     {mapData.map_info.children.find(
                       (sub) => sub.id === imageSelect
@@ -114,13 +82,7 @@ export default function MapSelector({
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className={`${
-                    theme === "dark"
-                      ? "bg-[#0f1115] border-gray-600"
-                      : "bg-white border-gray-200"
-                  } w-full min-w-[220px]`}
-                >
+                <DropdownMenuContent className="w-full min-w-[220px] bg-popover border border-border text-popover-foreground">
                   {mapData.map_info.children.map((subMap) => (
                     <DropdownMenuItem
                       key={`sub-map-${subMap.id}`}
@@ -128,12 +90,8 @@ export default function MapSelector({
                       className={`
                         ${
                           imageSelect === subMap.id
-                            ? theme === "dark"
-                              ? "text-orange-400 bg-orange-400/10"
-                              : "text-orange-600 bg-orange-50"
-                            : theme === "dark"
-                            ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                            ? "text-primary bg-primary/10 cursor-pointer"
+                            : "text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
                         }
                       `}
                     >
