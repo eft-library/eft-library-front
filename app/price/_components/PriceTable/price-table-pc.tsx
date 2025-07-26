@@ -13,6 +13,7 @@ import {
   findFleaMarketPrice,
 } from "@/lib/func/jsxfunction";
 import { Badge } from "@/components/ui/badge";
+import Highlighter from "react-highlight-words";
 
 export default function PriceTablePC({
   items,
@@ -21,6 +22,7 @@ export default function PriceTablePC({
   priceType,
   setSelectItem,
   selectItem,
+  word,
 }: PriceTablePCTypes) {
   const { theme } = useTheme();
   const locale = useLocale();
@@ -119,7 +121,12 @@ export default function PriceTablePC({
                       }`}
                       title={item.name[localeKey]}
                     >
-                      {item.name[localeKey]}
+                      <Highlighter
+                        highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                        searchWords={[word]}
+                        autoEscape
+                        textToHighlight={item.name[localeKey]}
+                      />
                     </div>
                   </td>
                   <td className="py-4 px-3">

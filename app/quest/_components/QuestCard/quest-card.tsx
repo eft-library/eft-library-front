@@ -12,12 +12,15 @@ import {
 } from "@/lib/func/localeFunction";
 import type { QuestCardTypes } from "../quest.types";
 import Link from "next/link";
+import Highlighter from "react-highlight-words";
 
-export default function QuestCard({ quest_list }: QuestCardTypes) {
+export default function QuestCard({ quest_list, word }: QuestCardTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
-
+  const filteredList = quest_list.filter((item) =>
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+  );
   return (
     <div className="hidden md:block">
       <Card
@@ -68,7 +71,7 @@ export default function QuestCard({ quest_list }: QuestCardTypes) {
               </tr>
             </thead>
             <tbody>
-              {quest_list.map((quest, index) => (
+              {filteredList.map((quest, index) => (
                 <tr
                   key={quest.id}
                   className={`border-b transition-colors ${
@@ -89,7 +92,12 @@ export default function QuestCard({ quest_list }: QuestCardTypes) {
                     }`}
                   >
                     <Link href={`/quest/detail/${quest.url_mapping}`}>
-                      {quest.name[localeKey]}
+                      <Highlighter
+                        highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                        searchWords={[word]}
+                        autoEscape
+                        textToHighlight={quest.name[localeKey]}
+                      />
                     </Link>
                   </td>
                   <td className="p-6">

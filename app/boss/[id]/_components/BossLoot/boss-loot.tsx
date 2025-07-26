@@ -1,18 +1,20 @@
 "use client";
 
-import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
-import { useLocale } from "next-intl";
-// import { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import type { FollowerLoot } from "../boss.types";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { boss18N } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
+import { useLocale } from "next-intl";
+import Highlighter from "react-highlight-words";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { boss18N, placeHolderText } from "@/lib/consts/i18nConsts";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import type { FollowerLoot } from "../boss.types";
 
 export default function BossLoot({ follower }: FollowerLoot) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  //   const [word, setWord] = useState<string>("");
+  const [word, setWord] = useState<string>("");
 
   const combinedItemInfo = [
     ...follower.item_info,
@@ -34,8 +36,19 @@ export default function BossLoot({ follower }: FollowerLoot) {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {/* Search Input */}
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder={placeHolderText.search[localeKey]} // Use a placeholder from i18n or a default
+              value={word}
+              onChange={(e) => setWord(e.target.value)}
+              className="w-full"
+            />
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
-            {uniqueItemInfo.map((loot, index) => (
+            {follower.item_info.map((loot, index) => (
               <Link
                 key={`boss-loot-${index}-${loot.item.name_en}`}
                 href={`/item/${loot.item.normalizedName}`}
@@ -43,14 +56,15 @@ export default function BossLoot({ follower }: FollowerLoot) {
               >
                 <div className="group flex flex-col items-center p-3 sm:p-4 border-2 border-muted/40 rounded-xl hover:bg-muted/20 hover:border-muted hover:shadow-md transition-all duration-300 cursor-pointer">
                   {/* Image Container */}
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 mb-3 rounded-lg overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border shadow-sm group-hover:shadow-md transition-all duration-300">
+                  <div className="relative w-26 h-26 mb-3 rounded-lg overflow-hidden border shadow-sm group-hover:shadow-md transition-all duration-300">
                     <Image
                       src={
                         loot.item.gridImageLink ||
-                        "/placeholder.svg?height=64&width=64"
+                        "/placeholder.svg?height=64&width=64" ||
+                        "/placeholder.svg"
                       }
                       alt={loot.item.name_en || "Loot item"}
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="object-contain group-hover:scale-110 transition-transform duration-300"
                       fill
                       sizes="(max-width: 640px) 56px, (max-width: 768px) 64px, 72px"
                       placeholder="blur"
@@ -59,10 +73,16 @@ export default function BossLoot({ follower }: FollowerLoot) {
                     {/* Overlay for better text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-
                   {/* Item Name */}
-                  <span className="text-xs sm:text-sm text-center font-medium leading-tight line-clamp-2 group-hover:text-foreground transition-colors duration-200">
-                    {loot.item[getOtherLocalizedKey(localeKey)]}
+                  <span className="text-xs text-center font-medium leading-tight line-clamp-3 group-hover:text-foreground transition-colors duration-200">
+                    <Highlighter
+                      highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                      searchWords={[word]}
+                      autoEscape
+                      textToHighlight={
+                        loot.item[getOtherLocalizedKey(localeKey)]
+                      }
+                    />
                   </span>
                 </div>
               </Link>

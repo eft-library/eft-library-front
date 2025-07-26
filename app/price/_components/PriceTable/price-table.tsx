@@ -17,6 +17,7 @@ export default function PriceTable({
   selectItem,
   hasNextPage,
   fetchNextPage,
+  word,
 }: PriceTableTypes) {
   const { theme } = useTheme();
   const locale = useLocale();
@@ -49,6 +50,7 @@ export default function PriceTable({
           selectItem={selectItem}
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
+          word={word}
         />
         {/* Desktop Table Layout */}
         <PriceTablePC
@@ -58,6 +60,7 @@ export default function PriceTable({
           selectItem={selectItem}
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
+          word={word}
         />
       </CardContent>
     </Card>

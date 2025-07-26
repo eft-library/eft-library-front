@@ -7,6 +7,7 @@ export interface PriceTableTypes {
   selectItem: Price | undefined;
   hasNextPage: boolean;
   fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+  word: string;
 }
 
 export interface PriceTablePCTypes {
@@ -16,6 +17,7 @@ export interface PriceTablePCTypes {
   selectItem: Price | undefined;
   hasNextPage: boolean;
   fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+  word: string;
 }
 
 export interface PriceTableMTypes {
@@ -25,6 +27,7 @@ export interface PriceTableMTypes {
   selectItem: Price | undefined;
   hasNextPage: boolean;
   fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+  word: string;
 }
 
 export interface TraderInfo {

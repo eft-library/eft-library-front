@@ -60,7 +60,7 @@ export default function PriceView() {
 
   useEffect(() => {
     if (data?.pages.length && !selectItem) {
-      const firstItem = data.pages[0]?.data?.data?.[0];
+      const firstItem = data.pages[0]?.data?.data?.[3];
       setSelectItem(firstItem);
     }
   }, [data, selectItem]);
@@ -82,26 +82,22 @@ export default function PriceView() {
         } backdrop-blur-sm`}
       >
         <div className="container mx-auto px-4 py-4 sm:py-6">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 items-center justify-center">
             {/* Title and Theme Toggle Row */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h1
-                  className={`text-xl sm:text-2xl font-bold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {price18N.title[localeKey]}
-                </h1>
-                <p
-                  className={`${
-                    theme === "dark" ? "text-slate-400" : "text-gray-600"
-                  } mt-1 text-sm sm:text-base`}
-                >
-                  {price18N.checkPriceByButton[localeKey]}
-                </p>
-              </div>
-            </div>
+            <h1
+              className={`text-xl sm:text-2xl font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {price18N.title[localeKey]}
+            </h1>
+            <p
+              className={`${
+                theme === "dark" ? "text-slate-400" : "text-gray-600"
+              } mt-1 text-sm sm:text-base`}
+            >
+              {price18N.checkPriceByButton[localeKey]}
+            </p>
             {/* Controls Row */}
             <ControlPanel
               priceType={priceType}
@@ -129,6 +125,7 @@ export default function PriceView() {
           selectItem={selectItem}
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
+          word={fetchWord}
         />
       </div>
       {isFetching && <Loading />}

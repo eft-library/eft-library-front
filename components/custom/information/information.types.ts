@@ -11,6 +11,12 @@ export interface InformationData {
   current_page: number;
 }
 
+export interface InformationCardTypes {
+  informationData: InformationData;
+  routeLink: string;
+  word: string;
+}
+
 export interface InformationTypes {
   informationData: InformationData;
   routeLink: string;

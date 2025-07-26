@@ -12,6 +12,7 @@ import {
   findExpensiveTrader,
   findFleaMarketPrice,
 } from "@/lib/func/jsxfunction";
+import Highlighter from "react-highlight-words";
 
 export default function PriceTableM({
   items,
@@ -20,6 +21,7 @@ export default function PriceTableM({
   priceType,
   setSelectItem,
   selectItem,
+  word,
 }: PriceTableMTypes) {
   const { theme } = useTheme();
   const locale = useLocale();
@@ -68,7 +70,12 @@ export default function PriceTableM({
                     theme === "dark" ? "text-white" : "text-gray-900"
                   } text-sm leading-tight`}
                 >
-                  {item.name[localeKey]}
+                  <Highlighter
+                    highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                    searchWords={[word]}
+                    autoEscape
+                    textToHighlight={item.name[localeKey]}
+                  />
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex flex-col gap-1">

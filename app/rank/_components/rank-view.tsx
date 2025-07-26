@@ -25,12 +25,14 @@ export default function RankView() {
   const [tooltipItem, setTooltipItem] = useState<TopListDetailData | null>(
     null
   );
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [listCategory, setListCategory] =
     useState<string[]>(defaultRankCategory);
 
   const getItemRank = useCallback(async () => {
     try {
+      setLoading(true);
       const data = await requestPostData(API_ENDPOINTS.GET_TOP_PRICE, {
         categoryList: listCategory,
       });
@@ -40,10 +42,13 @@ export default function RankView() {
           "Failed to fetch quest data:",
           data?.msg || "Unknown error"
         );
+        setLoading(false);
         return null;
       }
       setTopRankData(data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
       return null;
     }
@@ -83,9 +88,9 @@ export default function RankView() {
   return (
     <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 shadow-sm">
       <div className="container mx-auto px-3 sm:px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-center mb-4">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            Item Rank
+            {rankI18N.title[localeKey]}
           </h1>
         </div>
 
@@ -137,6 +142,7 @@ export default function RankView() {
           <ItemTooltip item={tooltipItem} position={tooltipPosition} />
         )}
       </div>
+      {isLoading && <Loading />}
     </div>
   );
 }

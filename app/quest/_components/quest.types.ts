@@ -13,6 +13,7 @@ interface QuestJson {
 
 export interface QuestCardTypes {
   quest_list: Quest[];
+  word: string;
 }
 
 export interface TraderCardTypes {

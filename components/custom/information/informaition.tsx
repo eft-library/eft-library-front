@@ -10,6 +10,13 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { formatISODate } from "@/lib/func/formatTime";
 import { Badge } from "../../ui/badge";
 import InformationSelector from "./information-selector";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { placeHolderText } from "@/lib/consts/i18nConsts";
+import { useState } from "react";
+import Highlighter from "react-highlight-words";
+import CustomPagination from "../CustomPagination/custom-pagination";
+import { useSearchParams } from "next/navigation";
 
 export default function Information({
   informationData,
@@ -19,50 +26,49 @@ export default function Information({
   const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const [word, setWord] = useState<string>("");
+  const param = useSearchParams();
 
   return (
     <div className="max-w-6xl mx-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1
-            className={`text-3xl font-bold mb-2 ${
+            className={`text-3xl text-center font-bold mb-2 ${
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
             {title}
           </h1>
           <InformationSelector />
-          {/* <div className="mb-6">
-              <div className="relative max-w-md">
-                <Search
-                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
-                    isDark ? "text-gray-400" : "text-gray-500"
-                  }`}
-                />
-                <Input
-                  placeholder={
-                    activeTab === "all"
-                      ? "공지사항 검색..."
-                      : activeTab === "patch"
-                      ? "패치노트 검색..."
-                      : "이벤트 검색..."
-                  }
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className={`pl-10 ${
-                    isDark
-                      ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                      : "bg-white border-gray-300"
-                  }`}
-                />
-              </div>
-            </div> */}
-          <div>
-            <div className="grid gap-4">
-              {informationData.data.map((item) => (
+          <div className="mb-6">
+            <div className="relative max-w-md">
+              <Search
+                className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-500"
+                }`}
+              />
+              <Input
+                placeholder={placeHolderText.search[localeKey]}
+                value={word}
+                onChange={(e) => {
+                  setWord(e.target.value);
+                  // setCurrentPage(1);
+                }}
+                className={`pl-10 ${
+                  theme === "dark"
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+            </div>
+          </div>
+          <div className="grid gap-4">
+            {informationData.data
+              .filter((item) =>
+                item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+              )
+              .map((item) => (
                 <Link key={item.id} href={`${routeLink}/detail/${item.id}`}>
                   <Card
                     className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
@@ -84,7 +90,12 @@ export default function Information({
                               theme === "dark" ? "text-white" : "text-gray-900"
                             }`}
                           >
-                            {item.name[localeKey]}
+                            <Highlighter
+                              highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                              searchWords={[word]}
+                              autoEscape
+                              textToHighlight={item.name[localeKey]}
+                            />
                           </h3>
                           <div
                             className={`text-sm mb-3 line-clamp-2 ${
@@ -118,9 +129,16 @@ export default function Information({
                   </Card>
                 </Link>
               ))}
-            </div>
           </div>
         </div>
+
+        {!word && (
+          <CustomPagination
+            total={informationData.max_pages}
+            routeLink={`${routeLink}?id=`}
+            currentPage={Number(param.get("id"))}
+          />
+        )}
       </div>
     </div>
   );

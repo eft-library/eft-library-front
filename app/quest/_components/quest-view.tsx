@@ -5,10 +5,18 @@ import type { QuestViewTypes } from "./quest.types";
 import TraderCard from "./TranderCard/trader-card";
 import QuestCard from "./QuestCard/quest-card";
 import QuestCardM from "./QuestCard/quest-card-m";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { placeHolderText, questI18N } from "@/lib/consts/i18nConsts";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function QuestView({ questData }: QuestViewTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
-  // 여기에 npc 리스트, 퀘스트 리스트 가져와서 조합하기
+  const [word, setWord] = useState<string>("");
+
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
@@ -24,18 +32,27 @@ export default function QuestView({ questData }: QuestViewTypes) {
             theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
           }`}
         >
-          퀘스트
+          {questI18N.title[localeKey]}
         </h1>
 
         {/* Character Grid */}
         <TraderCard trader_list={questData.trader_list} />
 
+        <div className="mb-8 mt-8">
+          <Input
+            type="text"
+            placeholder={placeHolderText.search[localeKey]}
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            className="w-full max-w-lg mx-auto block"
+          />
+        </div>
         {/* Quest Content - Desktop Table / Mobile Cards */}
-        <QuestCard quest_list={questData.quest_list} />
+        <QuestCard quest_list={questData.quest_list} word={word} />
 
         {/* Mobile Quest Cards */}
         <div className="md:hidden space-y-4">
-          <QuestCardM quest_list={questData.quest_list} />
+          <QuestCardM quest_list={questData.quest_list} word={word} />
         </div>
       </div>
     </div>

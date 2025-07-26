@@ -1,18 +1,27 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { BossDetail } from "../boss.types";
-import { useParams, useRouter } from "next/navigation";
+import React from "react";
 import Image from "next/image";
-import { boss18N } from "@/lib/consts/i18nConsts";
+import { useParams, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { ChevronDown } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { boss18N, placeHolderText } from "@/lib/consts/i18nConsts";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import {
   groupSpawnAreas,
   groupAndSummarizeChances,
 } from "@/lib/func/jsxfunction";
-import React from "react";
-import { Separator } from "@/components/ui/separator";
+import type { BossDetail } from "../boss.types";
 
 export default function BossSelector({ bossData }: BossDetail) {
   const locale = useLocale();
@@ -24,39 +33,51 @@ export default function BossSelector({ bossData }: BossDetail) {
     router.push(`/boss/${bossUrl}`);
   };
 
+  const selectedBoss = bossData.boss_selector.find(
+    (boss) => boss.url_mapping === param.id
+  );
+
   return (
     <div className="space-y-6">
-      {/* Boss Selection Dropdown - Remove Card wrapper */}
-      <div className="mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <span className="text-lg font-medium">보스:</span>
-          <div className="relative flex-1 sm:flex-initial">
-            <select
-              value={param.id}
-              onChange={(e) => handleBossClick(e.target.value)}
-              className="appearance-none bg-background border-2 border-input rounded-lg px-4 py-3 pr-10 w-full sm:min-w-[200px] text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-            >
-              {bossData.boss_selector.map((boss) => (
-                <option key={boss.url_mapping} value={boss.url_mapping}>
-                  {boss.name[localeKey]}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
+      {/* Boss Selection Dropdown */}
+      <div className="container mx-auto px-4 py-4">
+        {" "}
+        {/* Added container and padding */}
+        <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 lg:items-center">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
+              {placeHolderText.search[localeKey]}
+            </span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto min-w-[140px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+                >
+                  {selectedBoss?.name[localeKey] || ""}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-full min-w-[200px] bg-popover border border-border text-popover-foreground">
+                {bossData.boss_selector.map((boss) => (
+                  <DropdownMenuItem
+                    key={boss.url_mapping}
+                    onClick={() => handleBossClick(boss.url_mapping)}
+                    className={`
+                      ${
+                        param.id === boss.url_mapping
+                          ? "text-primary bg-primary/10 cursor-pointer"
+                          : "text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span>{boss.name[localeKey]}</span>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
@@ -95,7 +116,7 @@ export default function BossSelector({ bossData }: BossDetail) {
                 <tr className="border-b hover:bg-muted/20 transition-colors">
                   <td className="text-center p-3 sm:p-4 relative">
                     <Image
-                      src={bossData.boss.image}
+                      src={bossData.boss.image || "/placeholder.svg"}
                       alt={bossData.boss.name.en}
                       className="w-16 h-16 sm:w-24 sm:h-24 rounded object-cover mx-auto"
                       placeholder="blur"
