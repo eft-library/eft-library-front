@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Pagination,
@@ -25,28 +25,30 @@ export default function CustomPagination({
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
   const router = useRouter();
 
-  const updateVisiblePages = (page: number) => {
-    const maxPagesToShow = 10; // Maximum number of page links to display
-    const totalPages = total;
+  const updateVisiblePages = useCallback(
+    (page: number) => {
+      const maxPagesToShow = 10;
+      const totalPages = total;
 
-    let startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
-    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+      let startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
+      const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-    // Adjust startPage if we hit the end limit and don't have enough pages to show
-    if (endPage - startPage + 1 < maxPagesToShow) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }
+      if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
 
-    const newPages = [];
-    for (let i = startPage; i <= endPage; i++) {
-      newPages.push(i);
-    }
-    setVisiblePages(newPages);
-  };
+      const newPages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        newPages.push(i);
+      }
+      setVisiblePages(newPages);
+    },
+    [total]
+  );
 
   useEffect(() => {
     updateVisiblePages(currentPage);
-  }, [total, currentPage]);
+  }, [total, currentPage, updateVisiblePages]);
 
   const handlePageChange = (page: number) => {
     if (page === currentPage || page < 1 || page > total) return; // Ignore if same page or out of bounds
@@ -65,9 +67,9 @@ export default function CustomPagination({
           <PaginationLink
             onClick={() => handlePageChange(1)}
             className={cn(
-              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
               {
-                "pointer-events-none opacity-50": isFirstPage,
+                "pointer-events-none opacity-50 cursor-default": isFirstPage,
               }
             )}
             aria-disabled={isFirstPage}
@@ -82,9 +84,9 @@ export default function CustomPagination({
           <PaginationLink
             onClick={() => handlePageChange(currentPage - 1)}
             className={cn(
-              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
               {
-                "pointer-events-none opacity-50": isFirstPage,
+                "pointer-events-none opacity-50 cursor-default": isFirstPage,
               }
             )}
             aria-disabled={isFirstPage}
@@ -100,9 +102,9 @@ export default function CustomPagination({
             <PaginationLink
               onClick={() => handlePageChange(page)}
               className={cn(
-                "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+                "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
                 {
-                  "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground":
+                  "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground cursor-default":
                     page === currentPage,
                 }
               )}
@@ -118,9 +120,9 @@ export default function CustomPagination({
           <PaginationLink
             onClick={() => handlePageChange(currentPage + 1)}
             className={cn(
-              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
               {
-                "pointer-events-none opacity-50": isLastPage,
+                "pointer-events-none opacity-50 cursor-default": isLastPage,
               }
             )}
             aria-disabled={isLastPage}
@@ -135,9 +137,9 @@ export default function CustomPagination({
           <PaginationLink
             onClick={() => handlePageChange(total)}
             className={cn(
-              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+              "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
               {
-                "pointer-events-none opacity-50": isLastPage,
+                "pointer-events-none opacity-50 cursor-default": isLastPage,
               }
             )}
             aria-disabled={isLastPage}
