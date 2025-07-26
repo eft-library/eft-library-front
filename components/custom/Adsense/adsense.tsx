@@ -6,7 +6,7 @@ export default function AdSense({ pId }: AdsenseTypes) {
   return (
     <>
       {/* Consent Mode (GDPR/CCPA 대응) */}
-      <Script id="google-consent" strategy="beforeInteractive">
+      <Script id="google-consent" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { boss18N, placeHolderText } from "@/lib/consts/i18nConsts";
+import { boss18N } from "@/lib/consts/i18nConsts";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import {
   groupSpawnAreas,
