@@ -4,6 +4,10 @@ export interface MainViewTypes {
   homeData: HomeDataType;
 }
 
+export interface PinnedNotice {
+  notice: NewsMapColumn;
+}
+
 interface HomeDataType {
   main_info: MainInfoType[];
   menu: ParentMenuType[];

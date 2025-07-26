@@ -1,10 +1,10 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Pin } from "lucide-react";
 import NewsView from "./News/news-view";
 import GridItem from "./GridItem/grid-item";
 import type { MainViewTypes } from "./news-view.types";
+import PinnedNotice from "./PinnedNotice/pinned-notice";
 
 export default function MainView({ homeData }: MainViewTypes) {
   const { theme } = useTheme();
@@ -88,53 +88,7 @@ export default function MainView({ homeData }: MainViewTypes) {
             </div> */}
 
             {/* Pinned Notices */}
-            <div
-              className={`rounded-lg p-6 border ${
-                theme === "dark"
-                  ? "bg-gray-800/30 border-gray-700/50"
-                  : "bg-white border-gray-200 shadow-sm"
-              }`}
-            >
-              <div className="flex items-center space-x-2 mb-4">
-                <Pin className="w-5 h-5 text-orange-400" />
-                <h2
-                  className={`text-lg font-semibold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  공지사항
-                </h2>
-              </div>
-              <div className="space-y-3">
-                <div
-                  className={`text-sm cursor-pointer transition-colors ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-orange-400"
-                      : "text-gray-600 hover:text-orange-500"
-                  }`}
-                >
-                  사이트 이용 규칙 및 가이드라인
-                </div>
-                <div
-                  className={`text-sm cursor-pointer transition-colors ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-orange-400"
-                      : "text-gray-600 hover:text-orange-500"
-                  }`}
-                >
-                  Discord 서버 참여 안내
-                </div>
-                <div
-                  className={`text-sm cursor-pointer transition-colors ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-orange-400"
-                      : "text-gray-600 hover:text-orange-500"
-                  }`}
-                >
-                  데이터 업데이트 일정 공지
-                </div>
-              </div>
-            </div>
+            <PinnedNotice notice={homeData.news} />
           </div>
         </div>
       </div>
