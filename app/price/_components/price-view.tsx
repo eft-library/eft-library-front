@@ -60,7 +60,7 @@ export default function PriceView() {
 
   useEffect(() => {
     if (data?.pages.length && !selectItem) {
-      const firstItem = data.pages[0]?.data?.data?.[3];
+      const firstItem = data.pages[0]?.data?.data?.[2];
       setSelectItem(firstItem);
     }
   }, [data, selectItem]);
