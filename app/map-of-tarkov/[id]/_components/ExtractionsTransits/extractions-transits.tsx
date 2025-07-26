@@ -51,14 +51,14 @@ export default function ExtractionsTransits({
       <Card
         className={`${
           theme === "dark"
-            ? "bg-[#1a1c20] border-gray-700"
+            ? "bg-gray-800/30 border-gray-700/50"
             : "bg-white border-gray-200 shadow-sm"
         } mb-4`}
       >
-        <div className="p-4">
+        <div>
           <div
-            className={`grid grid-cols-7 gap-4 text-center font-semibold text-sm ${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
+            className={`grid grid-cols-7 gap-2 text-center font-semibold text-sm ${
+              theme === "dark" ? "text-white" : "text-gray-700"
             }`}
           >
             <div>{mapOfTarkovI18n.photo[localeKey]}</div>
@@ -72,18 +72,18 @@ export default function ExtractionsTransits({
         </div>
       </Card>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {extractionsOrTransits.map((extract, index) => (
           <Card
             key={index}
             className={`${
               theme === "dark"
-                ? "bg-[#1a1c20] border-gray-700 hover:bg-[#2a2d35]"
-                : "bg-white border-gray-200 shadow-sm hover:shadow-md"
+                ? "bg-gray-800/30 border-gray-700/50"
+                : "bg-white border-gray-200 shadow-sm"
             } transition-all`}
           >
-            <div className="p-4">
-              <div className="grid grid-cols-7 gap-4 items-center text-sm">
+            <div className="p-2">
+              <div className="grid grid-cols-7 gap-2 items-center text-sm">
                 <div className="flex justify-center">
                   <ImageView
                     src={extract.image}
@@ -107,7 +107,7 @@ export default function ExtractionsTransits({
                     variant="secondary"
                     className={`${getFactionBadgeStyle(
                       extract.faction
-                    )} font-semibold`}
+                    )} font-medium`}
                   >
                     {extract.faction}
                   </Badge>
@@ -128,7 +128,7 @@ export default function ExtractionsTransits({
                 </div>
                 <div
                   className={`text-center ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    theme === "dark" ? "text-white" : "text-gray-700"
                   }`}
                 >
                   {extract.requirements && extract.requirements[localeKey] ? (
@@ -139,7 +139,7 @@ export default function ExtractionsTransits({
                 </div>
                 <div
                   className={`text-xs text-center ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    theme === "dark" ? "text-white" : "text-gray-600"
                   }`}
                 >
                   {extract.tip && extract.tip[localeKey] ? (

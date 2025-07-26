@@ -74,7 +74,7 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
         <Card
           className={`${
             theme === "dark"
-              ? "bg-[#1a1c20] border-gray-700"
+              ? "bg-gray-800/30 border-gray-700/50"
               : "bg-white border-gray-200 shadow-sm"
           } p-4`}
         >

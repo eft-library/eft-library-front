@@ -11,15 +11,21 @@ import { useLocale } from "next-intl";
 import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 import MapBoss from "./MapBoss/map-boss";
 import ExtractionsTransits from "./ExtractionsTransits/extractions-transits";
+import { useTheme } from "next-themes";
 
 export default function MapOfTarkovView({ mapData }: MapOfTarkovViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const param = useParams<{ id: string }>();
   const [imageSelect, setImageSelect] = useState<string>(param.id);
+  const { theme } = useTheme();
   return (
     <div
-      className={`min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 dark:bg-gradient-to-b dark:from-[#0f1115] dark:to-[#1a1c20] dark:text-white`}
+      className={`min-h-screen ${
+        theme === "dark"
+          ? "bg-[#1e2124] text-white"
+          : "bg-gray-50 text-gray-900"
+      }`}
     >
       <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="text-center">

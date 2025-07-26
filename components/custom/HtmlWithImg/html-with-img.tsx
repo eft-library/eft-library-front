@@ -26,7 +26,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImageTypes) {
   return (
     <div>
       <div
-        className="quest-editor font-bold text-lg"
+        className="quest-editor font-semibold text-sm"
         dangerouslySetInnerHTML={{ __html: contents }}
         onClick={handleImageClick}
       />

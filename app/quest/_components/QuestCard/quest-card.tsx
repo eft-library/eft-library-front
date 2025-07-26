@@ -28,7 +28,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
           theme === "dark"
             ? "bg-[#1E1E1E] border-[#2B2B2B]"
             : "bg-white border-gray-200"
-        } overflow-hidden`}
+        } overflow-hidden p-0`}
       >
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -85,7 +85,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                   }`}
                 >
                   <td
-                    className={`p-6 font-semibold text-base ${
+                    className={`p-2 font-semibold text-center ${
                       theme === "dark"
                         ? "text-[#FFB82E] hover:text-yellow-400"
                         : "text-[#FF8C00] hover:text-yellow-400"

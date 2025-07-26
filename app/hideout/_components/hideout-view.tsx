@@ -178,6 +178,9 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
+        <div className="flex-grow text-center mb-4">
+          <h1 className="text-4xl font-bold text-foreground">은신처</h1>
+        </div>
         <div className="flex gap-8">
           {/* Main Content Area */}
           <div className="flex-1 max-w-6xl mx-auto">

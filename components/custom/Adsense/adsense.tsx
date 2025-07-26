@@ -1,9 +1,6 @@
 import Script from "next/script";
 import React from "react";
-
-type AdsenseTypes = {
-  pId: string;
-};
+import { AdsenseTypes } from "./adsense.types";
 
 export default function AdSense({ pId }: AdsenseTypes) {
   return (

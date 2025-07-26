@@ -25,11 +25,11 @@ export default function MapBoss({ bossInfo }: MapBossTypes) {
 
       {/* Boss Table Header */}
       <Card
-        className={`dark:bg-[#1a1c20] dark:border-gray-700 bg-white border-gray-200 shadow-sm mb-4`}
+        className={`dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 shadow-sm mb-4`}
       >
-        <div className="p-4">
+        <div>
           <div
-            className={`grid grid-cols-7 gap-4 text-center font-semibold text-sm dark:text-white text-gray-700`}
+            className={`grid grid-cols-7 gap-2 text-center font-semibold text-sm dark:text-white text-gray-700`}
           >
             <div>{mapOfTarkovI18n.photo[localeKey]}</div>
             <div>{mapOfTarkovI18n.name[localeKey]}</div>
@@ -47,10 +47,10 @@ export default function MapBoss({ bossInfo }: MapBossTypes) {
         {bossInfo.map((boss, index) => (
           <Card
             key={`boss-info-${boss.id}-${index}`}
-            className={`dark:bg-[#1a1c20] dark:border-gray-700 bg-white border-gray-200 shadow-sm`}
+            className={`dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 shadow-sm`}
           >
             <div className="p-4">
-              <div className="grid grid-cols-7 gap-4 items-center text-center text-sm">
+              <div className="grid grid-cols-7 gap-2 items-center text-center text-sm">
                 <div className="flex justify-center">
                   <Image
                     src={boss.image}

@@ -12,7 +12,7 @@ export default function Loading() {
       <div className="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm" />
 
       {/* 스피너 컨테이너 */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 border border-gray-200 dark:border-gray-700">
+      <div className="relative bg-white dark:bg-[#1e2124] rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 border border-gray-200 dark:border-gray-700">
         {/* 스피너 */}
         <div className="flex flex-col items-center justify-center space-y-6">
           <div className="relative">

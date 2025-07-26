@@ -29,7 +29,7 @@ export default function QuestView({ questData }: QuestViewTypes) {
         {/* Page Title */}
         <h1
           className={`text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 ${
-            theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
+            theme === "dark" ? "text-white" : "text-black"
           }`}
         >
           {questI18N.title[localeKey]}

@@ -37,7 +37,7 @@ export default function ItemCard({
         ${rankCardTierColors[tier]}
         ${
           isHighlighted
-            ? "ring-2 ring-yellow-400 ring-offset-2 dark:ring-offset-gray-900"
+            ? "dark:ring-offset-gray-900"
             : "opacity-60 brightness-90 bg-gray-100 dark:bg-gray-900"
         }
       `}

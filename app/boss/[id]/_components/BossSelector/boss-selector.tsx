@@ -41,12 +41,11 @@ export default function BossSelector({ bossData }: BossDetail) {
     <div className="space-y-6">
       {/* Boss Selection Dropdown */}
       <div className="container mx-auto px-4 py-4">
-        {" "}
         {/* Added container and padding */}
         <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 lg:items-center">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <span className="text-sm font-semibold whitespace-nowrap text-muted-foreground">
-              {placeHolderText.search[localeKey]}
+              {boss18N.title[localeKey]}
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
