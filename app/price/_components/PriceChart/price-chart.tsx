@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-// import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, MoveRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import dayjs from "dayjs";
 import { useLocale } from "next-intl";
@@ -17,6 +17,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { price18N } from "@/lib/consts/i18nConsts";
+import { calcChangeRate } from "@/lib/func/jsxfunction";
 
 export default function PriceChart({ item, priceType }: PriceChartTypes) {
   const { theme } = useTheme();
@@ -41,21 +42,33 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
           >
             {item.name[localeKey]}
           </CardTitle>
-          {/* <div className="flex items-center gap-2">
-            {priceChange > 0 ? (
-              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-            ) : (
-              <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
-            )}
-            <span
-              className={`font-semibold text-sm sm:text-base ${
-                priceChange > 0 ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {priceChange > 0 ? "+" : ""}
-              {priceChange.toFixed(1)}%
-            </span>
-          </div> */}
+          {(() => {
+            const { raw, formatted } = calcChangeRate(item, priceType);
+
+            const textClass =
+              raw > 0
+                ? "text-green-500"
+                : raw < 0
+                ? "text-red-500"
+                : "dark:text-white text-gray-900";
+
+            return (
+              <div className="flex items-center gap-2">
+                {raw > 0 ? (
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+                ) : raw < 0 ? (
+                  <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+                ) : (
+                  <MoveRight className="h-4 w-4 sm:h-5 sm:w-5 dark:text-white text-gray-900" />
+                )}
+                <span
+                  className={`font-semibold text-sm sm:text-base ${textClass}`}
+                >
+                  {formatted}
+                </span>
+              </div>
+            );
+          })()}
         </div>
       </CardHeader>
       <CardContent>

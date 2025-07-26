@@ -106,7 +106,7 @@ export default function ItemFilter({
             className="border rounded-lg p-4 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-medium text-lg">
+              <h3 className="font-semibold text-lg">
                 {category.name[localeKey]}
               </h3>
             </div>
@@ -132,7 +132,7 @@ export default function ItemFilter({
                       />
                       <span
                         className={cn(
-                          "text-sm font-medium leading-none",
+                          "text-sm font-semibold leading-none",
                           viewItemList.includes(item.value)
                             ? "text-foreground"
                             : "text-muted-foreground"

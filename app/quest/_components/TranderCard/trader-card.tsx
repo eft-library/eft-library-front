@@ -52,7 +52,7 @@ export default function TraderCard({ trader_list }: TraderCardTypes) {
                 />
               </div>
               <p
-                className={`text-xs md:text-sm font-medium transition-colors ${
+                className={`text-xs md:text-sm font-semibold transition-colors ${
                   theme === "dark"
                     ? "text-[#CCCCCC] group-hover:text-white"
                     : "text-gray-600 group-hover:text-gray-900"

@@ -85,7 +85,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                   }`}
                 >
                   <td
-                    className={`p-6 font-medium text-base ${
+                    className={`p-6 font-semibold text-base ${
                       theme === "dark"
                         ? "text-[#FFB82E] hover:text-yellow-400"
                         : "text-[#FF8C00] hover:text-yellow-400"
@@ -136,7 +136,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                       {quest.finish_rewards.items.map((rewards, rIndex) => (
                         <div
                           key={`${rIndex}-rewards-${quest.id}`}
-                          className={`text-sm font-medium transition-colors ${
+                          className={`text-sm font-semibold transition-colors ${
                             theme === "dark"
                               ? "text-[#FFB82E] hover:text-yellow-400"
                               : "text-[#FF8C00] hover:text-yellow-400"

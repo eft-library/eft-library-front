@@ -54,7 +54,7 @@ export default function StationDetail({
               </div>
             </div>
             <div>
-              <p className="text-3xl font-medium font-bold">
+              <p className="text-3xl font-semibold font-bold">
                 {masterInfo ? masterInfo.master_name[localeKey] : ""}
               </p>
               <p className="text-2xl font-bold">LV {splitLevel[1]}</p>

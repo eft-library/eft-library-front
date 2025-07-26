@@ -46,7 +46,7 @@ export default function GridItem({ main_info }: GridItemTypes) {
               />
             </div>
             <h3
-              className={`text-sm font-medium text-center transition-colors ${
+              className={`text-sm font-semibold text-center transition-colors ${
                 theme === "dark"
                   ? "text-gray-200 group-hover:text-orange-400"
                   : "text-gray-700 group-hover:text-orange-500"

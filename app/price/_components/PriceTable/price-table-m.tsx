@@ -66,7 +66,7 @@ export default function PriceTableM({
               />
               <div className="flex-1 min-w-0">
                 <div
-                  className={`font-medium ${
+                  className={`font-semibold ${
                     theme === "dark" ? "text-white" : "text-gray-900"
                   } text-sm leading-tight`}
                 >
@@ -79,12 +79,12 @@ export default function PriceTableM({
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex flex-col gap-1">
-                    <div className="text-xs text-orange-400 font-medium">
+                    <div className="text-xs text-orange-400 font-semibold">
                       {priceType === "PVE"
                         ? findExpensiveTrader(item.trader.pve_trader)
                         : findExpensiveTrader(item.trader.pvp_trader)}
                     </div>
-                    <div className="text-xs text-green-500 font-medium">
+                    <div className="text-xs text-green-500 font-semibold">
                       {priceType === "PVE"
                         ? findFleaMarketPrice(item.trader.pve_trader)
                         : findFleaMarketPrice(item.trader.pvp_trader)}

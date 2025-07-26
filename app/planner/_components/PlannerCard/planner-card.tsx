@@ -74,7 +74,7 @@ export default function PlannerCard({
                 <div className="flex items-center gap-2">
                   <Badge
                     variant="secondary"
-                    className="text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border-0 px-3 py-1 rounded-full"
+                    className="text-xs font-semibold bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border-0 px-3 py-1 rounded-full"
                   >
                     {npcInfo.quest_info.length}{" "}
                     {planner18N.questCountText[localeKey]}
@@ -128,7 +128,7 @@ export default function PlannerCard({
                             </h4>
                             <Badge
                               variant="outline"
-                              className="text-xs font-medium bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700/50 px-2.5 py-1 rounded-full flex-shrink-0"
+                              className="text-xs font-semibold bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700/50 px-2.5 py-1 rounded-full flex-shrink-0"
                             >
                               Lv.{quest.min_player_level}
                             </Badge>

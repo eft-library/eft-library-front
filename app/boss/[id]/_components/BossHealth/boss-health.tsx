@@ -89,7 +89,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
               {selectedFollower?.health_detail.map((health_detail, index) => (
                 <div className="space-y-2" key={`boss-health-${index}`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-semibold">
                       {health_detail[getHealthKey(localeKey)]}
                     </span>
                     <span className="text-sm text-muted-foreground">

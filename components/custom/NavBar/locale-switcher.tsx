@@ -42,7 +42,9 @@ export default function LocalSwitcher() {
         }`}
       >
         <span className="text-base">{getCurrentLanguage().flag}</span>
-        <span className="text-sm font-medium">{getCurrentLanguage().name}</span>
+        <span className="text-sm font-semibold">
+          {getCurrentLanguage().name}
+        </span>
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${
             isLanguageMenuOpen ? "rotate-180" : ""
@@ -74,7 +76,7 @@ export default function LocalSwitcher() {
                 }`}
               >
                 <span className="text-base">{language.flag}</span>
-                <span className="font-medium">{language.name}</span>
+                <span className="font-semibold">{language.name}</span>
               </button>
             ))}
           </div>

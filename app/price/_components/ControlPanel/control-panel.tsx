@@ -37,7 +37,7 @@ export default function ControlPanel({
         >
           <TabsTrigger
             value="PVE"
-            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-medium transition-all duration-200 ${
+            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
               theme === "dark"
                 ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
@@ -47,7 +47,7 @@ export default function ControlPanel({
           </TabsTrigger>
           <TabsTrigger
             value="PVP"
-            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-medium transition-all duration-200 ${
+            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
               theme === "dark"
                 ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"

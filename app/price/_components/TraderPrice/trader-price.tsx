@@ -57,7 +57,7 @@ export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
                   sizes="(max-width: 640px) 32px, 48px"
                 />
               </div>
-              <div className="text-xs sm:text-sm font-medium text-orange-400">
+              <div className="text-xs sm:text-sm font-semibold text-orange-400">
                 {trader.price.toLocaleString()} ₽
               </div>
             </div>

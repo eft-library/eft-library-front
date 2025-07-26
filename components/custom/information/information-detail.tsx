@@ -132,7 +132,7 @@ export default function InformationDetail({
                           </Badge>
                         </div>
                         <h4
-                          className={`font-medium mb-1 ${
+                          className={`font-semibold mb-1 ${
                             theme === "dark" ? "text-white" : "text-gray-900"
                           }`}
                         >

@@ -55,7 +55,7 @@ export default function MapSelector({
     <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 bg-card rounded-xl border shadow-sm">
       {/* Main Map Selector */}
       <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
-        <div className="flex items-center space-x-2 text-sm font-medium text-muted-foreground">
+        <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">
           <Map className="h-4 w-4" />
           <span>{interactiveMapI18N.map[localeKey]}</span>
         </div>
@@ -67,7 +67,7 @@ export default function MapSelector({
             >
               <div className="flex items-center">
                 <Map className="mr-2 h-4 w-4 opacity-60" />
-                <span className="truncate font-medium">
+                <span className="truncate font-semibold">
                   {currentMainMap?.name[localeKey] || "Main"}
                 </span>
               </div>
@@ -104,7 +104,7 @@ export default function MapSelector({
 
       {/* Sub Map Selector */}
       <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
-        <div className="flex items-center space-x-2 text-sm font-medium text-muted-foreground">
+        <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">
           <MapPin className="h-4 w-4" />
           <span>{interactiveMapI18N.subMap[localeKey]}</span>
         </div>
@@ -116,7 +116,7 @@ export default function MapSelector({
             >
               <div className="flex items-center">
                 <MapPin className="mr-2 h-4 w-4 opacity-60" />
-                <span className="truncate font-medium">
+                <span className="truncate font-semibold">
                   {currentSubMap?.name[localeKey] || "Sub"}
                 </span>
               </div>

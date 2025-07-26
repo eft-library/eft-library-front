@@ -20,7 +20,7 @@ export default function TraderTab({
           <TabsTrigger
             value={"all"}
             className="
-              relative text-xs font-medium px-3 py-2.5 rounded-lg
+              relative text-xs font-semibold px-3 py-2.5 rounded-lg
               transition-all duration-200 ease-in-out
               text-slate-600 dark:text-slate-400
               hover:text-slate-900 dark:hover:text-slate-100
@@ -43,7 +43,7 @@ export default function TraderTab({
               key={trader.id}
               value={trader.id}
               className="
-                relative text-xs font-medium px-3 py-2.5 rounded-lg
+                relative text-xs font-semibold px-3 py-2.5 rounded-lg
                 transition-all duration-200 ease-in-out
                 text-slate-600 dark:text-slate-400
                 hover:text-slate-900 dark:hover:text-slate-100

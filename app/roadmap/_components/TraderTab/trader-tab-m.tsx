@@ -38,7 +38,7 @@ export default function TraderTabM({
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center shadow-md">
                   <Store className="h-4 w-4 text-white" />
                 </div>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
                   ALL
                 </span>
               </div>
@@ -59,7 +59,7 @@ export default function TraderTabM({
                     className="rounded-full object-cover"
                   />
                 </div>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
                   {trader?.name[localeKey]}
                 </span>
               </div>

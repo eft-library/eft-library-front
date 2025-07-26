@@ -11,7 +11,7 @@ export default function TotalRequestCard({
       <div className="p-8 text-center space-y-2">
         <div className="flex items-center justify-center space-x-2">
           <Activity className="h-8 w-8" />
-          <span className="text-lg font-medium">총 요청수</span>
+          <span className="text-lg font-semibold">총 요청수</span>
         </div>
         <div className="text-5xl font-bold">
           {total_request.current_requests.toLocaleString()}

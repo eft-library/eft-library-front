@@ -66,7 +66,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
         {/* Objectives */}
         <div>
           <h4
-            className={`text-sm font-medium mb-2 ${
+            className={`text-sm font-semibold mb-2 ${
               theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
             }`}
           >
@@ -102,7 +102,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
         {/* Rewards */}
         <div>
           <h4
-            className={`text-sm font-medium mb-2 ${
+            className={`text-sm font-semibold mb-2 ${
               theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
             }`}
           >
@@ -112,7 +112,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
             {quest.finish_rewards.items.map((rewards, rIndex) => (
               <div
                 key={`${rIndex}-rewards-${quest.id}`}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-semibold transition-colors ${
                   theme === "dark"
                     ? "text-[#FFB82E] hover:text-yellow-400"
                     : "text-[#FF8C00] hover:text-yellow-400"

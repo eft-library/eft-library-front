@@ -29,7 +29,7 @@ export default function DurationBar({
         />
       </div>
       <span
-        className={`text-sm font-medium ${
+        className={`text-sm font-semibold ${
           isActive ? "text-cyan-400" : "text-orange-400"
         } ${isMobile ? "self-end" : ""}`}
       >

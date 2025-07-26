@@ -73,7 +73,7 @@ export default function ControlPanel({
           "
         >
           <CheckSquare className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-          <span className="font-medium">
+          <span className="font-semibold">
             {roadmapI18N.selectAll[localeKey]}
           </span>
         </Button>
@@ -97,7 +97,7 @@ export default function ControlPanel({
           "
         >
           <Square className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-          <span className="font-medium">
+          <span className="font-semibold">
             {roadmapI18N.unSelectAll[localeKey]}
           </span>
         </Button>
@@ -118,7 +118,7 @@ export default function ControlPanel({
           "
         >
           <Save className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-          <span className="font-medium">{roadmapI18N.save[localeKey]}</span>
+          <span className="font-semibold">{roadmapI18N.save[localeKey]}</span>
         </Button>
 
         {/* Kappa Filter Toggle Button */}
@@ -143,7 +143,7 @@ export default function ControlPanel({
               onlyKappa ? "text-purple-600 dark:text-purple-400" : ""
             }`}
           />
-          <span className="font-medium">
+          <span className="font-semibold">
             {onlyKappa
               ? roadmapI18N.viewAllQuest[localeKey]
               : roadmapI18N.viewKappaQuest[localeKey]}

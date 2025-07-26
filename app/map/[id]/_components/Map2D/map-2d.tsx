@@ -133,7 +133,7 @@ export default function Map2D({ mapData, viewItemList }: Map2DTypes) {
                               className="group block"
                             >
                               <div className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-card/50 hover:bg-accent/50 hover:border-accent-foreground/20 transition-all duration-200 hover:shadow-md">
-                                <span className="font-medium text-sm text-card-foreground group-hover:text-accent-foreground truncate pr-2">
+                                <span className="font-semibold text-sm text-card-foreground group-hover:text-accent-foreground truncate pr-2">
                                   {quest.name[localeKey]}
                                 </span>
                                 <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-accent-foreground flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
@@ -147,7 +147,7 @@ export default function Map2D({ mapData, viewItemList }: Map2DTypes) {
                         <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
                           <MapPin className="w-6 h-6 text-muted-foreground" />
                         </div>
-                        <p className="text-sm text-muted-foreground font-medium">
+                        <p className="text-sm text-muted-foreground font-semibold">
                           No quests available
                         </p>
                         <p className="text-xs text-muted-foreground/70 mt-1">

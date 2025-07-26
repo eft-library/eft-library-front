@@ -75,7 +75,7 @@ export default function HourlyDistributionChart({
         <div className="mt-4 p-3 bg-blue-900/30 rounded-lg border border-blue-700/50">
           <div className="flex items-center space-x-2 text-blue-300">
             <TrendingUp className="h-4 w-4" />
-            <span className="font-medium">피크 시간대</span>
+            <span className="font-semibold">피크 시간대</span>
           </div>
           <p className="text-sm text-white mt-1">
             {maxRequestEntry.time} 에 요청이 집중되었습니다 (총

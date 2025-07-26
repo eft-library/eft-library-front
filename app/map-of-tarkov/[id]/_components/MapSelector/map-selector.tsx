@@ -29,7 +29,7 @@ export default function MapSelector({
       <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 lg:items-center">
         {/* Main Map Selection */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-          <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
+          <span className="text-sm font-semibold whitespace-nowrap text-muted-foreground">
             {interactiveMapI18N.map[localeKey]}
           </span>
           <DropdownMenu>
@@ -67,7 +67,7 @@ export default function MapSelector({
           <>
             <ChevronRight className="h-4 w-4 text-muted-foreground hidden lg:block" />
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
+              <span className="text-sm font-semibold whitespace-nowrap text-muted-foreground">
                 {interactiveMapI18N.subMap[localeKey]}
               </span>
               <DropdownMenu>

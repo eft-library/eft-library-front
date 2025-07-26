@@ -221,7 +221,7 @@ export default function HideoutDetail({
                 <Clock className="w-5 h-5 text-yellow-400" />
                 {hideoutI18n.constructionTime[localeKey]}
               </h3>
-              <span className="text-foreground font-medium">
+              <span className="text-foreground font-semibold">
                 {changeTime(levelItem?.level_info[0].construction_time)}
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function HideoutDetail({
                       <AccordionContent className="px-4 pb-4">
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
-                            <h4 className="text-sm font-medium text-foreground mb-2">
+                            <h4 className="text-sm font-semibold text-foreground mb-2">
                               {hideoutI18n.material[localeKey]}
                             </h4>
                             <div className="space-y-1">
@@ -315,7 +315,7 @@ export default function HideoutDetail({
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-sm font-medium text-foreground mb-2">
+                            <h4 className="text-sm font-semibold text-foreground mb-2">
                               {hideoutI18n.result[localeKey]}
                             </h4>
                             <div className="flex items-center gap-2 text-sm">

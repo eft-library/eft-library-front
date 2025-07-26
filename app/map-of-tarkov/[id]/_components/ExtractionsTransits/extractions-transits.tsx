@@ -107,7 +107,7 @@ export default function ExtractionsTransits({
                     variant="secondary"
                     className={`${getFactionBadgeStyle(
                       extract.faction
-                    )} font-medium`}
+                    )} font-semibold`}
                   >
                     {extract.faction}
                   </Badge>

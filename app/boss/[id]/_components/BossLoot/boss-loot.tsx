@@ -74,7 +74,7 @@ export default function BossLoot({ follower }: FollowerLoot) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                   {/* Item Name */}
-                  <span className="text-xs text-center font-medium leading-tight line-clamp-3 group-hover:text-foreground transition-colors duration-200">
+                  <span className="text-xs text-center font-semibold leading-tight line-clamp-3 group-hover:text-foreground transition-colors duration-200">
                     <Highlighter
                       highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                       searchWords={[word]}

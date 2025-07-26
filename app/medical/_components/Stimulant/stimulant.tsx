@@ -47,7 +47,7 @@ export default function Stimulant({ medicalList, word }: StimulantTypes) {
                   />
                 </div>
               </div>
-              <div className="text-sm font-medium text-foreground">
+              <div className="text-sm font-semibold text-foreground">
                 <Highlighter
                   highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                   searchWords={[word]}

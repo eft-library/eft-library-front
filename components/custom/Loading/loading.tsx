@@ -34,7 +34,7 @@ export default function Loading() {
 
           {/* 로딩 텍스트 */}
           <div className="text-center">
-            <p className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-1">
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
               {loadingI18N.loading[localeKey]}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400">

@@ -43,7 +43,7 @@ export default function LocalSwitcherM() {
       >
         <div className="flex items-center space-x-3">
           <span className="text-base">{getCurrentLanguage().flag}</span>
-          <span className="text-sm font-medium">
+          <span className="text-sm font-semibold">
             {getCurrentLanguage().name}
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function LocalSwitcherM() {
                 }`}
               >
                 <span className="text-base">{language.flag}</span>
-                <span className="font-medium">{language.name}</span>
+                <span className="font-semibold">{language.name}</span>
               </button>
             ))}
           </div>

@@ -37,7 +37,7 @@ export default function WipeCardM({
               {wipe.patch_version}
             </span>
             {isActive && (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
                 Active
               </span>
             )}

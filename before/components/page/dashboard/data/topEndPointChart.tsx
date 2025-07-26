@@ -34,7 +34,7 @@ export default function TopEndpointsChart({
           </p>
           <div className="flex items-center space-x-2 bg-blue-900/30 px-3 py-1 rounded-lg border border-blue-700/50">
             <Activity className="h-4 w-4 text-blue-300" />
-            <span className="text-sm font-medium text-blue-300">
+            <span className="text-sm font-semibold text-blue-300">
               총 요청수:
             </span>
             <span className="text-sm font-bold text-white">

@@ -31,7 +31,7 @@ export default function StatsPanel({
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-semibold text-foreground">
                 {roadmapI18N.allQuest[localeKey]}
               </span>
             </div>
@@ -55,7 +55,7 @@ export default function StatsPanel({
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-semibold text-foreground">
                 {roadmapI18N.kappaQuest[localeKey]}
               </span>
             </div>
@@ -81,7 +81,7 @@ export default function StatsPanel({
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-semibold text-foreground">
                 {roadmapI18N.kappaSuccessQuest[localeKey]}
               </span>
             </div>
@@ -111,7 +111,7 @@ export default function StatsPanel({
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-sm font-semibold text-foreground">
                   {roadmapI18N.allSuccessQuest[localeKey]}
                 </span>
               </div>

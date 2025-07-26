@@ -116,7 +116,7 @@ export default function PriceTablePC({
                   </td>
                   <td className="py-4 px-3">
                     <div
-                      className={`font-medium leading-tight ${
+                      className={`font-semibold leading-tight ${
                         theme === "dark" ? "text-white" : "text-gray-900"
                       }`}
                       title={item.name[localeKey]}

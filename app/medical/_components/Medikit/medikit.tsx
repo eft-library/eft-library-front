@@ -51,7 +51,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   />
                 </div>
               </div>
-              <div className="text-sm font-medium text-foreground">
+              <div className="text-sm font-semibold text-foreground">
                 <Highlighter
                   highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                   searchWords={[word]}
@@ -127,7 +127,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   <div className="font-semibold text-xs uppercase tracking-wide mb-2 text-muted-foreground">
                     {itemI18N.medical.duration[localeKey]}
                   </div>
-                  <div className="text-sm font-medium text-foreground">
+                  <div className="text-sm font-semibold text-foreground">
                     {item.info.use_time} {itemI18N.medical.sec[localeKey]}
                   </div>
                 </div>

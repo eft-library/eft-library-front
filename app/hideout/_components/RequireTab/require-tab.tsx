@@ -84,19 +84,19 @@ export default function RequireTab({ items, type }: RequireTabTypes) {
           )}
           {type === "item" ? (
             <>
-              <p className="text-sm text-muted-foreground font-medium">
+              <p className="text-sm text-muted-foreground font-semibold">
                 {item.name[localeKey]}
               </p>
-              <p className="text-yellow-400 text-xs font-medium">
+              <p className="text-yellow-400 text-xs font-semibold">
                 x {"quantity" in item ? item.quantity : 1}
               </p>
             </>
           ) : (
             <>
-              <p className="text-sm text-muted-foreground font-medium">
+              <p className="text-sm text-muted-foreground font-semibold">
                 {item.name[localeKey]}
               </p>
-              <p className="text-yellow-400 text-xs font-medium">
+              <p className="text-yellow-400 text-xs font-semibold">
                 {checkType(item)}
               </p>
             </>

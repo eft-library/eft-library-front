@@ -72,11 +72,11 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
                           : ""
                       }`}
                     >
-                      <TableCell className="font-mono font-medium text-left">
+                      <TableCell className="font-mono font-semibold text-left">
                         <div className="flex items-center gap-2">
                           {wipe.patch_version}
                           {index === 0 && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
                               Active
                             </span>
                           )}

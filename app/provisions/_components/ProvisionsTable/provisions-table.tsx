@@ -61,7 +61,7 @@ export default function ProvisionsTable({
                   />
                 </div>
               </div>
-              <div className="col-span-1 text-sm font-medium text-foreground">
+              <div className="col-span-1 text-sm font-semibold text-foreground">
                 <Highlighter
                   highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                   searchWords={[word]}
@@ -70,7 +70,7 @@ export default function ProvisionsTable({
                 />
               </div>
               <div
-                className={`col-span-1 text-center font-medium ${
+                className={`col-span-1 text-center font-semibold ${
                   item.info.energy > 0 ? "text-green-500" : "text-foreground/80"
                 }`}
               >

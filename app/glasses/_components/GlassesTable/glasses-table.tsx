@@ -58,7 +58,7 @@ export default function GlassesTable({ glassesData, word }: GlassesTableTypes) {
                   />
                 </div>
               </div>
-              <div className="col-span-1 text-sm font-medium text-foreground">
+              <div className="col-span-1 text-sm font-semibold text-foreground">
                 <Highlighter
                   highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                   searchWords={[word]}
@@ -150,7 +150,7 @@ export default function GlassesTable({ glassesData, word }: GlassesTableTypes) {
                   className="w-34 h-30 object-contain rounded-lg border border-border bg-background"
                 />
               </div>
-              <div className="col-span-1 text-sm font-medium text-foreground">
+              <div className="col-span-1 text-sm font-semibold text-foreground">
                 <Highlighter
                   highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                   searchWords={[word]}

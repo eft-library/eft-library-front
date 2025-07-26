@@ -107,7 +107,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipTypes) {
             <div className="text-gray-500 dark:text-gray-400 mb-1 text-xs">
               {rankI18N.fleaMarketPrice[localeKey]}
             </div>
-            <div className="font-mono font-medium text-green-600 dark:text-green-400 text-xs">
+            <div className="font-mono font-semibold text-green-600 dark:text-green-400 text-xs">
               {item.flea_market_price.toLocaleString()}
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipTypes) {
             <div className="text-gray-500 dark:text-gray-400 mb-1 text-xs">
               {rankI18N.slotPerPrice[localeKey]}
             </div>
-            <div className="font-mono font-medium text-blue-600 dark:text-blue-400 text-xs">
+            <div className="font-mono font-semibold text-blue-600 dark:text-blue-400 text-xs">
               {item.per_slot.toLocaleString()}
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipTypes) {
             <div className="text-gray-500 dark:text-gray-400 mb-1 text-xs">
               {rankI18N.slotSize[localeKey]}
             </div>
-            <div className="font-medium text-gray-900 dark:text-white text-xs">
+            <div className="font-semibold text-gray-900 dark:text-white text-xs">
               {item.width} x {item.height}
             </div>
           </div>
