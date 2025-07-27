@@ -19,6 +19,14 @@ export interface ItemDetail {
   rewarded_by_quests_offer_unlock: RewardedByQuestsOfferUnlock[];
 }
 
+export interface CraftingUnlockTypes {
+  itemInfo: ItemDetail;
+}
+
+export interface PurchaseUnlockTypes {
+  itemInfo: ItemDetail;
+}
+
 export interface QuestRequireTypes {
   itemInfo: ItemDetail;
 }

@@ -1216,6 +1216,11 @@ export const itemRelatedInfo = {
     ja: "購入",
     ko: "구매",
   },
+  production: {
+    en: "Production",
+    ja: "制作",
+    ko: "제작",
+  },
 };
 
 export const headerI18N = {

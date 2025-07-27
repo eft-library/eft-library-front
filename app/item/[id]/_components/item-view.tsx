@@ -8,6 +8,8 @@ import TraderExchange from "./TraderExchange/trader-exchange";
 import HideoutCrafting from "./HideoutCrafting/hideout-crafting";
 import QuestReward from "./QuestReward/quest-reward";
 import HideoutConstruction from "./HideoutConstruction/hideout-construction";
+import PurchaseUnlock from "./PurchaseUnlock/purchase-unlock";
+import CraftingUnlock from "./CraftingUnlock/crafting-unlock";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -38,6 +40,12 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
         )}
         {itemInfo.hideout_items.length > 0 && (
           <HideoutConstruction itemInfo={itemInfo} />
+        )}
+        {itemInfo.rewarded_by_quests_offer_unlock.length > 0 && (
+          <PurchaseUnlock itemInfo={itemInfo} />
+        )}
+        {itemInfo.rewarded_by_quests_craft_unlock.length > 0 && (
+          <CraftingUnlock itemInfo={itemInfo} />
         )}
       </div>
     </div>
