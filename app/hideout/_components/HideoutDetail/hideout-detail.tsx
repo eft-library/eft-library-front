@@ -46,30 +46,6 @@ export default function HideoutDetail({
     return !complete_list.includes(levelId);
   };
 
-  const getLightGradient = (index: number) => {
-    const gradients = [
-      "from-blue-400 to-blue-600",
-      "from-emerald-400 to-emerald-600",
-      "from-orange-400 to-orange-600",
-      "from-purple-400 to-purple-600",
-      "from-teal-400 to-teal-600",
-      "from-rose-400 to-rose-600",
-    ];
-    return gradients[index % gradients.length];
-  };
-
-  const getDarkGradient = (index: number) => {
-    const gradients = [
-      "from-blue-500 to-cyan-500",
-      "from-emerald-500 to-teal-500",
-      "from-orange-500 to-red-500",
-      "from-purple-500 to-pink-500",
-      "from-teal-500 to-blue-500",
-      "from-rose-500 to-orange-500",
-    ];
-    return gradients[index % gradients.length];
-  };
-
   const getShadowColor = (index: number) => {
     const shadows = [
       "drop-shadow-[0_0_6px_#914FA3]",
