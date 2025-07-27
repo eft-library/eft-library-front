@@ -65,21 +65,21 @@ export default function Drug({ medicalList, word }: DrugTypes) {
                 />
               </div>
               <div className="text-sm space-y-1 text-foreground/80">
-                <div className="text-yellow-500 dark:text-yellow-300">
+                <div className="text-black dark:text-white font-semibold">
                   {item.info.painkiller_duration}&nbsp;
                   {itemI18N.medical.duration_delay[localeKey]}
                 </div>
-                <div className="text-primary">
+                <div className="text-green-500 font-semibold">
                   {itemI18N.medical.painKiller[localeKey]}
                 </div>
                 {item.info.hydration_impact > 0 && (
-                  <div className="text-primary">
+                  <div className="text-green-500 font-semibold">
                     {itemI18N.medical.hydration[localeKey]}:&nbsp;
                     {item.info.hydration_impact}
                   </div>
                 )}
                 {item.info.energy_impact > 0 && (
-                  <div className="text-primary">
+                  <div className="text-green-500 font-semibold">
                     {itemI18N.medical.energy[localeKey]}:&nbsp;
                     {item.info.energy_impact}
                   </div>
@@ -87,13 +87,13 @@ export default function Drug({ medicalList, word }: DrugTypes) {
               </div>
               <div className="text-sm space-y-1 text-foreground/80">
                 {item.info.hydration_impact < 0 && (
-                  <div className="text-red-500">
+                  <div className="text-red-500 font-semibold">
                     {itemI18N.medical.hydration[localeKey]}:&nbsp;
                     {item.info.hydration_impact}
                   </div>
                 )}
                 {item.info.energy_impact < 0 && (
-                  <div className="text-red-500">
+                  <div className="text-red-500 font-semibold">
                     {itemI18N.medical.energy[localeKey]}:&nbsp;
                     {item.info.energy_impact}
                   </div>
@@ -134,7 +134,7 @@ export default function Drug({ medicalList, word }: DrugTypes) {
                     {itemI18N.medical.buff[localeKey]}
                   </div>
                   <div className="space-y-1">
-                    <div className="text-yellow-500 dark:text-yellow-300 text-sm">
+                    <div className="text-white dark:text-black text-sm">
                       •&nbsp;{item.info.painkiller_duration}&nbsp;
                       {itemI18N.medical.duration_delay[localeKey]}
                     </div>

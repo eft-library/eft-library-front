@@ -284,7 +284,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
         {/* Header */}
         <div className="space-y-4">
           <div className="flex items-center justify-center">
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-xl font-bold">
               {roadmapI18N.title[localeKey]}
             </h1>
           </div>

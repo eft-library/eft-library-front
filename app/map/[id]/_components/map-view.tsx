@@ -24,7 +24,7 @@ export default function MapView({ mapInfo }: MapViewTypes) {
     <div className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6">
       {/* Header */}
       <div className="flex items-center justify-center mb-6 relative">
-        <h1 className="text-3xl md:text-4xl font-bold text-center">
+        <h1 className="text-xl md:text-4xl font-bold text-center">
           {interactiveMapI18N.title[localeKey]}
         </h1>
       </div>

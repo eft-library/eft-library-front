@@ -96,12 +96,9 @@ export default function MapSelector({
       </div>
 
       {/* Separator */}
-      <div className="hidden lg:flex items-center">
-        <div className="w-8 h-px bg-border"></div>
+      <div className="hidden lg:flex items-center justify-center mt-6">
         <ChevronDown className="h-4 w-4 text-muted-foreground rotate-[-90deg]" />
-        <div className="w-8 h-px bg-border"></div>
       </div>
-
       {/* Sub Map Selector */}
       <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
         <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">

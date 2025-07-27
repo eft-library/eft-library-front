@@ -18,7 +18,7 @@ export default function ArmorVestView({ armorVestList }: ArmorVestViewTypes) {
       <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-6xl">
         <div className="text-center mb-6 md:mb-8">
           <div className="flex justify-center items-center mb-4">
-            <h1 className="text-3xl md:text-4xl font-bold">
+            <h1 className="text-xl md:text-4xl font-bold">
               {itemI18N.armorVest.title[localeKey]}
             </h1>
           </div>

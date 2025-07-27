@@ -205,7 +205,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 헤더 */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
             {planner18N.title[localeKey]}
           </h1>
         </div>

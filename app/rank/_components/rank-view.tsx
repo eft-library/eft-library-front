@@ -21,7 +21,7 @@ export default function RankView() {
   const [searchWord, setSearchWord] = useState<string>("");
   const [realWord, setSearchRealWord] = useState<string>("");
   const [topRankData, setTopRankData] = useState<RankData>();
-  const [priceType, setPriceType] = useState<string>("PVE");
+  const [priceType, setPriceType] = useState<string>("PVP");
   const [tooltipItem, setTooltipItem] = useState<TopListDetailData | null>(
     null
   );

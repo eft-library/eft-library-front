@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 
 export default function BossHealth({ subFollowers }: BossHealth) {
+  console.log(subFollowers);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [healthId, setHealthId] = useState<string>("");
@@ -43,9 +44,9 @@ export default function BossHealth({ subFollowers }: BossHealth) {
       <CardContent>
         {/* Boss Selection Buttons */}
         <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
-          {subFollowers.map((follower) => (
+          {subFollowers.map((follower, index) => (
             <Button
-              key={`${follower.id}-health`}
+              key={`${follower.id}-health-${index}`}
               variant={healthId === follower.id ? "default" : "outline"}
               onClick={() => clickHealth(follower.id)}
               className="flex-1 min-w-[120px] sm:flex-none sm:min-w-[140px]"

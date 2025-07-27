@@ -14,7 +14,7 @@ export default function BossView({ bossData }: BossDetail) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-6xl">
-        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8">
+        <h1 className="text-xl sm:text-4xl font-bold text-center mb-8">
           {boss18N.title[localeKey]}
         </h1>
         <BossSelector bossData={bossData} />

@@ -10,6 +10,10 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { getMaxSuffix } from "@/lib/func/jsxfunction";
+import { hideoutI18n } from "@/lib/consts/i18nConsts";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
+import { cn } from "@/lib/utils";
 
 export default function StationMap({
   onClickReset,
@@ -17,6 +21,8 @@ export default function StationMap({
   completeList,
   masterId,
 }: StationMapTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [stationMapData, setStationMapData] = useState<StationMapStateTypes>();
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function StationMap({
 
   return (
     <div className="bg-card rounded-lg p-6 border border-border">
-      <div className="relative w-full h-96 overflow-hidden mb-4">
+      <div className="relative w-full h-[600px] overflow-hidden mb-4 hidden md:block">
         <StationBackground />
         {stationMapData.json_value.station_list.map((station) => (
           <div
@@ -66,29 +72,25 @@ export default function StationMap({
       </div>
       {/* Mobile Facility Selector */}
       <div className="md:hidden mt-4">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-6 gap-2">
           {stationMapData.json_value.station_list.map((station) => (
-            <Button
+            <div
               key={station.id}
-              size="sm"
               onClick={() => onChangeMaster(station.id)}
-              style={{
-                top: station.top,
-                left: station.left,
-              }}
-              className={
+              className={cn(
+                "w-16 h-16 p-1 rounded-lg flex items-center justify-center",
                 masterId === station.id
                   ? "bg-yellow-700 text-white hover:bg-yellow-800 text-xs"
                   : "bg-muted text-muted-foreground border border-border hover:bg-muted/80 text-xs"
-              }
+              )}
             >
               {getStationSVG(
                 station.id,
-                stationMapData.json_value.width,
-                stationMapData.json_value.height,
+                50,
+                50,
                 getMaxSuffix(station.id, completeList)
               )}
-            </Button>
+            </div>
           ))}
         </div>
       </div>
@@ -99,7 +101,7 @@ export default function StationMap({
           onClick={onClickReset}
           className="bg-secondary text-secondary-foreground hover:bg-secondary/80 focus-visible:ring-0 focus-visible:ring-offset-0"
         >
-          초기화
+          {hideoutI18n.reset[localeKey]}
         </Button>
       </div>
     </div>

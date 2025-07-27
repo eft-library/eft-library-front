@@ -59,7 +59,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   textToHighlight={item.name[localeKey]}
                 />
               </div>
-              <div className="text-center font-bold text-green-500 text-sm">
+              <div className="text-center font-bold text-green-500 text-sm font-semibold">
                 {item.info.hitpoints}
               </div>
               <div className="text-sm space-y-1 text-foreground/80">
@@ -69,7 +69,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   item.info.cures[localeKey].map((buff, index) => (
                     <div
                       key={`${item.id}-cures-${index}`}
-                      className="text-primary"
+                      className="text-green-500 font-semibold"
                     >
                       {buff}
                     </div>

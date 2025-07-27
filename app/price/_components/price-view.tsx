@@ -20,7 +20,7 @@ export default function PriceView() {
   const localeKey = getLocaleKey(locale);
   const [search, setSearch] = useState<string>("");
   const [fetchWord, setFetchWord] = useState<string>("");
-  const [priceType, setPriceType] = useState<string>("PVE");
+  const [priceType, setPriceType] = useState<string>("PVP");
   const [selectItem, setSelectItem] = useState<Price>();
 
   const getItemPrice = async ({ pageParam = 1, query = "" }) => {
@@ -85,7 +85,7 @@ export default function PriceView() {
           <div className="flex flex-col gap-4 items-center justify-center">
             {/* Title and Theme Toggle Row */}
             <h1
-              className={`text-xl sm:text-2xl font-bold ${
+              className={`text-xl font-bold ${
                 theme === "dark" ? "text-white" : "text-gray-900"
               }`}
             >

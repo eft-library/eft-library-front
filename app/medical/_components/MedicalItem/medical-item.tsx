@@ -66,7 +66,7 @@ export default function MedicalItem({ medicalList, word }: MedicalItemTypes) {
                   item.info.cures[localeKey].map((buff, index) => (
                     <div
                       key={`${item.id}-cures-${index}`}
-                      className="text-primary"
+                      className="text-green-500 font-semibold"
                     >
                       {buff}
                     </div>
