@@ -52,7 +52,7 @@ export default function MapSelector({
   const currentSubMap = subMap.find((sub) => sub.id === mapData.id);
 
   return (
-    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 bg-card rounded-xl border shadow-sm">
+    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 rounded-xl shadow-sm">
       {/* Main Map Selector */}
       <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
         <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">

@@ -35,7 +35,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
   );
 
   return (
-    <Card className="w-full">
+    <Card className="w-full dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200">
       <CardHeader className="pb-4">
         <CardTitle className="text-xl sm:text-2xl">
           {boss18N.health[localeKey]}

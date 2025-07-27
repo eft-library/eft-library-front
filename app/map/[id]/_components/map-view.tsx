@@ -21,7 +21,7 @@ export default function MapView({ mapInfo }: MapViewTypes) {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6">
+    <div className="flex flex-col min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black p-4 md:p-6">
       {/* Header */}
       <div className="flex items-center justify-center mb-6 relative">
         <h1 className="text-xl md:text-4xl font-bold text-center">

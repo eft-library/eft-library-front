@@ -17,7 +17,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
   );
 
   return (
-    <div className="mb-6 border border-border rounded-xl bg-background dark:bg-card shadow-sm dark:shadow-lg">
+    <div className="mb-6 border border-border rounded-xl dark:bg-gray-800/30 bg-white shadow-sm dark:shadow-lg">
       {/* Desktop Header */}
       <div className="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-border font-semibold text-center bg-muted/50 dark:bg-card-foreground/10 text-foreground rounded-t-xl">
         <div>{itemI18N.ammo.photo[localeKey]}</div>
@@ -55,7 +55,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
                     alt={item.name.en}
                     width={120}
                     height={120}
-                    className="w-20 h-20 object-contain rounded-lg border border-border bg-background group-hover:scale-105 transition-transform duration-200"
+                    className="w-20 h-20 object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </div>
               </div>
@@ -89,7 +89,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
             </div>
 
             {/* Mobile Layout */}
-            <div className="md:hidden p-4">
+            <div className="md:hidden p-2">
               <div className="flex items-start space-x-4 mb-4">
                 <div className="flex-shrink-0">
                   <div className="relative group">
@@ -98,7 +98,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
                       alt={item.name.en}
                       width={80}
                       height={80}
-                      className="w-20 h-20 object-contain rounded-lg border border-border bg-background group-hover:scale-105 transition-transform duration-200"
+                      className="w-20 h-20 object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
                     />
                   </div>
                 </div>

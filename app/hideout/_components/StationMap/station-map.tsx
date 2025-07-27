@@ -46,7 +46,7 @@ export default function StationMap({
   if (!stationMapData) return <Loading />;
 
   return (
-    <div className="bg-card rounded-lg p-6 border border-border">
+    <div className="dark:bg-gray-800/30 bg-white rounded-lg p-6 border border-border">
       <div className="relative w-full h-[600px] overflow-hidden mb-4 hidden md:block">
         <StationBackground />
         {stationMapData.json_value.station_list.map((station) => (

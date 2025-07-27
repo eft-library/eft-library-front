@@ -67,20 +67,10 @@ export default function PriceView() {
 
   return (
     <div
-      className={`min-h-screen ${
-        theme === "dark"
-          ? "bg-slate-900 text-white"
-          : "bg-gray-50 text-gray-900"
-      }`}
+      className={`min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black`}
     >
       {/* Header */}
-      <div
-        className={`border-b ${
-          theme === "dark"
-            ? "border-slate-700 bg-slate-800/50"
-            : "border-gray-200 bg-white/80"
-        } backdrop-blur-sm`}
-      >
+      <div className={`backdrop-blur-sm`}>
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 items-center justify-center">
             {/* Title and Theme Toggle Row */}

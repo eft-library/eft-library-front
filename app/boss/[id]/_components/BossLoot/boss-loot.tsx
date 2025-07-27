@@ -29,7 +29,7 @@ export default function BossLoot({ follower }: FollowerLoot) {
 
   return (
     uniqueItemInfo.length > 0 && (
-      <Card className="w-full">
+      <Card className="w-full dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200">
         <CardHeader className="pb-4">
           <CardTitle className="text-xl sm:text-2xl">
             {boss18N.loot[localeKey]}
@@ -54,9 +54,9 @@ export default function BossLoot({ follower }: FollowerLoot) {
                 href={`/item/${loot.item.normalizedName}`}
                 target="_blank"
               >
-                <div className="group flex flex-col items-center p-3 sm:p-4 border-2 border-muted/40 rounded-xl hover:bg-muted/20 hover:border-muted hover:shadow-md transition-all duration-300 cursor-pointer">
+                <div className="group flex flex-col items-center p-2 border-2 rounded-xl hover:bg-muted/20 hover:border-muted hover:shadow-md transition-all duration-300 cursor-pointer">
                   {/* Image Container */}
-                  <div className="relative w-26 h-26 mb-3 rounded-lg overflow-hidden border shadow-sm group-hover:shadow-md transition-all duration-300">
+                  <div className="relative w-26 h-26 mb-3 rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all duration-300">
                     <Image
                       src={
                         loot.item.gridImageLink ||
@@ -70,8 +70,6 @@ export default function BossLoot({ follower }: FollowerLoot) {
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
                     />
-                    {/* Overlay for better text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                   {/* Item Name */}
                   <span className="text-xs text-center font-semibold leading-tight line-clamp-3 group-hover:text-foreground transition-colors duration-200">

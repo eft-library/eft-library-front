@@ -279,7 +279,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
       <div className="container mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="space-y-4">

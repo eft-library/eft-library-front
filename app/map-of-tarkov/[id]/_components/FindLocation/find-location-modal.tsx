@@ -87,7 +87,7 @@ export default function FindLocationModal({
                             src={step.img || "/placeholder.svg"}
                             alt={`Step ${step.step} preview`}
                             fill
-                            className="object-cover"
+                            className="object-contain"
                             sizes="(max-width: 1024px) 100vw, 320px"
                           />
                         </div>

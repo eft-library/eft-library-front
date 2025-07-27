@@ -27,11 +27,7 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
 
   return (
     <Card
-      className={`mb-6 sm:mb-8 ${
-        theme === "dark"
-          ? "bg-slate-800 border-slate-700"
-          : "bg-white border-gray-200"
-      }`}
+      className={`mb-6 sm:mb-8 dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200`}
     >
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">

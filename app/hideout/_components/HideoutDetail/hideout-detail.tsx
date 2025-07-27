@@ -71,18 +71,30 @@ export default function HideoutDetail({
   };
 
   const getShadowColor = (index: number) => {
-    const colors = [
-      "shadow-blue-500/30",
-      "shadow-emerald-500/30",
-      "shadow-orange-500/30",
-      "shadow-purple-500/30",
-      "shadow-teal-500/30",
-      "shadow-rose-500/30",
+    const shadows = [
+      "drop-shadow-[0_0_6px_#914FA3]",
+      "drop-shadow-[0_0_6px_#D4A076]",
+      "drop-shadow-[0_0_6px_#E06A32]",
+      "drop-shadow-[0_0_6px_#70A568]",
+      "drop-shadow-[0_0_6px_#4B91A3]",
+      "drop-shadow-[0_0_6px_#5A5FAA]",
     ];
-    return colors[index % colors.length];
+    return shadows[index % shadows.length];
+  };
+
+  const getGradient = (index: number) => {
+    const gradients = [
+      "from-[#914FA3] to-[#D4A076]", // RoyalPurple → SandyOchre (루프)
+      "from-[#D4A076] to-[#E06A32]", // SandyOchre → BurningOrange
+      "from-[#E06A32] to-[#70A568]", // BurningOrange → OliveTeal
+      "from-[#70A568] to-[#4B91A3]", // OliveTeal → CobaltBlue
+      "from-[#4B91A3] to-[#5A5FAA]", // CobaltBlue → IndigoViolet
+      "from-[#5A5FAA] to-[#914FA3]", // IndigoViolet → RoyalPurple
+    ];
+    return gradients[index % gradients.length];
   };
   return (
-    <Card className="bg-card border-border">
+    <Card className="dark:bg-gray-800/30 bg-white border-border">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
@@ -129,9 +141,9 @@ export default function HideoutDetail({
           <TabsList
             className="
           grid w-full grid-cols-6 mb-6 p-2 rounded-xl border
-          bg-gradient-to-r from-slate-50 to-slate-100 
+          bg-muted to-slate-100 
           border-slate-200 shadow-lg
-          dark:bg-gradient-to-r dark:from-slate-900 dark:to-slate-800
+          dark:from-slate-900 dark:to-slate-800
           dark:border-slate-700 dark:shadow-2xl dark:shadow-slate-900/50
         "
           >
@@ -149,7 +161,7 @@ export default function HideoutDetail({
                 
                 /* 라이트 모드 - 활성 상태 */
                 data-[state=active]:bg-gradient-to-r 
-                data-[state=active]:${getLightGradient(index)}
+                data-[state=active]:${getGradient(index)}
                 data-[state=active]:text-white 
                 data-[state=active]:shadow-lg
                 data-[state=active]:${getShadowColor(index)}
@@ -161,7 +173,7 @@ export default function HideoutDetail({
                 
                 /* 다크 모드 - 활성 상태 */
                 dark:data-[state=active]:bg-gradient-to-r 
-                dark:data-[state=active]:${getDarkGradient(index)}
+                dark:data-[state=active]:${getGradient(index)}
                 dark:data-[state=active]:text-white
                 dark:data-[state=active]:shadow-xl
                 dark:data-[state=active]:${getShadowColor(index)}
@@ -195,7 +207,7 @@ export default function HideoutDetail({
                 data-[state=active]:opacity-20 
                 transition-opacity duration-300 blur-sm
                 hidden dark:block
-                bg-gradient-to-r ${getDarkGradient(index)}
+                bg-gradient-to-r ${getGradient(index)}
               `}
                 />
 
@@ -206,7 +218,7 @@ export default function HideoutDetail({
                 data-[state=active]:opacity-100
                 transition-opacity duration-300
                 hidden dark:block
-                bg-gradient-to-r ${getDarkGradient(index)}
+                bg-gradient-to-r ${getGradient(index)}
                 blur-md -z-10 scale-110
               `}
                 />

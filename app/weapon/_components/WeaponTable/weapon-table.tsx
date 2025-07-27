@@ -14,7 +14,7 @@ export default function WeaponTable({ weaponList, word }: WeaponTableTypes) {
   );
 
   return (
-    <div className="mb-6 border border-border rounded-xl bg-background dark:bg-card shadow-sm dark:shadow-lg">
+    <div className="mb-6 border border-border rounded-xl dark:bg-gray-800/30 bg-white shadow-sm dark:shadow-lg">
       {/* Desktop Header */}
       <div className="hidden md:grid grid-cols-2 gap-4 p-4 border-b border-border font-semibold text-center bg-muted/50 dark:bg-card-foreground/10 text-foreground rounded-t-xl">
         <div>{itemI18N.weapon.photo[localeKey]}</div>
@@ -43,7 +43,7 @@ export default function WeaponTable({ weaponList, word }: WeaponTableTypes) {
                     alt={item.name.en}
                     width={176}
                     height={88}
-                    className="w-44 h-22 object-contain rounded-lg border border-border bg-background group-hover:scale-105 transition-transform duration-200"
+                    className="w-44 h-22 object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default function WeaponTable({ weaponList, word }: WeaponTableTypes) {
             </div>
 
             {/* Mobile Layout */}
-            <div className="md:hidden p-4">
+            <div className="md:hidden p-2">
               <div className="flex items-center space-x-4 p-3 rounded-lg bg-muted/50 border border-border">
                 <div className="relative group flex-shrink-0">
                   <Image
@@ -66,7 +66,7 @@ export default function WeaponTable({ weaponList, word }: WeaponTableTypes) {
                     alt={item.name.en}
                     width={128}
                     height={72}
-                    className="w-32 h-18 object-contain rounded-lg border border-border bg-background group-hover:scale-105 transition-transform duration-200"
+                    className="w-32 h-18 object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </div>
                 <div className="flex-1 min-w-0">

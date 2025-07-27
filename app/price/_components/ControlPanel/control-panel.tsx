@@ -31,8 +31,8 @@ export default function ControlPanel({
         <TabsList
           className={`${
             theme === "dark"
-              ? "bg-slate-800 border border-slate-600"
-              : "bg-white border border-gray-300"
+              ? "bg-gray-800/30 border border-gray-700/50"
+              : "bg-white border border-gray-200"
           } w-full sm:w-auto p-1 rounded-lg shadow-sm`}
         >
           <TabsTrigger

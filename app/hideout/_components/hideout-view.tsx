@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type { HideoutViewTypes } from "./hideout.types";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
-import { alertMessageI18N } from "@/lib/consts/i18nConsts";
+import { alertMessageI18N, hideoutI18n } from "@/lib/consts/i18nConsts";
 import StationMap from "./StationMap/station-map";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import HideoutDetail from "./HideoutDetail/hideout-detail";
@@ -176,10 +176,10 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
       <div className="container mx-auto px-4 py-8">
         <div className="flex-grow text-center mb-4">
-          <h1 className="text-xl font-bold">은신처</h1>
+          <h1 className="text-xl font-bold">{hideoutI18n.title[localeKey]}</h1>
         </div>
         <div className="flex gap-8">
           {/* Main Content Area */}

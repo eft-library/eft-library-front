@@ -18,11 +18,11 @@ export default function CategoryFilter({
         <Button
           key={category.value}
           variant={
-            listCategory.includes(category.value) ? "default" : "outline"
+            listCategory.includes(category.value) ? "outline" : "secondary" // "default" 대신 "secondary" 사용
           }
           size="sm"
           onClick={() => onChangeCategory(category.value)}
-          className="text-xs px-3 py-1.5 h-auto"
+          className="text-xs px-3 py-1.5 h-auto cursor-pointer"
         >
           {category[localeKey]}
         </Button>

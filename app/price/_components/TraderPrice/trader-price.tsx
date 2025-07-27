@@ -21,11 +21,7 @@ export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
 
   return (
     <Card
-      className={`mb-6 sm:mb-8 ${
-        theme === "dark"
-          ? "bg-slate-800 border-slate-700"
-          : "bg-white border-gray-200"
-      }`}
+      className={`mb-6 sm:mb-8 dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200`}
     >
       <CardHeader>
         <CardTitle

@@ -82,7 +82,7 @@ export default function BossSelector({ bossData }: BossDetail) {
       </div>
 
       {/* Boss Details Table */}
-      <Card>
+      <Card className="dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 p-0">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px]">
@@ -180,7 +180,7 @@ export default function BossSelector({ bossData }: BossDetail) {
                   <td className="text-center p-3 sm:p-4 font-bold text-sm sm:text-base text-primary">
                     {bossData.boss.health_total}
                   </td>
-                  <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
+                  <td className="flex flex-col text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.children &&
                     bossData.boss.children.some((child) => !child.is_boss) ? (
                       bossData.boss.children.map(

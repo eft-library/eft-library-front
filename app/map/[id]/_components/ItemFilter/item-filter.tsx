@@ -44,7 +44,7 @@ export default function ItemFilter({
   if (!originalItem || !newItemFilter) return <Loading />;
 
   return (
-    <div className="p-4 md:p-6 bg-card rounded-lg shadow-sm">
+    <div className="p-4 md:p-6 dark:bg-gray-800/30 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4 md:gap-0">
         {/* Left side: Filter Title and Toggle */}
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
@@ -63,14 +63,14 @@ export default function ItemFilter({
             <ToggleGroupItem
               value="2D"
               aria-label="Toggle 2D map"
-              className=" cursor-pointer px-4 py-2 rounded-full data-[state=on]:bg-primary data-[state=on]:text-primary-foreground flex-1 md:flex-none"
+              className=" cursor-pointer px-4 py-2 rounded-full data-[state=on]:bg-primary data-[state=on]:text-primary-foreground flex-1 md:flex-none font-semibold"
             >
               {interactiveMapI18N.map2D[localeKey]}
             </ToggleGroupItem>
             <ToggleGroupItem
               value="3D"
               aria-label="Toggle 3D map"
-              className=" cursor-pointer px-4 py-2 rounded-full data-[state=on]:bg-primary data-[state=on]:text-primary-foreground flex-1 md:flex-none"
+              className=" cursor-pointer px-4 py-2 rounded-full data-[state=on]:bg-primary data-[state=on]:text-primary-foreground flex-1 md:flex-none font-semibold"
             >
               {interactiveMapI18N.map3D[localeKey]}
             </ToggleGroupItem>
@@ -132,7 +132,7 @@ export default function ItemFilter({
                       />
                       <span
                         className={cn(
-                          "text-sm font-semibold leading-none",
+                          "text-sm",
                           viewItemList.includes(item.value)
                             ? "text-foreground"
                             : "text-muted-foreground"
