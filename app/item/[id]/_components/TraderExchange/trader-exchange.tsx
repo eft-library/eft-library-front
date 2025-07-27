@@ -30,7 +30,10 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
           </span>
         </div>
         {itemInfo.rewarded_by_npcs.map((trader) => (
-          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 py-3 px-4 rounded-lg hover:bg-secondary transition-colors items-start sm:items-center border-b border-border last:border-b-0">
+          <div
+            key={`trader-${trader.barter_info.level}-${trader.npc_name.en}`}
+            className="flex flex-col sm:grid sm:grid-cols-3 gap-4 py-3 px-4 rounded-lg hover:bg-secondary transition-colors items-start sm:items-center border-b border-border last:border-b-0"
+          >
             <div className="flex items-center gap-3">
               <div className="w-20 h-20 rounded-mdflex items-center justify-center overflow-hidden flex-shrink-0">
                 <Image
@@ -51,7 +54,10 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
               </div>
             </div>
             {trader.barter_info.requiredItems.map((reqItem) => (
-              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap">
+              <div
+                key={`trader-req-${reqItem.item.id}`}
+                className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap"
+              >
                 <div className="w-20 h-20 rounded-md flex items-center justify-center flex-shrink-0">
                   <Image
                     src={reqItem.item.gridImageLink}

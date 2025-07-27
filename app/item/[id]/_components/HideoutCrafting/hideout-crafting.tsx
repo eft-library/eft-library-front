@@ -34,7 +34,10 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
           {/* Changed to text-center for consistency with content */}
         </div>
         {itemInfo.used_in_crafts.map((craft) => (
-          <div className="flex flex-col gap-4 py-4 px-4 rounded-lg hover:bg-secondary transition-colors items-start border-b border-border last:border-b-0 md:grid md:grid-cols-4 md:items-center">
+          <div
+            key={`craft-${craft.id}`}
+            className="flex flex-col gap-4 py-4 px-4 rounded-lg hover:bg-secondary transition-colors items-start border-b border-border last:border-b-0 md:grid md:grid-cols-4 md:items-center"
+          >
             {/* Requirement Section */}
             <div className="w-full">
               {/* Mobile Layout for Requirement */}
