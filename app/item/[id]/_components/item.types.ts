@@ -19,6 +19,26 @@ export interface ItemDetail {
   rewarded_by_quests_offer_unlock: RewardedByQuestsOfferUnlock[];
 }
 
+export interface QuestRequireTypes {
+  itemInfo: ItemDetail;
+}
+
+export interface TraderExchangeTypes {
+  itemInfo: ItemDetail;
+}
+
+export interface HideoutCraftingTypes {
+  itemInfo: ItemDetail;
+}
+
+export interface QuestRewardTypes {
+  itemInfo: ItemDetail;
+}
+
+export interface HideoutConstructionTypes {
+  itemInfo: ItemDetail;
+}
+
 interface LocaleName {
   en: string;
   ja: string;
