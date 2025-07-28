@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import type { QuestViewTypes } from "./quest.types";
 import TraderCard from "./TranderCard/trader-card";
 import QuestCard from "./QuestCard/quest-card";
@@ -14,23 +13,16 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 export default function QuestView({ questData }: QuestViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
   const [word, setWord] = useState<string>("");
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
-        theme === "dark"
-          ? "bg-[#121212] text-white"
-          : "bg-gray-50 text-gray-900"
-      }`}
+      className={`min-h-screen transition-colors duration-300 dark:bg-[#121212] dark:text-white bg-gray-50 text-gray-900`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
         {/* Page Title */}
         <h1
-          className={`text-xl md:text-4xl font-bold text-center mb-8 md:mb-12 ${
-            theme === "dark" ? "text-white" : "text-black"
-          }`}
+          className={`text-xl md:text-4xl font-bold text-center mb-8 md:mb-12 dark:text-white text-black`}
         >
           {questI18N.title[localeKey]}
         </h1>

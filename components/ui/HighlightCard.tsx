@@ -1,30 +1,17 @@
 "use client";
 
 import { FlameIcon as Fire } from "lucide-react";
-import { useTheme } from "next-themes";
 import type { HighlightCardTypes } from "../types/HighlightsCard.types";
 
 export default function HighlightCardList({
   sectionTitle,
   posts,
 }: HighlightCardTypes) {
-  const { theme } = useTheme();
-
   return (
-    <div
-      className={`rounded-lg p-6 border ${
-        theme === "dark"
-          ? "bg-gray-800/30 border-gray-700/50"
-          : "bg-white border-gray-200 shadow-sm"
-      }`}
-    >
+    <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
       <div className="flex items-center space-x-2 mb-4">
         <Fire className="w-5 h-5 text-orange-400" />
-        <h2
-          className={`text-lg font-semibold ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}
-        >
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
           {sectionTitle}
         </h2>
       </div>
@@ -32,11 +19,7 @@ export default function HighlightCardList({
         {posts.map((post) => (
           <div
             key={`main-post-${post.id}`}
-            className={`text-sm cursor-pointer transition-colors ${
-              theme === "dark"
-                ? "text-gray-300 hover:text-orange-400"
-                : "text-gray-600 hover:text-orange-500"
-            }`}
+            className="text-sm cursor-pointer text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400 transition-colors"
           >
             {post.title}
           </div>

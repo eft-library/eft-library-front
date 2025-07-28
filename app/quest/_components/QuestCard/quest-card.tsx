@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { Check, Skull, X } from "lucide-react";
-import { useTheme } from "next-themes";
 import { questI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
 import {
@@ -17,80 +16,41 @@ import Highlighter from "react-highlight-words";
 export default function QuestCard({ quest_list, word }: QuestCardTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
+
   const filteredList = quest_list.filter((item) =>
     item.name[localeKey].toLowerCase().includes(word.toLowerCase())
   );
+
   return (
     <div className="hidden md:block">
-      <Card
-        className={`${
-          theme === "dark"
-            ? "bg-[#1E1E1E] border-[#2B2B2B]"
-            : "bg-white border-gray-200"
-        } overflow-hidden p-0`}
-      >
+      <Card className="overflow-hidden p-0 bg-white border-gray-200 dark:bg-[#1E1E1E] dark:border-[#2B2B2B]">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr
-                className={`border-b ${
-                  theme === "dark"
-                    ? "border-[#2B2B2B] bg-[#2B2B2B]"
-                    : "border-gray-200 bg-gray-50"
-                }`}
-              >
-                <th
-                  className={`p-6 font-semibold text-lg text-center ${
-                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
-                  }`}
-                >
-                  {questI18N.name[localeKey]}
-                </th>
-                <th
-                  className={`p-6 font-semibold text-lg text-center ${
-                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
-                  }`}
-                >
-                  {questI18N.objectives[localeKey]}
-                </th>
-                <th
-                  className={`p-6 font-semibold text-lg text-center ${
-                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
-                  }`}
-                >
-                  {questI18N.reward[localeKey]}
-                </th>
-                <th
-                  className={`text-center p-6 font-semibold text-lg ${
-                    theme === "dark" ? "text-[#FFB82E]" : "text-[#FF8C00]"
-                  }`}
-                >
-                  {questI18N.kappa[localeKey]}
-                </th>
+              <tr className="border-b border-gray-200 bg-gray-50 dark:border-[#2B2B2B] dark:bg-[#2B2B2B]">
+                {[
+                  questI18N.name[localeKey],
+                  questI18N.objectives[localeKey],
+                  questI18N.reward[localeKey],
+                  questI18N.kappa[localeKey],
+                ].map((header, idx) => (
+                  <th
+                    key={idx}
+                    className="p-6 font-semibold text-lg text-center text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400"
+                  >
+                    {header}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {filteredList.map((quest, index) => (
+              {filteredList.map((quest) => (
                 <tr
                   key={quest.id}
-                  className={`border-b transition-colors ${
-                    theme === "dark"
-                      ? `border-[#2B2B2B] hover:bg-[#2B2B2B]/50 ${
-                          index % 2 === 0 ? "bg-[#1A1A1A]" : "bg-[#1E1E1E]"
-                        }`
-                      : `border-gray-200 hover:bg-gray-50 ${
-                          index % 2 === 0 ? "bg-gray-25" : "bg-white"
-                        }`
-                  }`}
+                  className={`border-b transition-colors border-gray-200 hover:bg-gray-50 even:bg-gray-25 odd:bg-white
+                  dark:border-[#2B2B2B] dark:hover:bg-[#2B2B2B]/50 even:dark:bg-[#1A1A1A] odd:dark:bg-[#1E1E1E]`}
                 >
-                  <td
-                    className={`p-2 font-semibold text-center ${
-                      theme === "dark"
-                        ? "text-[#FFB82E] hover:text-yellow-400"
-                        : "text-[#FF8C00] hover:text-yellow-400"
-                    }`}
-                  >
+                  <td className="p-2 font-semibold text-center text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400">
                     <Link href={`/quest/detail/${quest.url_mapping}`}>
                       <Highlighter
                         highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
@@ -102,33 +62,26 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                   </td>
                   <td className="p-6">
                     <ul className="space-y-2">
-                      {quest.objectives &&
-                        quest.objectives.map((objective, idx) => (
-                          <li
-                            key={idx}
-                            className={`text-sm leading-relaxed ${
-                              theme === "dark"
-                                ? "text-[#CCCCCC]"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            {objective.type === "shoot" ? (
-                              <>
-                                • {objective[getDescriptionLocaleKey(locale)]}
-                                &nbsp;[
-                                <Skull
-                                  className="inline-block w-4 h-4 text-red-400"
-                                  strokeWidth={3}
-                                />
-                                x&nbsp;{objective.count}]
-                              </>
-                            ) : (
-                              <>
-                                • {objective[getDescriptionLocaleKey(locale)]}
-                              </>
-                            )}
-                          </li>
-                        ))}
+                      {quest.objectives?.map((objective, idx) => (
+                        <li
+                          key={idx}
+                          className="text-sm leading-relaxed text-gray-600 dark:text-[#CCCCCC]"
+                        >
+                          {objective.type === "shoot" ? (
+                            <>
+                              • {objective[getDescriptionLocaleKey(locale)]}
+                              &nbsp;[
+                              <Skull
+                                className="inline-block w-4 h-4 text-red-400"
+                                strokeWidth={3}
+                              />
+                              x&nbsp;{objective.count}]
+                            </>
+                          ) : (
+                            <>• {objective[getDescriptionLocaleKey(locale)]}</>
+                          )}
+                        </li>
+                      ))}
                     </ul>
                   </td>
                   <td className="p-6">
@@ -136,11 +89,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                       {quest.finish_rewards.items.map((rewards, rIndex) => (
                         <div
                           key={`${rIndex}-rewards-${quest.id}`}
-                          className={`text-sm font-semibold transition-colors ${
-                            theme === "dark"
-                              ? "text-[#FFB82E] hover:text-yellow-400"
-                              : "text-[#FF8C00] hover:text-yellow-400"
-                          }`}
+                          className="text-sm font-semibold text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400 transition-colors"
                         >
                           •&nbsp;
                           <Link
@@ -156,14 +105,9 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                       {quest.finish_rewards.offerUnlock.map((offer, rIndex) => (
                         <div
                           key={`${rIndex}-offerUnlock-${quest.id}`}
-                          className={`text-sm ${
-                            theme === "dark"
-                              ? "text-[#CCCCCC]"
-                              : "text-gray-600"
-                          }`}
+                          className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                         >
-                          • {offer.trader[getOtherLocalizedKey(locale)]}
-                          &nbsp;
+                          • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                           <Link
                             href={`/item/${offer.item.normalizedName}`}
                             target="_blank"
@@ -178,15 +122,12 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                         (standing, rIndex) => (
                           <div
                             key={`${rIndex}-traderStanding-${quest.id}`}
-                            className={`text-sm ${
-                              theme === "dark"
-                                ? "text-[#CCCCCC]"
-                                : "text-gray-600"
-                            }`}
+                            className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                           >
                             *&nbsp;
                             {standing.trader[getOtherLocalizedKey(locale)]}
-                            &nbsp;{questI18N.standing[localeKey]}&nbsp;
+                            &nbsp;
+                            {questI18N.standing[localeKey]}&nbsp;
                             <span>{standing.standing}</span>
                           </div>
                         )
@@ -194,20 +135,12 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                       {quest.finish_rewards.craftUnlock.map((craft, rIndex) => (
                         <div
                           key={`${rIndex}-craftUnlock-${quest.id}`}
-                          className={`text-sm ${
-                            theme === "dark"
-                              ? "text-[#CCCCCC]"
-                              : "text-gray-600"
-                          }`}
+                          className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                         >
                           {craft.rewardItems.map((crReward, crIndex) => (
                             <div
                               key={`${crIndex}-crReward-${quest.id}`}
-                              className={`text-sm ${
-                                theme === "dark"
-                                  ? "text-[#CCCCCC]"
-                                  : "text-gray-600"
-                              }`}
+                              className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                             >
                               <span>
                                 * {questI18N.workbenchLevel[localeKey]}&nbsp;
@@ -230,15 +163,12 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                         (standing, rIndex) => (
                           <div
                             key={`${rIndex}-traderStanding-${quest.id}`}
-                            className={`text-sm ${
-                              theme === "dark"
-                                ? "text-[#CCCCCC]"
-                                : "text-gray-600"
-                            }`}
+                            className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                           >
                             *&nbsp;
                             {standing.trader[getOtherLocalizedKey(locale)]}
-                            &nbsp;{questI18N.standing[localeKey]}&nbsp;
+                            &nbsp;
+                            {questI18N.standing[localeKey]}&nbsp;
                             <span>{standing.standing}</span>
                           </div>
                         )
@@ -247,11 +177,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                         (skill, rIndex) => (
                           <div
                             key={`${rIndex}-skillLevelReward-${quest.id}`}
-                            className={`text-sm ${
-                              theme === "dark"
-                                ? "text-[#CCCCCC]"
-                                : "text-gray-600"
-                            }`}
+                            className="text-sm text-gray-600 dark:text-[#CCCCCC]"
                           >
                             * {skill[getOtherLocalizedKey(locale)]}
                             <span>&nbsp;LV&nbsp;{skill.level}</span>

@@ -25,46 +25,33 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
   const localeKey = getLocaleKey(locale);
   if (!item) return null;
 
+  const { raw, formatted } = calcChangeRate(item, priceType);
+  const textClass =
+    raw > 0
+      ? "text-green-500"
+      : raw < 0
+      ? "text-red-500"
+      : "dark:text-white text-gray-900";
+
   return (
-    <Card
-      className={`mb-6 sm:mb-8 dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200`}
-    >
+    <Card className="mb-6 sm:mb-8 bg-white border border-gray-200 dark:bg-gray-800/30 dark:border-gray-700/50">
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <CardTitle
-            className={`text-lg sm:text-xl ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
+          <CardTitle className="text-lg sm:text-xl dark:text-white text-gray-900">
             {item.name[localeKey]}
           </CardTitle>
-          {(() => {
-            const { raw, formatted } = calcChangeRate(item, priceType);
-
-            const textClass =
-              raw > 0
-                ? "text-green-500"
-                : raw < 0
-                ? "text-red-500"
-                : "dark:text-white text-gray-900";
-
-            return (
-              <div className="flex items-center gap-2">
-                {raw > 0 ? (
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                ) : raw < 0 ? (
-                  <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
-                ) : (
-                  <MoveRight className="h-4 w-4 sm:h-5 sm:w-5 dark:text-white text-gray-900" />
-                )}
-                <span
-                  className={`font-semibold text-sm sm:text-base ${textClass}`}
-                >
-                  {formatted}
-                </span>
-              </div>
-            );
-          })()}
+          <div className="flex items-center gap-2">
+            {raw > 0 ? (
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+            ) : raw < 0 ? (
+              <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+            ) : (
+              <MoveRight className="h-4 w-4 sm:h-5 sm:w-5 dark:text-white text-gray-900" />
+            )}
+            <span className={`font-semibold text-sm sm:text-base ${textClass}`}>
+              {formatted}
+            </span>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
@@ -76,12 +63,7 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
                   ? item.history_by_type.pvp
                   : item.history_by_type.pve
               }
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
               <defs>
                 <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">

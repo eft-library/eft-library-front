@@ -9,7 +9,6 @@ import Link from "next/link";
 import { newsI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useTheme } from "next-themes";
 import { returnBadgeColor } from "@/lib/func/jsxfunction";
 import { formatISODate } from "@/lib/func/formatTime";
 import { Badge } from "../../ui/badge";
@@ -19,7 +18,6 @@ export default function InformationDetail({
   routeLink,
   title,
 }: InformationDetailTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -29,42 +27,24 @@ export default function InformationDetail({
         <Link href={`${routeLink}?id=1`}>
           <Button
             variant="ghost"
-            className={`mb-6 font-semibold cursor-pointer ${
-              theme === "dark"
-                ? "text-gray-300 hover:text-white"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            className="mb-6 font-semibold cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             {newsI18N.list[localeKey]}
           </Button>
         </Link>
 
-        <Card
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800 border-gray-700"
-              : "bg-white border-gray-200"
-          }`}
-        >
+        <Card className="bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="pb-4">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge className={returnBadgeColor(routeLink)}>{title}</Badge>
                 </div>
-                <CardTitle
-                  className={`text-2xl mb-2 ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
+                <CardTitle className="text-2xl mb-2 text-gray-900 dark:text-white">
                   {informationInfo.information.name[localeKey]}
                 </CardTitle>
-                <div
-                  className={`flex items-center gap-4 text-sm ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
+                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center gap-2">
                     <span>EFT Library</span>
                   </div>
@@ -75,27 +55,23 @@ export default function InformationDetail({
                     </span>
                   </div>
                   {/* <div className="flex items-center gap-1">
-                  <Eye className="w-4 h-4" />
-                  <span>
-                    {notices
-                      .find((n) => n.id === selectedNotice)
-                      ?.views?.toLocaleString()}
-                  </span>
-                </div> */}
+                    <Eye className="w-4 h-4" />
+                    <span>
+                      {notices.find((n) => n.id === selectedNotice)?.views?.toLocaleString()}
+                    </span>
+                  </div> */}
                 </div>
               </div>
             </div>
           </CardHeader>
-          <Separator
-            className={theme === "dark" ? "bg-gray-700" : "bg-gray-200"}
-          />
+
+          <Separator className="bg-gray-200 dark:bg-gray-700" />
+
           <CardContent className="pt-6">
             <div
-              className={`prose max-w-none ${
-                theme === "dark" ? "prose-invert" : ""
-              }`}
+              className="prose max-w-none dark:prose-invert"
               dangerouslySetInnerHTML={{
-                __html: `${informationInfo.information.description[localeKey]}`,
+                __html: informationInfo.information.description[localeKey],
               }}
             />
           </CardContent>
@@ -103,24 +79,13 @@ export default function InformationDetail({
 
         {/* 다른 공지사항 목록 */}
         <div className="mt-8">
-          <h3
-            className={`text-xl font-semibold mb-4 ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
+          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
             {title}
           </h3>
           <div className="grid gap-3">
             {informationInfo.information_group.map((item) => (
               <Link href={`${routeLink}/detail/${item.id}`} key={item.id}>
-                <Card
-                  key={item.id}
-                  className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700 hover:bg-gray-750"
-                      : "bg-white border-gray-200 hover:shadow-sm"
-                  }`}
-                >
+                <Card className="cursor-pointer transition-all duration-200 hover:shadow-md bg-white border-gray-200 hover:shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -131,24 +96,16 @@ export default function InformationDetail({
                             {item.name[localeKey]}
                           </Badge>
                         </div>
-                        <h4
-                          className={`font-semibold mb-1 ${
-                            theme === "dark" ? "text-white" : "text-gray-900"
-                          }`}
-                        >
+                        <h4 className="font-semibold mb-1 text-gray-900 dark:text-white">
                           {item.name[localeKey]}
                         </h4>
-                        <div
-                          className={`flex items-center gap-3 text-xs ${
-                            theme === "dark" ? "text-gray-500" : "text-gray-500"
-                          }`}
-                        >
+                        <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                           <span>EFT Library</span>
                           <span>{formatISODate(item.update_time)}</span>
                           {/* <div className="flex items-center gap-1">
-                          <Eye className="w-3 h-3" />
-                          <span>{notice.views.toLocaleString()}</span>
-                        </div> */}
+                            <Eye className="w-3 h-3" />
+                            <span>{notice.views.toLocaleString()}</span>
+                          </div> */}
                         </div>
                       </div>
                     </div>

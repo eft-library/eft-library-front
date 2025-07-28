@@ -20,6 +20,13 @@ export interface NewsViewTypes {
   news: NewsMapColumn;
 }
 
+export interface RenderSectionTypes {
+  icon: string;
+  title: string;
+  items: LinkInfoTypes[];
+  sectionKey: string;
+}
+
 export interface NewsMapColumn {
   id: string;
   json_value: JsonValueTypes;

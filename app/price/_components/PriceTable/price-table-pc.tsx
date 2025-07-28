@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -24,7 +23,6 @@ export default function PriceTablePC({
   selectItem,
   word,
 }: PriceTablePCTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -42,83 +40,54 @@ export default function PriceTablePC({
         >
           <table className="w-full table-fixed min-w-[800px]">
             <thead className="sticky top-0 z-10">
-              <tr
-                className={`border-b ${
-                  theme === "dark"
-                    ? "border-slate-700 bg-slate-800"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
-                <th
-                  className={`text-center py-3 px-3 w-32 ${
-                    theme === "dark" ? "text-slate-300" : "text-gray-700"
-                  }`}
-                >
+              <tr className="border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+                <th className="text-center py-3 px-3 w-32 text-gray-700 dark:text-slate-300">
                   {price18N.image[localeKey]}
                 </th>
-                <th
-                  className={`text-left py-3 px-3 ${
-                    theme === "dark" ? "text-slate-300" : "text-gray-700"
-                  }`}
-                >
+                <th className="text-left py-3 px-3 text-gray-700 dark:text-slate-300">
                   {price18N.name[localeKey]}
                 </th>
-                <th
-                  className={`text-left py-3 px-3 w-36 ${
-                    theme === "dark" ? "text-slate-300" : "text-gray-700"
-                  }`}
-                >
+                <th className="text-left py-3 px-3 w-36 text-gray-700 dark:text-slate-300">
                   {price18N.traderPrice[localeKey]}
                 </th>
-                <th
-                  className={`text-left py-3 px-3 w-36 ${
-                    theme === "dark" ? "text-slate-300" : "text-gray-700"
-                  }`}
-                >
+                <th className="text-left py-3 px-3 w-36 text-gray-700 dark:text-slate-300">
                   {price18N.fleaMarketPrice[localeKey]}
                 </th>
-                <th
-                  className={`text-left py-3 px-3 w-28 ${
-                    theme === "dark" ? "text-slate-300" : "text-gray-700"
-                  }`}
-                >
+                <th className="text-left py-3 px-3 w-28 text-gray-700 dark:text-slate-300">
                   {price18N.changeRate[localeKey]}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {items.map((item, index) => (
-                <tr
-                  key={`price-table-${item.id}-${index}`}
-                  className={`border-b cursor-pointer transition-colors ${
-                    selectItem?.id === item.id
-                      ? theme === "dark"
-                        ? "bg-slate-700/50 border-slate-700/50"
-                        : "bg-gray-100 border-gray-200/50"
-                      : theme === "dark"
-                      ? "border-slate-700/50 hover:bg-slate-700/30"
-                      : "border-gray-200/50 hover:bg-gray-50"
-                  }`}
-                  onClick={() => setSelectItem(item)}
-                >
-                  <td className="py-4 px-3">
-                    <div className="relative w-24 h-16 mx-auto">
-                      <Image
-                        src={item.image || "/placeholder.svg"}
-                        alt={item.name.en}
-                        fill
-                        className={`rounded object-contain ${
-                          theme === "dark" ? "bg-slate-700" : "bg-gray-200"
-                        }`}
-                        sizes="96px"
-                      />
-                    </div>
-                  </td>
-                  <td className="py-4 px-3">
-                    <div
-                      className={`font-semibold leading-tight ${
-                        theme === "dark" ? "text-white" : "text-gray-900"
-                      }`}
+              {items.map((item, index) => {
+                const isSelected = selectItem?.id === item.id;
+                const baseRowClasses =
+                  "border-b cursor-pointer transition-colors border-gray-200/50 hover:bg-gray-50";
+                const darkRowClasses =
+                  "dark:border-slate-700/50 dark:hover:bg-slate-700/30";
+                const selectedClasses = isSelected
+                  ? "bg-gray-100 border-gray-200/50 dark:bg-slate-700/50 dark:border-slate-700/50"
+                  : "";
+
+                return (
+                  <tr
+                    key={`price-table-${item.id}-${index}`}
+                    className={`${baseRowClasses} ${darkRowClasses} ${selectedClasses}`}
+                    onClick={() => setSelectItem(item)}
+                  >
+                    <td className="py-4 px-3">
+                      <div className="relative w-24 h-16 mx-auto">
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name.en}
+                          fill
+                          className="rounded object-contain bg-gray-200 dark:bg-slate-700"
+                          sizes="96px"
+                        />
+                      </div>
+                    </td>
+                    <td
+                      className="py-4 px-3 font-semibold leading-tight text-gray-900 dark:text-white"
                       title={item.name[localeKey]}
                     >
                       <Highlighter
@@ -127,24 +96,22 @@ export default function PriceTablePC({
                         autoEscape
                         textToHighlight={item.name[localeKey]}
                       />
-                    </div>
-                  </td>
-                  <td className="py-4 px-3">
-                    <span className="font-semibold text-orange-400 whitespace-nowrap">
-                      {priceType === "PVE"
-                        ? findExpensiveTrader(item.trader.pve_trader)
-                        : findExpensiveTrader(item.trader.pvp_trader)}
-                    </span>
-                  </td>
-                  <td className="py-4 px-3">
-                    <span className="text-green-500 font-semibold whitespace-nowrap">
-                      {priceType === "PVE"
-                        ? findFleaMarketPrice(item.trader.pve_trader)
-                        : findFleaMarketPrice(item.trader.pvp_trader)}
-                    </span>
-                  </td>
-                  <td className="py-4 px-3">
-                    <span className="text-green-500 font-semibold whitespace-nowrap">
+                    </td>
+                    <td className="py-4 px-3">
+                      <span className="font-semibold text-orange-400 whitespace-nowrap">
+                        {priceType === "PVE"
+                          ? findExpensiveTrader(item.trader.pve_trader)
+                          : findExpensiveTrader(item.trader.pvp_trader)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-3">
+                      <span className="text-green-500 font-semibold whitespace-nowrap">
+                        {priceType === "PVE"
+                          ? findFleaMarketPrice(item.trader.pve_trader)
+                          : findFleaMarketPrice(item.trader.pvp_trader)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-3">
                       {(() => {
                         const { raw, formatted } = calcChangeRate(
                           item,
@@ -166,10 +133,10 @@ export default function PriceTablePC({
                           </Badge>
                         );
                       })()}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </InfiniteScroll>

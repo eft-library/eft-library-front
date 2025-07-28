@@ -2,7 +2,6 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Users } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { TraderPriceTypes } from "../price.types";
@@ -10,7 +9,6 @@ import Image from "next/image";
 import { price18N } from "@/lib/consts/i18nConsts";
 
 export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -25,9 +23,7 @@ export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
     >
       <CardHeader>
         <CardTitle
-          className={`flex items-center gap-2 text-lg sm:text-xl ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}
+          className={`flex items-center gap-2 text-lg sm:text-xl dark:text-white text-gray-900`}
         >
           <Users className="h-4 w-4 sm:h-5 sm:w-5" />
           {price18N.traderPrice[localeKey]}
@@ -41,9 +37,7 @@ export default function TraderPrice({ item, priceType }: TraderPriceTypes) {
               className="text-center"
             >
               <div
-                className={`w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-1 sm:mb-2 rounded-full ${
-                  theme === "dark" ? "bg-slate-700" : "bg-gray-200"
-                } flex items-center justify-center overflow-hidden relative`}
+                className={`w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-1 sm:mb-2 rounded-full dark:bg-slate-700 bg-gray-200 flex items-center justify-center overflow-hidden relative`}
               >
                 <Image
                   src={trader.trader.npc_image || "/placeholder.svg"}

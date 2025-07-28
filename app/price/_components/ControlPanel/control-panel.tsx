@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Search } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { buttonI18N, placeHolderText } from "@/lib/consts/i18nConsts";
@@ -19,7 +18,6 @@ export default function ControlPanel({
 }: ControlPanelTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -28,30 +26,16 @@ export default function ControlPanel({
         onValueChange={setPriceType}
         className="w-full sm:w-auto"
       >
-        <TabsList
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800/30 border border-gray-700/50"
-              : "bg-white border border-gray-200"
-          } w-full sm:w-auto p-1 rounded-lg shadow-sm`}
-        >
+        <TabsList className="w-full sm:w-auto p-1 rounded-lg shadow-sm bg-white border border-gray-200 dark:bg-gray-800/30 dark:border-gray-700/50">
           <TabsTrigger
             value="PVP"
-            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-              theme === "dark"
-                ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-            }`}
+            className="flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-700 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white dark:data-[state=active]:shadow-md"
           >
             PVP
           </TabsTrigger>
           <TabsTrigger
             value="PVE"
-            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-              theme === "dark"
-                ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-            }`}
+            className="flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-700 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white dark:data-[state=active]:shadow-md"
           >
             PVE
           </TabsTrigger>
@@ -59,20 +43,12 @@ export default function ControlPanel({
       </Tabs>
       <div className="flex gap-2 w-full sm:w-auto">
         <div className="relative flex-1 sm:w-80">
-          <Search
-            className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${
-              theme === "dark" ? "text-slate-400" : "text-gray-600"
-            }`}
-          />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600 dark:text-slate-400" />
           <Input
             placeholder={placeHolderText.search[localeKey]}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className={`pl-10 ${
-              theme === "dark"
-                ? "bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
-                : "bg-gray-100 border-gray-300 text-gray-900 placeholder:text-gray-500"
-            }`}
+            className="pl-10 bg-gray-100 border-gray-300 text-gray-900 placeholder:text-gray-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:placeholder:text-slate-400"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setFetchWord(search);

@@ -2,7 +2,6 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { price18N } from "@/lib/consts/i18nConsts";
@@ -19,23 +18,16 @@ export default function PriceTable({
   fetchNextPage,
   word,
 }: PriceTableTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
   return (
     <Card
-      className={`${
-        theme === "dark"
-          ? "bg-slate-800 border-slate-700"
-          : "bg-white border-gray-200"
-      }`}
+      className={`dark:bg-slate-800 dark:border-slate-700 bg-white border-gray-200`}
     >
       <CardHeader>
         <CardTitle
-          className={`flex items-center gap-2 text-lg sm:text-xl ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}
+          className={`flex items-center gap-2 text-lg sm:text-xl dark:text-white text-gray-900`}
         >
           <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           {price18N.checkLatestPriceAfterClick[localeKey]}

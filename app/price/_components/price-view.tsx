@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { price18N } from "@/lib/consts/i18nConsts";
@@ -15,7 +14,6 @@ import { Price } from "./price.types";
 import Loading from "@/components/custom/Loading/loading";
 
 export default function PriceView() {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [search, setSearch] = useState<string>("");
@@ -74,17 +72,11 @@ export default function PriceView() {
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 items-center justify-center">
             {/* Title and Theme Toggle Row */}
-            <h1
-              className={`text-xl font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <h1 className={`text-xl font-bold dark:text-white text-gray-900`}>
               {price18N.title[localeKey]}
             </h1>
             <p
-              className={`${
-                theme === "dark" ? "text-slate-400" : "text-gray-600"
-              } mt-1 text-sm sm:text-base`}
+              className={` mt-1 text-sm sm:text-base dark:text-slate-400 text-gray-600`}
             >
               {price18N.checkPriceByButton[localeKey]}
             </p>

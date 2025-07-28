@@ -4,7 +4,6 @@ import { ExtractionsTransitsTypes } from "../map-of-tarkov.types";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
-import { useTheme } from "next-themes";
 import { Card } from "@/components/ui/card";
 import { Navigation2Icon, Check, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +16,6 @@ export default function ExtractionsTransits({
 }: ExtractionsTransitsTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { theme } = useTheme();
 
   const getFactionBadgeStyle = (faction: string) => {
     switch (faction) {
@@ -34,41 +32,21 @@ export default function ExtractionsTransits({
 
   return (
     <div className="container mx-auto px-4 mb-6">
-      <h3
-        className={`text-xl font-bold mb-6 ${
-          theme === "dark" ? "text-white" : "text-gray-900"
-        }`}
-      >
-        <Navigation2Icon
-          className={`inline mr-2 h-5 w-5 ${
-            theme === "dark" ? "text-orange-400" : "text-orange-600"
-          }`}
-        />
+      <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">
+        <Navigation2Icon className="inline mr-2 h-5 w-5 text-orange-600 dark:text-orange-400" />
         {title}
       </h3>
 
       {/* Extract Table Header */}
-      <Card
-        className={`${
-          theme === "dark"
-            ? "bg-gray-800/30 border-gray-700/50"
-            : "bg-white border-gray-200 shadow-sm"
-        } mb-4`}
-      >
-        <div>
-          <div
-            className={`grid grid-cols-7 gap-2 text-center font-semibold text-sm ${
-              theme === "dark" ? "text-white" : "text-gray-700"
-            }`}
-          >
-            <div>{mapOfTarkovI18n.photo[localeKey]}</div>
-            <div>{mapOfTarkovI18n.name[localeKey]}</div>
-            <div>{mapOfTarkovI18n.affiliation[localeKey]}</div>
-            <div>{mapOfTarkovI18n.alwaysOpen[localeKey]}</div>
-            <div>{mapOfTarkovI18n.oneTimeUse[localeKey]}</div>
-            <div>{mapOfTarkovI18n.requirements[localeKey]}</div>
-            <div>{mapOfTarkovI18n.tip[localeKey]}</div>
-          </div>
+      <Card className="bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50 mb-4">
+        <div className="grid grid-cols-7 gap-2 text-center font-semibold text-sm text-gray-700 dark:text-white">
+          <div>{mapOfTarkovI18n.photo[localeKey]}</div>
+          <div>{mapOfTarkovI18n.name[localeKey]}</div>
+          <div>{mapOfTarkovI18n.affiliation[localeKey]}</div>
+          <div>{mapOfTarkovI18n.alwaysOpen[localeKey]}</div>
+          <div>{mapOfTarkovI18n.oneTimeUse[localeKey]}</div>
+          <div>{mapOfTarkovI18n.requirements[localeKey]}</div>
+          <div>{mapOfTarkovI18n.tip[localeKey]}</div>
         </div>
       </Card>
 
@@ -76,11 +54,7 @@ export default function ExtractionsTransits({
         {extractionsOrTransits.map((extract, index) => (
           <Card
             key={index}
-            className={`${
-              theme === "dark"
-                ? "bg-gray-800/30 border-gray-700/50"
-                : "bg-white border-gray-200 shadow-sm"
-            } transition-all`}
+            className="bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50 transition-all"
           >
             <div className="p-2">
               <div className="grid grid-cols-7 gap-2 items-center text-sm">
@@ -95,11 +69,7 @@ export default function ExtractionsTransits({
                     wrapHeight={130}
                   />
                 </div>
-                <div
-                  className={`font-semibold text-center ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
+                <div className="font-semibold text-center text-gray-900 dark:text-white">
                   {extract.name[localeKey]}
                 </div>
                 <div className="text-center">
@@ -126,23 +96,15 @@ export default function ExtractionsTransits({
                     <X className="h-10 w-10 text-red-500" />
                   )}
                 </div>
-                <div
-                  className={`text-center ${
-                    theme === "dark" ? "text-white" : "text-gray-700"
-                  }`}
-                >
-                  {extract.requirements && extract.requirements[localeKey] ? (
+                <div className="text-center text-gray-700 dark:text-white">
+                  {extract.requirements?.[localeKey] ? (
                     <HtmlWithImage contents={extract.requirements[localeKey]} />
                   ) : (
                     <span>-</span>
                   )}
                 </div>
-                <div
-                  className={`text-xs text-center ${
-                    theme === "dark" ? "text-white" : "text-gray-600"
-                  }`}
-                >
-                  {extract.tip && extract.tip[localeKey] ? (
+                <div className="text-xs text-center text-gray-600 dark:text-white">
+                  {extract.tip?.[localeKey] ? (
                     <HtmlWithImage contents={extract.tip[localeKey]} />
                   ) : (
                     <span>-</span>

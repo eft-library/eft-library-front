@@ -25,13 +25,7 @@ export default function NavBar({ navData }: NavBarTypes) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav
-      className={`sticky top-0 z-50 border-b z-[9999] ${
-        theme === "dark"
-          ? "bg-[#2a2d35] border-gray-700"
-          : "bg-white border-gray-200"
-      }`}
-    >
+    <nav className="sticky top-0 z-[9999] border-b bg-white border-gray-200 dark:bg-[#2a2d35] dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
@@ -74,11 +68,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               <a
                 href="#"
                 onClick={() => signOut()}
-                className={`transition-colors text-sm ${
-                  theme === "dark"
-                    ? "text-white hover:text-orange-400"
-                    : "text-gray-700 hover:text-orange-500"
-                }`}
+                className="transition-colors text-sm text-gray-700 hover:text-orange-500 dark:text-white dark:hover:text-orange-400"
               >
                 {headerI18N.logout[localeKey]}
               </a>
@@ -88,11 +78,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               <a
                 href="#"
                 onClick={() => signIn()}
-                className={`transition-colors text-sm ${
-                  theme === "dark"
-                    ? "text-white hover:text-orange-400"
-                    : "text-gray-700 hover:text-orange-500"
-                }`}
+                className="transition-colors text-sm text-gray-700 hover:text-orange-500 dark:text-white dark:hover:text-orange-400"
               >
                 {headerI18N.login[localeKey]}
               </a>
@@ -104,11 +90,7 @@ export default function NavBar({ navData }: NavBarTypes) {
             {/* Theme Toggle Button */}
             <Button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-md transition-colors ${
-                theme === "dark"
-                  ? "text-gray-300 hover:text-orange-400"
-                  : "text-gray-600 hover:text-orange-500"
-              }`}
+              className="p-2 rounded-md transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400"
             >
               {theme === "dark" ? "☀️" : "🌙"}
             </Button>
@@ -137,11 +119,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`${
-                theme === "dark"
-                  ? "text-white hover:text-orange-400"
-                  : "text-gray-700 hover:text-orange-500"
-              }`}
+              className="text-gray-700 hover:text-orange-500 dark:text-white dark:hover:text-orange-400"
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -154,22 +132,14 @@ export default function NavBar({ navData }: NavBarTypes) {
       </div>
 
       {isMobileMenuOpen && (
-        <div
-          className={`md:hidden border-t py-4 px-4 sm:px-6 lg:px-8 ${
-            theme === "dark" ? "border-gray-800" : "border-gray-200"
-          }`}
-        >
+        <div className="md:hidden border-t border-gray-200 dark:border-gray-800 py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col space-y-4">
             {/* Mobile Language Selector */}
             <div className="sm:hidden mb-4">
               {/* Theme Toggle Button */}
               <button
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className={`w-full flex items-center justify-center px-4 py-3 rounded-lg border transition-all duration-200 mb-4 ${
-                  theme === "dark"
-                    ? "bg-[#36393f] border-gray-600 text-white hover:border-orange-400 hover:bg-[#40444b]"
-                    : "bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50"
-                }`}
+                className="w-full flex items-center justify-center px-4 py-3 rounded-lg border mb-4 transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50 dark:bg-[#36393f] dark:border-gray-600 dark:text-white dark:hover:border-orange-400 dark:hover:bg-[#40444b]"
               >
                 {theme === "dark" ? "☀️" : "🌙"}
               </button>
@@ -219,11 +189,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               <a
                 href="#"
                 onClick={() => signOut()}
-                className={`transition-colors text-sm ${
-                  theme === "dark"
-                    ? "text-white hover:text-orange-400"
-                    : "text-gray-700 hover:text-orange-500"
-                }`}
+                className="transition-colors text-sm text-gray-700 hover:text-orange-500 dark:text-white dark:hover:text-orange-400"
               >
                 {headerI18N.logout[localeKey]}
               </a>
@@ -233,11 +199,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               <a
                 href="#"
                 onClick={() => signIn()}
-                className={`transition-colors text-sm ${
-                  theme === "dark"
-                    ? "text-white hover:text-orange-400"
-                    : "text-gray-700 hover:text-orange-500"
-                }`}
+                className="transition-colors text-sm text-gray-700 hover:text-orange-500 dark:text-white dark:hover:text-orange-400"
               >
                 {headerI18N.login[localeKey]}
               </a>

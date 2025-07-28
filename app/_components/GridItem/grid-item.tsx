@@ -1,14 +1,12 @@
 "use client";
 
 import type { GridItemTypes } from "./grid-item.types";
-import { useTheme } from "next-themes";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function GridItem({ main_info }: GridItemTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -21,16 +19,17 @@ export default function GridItem({ main_info }: GridItemTypes) {
           className="flex flex-col"
         >
           <div
-            className={`group rounded-lg p-3 border transition-all duration-200 cursor-pointer hover:scale-105 ${
-              theme === "dark"
-                ? "bg-gray-800/30 border-gray-700/50 hover:border-orange-400/50 hover:bg-gray-700/30"
-                : "bg-white border-gray-200 hover:border-orange-500/50 hover:bg-gray-50 shadow-sm hover:shadow-md"
-            }`}
+            className={`
+              group rounded-lg p-3 border transition-all duration-200 cursor-pointer hover:scale-105
+              bg-white border-gray-200 hover:border-orange-500/50 hover:bg-gray-50 shadow-sm hover:shadow-md
+              dark:bg-gray-800/30 dark:border-gray-700/50 dark:hover:border-orange-400/50 dark:hover:bg-gray-700/30
+            `}
           >
             <div
-              className={`aspect-square rounded-md mb-3 overflow-hidden relative ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-100"
-              }`}
+              className={`
+                aspect-square rounded-md mb-3 overflow-hidden relative
+                bg-gray-100 dark:bg-gray-700/50
+              `}
             >
               <Image
                 src={item.image || "/placeholder.svg"}
@@ -46,11 +45,11 @@ export default function GridItem({ main_info }: GridItemTypes) {
               />
             </div>
             <h3
-              className={`text-sm font-semibold text-center transition-colors ${
-                theme === "dark"
-                  ? "text-gray-200 group-hover:text-orange-400"
-                  : "text-gray-700 group-hover:text-orange-500"
-              }`}
+              className={`
+                text-sm font-semibold text-center transition-colors
+                text-gray-700 group-hover:text-orange-500
+                dark:text-gray-200 dark:group-hover:text-orange-400
+              `}
             >
               {item.name[localeKey]}
             </h3>

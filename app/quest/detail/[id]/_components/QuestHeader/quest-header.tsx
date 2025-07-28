@@ -8,7 +8,6 @@ import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import { questI18N } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useState } from "react";
 
 export default function QuestHeader({ quest }: QuestDetailTypes) {
@@ -16,7 +15,6 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
   const localeKey = getLocaleKey(locale);
   const [showAllPrevious, setShowAllPrevious] = useState(false);
   const [showAllNext, setShowAllNext] = useState(false);
-  const { theme } = useTheme();
 
   return (
     <div className="text-center mb-8 sm:mb-12">
@@ -33,7 +31,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
       </div>
 
       <h1 className="text-xl sm:text-4xl font-bold mb-4 text-black dark:text-white">
-        {quest.name[getLocaleKey(localeKey)]}
+        {quest.name[localeKey]}
       </h1>
 
       <div className="flex items-center justify-center gap-4 mb-6 flex-wrap">
@@ -56,11 +54,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
       {/* Navigation */}
       <div className="flex items-start justify-center gap-8 sm:gap-16 max-w-4xl mx-auto">
         <div className="text-center flex-1">
-          <div
-            className={`text-sm leading-relaxed font-semibold ${
-              theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
-            } cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base`}
-          >
+          <div className="text-sm leading-relaxed font-semibold cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base text-gray-600 dark:text-[#CCCCCC]">
             {questI18N.prev[localeKey]}
           </div>
           <div className="text-gray-400 dark:text-gray-500 text-xs sm:text-sm mt-2 space-y-1">
@@ -71,9 +65,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
               ).map((prev_quest, index) => (
                 <div
                   key={index}
-                  className={`text-sm font-semibold ${
-                    theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
-                  } hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed`}
+                  className="text-sm font-semibold text-gray-600 dark:text-[#CCCCCC] hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed"
                 >
                   <Link
                     href={`/quest/detail/${prev_quest.task.normalizedName}`}
@@ -88,7 +80,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 className="text-yellow-400 hover:text-yellow-300 transition-colors text-xs mt-3 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"
               >
                 {showAllPrevious
-                  ? `${questI18N.less[localeKey]}`
+                  ? questI18N.less[localeKey]
                   : `+${quest.task_requirements.length - 5} ${
                       questI18N.more[localeKey]
                     }`}
@@ -98,11 +90,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
         </div>
 
         <div className="flex-1 text-center">
-          <div
-            className={`text-sm font-semibold leading-relaxed ${
-              theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
-            } cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base`}
-          >
+          <div className="text-sm font-semibold leading-relaxed cursor-not-allowed px-2 sm:px-4 py-2 sm:text-base text-gray-600 dark:text-[#CCCCCC]">
             {questI18N.next[localeKey]}
           </div>
           <div className="text-gray-400 dark:text-gray-500 text-xs sm:text-sm mt-2 space-y-1 max-w-xs mx-auto">
@@ -111,9 +99,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 (next_quest) => (
                   <div
                     key={`next-quest-${next_quest.task.normalizedName}`}
-                    className={`text-sm font-semibold ${
-                      theme === "dark" ? "text-[#CCCCCC]" : "text-gray-600"
-                    } hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed`}
+                    className="text-sm font-semibold text-gray-600 dark:text-[#CCCCCC] hover:text-yellow-400 transition-colors cursor-pointer text-center leading-relaxed"
                   >
                     <Link
                       href={`/quest/detail/${next_quest.task.normalizedName}`}
@@ -129,7 +115,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 className="text-yellow-400 hover:text-yellow-300 transition-colors text-xs mt-3 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"
               >
                 {showAllNext
-                  ? `${questI18N.less[localeKey]}`
+                  ? questI18N.less[localeKey]
                   : `+${quest.task_next.length - 5} ${
                       questI18N.more[localeKey]
                     }`}

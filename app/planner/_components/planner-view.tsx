@@ -2,7 +2,6 @@
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { alertMessageI18N, planner18N } from "@/lib/consts/i18nConsts";
-import { useTheme } from "next-themes";
 import type { Planner, PlannerViewTypes } from "./planner.types";
 import SearchFilter from "./SearchFilter/search-filter";
 import type { Quest, TaskWrapper } from "@/app/quest/_components/quest.types";
@@ -18,7 +17,6 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { plannerSampleData } from "@/lib/consts/libraryConsts";
 
 export default function PlannerView({ userQuestList }: PlannerViewTypes) {
-  const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [selectedItems, setSelectedItems] = useState<Quest[]>([]);
@@ -198,9 +196,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
-        theme === "dark" ? "dark bg-gray-900" : "bg-gray-50"
-      }`}
+      className={`min-h-screen transition-colors duration-300 dark:bg-gray-900 bg-gray-50`}
     >
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 헤더 */}
