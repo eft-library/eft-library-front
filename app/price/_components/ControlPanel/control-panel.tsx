@@ -36,16 +36,6 @@ export default function ControlPanel({
           } w-full sm:w-auto p-1 rounded-lg shadow-sm`}
         >
           <TabsTrigger
-            value="PVE"
-            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
-              theme === "dark"
-                ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-            }`}
-          >
-            PVE
-          </TabsTrigger>
-          <TabsTrigger
             value="PVP"
             className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
               theme === "dark"
@@ -54,6 +44,16 @@ export default function ControlPanel({
             }`}
           >
             PVP
+          </TabsTrigger>
+          <TabsTrigger
+            value="PVE"
+            className={`flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+              theme === "dark"
+                ? "text-slate-300 hover:text-white hover:bg-slate-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
+            }`}
+          >
+            PVE
           </TabsTrigger>
         </TabsList>
       </Tabs>

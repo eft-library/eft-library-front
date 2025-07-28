@@ -101,20 +101,20 @@ export default function RankView() {
           </div>
           <div className="flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <Button
-              variant={priceType === "PVE" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setPriceType("PVE")}
-              className="rounded-none px-4 py-2"
-            >
-              PVE
-            </Button>
-            <Button
               variant={priceType === "PVP" ? "default" : "ghost"}
               size="sm"
               onClick={() => setPriceType("PVP")}
               className="rounded-none px-4 py-2"
             >
               PVP
+            </Button>
+            <Button
+              variant={priceType === "PVE" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPriceType("PVE")}
+              className="rounded-none px-4 py-2"
+            >
+              PVE
             </Button>
           </div>
         </div>

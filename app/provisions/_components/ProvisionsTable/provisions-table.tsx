@@ -112,7 +112,7 @@ export default function ProvisionsTable({
                                 className="flex flex-col"
                                 key={`${effectKey}-${groupKey}`}
                               >
-                                <div className="text-yellow-500 dark:text-yellow-300 text-xs">
+                                <div className="text-black dark:text-white font-semibold text-xs">
                                   {[
                                     delay !== "0"
                                       ? `${delay} ${effectI18N.delay[localeKey]}`
@@ -229,7 +229,7 @@ export default function ProvisionsTable({
                                     key={`${effectKey}-${groupKey}`}
                                   >
                                     {/* 공통 delay-duration 정보 */}
-                                    <div className="text-yellow-500 dark:text-yellow-300 text-xs">
+                                    <div className="text-black dark:text-white font-semibold text-xs">
                                       {[
                                         delay !== "0"
                                           ? `${delay} ${effectI18N.delay[localeKey]}`
