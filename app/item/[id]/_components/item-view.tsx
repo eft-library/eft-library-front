@@ -14,6 +14,7 @@ import MedikitDetail from "./ItemDetail/medikit-detail";
 import DrugDetail from "./ItemDetail/drug-detail";
 import MedicalItemDetail from "./ItemDetail/medical-item-detail";
 import StimulantDetail from "./ItemDetail/stimulant-detail";
+import ProvisionsDetail from "./ItemDetail/provisions-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -46,6 +47,9 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
           itemInfo.info.medical_category === "Stimulant" && (
             <StimulantDetail itemInfo={itemInfo} />
           )}
+        {itemInfo.category === "Provisions" && (
+          <ProvisionsDetail itemInfo={itemInfo} />
+        )}
 
         {(itemInfo.required_by_quest_item.length > 0 ||
           itemInfo.required_by_quest_item_array.length > 0) && (

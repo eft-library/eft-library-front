@@ -1,19 +1,28 @@
 "use client";
 
-import { getLocaleKey, getEffectLocalizedKey } from "@/lib/func/localeFunction";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { getEffectLocalizedKey, getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { effectI18N, itemI18N } from "@/lib/consts/i18nConsts";
+import { effectI18N, itemDetailI18N, itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
-import { Shield, Pill, Droplet, Zap, ShieldOff, Clock } from "lucide-react";
+import {
+  Heart,
+  Clock,
+  Shield,
+  Pill,
+  Droplet,
+  Zap,
+  ShieldOff,
+} from "lucide-react"; // 추가 아이콘 임포트
 import { Badge } from "@/components/ui/badge";
-import type { StimEffect } from "@/app/medical/_components/medical.types";
+import { StimEffect } from "@/app/medical/_components/medical.types";
 import { getPlusMinus } from "@/lib/func/jsxfunction";
 
-export default function StimulantDetail({ itemInfo }: ItemDetailTypes) {
+export default function ProvisionsDetail({ itemInfo }: ItemDetailTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+
   const renderEffectItem = (effect: StimEffect, type: "buff" | "debuff") => {
     const textColor = type === "buff" ? "text-green-500" : "text-red-500";
     const IconComponent =
@@ -39,7 +48,6 @@ export default function StimulantDetail({ itemInfo }: ItemDetailTypes) {
       </div>
     );
   };
-
   return (
     <Card className="rounded-xl shadow-lg border border-border bg-card">
       <CardHeader className="text-center pb-4">
@@ -58,6 +66,64 @@ export default function StimulantDetail({ itemInfo }: ItemDetailTypes) {
       </CardHeader>
 
       <CardContent className="px-4 sm:px-6 pb-6 space-y-4 sm:space-y-6">
+        {/* Basic Info Section */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Heart className="w-4 h-4 text-primary" />
+            <h3 className="text-sm sm:text-base font-semibold text-primary">
+              {itemDetailI18N.info[localeKey]}
+            </h3>
+          </div>
+          <div className="space-y-2">
+            {/* Usage Count */}
+            <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
+              <div className="flex items-center gap-2">
+                <Zap
+                  className={`w-4 h-4 ${
+                    itemInfo.info.energy < 0 ? "text-red-500" : "text-green-500"
+                  }`}
+                />
+                <span className="font-medium text-sm sm:text-base text-muted-foreground">
+                  {itemI18N.medical.energy[localeKey]}
+                </span>
+              </div>
+              <Badge
+                variant="secondary"
+                className={`font-semibold ${
+                  itemInfo.info.energy < 0 ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {itemInfo.info.energy}
+              </Badge>
+            </div>
+            {/* Duration */}
+            <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
+              <div className="flex items-center gap-2">
+                <Droplet
+                  className={`w-4 h-4 ${
+                    itemInfo.info.hydration < 0
+                      ? "text-red-500"
+                      : "text-green-500"
+                  }`}
+                />
+                <span className="font-medium text-sm sm:text-base text-muted-foreground">
+                  {itemI18N.medical.hydration[localeKey]}
+                </span>
+              </div>
+              <Badge
+                variant="secondary"
+                className={`font-semibold ${
+                  itemInfo.info.hydration < 0
+                    ? "text-red-500"
+                    : "text-green-500"
+                }`}
+              >
+                {itemInfo.info.hydration}
+              </Badge>
+            </div>
+          </div>
+        </div>
+
         {/* Buffs Section */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-3">
