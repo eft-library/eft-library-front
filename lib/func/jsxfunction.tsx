@@ -1,9 +1,3 @@
-// import { SpawnChance } from "@/components/page/boss/data/bossTypes";
-// import type { StimEffect } from "@/components/page/provisions/data/provisionsTypes";
-// import { getOtherLocalizedKey } from "./localeFunction";
-// import TextSpan from "@/components/custom/gridContents/textSpan";
-// import { ALL_COLOR } from "../consts/colorConsts";
-
 import { SpawnChance } from "@/app/boss/[id]/_components/boss.types";
 import { getOtherLocalizedKey } from "./localeFunction";
 import { Price, TradeOption } from "@/app/price/_components/price.types";
@@ -186,89 +180,6 @@ export const getPlusMinus = (text: number) => {
   return text > 0 ? ` +${text}` : `${text}`;
 };
 
-// export const highlightMatchedText = (text: string, keyword: string) => {
-//   if (keyword.length < 2)
-//     return (
-//       <span className="text-white font-bold hover:text-GoldenYellow">
-//         {text}
-//       </span>
-//     );
-
-//   const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-//   const regex = new RegExp(`(${safeKeyword})`, "gi");
-//   const parts = text.split(regex);
-
-//   return (
-//     <>
-//       {parts.map((part, index) =>
-//         part.toLowerCase() === keyword.toLowerCase() ? (
-//           <span
-//             key={index}
-//             className="text-GoldenYellow font-bold hover:text-GoldenYellow"
-//           >
-//             {part}
-//           </span>
-//         ) : (
-//           <span
-//             key={index}
-//             className="text-white font-bold hover:text-GoldenYellow"
-//           >
-//             {part}
-//           </span>
-//         )
-//       )}
-//     </>
-//   );
-// };
-
-// export const hasMatchInList = (list: any[], searchWord: string): boolean => {
-//   if (searchWord.length < 1) return true;
-
-//   const safeWord = searchWord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-//   const regex = new RegExp(safeWord, "i");
-
-//   return list.some(
-//     (item) =>
-//       regex.test(item.name_en) ||
-//       regex.test(item.name_ko) ||
-//       regex.test(item.name_ja || item.name_ko)
-//   );
-// };
-// export const filteringData = (
-//   userSearch: string,
-//   name_en: string,
-//   name_ko: string,
-//   name_ja: string
-// ) => {
-//   if (userSearch.length < 2) {
-//     return true;
-//   }
-//   const safeWord = userSearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-//   const regex = new RegExp(safeWord, "i");
-
-//   return regex.test(name_en) || regex.test(name_ko) || regex.test(name_ja);
-// };
-
-// export const getColor = (value: number, mode: "check" | "recoil") => {
-//   if (value === 0) {
-//     return "white";
-//   }
-
-//   if (mode === "check") {
-//     return value > 0 ? "BrightCyan" : "Red";
-//   } else {
-//     return value < 0 ? "BrightCyan" : "Red";
-//   }
-// };
-
-// export const floatToPercent = (value: number) => {
-//   if (value !== 0) {
-//     return Math.round(value * 100);
-//   } else {
-//     return value;
-//   }
-// };
-
 export const filterStimEffects = (effects: StimEffect[]) => {
   const seen = new Set();
   for (const effect of effects) {
@@ -282,56 +193,6 @@ export const filterStimEffects = (effects: StimEffect[]) => {
   }
   return effects;
 };
-
-// export const checkPlus = (effect: number | string | null) => {
-//   if (effect === null) {
-//     return "white";
-//   }
-
-//   if (typeof effect === "number") {
-//     if (effect == 0) {
-//       return "white";
-//     } else if (effect > 0) {
-//       return "BrightCyan";
-//     } else {
-//       return "Red";
-//     }
-//   }
-
-//   if (typeof effect === "string") {
-//     switch (effect) {
-//       case "손 떨림":
-//         return "Red";
-//       case "진통제":
-//         return "BrightCyan";
-//       default:
-//         return "white";
-//     }
-//   }
-// };
-
-// export const checkIdCategory = (id: string, checkId: string) => {
-//   return id === checkId;
-// };
-
-// export const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
-//   e.currentTarget.style.transform = "scale(1.1)";
-//   e.currentTarget.style.opacity = "0.8";
-// };
-
-// export const handleHoverExit = (e: React.MouseEvent<HTMLDivElement>) => {
-//   e.currentTarget.style.transform = "scale(1)";
-//   e.currentTarget.style.opacity = "1";
-// };
-
-// export const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-//   const list = event.target as HTMLDivElement;
-//   if (list.scrollTop === 0) {
-//     list.scrollTop = 1;
-//   } else if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
-//     list.scrollTop = list.scrollHeight - list.clientHeight - 1;
-//   }
-// };
 
 export const getFirstParagraph = (htmlString: string) => {
   const parser = new DOMParser();
@@ -376,16 +237,6 @@ export const groupSpawnAreas = (spawnChances: SpawnChance[]) => {
   return uniqueList;
 };
 
-// export const drugText = (label: string, value: number, positive: boolean) => {
-//   return (
-//     <div className={"flex mb-[4px]"}>
-//       <TextSpan isCenter={false}>{label} :&nbsp;</TextSpan>
-//       <TextSpan isCenter={false} textColor={positive ? "BrightCyan" : "Red"}>
-//         {value}
-//       </TextSpan>
-//     </div>
-//   );
-// };
 export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
   let level: number;
 

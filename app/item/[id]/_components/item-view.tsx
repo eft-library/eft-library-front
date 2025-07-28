@@ -10,6 +10,7 @@ import QuestReward from "./QuestReward/quest-reward";
 import HideoutConstruction from "./HideoutConstruction/hideout-construction";
 import PurchaseUnlock from "./PurchaseUnlock/purchase-unlock";
 import CraftingUnlock from "./CraftingUnlock/crafting-unlock";
+import MedikitDetail from "./ItemDetail/medikit-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -25,6 +26,10 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
             </h1>
           </div>
         </div>
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Medikit" && (
+            <MedikitDetail itemInfo={itemInfo} />
+          )}
         {(itemInfo.required_by_quest_item.length > 0 ||
           itemInfo.required_by_quest_item_array.length > 0) && (
           <QuestRequire itemInfo={itemInfo} />
