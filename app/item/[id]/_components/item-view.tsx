@@ -19,7 +19,7 @@ import ArmBandDetail from "./ItemDetail/arm-band-detail";
 import GunDetail from "./ItemDetail/gun-detail";
 import AmmoDetail from "./ItemDetail/ammo-detail";
 import HeadWearDetail from "./ItemDetail/head-wear-detail";
-import HeadsetDetail from "./HideoutCrafting/headset-detail";
+import HeadsetDetail from "./ItemDetail/headset-detail";
 import RigDetail from "./ItemDetail/rig-detail";
 import BackpackDetail from "./ItemDetail/backpack-detail";
 import ContainerDetail from "./ItemDetail/container-detail";
@@ -27,6 +27,9 @@ import LootDetail from "./ItemDetail/loot-detail";
 import FaceCoverDetail from "./ItemDetail/face-cover-detail";
 import GlassesDetail from "./ItemDetail/glasses-detail";
 import KeyDetail from "./ItemDetail/key-detail";
+import KnifeDetail from "./ItemDetail/knife-detail";
+import ThrowableDetail from "./ItemDetail/throwable-detail";
+import StationaryDetail from "./ItemDetail/stationary-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -91,6 +94,14 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
           <GlassesDetail itemInfo={itemInfo} />
         )}
         {itemInfo.category === "Key" && <KeyDetail itemInfo={itemInfo} />}
+        {itemInfo.category === "Knife" && <KnifeDetail itemInfo={itemInfo} />}
+        {itemInfo.category === "Throwable" && (
+          <ThrowableDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Gun" &&
+          itemInfo.info.gun_category === "Stationary weapons" && (
+            <StationaryDetail itemInfo={itemInfo} />
+          )}
 
         {(itemInfo.required_by_quest_item.length > 0 ||
           itemInfo.required_by_quest_item_array.length > 0) && (

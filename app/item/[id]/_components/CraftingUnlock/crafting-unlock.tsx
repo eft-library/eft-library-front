@@ -7,7 +7,7 @@ import type { CraftingUnlockTypes } from "../item.types";
 import Image from "next/image";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
-import { Unlock } from "lucide-react";
+import { Unlock, Wrench } from "lucide-react";
 
 export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
   const locale = useLocale();
@@ -51,15 +51,15 @@ export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
                       className="w-full h-full object-contain rounded-lg"
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="font-medium text-sm sm:text-base text-foreground">
+                  <div className="flex-1 min-w-0 flex items-center justify-start sm:justify-start">
+                    <span className="font-medium text-sm sm:text-base text-black dark:text-white text-left sm:text-left">
                       {unlock.name[localeKey]}
                     </span>
                   </div>
                 </div>
 
                 {/* Production Info */}
-                <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center">
+                <div className="flex items-center gap-2 mt-2 sm:mt-0 justify-start sm:justify-center">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
                     <Image
                       src={
@@ -72,7 +72,8 @@ export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
                     />
                   </div>
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                    <Wrench className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                       {unlock.reward.item[getOtherLocalizedKey(localeKey)]}
                     </span>
                   </div>

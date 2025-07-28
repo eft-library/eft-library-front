@@ -20,7 +20,7 @@ export default function TotalRequestCard({
           <div className="flex items-center space-x-1">
             <CalendarDays className="h-4 w-4" />
             <span>
-              {startDate?.toLocaleDateString("ko-KR")} ~{" "}
+              {startDate?.toLocaleDateString("ko-KR")} ~
               {endDate?.toLocaleDateString("ko-KR")} 기준
             </span>
           </div>

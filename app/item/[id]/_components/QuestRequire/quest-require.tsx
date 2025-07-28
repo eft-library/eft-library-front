@@ -51,8 +51,10 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         className="w-full h-full object-contain rounded-lg"
                       />
                     </div>
-                    <div className="flex-1 min-w-0 flex items-center justify-center sm:justify-start">
-                      <span className="font-medium text-sm sm:text-base text-foreground text-center sm:text-left leading-tight line-clamp-2">
+                    <div className="flex-1 min-w-0 flex items-center justify-start sm:justify-start">
+                      {/* Changed justify-center to justify-start */}
+                      <span className="font-medium text-sm sm:text-base text-black dark:text-white text-left sm:text-left leading-tight line-clamp-2">
+                        {/* Changed text-center to text-left */}
                         {questItem.name[localeKey]}
                       </span>
                     </div>
@@ -64,6 +66,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                       <Image
                         src={
                           questItem.objective.questItem.gridImageLink ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={questItem.objective.questItem.name_en}
@@ -75,14 +78,14 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <Package className="w-4 h-4 text-primary flex-shrink-0" />
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0 flex-1">
-                        <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                        <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                           {
                             questItem.objective.questItem[
                               getOtherLocalizedKey(localeKey)
                             ]
                           }
                         </span>
-                        <span className="text-sm sm:text-base font-semibold text-primary flex-shrink-0">
+                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white flex-shrink-0">
                           ×{questItem.objective.count}
                         </span>
                       </div>
@@ -112,8 +115,10 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         className="w-full h-full object-contain rounded-lg"
                       />
                     </div>
-                    <div className="flex-1 min-w-0 flex items-center justify-center sm:justify-start">
-                      <span className="font-medium text-sm sm:text-base text-foreground text-center sm:text-left leading-tight line-clamp-2">
+                    <div className="flex-1 min-w-0 flex items-center justify-start sm:justify-start">
+                      {/* Changed justify-center to justify-start */}
+                      <span className="font-medium text-sm sm:text-base text-black dark:text-white text-left sm:text-left leading-tight line-clamp-2">
+                        {/* Changed text-center to text-left */}
                         {questItem.name[localeKey]}
                       </span>
                     </div>
@@ -127,6 +132,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                           questItem.objective.items.find(
                             (qItem) => qItem.id === itemInfo.id
                           )?.gridImageLink ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -143,14 +149,14 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <Package className="w-4 h-4 text-primary flex-shrink-0" />
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0 flex-1">
-                        <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                        <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                           {
                             questItem.objective.items.find(
                               (qItem) => qItem.id === itemInfo.id
                             )?.name_en
                           }
                         </span>
-                        <span className="text-sm sm:text-base font-semibold text-primary flex-shrink-0">
+                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white flex-shrink-0">
                           ×{questItem.objective.count}
                         </span>
                       </div>

@@ -30,7 +30,6 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
             {itemRelatedInfo.purchase[localeKey]}
           </span>
         </div>
-
         <div className="space-y-2 sm:space-y-3">
           {itemInfo.rewarded_by_quests_offer_unlock.map((unlock, index) => (
             <Link
@@ -41,7 +40,7 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
             >
               <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]">
                 {/* Quest Info */}
-                <div className="flex items-start gap-2 sm:gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 bg-secondary/30">
                     <Image
                       src={unlock.npc_image || "/placeholder.svg"}
@@ -51,15 +50,17 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
                       className="w-full h-full object-contain rounded-lg"
                     />
                   </div>
-                  <div className="flex-1 min-w-0 flex items-center justify-center sm:justify-start">
-                    <span className="font-medium text-sm sm:text-base text-foreground text-center sm:text-left line-clamp-2">
+                  <div className="flex-1 min-w-0 flex items-center justify-start sm:justify-start">
+                    {/* Changed justify-center to justify-start */}
+                    <span className="font-medium text-sm sm:text-base text-black dark:text-white text-left sm:text-left line-clamp-2">
+                      {/* Changed text-center to text-left */}
                       {unlock.name[localeKey]}
                     </span>
                   </div>
                 </div>
 
                 {/* Purchase Info */}
-                <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center">
+                <div className="flex items-center gap-2 mt-2 sm:mt-0 justify-start sm:justify-center">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
                     <Image
                       src={
@@ -73,7 +74,7 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
                   </div>
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <Unlock className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                    <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                       {unlock.reward.item[getOtherLocalizedKey(localeKey)]}
                     </span>
                   </div>
@@ -82,16 +83,6 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
             </Link>
           ))}
         </div>
-
-        {/* Empty State */}
-        {itemInfo.rewarded_by_quests_offer_unlock.length === 0 && (
-          <div className="py-8 text-center">
-            <ShoppingCart className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground">
-              No purchase unlocks available
-            </p>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

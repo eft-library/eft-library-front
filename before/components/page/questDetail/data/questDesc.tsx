@@ -102,7 +102,7 @@ export default function QuestDesc({ questInfo }: QuestDesc) {
               key={`${rIndex}-rewards-${questInfo.id}`}
               className="font-bold p-[1px]"
             >
-              *{" "}
+              *
               <Link
                 href={`/item/${rewards.item.normalizedName}`}
                 className="text-GoldenYellow hover:text-Beige"

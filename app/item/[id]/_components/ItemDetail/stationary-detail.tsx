@@ -6,10 +6,11 @@ import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
 import Image from "next/image";
 import { itemDetailI18N } from "@/lib/consts/i18nConsts";
-import { Map, Key, Scale, Info } from "lucide-react";
+import { Timer, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { detailThrowable } from "@/lib/consts/columnConsts";
 
-export default function KeyDetail({ itemInfo }: ItemDetailTypes) {
+export default function ThrowableDetail({ itemInfo }: ItemDetailTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -36,52 +37,36 @@ export default function KeyDetail({ itemInfo }: ItemDetailTypes) {
             </h3>
           </div>
           <div className="space-y-2">
-            {itemInfo.info.use_map && itemInfo.info.use_map.en && (
+            {itemInfo.info.modes && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Map className="w-4 h-4 text-blue-500" /> {/* Map icon */}
+                  <Timer className="w-4 h-4 text-purple-500" />
+                  {/* Timer icon for fuse time */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                    {itemDetailI18N.useMap[localeKey]}
+                    {itemDetailI18N.shootMode[localeKey]}
+                    {/* This label seems to be reused for fuse time */}
                   </span>
                 </div>
                 <div className="flex gap-1 flex-wrap justify-end">
-                  {itemInfo.info.use_map[getLocaleKey(locale)].map(
-                    (area: string, index: number) => (
-                      <Badge
-                        variant="secondary"
-                        className="font-semibold"
-                        key={`${index}-use-map-${itemInfo.id}`}
-                      >
-                        {area}
+                  {detailThrowable.includes(itemInfo.name.ko) ? (
+                    <div className="flex flex-col items-end">
+                      <Badge variant="secondary" className="font-semibold">
+                        {itemDetailI18N.onImpact[localeKey]}
+                        {itemInfo.info.min_fuse} {itemDetailI18N.sec[localeKey]}
                       </Badge>
-                    )
+                      <Badge variant="secondary" className="font-semibold mt-1">
+                        ({itemDetailI18N.noImpactTrigger[localeKey]}
+                        {itemInfo.info.fuse} {itemDetailI18N.sec[localeKey]})
+                      </Badge>
+                    </div>
+                  ) : (
+                    <Badge variant="secondary" className="font-semibold">
+                      {itemInfo.info.fuse} {itemDetailI18N.sec[localeKey]}
+                    </Badge>
                   )}
                 </div>
               </div>
             )}
-            <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
-              <div className="flex items-center gap-2">
-                <Key className="w-4 h-4 text-orange-500" />
-                {/* Key icon for usage count */}
-                <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                  {itemDetailI18N.usageCount[localeKey]}
-                </span>
-              </div>
-              <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.uses}
-              </Badge>
-            </div>
-            <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
-              <div className="flex items-center gap-2">
-                <Scale className="w-4 h-4 text-gray-500" /> {/* Weight icon */}
-                <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                  {itemDetailI18N.weight[localeKey]}
-                </span>
-              </div>
-              <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.weight} kg
-              </Badge>
-            </div>
           </div>
         </div>
       </CardContent>

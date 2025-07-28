@@ -27,8 +27,10 @@ export default function HideoutConstruction({
       </CardHeader>
       <CardContent className="px-4 sm:px-6 pb-6">
         <div className="grid grid-cols-2 gap-2 sm:gap-4 py-2 sm:py-3 px-2 sm:px-4 rounded-lg font-semibold text-sm sm:text-base mb-4 bg-secondary">
-          <span>{itemRelatedInfo.hideout[localeKey]}</span>
-          <span className="text-right">
+          <span className="text-black dark:text-white">
+            {itemRelatedInfo.hideout[localeKey]}
+          </span>
+          <span className="text-black dark:text-white">
             {itemRelatedInfo.material[localeKey]}
           </span>
         </div>
@@ -40,7 +42,7 @@ export default function HideoutConstruction({
               className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]"
             >
               {/* Hideout Info */}
-              <div className="flex items-start gap-2 sm:gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md flex items-center justify-center">
                     {getStationSVG(
@@ -53,14 +55,14 @@ export default function HideoutConstruction({
                     )}
                   </div>
                 </div>
-                <div className="flex-1 min-w-0 flex flex-col justify-center sm:justify-start">
-                  <div className="flex items-center justify-center sm:justify-start">
-                    <span className="font-medium text-sm sm:text-base text-foreground text-center sm:text-left">
+                <div className="flex-1 min-w-0 flex flex-col justify-start sm:justify-start">
+                  <div className="flex items-center justify-start sm:justify-start">
+                    <span className="font-medium text-sm sm:text-base text-black dark:text-white text-left sm:text-left">
                       {hideout.master_name[localeKey]}
                     </span>
                   </div>
-                  <div className="flex justify-center sm:justify-start mt-1">
-                    <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-secondary-foreground">
+                  <div className="flex justify-start sm:justify-start mt-1">
+                    <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-black dark:text-white">
                       LV {Number.parseInt(hideout.level_id.split("-")[1], 10)}
                     </Badge>
                   </div>
@@ -68,7 +70,7 @@ export default function HideoutConstruction({
               </div>
 
               {/* Material Info */}
-              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-end">
+              <div className="flex items-center gap-2 mt-2 sm:mt-0 justify-start sm:justify-end">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
                   <Image
                     src={hideout.image || "/placeholder.svg"}
@@ -80,10 +82,10 @@ export default function HideoutConstruction({
                 </div>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <Package className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                  <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                     {hideout.name[localeKey]}
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold text-primary flex-shrink-0 ml-1">
+                  <span className="text-xs sm:text-sm font-semibold text-black dark:text-white flex-shrink-0 ml-1">
                     ×{hideout.quantity}
                   </span>
                 </div>

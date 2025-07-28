@@ -6,17 +6,10 @@ import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
 import Image from "next/image";
 import { itemDetailI18N } from "@/lib/consts/i18nConsts";
-import {
-  Shield,
-  HardHat,
-  HeartCrack,
-  Sparkles,
-  Scale,
-  Info,
-} from "lucide-react";
+import { Sword, DotIcon as Dagger, Maximize2, Scale, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export default function GlassesDetail({ itemInfo }: ItemDetailTypes) {
+export default function KnifeDetail({ itemInfo }: ItemDetailTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
@@ -43,56 +36,46 @@ export default function GlassesDetail({ itemInfo }: ItemDetailTypes) {
             </h3>
           </div>
           <div className="space-y-2">
+            {/* Slash Damage */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-500" />
-                {/* Armor Class icon */}
+                <Sword className="w-4 h-4 text-red-500" />
+                {/* Sword icon for slash damage */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                  {itemDetailI18N.armorClass[localeKey]}
+                  {itemDetailI18N.baseDamage[localeKey]}
                 </span>
               </div>
               <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.class_value}
+                {itemInfo.info.slash_damage}
               </Badge>
             </div>
-            {itemInfo.info.material && (
-              <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
-                <div className="flex items-center gap-2">
-                  <HardHat className="w-4 h-4 text-red-500" />
-                  {/* Material icon */}
-                  <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                    {itemDetailI18N.material[localeKey]}
-                  </span>
-                </div>
-                <Badge variant="secondary" className="font-semibold">
-                  {itemInfo.info.material.name}
-                </Badge>
-              </div>
-            )}
+            {/* Stab Damage */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <HeartCrack className="w-4 h-4 text-purple-500" />
-                {/* Durability icon */}
+                <Dagger className="w-4 h-4 text-blue-500" />
+                {/* Dagger icon for stab damage */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                  {itemDetailI18N.durability[localeKey]}
+                  {itemDetailI18N.stabbing[localeKey]}
                 </span>
               </div>
               <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.durability}
+                {itemInfo.info.stab_damage}
               </Badge>
             </div>
+            {/* Base Attack Range (Hit Radius) */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-orange-500" />
-                {/* Ricochet Chance icon */}
+                <Maximize2 className="w-4 h-4 text-purple-500" />
+                {/* Maximize2 icon for attack range */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
-                  {itemDetailI18N.eyeProtection[localeKey]}
+                  {itemDetailI18N.baseAttackRange[localeKey]}
                 </span>
               </div>
               <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.blindness_protection}%
+                {itemInfo.info.hit_radius}
               </Badge>
             </div>
+            {/* Weight */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
                 <Scale className="w-4 h-4 text-gray-500" /> {/* Weight icon */}

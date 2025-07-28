@@ -76,7 +76,7 @@ export default function PlannerCard({
                     variant="secondary"
                     className="text-xs font-semibold bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border-0 px-3 py-1 rounded-full"
                   >
-                    {npcInfo.quest_info.length}{" "}
+                    {npcInfo.quest_info.length}
                     {planner18N.questCountText[localeKey]}
                   </Badge>
                 </div>

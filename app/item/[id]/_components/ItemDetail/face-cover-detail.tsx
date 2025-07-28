@@ -53,7 +53,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
           <div className="space-y-2">
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-500" />{" "}
+                <Shield className="w-4 h-4 text-green-500" />
                 {/* Armor Class icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.armorClass[localeKey]}
@@ -66,7 +66,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.zones && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Head className="w-4 h-4 text-blue-500" />{" "}
+                  <Head className="w-4 h-4 text-blue-500" />
                   {/* Armor Zone icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.armorZone[localeKey]}
@@ -90,7 +90,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.material && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <HardHat className="w-4 h-4 text-red-500" />{" "}
+                  <HardHat className="w-4 h-4 text-red-500" />
                   {/* Material icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.material[localeKey]}
@@ -103,7 +103,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             )}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <HeartCrack className="w-4 h-4 text-purple-500" />{" "}
+                <HeartCrack className="w-4 h-4 text-purple-500" />
                 {/* Durability icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.durability[localeKey]}
@@ -116,7 +116,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.ricochet_chance && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-orange-500" />{" "}
+                  <Sparkles className="w-4 h-4 text-orange-500" />
                   {/* Ricochet Chance icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.ricochetChance[localeKey]}
@@ -144,7 +144,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <MinusCircle className="w-4 h-4 text-red-500" />{" "}
+                <MinusCircle className="w-4 h-4 text-red-500" />
                 {/* Ergonomics Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.ergonomicsPenalty[localeKey]}
@@ -156,7 +156,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Footprints className="w-4 h-4 text-red-500" />{" "}
+                <Footprints className="w-4 h-4 text-red-500" />
                 {/* Move Speed Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.moveSpeedPenalty[localeKey]}
@@ -168,7 +168,7 @@ export default function FaceCoverDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <RotateCw className="w-4 h-4 text-red-500" />{" "}
+                <RotateCw className="w-4 h-4 text-red-500" />
                 {/* Turn Speed Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.turnSpeedPenalty[localeKey]}

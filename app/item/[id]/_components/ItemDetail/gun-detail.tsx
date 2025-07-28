@@ -50,7 +50,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.ergonomics && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Hand className="w-4 h-4 text-green-500" />{" "}
+                  <Hand className="w-4 h-4 text-green-500" />
                   {/* Ergonomics icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.ergonomics[localeKey]}
@@ -65,7 +65,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.recoil_horizontal && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <ArrowLeftRight className="w-4 h-4 text-blue-500" />{" "}
+                  <ArrowLeftRight className="w-4 h-4 text-blue-500" />
                   {/* Horizontal Recoil icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.horizontalRecoil[localeKey]}
@@ -80,7 +80,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.recoil_vertical && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <ArrowUpDown className="w-4 h-4 text-red-500" />{" "}
+                  <ArrowUpDown className="w-4 h-4 text-red-500" />
                   {/* Vertical Recoil icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.verticalRecoil[localeKey]}
@@ -95,7 +95,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.modes && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Settings className="w-4 h-4 text-purple-500" />{" "}
+                  <Settings className="w-4 h-4 text-purple-500" />
                   {/* Shoot Mode icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.shootMode[localeKey]}
@@ -120,7 +120,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.fire_rate && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Gauge className="w-4 h-4 text-orange-500" />{" "}
+                  <Gauge className="w-4 h-4 text-orange-500" />
                   {/* Shoot Rate icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.shootRate[localeKey]}
@@ -135,7 +135,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.weight && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-gray-500" />{" "}
+                  <Scale className="w-4 h-4 text-gray-500" />
                   {/* Weight icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.weight[localeKey]}
@@ -151,7 +151,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
             {itemInfo.info.default_ammo && (
               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
                 <div className="flex items-center gap-2">
-                  <Bullet className="w-4 h-4 text-yellow-500" />{" "}
+                  <Bullet className="w-4 h-4 text-yellow-500" />
                   {/* Default Ammo icon */}
                   <span className="font-medium text-sm sm:text-base text-muted-foreground">
                     {itemDetailI18N.defaultAmmo[localeKey]}
@@ -170,10 +170,10 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
           itemInfo.info.allowed_ammo.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-3">
-                <Bullet className="w-4 h-4 text-primary" />{" "}
+                <Bullet className="w-4 h-4 text-primary" />
                 {/* Icon for Allowed Ammo section */}
                 <h3 className="text-sm sm:text-base font-semibold text-primary">
-                  {itemDetailI18N.allowedAmmo[localeKey] || "Allowed Ammo"}{" "}
+                  {itemDetailI18N.allowedAmmo[localeKey] || "Allowed Ammo"}
                   {/* Fallback for i18n key */}
                 </h3>
               </div>

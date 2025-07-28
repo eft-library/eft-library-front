@@ -81,7 +81,7 @@ export default function QuestClient({ questList }: QuestClient) {
                     key={`${rIndex}-rewards-${quest.id}`}
                     className="font-bold text-sm p-[1px]"
                   >
-                    *{" "}
+                    *
                     <Link
                       href={`/item/${rewards.item.normalizedName}`}
                       className="text-GoldenYellow hover:text-Beige"

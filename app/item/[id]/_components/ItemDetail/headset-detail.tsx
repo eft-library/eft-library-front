@@ -38,7 +38,7 @@ export default function HeadserDetail({ itemInfo }: ItemDetailTypes) {
           <div className="space-y-2">
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Speech className="w-4 h-4 text-green-500" />{" "}
+                <Speech className="w-4 h-4 text-green-500" />
                 {/* Armor Class icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.distance[localeKey]}

@@ -90,7 +90,7 @@ export default function DrugDetail({ itemInfo }: ItemDetailTypes) {
                     </span>
                   </div>
                   <Badge variant="secondary" className="font-semibold">
-                    {itemInfo.info.painkiller_duration}{" "}
+                    {itemInfo.info.painkiller_duration}
                     {itemI18N.medical.duration_delay[localeKey]}
                   </Badge>
                 </div>

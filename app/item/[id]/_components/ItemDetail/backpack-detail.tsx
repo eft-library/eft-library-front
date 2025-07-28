@@ -59,7 +59,7 @@ export default function BackpackDetail({ itemInfo }: ItemDetailTypes) {
             {/* Internal Size (Grids) */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <LayoutGrid className="w-4 h-4 text-purple-500" />{" "}
+                <LayoutGrid className="w-4 h-4 text-purple-500" />
                 {/* Internal Size icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.grid[localeKey]}
@@ -82,7 +82,7 @@ export default function BackpackDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <MinusCircle className="w-4 h-4 text-red-500" />{" "}
+                <MinusCircle className="w-4 h-4 text-red-500" />
                 {/* Ergonomics Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.ergonomicsPenalty[localeKey]}
@@ -94,7 +94,7 @@ export default function BackpackDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Footprints className="w-4 h-4 text-red-500" />{" "}
+                <Footprints className="w-4 h-4 text-red-500" />
                 {/* Move Speed Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.moveSpeedPenalty[localeKey]}
@@ -106,7 +106,7 @@ export default function BackpackDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <RotateCw className="w-4 h-4 text-red-500" />{" "}
+                <RotateCw className="w-4 h-4 text-red-500" />
                 {/* Turn Speed Penalty icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.turnSpeedPenalty[localeKey]}

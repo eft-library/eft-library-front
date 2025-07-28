@@ -47,7 +47,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
           <div className="space-y-2">
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Crosshair className="w-4 h-4 text-red-500" />{" "}
+                <Crosshair className="w-4 h-4 text-red-500" />
                 {/* Damage icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.damage[localeKey]}
@@ -59,7 +59,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Drill className="w-4 h-4 text-blue-500" />{" "}
+                <Drill className="w-4 h-4 text-blue-500" />
                 {/* Penetration icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.penetration[localeKey]}
@@ -71,7 +71,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <ShieldMinus className="w-4 h-4 text-orange-500" />{" "}
+                <ShieldMinus className="w-4 h-4 text-orange-500" />
                 {/* Armor Damage icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.armorDamage[localeKey]}
@@ -83,7 +83,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-purple-500" />{" "}
+                <Target className="w-4 h-4 text-purple-500" />
                 {/* Accuracy icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.accuracy[localeKey]}
@@ -95,7 +95,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Minimize2 className="w-4 h-4 text-green-500" />{" "}
+                <Minimize2 className="w-4 h-4 text-green-500" />
                 {/* Recoil icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.recoil[localeKey]}
@@ -107,7 +107,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Droplet className="w-4 h-4 text-red-500" />{" "}
+                <Droplet className="w-4 h-4 text-red-500" />
                 {/* Light Bleeding icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.lightBleeding[localeKey]}
@@ -119,7 +119,7 @@ export default function AmmoDetail({ itemInfo }: ItemDetailTypes) {
             </div>
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Droplets className="w-4 h-4 text-red-700" />{" "}
+                <Droplets className="w-4 h-4 text-red-700" />
                 {/* Heavy Bleeding icon */}
                 <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemDetailI18N.heavyBleeding[localeKey]}

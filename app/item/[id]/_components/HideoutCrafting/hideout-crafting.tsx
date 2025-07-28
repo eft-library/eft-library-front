@@ -121,12 +121,14 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                           className="w-8 h-8 object-contain rounded-lg"
                         />
                       </div>
-                      <span className="text-xs text-muted-foreground flex-1 truncate">
-                        {reqItem.item[getOtherLocalizedKey(localeKey)]}
-                      </span>
-                      <span className="text-xs font-semibold text-primary flex-shrink-0">
-                        ×{reqItem.quantity}
-                      </span>
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <span className="text-xs text-black dark:text-white flex-1 truncate">
+                          {reqItem.item[getOtherLocalizedKey(localeKey)]}
+                        </span>
+                        <span className="text-xs font-semibold text-black dark:text-white flex-shrink-0">
+                          ×{reqItem.quantity}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -148,12 +150,14 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                         className="w-14 h-14 object-contain rounded-lg"
                       />
                     </div>
-                    <span className="text-xs text-muted-foreground flex-grow-0">
-                      {reqItem.item[getOtherLocalizedKey(localeKey)]}
-                    </span>
-                    <span className="text-xs text-muted-foreground flex-shrink-0">
-                      ×{reqItem.quantity}
-                    </span>
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
+                        {reqItem.item[getOtherLocalizedKey(localeKey)]}
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-black dark:text-white flex-shrink-0 ml-1">
+                        ×{reqItem.quantity}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -164,10 +168,10 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
               {/* Mobile Layout for Time */}
               <div className="flex items-center gap-2 md:hidden">
                 <Clock className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="font-semibold text-sm text-foreground flex-shrink-0">
+                <span className="font-semibold text-sm text-black dark:text-white flex-shrink-0">
                   {itemRelatedInfo.time[localeKey]}:
                 </span>
-                <span className="text-sm font-semibold text-foreground">
+                <span className="text-sm font-semibold text-black dark:text-white">
                   {changeTime(craft.duration)}
                 </span>
               </div>
@@ -175,7 +179,7 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
               {/* Desktop Layout for Time */}
               <div className="hidden md:flex flex-col items-center justify-center w-full text-center">
                 <ArrowRight className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <span className="text-base font-bold text-foreground">
+                <span className="text-base font-bold text-black dark:text-white">
                   {changeTime(craft.duration)}
                 </span>
               </div>
@@ -186,7 +190,7 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
               {/* Mobile Layout for Reward */}
               <div className="flex items-center gap-2 md:hidden">
                 <Award className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="font-semibold text-sm text-foreground flex-shrink-0">
+                <span className="font-semibold text-sm text-black dark:text-white flex-shrink-0">
                   {itemRelatedInfo.reward[localeKey]}:
                 </span>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -199,12 +203,14 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                       className="w-8 h-8 object-contain rounded-lg"
                     />
                   </div>
-                  <span className="text-xs font-medium text-muted-foreground flex-1 truncate">
-                    {craft.name[localeKey]}
-                  </span>
-                  <span className="text-xs font-semibold text-primary flex-shrink-0">
-                    ×{craft.quantity}
-                  </span>
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
+                      {craft.name[localeKey]}
+                    </span>
+                    <span className="text-xs sm:text-sm font-semibold text-black dark:text-white flex-shrink-0 ml-1">
+                      ×{craft.quantity}
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -219,12 +225,14 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                     className="w-20 h-20 object-contain rounded-lg"
                   />
                 </div>
-                <span className="text-sm font-medium text-muted-foreground flex-grow-0">
-                  {craft.name[localeKey]}
-                </span>
-                <span className="text-sm font-semibold text-muted-foreground flex-shrink-0">
-                  &nbsp;×{craft.quantity}
-                </span>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
+                    {craft.name[localeKey]}
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-black dark:text-white flex-shrink-0 ml-1">
+                    ×{craft.quantity}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
