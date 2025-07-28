@@ -1,81 +1,92 @@
+"use client";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { HideoutConstructionTypes } from "../item.types";
+import type { HideoutConstructionTypes } from "../item.types";
 import { Badge } from "@/components/ui/badge";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { getMaxSuffix } from "@/lib/func/jsxfunction";
+import { Home, Package } from "lucide-react";
 
 export default function HideoutConstruction({
   itemInfo,
 }: HideoutConstructionTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+
   return (
-    <Card className="rounded-xl shadow-lg border border-border">
+    <Card className="rounded-xl shadow-lg border border-border bg-card">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-bold text-center text-foreground">
+        <CardTitle className="text-lg sm:text-xl font-bold text-center text-foreground flex items-center justify-center gap-2">
+          <Home className="w-5 h-5 text-primary" />
           {itemRelatedInfo.hideoutConstruction[localeKey]}
         </CardTitle>
       </CardHeader>
-
-      <CardContent className="px-6 pb-6">
-        <div className="grid grid-cols-2 gap-4 py-3 px-4 rounded-lg font-semibold text-base mb-4 bg-secondary">
+      <CardContent className="px-4 sm:px-6 pb-6">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 py-2 sm:py-3 px-2 sm:px-4 rounded-lg font-semibold text-sm sm:text-base mb-4 bg-secondary">
           <span>{itemRelatedInfo.hideout[localeKey]}</span>
           <span className="text-right">
             {itemRelatedInfo.material[localeKey]}
           </span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {itemInfo.hideout_items.map((hideout) => (
             <div
               key={`hideout-${hideout.level_id}`}
-              className="flex flex-col sm:grid sm:grid-cols-2 gap-4 py-3 px-4 rounded-lg hover:bg-secondary transition-colors items-start sm:items-center border-b border-border last:border-b-0"
+              className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]"
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-12 h-12 rounded-md flex items-center justify-center flex-shrink-0`}
-                >
-                  <div
-                    className={`w-8 h-8 rounded-md flex items-center justify-center`}
-                  >
+              {/* Hideout Info */}
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md flex items-center justify-center">
                     {getStationSVG(
                       hideout.master_id,
                       80,
                       80,
-                      getMaxSuffix(parseInt(hideout.level_id.split("-")[1], 10))
+                      getMaxSuffix(
+                        Number.parseInt(hideout.level_id.split("-")[1], 10)
+                      )
                     )}
                   </div>
                 </div>
-                <div>
-                  <div className="font-medium text-base text-foreground">
-                    {hideout.master_name[localeKey]}
+                <div className="flex-1 min-w-0 flex flex-col justify-center sm:justify-start">
+                  <div className="flex items-center justify-center sm:justify-start">
+                    <span className="font-medium text-sm sm:text-base text-foreground text-center sm:text-left">
+                      {hideout.master_name[localeKey]}
+                    </span>
                   </div>
-                  <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-secondary-foreground mt-1">
-                    LV {parseInt(hideout.level_id.split("-")[1], 10)}
-                  </Badge>
+                  <div className="flex justify-center sm:justify-start mt-1">
+                    <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-secondary-foreground">
+                      LV {Number.parseInt(hideout.level_id.split("-")[1], 10)}
+                    </Badge>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-end w-full sm:w-auto flex-nowrap">
-                <div className="w-20 h-20 rounded-md flex items-center justify-center flex-shrink-0">
+              {/* Material Info */}
+              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-end">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
                   <Image
-                    src={hideout.image}
+                    src={hideout.image || "/placeholder.svg"}
                     alt={hideout.name.en}
-                    width={40}
-                    height={40}
-                    className="w-20 h-20 object-contain rounded-lg"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-contain rounded-lg"
                   />
                 </div>
-                <span className="text-sm font-medium text-muted-foreground flex-grow-0">
-                  {hideout.name[localeKey]}
-                </span>
-                <span className="text-sm font-semibold text-primary flex-shrink-0">
-                  x {hideout.quantity}
-                </span>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <Package className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                    {hideout.name[localeKey]}
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-primary flex-shrink-0 ml-1">
+                    ×{hideout.quantity}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

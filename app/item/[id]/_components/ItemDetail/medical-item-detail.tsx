@@ -1,22 +1,19 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import type { ItemDetailTypes } from "../item.types";
-import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useLocale } from "next-intl";
+import type { ItemDetailTypes } from "../item.types";
 import { itemDetailI18N, itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
+import { Heart, Clock, Shield, Pill } from "lucide-react"; // 추가 아이콘 임포트
 import { Badge } from "@/components/ui/badge";
-import { Heart, Clock, Shield } from "lucide-react";
 
-export default function MedikitDetail({ itemInfo }: ItemDetailTypes) {
+export default function MedicalItemDetail({ itemInfo }: ItemDetailTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
   return (
     <Card className="rounded-xl shadow-lg border border-border bg-card">
       <CardHeader className="text-center pb-4">
-        <div className="mx-auto mb-3 p-2 rounded-xl bg-secondary/50 w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+        <div className="mx-auto mb-3 p-3 rounded-xl bg-secondary/50 w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
           <Image
             src={itemInfo.image || "/placeholder.svg"}
             alt={itemInfo.name.en}
@@ -39,26 +36,24 @@ export default function MedikitDetail({ itemInfo }: ItemDetailTypes) {
               {itemDetailI18N.info[localeKey]}
             </h3>
           </div>
-
           <div className="space-y-2">
-            {/* Heal Amount */}
+            {/* Usage Count */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-red-500" />
-                <span className="font-medium text-sm sm:text-base dark:text-white text-black">
-                  {itemI18N.medical.healAmount[localeKey]}
+                <Pill className="w-4 h-4 text-purple-500" />
+                <span className="font-medium text-sm sm:text-base text-muted-foreground">
+                  {itemI18N.medical.usageCount[localeKey]}
                 </span>
               </div>
               <Badge variant="secondary" className="font-semibold">
-                {itemInfo.info.hitpoints}
+                {itemInfo.info.uses}
               </Badge>
             </div>
-
             {/* Duration */}
             <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-500" />
-                <span className="font-medium text-sm sm:text-base dark:text-white text-black">
+                <span className="font-medium text-sm sm:text-base text-muted-foreground">
                   {itemI18N.medical.duration[localeKey]}
                 </span>
               </div>
@@ -69,7 +64,6 @@ export default function MedikitDetail({ itemInfo }: ItemDetailTypes) {
           </div>
         </div>
 
-        {/* Buffs Section */}
         {itemInfo.info.cures &&
           itemInfo.info.cures[localeKey] &&
           itemInfo.info.cures[localeKey].length > 0 && (

@@ -11,6 +11,9 @@ import HideoutConstruction from "./HideoutConstruction/hideout-construction";
 import PurchaseUnlock from "./PurchaseUnlock/purchase-unlock";
 import CraftingUnlock from "./CraftingUnlock/crafting-unlock";
 import MedikitDetail from "./ItemDetail/medikit-detail";
+import DrugDetail from "./ItemDetail/drug-detail";
+import MedicalItemDetail from "./ItemDetail/medical-item-detail";
+import StimulantDetail from "./ItemDetail/stimulant-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -30,6 +33,20 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
           itemInfo.info.medical_category === "Medikit" && (
             <MedikitDetail itemInfo={itemInfo} />
           )}
+
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Drug" && (
+            <DrugDetail itemInfo={itemInfo} />
+          )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Medical item" && (
+            <MedicalItemDetail itemInfo={itemInfo} />
+          )}
+        {itemInfo.category === "Medical" &&
+          itemInfo.info.medical_category === "Stimulant" && (
+            <StimulantDetail itemInfo={itemInfo} />
+          )}
+
         {(itemInfo.required_by_quest_item.length > 0 ||
           itemInfo.required_by_quest_item_array.length > 0) && (
           <QuestRequire itemInfo={itemInfo} />
