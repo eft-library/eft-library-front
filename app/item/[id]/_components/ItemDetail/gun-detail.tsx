@@ -17,6 +17,7 @@ import {
   Info,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { LocaleName } from "@/components/types/common";
 
 export default function GunDetail({ itemInfo }: ItemDetailTypes) {
   const locale = useLocale();
@@ -179,7 +180,7 @@ export default function GunDetail({ itemInfo }: ItemDetailTypes) {
               <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
                 {itemInfo.info.allowed_ammo.map(
                   (
-                    ammo: { name: any; gridImageLink: string },
+                    ammo: { name: LocaleName; gridImageLink: string },
                     index: number
                   ) => (
                     <div

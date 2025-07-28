@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
 import Image from "next/image";
 import { itemDetailI18N } from "@/lib/consts/i18nConsts";
-import { Shield, Scale, Info, Speech } from "lucide-react";
+import { Scale, Info, Speech } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function HeadserDetail({ itemInfo }: ItemDetailTypes) {
