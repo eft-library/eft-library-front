@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";

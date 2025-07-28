@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { getEffectLocalizedKey, getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";

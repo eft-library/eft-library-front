@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Image from "next/image";

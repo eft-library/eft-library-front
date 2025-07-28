@@ -1,5 +1,3 @@
-"use client";
-
 import dayjs from "dayjs";
 import type { WipeViewTypes } from "./wipe.types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";

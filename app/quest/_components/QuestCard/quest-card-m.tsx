@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Check, Skull, X } from "lucide-react";
 import { questI18N } from "@/lib/consts/i18nConsts";

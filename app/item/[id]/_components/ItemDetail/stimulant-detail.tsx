@@ -1,5 +1,3 @@
-"use client";
-
 import { getLocaleKey, getEffectLocalizedKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";

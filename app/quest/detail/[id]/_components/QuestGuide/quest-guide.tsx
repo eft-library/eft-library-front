@@ -1,5 +1,3 @@
-"use client";
-
 import { QuestDetailTypes } from "@/app/quest/_components/quest.types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

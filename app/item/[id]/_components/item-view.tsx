@@ -1,5 +1,3 @@
-"use client";
-
 import type { ItemViewTypes } from "./item.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";

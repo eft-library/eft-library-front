@@ -1,4 +1,3 @@
-"use client";
 import type { MedicalItemTypes } from "../medical.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";

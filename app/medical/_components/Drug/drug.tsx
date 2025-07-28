@@ -1,4 +1,3 @@
-"use client";
 import type { DrugTypes } from "../medical.types";
 import Image from "next/image";
 import { useLocale } from "next-intl";

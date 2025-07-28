@@ -1,5 +1,3 @@
-"use client";
-
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import InfiniteScroll from "react-infinite-scroll-component";

@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { hideoutI18n } from "@/lib/consts/i18nConsts";
 import { Zap } from "lucide-react";

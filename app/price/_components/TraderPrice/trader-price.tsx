@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Users } from "lucide-react";
 import { useLocale } from "next-intl";

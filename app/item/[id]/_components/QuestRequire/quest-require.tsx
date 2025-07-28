@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";

@@ -1,4 +1,3 @@
-"use client";
 import type { StimEffect, StimulantTypes } from "../medical.types";
 import Image from "next/image";
 import { useLocale } from "next-intl";

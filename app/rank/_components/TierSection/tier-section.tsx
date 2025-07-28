@@ -1,5 +1,3 @@
-"use client";
-
 import { rankTierInfo } from "@/lib/consts/libraryConsts";
 import { TierSectionTypes } from "../rank.types";
 import ItemCard from "../ItemCard/item-card";

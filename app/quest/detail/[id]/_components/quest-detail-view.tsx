@@ -1,5 +1,3 @@
-"use client";
-
 import type { QuestDetailViewTypes } from "@/app/quest/_components/quest.types";
 import QuestHeader from "./QuestHeader/quest-header";
 import QuestObjectives from "./QuestObjectives/quest-objectives";

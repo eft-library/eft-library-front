@@ -1,5 +1,3 @@
-"use client";
-
 import NewsView from "./News/news-view";
 import GridItem from "./GridItem/grid-item";
 import type { MainViewTypes } from "./news-view.types";

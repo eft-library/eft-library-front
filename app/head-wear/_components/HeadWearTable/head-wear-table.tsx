@@ -1,5 +1,3 @@
-"use client";
-
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";

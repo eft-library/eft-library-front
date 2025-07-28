@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowRight, Hammer, Package, Clock, Award } from "lucide-react";
 import Image from "next/image";

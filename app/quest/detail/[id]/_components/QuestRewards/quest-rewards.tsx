@@ -1,5 +1,3 @@
-"use client";
-
 import type { QuestDetailTypes } from "@/app/quest/_components/quest.types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocale } from "next-intl";

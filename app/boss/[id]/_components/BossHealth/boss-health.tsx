@@ -11,7 +11,6 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 
 export default function BossHealth({ subFollowers }: BossHealth) {
-  console.log(subFollowers);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [healthId, setHealthId] = useState<string>("");

@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent } from "@/components/ui/card";
 import DurationBar from "../DurationBar/duration-bar";
 import { WipeCardTypes } from "../wipe.types";

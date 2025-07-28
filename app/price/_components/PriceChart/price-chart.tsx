@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, MoveRight } from "lucide-react";
 import { useTheme } from "next-themes";

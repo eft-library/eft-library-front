@@ -1,5 +1,3 @@
-"use client";
-
 import type { NewsViewTypes } from "./NewsView.types";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
