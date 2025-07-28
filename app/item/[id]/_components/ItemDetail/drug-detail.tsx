@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
@@ -14,7 +14,7 @@ import {
   Droplet,
   Zap,
   ShieldOff,
-} from "lucide-react"; // 추가 아이콘 임포트
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function DrugDetail({ itemInfo }: ItemDetailTypes) {
@@ -32,9 +32,6 @@ export default function DrugDetail({ itemInfo }: ItemDetailTypes) {
             className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-lg"
           />
         </div>
-        <CardTitle className="text-lg sm:text-xl font-bold text-foreground leading-tight">
-          {itemInfo.name[localeKey]}
-        </CardTitle>
       </CardHeader>
 
       <CardContent className="px-4 sm:px-6 pb-6 space-y-4 sm:space-y-6">

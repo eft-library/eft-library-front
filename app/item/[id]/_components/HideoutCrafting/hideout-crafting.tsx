@@ -36,9 +36,9 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
           </span>
         </div>
 
-        {itemInfo.used_in_crafts.map((craft) => (
+        {itemInfo.used_in_crafts.map((craft, index) => (
           <div
-            key={`craft-${craft.id}`}
+            key={`craft-${craft.id}-${index}`}
             className="flex flex-col gap-3 sm:gap-4 py-3 sm:py-4 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors items-start border-b border-border last:border-b-0 md:grid md:grid-cols-4 md:items-center"
           >
             {/* Requirement Section */}
@@ -109,7 +109,7 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                 <div className="space-y-1 max-h-20 overflow-y-auto pr-1 w-full">
                   {craft.req_item.map((reqItem, index) => (
                     <div
-                      key={index}
+                      key={`craft-${reqItem.item.id}-${index}`}
                       className="flex items-center gap-2 text-sm flex-nowrap"
                     >
                       <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
@@ -136,7 +136,7 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
               <div className="hidden md:block space-y-2 max-h-40 overflow-y-auto pr-2 w-full">
                 {craft.req_item.map((reqItem, index) => (
                   <div
-                    key={index}
+                    key={`craft-${reqItem.item.id}-${index}-${index}`}
                     className="flex items-center gap-2 text-sm flex-nowrap"
                   >
                     <div className="w-14 h-14 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">

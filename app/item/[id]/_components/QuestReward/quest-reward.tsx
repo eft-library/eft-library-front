@@ -31,11 +31,11 @@ export default function QuestReward({ itemInfo }: QuestRewardTypes) {
           </span>
         </div>
         <div className="space-y-2 sm:space-y-3">
-          {itemInfo.rewarded_by_quests.map((reward) => (
+          {itemInfo.rewarded_by_quests.map((reward, index) => (
             <Link
               href={`/quest/detail/${reward.url_mapping}`}
               target="_blank"
-              key={`reward-${reward.quest_id}`}
+              key={`reward-${reward.quest_id}-${index}`}
               className="block"
             >
               <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]">

@@ -20,7 +20,7 @@ export default function LootView({ lootList }: LootViewTypes) {
         <div className="text-center mb-6 md:mb-8">
           <div className="flex justify-center items-center mb-4">
             <h1 className="text-xl md:text-4xl font-bold">
-              {itemI18N.headset.title[localeKey]}
+              {itemI18N.loot.title[localeKey]}
             </h1>
           </div>
 

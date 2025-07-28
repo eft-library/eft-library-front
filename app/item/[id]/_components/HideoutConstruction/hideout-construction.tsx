@@ -34,9 +34,9 @@ export default function HideoutConstruction({
         </div>
 
         <div className="space-y-2 sm:space-y-3">
-          {itemInfo.hideout_items.map((hideout) => (
+          {itemInfo.hideout_items.map((hideout, index) => (
             <div
-              key={`hideout-${hideout.level_id}`}
+              key={`hideout-${hideout.level_id}-${index}`}
               className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]"
             >
               {/* Hideout Info */}

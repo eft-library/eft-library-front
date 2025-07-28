@@ -952,6 +952,11 @@ export const itemDetailI18N = {
     ja: "初期弾薬",
     ko: "기본탄약",
   },
+  allowedAmmo: {
+    en: "Allowed Ammo",
+    ja: "許可された弾薬",
+    ko: "허용 탄약",
+  },
   shootRate: {
     en: "Fire Rate",
     ja: "発射速度",

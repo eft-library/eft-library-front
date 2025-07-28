@@ -32,10 +32,10 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
         </div>
 
         <div className="space-y-2 sm:space-y-3">
-          {itemInfo.rewarded_by_quests_offer_unlock.map((unlock) => (
+          {itemInfo.rewarded_by_quests_offer_unlock.map((unlock, index) => (
             <Link
               href={`/quest/detail/${unlock.url_mapping}`}
-              key={`rewarded_by_quests_craft_unlock-${unlock.reward.item.id}`}
+              key={`rewarded_by_quests_craft_unlock-${unlock.reward.item.id}-${index}`}
               target="_blank"
               className="block"
             >

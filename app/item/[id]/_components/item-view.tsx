@@ -15,6 +15,18 @@ import DrugDetail from "./ItemDetail/drug-detail";
 import MedicalItemDetail from "./ItemDetail/medical-item-detail";
 import StimulantDetail from "./ItemDetail/stimulant-detail";
 import ProvisionsDetail from "./ItemDetail/provisions-detail";
+import ArmBandDetail from "./ItemDetail/arm-band-detail";
+import GunDetail from "./ItemDetail/gun-detail";
+import AmmoDetail from "./ItemDetail/ammo-detail";
+import HeadWearDetail from "./ItemDetail/head-wear-detail";
+import HeadsetDetail from "./HideoutCrafting/headset-detail";
+import RigDetail from "./ItemDetail/rig-detail";
+import BackpackDetail from "./ItemDetail/backpack-detail";
+import ContainerDetail from "./ItemDetail/container-detail";
+import LootDetail from "./ItemDetail/loot-detail";
+import FaceCoverDetail from "./ItemDetail/face-cover-detail";
+import GlassesDetail from "./ItemDetail/glasses-detail";
+import KeyDetail from "./ItemDetail/key-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -50,6 +62,35 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
         {itemInfo.category === "Provisions" && (
           <ProvisionsDetail itemInfo={itemInfo} />
         )}
+        {itemInfo.category === "Armband" && (
+          <ArmBandDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Gun" &&
+          itemInfo.info.gun_category !== "Stationary weapons" && (
+            <GunDetail itemInfo={itemInfo} />
+          )}
+        {itemInfo.category === "Ammo" && <AmmoDetail itemInfo={itemInfo} />}
+        {itemInfo.category === "Headwear" && (
+          <HeadWearDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Headset" && (
+          <HeadsetDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Rig" && <RigDetail itemInfo={itemInfo} />}
+        {itemInfo.category === "Backpack" && (
+          <BackpackDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Container" && (
+          <ContainerDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Loot" && <LootDetail itemInfo={itemInfo} />}
+        {itemInfo.category === "FaceCover" && (
+          <FaceCoverDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Glasses" && (
+          <GlassesDetail itemInfo={itemInfo} />
+        )}
+        {itemInfo.category === "Key" && <KeyDetail itemInfo={itemInfo} />}
 
         {(itemInfo.required_by_quest_item.length > 0 ||
           itemInfo.required_by_quest_item_array.length > 0) && (

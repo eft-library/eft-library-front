@@ -3,7 +3,7 @@
 import { getLocaleKey, getEffectLocalizedKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
 import type { ItemDetailTypes } from "../item.types";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { effectI18N, itemI18N } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { Shield, Pill, Droplet, Zap, ShieldOff, Clock } from "lucide-react";
@@ -52,9 +52,6 @@ export default function StimulantDetail({ itemInfo }: ItemDetailTypes) {
             className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-lg"
           />
         </div>
-        <CardTitle className="text-lg sm:text-xl font-bold text-foreground leading-tight">
-          {itemInfo.name[localeKey]}
-        </CardTitle>
       </CardHeader>
 
       <CardContent className="px-4 sm:px-6 pb-6 space-y-4 sm:space-y-6">
