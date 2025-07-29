@@ -62,7 +62,10 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                     <span className="text-xs font-medium text-foreground truncate">
                       {craft.master_name[localeKey]}
                     </span>
-                    <Badge className="text-xs px-1 py-0 rounded-sm bg-secondary/20 text-secondary-foreground">
+                    <Badge
+                      variant="outline"
+                      className="text-xs px-1 py-0 rounded-sm bg-secondary text-secondary-foreground"
+                    >
                       LV {craft.level}
                     </Badge>
                   </div>
@@ -86,7 +89,10 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
                     <div className="font-medium text-base text-foreground">
                       {craft.master_name[localeKey]}
                     </div>
-                    <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-secondary-foreground mt-1">
+                    <Badge
+                      variant="outline"
+                      className="text-xs px-2 py-0.5 rounded-md bg-secondary text-secondary-foreground mt-1"
+                    >
                       LV {craft.level}
                     </Badge>
                   </div>

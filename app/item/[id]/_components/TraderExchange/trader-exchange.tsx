@@ -50,7 +50,10 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                 <div className="font-medium text-base text-black dark:text-white">
                   {trader.npc_name[localeKey]}
                 </div>
-                <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-black dark:text-white mt-1">
+                <Badge
+                  variant="outline"
+                  className="text-xs px-2 py-0.5 rounded-md bg-secondary text-black dark:text-white mt-1"
+                >
                   LV {trader.barter_info.level}
                 </Badge>
               </div>

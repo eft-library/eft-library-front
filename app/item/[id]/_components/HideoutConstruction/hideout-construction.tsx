@@ -60,7 +60,10 @@ export default function HideoutConstruction({
                     </span>
                   </div>
                   <div className="flex justify-start sm:justify-start mt-1">
-                    <Badge className="text-xs px-2 py-0.5 rounded-md bg-secondary/20 text-black dark:text-white">
+                    <Badge
+                      variant="outline"
+                      className="text-xs px-2 py-0.5 rounded-md bg-secondary text-black dark:text-white"
+                    >
                       LV {Number.parseInt(hideout.level_id.split("-")[1], 10)}
                     </Badge>
                   </div>

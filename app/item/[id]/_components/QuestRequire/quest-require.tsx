@@ -6,6 +6,7 @@ import Image from "next/image";
 import type { QuestRequireTypes } from "../item.types";
 import Link from "next/link";
 import { Target } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
   const locale = useLocale();
@@ -55,6 +56,12 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         {/* Changed text-center to text-left */}
                         {questItem.name[localeKey]}
                       </span>
+                      <Badge
+                        variant="outline"
+                        className="ml-2 bg-secondary text-black dark:text-white border-border "
+                      >
+                        {questItem.objective.type}
+                      </Badge>
                     </div>
                   </div>
 
@@ -118,6 +125,12 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         {/* Changed text-center to text-left */}
                         {questItem.name[localeKey]}
                       </span>
+                      <Badge
+                        variant="outline"
+                        className="ml-2 bg-secondary text-black dark:text-white border-border "
+                      >
+                        {questItem.objective.type}
+                      </Badge>
                     </div>
                   </div>
 
