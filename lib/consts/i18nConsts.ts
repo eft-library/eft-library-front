@@ -1289,6 +1289,19 @@ export const exitI18N = {
   },
 };
 
+export const ruleI18N = {
+  terms: {
+    en: "Terms of Service",
+    ko: "이용약관",
+    ja: "利用規約",
+  },
+  privacyPolicy: {
+    en: "Privacy Policy",
+    ko: "개인정보 처리방침",
+    ja: "プライバシーポリシー",
+  },
+};
+
 export const adBlockI18N = {
   adblockDetected: {
     en: "Ad blocker detected.",
