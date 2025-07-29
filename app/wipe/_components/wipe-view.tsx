@@ -33,7 +33,7 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
   return (
     <ViewWrapper>
       <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-        <div className="container mx-auto p-4 sm:p-6 max-w-6xl">
+        <div className="container mx-auto p-4 sm:p-6 max-w-7xl">
           <Card className="border-border/50 shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
               <div>

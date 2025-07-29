@@ -17,7 +17,7 @@ export default function WeaponView({ weaponList }: WeaponViewTypes) {
   return (
     <ViewWrapper>
       <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
-        <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-6xl">
+        <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-7xl">
           <div className="text-center mb-4">
             <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2 dark:text-white text-gray-900">
               {itemI18N.weapon.title[localeKey]}

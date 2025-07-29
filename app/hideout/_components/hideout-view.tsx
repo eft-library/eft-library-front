@@ -187,7 +187,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
           </div>
           <div className="flex gap-8">
             {/* Main Content Area */}
-            <div className="flex-1 max-w-6xl mx-auto">
+            <div className="flex-1 max-w-7xl mx-auto">
               {/* Hideout Tree */}
               <div className="mb-8">
                 <StationMap

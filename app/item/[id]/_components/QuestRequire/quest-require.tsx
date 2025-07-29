@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import Image from "next/image";
 import type { QuestRequireTypes } from "../item.types";
 import Link from "next/link";
-import { Target, Package } from "lucide-react";
+import { Target } from "lucide-react";
 
 export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
   const locale = useLocale();
@@ -74,7 +74,6 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                       />
                     </div>
                     <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <Package className="w-4 h-4 text-primary flex-shrink-0" />
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0 flex-1">
                         <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                           {
@@ -145,7 +144,6 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                       />
                     </div>
                     <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <Package className="w-4 h-4 text-primary flex-shrink-0" />
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0 flex-1">
                         <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                           {

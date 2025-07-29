@@ -32,7 +32,7 @@ export default function MapView({ mapInfo }: MapViewTypes) {
         </div>
 
         {/* Main Content Area - Centered with max-w */}
-        <div className="flex flex-col flex-1 w-full max-w-6xl mx-auto space-y-6">
+        <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6">
           {/* <MapSelection /> */}
           <MapSelector
             onClickMapAction={setMapData}

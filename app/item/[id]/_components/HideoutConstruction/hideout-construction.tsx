@@ -7,7 +7,7 @@ import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import Image from "next/image";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { getMaxSuffix } from "@/lib/func/jsxfunction";
-import { Home, Package } from "lucide-react";
+import { Home } from "lucide-react";
 
 export default function HideoutConstruction({
   itemInfo,
@@ -79,7 +79,6 @@ export default function HideoutConstruction({
                   />
                 </div>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <Package className="w-4 h-4 text-primary flex-shrink-0" />
                   <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                     {hideout.name[localeKey]}
                   </span>

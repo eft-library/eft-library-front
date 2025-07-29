@@ -5,7 +5,7 @@ import Image from "next/image";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { SmilePlus, Sparkles } from "lucide-react";
+import { SmilePlus } from "lucide-react";
 
 export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
   const locale = useLocale();
@@ -55,29 +55,54 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                 </Badge>
               </div>
             </div>
-            {trader.barter_info.requiredItems.map((reqItem, sIndex) => (
-              <div
-                key={`trader-req-${reqItem.item.id}-${sIndex}`}
-                className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap"
-              >
+            <div>
+              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
                   <Image
-                    src={reqItem.item.gridImageLink}
-                    alt={reqItem.item.name_en}
+                    src={trader.barter_info.rewardItems.item.gridImageLink}
+                    alt={trader.barter_info.rewardItems.item.name_en}
                     width={40}
                     height={40}
                     className="w-full h-full object-contain rounded-lg"
                   />
                 </div>
-                <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
                 <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
-                  {reqItem.item[getOtherLocalizedKey(localeKey)]}
+                  {
+                    trader.barter_info.rewardItems.item[
+                      getOtherLocalizedKey(localeKey)
+                    ]
+                  }
                 </span>
                 <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
-                  x {reqItem.quantity}
+                  x {trader.barter_info.rewardItems.quantity}
                 </span>
               </div>
-            ))}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {trader.barter_info.requiredItems.map((reqItem, sIndex) => (
+                <div
+                  key={`trader-req-${reqItem.item.id}-${sIndex}`}
+                  className="flex items-center gap-2 mt-2 sm:mt-0 w-full sm:w-auto flex-nowrap"
+                >
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
+                    <Image
+                      src={reqItem.item.gridImageLink}
+                      alt={reqItem.item.name_en}
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain rounded-lg"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
+                    {reqItem.item[getOtherLocalizedKey(localeKey)]}
+                  </span>
+                  <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
+                    x {reqItem.quantity}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </CardContent>

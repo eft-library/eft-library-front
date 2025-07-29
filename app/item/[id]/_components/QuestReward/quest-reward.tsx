@@ -5,7 +5,7 @@ import type { QuestRewardTypes } from "../item.types";
 import Image from "next/image";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
-import { Gift, Award } from "lucide-react";
+import { Gift } from "lucide-react";
 
 export default function QuestReward({ itemInfo }: QuestRewardTypes) {
   const locale = useLocale();
@@ -70,7 +70,6 @@ export default function QuestReward({ itemInfo }: QuestRewardTypes) {
                     />
                   </div>
                   <div className="flex-1 min-w-0 flex items-center gap-1">
-                    <Award className="w-4 h-4 text-primary flex-shrink-0" />
                     {/* 보상 아이콘 추가 */}
                     <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                       {reward.reward.item[getOtherLocalizedKey(localeKey)]}

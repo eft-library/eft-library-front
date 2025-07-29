@@ -30,7 +30,7 @@ export default function Information({
 
   return (
     <ViewWrapper>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-3xl text-center font-bold mb-2 text-gray-900 dark:text-white">

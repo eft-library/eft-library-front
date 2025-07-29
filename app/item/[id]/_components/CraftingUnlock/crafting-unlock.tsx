@@ -5,7 +5,7 @@ import type { CraftingUnlockTypes } from "../item.types";
 import Image from "next/image";
 import { itemRelatedInfo } from "@/lib/consts/i18nConsts";
 import Link from "next/link";
-import { Unlock, Wrench } from "lucide-react";
+import { Unlock } from "lucide-react";
 
 export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
   const locale = useLocale();
@@ -70,7 +70,6 @@ export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
                     />
                   </div>
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <Wrench className="w-4 h-4 text-primary flex-shrink-0" />
                     <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                       {unlock.reward.item[getOtherLocalizedKey(localeKey)]}
                     </span>
