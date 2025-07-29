@@ -337,7 +337,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
             />
 
             {/* Quest Flow */}
-            <Card className="h-[500px] sm:h-[600px] lg:h-[700px]">
+            <Card className="min-h-[500px] sm:h-[600px] lg:h-[700px]">
               <CardContent className="p-0 h-full relative">
                 <ReactFlow
                   nodes={enhancedNodes}

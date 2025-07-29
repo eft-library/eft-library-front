@@ -21,7 +21,7 @@ export default function MapOfTarkovView({ mapData }: MapOfTarkovViewTypes) {
 
   return (
     <ViewWrapper>
-      <div className="container mx-auto px-4 py-6 md:py-8 max-w-5xl">
+      <div className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
         <div className="text-center mb-4">
           <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2 dark:text-white text-gray-900">
             {mapOfTarkovI18n.title[localeKey]}

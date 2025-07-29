@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import QueryProvider from "@/store/queryProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Footer from "@/components/custom/Footer/footer";
 import "./globals.css";
 import "../assets/editor.css";
 import "../assets/xyflow.css";
@@ -27,9 +28,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EFT Library",
-  description: "EFT Library",
-  metadataBase: new URL("https://eftlibrary.com"),
+  title: "타르코프 도서관 - EFT LIBRARY",
+  description:
+    "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
+  metadataBase: new URL("https://eftlibrary.com/"),
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     other: {
@@ -38,15 +40,17 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    siteName: "EFT Library",
-    title: "EFT Library",
-    description: "Tarkov 공략 페이지 입니다.",
+    siteName: "EFT LIBRARY",
+    title: "타르코프 도서관 - EFT LIBRARY",
+    description:
+      "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
     images: "/og.png",
-    url: "https://eftlibrary.com",
+    url: "https://eftlibrary.com/",
   },
   twitter: {
-    title: "EFT Library",
-    description: "Tarkov 공략 페이지 입니다.",
+    title: "타르코프 도서관 - EFT LIBRARY",
+    description:
+      "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다.",
     images: "/og.png",
   },
   robots: {
@@ -91,6 +95,7 @@ export default async function RootLayout({
                   <QueryProvider>
                     <NavData />
                     {children}
+                    <Footer />
                   </QueryProvider>
                 </AppStoreProvider>
               </Suspense>
