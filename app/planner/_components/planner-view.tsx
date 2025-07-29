@@ -15,6 +15,7 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { Button } from "@/components/ui/button";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { plannerSampleData } from "@/lib/consts/libraryConsts";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   const locale = useLocale();
@@ -195,69 +196,104 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   };
 
   return (
-    <div
-      className={`min-h-screen transition-colors duration-300 dark:bg-gray-900 bg-gray-50`}
-    >
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* 헤더 */}
-        <div className="text-center mb-8">
-          <h1 className="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-            {planner18N.title[localeKey]}
-          </h1>
-        </div>
+    <ViewWrapper>
+      <div
+        className={`min-h-screen transition-colors duration-300 dark:bg-gray-900 bg-gray-50`}
+      >
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          {/* 헤더 */}
+          <div className="text-center mb-8">
+            <h1 className="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+              {planner18N.title[localeKey]}
+            </h1>
+          </div>
 
-        {/* 퀘스트 검색 */}
-        <SearchFilter
-          selectedItems={selectedItems}
-          setSelectedItems={setSelectedItems}
-        />
-
-        {/* 선택된 퀘스트 미리보기 */}
-        {selectedItems.length > 0 && (
-          <PreviewSelect
+          {/* 퀘스트 검색 */}
+          <SearchFilter
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
-            removeSelected={removeSelected}
-            updateQuest={updateUserQuest}
           />
-        )}
 
-        {/* 퀘스트 진행 목록 */}
-        {session && session.email ? (
-          userQuest.length > 0 && userQuest[0].npc_id ? (
+          {/* 선택된 퀘스트 미리보기 */}
+          {selectedItems.length > 0 && (
+            <PreviewSelect
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+              removeSelected={removeSelected}
+              updateQuest={updateUserQuest}
+            />
+          )}
+
+          {/* 퀘스트 진행 목록 */}
+          {session && session.email ? (
+            userQuest.length > 0 && userQuest[0].npc_id ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    {planner18N.questProgressList[localeKey]}
+                  </h2>
+                  <div className="h-10 flex items-center">
+                    {/* 고정 높이 컨테이너 */}
+                    <Button
+                      variant="destructive"
+                      onClick={() => deleteUserQuest()}
+                      className={`group relative overflow-hidden rounded-xl cursor-pointer bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 ${
+                        selectedActiveQuests.length > 0
+                          ? "opacity-100 visible"
+                          : "opacity-0 invisible pointer-events-none"
+                      }`}
+                    >
+                      {/* Hover overlay effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      <Trash2 className="h-4 w-4 relative z-10 group-hover:rotate-12 transition-transform duration-200" />
+                      <span className="relative z-10">
+                        {planner18N.delete[localeKey]} (
+                        {selectedActiveQuests.length})
+                      </span>
+                    </Button>
+                  </div>
+                </div>
+                {userQuest.map((npc) => (
+                  <PlannerCard
+                    key={npc.npc_id}
+                    npcInfo={npc}
+                    openNPCs={openNPCs}
+                    toggleNPC={toggleNPC}
+                    allNPCSelected={getNPCSelectionState(npc)}
+                    toggleNPCSelection={toggleNPCSelection}
+                    selectedActiveQuests={selectedActiveQuests}
+                    toggleActiveQuestSelection={toggleActiveQuestSelection}
+                    successUserQuest={successUserQuest}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-gray-400 dark:text-gray-600 mb-4">
+                  <Search className="h-16 w-16 mx-auto mb-4" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {planner18N.noActiveQuest[localeKey]}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {planner18N.notice[localeKey]}
+                </p>
+              </div>
+            )
+          ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {planner18N.questProgressList[localeKey]}
                 </h2>
-                <div className="h-10 flex items-center">
-                  {/* 고정 높이 컨테이너 */}
-                  <Button
-                    variant="destructive"
-                    onClick={() => deleteUserQuest()}
-                    className={`group relative overflow-hidden rounded-xl cursor-pointer bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 ${
-                      selectedActiveQuests.length > 0
-                        ? "opacity-100 visible"
-                        : "opacity-0 invisible pointer-events-none"
-                    }`}
-                  >
-                    {/* Hover overlay effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                    <Trash2 className="h-4 w-4 relative z-10 group-hover:rotate-12 transition-transform duration-200" />
-                    <span className="relative z-10">
-                      {planner18N.delete[localeKey]} (
-                      {selectedActiveQuests.length})
-                    </span>
-                  </Button>
-                </div>
               </div>
-              {userQuest.map((npc) => (
+              {plannerSampleData.map((sample) => (
                 <PlannerCard
-                  key={npc.npc_id}
-                  npcInfo={npc}
+                  key={sample.npc_id}
+                  npcInfo={sample}
                   openNPCs={openNPCs}
                   toggleNPC={toggleNPC}
-                  allNPCSelected={getNPCSelectionState(npc)}
+                  allNPCSelected={getNPCSelectionState(sample)}
                   toggleNPCSelection={toggleNPCSelection}
                   selectedActiveQuests={selectedActiveQuests}
                   toggleActiveQuestSelection={toggleActiveQuestSelection}
@@ -265,48 +301,15 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
                 />
               ))}
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="text-gray-400 dark:text-gray-600 mb-4">
-                <Search className="h-16 w-16 mx-auto mb-4" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {planner18N.noActiveQuest[localeKey]}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {planner18N.notice[localeKey]}
-              </p>
-            </div>
-          )
-        ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {planner18N.questProgressList[localeKey]}
-              </h2>
-            </div>
-            {plannerSampleData.map((sample) => (
-              <PlannerCard
-                key={sample.npc_id}
-                npcInfo={sample}
-                openNPCs={openNPCs}
-                toggleNPC={toggleNPC}
-                allNPCSelected={getNPCSelectionState(sample)}
-                toggleNPCSelection={toggleNPCSelection}
-                selectedActiveQuests={selectedActiveQuests}
-                toggleActiveQuestSelection={toggleActiveQuestSelection}
-                successUserQuest={successUserQuest}
-              />
-            ))}
-          </div>
-        )}
+          )}
+        </div>
+        <DefaultDialog
+          open={alertStatus}
+          setOpen={setAlertStatus}
+          title="Notice"
+          description={alertDesc}
+        />
       </div>
-      <DefaultDialog
-        open={alertStatus}
-        setOpen={setAlertStatus}
-        title="Notice"
-        description={alertDesc}
-      />
-    </div>
+    </ViewWrapper>
   );
 }

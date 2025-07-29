@@ -12,6 +12,7 @@ import StationMap from "./StationMap/station-map";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import HideoutDetail from "./HideoutDetail/hideout-detail";
 import Loading from "@/components/custom/Loading/loading";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const locale = useLocale();
@@ -176,43 +177,47 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   };
 
   return (
-    <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex-grow text-center mb-4">
-          <h1 className="text-xl font-bold">{hideoutI18n.title[localeKey]}</h1>
-        </div>
-        <div className="flex gap-8">
-          {/* Main Content Area */}
-          <div className="flex-1 max-w-6xl mx-auto">
-            {/* Hideout Tree */}
-            <div className="mb-8">
-              <StationMap
-                masterId={master}
-                onChangeMaster={onClickChangeMaster}
-                completeList={completeList}
-                onClickReset={onClickReset}
+    <ViewWrapper>
+      <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex-grow text-center mb-4">
+            <h1 className="text-xl font-bold">
+              {hideoutI18n.title[localeKey]}
+            </h1>
+          </div>
+          <div className="flex gap-8">
+            {/* Main Content Area */}
+            <div className="flex-1 max-w-6xl mx-auto">
+              {/* Hideout Tree */}
+              <div className="mb-8">
+                <StationMap
+                  masterId={master}
+                  onChangeMaster={onClickChangeMaster}
+                  completeList={completeList}
+                  onClickReset={onClickReset}
+                />
+              </div>
+
+              {/* Facility Details */}
+              <HideoutDetail
+                levelId={level}
+                hideoutData={hideoutData}
+                onClickSave={onClickSave}
+                complete_list={completeList}
+                onChangeLevel={setLevel}
               />
             </div>
-
-            {/* Facility Details */}
-            <HideoutDetail
-              levelId={level}
-              hideoutData={hideoutData}
-              onClickSave={onClickSave}
-              complete_list={completeList}
-              onChangeLevel={setLevel}
-            />
           </div>
         </div>
-      </div>
 
-      <DefaultDialog
-        open={alertStatus}
-        setOpen={setAlertStatus}
-        title="Notice"
-        description={alertDesc}
-      />
-      {isLoading && <Loading />}
-    </div>
+        <DefaultDialog
+          open={alertStatus}
+          setOpen={setAlertStatus}
+          title="Notice"
+          description={alertDesc}
+        />
+        {isLoading && <Loading />}
+      </div>
+    </ViewWrapper>
   );
 }

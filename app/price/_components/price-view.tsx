@@ -12,6 +12,7 @@ import TraderPrice from "./TraderPrice/trader-price";
 import PriceTable from "./PriceTable/price-table";
 import { Price } from "./price.types";
 import Loading from "@/components/custom/Loading/loading";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function PriceView() {
   const locale = useLocale();
@@ -64,53 +65,55 @@ export default function PriceView() {
   }, [data, selectItem]);
 
   return (
-    <div
-      className={`min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black`}
-    >
-      {/* Header */}
-      <div className={`backdrop-blur-sm`}>
-        <div className="container mx-auto px-4 py-4 sm:py-6">
-          <div className="flex flex-col gap-4 items-center justify-center">
-            {/* Title and Theme Toggle Row */}
-            <h1 className={`text-xl font-bold dark:text-white text-gray-900`}>
-              {price18N.title[localeKey]}
-            </h1>
-            <p
-              className={` mt-1 text-sm sm:text-base dark:text-slate-400 text-gray-600`}
-            >
-              {price18N.checkPriceByButton[localeKey]}
-            </p>
-            {/* Controls Row */}
-            <ControlPanel
-              priceType={priceType}
-              setPriceType={setPriceType}
-              search={search}
-              setSearch={setSearch}
-              setFetchWord={setFetchWord}
-            />
+    <ViewWrapper>
+      <div
+        className={`min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black`}
+      >
+        {/* Header */}
+        <div className={`backdrop-blur-sm`}>
+          <div className="container mx-auto px-4 py-4 sm:py-6">
+            <div className="flex flex-col gap-4 items-center justify-center">
+              {/* Title and Theme Toggle Row */}
+              <h1 className={`text-xl font-bold dark:text-white text-gray-900`}>
+                {price18N.title[localeKey]}
+              </h1>
+              <p
+                className={` mt-1 text-sm sm:text-base dark:text-slate-400 text-gray-600`}
+              >
+                {price18N.checkPriceByButton[localeKey]}
+              </p>
+              {/* Controls Row */}
+              <ControlPanel
+                priceType={priceType}
+                setPriceType={setPriceType}
+                search={search}
+                setSearch={setSearch}
+                setFetchWord={setFetchWord}
+              />
+            </div>
           </div>
         </div>
+
+        <div className="container mx-auto px-4 py-6 sm:py-8">
+          {/* Price Chart Section */}
+          <PriceChart item={selectItem} priceType={priceType} />
+
+          {/* Traders Section */}
+          <TraderPrice item={selectItem} priceType={priceType} />
+
+          {/* Market Items Table */}
+          <PriceTable
+            items={items}
+            priceType={priceType}
+            setSelectItem={setSelectItem}
+            selectItem={selectItem}
+            hasNextPage={hasNextPage}
+            fetchNextPage={fetchNextPage}
+            word={fetchWord}
+          />
+        </div>
+        {isFetching && <Loading />}
       </div>
-
-      <div className="container mx-auto px-4 py-6 sm:py-8">
-        {/* Price Chart Section */}
-        <PriceChart item={selectItem} priceType={priceType} />
-
-        {/* Traders Section */}
-        <TraderPrice item={selectItem} priceType={priceType} />
-
-        {/* Market Items Table */}
-        <PriceTable
-          items={items}
-          priceType={priceType}
-          setSelectItem={setSelectItem}
-          selectItem={selectItem}
-          hasNextPage={hasNextPage}
-          fetchNextPage={fetchNextPage}
-          word={fetchWord}
-        />
-      </div>
-      {isFetching && <Loading />}
-    </div>
+    </ViewWrapper>
   );
 }

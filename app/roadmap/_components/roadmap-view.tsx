@@ -39,6 +39,7 @@ import {
   onClickKappaFilter,
   generateEdges,
 } from "./roadmap-func";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   const locale = useLocale();
@@ -279,95 +280,97 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   };
 
   return (
-    <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
-      <div className="container mx-auto p-4 space-y-6">
-        {/* Header */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center">
-            <h1 className="text-xl font-bold">
-              {roadmapI18N.title[localeKey]}
-            </h1>
-          </div>
+    <ViewWrapper>
+      <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
+        <div className="container mx-auto p-4 space-y-6">
+          {/* Header */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-center">
+              <h1 className="text-xl font-bold">
+                {roadmapI18N.title[localeKey]}
+              </h1>
+            </div>
 
-          {/* Merchant Selection - Desktop */}
-          <div className="hidden lg:block">
-            <TraderTab
+            {/* Merchant Selection - Desktop */}
+            <div className="hidden lg:block">
+              <TraderTab
+                npcList={npcList}
+                setTabState={onChangeNpcTab}
+                tabState={tabState}
+              />
+            </div>
+
+            {/* Merchant Selection - Mobile */}
+            <TraderTabM
               npcList={npcList}
               setTabState={onChangeNpcTab}
               tabState={tabState}
             />
+
+            <ControlPanel
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleSearch={handleSearch}
+              checkAllNodes={() =>
+                checkAllNodes(roadmapInfo.node_info, tabState, setQuestList)
+              }
+              uncheckAllNodes={() =>
+                setQuestList(getUncheckUpdater(roadmapInfo.node_info, tabState))
+              }
+              onClickSave={onClickSave}
+              onClickKappaFilter={() =>
+                onClickKappaFilter(onlyKappa, setOnlyKappa, fitView)
+              }
+              onlyKappa={onlyKappa}
+            />
           </div>
 
-          {/* Merchant Selection - Mobile */}
-          <TraderTabM
-            npcList={npcList}
-            setTabState={onChangeNpcTab}
-            tabState={tabState}
-          />
+          {/* Main Content */}
+          <div className="w-full space-y-6">
+            {/* 현황판을 ReactFlow 위에 배치 */}
+            <StatsPanel
+              getAllCount={getAllCount(nodes, roadmapInfo.node_info)}
+              getAllKappaCount={getAllKappaCount(nodes)}
+              getKappaCompleteCount={getKappaCompleteCount(nodes, questList)}
+              onlyKappa={onlyKappa}
+              getCompleteCount={getCompleteCount(nodes, questList)}
+            />
 
-          <ControlPanel
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleSearch={handleSearch}
-            checkAllNodes={() =>
-              checkAllNodes(roadmapInfo.node_info, tabState, setQuestList)
-            }
-            uncheckAllNodes={() =>
-              setQuestList(getUncheckUpdater(roadmapInfo.node_info, tabState))
-            }
-            onClickSave={onClickSave}
-            onClickKappaFilter={() =>
-              onClickKappaFilter(onlyKappa, setOnlyKappa, fitView)
-            }
-            onlyKappa={onlyKappa}
-          />
+            {/* Quest Flow */}
+            <Card className="h-[500px] sm:h-[600px] lg:h-[700px]">
+              <CardContent className="p-0 h-full relative">
+                <ReactFlow
+                  nodes={enhancedNodes}
+                  edges={edges}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
+                  className="quest-flow"
+                  fitView
+                  onConnect={onConnect}
+                  minZoom={0.03}
+                  maxZoom={2}
+                  zoomOnDoubleClick={false}
+                  nodeTypes={nodeTypes}
+                >
+                  <Controls className="bg-background border border-border" />
+                  <Background
+                    variant={BackgroundVariant.Dots}
+                    gap={20}
+                    size={1}
+                    className="opacity-30"
+                  />
+                </ReactFlow>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-
-        {/* Main Content */}
-        <div className="w-full space-y-6">
-          {/* 현황판을 ReactFlow 위에 배치 */}
-          <StatsPanel
-            getAllCount={getAllCount(nodes, roadmapInfo.node_info)}
-            getAllKappaCount={getAllKappaCount(nodes)}
-            getKappaCompleteCount={getKappaCompleteCount(nodes, questList)}
-            onlyKappa={onlyKappa}
-            getCompleteCount={getCompleteCount(nodes, questList)}
-          />
-
-          {/* Quest Flow */}
-          <Card className="h-[500px] sm:h-[600px] lg:h-[700px]">
-            <CardContent className="p-0 h-full relative">
-              <ReactFlow
-                nodes={enhancedNodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                className="quest-flow"
-                fitView
-                onConnect={onConnect}
-                minZoom={0.03}
-                maxZoom={2}
-                zoomOnDoubleClick={false}
-                nodeTypes={nodeTypes}
-              >
-                <Controls className="bg-background border border-border" />
-                <Background
-                  variant={BackgroundVariant.Dots}
-                  gap={20}
-                  size={1}
-                  className="opacity-30"
-                />
-              </ReactFlow>
-            </CardContent>
-          </Card>
-        </div>
+        <DefaultDialog
+          open={alertStatus}
+          setOpen={setAlertStatus}
+          title="Notice"
+          description={alertDesc}
+        />
       </div>
-      <DefaultDialog
-        open={alertStatus}
-        setOpen={setAlertStatus}
-        title="Notice"
-        description={alertDesc}
-      />
-    </div>
+    </ViewWrapper>
   );
 }

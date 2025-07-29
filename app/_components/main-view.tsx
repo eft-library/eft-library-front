@@ -2,25 +2,27 @@ import NewsView from "./News/news-view";
 import GridItem from "./GridItem/grid-item";
 import type { MainViewTypes } from "./news-view.types";
 import PinnedNotice from "./PinnedNotice/pinned-notice";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Recommended Info Section */}
-            <NewsView news={homeData.news} />
+    <ViewWrapper>
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Content */}
+            <div className="flex-1">
+              {/* Recommended Info Section */}
+              <NewsView news={homeData.news} />
 
-            {/* Grid Layout */}
-            <GridItem main_info={homeData.main_info} />
-          </div>
+              {/* Grid Layout */}
+              <GridItem main_info={homeData.main_info} />
+            </div>
 
-          {/* Sidebar */}
-          <div className="lg:w-80 space-y-6">
-            {/* Trending Posts */}
-            {/* <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
+            {/* Sidebar */}
+            <div className="lg:w-80 space-y-6">
+              {/* Trending Posts */}
+              {/* <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
               <div className="flex items-center space-x-2 mb-4">
                 <Fire className="w-5 h-5 text-orange-400" />
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -43,11 +45,12 @@ export default function MainView({ homeData }: MainViewTypes) {
               </div>
             </div> */}
 
-            {/* Pinned Notices */}
-            <PinnedNotice notice={homeData.news} />
+              {/* Pinned Notices */}
+              <PinnedNotice notice={homeData.news} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ViewWrapper>
   );
 }

@@ -8,20 +8,19 @@ import { itemI18N, placeHolderText } from "@/lib/consts/i18nConsts";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function AmmoView({ ammoList }: AmmoViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [word, setWord] = useState<string>("");
   return (
-    <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
+    <ViewWrapper>
       <div className="container mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-6xl">
-        <div className="text-center mb-6 md:mb-8">
-          <div className="flex justify-center items-center mb-4">
-            <h1 className="text-xl md:text-4xl font-bold">
-              {itemI18N.ammo.title[localeKey]}
-            </h1>
-          </div>
+        <div className="text-center mb-4">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2 dark:text-white text-gray-900">
+            {itemI18N.ammo.title[localeKey]}
+          </h1>
 
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto mb-6 md:mb-8">
@@ -39,6 +38,6 @@ export default function AmmoView({ ammoList }: AmmoViewTypes) {
         </div>
         <AmmoTable ammoList={ammoList} word={word} />
       </div>
-    </div>
+    </ViewWrapper>
   );
 }
