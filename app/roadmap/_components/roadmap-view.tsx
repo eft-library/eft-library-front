@@ -126,7 +126,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   );
 
   useEffect(() => {
-    if (roadmapInfo.quest_list.length > 0) {
+    if (roadmapInfo.quest_list && roadmapInfo.quest_list.length > 0) {
       setQuestList(roadmapInfo.quest_list);
     }
   }, [roadmapInfo.quest_list]);
