@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
 import type { NavBarTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
@@ -16,6 +16,7 @@ import RenderNavM from "./render-nav-m";
 import Logo from "@/assets/navi/logo";
 import Link from "next/link";
 import NavSearch from "./nav-search";
+import Loading from "../Loading/loading";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,7 +25,11 @@ export default function NavBar({ navData }: NavBarTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme, setTheme } = useTheme();
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) {
+    return <Loading />;
+  }
   return (
     <nav className="sticky top-0 z-[9999] border-b bg-white border-gray-200 dark:bg-[#2a2d35] dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
