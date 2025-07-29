@@ -55,29 +55,6 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                 </Badge>
               </div>
             </div>
-            <div>
-              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
-                  <Image
-                    src={trader.barter_info.rewardItems.item.gridImageLink}
-                    alt={trader.barter_info.rewardItems.item.name_en}
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-contain rounded-lg"
-                  />
-                </div>
-                <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
-                  {
-                    trader.barter_info.rewardItems.item[
-                      getOtherLocalizedKey(localeKey)
-                    ]
-                  }
-                </span>
-                <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
-                  x {trader.barter_info.rewardItems.quantity}
-                </span>
-              </div>
-            </div>
 
             <div className="flex flex-col gap-2">
               {trader.barter_info.requiredItems.map((reqItem, sIndex) => (
@@ -102,6 +79,30 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                   </span>
                 </div>
               ))}
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
+                  <Image
+                    src={trader.barter_info.rewardItems.item.gridImageLink}
+                    alt={trader.barter_info.rewardItems.item.name_en}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+                <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
+                  {
+                    trader.barter_info.rewardItems.item[
+                      getOtherLocalizedKey(localeKey)
+                    ]
+                  }
+                </span>
+                <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
+                  x {trader.barter_info.rewardItems.quantity}
+                </span>
+              </div>
             </div>
           </div>
         ))}
