@@ -7,7 +7,7 @@ export default function ViewWrapper({ children }: ViewWrapperTypes) {
       {/* 왼쪽 광고 */}
       <aside className="hidden 2xl:block fixed top-1/2 left-4 z-[9999] -translate-y-1/2">
         <div className="sticky top-20">
-          <div className="w-[180px] h-[620px] border border-gray-300 shadow-md flex items-center justify-center">
+          <div className="w-[180px] h-[620px] flex items-center justify-center">
             <AdBanner
               dataAdFormat={"vertical"}
               dataFullWidthResponsive={true}
@@ -21,7 +21,7 @@ export default function ViewWrapper({ children }: ViewWrapperTypes) {
       {/* 오른쪽 광고 */}
       <aside className="hidden 2xl:block fixed top-1/2 right-4 z-[9999] -translate-y-1/2">
         <div className="sticky top-20">
-          <div className="w-[180px] h-[620px] border border-gray-300 shadow-md flex items-center justify-center">
+          <div className="w-[180px] h-[620px] flex items-center justify-center">
             <AdBanner
               dataAdFormat={"vertical"}
               dataFullWidthResponsive={true}

@@ -9,7 +9,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import QueryProvider from "@/store/queryProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import AdSense from "@/components/custom/Adsense/adsense";
 import "./globals.css";
 import "../assets/editor.css";
 import "../assets/xyflow.css";
@@ -42,7 +41,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <AdSense pId={process.env.NEXT_PUBLIC_ADSENSE || ""} />
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+            process.env.NEXT_PUBLIC_ADSENSE || ""
+          }`}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
