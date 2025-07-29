@@ -5,7 +5,7 @@ import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 
 export default async function NavData() {
-  const data = await requestData(API_ENDPOINTS.GET_NAVI_MENU);
+  const data = await requestData(API_ENDPOINTS.GET_NAVI_WITH_SEARCH);
 
   if (!data || data.status !== 200) {
     console.error("Failed to fetch header data:", data?.msg || "Unknown error");

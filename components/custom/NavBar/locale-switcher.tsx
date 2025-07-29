@@ -33,7 +33,7 @@ export default function LocalSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 min-w-[100px]
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 min-w-[120px]
                    bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50
                    dark:bg-[#36393f] dark:border-gray-600 dark:text-white dark:hover:border-orange-400 dark:hover:bg-[#40444b]"
       >

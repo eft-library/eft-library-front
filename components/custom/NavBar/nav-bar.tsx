@@ -15,6 +15,7 @@ import LocalSwitcherM from "./locale-switcher-m";
 import RenderNavM from "./render-nav-m";
 import Logo from "@/assets/navi/logo";
 import Link from "next/link";
+import NavSearch from "./nav-search";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function NavBar({ navData }: NavBarTypes) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 relative">
-            {navData
+            {navData.main_menu_list
               .filter((item) => item.value !== "USER")
               .map((navMain) => (
                 <RenderNav
@@ -52,7 +53,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               ))}
 
             {session &&
-              navData
+              navData.main_menu_list
                 .filter((item) => item.value === "USER")
                 .map((navMain) => (
                   <RenderNav
@@ -99,18 +100,7 @@ export default function NavBar({ navData }: NavBarTypes) {
             <LocalSwitcher />
 
             {/* Search Bar */}
-            {/* <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="text"
-                placeholder="검색..."
-                className={`w-64 pl-10 h-9 focus:ring-orange-400 ${
-                  theme === "dark"
-                    ? "bg-[#36393f] border-[#36393f] text-white placeholder-gray-400 focus:border-orange-400"
-                    : "bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-orange-500"
-                }`}
-              />
-            </div> */}
+            <NavSearch searchList={navData.search_list} />
           </div>
 
           {/* Mobile menu button */}
@@ -148,19 +138,12 @@ export default function NavBar({ navData }: NavBarTypes) {
               <LocalSwitcherM />
 
               {/* Mobile Search */}
-              {/* <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  type="text"
-                  placeholder="검색..."
-                  className={`w-full pl-10 h-9 focus:ring-orange-400 ${theme === "dark" ? "bg-[#36393f] border-[#36393f] text-white placeholder-gray-400 focus:border-orange-400" : "bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-orange-500"}`}
-                />
-              </div> */}
+              <NavSearch searchList={navData.search_list} />
             </div>
 
             {/* Mobile Menu Items with Dropdowns */}
 
-            {navData
+            {navData.main_menu_list
               .filter((item) => item.value !== "USER")
               .map((navMain) => (
                 <RenderNavM
@@ -173,7 +156,7 @@ export default function NavBar({ navData }: NavBarTypes) {
               ))}
 
             {session &&
-              navData
+              navData.main_menu_list
                 .filter((item) => item.value === "USER")
                 .map((navMain) => (
                   <RenderNavM

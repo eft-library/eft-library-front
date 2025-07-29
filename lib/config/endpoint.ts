@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   GET_MAP: baseUrl + "/api/map/info",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
   GET_NAVI_MENU: baseUrl + "/api/menu/navi",
+  GET_NAVI_WITH_SEARCH: baseUrl + "/api/menu/menu-wtih-search",
   GET_ALL_SLIDE: baseUrl + "/api/menu/slide",
   GET_NPC: baseUrl + "/api/quest/npc",
   GET_NOTICE: baseUrl + "/api/notice/board",

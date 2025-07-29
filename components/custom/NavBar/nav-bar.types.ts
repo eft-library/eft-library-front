@@ -16,8 +16,13 @@ export interface NavTypes extends MenuData {
   sub_menus: SubMenu[];
 }
 
+interface NavWithSearch {
+  main_menu_list: NavTypes[];
+  search_list: SearchData[];
+}
+
 export interface NavBarTypes {
-  navData: NavTypes[];
+  navData: NavWithSearch;
 }
 
 export interface RenderNavTypes {
@@ -25,4 +30,17 @@ export interface RenderNavTypes {
   setActiveMenu: (val: string | null) => void;
   activeMenu: string | null;
   setIsMobileMenuOpen: (val: boolean) => void;
+}
+
+export interface NavSearchTypes {
+  searchList: SearchData[];
+}
+
+export interface SearchData {
+  link: string;
+  page_value: string;
+  type: string;
+  value: string;
+  order: number;
+  lang: string;
 }
