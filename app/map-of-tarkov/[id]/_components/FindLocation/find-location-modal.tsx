@@ -41,15 +41,15 @@ export default function FindLocationModal({
               {findLocationI18N.map((step) => (
                 <div
                   key={step.step}
-                  className="relative p-4 sm:p-6 rounded-xl border-l-4 border-l-orange-500 transition-all duration-300
-                  bg-orange-50 border border-orange-200
-                  dark:bg-orange-500/10 dark:border dark:border-orange-500/20"
+                  className="relative p-4 sm:p-6 rounded-xl border-2 border-orange-500 dark:border-2 dark:border-orange-400 transition-all duration-300
+                  bg-[#f5f6f7] border border-[#f5f6f7]
+                  dark:bg-[#1e2124] dark:border dark:border-[#1e2124]"
                 >
                   {/* Mobile: Stack vertically, Desktop: Side by side */}
                   <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-6">
                     {/* Text content */}
                     <div className="flex items-start gap-3 sm:gap-4 flex-1">
-                      <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full font-bold text-white bg-orange-500 scale-110 flex-shrink-0">
+                      <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full font-bold text-white bg-orange-500 dark:bg-orange-400 scale-110 flex-shrink-0">
                         <span className="text-sm sm:text-base">
                           {step.step}
                         </span>
@@ -63,7 +63,7 @@ export default function FindLocationModal({
                     {/* Image for steps with img */}
                     {step.img && (
                       <div className="w-full lg:w-80 lg:flex-shrink-0">
-                        <div className="aspect-video rounded-lg overflow-hidden border-2 border-orange-500/20 relative">
+                        <div className="aspect-video rounded-lg overflow-hidden relative">
                           <Image
                             src={step.img || "/placeholder.svg"}
                             alt={`Step ${step.step} preview`}
