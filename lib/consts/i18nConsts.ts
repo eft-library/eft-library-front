@@ -24,6 +24,134 @@ export const notFoundI18N = {
   },
 };
 
+export const dashboardI18N = {
+  pageStats: {
+    en: "Page Statistics",
+    ja: "ページ統計",
+    ko: "페이지 통계",
+  },
+  success: {
+    en: "Success",
+    ja: "成功",
+    ko: "성공",
+  },
+  failure: {
+    en: "Failure",
+    ja: "失敗",
+    ko: "실패",
+  },
+  successRate: {
+    en: "Success Rate",
+    ja: "成功率",
+    ko: "성공률",
+  },
+  failureRate: {
+    en: "Failure Rate",
+    ja: "失敗率",
+    ko: "실패율",
+  },
+  normal: {
+    en: "Normal",
+    ja: "正常",
+    ko: "정상",
+  },
+  abnormal: {
+    en: "Abnormal",
+    ja: "異常",
+    ko: "이상",
+  },
+  serviceStatus: {
+    en: "Service Status",
+    ja: "サービス状態",
+    ko: "서비스 상태",
+  },
+  totalCount: {
+    en: "Total Count",
+    ja: "総数",
+    ko: "총 개수",
+  },
+  fastApiAvgResponseTime: {
+    en: "FastAPI Average Response Time",
+    ja: "FastAPI 平均応答時間",
+    ko: "FastAPI 평균 응답 시간",
+  },
+  nextJsAvgResponseTime: {
+    en: "Next.js Average Response Time",
+    ja: "Next.js 平均応答時間",
+    ko: "NextJS 평균 응답 시간",
+  },
+  activeUsersInPeriod: {
+    en: "Active Users in Period",
+    ja: "期間内アクティブユーザー",
+    ko: "기간내 활성 사용자",
+  },
+  totalUsers: {
+    en: "Total Users",
+    ja: "総ユーザー数",
+    ko: "총 사용자",
+  },
+  requestsByHour: {
+    en: "Requests by Hour",
+    ja: "時間帯別リクエスト分布",
+    ko: "시간대별 요청 분포",
+  },
+  apiRequestPatternByHour: {
+    en: "API Request Pattern by Hour",
+    ja: "時間帯別 API リクエストパターン",
+    ko: "시간대별 API 요청 패턴",
+  },
+  focus: {
+    en: "Focus",
+    ja: "集中",
+    ko: "집중",
+  },
+  request: {
+    en: "Request",
+    ja: "リクエスト",
+    ko: "요청",
+  },
+  requestCount: {
+    en: "Request Count",
+    ja: "リクエスト数",
+    ko: "요청 수",
+  },
+  time: {
+    en: "Time",
+    ja: "時間",
+    ko: "시간",
+  },
+  peakTime: {
+    en: "Peak Time",
+    ja: "ピーク時間帯",
+    ko: "피크 시간대",
+  },
+  focusedRequestsAtTime: {
+    en: "Requests were concentrated at this time",
+    ja: "この時間帯にリクエストが集中しました",
+    ko: "에 요청이 집중되었습니다",
+  },
+  top10Endpoints: {
+    en: "Top 10 Endpoints",
+    ja: "上位10個のエンドポイント",
+    ko: "상위 10개 엔드포인트",
+  },
+  top10ApiEndpointsByRequest: {
+    en: "Top 10 API Endpoints by Request Count",
+    ja: "リクエスト数が多い上位10個のAPIエンドポイント",
+    ko: "요청 수가 많은 상위 10개 API 엔드포인트",
+  },
+  totalRequests: {
+    en: "Total Requests",
+    ja: "総リクエスト数",
+    ko: "총 요청수",
+  },
+  endpoint: {
+    en: "Endpoint",
+    ja: "エンドポイント",
+    ko: "엔드포인트",
+  },
+};
+
 export const information18N = {
   event: { title: { en: "Event", ja: "イベント", ko: "이벤트" } },
   notice: { title: { en: "Notice", ja: "お知らせ", ko: "공지사항" } },

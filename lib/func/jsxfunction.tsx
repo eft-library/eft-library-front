@@ -4,6 +4,31 @@ import { Price, TradeOption } from "@/app/price/_components/price.types";
 import { StimEffect } from "@/app/provisions/_components/provisions.types";
 import { ALL_COLOR } from "../consts/colorConsts";
 
+// ✅ 어제 날짜와 8일 전 날짜 구하는 함수
+export const getDefaultDates = () => {
+  const end = new Date(); // 오늘
+  end.setDate(end.getDate() - 1); // 어제
+
+  const start = new Date(end); // end를 기준으로 복사
+  start.setDate(start.getDate() - 7); // 8일 전 (어제 기준 7일 전)
+
+  return { start, end };
+};
+
+export const getMethodColor = (method: string) => {
+  const colors = {
+    GET: "#34d399",
+    POST: "#60a5fa",
+  };
+  return colors[method as keyof typeof colors] || "#9ca3af";
+};
+
+export const getYesterday = () => {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // 시/분/초 제거
+};
+
 // 변동률 계산
 export const calcChangeRate = (
   item: Price,

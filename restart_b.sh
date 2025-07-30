@@ -1,33 +1,62 @@
 #!/bin/bash
 
-# 작업 디렉토리로 이동
-cd /home/frontend_b/eft-library-front
+# 설정
+APP_DIR="/home/frontend_b/eft-library-front"
+NODE="/usr/bin/npm"
+KILL="/bin/kill"
+NETSTAT="/usr/bin/netstat"
+GREP="/usr/bin/grep"
+AWK="/usr/bin/awk"
+CUT="/usr/bin/cut"
+SLEEP="/bin/sleep"
+NOHUP="/usr/bin/nohup"
+DEFAULT_PORT=4003
 
-# .next 디렉토리와 빌드를 삭제
-rm -rf /home/frontend_b/eft-library-front/.next/
+# 인자 처리
+ACTION=$1
+PORT=${2:-$DEFAULT_PORT}
 
-# 애플리케이션 빌드
-/usr/bin/npm run build --prefix /home/frontend_b/eft-library-front
+# 포트 사용 중인 프로세스 종료 함수
+stop_server() {
+  pid=$($NETSTAT -tnlp 2>/dev/null | $GREP ":$PORT\b" | $AWK '{print $7}' | $CUT -d'/' -f1)
+  if [ -n "$pid" ]; then
+    echo "포트 $PORT를 사용 중인 프로세스(PID: $pid)를 종료합니다."
+    $KILL -9 "$pid"
+  else
+    echo "포트 $PORT를 사용 중인 프로세스가 없습니다."
+  fi
+  $SLEEP 1
+}
 
-# 포트 번호를 첫 번째 인수로 받아옴
-port=4003
+# 애플리케이션 빌드 및 시작 함수
+start_server() {
+  echo "앱 디렉토리로 이동: $APP_DIR"
+  cd "$APP_DIR" || { echo "디렉토리 이동 실패"; exit 1; }
 
-# 해당 포트를 사용 중인 프로세스의 PID를 찾아서 변수에 저장
-pid=$(/usr/bin/netstat -tnlp | /usr/bin/grep ":$port\b" | /usr/bin/awk '{print $7}' | /usr/bin/cut -d'/' -f1)
+  echo ".next 디렉토리 제거 중..."
+  rm -rf .next/
 
-# PID가 비어있는지 확인하고, 비어있지 않으면 프로세스를 종료
-if [ -n "$pid" ]; then
-  echo "포트 $port를 사용 중인 프로세스의 PID: $pid"
-  echo "프로세스를 종료합니다."
-  /bin/kill -9 "$pid"
-else
-  echo "포트 $port를 사용 중인 프로세스가 없습니다."
-fi
+  echo "Next.js 빌드 시작..."
+  $NODE run build --prefix "$APP_DIR"
 
-# 1초 대기
-/bin/sleep 1
+  echo "Next.js 서버를 포트 $PORT에서 시작합니다."
+  $NOHUP bash -c "PORT=$PORT $NODE run start --prefix $APP_DIR" > "$APP_DIR/log.out" 2>&1 &
+}
 
-# 백그라운드에서 애플리케이션 시작
-/usr/bin/nohup bash -c 'PORT=4003 /usr/bin/npm run start --prefix /home/frontend_b/eft-library-front' > /home/frontend_b/eft-library-front/log.out 2>&1 &
-
-echo "Next.js를 실행합니다."
+# 실행 분기
+case "$ACTION" in
+  start)
+    start_server
+    ;;
+  stop)
+    stop_server
+    ;;
+  restart)
+    stop_server
+    start_server
+    ;;
+  *)
+    echo "사용법: $0 {start|stop|restart} [포트번호]"
+    exit 1
+    ;;
+esac
