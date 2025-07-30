@@ -24,8 +24,8 @@ export default function FindLocationModal({
       <DialogTitle />
       <DialogContent
         className="!max-w-none !w-[60vw] !z-[9999] h-[90vh] rounded-lg flex flex-col p-0
-        bg-white border-gray-200
-        dark:bg-[#1a1c20] dark:border-gray-700"
+        bg-[#D9D9D9] border-gray-200
+        dark:bg-[#1A1A1D] dark:border-gray-700"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 pb-4 border-b flex-shrink-0 border-gray-200 dark:border-gray-700">

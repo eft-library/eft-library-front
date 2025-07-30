@@ -47,7 +47,7 @@ export default function StationMap({
 
   return (
     <div className="dark:bg-gray-800/30 bg-white rounded-lg p-6 border border-border">
-      <div className="relative w-full h-[600px] overflow-hidden mb-4 hidden md:block">
+      <div className="relative w-full h-[600px] overflow-hidden mb-4 hidden lg:block">
         <StationBackground />
         {stationMapData.json_value.station_list.map((station) => (
           <div
@@ -57,8 +57,8 @@ export default function StationMap({
               masterId === station.id ? "100" : "70"
             } hover:opacity-100 transition-opacity duration-100 cursor-pointer`}
             style={{
-              top: station.top,
-              left: station.left,
+              top: `${(station.top / stationMapData.json_value.height) * 5}%`,
+              left: `${(station.left / stationMapData.json_value.width) * 5}%`,
             }}
           >
             {getStationSVG(
@@ -71,7 +71,7 @@ export default function StationMap({
         ))}
       </div>
       {/* Mobile Facility Selector */}
-      <div className="md:hidden mt-4">
+      <div className="lg:hidden mt-4">
         <div className="grid grid-cols-6 gap-2">
           {stationMapData.json_value.station_list.map((station) => (
             <div
