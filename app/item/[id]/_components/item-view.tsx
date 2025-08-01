@@ -29,6 +29,7 @@ import KnifeDetail from "./ItemDetail/knife-detail";
 import ThrowableDetail from "./ItemDetail/throwable-detail";
 import StationaryDetail from "./ItemDetail/stationary-detail";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import ArmorVestDetail from "./ItemDetail/armor-vest-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -102,6 +103,9 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
             itemInfo.info.gun_category === "Stationary weapons" && (
               <StationaryDetail itemInfo={itemInfo} />
             )}
+          {itemInfo.category === "ArmorVest" && (
+            <ArmorVestDetail itemInfo={itemInfo} />
+          )}
 
           {(itemInfo.required_by_quest_item.length > 0 ||
             itemInfo.required_by_quest_item_array.length > 0) && (
