@@ -17,6 +17,7 @@ import Highlighter from "react-highlight-words";
 import CustomPagination from "../CustomPagination/custom-pagination";
 import { useSearchParams } from "next/navigation";
 import ViewWrapper from "../ViewWrapper/view-wrapper";
+import AdBanner from "../Adsense/ad-banner";
 
 export default function Information({
   informationData,
@@ -37,7 +38,14 @@ export default function Information({
               {title}
             </h1>
             <InformationSelector />
-            <div className="mb-6">
+
+            <AdBanner
+              dataAdFormat={"auto"}
+              dataFullWidthResponsive={true}
+              dataAdSlot="2690838054"
+              maxWidth={1220}
+            />
+            <div className="mb-4 mt-4">
               <div className="relative max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
                 <Input

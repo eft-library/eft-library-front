@@ -30,6 +30,7 @@ import ThrowableDetail from "./ItemDetail/throwable-detail";
 import StationaryDetail from "./ItemDetail/stationary-detail";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import ArmorVestDetail from "./ItemDetail/armor-vest-detail";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -106,6 +107,12 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
           {itemInfo.category === "ArmorVest" && (
             <ArmorVestDetail itemInfo={itemInfo} />
           )}
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
 
           {(itemInfo.required_by_quest_item.length > 0 ||
             itemInfo.required_by_quest_item_array.length > 0) && (

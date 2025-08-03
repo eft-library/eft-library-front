@@ -10,6 +10,7 @@ import { placeHolderText, questI18N } from "@/lib/consts/i18nConsts";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function QuestView({ questData }: QuestViewTypes) {
   const locale = useLocale();
@@ -31,7 +32,12 @@ export default function QuestView({ questData }: QuestViewTypes) {
 
           {/* Character Grid */}
           <TraderCard trader_list={questData.trader_list} />
-
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
           <div className="mb-8 mt-8">
             <Input
               type="text"

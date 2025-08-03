@@ -15,6 +15,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { itemI18N } from "@/lib/consts/i18nConsts";
 import WipeCardM from "./WipeCard/wipe-card-m";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function WipeView({ wipeList }: WipeViewTypes) {
   const locale = useLocale();
@@ -35,13 +36,20 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
       <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
         <div className="container mx-auto p-4 sm:p-6 max-w-7xl">
           <Card className="border-border/50 shadow-lg">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
+            <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-6">
               <div>
                 <CardTitle className="text-xl sm:text-2xl font-bold">
                   {itemI18N.wipe.title[localeKey]}
                 </CardTitle>
               </div>
             </CardHeader>
+
+            <AdBanner
+              dataAdFormat={"auto"}
+              dataFullWidthResponsive={true}
+              dataAdSlot="2690838054"
+              maxWidth={1220}
+            />
             <CardContent>
               {/* Desktop Table View */}
               <div className="hidden lg:block rounded-lg border border-border/50 overflow-hidden">

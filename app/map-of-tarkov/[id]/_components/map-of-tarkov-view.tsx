@@ -12,6 +12,7 @@ import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 import MapBoss from "./MapBoss/map-boss";
 import ExtractionsTransits from "./ExtractionsTransits/extractions-transits";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function MapOfTarkovView({ mapData }: MapOfTarkovViewTypes) {
   const locale = useLocale();
@@ -27,7 +28,12 @@ export default function MapOfTarkovView({ mapData }: MapOfTarkovViewTypes) {
             {mapOfTarkovI18n.title[localeKey]}
           </h1>
         </div>
-
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+          maxWidth={1220}
+        />
         <MapSelector
           imageSelect={imageSelect}
           setImageSelect={setImageSelect}
@@ -35,6 +41,12 @@ export default function MapOfTarkovView({ mapData }: MapOfTarkovViewTypes) {
         />
         <MapViewer mapData={mapData.map_info} imageSelect={imageSelect} />
         <FindLocation findInfo={mapData.find_info} />
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+          maxWidth={1220}
+        />
         <MapBoss bossInfo={mapData.boss_info} />
         <ExtractionsTransits
           extractionsOrTransits={mapData.extraction_info}

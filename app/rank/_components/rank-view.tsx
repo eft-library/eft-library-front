@@ -15,6 +15,7 @@ import TierSection from "./TierSection/tier-section";
 import ItemTooltip from "./ItemTooltip/item-tooltip";
 import Loading from "@/components/custom/Loading/loading";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function RankView() {
   const locale = useLocale();
@@ -96,8 +97,14 @@ export default function RankView() {
             </h1>
           </div>
 
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
           {/* Game Mode Toggle */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
+          <div className="flex mt-4 flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
             <div className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
               {rankI18N.notice[localeKey]}
             </div>

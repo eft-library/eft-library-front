@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { itemI18N, placeHolderText } from "@/lib/consts/i18nConsts";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function MedicalView({ medical }: MedicalViewTypes) {
   const locale = useLocale();
@@ -24,9 +25,14 @@ export default function MedicalView({ medical }: MedicalViewTypes) {
           <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2 dark:text-white text-gray-900">
             {itemI18N.medical.title[localeKey]}
           </h1>
-
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
           {/* Search Bar */}
-          <div className="relative max-w-md mx-auto mb-6 md:mb-8">
+          <div className="relative max-w-md mx-auto mb-6 md:mb-8 mt-4">
             <Search
               className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 dark:text-gray-400 text-gray-500`}
             />

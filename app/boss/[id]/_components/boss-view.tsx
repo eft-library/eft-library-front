@@ -7,6 +7,7 @@ import BossLocation from "./BossLocation/boss-location";
 import BossHealth from "./BossHealth/boss-health";
 import BossLoot from "./BossLoot/boss-loot";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function BossView({ bossData }: BossDetail) {
   const locale = useLocale();
@@ -20,7 +21,13 @@ export default function BossView({ bossData }: BossDetail) {
             {boss18N.title[localeKey]}
           </h1>
           <BossSelector bossData={bossData} />
-          <div className="space-y-6 sm:space-y-8">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
+          <div className="space-y-6 sm:space-y-8 mt-4">
             <BossLocation bossData={bossData} />
             <BossHealth subFollowers={bossData.boss.children} />
             <BossLoot follower={bossData.boss} />

@@ -9,7 +9,7 @@ export default function GridItem({ main_info }: GridItemTypes) {
   const localeKey = getLocaleKey(locale);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
       {main_info.map((item) => (
         <Link
           key={`main-info-${item.value}`}

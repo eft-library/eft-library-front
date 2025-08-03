@@ -80,7 +80,7 @@ export default function SearchFilter({
   const filteredQuests = getFilteredQuests(inputValue);
 
   return (
-    <div className="mb-6">
+    <div className="mb-4 mt-4">
       {/* Combobox Container */}
       <div className="relative">
         <label {...getLabelProps()} className="sr-only">

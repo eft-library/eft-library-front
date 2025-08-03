@@ -14,7 +14,7 @@ export default function HideoutCrafting({ itemInfo }: HideoutCraftingTypes) {
   const localeKey = getLocaleKey(locale);
 
   return (
-    <Card className="rounded-xl shadow-lg border border-border bg-card">
+    <Card className="rounded-xl shadow-lg border border-border bg-card mt-4">
       <CardHeader className="pb-4">
         <CardTitle className="text-lg sm:text-xl font-bold text-center text-foreground flex items-center justify-center gap-2">
           <Hammer className="w-5 h-5 text-primary" />

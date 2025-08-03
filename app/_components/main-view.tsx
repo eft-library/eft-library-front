@@ -3,6 +3,7 @@ import GridItem from "./GridItem/grid-item";
 import type { MainViewTypes } from "./news-view.types";
 import PinnedNotice from "./PinnedNotice/pinned-notice";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (
@@ -14,7 +15,12 @@ export default function MainView({ homeData }: MainViewTypes) {
             <div className="flex-1">
               {/* Recommended Info Section */}
               <NewsView news={homeData.news} />
-
+              <AdBanner
+                dataAdFormat={"auto"}
+                dataFullWidthResponsive={true}
+                dataAdSlot="2690838054"
+                maxWidth={880}
+              />
               {/* Grid Layout */}
               <GridItem main_info={homeData.main_info} />
             </div>

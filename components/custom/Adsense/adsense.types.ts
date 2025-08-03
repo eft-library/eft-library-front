@@ -5,4 +5,5 @@ export interface AdBannerTypes {
   dataAdFormat: string;
   dataFullWidthResponsive: boolean;
   style?: React.CSSProperties;
+  maxWidth: number;
 }

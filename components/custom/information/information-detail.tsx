@@ -13,6 +13,7 @@ import { returnBadgeColor } from "@/lib/func/jsxfunction";
 import { formatISODate } from "@/lib/func/formatTime";
 import { Badge } from "../../ui/badge";
 import ViewWrapper from "../ViewWrapper/view-wrapper";
+import AdBanner from "../Adsense/ad-banner";
 
 export default function InformationDetail({
   informationInfo,
@@ -25,7 +26,7 @@ export default function InformationDetail({
   return (
     <ViewWrapper>
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <Link href={`${routeLink}?id=1`}>
             <Button
               variant="ghost"
@@ -36,7 +37,7 @@ export default function InformationDetail({
             </Button>
           </Link>
 
-          <Card className="bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          <Card className="bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-4">
             <CardHeader className="pb-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -81,8 +82,14 @@ export default function InformationDetail({
             </CardContent>
           </Card>
 
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
           {/* 다른 공지사항 목록 */}
-          <div className="mt-8">
+          <div className="mt-4">
             <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
               {title}
             </h3>

@@ -40,6 +40,7 @@ import {
   generateEdges,
 } from "./roadmap-func";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   const locale = useLocale();
@@ -291,8 +292,14 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
               </h1>
             </div>
 
+            <AdBanner
+              dataAdFormat={"auto"}
+              dataFullWidthResponsive={true}
+              dataAdSlot="2690838054"
+              maxWidth={1220}
+            />
             {/* Merchant Selection - Desktop */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block mt-4">
               <TraderTab
                 npcList={npcList}
                 setTabState={onChangeNpcTab}

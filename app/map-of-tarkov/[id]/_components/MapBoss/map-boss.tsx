@@ -23,7 +23,7 @@ export default function MapBoss({ bossInfo }: MapBossTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
-    <div className="mb-12">
+    <div className="mb-12 mt-4">
       <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
         <AngryIcon className="inline mr-2 h-5 w-5 text-orange-600 dark:text-orange-400" />
         {mapOfTarkovI18n.boss[localeKey]}

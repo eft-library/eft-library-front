@@ -13,6 +13,7 @@ import PriceTable from "./PriceTable/price-table";
 import { Price } from "./price.types";
 import Loading from "@/components/custom/Loading/loading";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function PriceView() {
   const locale = useLocale();
@@ -77,6 +78,12 @@ export default function PriceView() {
               <h1 className={`text-xl font-bold dark:text-white text-gray-900`}>
                 {price18N.title[localeKey]}
               </h1>
+              <AdBanner
+                dataAdFormat={"auto"}
+                dataFullWidthResponsive={true}
+                dataAdSlot="2690838054"
+                maxWidth={1220}
+              />
               <p
                 className={` mt-1 text-sm sm:text-base dark:text-slate-400 text-gray-600`}
               >

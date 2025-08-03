@@ -11,6 +11,7 @@ import MapSelector from "./MapSelector/map-selector";
 import Map2D from "./Map2D/map-2d";
 import Map3D from "./Map3D/map-3d";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function MapView({ mapInfo }: MapViewTypes) {
   const locale = useLocale();
@@ -30,7 +31,12 @@ export default function MapView({ mapInfo }: MapViewTypes) {
             {interactiveMapI18N.title[localeKey]}
           </h1>
         </div>
-
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+          maxWidth={1220}
+        />
         {/* Main Content Area - Centered with max-w */}
         <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6">
           {/* <MapSelection /> */}

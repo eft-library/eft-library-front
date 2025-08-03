@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { plannerSampleData } from "@/lib/consts/libraryConsts";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   const locale = useLocale();
@@ -208,6 +209,12 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
             </h1>
           </div>
 
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={880}
+          />
           {/* 퀘스트 검색 */}
           <SearchFilter
             selectedItems={selectedItems}

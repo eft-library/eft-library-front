@@ -13,6 +13,7 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import HideoutDetail from "./HideoutDetail/hideout-detail";
 import Loading from "@/components/custom/Loading/loading";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const locale = useLocale();
@@ -185,7 +186,13 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
               {hideoutI18n.title[localeKey]}
             </h1>
           </div>
-          <div className="flex gap-8">
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
+          <div className="flex gap-8 mt-4">
             {/* Main Content Area */}
             <div className="flex-1 max-w-7xl mx-auto">
               {/* Hideout Tree */}

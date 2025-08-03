@@ -49,7 +49,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
   if (questItems.length < 1) return null;
 
   return (
-    <Card className="mb-6 sm:mb-8 mx-4 sm:mx-0 bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700/50 shadow-xl">
+    <Card className="mb-6 sm:mb-8 mx-4 sm:mx-0 bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700/50 shadow-xl mt-4">
       <CardContent className="p-4 sm:p-6">
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <div className="min-w-full inline-block align-middle">

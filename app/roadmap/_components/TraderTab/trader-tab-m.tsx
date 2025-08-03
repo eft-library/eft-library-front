@@ -26,7 +26,7 @@ export default function TraderTabM({
   const localeKey = getLocaleKey(locale);
   const trader = npcList.find((npc) => npc.id === tabState);
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden mt-4">
       <Sheet>
         <SheetTrigger asChild>
           {tabState === "all" ? (
