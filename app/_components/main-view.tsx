@@ -53,6 +53,12 @@ export default function MainView({ homeData }: MainViewTypes) {
 
               {/* Pinned Notices */}
               <PinnedNotice notice={homeData.news} />
+              <AdBanner
+                dataAdFormat={"auto"}
+                dataFullWidthResponsive={true}
+                dataAdSlot="8601640289"
+                maxWidth={340}
+              />
             </div>
           </div>
         </div>
