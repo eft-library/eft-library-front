@@ -1,39 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AdBannerTypes } from "./adsense.types";
 
-export default function AdBanner({
-  dataAdSlot,
-  dataAdFormat,
-  dataFullWidthResponsive,
-  style,
-  maxWidth = 970,
-}: AdBannerTypes) {
+export default function AdBanner({ ...props }: AdBannerTypes) {
+  const [showAd, setShowAd] = useState(false);
+
   useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
+    setShowAd(true);
+  }, []);
+
+  useEffect(() => {
+    if (showAd) {
+      try {
         (window as any).adsbygoogle = (window as any).adsbygoogle || [];
         (window as any).adsbygoogle.push({});
+      } catch (e) {
+        console.error("Google AdSense script load error:", e);
       }
-    } catch (e) {
-      console.error("Google AdSense script load error:", e);
     }
-  }, []);
+  }, [showAd]);
+
+  if (!showAd) return null;
 
   return (
     <div
       className="w-full text-center my-4 px-2"
-      style={{ maxWidth: `${maxWidth}px`, margin: "0 auto" }}
+      style={{ maxWidth: `${props.maxWidth ?? 970}px`, margin: "0 auto" }}
     >
       <ins
         className="adsbygoogle"
-        style={{ display: "block", width: "100%", ...style }}
+        style={{
+          display: "block",
+          width: "100%",
+          minHeight: 250,
+          ...props.style,
+        }}
         data-ad-client={process.env.NEXT_PUBLIC_ADSENSE}
-        data-ad-slot={dataAdSlot}
-        data-ad-format={dataAdFormat}
-        data-full-width-responsive={dataFullWidthResponsive.toString()}
+        data-ad-slot={props.dataAdSlot}
+        data-ad-format={props.dataAdFormat}
+        data-full-width-responsive={
+          props.dataFullWidthResponsive ? "true" : "false"
+        }
       />
     </div>
   );
