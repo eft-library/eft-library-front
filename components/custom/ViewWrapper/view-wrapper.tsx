@@ -13,6 +13,7 @@ export default function ViewWrapper({ children }: ViewWrapperTypes) {
               dataFullWidthResponsive={true}
               dataAdSlot="8601640289"
               style={{ width: "160px", height: "600px" }}
+              maxWidth={600}
             />
           </div>
         </div>
@@ -27,6 +28,7 @@ export default function ViewWrapper({ children }: ViewWrapperTypes) {
               dataFullWidthResponsive={true}
               dataAdSlot="8601640289"
               style={{ width: "160px", height: "600px" }}
+              maxWidth={600}
             />
           </div>
         </div>
