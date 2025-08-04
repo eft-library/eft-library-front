@@ -84,12 +84,23 @@ export default function DashboardView() {
           {/* here */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-end gap-4 mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-white font-bold">시작일:</span>
+              <span className="text-black dark:text-white font-bold">
+                시작일:
+              </span>
               <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date ?? null)}
                 dateFormat="yyyy-MM-dd"
-                className="text-black dark:text-white px-2 py-1 rounded"
+                className="
+                  text-black dark:text-white
+                  px-2 py-1
+                  rounded
+                  border border-gray-300 dark:border-gray-600
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                  hover:border-blue-400 dark:hover:border-blue-400
+                  bg-white dark:bg-gray-800
+                  transition
+                "
                 placeholderText="날짜 선택"
                 maxDate={
                   endDate
@@ -103,12 +114,23 @@ export default function DashboardView() {
               />
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-white font-bold">종료일:</span>
+              <span className="text-black dark:text-white font-bold">
+                종료일:
+              </span>
               <DatePicker
                 selected={endDate}
                 onChange={(date) => setEndDate(date ?? null)}
                 dateFormat="yyyy-MM-dd"
-                className="text-black dark:text-white px-2 py-1 rounded"
+                className="
+                  text-black dark:text-white
+                  px-2 py-1
+                  rounded
+                  border border-gray-300 dark:border-gray-600
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                  hover:border-blue-400 dark:hover:border-blue-400
+                  bg-white dark:bg-gray-800
+                  transition
+                "
                 placeholderText="날짜 선택"
                 minDate={
                   startDate

@@ -16,6 +16,7 @@ import "../assets/xyflow.css";
 import "@xyflow/react/dist/style.css";
 import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
