@@ -93,7 +93,7 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
             </div>
 
             {/* 검색 영역 */}
-            <div className="flex items-center space-x-2 ml-auto">
+            <div className="flex flex-wrap items-center justify-end gap-2 w-full lg:w-auto lg:ml-auto">
               {/* 도움말 버튼 */}
               <Button
                 size="sm"
