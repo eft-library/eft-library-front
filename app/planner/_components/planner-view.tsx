@@ -198,10 +198,8 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
 
   return (
     <ViewWrapper>
-      <div
-        className={`min-h-screen transition-colors duration-300 dark:bg-gray-900 bg-gray-50`}
-      >
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* 헤더 */}
           <div className="text-center mb-8">
             <h1 className="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
@@ -213,7 +211,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
             dataAdFormat={"auto"}
             dataFullWidthResponsive={true}
             dataAdSlot="2690838054"
-            maxWidth={880}
+            maxWidth={1220}
           />
           {/* 퀘스트 검색 */}
           <SearchFilter

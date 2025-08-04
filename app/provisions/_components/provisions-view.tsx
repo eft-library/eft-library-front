@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function ProvisionsView({
   provisionsList,
@@ -24,6 +25,12 @@ export default function ProvisionsView({
             {itemI18N.provisions.title[localeKey]}
           </h1>
 
+          <AdBanner
+            dataAdFormat={"auto"}
+            dataFullWidthResponsive={true}
+            dataAdSlot="2690838054"
+            maxWidth={1220}
+          />
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto mb-6 md:mb-8">
             <Search
