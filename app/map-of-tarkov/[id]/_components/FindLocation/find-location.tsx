@@ -50,6 +50,40 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData("text");
+    setWhere(pastedText);
+
+    // 상태 반영 기다릴 필요 없이 직접 전달
+    setTimeout(() => {
+      onClickWhereDirect(pastedText);
+    }, 0);
+  };
+
+  // 복사 붙여넣기 전용 함수
+  const onClickWhereDirect = (text: string) => {
+    if (text.length > 0) {
+      const splitStr = text.split("]_")[1];
+
+      if (splitStr) {
+        const matches = splitStr.match(/[-+]?\d*\.\d+/g);
+
+        if (matches && matches.length >= 3) {
+          const x = parseFloat(matches[0]);
+          const y = parseFloat(matches[2]);
+          setImageCoord({ x, y });
+        } else {
+          setImageCoord({ x: 0, y: 0 });
+        }
+
+        setIsViewWhere(true);
+      } else {
+        setImageCoord({ x: 0, y: 0 });
+      }
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="container mx-auto px-4 mb-6">
@@ -115,6 +149,7 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") onClickWhere();
                   }}
+                  onPaste={handlePaste}
                   className="pl-8 h-8 w-64 rounded-full bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 dark:bg-[#0f1115] dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
                 />
               </div>
