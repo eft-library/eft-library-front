@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,4 +120,39 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* globals.css */
+
+.ProseMirror {
+  @apply prose dark:prose-invert max-w-none min-h-[400px];
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror img {
+  @apply rounded-lg my-4;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-orange-400 pl-4 italic my-4;
+}
+
+.ProseMirror table {
+  @apply border-collapse border border-gray-300 my-4;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  @apply border border-gray-300 px-2 py-1;
+}
+
+.ProseMirror pre {
+  @apply bg-gray-900 text-white rounded-lg p-4 overflow-x-auto;
+}
+
+.ProseMirror code {
+  @apply text-orange-400;
 }
