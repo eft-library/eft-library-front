@@ -29,7 +29,7 @@ export default function PostEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false }),
+      StarterKit.configure({ codeBlock: false, underline: false }),
       Underline,
       TipTapIframe,
       Highlight,
@@ -89,14 +89,53 @@ export default function PostEditor({
   );
 
   const insertIframe = () => {
-    const url = prompt("iframe URL을 입력하세요");
-    if (!url || !editor) return;
+    const raw = prompt("iframe 태그 전체 또는 URL을 입력하세요");
+
+    if (!raw || !editor) return;
+
+    // 1. iframe 전체 태그 형태인지 체크
+    const iframeMatch = raw.match(/<iframe[^>]+>/i);
+
+    if (iframeMatch) {
+      // iframe 태그에서 속성 파싱
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(raw, "text/html");
+      const iframeEl = doc.querySelector("iframe");
+
+      if (iframeEl) {
+        const attrs: Record<string, string> = {};
+        for (const attr of iframeEl.attributes) {
+          attrs[attr.name] = attr.value;
+        }
+
+        editor
+          .chain()
+          .focus()
+          .insertContent({
+            type: "iframe",
+            attrs,
+          })
+          .run();
+
+        return;
+      }
+    }
+
+    // 2. 그냥 URL인 경우 기본 속성으로 삽입
     editor
       .chain()
       .focus()
       .insertContent({
         type: "iframe",
-        attrs: { src: url },
+        attrs: {
+          src: raw,
+          width: "800",
+          height: "450",
+          frameborder: "0",
+          allow: "autoplay; clipboard-write; web-share",
+          allowfullscreen: "true",
+          title: "Iframe",
+        },
       })
       .run();
   };
