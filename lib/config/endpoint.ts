@@ -52,3 +52,7 @@ export const USER_API_ENDPOINTS = {
   UPDATE_STATION: baseUrl + "/api/hideout/save_station",
   UPDATE_USER_QUEST: baseUrl + "/api/planner/quest/update",
 };
+
+export const COMMUNITY_ENDPOINTS = {
+  IMAGE_UPLOAD: baseUrl + "/api/community/upload_image",
+};
