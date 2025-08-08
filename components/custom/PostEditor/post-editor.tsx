@@ -16,7 +16,6 @@ import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui/button"; // Shadcn UI
 import { PostEditorTypes } from "./post-editor.types";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 
