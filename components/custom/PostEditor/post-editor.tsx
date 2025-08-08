@@ -148,76 +148,85 @@ export default function PostEditor({
   if (!mounted || !editor) return null;
 
   return (
-    <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
+    <div className="border rounded-lg p-4 bg-white dark:bg-gray-900 shadow-md">
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        <Button
-          variant={editor.isActive("bold") ? "default" : "outline"}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          B
-        </Button>
-        <Button
-          variant={editor.isActive("italic") ? "default" : "outline"}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        >
-          I
-        </Button>
-        <Button variant="outline" onClick={insertIframe}>
-          iframe 삽입
-        </Button>
-        <Button
-          variant={editor.isActive("underline") ? "default" : "outline"}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-        >
-          U
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
+      <div className="flex flex-wrap gap-3 mb-4 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-inner">
+        {/** 버튼 공통 스타일 */}
+        {[
+          {
+            name: "B",
+            action: () => editor.chain().focus().toggleBold().run(),
+            isActive: editor.isActive("bold"),
+          },
+          {
+            name: "I",
+            action: () => editor.chain().focus().toggleItalic().run(),
+            isActive: editor.isActive("italic"),
+          },
+          {
+            name: "U",
+            action: () => editor.chain().focus().toggleUnderline().run(),
+            isActive: editor.isActive("underline"),
+          },
+          { name: "iframe 삽입", action: insertIframe, isActive: false },
+          {
+            name: "H1",
+            action: () =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run(),
+            isActive: editor.isActive("heading", { level: 1 }),
+          },
+          {
+            name: "H2",
+            action: () =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run(),
+            isActive: editor.isActive("heading", { level: 2 }),
+          },
+          {
+            name: "• List",
+            action: () => editor.chain().focus().toggleBulletList().run(),
+            isActive: editor.isActive("bulletList"),
+          },
+          {
+            name: "1. List",
+            action: () => editor.chain().focus().toggleOrderedList().run(),
+            isActive: editor.isActive("orderedList"),
+          },
+          {
+            name: "❝",
+            action: () => editor.chain().focus().toggleBlockquote().run(),
+            isActive: editor.isActive("blockquote"),
+          },
+          {
+            name: "표",
+            action: () =>
+              editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run(),
+            isActive: false,
+          },
+        ].map(({ name, action, isActive }, idx) => (
+          <button
+            key={idx}
+            onClick={action}
+            className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors
+          ${
+            isActive
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
           }
-        >
-          H1
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-        >
-          H2
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-        >
-          • List
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        >
-          1. List
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        >
-          ❝
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() =>
-            editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run()
-          }
-        >
-          표
-        </Button>
+          focus:outline-none focus:ring-2 focus:ring-blue-500
+        `}
+            type="button"
+          >
+            {name}
+          </button>
+        ))}
       </div>
 
       {/* Editor */}
-      <EditorContent editor={editor} className="ProseMirror" onDrop={onDrop} />
+      <EditorContent
+        editor={editor}
+        className="ProseMirror min-h-[300px] max-h-[600px] overflow-auto"
+        onDrop={onDrop}
+      />
     </div>
   );
 }
