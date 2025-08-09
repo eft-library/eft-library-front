@@ -25,17 +25,19 @@ const COLORS = [
 ];
 
 export default function ColorPalette({ editor }: ColorPaletteTypes) {
-  if (!editor) return null;
-
   const [open, setOpen] = useState(false);
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
-  const [color, setColor] = useState(
-    editor.getAttributes("textStyle").color || "#000000"
-  );
+  const [color, setColor] = useState("#000000");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 외부 클릭 시 닫기
+    if (!editor) return;
+
+    // editor가 있을 때만 현재 색상 동기화
+    setColor(editor.getAttributes("textStyle").color || "#000000");
+  }, [editor]);
+
+  useEffect(() => {
     function onClickOutside(event: MouseEvent) {
       if (
         containerRef.current &&
@@ -55,7 +57,9 @@ export default function ColorPalette({ editor }: ColorPaletteTypes) {
 
   const applyColor = (newColor: string) => {
     setColor(newColor);
-    editor.chain().focus().setColor(newColor).run();
+    if (editor) {
+      editor.chain().focus().setColor(newColor).run();
+    }
     setOpen(false);
     setColorPickerOpen(false);
   };
