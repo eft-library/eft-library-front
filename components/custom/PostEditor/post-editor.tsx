@@ -17,6 +17,7 @@ import { useState, useEffect, useCallback } from "react";
 import { PostEditorTypes } from "./post-editor.types";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import { TextStyle } from "@tiptap/extension-text-style";
+import { YoutubeAutoPaste } from "./youtube-auto-paste";
 import { Color } from "@tiptap/extension-color";
 import TableControls from "./table-controls";
 import Toolbar from "./toolbar";
@@ -41,7 +42,7 @@ export default function PostEditor({
       Highlight,
       Link.configure({ openOnClick: false }),
       Image,
-      Youtube.configure({ controls: true }),
+      YoutubeAutoPaste.configure({ controls: true, allowFullscreen: true }),
       CodeBlockLowlight.configure({ lowlight }),
       TableKit,
       ImageResize,

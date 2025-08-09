@@ -14,43 +14,71 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ReceiptText } from "lucide-react";
+import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 
 export default function CommunityCreateView() {
   const { data: session } = useSession();
   const [contents, setContents] = useState("");
-  const [category, setCategory] = useState({ id: "free", kr: "자유게시판" });
+  const [category, setCategory] = useState({ id: "free", kr: "자유" });
   const [title, setTitle] = useState("");
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
 
-  // 카테고리 정리
   // 제목, 내용 없는 경우 경고 문구
 
   const CATEGORY_LIST = [
-    { id: "free", kr: "자유게시판" },
-    { id: "tip", kr: "팁" },
+    { id: "free", kr: "자유" },
+    { id: "info", kr: "정보" },
+    { id: "humor", kr: "유머" },
+    { id: "pvp", kr: "pvp" },
+    { id: "pve", kr: "PVE" },
+    { id: "question", kr: "질문" },
   ];
 
   const handleSave = async () => {
     try {
-      const data = await requestUserData(
-        COMMUNITY_ENDPOINTS.CREATE_POSTS,
-        {
-          title: title,
-          category: category.id,
-          contents: contents,
-        },
-        session
-      );
-      console.log(data);
-      if (data && data.status === 200) {
-        console.log("성공");
-      } else {
-        console.error(
-          "Failed to fetch roadmap data:",
-          data?.msg || "Unknown error"
+      if (session && session.email) {
+        if (title.length < 1) {
+          setAlertDesc("제목을 입력해주세요.");
+          requestAnimationFrame(() => {
+            setAlertStatus(true);
+          });
+          return;
+        }
+
+        if (contents.length < 1) {
+          setAlertDesc("내용을 입력해주세요.");
+          requestAnimationFrame(() => {
+            setAlertStatus(true);
+          });
+          return;
+        }
+
+        const data = await requestUserData(
+          COMMUNITY_ENDPOINTS.CREATE_POSTS,
+          {
+            title: title,
+            category: category.id,
+            contents: contents,
+          },
+          session
         );
+        if (data && data.status === 200) {
+          console.log("성공");
+        } else {
+          console.error(
+            "Failed to fetch community create:",
+            data?.msg || "Unknown error"
+          );
+        }
+      } else {
+        setAlertDesc("로그인 사용자만 저장 가능합니다.");
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
       }
     } catch (error) {
-      console.error("Error fetching roadmap:", error);
+      console.error("Error fetching community create:", error);
     }
   };
 
@@ -101,6 +129,12 @@ export default function CommunityCreateView() {
       >
         저장
       </button>
+      <DefaultDialog
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="Notice"
+        description={alertDesc}
+      />
     </div>
   );
 }
