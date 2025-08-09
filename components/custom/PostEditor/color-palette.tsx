@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { HexColorPicker } from "react-colorful";
+import { ColorPaletteTypes } from "./post-editor.types";
 
 const COLORS = [
   "#000000",
@@ -21,7 +22,9 @@ const COLORS = [
   "#A0AEC0",
 ];
 
-export default function ColorPickerDropdown({ editor }: { editor: any }) {
+export default function ColorPalette({ editor }: ColorPaletteTypes) {
+  if (!editor) return null;
+
   const [open, setOpen] = useState(false);
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   const [color, setColor] = useState(
@@ -75,7 +78,7 @@ export default function ColorPickerDropdown({ editor }: { editor: any }) {
 
       {/* 기본 색상 팔레트 팝업 */}
       {open && (
-        <div className="absolute bottom-full mb-2 left-0 z-30 p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg flex flex-wrap gap-2 max-w-xs w-52">
+        <div className="absolute top-full mb-2 left-0 z-30 p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg flex flex-wrap gap-2 max-w-xs w-52">
           {COLORS.map((c) => (
             <button
               key={c}
@@ -108,7 +111,7 @@ export default function ColorPickerDropdown({ editor }: { editor: any }) {
 
       {/* react-colorful 컬러 피커 팝업 */}
       {colorPickerOpen && (
-        <div className="absolute bottom-full mb-2 left-0 z-40 p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg max-w-xs w-52">
+        <div className="absolute top-full mt-2 left-0 ml-2 z-40 p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg max-w-xs w-56">
           <HexColorPicker
             color={color}
             onChange={(newColor) => setColor(newColor)}

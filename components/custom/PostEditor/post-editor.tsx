@@ -17,7 +17,8 @@ import { PostEditorTypes } from "./post-editor.types";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-import ColorPalette from "./color-palette";
+import TableControls from "./table-controls";
+import Toolbar from "./toolbar";
 
 export default function PostEditor({
   initialContent = "",
@@ -183,119 +184,13 @@ export default function PostEditor({
 
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-white dark:bg-gray-900 shadow-lg">
-      {/* Toolbar */}
-      <div className="flex flex-wrap gap-2 mb-2 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg shadow-inner">
-        {[
-          {
-            name: "B",
-            action: () => editor.chain().focus().toggleBold().run(),
-            isActive: editor.isActive("bold"),
-          },
-          {
-            name: "I",
-            action: () => editor.chain().focus().toggleItalic().run(),
-            isActive: editor.isActive("italic"),
-          },
-          {
-            name: "U",
-            action: () => editor.chain().focus().toggleUnderline().run(),
-            isActive: editor.isActive("underline"),
-          },
-          { name: "iframe", action: insertIframe, isActive: false },
-          {
-            name: "H1",
-            action: () =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run(),
-            isActive: editor.isActive("heading", { level: 1 }),
-          },
-          {
-            name: "H2",
-            action: () =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run(),
-            isActive: editor.isActive("heading", { level: 2 }),
-          },
-          {
-            name: "•",
-            action: () => editor.chain().focus().toggleBulletList().run(),
-            isActive: editor.isActive("bulletList"),
-          },
-          {
-            name: "1.",
-            action: () => editor.chain().focus().toggleOrderedList().run(),
-            isActive: editor.isActive("orderedList"),
-          },
-          {
-            name: "❝",
-            action: () => editor.chain().focus().toggleBlockquote().run(),
-            isActive: editor.isActive("blockquote"),
-          },
-          {
-            name: "표",
-            action: () =>
-              editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run(),
-            isActive: false,
-          },
-        ].map(({ name, action, isActive }, idx) => (
-          <button
-            key={idx}
-            onClick={action}
-            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150
-          ${
-            isActive
-              ? "bg-blue-600 text-white shadow hover:bg-blue-700"
-              : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
-          }
-        `}
-            type="button"
-          >
-            {name}
-          </button>
-        ))}
-        <ColorPalette editor={editor} />
-      </div>
+      <Toolbar editor={editor} insertIframe={insertIframe} />
 
-      {/* Table Controls */}
-      <div className="flex flex-wrap gap-2 mb-2 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
-        {[
-          {
-            label: "행 위",
-            onClick: () => editor.chain().focus().addRowBefore().run(),
-          },
-          {
-            label: "행 아래",
-            onClick: () => editor.chain().focus().addRowAfter().run(),
-          },
-          { label: "행 삭제", onClick: deleteRowSmart },
-          {
-            label: "열 왼쪽",
-            onClick: () => editor.chain().focus().addColumnBefore().run(),
-          },
-          {
-            label: "열 오른쪽",
-            onClick: () => editor.chain().focus().addColumnAfter().run(),
-          },
-          {
-            label: "열 삭제",
-            onClick: () => editor.chain().focus().deleteColumn().run(),
-          },
-          {
-            label: "표 삭제",
-            onClick: () => editor.chain().focus().deleteTable().run(),
-          },
-        ].map(({ label, onClick }, idx) => (
-          <button
-            key={idx}
-            onClick={onClick}
-            disabled={!inTable}
-            className="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 text-sm
-                   bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300
-                   hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed
-                   transition-colors duration-150"
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <TableControls
+        editor={editor}
+        inTable={inTable}
+        deleteRowSmart={deleteRowSmart}
+      />
 
       {/* Editor */}
       <EditorContent
