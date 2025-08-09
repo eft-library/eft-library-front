@@ -11,13 +11,13 @@ import Highlight from "@tiptap/extension-highlight";
 import Youtube from "@tiptap/extension-youtube";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
-import { Table } from "@tiptap/extension-table";
-import { TableRow } from "@tiptap/extension-table-row";
-import { TableHeader } from "@tiptap/extension-table-header";
-import { TableCell } from "@tiptap/extension-table-cell";
+import { TableKit } from "@tiptap/extension-table";
 import { useState, useEffect, useCallback } from "react";
 import { PostEditorTypes } from "./post-editor.types";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+import ColorPalette from "./color-palette";
 
 export default function PostEditor({
   initialContent = "",
@@ -28,7 +28,12 @@ export default function PostEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false, underline: false }),
+      StarterKit.configure({
+        codeBlock: false,
+        underline: false,
+      }),
+      TextStyle,
+      Color,
       Underline,
       TipTapIframe,
       Highlight,
@@ -36,14 +41,11 @@ export default function PostEditor({
       Image,
       Youtube.configure({ controls: true }),
       CodeBlockLowlight.configure({ lowlight }),
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableHeader,
-      TableCell,
+      TableKit,
       ImageResize,
     ],
     content: initialContent,
-    immediatelyRender: false, // SSR 방지
+    immediatelyRender: false,
     onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
   });
 
@@ -92,11 +94,9 @@ export default function PostEditor({
 
     if (!raw || !editor) return;
 
-    // 1. iframe 전체 태그 형태인지 체크
     const iframeMatch = raw.match(/<iframe[^>]+>/i);
 
     if (iframeMatch) {
-      // iframe 태그에서 속성 파싱
       const parser = new DOMParser();
       const doc = parser.parseFromString(raw, "text/html");
       const iframeEl = doc.querySelector("iframe");
@@ -120,7 +120,6 @@ export default function PostEditor({
       }
     }
 
-    // 2. 그냥 URL인 경우 기본 속성으로 삽입
     editor
       .chain()
       .focus()
@@ -139,6 +138,40 @@ export default function PostEditor({
       .run();
   };
 
+  // **수정된 안전한 행 삭제 함수**
+  const deleteRowSmart = () => {
+    if (!editor) return;
+
+    const { state } = editor;
+    const { selection } = state;
+    const $from = selection.$from;
+
+    // 위로 올라가면서 table 노드를 찾는다 (depth 범위 내)
+    let tableNode: any | null = null;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      if (node && node.type && node.type.name === "table") {
+        tableNode = node;
+        break;
+      }
+    }
+
+    if (!tableNode) {
+      // 테이블이 아닌 위치에서 호출되면 아무것도 안 함
+      console.warn("표 노드를 찾을 수 없습니다. 커서가 표 내부에 있나요?");
+      return;
+    }
+
+    const rowCount = tableNode.childCount;
+
+    if (rowCount <= 1) {
+      // 마지막 행이면 표 자체 삭제
+      editor.chain().focus().deleteTable().run();
+    } else {
+      editor.chain().focus().deleteRow().run();
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
     return () => editor?.destroy();
@@ -146,11 +179,12 @@ export default function PostEditor({
 
   if (!mounted || !editor) return null;
 
+  const inTable = editor.isActive("table");
+
   return (
-    <div className="border rounded-lg p-4 bg-white dark:bg-gray-900 shadow-md">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-white dark:bg-gray-900 shadow-lg">
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-3 mb-4 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-inner">
-        {/** 버튼 공통 스타일 */}
+      <div className="flex flex-wrap gap-2 mb-2 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg shadow-inner">
         {[
           {
             name: "B",
@@ -167,7 +201,7 @@ export default function PostEditor({
             action: () => editor.chain().focus().toggleUnderline().run(),
             isActive: editor.isActive("underline"),
           },
-          { name: "iframe 삽입", action: insertIframe, isActive: false },
+          { name: "iframe", action: insertIframe, isActive: false },
           {
             name: "H1",
             action: () =>
@@ -181,12 +215,12 @@ export default function PostEditor({
             isActive: editor.isActive("heading", { level: 2 }),
           },
           {
-            name: "• List",
+            name: "•",
             action: () => editor.chain().focus().toggleBulletList().run(),
             isActive: editor.isActive("bulletList"),
           },
           {
-            name: "1. List",
+            name: "1.",
             action: () => editor.chain().focus().toggleOrderedList().run(),
             isActive: editor.isActive("orderedList"),
           },
@@ -205,17 +239,60 @@ export default function PostEditor({
           <button
             key={idx}
             onClick={action}
-            className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors
+            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150
           ${
             isActive
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              ? "bg-blue-600 text-white shadow hover:bg-blue-700"
+              : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
           }
-          focus:outline-none focus:ring-2 focus:ring-blue-500
         `}
             type="button"
           >
             {name}
+          </button>
+        ))}
+        <ColorPalette editor={editor} />
+      </div>
+
+      {/* Table Controls */}
+      <div className="flex flex-wrap gap-2 mb-2 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+        {[
+          {
+            label: "행 위",
+            onClick: () => editor.chain().focus().addRowBefore().run(),
+          },
+          {
+            label: "행 아래",
+            onClick: () => editor.chain().focus().addRowAfter().run(),
+          },
+          { label: "행 삭제", onClick: deleteRowSmart },
+          {
+            label: "열 왼쪽",
+            onClick: () => editor.chain().focus().addColumnBefore().run(),
+          },
+          {
+            label: "열 오른쪽",
+            onClick: () => editor.chain().focus().addColumnAfter().run(),
+          },
+          {
+            label: "열 삭제",
+            onClick: () => editor.chain().focus().deleteColumn().run(),
+          },
+          {
+            label: "표 삭제",
+            onClick: () => editor.chain().focus().deleteTable().run(),
+          },
+        ].map(({ label, onClick }, idx) => (
+          <button
+            key={idx}
+            onClick={onClick}
+            disabled={!inTable}
+            className="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 text-sm
+                   bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300
+                   hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed
+                   transition-colors duration-150"
+          >
+            {label}
           </button>
         ))}
       </div>
@@ -223,7 +300,7 @@ export default function PostEditor({
       {/* Editor */}
       <EditorContent
         editor={editor}
-        className="ProseMirror min-h-[300px] max-h-[600px] overflow-auto"
+        className="ProseMirror min-h-[300px] max-h-[600px] overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         onDrop={onDrop}
       />
     </div>
