@@ -83,45 +83,75 @@ export default function CommunityCreateView() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">새 글 작성</h1>
-      <Input
-        type="text"
-        placeholder={"제목"}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-full lg:w-[220px] justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
-          >
-            <div className="flex items-center">
-              <ReceiptText className="mr-2 h-4 w-4 opacity-60" />
-              <span className="truncate font-semibold">{category.kr}</span>
-            </div>
-
-            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="w-[220px] p-1"
-          align="start"
-          sideOffset={4}
-        >
-          {CATEGORY_LIST.map((category_identify) => (
-            <DropdownMenuItem
-              key={category_identify.id}
-              className="p-0"
-              onSelect={() => setCategory(category_identify)}
+    <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-extrabold mb-8 text-gray-900">새 글 작성</h1>
+      <div className="flex items-center justify-center gap-4 mb-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="
+          w-full 
+          max-w-xs
+          lg:w-[140px] 
+          justify-between 
+          h-9 
+          px-4 
+          py-2 
+          bg-white 
+          text-gray-700
+          border border-gray-300
+          rounded-md
+          hover:bg-blue-50 
+          hover:text-blue-600
+          transition-colors
+          flex items-center
+        "
             >
-              <ReceiptText className="mr-2 h-4 w-4 opacity-60" />
-              <span className="truncate">{category_identify.kr}</span>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+              <div className="flex items-center truncate">
+                <ReceiptText className="mr-2 h-5 w-5 opacity-70" />
+                <span className="truncate font-semibold">{category.kr}</span>
+              </div>
+
+              <ChevronDown className="ml-2 h-5 w-5 shrink-0 opacity-60" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent
+            className="w-[220px] p-1 rounded-md border border-gray-200 shadow-md bg-white"
+            align="start"
+            sideOffset={4}
+          >
+            {CATEGORY_LIST.map((category_identify) => (
+              <DropdownMenuItem
+                key={category_identify.id}
+                className="
+            p-2 
+            flex items-center 
+            gap-2 
+            rounded-md 
+            hover:bg-blue-100 
+            cursor-pointer
+            transition-colors
+          "
+                onSelect={() => setCategory(category_identify)}
+              >
+                <ReceiptText className="h-5 w-5 opacity-70" />
+                <span className="truncate text-gray-800">
+                  {category_identify.kr}
+                </span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Input
+          type="text"
+          placeholder="제목"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="rounded-md border border-gray-300 px-4 py-2 text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
       <PostEditor onChange={setContents} initialContent={contents} />
       <button
         onClick={handleSave}

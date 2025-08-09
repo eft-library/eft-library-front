@@ -9,9 +9,12 @@ export interface ColorPaletteTypes {
   editor: Editor | null;
 }
 
+export interface IframeInsertDialogTypes {
+  editor: Editor | null;
+}
+
 export interface ToolbarTypes {
   editor: Editor | null;
-  insertIframe: () => void;
 }
 
 export interface TableControlsTypes {

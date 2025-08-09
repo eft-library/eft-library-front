@@ -9,7 +9,6 @@ import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
 import ImageResize from "tiptap-extension-resize-image";
 import Highlight from "@tiptap/extension-highlight";
-import Youtube from "@tiptap/extension-youtube";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import { TableKit } from "@tiptap/extension-table";
@@ -92,55 +91,6 @@ export default function PostEditor({
     [editor]
   );
 
-  const insertIframe = () => {
-    const raw = prompt("iframe 태그 전체 또는 URL을 입력하세요");
-
-    if (!raw || !editor) return;
-
-    const iframeMatch = raw.match(/<iframe[^>]+>/i);
-
-    if (iframeMatch) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(raw, "text/html");
-      const iframeEl = doc.querySelector("iframe");
-
-      if (iframeEl) {
-        const attrs: Record<string, string> = {};
-        for (const attr of iframeEl.attributes) {
-          attrs[attr.name] = attr.value;
-        }
-
-        editor
-          .chain()
-          .focus()
-          .insertContent({
-            type: "iframe",
-            attrs,
-          })
-          .run();
-
-        return;
-      }
-    }
-
-    editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: "iframe",
-        attrs: {
-          src: raw,
-          width: "800",
-          height: "450",
-          frameborder: "0",
-          allow: "autoplay; clipboard-write; web-share",
-          allowfullscreen: "true",
-          title: "Iframe",
-        },
-      })
-      .run();
-  };
-
   // **수정된 안전한 행 삭제 함수**
   const deleteRowSmart = () => {
     if (!editor) return;
@@ -186,7 +136,7 @@ export default function PostEditor({
 
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-white dark:bg-gray-900 shadow-lg">
-      <Toolbar editor={editor} insertIframe={insertIframe} />
+      <Toolbar editor={editor} />
 
       <TableControls
         editor={editor}

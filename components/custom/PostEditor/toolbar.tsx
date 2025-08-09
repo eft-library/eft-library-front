@@ -1,8 +1,9 @@
 import React from "react";
 import { ToolbarTypes } from "./post-editor.types";
 import ColorPalette from "./color-palette";
+import IframeInsertDialog from "./iframe-insert-dialog";
 
-export default function Toolbar({ editor, insertIframe }: ToolbarTypes) {
+export default function Toolbar({ editor }: ToolbarTypes) {
   if (!editor) return null;
 
   const buttons = [
@@ -21,7 +22,6 @@ export default function Toolbar({ editor, insertIframe }: ToolbarTypes) {
       action: () => editor.chain().focus().toggleUnderline().run(),
       isActive: editor.isActive("underline"),
     },
-    { name: "iframe", action: insertIframe, isActive: false },
     {
       name: "H1",
       action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
@@ -73,6 +73,7 @@ export default function Toolbar({ editor, insertIframe }: ToolbarTypes) {
           {name}
         </button>
       ))}
+      <IframeInsertDialog editor={editor} />
       <ColorPalette editor={editor} />
     </div>
   );

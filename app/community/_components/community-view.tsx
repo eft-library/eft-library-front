@@ -1,5 +1,3 @@
-// @ts-ignore
-
 "use client";
 
 import DOMPurify from "dompurify";
