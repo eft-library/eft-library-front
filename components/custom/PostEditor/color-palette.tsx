@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { HexColorPicker } from "react-colorful";
 import { ColorPaletteTypes } from "./post-editor.types";
