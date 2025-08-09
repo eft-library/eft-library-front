@@ -1,6 +1,6 @@
 import React from "react";
 import { ToolbarTypes } from "./post-editor.types";
-// import ColorPalette from "./color-palette";
+import ColorPalette from "./color-palette";
 
 export default function Toolbar({ editor, insertIframe }: ToolbarTypes) {
   if (!editor) return null;
@@ -73,7 +73,7 @@ export default function Toolbar({ editor, insertIframe }: ToolbarTypes) {
           {name}
         </button>
       ))}
-      {/* <ColorPalette editor={editor} /> */}
+      <ColorPalette editor={editor} />
     </div>
   );
 }
