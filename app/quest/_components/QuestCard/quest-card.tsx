@@ -157,20 +157,6 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                           ))}
                         </div>
                       ))}
-                      {quest.finish_rewards.traderStanding.map(
-                        (standing, rIndex) => (
-                          <div
-                            key={`${rIndex}-traderStanding-${quest.id}`}
-                            className="text-sm text-gray-600 dark:text-[#CCCCCC]"
-                          >
-                            *&nbsp;
-                            {standing.trader[getOtherLocalizedKey(locale)]}
-                            &nbsp;
-                            {questI18N.standing[localeKey]}&nbsp;
-                            <span>{standing.standing}</span>
-                          </div>
-                        )
-                      )}
                       {quest.finish_rewards.skillLevelReward.map(
                         (skill, rIndex) => (
                           <div
