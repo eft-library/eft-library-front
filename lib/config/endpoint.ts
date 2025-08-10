@@ -56,4 +56,5 @@ export const USER_API_ENDPOINTS = {
 export const COMMUNITY_ENDPOINTS = {
   IMAGE_UPLOAD: baseUrl + "/api/community/upload_image",
   CREATE_POSTS: baseUrl + "/api/community/create_posts",
+  GET_POSTS: baseUrl + "/api/community",
 };

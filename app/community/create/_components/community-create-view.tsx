@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ReceiptText } from "lucide-react";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
+import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 
 export default function CommunityCreateView() {
   const { data: session } = useSession();
@@ -23,17 +24,6 @@ export default function CommunityCreateView() {
   const [title, setTitle] = useState("");
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
-
-  // 제목, 내용 없는 경우 경고 문구
-
-  const CATEGORY_LIST = [
-    { id: "free", kr: "자유" },
-    { id: "info", kr: "정보" },
-    { id: "humor", kr: "유머" },
-    { id: "pvp", kr: "pvp" },
-    { id: "pve", kr: "PVE" },
-    { id: "question", kr: "질문" },
-  ];
 
   const handleSave = async () => {
     try {
@@ -122,10 +112,11 @@ export default function CommunityCreateView() {
             align="start"
             sideOffset={4}
           >
-            {CATEGORY_LIST.map((category_identify) => (
-              <DropdownMenuItem
-                key={category_identify.id}
-                className="
+            {CATEGORY_LIST.filter((cate) => cate.id !== "issue").map(
+              (category_identify) => (
+                <DropdownMenuItem
+                  key={category_identify.id}
+                  className="
             p-2 
             flex items-center 
             gap-2 
@@ -134,14 +125,15 @@ export default function CommunityCreateView() {
             cursor-pointer
             transition-colors
           "
-                onSelect={() => setCategory(category_identify)}
-              >
-                <ReceiptText className="h-5 w-5 opacity-70" />
-                <span className="truncate text-gray-800">
-                  {category_identify.kr}
-                </span>
-              </DropdownMenuItem>
-            ))}
+                  onSelect={() => setCategory(category_identify)}
+                >
+                  <ReceiptText className="h-5 w-5 opacity-70" />
+                  <span className="truncate text-gray-800">
+                    {category_identify.kr}
+                  </span>
+                </DropdownMenuItem>
+              )
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
         <Input
