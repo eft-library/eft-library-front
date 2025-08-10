@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ToolbarTypes } from "./post-editor.types";
 import ColorPalette from "./color-palette";
 import IframeInsertDialog from "./iframe-insert-dialog";
 
-export default function Toolbar({ editor }: ToolbarTypes) {
+export default function Toolbar({ editor, handleFileChange }: ToolbarTypes) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   if (!editor) return null;
 
   const buttons = [
@@ -73,6 +75,22 @@ export default function Toolbar({ editor }: ToolbarTypes) {
           {name}
         </button>
       ))}
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+
+      {/* 툴바 버튼 */}
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
+      >
+        이미지
+      </button>
       <IframeInsertDialog editor={editor} />
       <ColorPalette editor={editor} />
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { requestData } from "@/lib/config/api";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import Loading from "../../Loading/loading";
@@ -34,9 +34,9 @@ export default function CommunityData({ category }: CommunityDataTypes) {
       setPostInfo(data.data);
     };
     getCommunity();
-  }, [category]);
+  }, [category, pageNum]);
 
   if (!postInfo) return <Loading />;
 
-  return <CommunityView postInfo={postInfo} />;
+  return <CommunityView postInfo={postInfo} category={category} />;
 }

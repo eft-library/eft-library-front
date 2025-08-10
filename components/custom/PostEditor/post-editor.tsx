@@ -91,6 +91,29 @@ export default function PostEditor({
     [editor]
   );
 
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!editor || !event.target.files) return;
+
+    const files = Array.from(event.target.files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    for (const file of files) {
+      try {
+        const url = await uploadFileToFastAPI(file);
+        editor.chain().focus().setImage({ src: url }).run();
+      } catch (error) {
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+        console.error(error);
+      }
+    }
+
+    // 같은 파일 재선택 가능하도록 초기화
+    event.target.value = "";
+  };
+
   // **수정된 안전한 행 삭제 함수**
   const deleteRowSmart = () => {
     if (!editor) return;
@@ -136,7 +159,7 @@ export default function PostEditor({
 
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-white dark:bg-gray-900 shadow-lg">
-      <Toolbar editor={editor} />
+      <Toolbar editor={editor} handleFileChange={handleFileChange} />
 
       <TableControls
         editor={editor}

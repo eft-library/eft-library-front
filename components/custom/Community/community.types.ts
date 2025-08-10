@@ -19,8 +19,13 @@ export interface CommunityPostsResponse {
 
 export interface CommunityViewTypes {
   postInfo: CommunityPostsResponse;
+  category: string;
 }
 
 export interface CommunityDataTypes {
   category: string;
+}
+
+export interface CategoryTabTypes {
+  currentCategory: string;
 }

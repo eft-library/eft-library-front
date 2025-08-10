@@ -15,6 +15,7 @@ export interface IframeInsertDialogTypes {
 
 export interface ToolbarTypes {
   editor: Editor | null;
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface TableControlsTypes {

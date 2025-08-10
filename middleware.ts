@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith(protectedPath)) {
     if (!token) {
       // 로그인 안 한 경우 → /login으로 리다이렉트
-      return NextResponse.redirect(new URL("/community", req.url));
+      return NextResponse.redirect(new URL("/community/issue", req.url));
     }
   }
 
