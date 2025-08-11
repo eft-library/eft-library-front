@@ -2,6 +2,7 @@
 
 import type { CommunityViewTypes } from "../community.types";
 import CategoryTab from "../CategoryTab/category-tab";
+import PostGrid from "../PostGrid/post-grid";
 
 export default function CommunityView({
   postInfo,
@@ -16,7 +17,7 @@ export default function CommunityView({
         <CategoryTab currentCategory={category} />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
           <div className="lg:col-span-3">
-            {/* <PostGrid searchQuery={searchQuery} searchScope={searchScope} /> */}
+            <PostGrid postInfo={postInfo} category={category} />
             {/* <div className="flex flex-col sm:flex-row gap-2 mt-6">
               <Select
                 value={searchScope}

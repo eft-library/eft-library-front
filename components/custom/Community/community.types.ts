@@ -14,6 +14,7 @@ export interface CommunityPost {
 
 export interface CommunityPostsResponse {
   total: number;
+  max_page_count: number;
   posts: CommunityPost[];
 }
 
@@ -28,4 +29,9 @@ export interface CommunityDataTypes {
 
 export interface CategoryTabTypes {
   currentCategory: string;
+}
+
+export interface PostGridTypes {
+  postInfo: CommunityPostsResponse;
+  category: string;
 }
