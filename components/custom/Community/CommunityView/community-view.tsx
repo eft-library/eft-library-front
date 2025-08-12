@@ -3,6 +3,8 @@
 import type { CommunityViewTypes } from "../community.types";
 import CategoryTab from "../CategoryTab/category-tab";
 import PostGrid from "../PostGrid/post-grid";
+import SidebarSearch from "../SideBarSearch/side-bar-search";
+import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 
 export default function CommunityView({
   postInfo,
@@ -15,6 +17,9 @@ export default function CommunityView({
           PMC 라운지
         </h1>
         <CategoryTab currentCategory={category} />
+        <div className="md:hidden mt-6">
+          <SidebarSearch />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
           <div className="lg:col-span-3">
             <PostGrid postInfo={postInfo} category={category} />
@@ -61,7 +66,12 @@ export default function CommunityView({
               </Button>
             </div> */}
           </div>
-          <div className="lg:col-span-1">{/* <Sidebar /> */}</div>
+          <div className="lg:col-span-1">
+            <CommunitySideBar
+              issue_posts={postInfo.issue_posts}
+              notice_posts={postInfo.notice_posts}
+            />
+          </div>
         </div>
       </div>
     </div>

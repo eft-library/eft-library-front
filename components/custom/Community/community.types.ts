@@ -1,3 +1,5 @@
+import type { InformationInfo } from "../information/information.types";
+
 export interface CommunityPost {
   user_email: string;
   slug: string;
@@ -18,6 +20,8 @@ export interface CommunityPostsResponse {
   total: number;
   max_page_count: number;
   posts: CommunityPost[];
+  issue_posts: CommunityPost[];
+  notice_posts: InformationInfo[];
 }
 
 export interface CommunityViewTypes {
@@ -36,4 +40,9 @@ export interface CategoryTabTypes {
 export interface PostGridTypes {
   postInfo: CommunityPostsResponse;
   category: string;
+}
+
+export interface CommunitySideBarTypes {
+  issue_posts: CommunityPost[];
+  notice_posts: InformationInfo[];
 }
