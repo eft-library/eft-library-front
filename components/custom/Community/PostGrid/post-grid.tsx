@@ -76,7 +76,7 @@ export default function PostGrid({ postInfo, category }: PostGridTypes) {
                     </span>
                     <div className="flex items-center space-x-1">
                       <Clock className="w-3 h-3" />
-                      <span>{formatISODateTime(post.update_time)}</span>
+                      <span>{formatISODateTime(post.create_time)}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">

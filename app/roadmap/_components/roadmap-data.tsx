@@ -1,45 +1,52 @@
 "use client";
 
-import { requestPostData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type { RoadmapDataTypes } from "./roadmap.types";
 import { ReactFlowProvider } from "@xyflow/react";
 import RoadmapView from "./roadmap-view";
 import Loading from "@/components/custom/Loading/loading";
+import { requestPostData } from "@/lib/config/api";
 
 export default function RoadmapData() {
   const { data: session, status } = useSession();
-  const [roadmapList, setRoadmapList] = useState<RoadmapDataTypes>();
 
-  useEffect(() => {
-    if (status === "loading") return; // 아직 세션 로딩 중이면 아무것도 안함
+  const fetchRoadmap = async (email: string): Promise<RoadmapDataTypes> => {
+    const data = await requestPostData(API_ENDPOINTS.GET_QUEST_LOADMAP, {
+      user_email: email,
+    });
 
-    const getRoadmap = async (email: string) => {
-      try {
-        const data = await requestPostData(API_ENDPOINTS.GET_QUEST_LOADMAP, {
-          user_email: email,
-        });
+    if (!data || data.status !== 200) {
+      throw new Error(data?.msg || "Failed to fetch roadmap data");
+    }
 
-        if (data && data.status === 200) {
-          setRoadmapList(data.data);
-        } else {
-          console.error(
-            "Failed to fetch roadmap data:",
-            data?.msg || "Unknown error"
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching roadmap:", error);
-      }
-    };
+    return data.data;
+  };
 
-    const userEmail = session?.email || "";
-    getRoadmap(userEmail);
-  }, [status, session]);
+  // 로그인 안 돼도 빈 문자열로 요청
+  const userEmail = session?.email ?? "";
 
-  if (!roadmapList) return <Loading />;
+  const {
+    data: roadmapList,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["roadmap", userEmail],
+    queryFn: () => fetchRoadmap(userEmail),
+    // 항상 요청, 단 email은 빈 문자열일 수 있음
+    enabled: status !== "loading",
+    retry: 1,
+  });
+
+  if (isLoading) return <Loading />;
+
+  if (error) {
+    console.error(error);
+    return <div>로드맵 데이터를 불러오지 못했습니다.</div>;
+  }
+
+  if (!roadmapList) return <div>로드맵 데이터가 없습니다.</div>;
 
   return (
     <ReactFlowProvider>
