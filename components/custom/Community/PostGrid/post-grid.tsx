@@ -82,7 +82,7 @@ export default function PostGrid({ postInfo, category }: PostGridTypes) {
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-1">
                       <Eye className="w-3 h-3" />
-                      {/* <span>{post.views.toLocaleString()}</span> */}
+                      <span>{post.view_count.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <MessageCircle className="w-3 h-3" />
@@ -90,7 +90,7 @@ export default function PostGrid({ postInfo, category }: PostGridTypes) {
                     </div>
                     <div className="flex items-center space-x-1">
                       <ThumbsUp className="w-3 h-3" />
-                      {/* <span>{post.likes}</span> */}
+                      <span>{post.reaction_score}</span>
                     </div>
                   </div>
                 </div>

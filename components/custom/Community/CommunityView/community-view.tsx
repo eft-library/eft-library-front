@@ -12,7 +12,7 @@ export default function CommunityView({
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-4 py-6">
         <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-          커뮤니티
+          PMC 라운지
         </h1>
         <CategoryTab currentCategory={category} />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">

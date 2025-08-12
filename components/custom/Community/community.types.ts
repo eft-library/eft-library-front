@@ -10,6 +10,8 @@ export interface CommunityPost {
   thumbnail: string | null;
   delete_by_admin: boolean;
   update_time: string;
+  reaction_score: number;
+  view_count: number;
 }
 
 export interface CommunityPostsResponse {
