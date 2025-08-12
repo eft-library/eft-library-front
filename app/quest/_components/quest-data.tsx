@@ -1,45 +1,41 @@
 "use client";
 
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/provider";
 import type { QuestDataTypes } from "./quest.types";
 import QuestView from "./quest-view";
 import Loading from "@/components/custom/Loading/loading";
+import { useQuery } from "@tanstack/react-query";
 
 export default function QuestData() {
   const { npcId } = useAppStore((state) => state);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [questData, setQuestData] = useState<QuestDataTypes>();
 
-  useEffect(() => {
-    const getQuestById = async () => {
-      setIsLoading(true);
-      const data = await requestData(
-        `${API_ENDPOINTS.GET_QUEST_BY_NPC}/${npcId}`
-      );
+  const fetchQuestData = async (id: string): Promise<QuestDataTypes> => {
+    const res = await fetch(`${API_ENDPOINTS.GET_QUEST_BY_NPC}/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch quest data");
+    }
+    const json = await res.json();
 
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch quest data:",
-          data?.msg || "Unknown error"
-        );
-        setIsLoading(false);
-        return null;
-      }
+    if (json.status !== 200) {
+      throw new Error(json.msg || "Unknown error");
+    }
 
-      setQuestData(data.data);
-      setIsLoading(false);
-    };
+    return json.data;
+  };
 
-    getQuestById();
-  }, [npcId]);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["questData", npcId],
+    queryFn: () => fetchQuestData(npcId),
+    enabled: !!npcId,
+  });
 
-  return (
-    <>
-      {questData && <QuestView questData={questData} />}
-      {isLoading && <Loading />}
-    </>
-  );
+  if (isLoading) return <Loading />;
+
+  if (error) {
+    console.error(error);
+    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  }
+
+  return <>{data && <QuestView questData={data} />}</>;
 }
