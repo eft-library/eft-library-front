@@ -1,40 +1,42 @@
 "use client";
 
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import type { MapOfTarkov } from "./map-of-tarkov.types";
 import MapOfTarkovView from "./map-of-tarkov-view";
 import Loading from "@/components/custom/Loading/loading";
+import { useQuery } from "@tanstack/react-query";
 
 export default function MapOfTarkovData() {
-  const [mapData, setMapData] = useState<MapOfTarkov>();
-  const param = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const getMap = async () => {
-      const data = await requestData(
-        `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${param.id}`
-      );
-
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch map data:",
-          data?.msg || "Unknown error"
-        );
-        return null;
-      }
-
-      setMapData(data.data);
-    };
-
-    if (param.id) {
-      getMap();
+  const fetchMOTData = async (id: string): Promise<MapOfTarkov> => {
+    const res = await fetch(`${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch map of tarkov data");
     }
-  }, [param.id]);
+    const json = await res.json();
 
-  if (!mapData) return <Loading />;
+    if (json.status !== 200) {
+      throw new Error(json.msg || "Unknown error");
+    }
 
-  return <MapOfTarkovView mapData={mapData} />;
+    return json.data;
+  };
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["motData", id],
+    queryFn: () => fetchMOTData(id),
+    enabled: !!id,
+  });
+  if (isLoading) return <Loading />;
+
+  if (error) {
+    console.error(error);
+    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  }
+
+  if (!data) return <div>데이터가 없습니다.</div>;
+
+  return <MapOfTarkovView mapData={data} />;
 }

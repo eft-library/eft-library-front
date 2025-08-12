@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { rankI18N } from "@/lib/consts/i18nConsts";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import CategoryFilter from "./CategoryFilter/category-filter";
 import { defaultRankCategory } from "@/lib/consts/libraryConsts";
 import { RankData, TopListDetailData } from "./rank.types";
@@ -16,45 +16,42 @@ import ItemTooltip from "./ItemTooltip/item-tooltip";
 import Loading from "@/components/custom/Loading/loading";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function RankView() {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+
   const [searchWord, setSearchWord] = useState<string>("");
   const [realWord, setSearchRealWord] = useState<string>("");
-  const [topRankData, setTopRankData] = useState<RankData>();
   const [priceType, setPriceType] = useState<string>("PVP");
   const [tooltipItem, setTooltipItem] = useState<TopListDetailData | null>(
     null
   );
-  const [isLoading, setLoading] = useState<boolean>(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [listCategory, setListCategory] =
     useState<string[]>(defaultRankCategory);
 
-  const getItemRank = useCallback(async () => {
-    try {
-      setLoading(true);
+  const {
+    data: topRankData,
+    isFetching,
+    isLoading,
+    error,
+  } = useQuery<RankData>({
+    queryKey: ["topRankData", listCategory],
+    queryFn: async () => {
       const data = await requestPostData(API_ENDPOINTS.GET_TOP_PRICE, {
         categoryList: listCategory,
       });
 
       if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch quest data:",
-          data?.msg || "Unknown error"
-        );
-        setLoading(false);
-        return null;
+        throw new Error(data?.msg || "Unknown error");
       }
-      setTopRankData(data.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error(error);
-      return null;
-    }
-  }, [listCategory]);
+
+      return data.data;
+    },
+    placeholderData: keepPreviousData, // ✅ v5에서는 이렇게!
+  });
 
   const onChangeCategory = (clickCategory: string) => {
     setListCategory((prevCategory) => {
@@ -81,11 +78,10 @@ export default function RankView() {
     }
   };
 
-  useEffect(() => {
-    getItemRank();
-  }, [getItemRank]);
-
-  if (!topRankData) return <Loading />;
+  if (isLoading && !topRankData) return <Loading />;
+  if (error)
+    return <div className="text-center text-red-500">데이터 로드 실패</div>;
+  console.log(topRankData);
 
   return (
     <ViewWrapper>
@@ -103,6 +99,7 @@ export default function RankView() {
             dataAdSlot="2690838054"
             maxWidth={1220}
           />
+
           {/* Game Mode Toggle */}
           <div className="flex mt-4 flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
             <div className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
@@ -127,6 +124,7 @@ export default function RankView() {
               </Button>
             </div>
           </div>
+
           {/* Search */}
           <SearchFilter
             searchWord={searchWord}
@@ -139,19 +137,20 @@ export default function RankView() {
             onChangeCategory={onChangeCategory}
             listCategory={listCategory}
           />
-
-          <TierSection
-            priceType={priceType}
-            rankItem={topRankData}
-            searchWord={realWord}
-            onTooltipShow={handleTooltipShow}
-          />
+          {topRankData && (
+            <TierSection
+              priceType={priceType}
+              rankItem={topRankData}
+              searchWord={realWord}
+              onTooltipShow={handleTooltipShow}
+            />
+          )}
 
           {tooltipItem && (
             <ItemTooltip item={tooltipItem} position={tooltipPosition} />
           )}
         </div>
-        {isLoading && <Loading />}
+        {(isLoading || isFetching) && <Loading />}
       </div>
     </ViewWrapper>
   );

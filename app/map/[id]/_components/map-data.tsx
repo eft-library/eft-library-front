@@ -1,38 +1,43 @@
 "use client";
 
 import Loading from "@/components/custom/Loading/loading";
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { MapInfoData } from "./map.types";
 import MapView from "./map-view";
+import { useQuery } from "@tanstack/react-query";
 
 export default function MapData() {
-  const [mapData, setMapData] = useState<MapInfoData>();
-  const param = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const getAllMap = async () => {
-      const data = await requestData(`${API_ENDPOINTS.GET_MAP}/${param.id}`);
-
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch map data:",
-          data?.msg || "Unknown error"
-        );
-        return null;
-      }
-
-      setMapData(data.data);
-    };
-
-    if (param.id) {
-      getAllMap();
+  const fetchMapData = async (id: string): Promise<MapInfoData> => {
+    const res = await fetch(`${API_ENDPOINTS.GET_MAP}/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch map data");
     }
-  }, [param.id]);
+    const json = await res.json();
 
-  if (!mapData) return <Loading />;
+    if (json.status !== 200) {
+      throw new Error(json.msg || "Unknown error");
+    }
 
-  return <MapView mapInfo={mapData} />;
+    return json.data;
+  };
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["mapData", id],
+    queryFn: () => fetchMapData(id),
+    enabled: !!id,
+  });
+
+  if (isLoading) return <Loading />;
+
+  if (error) {
+    console.error(error);
+    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  }
+
+  if (!data) return <div>데이터가 없습니다.</div>;
+
+  return <MapView mapInfo={data} />;
 }

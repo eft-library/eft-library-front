@@ -1,36 +1,43 @@
 "use client";
 
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import type { Quest } from "@/app/quest/_components/quest.types";
 import QuestDetailView from "./quest-detail-view";
 import Loading from "@/components/custom/Loading/loading";
+import { useQuery } from "@tanstack/react-query";
 
 export default function QuestDetailData() {
-  const [questInfo, setQuestInfo] = useState<Quest>();
-  const param = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const getQuestById = async () => {
-      const data = await requestData(`${API_ENDPOINTS.GET_QUEST}/${param.id}`);
+  const fetchQuestData = async (id: string): Promise<Quest> => {
+    const res = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch quest data");
+    }
+    const json = await res.json();
 
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch quest data:",
-          data?.msg || "Unknown error"
-        );
-        return null;
-      }
+    if (json.status !== 200) {
+      throw new Error(json.msg || "Unknown error");
+    }
 
-      setQuestInfo(data.data);
-    };
+    return json.data;
+  };
 
-    getQuestById();
-  }, [param.id]);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["questData", id],
+    queryFn: () => fetchQuestData(id),
+    enabled: !!id,
+  });
 
-  if (!questInfo) return <Loading />;
+  if (isLoading) return <Loading />;
 
-  return <QuestDetailView quest={questInfo} />;
+  if (error) {
+    console.error(error);
+    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  }
+
+  if (!data) return <div>데이터가 없습니다.</div>;
+
+  return <QuestDetailView quest={data} />;
 }
