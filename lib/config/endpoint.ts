@@ -57,5 +57,5 @@ export const COMMUNITY_ENDPOINTS = {
   IMAGE_UPLOAD: baseUrl + "/api/community/upload_image",
   CREATE_POSTS: baseUrl + "/api/community/create_posts",
   GET_POSTS: baseUrl + "/api/community",
-  GET_DETAIL_POST: baseUrl + "/api/community/detail?url=",
+  GET_DETAIL_POST: baseUrl + "/api/community/detail",
 };

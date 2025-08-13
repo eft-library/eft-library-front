@@ -17,8 +17,9 @@ export default function CommunityDetailData() {
     email: string
   ): Promise<CommunityPost> => {
     const data = await requestPostData(
-      `${COMMUNITY_ENDPOINTS.GET_DETAIL_POST}${id}`,
+      `${COMMUNITY_ENDPOINTS.GET_DETAIL_POST}`,
       {
+        url: id,
         user_email: email,
       }
     );
