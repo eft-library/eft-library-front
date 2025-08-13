@@ -8,7 +8,7 @@ export interface CommunityPost {
   delete_by_user: boolean;
   create_time: string;
   category: string;
-  id: number;
+  id: string;
   thumbnail: string | null;
   delete_by_admin: boolean;
   update_time: string;
@@ -45,4 +45,22 @@ export interface PostGridTypes {
 export interface CommunitySideBarTypes {
   issue_posts: CommunityPost[];
   notice_posts: InformationInfo[];
+}
+
+export interface ShareDialogTypes {
+  open: boolean;
+  onOpenChange?: (open: boolean) => void;
+  url: string;
+  title: string;
+}
+
+export interface ReportDialogTypes {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  subject: string;
+  subjectId: string;
+}
+
+export interface CommunityDetailTypes {
+  postInfo: CommunityPost;
 }

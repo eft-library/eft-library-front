@@ -3,6 +3,7 @@ import { getOtherLocalizedKey } from "./localeFunction";
 import { Price, TradeOption } from "@/app/price/_components/price.types";
 import { StimEffect } from "@/app/provisions/_components/provisions.types";
 import { ALL_COLOR } from "../consts/colorConsts";
+import DOMPurify from "dompurify";
 
 // ✅ 어제 날짜와 8일 전 날짜 구하는 함수
 export const getDefaultDates = () => {
@@ -162,61 +163,9 @@ export const getEffectivenessColor = (value: number) => {
   }
 };
 
-export const noReturnSkill = [
-  "Painkiller",
-  "HandsTremor",
-  "Removeallbloodlosses",
-  "QuantumTunnelling",
-  "Pain",
-  "Antidote",
-];
-
-export const checkSkillPlus = (skill_name_en: string) => {
-  switch (skill_name_en) {
-    case "HandsTremor":
-      return "text-red-400";
-    case "QuantumTunnelling":
-      return "text-red-400";
-    case "Painkiller":
-      return "text-green-400";
-    case "Removeallbloodlosses":
-      return "text-green-400";
-    case "Pain":
-      return "text-green-400";
-    case "Antidote":
-      return "text-green-400";
-    default:
-      return "text-gray-900";
-  }
-};
-
-export const checkValuePlus = (effect: number) => {
-  if (effect == 0) {
-    return "text-gray-900";
-  } else if (effect > 0) {
-    return "text-green-400";
-  } else {
-    return "text-red-400";
-  }
-};
-
 export const getPlusMinus = (text: number) => {
   if (text === 0) return "0";
   return text > 0 ? ` +${text}` : `${text}`;
-};
-
-export const filterStimEffects = (effects: StimEffect[]) => {
-  const seen = new Set();
-  for (const effect of effects) {
-    const key = `${effect.delay}-${effect.duration}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-    } else if (effect.skill_name_en !== "Painkiller") {
-      delete effect.delay;
-      delete effect.duration;
-    }
-  }
-  return effects;
 };
 
 export const getFirstParagraph = (htmlString: string) => {
@@ -307,4 +256,21 @@ export const changeTime = (sec: number | undefined) => {
   } else {
     return `${minutes} M`;
   }
+};
+
+export const purifyHtml = (html: string) => {
+  const convertCustomStylesToStyleAttr = (html: string) => {
+    // containerstyle -> style 변환
+    html = html.replace(/containerstyle="([^"]*)"/g, 'style="$1"');
+    // wrapperstyle 제거 (필요하면 래퍼 div 등에 적용 가능)
+    html = html.replace(/wrapperstyle="[^"]*"/g, "");
+    return html;
+  };
+
+  return DOMPurify.sanitize(convertCustomStylesToStyleAttr(html), {
+    FORBID_TAGS: ["script"], // <script> 태그 제거
+    FORBID_ATTR: ["on*"],
+    ADD_TAGS: ["iframe"],
+    ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
+  });
 };
