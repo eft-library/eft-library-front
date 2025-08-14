@@ -33,10 +33,11 @@ export default function CommunityDetailData() {
   const userEmail = session?.email ?? "";
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["communityDetail", userEmail],
+    queryKey: ["communityDetail", id, userEmail],
     queryFn: () => fetchCommunityDetail(userEmail),
     enabled: status !== "loading",
     retry: 1,
+    staleTime: 0,
   });
 
   if (isLoading) return <Loading />;

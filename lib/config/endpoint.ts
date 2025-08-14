@@ -58,4 +58,5 @@ export const COMMUNITY_ENDPOINTS = {
   CREATE_POSTS: baseUrl + "/api/community/create_posts",
   GET_POSTS: baseUrl + "/api/community",
   GET_DETAIL_POST: baseUrl + "/api/community/detail",
+  GET_DETAIL_POST_META_DATA: baseUrl + "/api/community/detail-meta-data",
 };

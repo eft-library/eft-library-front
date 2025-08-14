@@ -1,17 +1,6 @@
 import type { InformationInfo } from "../information/information.types";
 
-export interface CommunityPost {
-  user_email: string;
-  slug: string;
-  title: string;
-  contents: string;
-  delete_by_user: boolean;
-  create_time: string;
-  category: string;
-  id: string;
-  thumbnail: string | null;
-  delete_by_admin: boolean;
-  update_time: string;
+export interface CommunityPost extends CommunityDetail {
   reaction_score: number;
   view_count: number;
 }
@@ -61,6 +50,31 @@ export interface ReportDialogTypes {
   subjectId: string;
 }
 
+export interface CommunityDetail {
+  user_email: string;
+  slug: string;
+  title: string;
+  contents: string;
+  delete_by_user: boolean;
+  create_time: string;
+  category: string;
+  id: string;
+  thumbnail: string | null;
+  delete_by_admin: boolean;
+  update_time: string;
+}
+
 export interface CommunityDetailTypes {
-  postInfo: CommunityPost;
+  postInfo: CommunityDetail;
+}
+
+export interface CommunityReactionTypes {
+  postInfo: CommunityDetail;
+}
+
+export interface CommunityReactionDataTypes {
+  id: string;
+  is_like: number;
+  is_bookmarked: number;
+  like_count: number;
 }
