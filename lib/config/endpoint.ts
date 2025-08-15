@@ -59,4 +59,9 @@ export const COMMUNITY_ENDPOINTS = {
   GET_POSTS: baseUrl + "/api/community",
   GET_DETAIL_POST: baseUrl + "/api/community/detail",
   GET_DETAIL_POST_META_DATA: baseUrl + "/api/community/detail-meta-data",
+  LIKE_POST: baseUrl + "/api/community/like_post",
+  DISLIKE_POST: baseUrl + "/api/community/dislike_post",
+  BOOKMARK_POST: baseUrl + "/api/community/bookmark_post",
+  FOLLOW_USER: baseUrl + "/api/community/follow_user",
+  UNFOLLOW_USER: baseUrl + "/api/community/unfollow_user",
 };
