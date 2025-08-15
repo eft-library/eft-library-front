@@ -14,7 +14,6 @@ import { useSearchParams } from "next/navigation";
 export default function PostGrid({ postInfo, category }: PostGridTypes) {
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  console.log(postInfo);
   return (
     <div className="space-y-4">
       {postInfo.posts.length < 1 ? (

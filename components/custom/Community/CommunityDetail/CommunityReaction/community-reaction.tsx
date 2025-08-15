@@ -80,7 +80,7 @@ export default function CommunityReaction({
   };
 
   if (isLoading || !reactionData) return <Loading />;
-  console.log(reactionData);
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
       <div className="flex flex-wrap justify-center sm:flex sm:items-center sm:justify-between gap-2 sm:gap-4">

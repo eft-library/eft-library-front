@@ -81,7 +81,6 @@ export default function RankView() {
   if (isLoading && !topRankData) return <Loading />;
   if (error)
     return <div className="text-center text-red-500">데이터 로드 실패</div>;
-  console.log(topRankData);
 
   return (
     <ViewWrapper>
