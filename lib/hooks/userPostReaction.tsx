@@ -1,4 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { COMMUNITY_ENDPOINTS } from "../config/endpoint";
 
 export function usePostMetaData(postId: string, accessToken: string) {
