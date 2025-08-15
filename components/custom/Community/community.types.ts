@@ -62,6 +62,9 @@ export interface CommunityDetail {
   thumbnail: string | null;
   delete_by_admin: boolean;
   update_time: string;
+  total_post_count: number;
+  follower_count: number;
+  view_count: number;
 }
 
 export interface CommunityDetailTypes {

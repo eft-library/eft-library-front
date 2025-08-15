@@ -7,7 +7,7 @@ import {
   MessageCircle,
   Clock,
   UserIcon,
-  Bell,
+  // Bell,
   Edit,
   Trash2,
   CheckCircle2,
@@ -29,7 +29,6 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
   const router = useRouter();
   const [following, setFollowing] = useState(false);
-  const [subscribed, setSubscribed] = useState(true);
 
   const isOwner = session && session?.email === postInfo.user_email;
 
@@ -104,7 +103,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 flex-wrap justify-end">
                     <div className="flex items-center gap-1">
                       <Eye className="w-4 h-4" />
-                      {/* <span>{postInfo.view_count.toLocaleString()}</span> */}
+                      <span>{postInfo.view_count.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MessageCircle className="w-4 h-4" />
@@ -145,15 +144,15 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                         <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
                           <UserIcon className="w-3 h-3 mr-1" />
                           게시물
-                          {/* <span className="text-gray-900 dark:text-white">
-                    {post.author.posts}
-                  </span> */}
+                          <span className="text-gray-900 dark:text-white">
+                            {postInfo.total_post_count}
+                          </span>
                         </span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           팔로워
-                          {/* <span className="text-gray-900 dark:text-white">
-                    {post.author.followers.toLocaleString()}
-                  </span> */}
+                          <span className="text-gray-900 dark:text-white">
+                            {postInfo.follower_count.toLocaleString()}
+                          </span>
                         </span>
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-500 mt-1">
@@ -175,7 +174,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       <CheckCircle2 className="w-4 h-4 mr-1" />
                       {following ? "팔로잉" : "팔로우"}
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="ghost"
                       className={`text-sm ${
                         subscribed
@@ -186,7 +185,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     >
                       <Bell className="w-4 h-4 mr-1" />
                       알림 {subscribed ? "해제" : "받기"}
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>
