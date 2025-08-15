@@ -20,30 +20,30 @@ export default function CommunityDetailData() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  const fetchCommunityDetail = async () => {
-    if (status === "loading") return; // 세션 로딩 중이면 대기
-    setIsLoading(true);
-    setIsError(false);
-    try {
-      const data = await requestPostData(
-        `${COMMUNITY_ENDPOINTS.GET_DETAIL_POST}`,
-        {
-          url: id,
-          user_email: userEmail,
-        }
-      );
-      if (!data || data.status !== 200)
-        throw new Error(data?.msg || "Failed to fetch post data");
-      setPostInfo(data.data);
-    } catch (err) {
-      console.error(err);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchCommunityDetail = async () => {
+      if (status === "loading") return; // 세션 로딩 중이면 대기
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        const data = await requestPostData(
+          `${COMMUNITY_ENDPOINTS.GET_DETAIL_POST}`,
+          {
+            url: id,
+            user_email: userEmail,
+          }
+        );
+        if (!data || data.status !== 200)
+          throw new Error(data?.msg || "Failed to fetch post data");
+        setPostInfo(data.data);
+      } catch (err) {
+        console.error(err);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchCommunityDetail();
   }, [id, userEmail, status]); // id, 사용자 이메일, 세션 상태 바뀌면 새로 요청
 

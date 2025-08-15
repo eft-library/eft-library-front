@@ -1,38 +1,47 @@
+import { MetadataRoute } from "next";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 
-interface Sitemap {
+interface Data {
+  data: SitemapItemAPI[];
+}
+
+interface SitemapItemAPI {
   id: number;
-  update_time: string;
-  create_date: string;
   link: string;
+  update_time: string;
   change_freq: string;
   priority: number;
+  value: string;
+  create_date: string;
 }
 
-function formatLastMod(dateStr: string): string {
-  // 마이크로초(.)가 포함되어 있으면 자르고, 없으면 그대로 반환
-  const dotIndex = dateStr.indexOf(".");
-  if (dotIndex === -1) return dateStr;
-  // 초 뒤부터 시간대까지 남기기 (ex: "2025-06-14T07:13:14+09:00")
-  // 마이크로초 이후로는 버림
-  // +09:00 같은 timezone까지 포함하도록 추출
-  const prefix = dateStr.substring(0, dotIndex);
-  const timezone = dateStr.substring(dateStr.indexOf("+"));
-  return prefix + timezone;
+export async function generateSitemaps() {
+  const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP);
+  const data: Data = await res.json();
+
+  // 중복 없는 value 추출
+  const uniqueValues = Array.from(new Set(data.data.map((item) => item.value)));
+
+  // 각 value를 id처럼 사용
+  return uniqueValues.map((value) => ({ id: value }));
 }
 
-export default async function sitemap() {
-  const getAllPosts = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP);
-  const allPosts = await getAllPosts.json();
+export default async function sitemap({
+  id,
+}: {
+  id: string; // 숫자가 아닌 value 문자열
+}): Promise<MetadataRoute.Sitemap> {
+  const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP);
+  const data: Data = await res.json();
 
-  const posts = allPosts.data.map((post: Sitemap) => {
-    return {
-      url: post.link,
-      lastModified: formatLastMod(post.update_time),
-      changeFrequency: post.change_freq,
-      priority: post.priority,
-    };
-  });
+  // value가 id와 같은 항목만 필터
+  const items = data.data.filter((item) => item.value === id);
 
-  return [...posts];
+  // SitemapItem 형식으로 변환
+  return items.map((item) => ({
+    url: item.link,
+    lastModified: item.update_time,
+    changefreq: item.change_freq,
+    priority: item.priority,
+  }));
 }

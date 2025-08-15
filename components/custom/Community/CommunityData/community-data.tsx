@@ -21,27 +21,27 @@ export default function CommunityData({ category }: CommunityDataTypes) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  const fetchCommunity = async () => {
-    setIsLoading(true);
-    setIsError(false);
-    try {
-      const data = await requestData(
-        `${
-          COMMUNITY_ENDPOINTS.GET_POSTS
-        }/${category}?page_num=${pageNum}&_ts=${Date.now()}`
-      );
-      if (!data || data.status !== 200)
-        throw new Error(data?.msg || "Failed to fetch posts");
-      setPostInfo(data.data);
-    } catch (err) {
-      console.error(err);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchCommunity = async () => {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        const data = await requestData(
+          `${
+            COMMUNITY_ENDPOINTS.GET_POSTS
+          }/${category}?page_num=${pageNum}&_ts=${Date.now()}`
+        );
+        if (!data || data.status !== 200)
+          throw new Error(data?.msg || "Failed to fetch posts");
+        setPostInfo(data.data);
+      } catch (err) {
+        console.error(err);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchCommunity();
   }, [category, pageNum]);
 
