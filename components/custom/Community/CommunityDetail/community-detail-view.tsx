@@ -38,7 +38,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   );
 
   const goBack = () => {
-    router.back();
+    router.push(`/community/${postInfo.category}`);
   };
 
   return (

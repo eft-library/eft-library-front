@@ -16,8 +16,10 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ReceiptText } from "lucide-react";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { CATEGORY_LIST } from "@/lib/consts/community-consts";
+import { useRouter } from "next/navigation";
 
 export default function CommunityCreateView() {
+  const router = useRouter();
   const { data: session } = useSession();
   const [contents, setContents] = useState("");
   const [category, setCategory] = useState({ id: "free", kr: "자유" });
@@ -54,7 +56,7 @@ export default function CommunityCreateView() {
           session
         );
         if (data && data.status === 200) {
-          console.log("성공");
+          router.push(`/community/detail/${data.data.url}`);
         } else {
           console.error(
             "Failed to fetch community create:",
