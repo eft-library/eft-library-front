@@ -10,7 +10,6 @@ import {
   // Bell,
   Edit,
   Trash2,
-  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,20 +23,21 @@ import { purifyHtml } from "@/lib/func/jsxfunction";
 import CategoryTab from "../CategoryTab/category-tab";
 import { useRouter } from "next/navigation";
 import CommunityReaction from "./CommunityReaction/community-reaction";
+import CommunitySideBar from "../CommunitySideBar/community-side-bar";
+import FollowUser from "./FollowUser/follow-user";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
   const router = useRouter();
-  const [following, setFollowing] = useState(false);
 
-  const isOwner = session && session?.email === postInfo.user_email;
+  const isOwner = session && session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
-    (original) => original.id === postInfo.category
+    (original) => original.id === postInfo.post_detail.category
   );
 
   const goBack = () => {
-    router.push(`/community/${postInfo.category}`);
+    router.push(`/community/${postInfo.post_detail.category}`);
   };
 
   return (
@@ -46,7 +46,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
         <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">
           PMC 라운지
         </h1>
-        <CategoryTab currentCategory={postInfo.category} />
+        <CategoryTab currentCategory={postInfo.post_detail.category} />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
           <div className="lg:col-span-3">
             <article className="space-y-6">
@@ -56,7 +56,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   variant="ghost"
                   size="sm"
                   onClick={goBack}
-                  className="p-0 h-auto text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  className="cursor-pointer p-0 h-auto text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 >
                   <ArrowLeft className="w-4 h-4 mr-1" />
                   목록으로
@@ -103,7 +103,9 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 flex-wrap justify-end">
                     <div className="flex items-center gap-1">
                       <Eye className="w-4 h-4" />
-                      <span>{postInfo.view_count.toLocaleString()}</span>
+                      <span>
+                        {postInfo.post_detail.view_count.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MessageCircle className="w-4 h-4" />
@@ -111,13 +113,15 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      <span>{formatISODateTime(postInfo.create_time)}</span>
+                      <span>
+                        {formatISODateTime(postInfo.post_detail.create_time)}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-                  {postInfo.title}
+                  {postInfo.post_detail.title}
                 </h1>
 
                 {/* Author row */}
@@ -133,7 +137,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     <div>
                       <div className="flex items-center space-x-2 flex-wrap">
                         <span className="font-medium text-gray-900 dark:text-white">
-                          {postInfo.user_email}
+                          {postInfo.post_detail.user_email}
                         </span>
                         {/* <Badge
                   variant="outline"
@@ -145,48 +149,25 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                           <UserIcon className="w-3 h-3 mr-1" />
                           게시물
                           <span className="text-gray-900 dark:text-white">
-                            {postInfo.total_post_count}
+                            {postInfo.post_detail.total_post_count}
                           </span>
                         </span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           팔로워
                           <span className="text-gray-900 dark:text-white">
-                            {postInfo.follower_count.toLocaleString()}
+                            {postInfo.post_detail.follower_count.toLocaleString()}
                           </span>
                         </span>
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-500 mt-1">
-                        최종 수정: {formatISODateTime(postInfo.update_time)}
+                        최종 수정:
+                        {formatISODateTime(postInfo.post_detail.update_time)}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      className={`text-sm ${
-                        following
-                          ? "text-orange-400"
-                          : "text-gray-600 dark:text-gray-300"
-                      } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                      onClick={() => setFollowing((f) => !f)}
-                    >
-                      <CheckCircle2 className="w-4 h-4 mr-1" />
-                      {following ? "팔로잉" : "팔로우"}
-                    </Button>
-                    {/* <Button
-                      variant="ghost"
-                      className={`text-sm ${
-                        subscribed
-                          ? "text-orange-400"
-                          : "text-gray-600 dark:text-gray-300"
-                      } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                      onClick={() => setSubscribed((s) => !s)}
-                    >
-                      <Bell className="w-4 h-4 mr-1" />
-                      알림 {subscribed ? "해제" : "받기"}
-                    </Button> */}
-                  </div>
+                  {/* follow */}
+                  <FollowUser author_email={postInfo.post_detail.user_email} />
                 </div>
               </div>
 
@@ -196,14 +177,14 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   <div
                     className="text-gray-700 dark:text-gray-300 leading-relaxed"
                     dangerouslySetInnerHTML={{
-                      __html: purifyHtml(postInfo.contents),
+                      __html: purifyHtml(postInfo.post_detail.contents),
                     }}
                   />
                 </div>
               </div>
 
               {/* Reactions / Actions */}
-              <CommunityReaction postInfo={postInfo} />
+              <CommunityReaction postInfo={postInfo.post_detail} />
 
               <Separator className="bg-gray-200 dark:bg-gray-700" />
             </article>
@@ -218,7 +199,12 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
               {/* <PostGrid /> */}
             </section>
           </div>
-          <div className="lg:col-span-1">{/* <PostSidebar /> */}</div>
+          <div className="lg:col-span-1">
+            <CommunitySideBar
+              issue_posts={postInfo.issue_posts}
+              notice_posts={postInfo.notice_posts}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -67,8 +67,14 @@ export interface CommunityDetail {
   view_count: number;
 }
 
+export interface CommunitDetailDataTypes {
+  post_detail: CommunityDetail;
+  issue_posts: CommunityPost[];
+  notice_posts: InformationInfo[];
+}
+
 export interface CommunityDetailTypes {
-  postInfo: CommunityDetail;
+  postInfo: CommunitDetailDataTypes;
 }
 
 export interface CommunityReactionTypes {
@@ -80,4 +86,12 @@ export interface CommunityReactionDataTypes {
   is_like: number;
   is_bookmarked: number;
   like_count: number;
+}
+
+export interface FollowUserTypes {
+  author_email: string;
+}
+
+export interface CheckFollowTypes {
+  is_follow: number;
 }

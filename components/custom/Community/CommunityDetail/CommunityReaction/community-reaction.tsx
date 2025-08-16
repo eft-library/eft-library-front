@@ -44,7 +44,6 @@ export default function CommunityReaction({
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch post reaction data");
     }
-
     return data.data;
   };
 
@@ -149,7 +148,7 @@ export default function CommunityReaction({
         open={shareOpen}
         onOpenChange={setShareOpen}
         title="게시글 공유"
-        url=""
+        url={`https://eftlibrary.com/community/detail/${postInfo.id}-${postInfo.slug}`}
       />
       <ReportDialog
         open={reportOpen}
