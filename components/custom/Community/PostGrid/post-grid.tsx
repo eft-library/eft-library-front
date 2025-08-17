@@ -11,7 +11,12 @@ import CustomPagination from "../../CustomPagination/custom-pagination";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-export default function PostGrid({ postInfo, category }: PostGridTypes) {
+export default function PostGrid({
+  postInfo,
+  category,
+  currentPageNum,
+  currentPostId,
+}: PostGridTypes) {
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
   return (
@@ -25,7 +30,10 @@ export default function PostGrid({ postInfo, category }: PostGridTypes) {
           <Link
             key={post.id}
             href={`/community/detail/${post.id}-${post.slug}`}
-            className="block bg-white dark:bg-gray-800 rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors duration-200 cursor-pointer group"
+            className={`${
+              currentPostId === post.id &&
+              "dark:border-white border-black border-2"
+            } block bg-white dark:bg-gray-800 rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors duration-200 cursor-pointer group`}
           >
             <div className="flex items-start gap-4">
               <div className="flex-1 min-w-0">
@@ -102,7 +110,7 @@ export default function PostGrid({ postInfo, category }: PostGridTypes) {
         <CustomPagination
           total={postInfo.max_page_count}
           routeLink={`/community/${category}?page=`}
-          currentPage={Number(pageNum)}
+          currentPage={currentPageNum || Number(pageNum)}
         />
       )}
     </div>

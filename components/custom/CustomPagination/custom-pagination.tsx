@@ -104,7 +104,7 @@ export default function CustomPagination({
               className={cn(
                 "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer",
                 {
-                  "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground cursor-default":
+                  "bg-primary text-primary-foreground dark:text-white hover:bg-primary hover:text-primary-foreground cursor-default":
                     page === currentPage,
                 }
               )}

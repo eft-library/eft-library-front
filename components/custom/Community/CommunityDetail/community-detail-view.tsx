@@ -23,9 +23,12 @@ import CategoryTab from "../CategoryTab/category-tab";
 import { useRouter } from "next/navigation";
 import CommunityReaction from "./CommunityReaction/community-reaction";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
+import PostGrid from "../PostGrid/post-grid";
+import { useAppStore } from "@/store/provider";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
+  const { pageCategory } = useAppStore((state) => state);
   const router = useRouter();
 
   const isOwner = session && session?.email === postInfo.post_detail.user_email;
@@ -44,7 +47,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
         <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">
           PMC 라운지
         </h1>
-        <CategoryTab currentCategory={postInfo.post_detail.category} />
+        <CategoryTab />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
           <div className="lg:col-span-3">
             <article className="space-y-6">
@@ -190,8 +193,12 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 전체 게시글
               </h2>
-              {/* PostGrid will now display all posts without a local search filter */}
-              {/* <PostGrid /> */}
+              <PostGrid
+                postInfo={postInfo.posts}
+                category={pageCategory}
+                currentPageNum={postInfo.posts.current_page_num}
+                currentPostId={postInfo.post_detail.id}
+              />
             </section>
           </div>
           <div className="lg:col-span-1">

@@ -22,13 +22,11 @@ export interface CommunityDataTypes {
   category: string;
 }
 
-export interface CategoryTabTypes {
-  currentCategory: string;
-}
-
 export interface PostGridTypes {
-  postInfo: CommunityPostsResponse;
+  postInfo: CommunityPostsResponse | DetailPostListsTypes;
   category: string;
+  currentPageNum?: number;
+  currentPostId?: string;
 }
 
 export interface CommunitySideBarTypes {
@@ -73,6 +71,14 @@ export interface CommunitDetailDataTypes {
   issue_posts: CommunityPost[];
   notice_posts: InformationInfo[];
   author_detail: AuthorDetailDataTypes;
+  posts: DetailPostListsTypes;
+}
+
+interface DetailPostListsTypes {
+  total: number;
+  max_page_count: number;
+  posts: CommunityPost[];
+  current_page_num: number;
 }
 
 interface AuthorDetailDataTypes {

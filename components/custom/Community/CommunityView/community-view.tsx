@@ -23,7 +23,7 @@ export default function CommunityView({
         <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">
           PMC 라운지
         </h1>
-        <CategoryTab currentCategory={category} />
+        <CategoryTab />
         <div className="md:hidden mt-6">
           <SidebarSearch />
         </div>

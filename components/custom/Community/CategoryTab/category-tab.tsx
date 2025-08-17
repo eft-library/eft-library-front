@@ -5,10 +5,11 @@ import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
-import { CategoryTabTypes } from "../community.types";
 import { useSession } from "next-auth/react";
+import { useAppStore } from "@/store/provider";
 
-export default function CategoryTab({ currentCategory }: CategoryTabTypes) {
+export default function CategoryTab() {
+  const { pageCategory } = useAppStore((state) => state);
   const { data: session } = useSession();
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-1 flex items-center justify-between">
@@ -18,7 +19,7 @@ export default function CategoryTab({ currentCategory }: CategoryTabTypes) {
             <button
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 flex items-center space-x-2 cursor-pointer",
-                currentCategory === category.id
+                pageCategory === category.id
                   ? `${category.color} text-white shadow-lg`
                   : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               )}

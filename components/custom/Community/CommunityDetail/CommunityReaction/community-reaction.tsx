@@ -38,6 +38,7 @@ export default function CommunityReaction({
       {
         url: `${postInfo.id}-${postInfo.slug}`,
         user_email: email,
+        page_category: "all",
       }
     );
 
