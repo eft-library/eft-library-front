@@ -5,10 +5,13 @@ import { CommunitySideBarTypes } from "../community.types";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import FollowUser from "../CommunityDetail/FollowUser/follow-user";
 
 export default function CommunitySideBar({
   issue_posts,
   notice_posts,
+  author_detail,
 }: CommunitySideBarTypes) {
   return (
     <div className="space-y-6">
@@ -74,6 +77,53 @@ export default function CommunitySideBar({
           ))}
         </div>
       </div>
+      {author_detail && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            작성자 정보
+          </h3>
+          <div className="text-center space-y-3">
+            <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-full mx-auto flex items-center justify-center">
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                User
+              </span>
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-900 dark:text-white">
+                {author_detail.user_email}
+              </h4>
+              {/* <Badge
+                variant="outline"
+                className="text-xs border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 mt-1"
+              >
+                베테랑
+              </Badge> */}
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {author_detail.posts_count}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  게시물
+                </p>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {author_detail.like_count.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  좋아요
+                </p>
+              </div>
+            </div>
+            <FollowUser author_email={author_detail.user_email} />
+            {/* <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+              팔로우
+            </Button> */}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

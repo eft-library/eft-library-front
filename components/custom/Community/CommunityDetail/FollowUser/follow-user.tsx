@@ -56,28 +56,15 @@ export default function FollowUser({ author_email }: FollowUserTypes) {
     <div className="flex items-center gap-2">
       <Button
         variant="ghost"
-        className={`text-sm ${
+        className={`w-full  ${
           followData.is_follow === 1
-            ? "text-orange-400"
-            : "text-gray-600 dark:text-gray-300"
+            ? " bg-orange-500 hover:bg-orange-600 text-white"
+            : "dark:bg-gray-600 bg-gray-200 hover:bg-gray-500 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
         } cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700`}
         onClick={onClickReaction}
       >
-        <CheckCircle2 className="w-4 h-4 mr-1" />
-        {followData.is_follow === 1 ? "팔로잉" : "팔로우"}
+        {followData.is_follow === 1 ? "팔로잉" : "언팔로우"}
       </Button>
-      {/* <Button
-                      variant="ghost"
-                      className={`text-sm ${
-                        subscribed
-                          ? "text-orange-400"
-                          : "text-gray-600 dark:text-gray-300"
-                      } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                      onClick={() => setSubscribed((s) => !s)}
-                    >
-                      <Bell className="w-4 h-4 mr-1" />
-                      알림 {subscribed ? "해제" : "받기"}
-                    </Button> */}
       <DefaultDialog
         open={alertStatus}
         setOpen={setAlertStatus}

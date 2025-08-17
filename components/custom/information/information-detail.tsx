@@ -106,7 +106,7 @@ export default function InformationDetail({
                                 routeLink
                               )}`}
                             >
-                              {item.name[localeKey]}
+                              {title}
                             </Badge>
                           </div>
                           <h4 className="font-semibold mb-1 text-gray-900 dark:text-white">

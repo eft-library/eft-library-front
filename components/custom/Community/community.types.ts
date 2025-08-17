@@ -34,6 +34,7 @@ export interface PostGridTypes {
 export interface CommunitySideBarTypes {
   issue_posts: CommunityPost[];
   notice_posts: InformationInfo[];
+  author_detail?: AuthorDetailDataTypes;
 }
 
 export interface ShareDialogTypes {
@@ -71,6 +72,16 @@ export interface CommunitDetailDataTypes {
   post_detail: CommunityDetail;
   issue_posts: CommunityPost[];
   notice_posts: InformationInfo[];
+  author_detail: AuthorDetailDataTypes;
+}
+
+interface AuthorDetailDataTypes {
+  user_email: string;
+  nickname: string;
+  posts_count: number;
+  like_count: number;
+  is_follow: number;
+  post_id: string;
 }
 
 export interface CommunityDetailTypes {

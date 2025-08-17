@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   ArrowLeft,
   Eye,
@@ -24,7 +23,6 @@ import CategoryTab from "../CategoryTab/category-tab";
 import { useRouter } from "next/navigation";
 import CommunityReaction from "./CommunityReaction/community-reaction";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
-import FollowUser from "./FollowUser/follow-user";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
@@ -165,9 +163,6 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       </div>
                     </div>
                   </div>
-
-                  {/* follow */}
-                  <FollowUser author_email={postInfo.post_detail.user_email} />
                 </div>
               </div>
 
@@ -175,7 +170,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
                 <div className="prose prose-invert max-w-none">
                   <div
-                    className="text-gray-700 dark:text-gray-300 leading-relaxed"
+                    className="ProseMirror"
                     dangerouslySetInnerHTML={{
                       __html: purifyHtml(postInfo.post_detail.contents),
                     }}
@@ -203,6 +198,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
             <CommunitySideBar
               issue_posts={postInfo.issue_posts}
               notice_posts={postInfo.notice_posts}
+              author_detail={postInfo.author_detail}
             />
           </div>
         </div>
