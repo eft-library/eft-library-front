@@ -6,11 +6,17 @@ import PostGrid from "../PostGrid/post-grid";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import CommunitySearch from "../CommunitySearch/community-search";
+import { useAppStore } from "@/store/provider";
+import { useEffect } from "react";
 
 export default function CommunityView({
   postInfo,
   category,
 }: CommunityViewTypes) {
+  const { setPageCategory } = useAppStore((state) => state);
+  useEffect(() => {
+    setPageCategory(category);
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-4 py-6">

@@ -4,19 +4,23 @@ import { useSession } from "next-auth/react";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import Loading from "@/components/custom/Loading/loading";
 import { requestPostData } from "@/lib/config/api";
-import type { CommunityPost } from "../community.types";
+import type { CommunitDetailDataTypes } from "../community.types";
 import { CommunityDetailView } from "./community-detail-view";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAppStore } from "@/store/provider";
 
 // 여기는 항상 최신 데이터가 보여야 하는 곳이라 캐싱을 쓰면 안되기에 react query 제거
 
 export default function CommunityDetailData() {
+  const { pageCategory } = useAppStore((state) => state);
   const { id } = useParams<{ id: string }>();
   const { data: session, status } = useSession();
   const userEmail = session?.email ?? "";
 
-  const [postInfo, setPostInfo] = useState<CommunityPost | null>(null);
+  const [postInfo, setPostInfo] = useState<CommunitDetailDataTypes | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -31,6 +35,7 @@ export default function CommunityDetailData() {
           {
             url: id,
             user_email: userEmail,
+            page_category: pageCategory,
           }
         );
         if (!data || data.status !== 200)
