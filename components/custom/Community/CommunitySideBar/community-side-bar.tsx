@@ -5,7 +5,6 @@ import { CommunitySideBarTypes } from "../community.types";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import FollowUser from "../CommunityDetail/FollowUser/follow-user";
 
 export default function CommunitySideBar({

@@ -50,7 +50,7 @@ export default function CommunityDetailData() {
     };
 
     fetchCommunityDetail();
-  }, [id, userEmail, status]); // id, 사용자 이메일, 세션 상태 바뀌면 새로 요청
+  }, [id, userEmail, status, pageCategory]); // id, 사용자 이메일, 세션 상태 바뀌면 새로 요청
 
   if (isLoading) return <Loading />;
   if (isError) return <div>게시글 데이터를 불러오지 못했습니다.</div>;

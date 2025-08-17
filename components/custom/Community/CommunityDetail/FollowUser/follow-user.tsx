@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { FollowUserTypes, CheckFollowTypes } from "../../community.types";
 import { requestPostData } from "@/lib/config/api";
