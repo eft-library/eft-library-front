@@ -21,13 +21,7 @@ export function usePostMetaData(postId: string, accessToken: string) {
     onMutate: async () => {
       const previousData = queryClient.getQueryData(["postMetaData", postId]);
       queryClient.setQueryData(["postMetaData", postId], (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          like_count: oldData.like_count + 1,
-          is_like: true,
-          is_dislike: false,
-        };
+        return oldData;
       });
       return { previousData };
     },
@@ -60,15 +54,7 @@ export function usePostMetaData(postId: string, accessToken: string) {
     onMutate: async () => {
       const previousData = queryClient.getQueryData(["postMetaData", postId]);
       queryClient.setQueryData(["postMetaData", postId], (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          is_like: false,
-          is_dislike: true,
-          like_count: oldData.is_like
-            ? oldData.like_count - 1
-            : oldData.like_count,
-        };
+        return oldData;
       });
       return { previousData };
     },
@@ -101,11 +87,7 @@ export function usePostMetaData(postId: string, accessToken: string) {
     onMutate: async () => {
       const previousData = queryClient.getQueryData(["postMetaData", postId]);
       queryClient.setQueryData(["postMetaData", postId], (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          is_bookmarked: !oldData.is_bookmarked,
-        };
+        return oldData;
       });
       return { previousData };
     },

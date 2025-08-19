@@ -64,4 +64,7 @@ export const COMMUNITY_ENDPOINTS = {
   BOOKMARK_POST: baseUrl + "/api/community/bookmark_post",
   FOLLOW_USER: baseUrl + "/api/community/follow_user",
   CHECK_FOLLOW: baseUrl + "/api/community/check_follow",
+  LIKE_COMMENT: baseUrl + "/api/comment/like_comment",
+  DISLIKE_COMMENT: baseUrl + "/api/comment/dislike_comment",
+  GET_COMMENTS: baseUrl + "/api/comment/get_comments",
 };

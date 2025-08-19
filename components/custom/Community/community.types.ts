@@ -112,3 +112,37 @@ export interface FollowUserTypes {
 export interface CheckFollowTypes {
   is_follow: number;
 }
+
+export interface CommentSectionTypes {
+  postInfo: CommunityDetail;
+}
+
+export interface CommentListsTypes {
+  total: number;
+  max_page_count: number;
+  current_page_num: number;
+  comments: CommentDataTypes[];
+  issue_comments: CommentDataTypes[];
+}
+
+export interface CommentDataTypes {
+  id: string;
+  parent_id: string | null;
+  post_id: string;
+  path: string;
+  user_email: string;
+  contents: string;
+  delete_by_user: boolean;
+  delete_by_admin: boolean;
+  create_time: string;
+  update_time: string;
+  like_count: number;
+  dislike_count: number;
+  depth: number;
+  // is_like: number;
+}
+
+export interface CommentTypes {
+  comment: CommentDataTypes;
+  deleteComment: (val: string) => void;
+}

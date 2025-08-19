@@ -14,7 +14,7 @@ import { requestPostData } from "@/lib/config/api";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/custom/Loading/loading";
-import { usePostMetaData } from "@/lib/hooks/userPostReaction";
+import { usePostMetaData } from "@/lib/hooks/usePostReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 
 export default function CommunityReaction({
