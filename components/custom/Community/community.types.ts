@@ -139,14 +139,12 @@ export interface CommentDataTypes {
   like_count: number;
   dislike_count: number;
   depth: number;
-  // is_like: number;
+  is_like: number;
 }
 
 export interface CommentTypes {
   postInfo: CommunityDetail;
   comment: CommentDataTypes;
-  deleteComment: (commentId: string) => void;
-  updateComment: (commentId: string, contents: string) => void;
   setReportOpen: React.Dispatch<
     React.SetStateAction<{ open: boolean; id: string }>
   >;

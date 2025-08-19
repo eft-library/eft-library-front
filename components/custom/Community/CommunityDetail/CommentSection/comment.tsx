@@ -27,8 +27,6 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 export default function Comment({
   comment,
   postInfo,
-  deleteComment,
-  updateComment,
   setReportOpen,
 }: CommentTypes) {
   const { data: session } = useSession();
@@ -43,12 +41,19 @@ export default function Comment({
   const [replyText, setReplyText] = useState("");
 
   const onSubmitReply = () => {
-    createChildComment.mutate({
-      contents: replyText,
-      parent_comment_id: comment.id,
-    });
-    setReplyText("");
-    setReplying(false);
+    if (session && session.email) {
+      createChildComment.mutate({
+        contents: replyText,
+        parent_comment_id: comment.id,
+      });
+      setReplyText("");
+      setReplying(false);
+    } else {
+      setAlertDesc("로그인 사용자만 저장 가능합니다.");
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
   };
 
   const onClickReaction = (actionType: string) => {
@@ -73,7 +78,16 @@ export default function Comment({
   };
 
   return (
-    <div className="flex space-x-4">
+    <div
+      className={`flex space-x-4 ${
+        comment.depth > 1
+          ? "ml-4 pl-4 border-l-2 border-gray-200 dark:border-gray-700"
+          : ""
+      }`}
+      style={{
+        marginLeft: comment.depth > 1 ? `${(comment.depth - 1) * 20}px` : "0px",
+      }}
+    >
       {/* <Avatar className="w-10 h-10 flex-shrink-0">
                     <AvatarImage
                       src={comment.author.avatar || "/placeholder.svg"}
@@ -128,7 +142,7 @@ export default function Comment({
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-red-500 dark:text-red-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => deleteComment(comment.id)}
+                    // onClick={() => deleteComment(comment.id)}
                   >
                     <Trash2 className="w-4 h-4 mr-2" /> 삭제
                   </DropdownMenuItem>
@@ -164,7 +178,7 @@ export default function Comment({
             <div className="flex gap-2">
               <Button
                 size="sm"
-                onClick={() => updateComment(comment.id, editText)}
+                // onClick={() => updateComment(comment.id, editText)}
                 className="bg-orange-500 hover:bg-orange-600 text-white"
               >
                 저장
@@ -185,21 +199,31 @@ export default function Comment({
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+            className={`h-8 px-2 ${
+              comment.is_like === 1
+                ? "text-green-600 dark:text-green-400"
+                : "text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+            }`}
             onClick={() => onClickReaction("like")}
           >
             <ThumbsUp className="w-4 h-4 mr-1" />
             {comment.like_count}
           </Button>
+
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+            className={`h-8 px-2 ${
+              comment.is_like === 0
+                ? "text-red-600 dark:text-red-400"
+                : "text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+            }`}
             onClick={() => onClickReaction("dislike")}
           >
             <ThumbsDown className="w-4 h-4 mr-1" />
             {comment.dislike_count}
           </Button>
+
           <Button
             variant="ghost"
             size="sm"
