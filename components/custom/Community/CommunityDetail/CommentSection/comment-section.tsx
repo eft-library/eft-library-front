@@ -16,8 +16,14 @@ import Loading from "@/components/custom/Loading/loading";
 import Comment from "./comment";
 import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
+import CustomPagination from "@/components/custom/CustomPagination/custom-pagination";
+import { useSearchParams } from "next/navigation";
 
 export default function CommentSection({ postInfo }: CommentSectionTypes) {
+  const searchParams = useSearchParams();
+  const pageNum = searchParams.get("page") || 0;
+  const commentId = searchParams.get("comment_id") ?? "";
+
   const { data: session } = useSession();
   const { createParentComment } = useCommentReaction(
     postInfo.id,
@@ -47,13 +53,15 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
   };
 
   const fetchCommentData = async (
-    email: string
+    email: string,
+    pageNum: number,
+    commentId: string
   ): Promise<CommentListsTypes> => {
     const data = await requestPostData(`${COMMUNITY_ENDPOINTS.GET_COMMENTS}`, {
       post_id: postInfo.id,
       user_email: email,
-      issue_comment_id: "",
-      page_num: 1,
+      issue_comment_id: commentId,
+      page_num: pageNum,
     });
 
     if (!data || data.status !== 200) {
@@ -64,10 +72,9 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
 
   const userEmail = session?.email ?? "";
 
-  // TODO: query 파라미터로 page_num, comment_id 가져와야 함
   const { data: commentData, isLoading } = useQuery({
-    queryKey: ["commentData", postInfo.id, userEmail],
-    queryFn: () => fetchCommentData(userEmail),
+    queryKey: ["commentData", postInfo.id, userEmail, pageNum, commentId],
+    queryFn: () => fetchCommentData(userEmail, Number(pageNum), commentId),
   });
 
   if (isLoading || !commentData) return <Loading />;
@@ -151,6 +158,13 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
             ))}
           </div>
         </div>
+        {commentData.total > 0 && (
+          <CustomPagination
+            total={commentData.max_page_count}
+            routeLink={`/community/detail/${postInfo.id}-${postInfo.slug}?page=`}
+            currentPage={commentData.current_page_num}
+          />
+        )}
       </div>
 
       <ReportDialog
