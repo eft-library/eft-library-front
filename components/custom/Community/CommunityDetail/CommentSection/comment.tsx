@@ -22,16 +22,18 @@ import { CommentTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
+import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 
 export default function Comment({
   comment,
+  postInfo,
   deleteComment,
   updateComment,
   setReportOpen,
 }: CommentTypes) {
   const { data: session } = useSession();
-  const { likeMutation, dislikeMutation } = useCommentReaction(
-    comment.id,
+  const { likeComment, dislikeComment } = useCommentReaction(
+    postInfo.id,
     session?.accessToken || ""
   );
   const userEmail = session?.email ?? "";
@@ -39,15 +41,22 @@ export default function Comment({
   const [editText, setEditText] = useState(comment.contents);
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
+  const [replying, setReplying] = useState(false);
+  const [replyText, setReplyText] = useState("");
+
+  const onSubmitReply = () => {
+    setReplyText("");
+    setReplying(false);
+  };
 
   const onClickReaction = (actionType: string) => {
     if (session && session.email) {
       switch (actionType) {
         case "like":
-          likeMutation.mutate();
+          likeComment.mutate(comment.id);
           break;
         case "dislike":
-          dislikeMutation.mutate();
+          dislikeComment.mutate(comment.id);
           break;
         default:
           // 필요 시 처리
@@ -178,7 +187,7 @@ export default function Comment({
             onClick={() => onClickReaction("like")}
           >
             <ThumbsUp className="w-4 h-4 mr-1" />
-            {comment.likes}
+            {comment.like_count}
           </Button>
           <Button
             variant="ghost"
@@ -187,55 +196,54 @@ export default function Comment({
             onClick={() => onClickReaction("dislike")}
           >
             <ThumbsDown className="w-4 h-4 mr-1" />
-            {comment.dislikes}
+            {comment.dislike_count}
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-            onClick={() =>
-              setReplyingTo(replyingTo === comment.id ? null : comment.id)
-            }
+            onClick={() => setReplying(true)}
           >
             <Reply className="w-4 h-4 mr-1" />
             답글
           </Button>
         </div>
 
-        {/* {replyingTo === comment.id && (
-                    <div className="space-y-2 mt-3">
-                      <Textarea
-                        placeholder={`${comment.author.name}님에게 답글...`}
-                        value={replyDraft}
-                        onChange={(e) =>
-                          setReplyingTo({
-                            ...replyingTo,
-                            content: e.target.value,
-                          })
-                        }
-                        className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                        rows={3}
-                      />
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setReplyingTo(null)}
-                          className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                        >
-                          취소
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => submitReply(comment.id, replyDraft)}
-                          className="bg-orange-500 hover:bg-orange-600 text-white"
-                        >
-                          답글 작성
-                        </Button>
-                      </div>
-                    </div>
-                  )} */}
+        {replying && (
+          <div className="space-y-2 mt-3">
+            <Textarea
+              placeholder={`${comment.user_email} 님에게 답글...`}
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              rows={3}
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setReplying(false)}
+                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              >
+                취소
+              </Button>
+              <Button
+                size="sm"
+                onClick={onSubmitReply}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                답글 작성
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
+      <DefaultDialog
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="Notice"
+        description={alertDesc}
+      />
     </div>
   );
 }

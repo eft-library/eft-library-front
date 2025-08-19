@@ -25,6 +25,7 @@ import CommunityReaction from "./CommunityReaction/community-reaction";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import PostGrid from "../PostGrid/post-grid";
 import { useAppStore } from "@/store/provider";
+import CommentSection from "./CommentSection/comment-section";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
@@ -186,7 +187,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
 
               <Separator className="bg-gray-200 dark:bg-gray-700" />
             </article>
-            {/* <CommentsSection /> */}
+            <CommentSection postInfo={postInfo.post_detail} />
 
             {/* Full Post List Section */}
             <section className="mt-12 space-y-6">

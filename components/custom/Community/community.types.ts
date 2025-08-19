@@ -143,6 +143,7 @@ export interface CommentDataTypes {
 }
 
 export interface CommentTypes {
+  postInfo: CommunityDetail;
   comment: CommentDataTypes;
   deleteComment: (commentId: string) => void;
   updateComment: (commentId: string, contents: string) => void;

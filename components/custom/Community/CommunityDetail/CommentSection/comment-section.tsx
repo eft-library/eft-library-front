@@ -14,9 +14,16 @@ import { useQuery } from "@tanstack/react-query";
 import { CommentListsTypes, CommentSectionTypes } from "../../community.types";
 import Loading from "@/components/custom/Loading/loading";
 import Comment from "./comment";
+import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 
 export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const { data: session } = useSession();
+  const {
+    likeComment,
+    dislikeComment,
+    createParentComment,
+    createChildComment,
+  } = useCommentReaction(postInfo.id, session?.accessToken || "");
   const [newComment, setNewComment] = useState("");
   const [reportOpen, setReportOpen] = useState<{
     open: boolean;
@@ -25,9 +32,13 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
     open: false,
     id: "",
   });
-  const submitNewParentComment = () => {};
 
   const deleteComment = (commentId: string) => {};
+
+  const createParentCommentFunc = () => {
+    createParentComment.mutate({ contents: newComment });
+    setNewComment("");
+  };
 
   const updateComment = (commentId: string, contents: string) => {};
 
@@ -37,7 +48,8 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
     const data = await requestPostData(`${COMMUNITY_ENDPOINTS.GET_COMMENTS}`, {
       post_id: postInfo.id,
       user_email: email,
-      page_category: "all",
+      issue_comment_id: "",
+      page_num: 1,
     });
 
     if (!data || data.status !== 200) {
@@ -48,7 +60,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
 
   const userEmail = session?.email ?? "";
 
-  // query 파라미터로 page_num, comment_id 가져와야 함
+  // TODO: query 파라미터로 page_num, comment_id 가져와야 함
   const { data: commentData, isLoading } = useQuery({
     queryKey: ["commentData", postInfo.id, userEmail],
     queryFn: () => fetchCommentData(userEmail),
@@ -88,19 +100,21 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
               <div className="flex items-center justify-between mt-2">
                 <div className="flex gap-2">
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setNewComment("")}
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    onClick={() => submitNewParentComment()}
-                    className="bg-orange-500 hover:bg-orange-600 text-white"
+                    onClick={createParentCommentFunc}
+                    className="bg-orange-500 hover:bg-orange-600 text-white cursor-pointer"
                   >
                     <Send className="w-4 h-4 mr-1" /> 댓글 작성
                   </Button>
+                  {newComment.length > 1 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setNewComment("")}
+                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    >
+                      취소
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -126,6 +140,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
             {commentData.comments.map((comment) => (
               <Comment
                 comment={comment}
+                postInfo={postInfo}
                 key={`comment-${comment.id}`}
                 deleteComment={deleteComment}
                 updateComment={updateComment}
