@@ -29,6 +29,8 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
 
   const deleteComment = (commentId: string) => {};
 
+  const updateComment = (commentId: string, contents: string) => {};
+
   const fetchCommentData = async (
     email: string
   ): Promise<CommentListsTypes> => {
@@ -126,6 +128,8 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
                 comment={comment}
                 key={`comment-${comment.id}`}
                 deleteComment={deleteComment}
+                updateComment={updateComment}
+                setReportOpen={setReportOpen}
               />
             ))}
           </div>

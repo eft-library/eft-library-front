@@ -144,5 +144,9 @@ export interface CommentDataTypes {
 
 export interface CommentTypes {
   comment: CommentDataTypes;
-  deleteComment: (val: string) => void;
+  deleteComment: (commentId: string) => void;
+  updateComment: (commentId: string, contents: string) => void;
+  setReportOpen: React.Dispatch<
+    React.SetStateAction<{ open: boolean; id: string }>
+  >;
 }

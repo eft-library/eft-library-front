@@ -9,13 +9,57 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { MoreHorizontal, Pencil, Trash2, Flag } from "lucide-react";
+import {
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Flag,
+  ThumbsUp,
+  ThumbsDown,
+  Reply,
+} from "lucide-react";
 import { CommentTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 
-export default function Comment({ comment, deleteComment }: CommentTypes) {
+export default function Comment({
+  comment,
+  deleteComment,
+  updateComment,
+  setReportOpen,
+}: CommentTypes) {
   const { data: session } = useSession();
+  const { likeMutation, dislikeMutation } = useCommentReaction(
+    comment.id,
+    session?.accessToken || ""
+  );
   const userEmail = session?.email ?? "";
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(comment.contents);
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
+
+  const onClickReaction = (actionType: string) => {
+    if (session && session.email) {
+      switch (actionType) {
+        case "like":
+          likeMutation.mutate();
+          break;
+        case "dislike":
+          dislikeMutation.mutate();
+          break;
+        default:
+          // 필요 시 처리
+          break;
+      }
+    } else {
+      setAlertDesc("로그인 사용자만 저장 가능합니다.");
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
+  };
 
   return (
     <div className="flex space-x-4">
@@ -67,12 +111,7 @@ export default function Comment({ comment, deleteComment }: CommentTypes) {
                 <>
                   <DropdownMenuItem
                     className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() =>
-                      setEditingId({
-                        type: "comment",
-                        id: comment.id,
-                      })
-                    }
+                    onClick={() => setIsEditing(true)}
                   >
                     <Pencil className="w-4 h-4 mr-2" /> 수정
                   </DropdownMenuItem>
@@ -102,26 +141,19 @@ export default function Comment({ comment, deleteComment }: CommentTypes) {
 
         {!isEditing ? (
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-            {comment.content}
+            {comment.contents}
           </p>
         ) : (
           <div className="space-y-2">
             <Textarea
-              value={editDraft}
-              onChange={(e) =>
-                setEditingId({
-                  ...editingId,
-                  content: e.target.value,
-                })
-              }
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
               className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
             <div className="flex gap-2">
               <Button
                 size="sm"
-                onClick={() =>
-                  updateItem({ type: "comment", id: comment.id }, editDraft)
-                }
+                onClick={() => updateComment(comment.id, editText)}
                 className="bg-orange-500 hover:bg-orange-600 text-white"
               >
                 저장
@@ -129,7 +161,7 @@ export default function Comment({ comment, deleteComment }: CommentTypes) {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setEditingId(null)}
+                onClick={() => setIsEditing(false)}
                 className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
                 취소
@@ -138,49 +170,37 @@ export default function Comment({ comment, deleteComment }: CommentTypes) {
           </div>
         )}
 
-        {/* <div className="flex items-center space-x-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                      onClick={() =>
-                        toggleLikeDislike(
-                          { type: "comment", id: comment.id },
-                          "like"
-                        )
-                      }
-                    >
-                      <ThumbsUp className="w-4 h-4 mr-1" />
-                      {comment.likes}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
-                      onClick={() =>
-                        toggleLikeDislike(
-                          { type: "comment", id: comment.id },
-                          "dislike"
-                        )
-                      }
-                    >
-                      <ThumbsDown className="w-4 h-4 mr-1" />
-                      {comment.dislikes}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-                      onClick={() =>
-                        setReplyingTo(
-                          replyingTo === comment.id ? null : comment.id
-                        )
-                      }
-                    >
-                      <Reply className="w-4 h-4 mr-1" />
-                      답글
-                    </Button>
-                  </div> */}
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+            onClick={() => onClickReaction("like")}
+          >
+            <ThumbsUp className="w-4 h-4 mr-1" />
+            {comment.likes}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+            onClick={() => onClickReaction("dislike")}
+          >
+            <ThumbsDown className="w-4 h-4 mr-1" />
+            {comment.dislikes}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+            onClick={() =>
+              setReplyingTo(replyingTo === comment.id ? null : comment.id)
+            }
+          >
+            <Reply className="w-4 h-4 mr-1" />
+            답글
+          </Button>
+        </div>
 
         {/* {replyingTo === comment.id && (
                     <div className="space-y-2 mt-3">
