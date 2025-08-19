@@ -32,10 +32,8 @@ export default function Comment({
   setReportOpen,
 }: CommentTypes) {
   const { data: session } = useSession();
-  const { likeComment, dislikeComment } = useCommentReaction(
-    postInfo.id,
-    session?.accessToken || ""
-  );
+  const { likeComment, dislikeComment, createChildComment } =
+    useCommentReaction(postInfo.id, session?.accessToken || "");
   const userEmail = session?.email ?? "";
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(comment.contents);
@@ -45,6 +43,10 @@ export default function Comment({
   const [replyText, setReplyText] = useState("");
 
   const onSubmitReply = () => {
+    createChildComment.mutate({
+      contents: replyText,
+      parent_comment_id: comment.id,
+    });
     setReplyText("");
     setReplying(false);
   };
