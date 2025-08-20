@@ -18,6 +18,7 @@ import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import CustomPagination from "@/components/custom/CustomPagination/custom-pagination";
 import { useSearchParams } from "next/navigation";
+import IssueComment from "./issue-comment";
 
 export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const searchParams = useSearchParams();
@@ -63,7 +64,6 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
       issue_comment_id: commentId,
       page_num: pageNum,
     });
-
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch post reaction data");
     }
@@ -147,7 +147,16 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
               </div>
             </div>
           ))} */}
-          <div className="space-y-4 mb-4">
+          <div className="space-y-2 mb-4">
+            {commentData.issue_comments.map((comment) => (
+              <IssueComment
+                key={`issue-comment-${comment.id}`}
+                comment={comment}
+                postInfo={postInfo}
+              />
+            ))}
+          </div>
+          <div className="space-y-2 mb-4">
             {commentData.comments.map((comment) => (
               <Comment
                 comment={comment}

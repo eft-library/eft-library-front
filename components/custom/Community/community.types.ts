@@ -149,3 +149,8 @@ export interface CommentTypes {
     React.SetStateAction<{ open: boolean; id: string }>
   >;
 }
+
+export interface IssueCommentTypes {
+  postInfo: CommunityDetail;
+  comment: CommentDataTypes;
+}
