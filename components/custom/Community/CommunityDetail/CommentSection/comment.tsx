@@ -20,9 +20,10 @@ import {
 } from "lucide-react";
 import { CommentTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
+import { useSearchParams } from "next/navigation";
 
 export default function Comment({
   comment,
@@ -30,6 +31,8 @@ export default function Comment({
   setReportOpen,
 }: CommentTypes) {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const commentId = searchParams.get("comment_id") ?? "";
   const { likeComment, dislikeComment, createChildComment } =
     useCommentReaction(postInfo.id, session?.accessToken || "");
   const userEmail = session?.email ?? "";
@@ -39,6 +42,19 @@ export default function Comment({
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [replying, setReplying] = useState(false);
   const [replyText, setReplyText] = useState("");
+
+  useEffect(() => {
+    if (commentId) {
+      const el = document.getElementById(`comment-${commentId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" }); // 해당 댓글로 스크롤
+        el.classList.add("ring-2", "ring-blue-400"); // 선택된 댓글 강조 효과 (옵션)
+        setTimeout(() => {
+          el.classList.remove("ring-2", "ring-blue-400");
+        }, 2000);
+      }
+    }
+  }, [commentId]);
 
   const onSubmitReply = () => {
     if (session && session.email) {
@@ -78,7 +94,7 @@ export default function Comment({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" id={`comment-${comment.id}`}>
       {/* Connection line for nested comments */}
       {comment.depth > 1 && (
         <div
