@@ -111,7 +111,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     </div>
                     <div className="flex items-center gap-1">
                       <MessageCircle className="w-4 h-4" />
-                      {/* <span>{post.comments}</span> */}
+                      <span>{postInfo.post_detail.comment_count}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />

@@ -93,7 +93,7 @@ export default function PostGrid({
                     </div>
                     <div className="flex items-center space-x-1">
                       <MessageCircle className="w-3 h-3" />
-                      {/* <span>{post.comments}</span> */}
+                      <span>{post.comment_count}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <ThumbsUp className="w-3 h-3" />

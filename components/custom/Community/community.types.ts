@@ -2,7 +2,6 @@ import type { InformationInfo } from "../information/information.types";
 
 export interface CommunityPost extends CommunityDetail {
   reaction_score: number;
-  view_count: number;
 }
 
 export interface CommunityPostsResponse {
@@ -64,6 +63,7 @@ export interface CommunityDetail {
   total_post_count: number;
   follower_count: number;
   view_count: number;
+  comment_count: number;
 }
 
 export interface CommunitDetailDataTypes {
