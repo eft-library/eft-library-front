@@ -78,192 +78,213 @@ export default function Comment({
   };
 
   return (
-    <div
-      className={`flex space-x-4 ${
-        comment.depth > 1
-          ? "ml-4 pl-4 border-l-2 border-gray-200 dark:border-gray-700"
-          : ""
-      }`}
-      style={{
-        marginLeft: comment.depth > 1 ? `${(comment.depth - 1) * 20}px` : "0px",
-      }}
-    >
-      {/* <Avatar className="w-10 h-10 flex-shrink-0">
-                    <AvatarImage
-                      src={comment.author.avatar || "/placeholder.svg"}
-                      alt={comment.author.name}
-                    />
-                    <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
-                  </Avatar> */}
-      <div className="flex-1 space-y-2">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-2 flex-wrap">
-              <span className="font-medium text-gray-900 dark:text-white">
-                {comment.user_email}
-              </span>
-              {/* {comment.isAdmin && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs text-red-400 border-red-400"
-                          >
-                            관리자
-                          </Badge>
-                        )} */}
-            </div>
-            <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-500 mt-1 flex-wrap">
-              {/* <Badge
-                          variant="outline"
-                          className="text-xs border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
-                        >
-                          {comment.author.level}
-                        </Badge> */}
-              <span>{formatISODateTime(comment.create_time)}</span>
-            </div>
-          </div>
+    <div className="relative">
+      {/* Connection line for nested comments */}
+      {comment.depth > 1 && (
+        <div
+          className="absolute left-0 top-0 w-px bg-gradient-to-b from-blue-200 via-blue-300 to-transparent dark:from-blue-800 dark:via-blue-700 dark:to-transparent"
+          style={{
+            left: `${(comment.depth - 2) * 24 + 12}px`,
+            height: "60px",
+          }}
+        />
+      )}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
-            >
-              {comment.user_email === userEmail ? (
-                <>
-                  <DropdownMenuItem
-                    className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    <Pencil className="w-4 h-4 mr-2" /> 수정
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-red-500 dark:text-red-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    // onClick={() => deleteComment(comment.id)}
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" /> 삭제
-                  </DropdownMenuItem>
-                </>
-              ) : (
-                <DropdownMenuItem
-                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  onClick={() =>
-                    setReportOpen({
-                      open: true,
-                      id: comment.id,
-                    })
-                  }
+      {/* Reply connector */}
+      {comment.depth > 1 && (
+        <div
+          className="absolute top-6 w-3 h-px bg-gradient-to-r from-blue-300 to-transparent dark:from-blue-700 dark:to-transparent"
+          style={{ left: `${(comment.depth - 2) * 24 + 12}px` }}
+        />
+      )}
+
+      <div
+        className={`relative bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 ${
+          comment.depth > 1 ? "ml-6" : ""
+        }`}
+        style={{
+          marginLeft:
+            comment.depth > 1 ? `${(comment.depth - 1) * 24}px` : "0px",
+        }}
+      >
+        {/* Comment depth indicator */}
+        {comment.depth > 1 && (
+          <div className="absolute -left-2 top-6 w-4 h-4 bg-blue-100 dark:bg-gray-700 border-2 border-blue-300 dark:border-gray-500 rounded-full flex items-center justify-center">
+            <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-gray-300 rounded-full" />
+          </div>
+        )}
+
+        <div className="p-4 space-y-3">
+          {/* Header with user info and actions */}
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col">
+              <div className="flex items-center space-x-2 flex-wrap">
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {comment.user_email}
+                </span>
+                {comment.depth > 1 && (
+                  <span className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full">
+                    답글
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 mt-1 flex-wrap">
+                <span>{formatISODateTime(comment.create_time)}</span>
+              </div>
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <Flag className="w-4 h-4 mr-2" /> 신고하기
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {!isEditing ? (
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-            {comment.contents}
-          </p>
-        ) : (
-          <div className="space-y-2">
-            <Textarea
-              value={editText}
-              onChange={(e) => setEditText(e.target.value)}
-              className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
-            />
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                // onClick={() => updateComment(comment.id, editText)}
-                className="bg-orange-500 hover:bg-orange-600 text-white"
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-600 shadow-lg"
               >
-                저장
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setIsEditing(false)}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                취소
-              </Button>
-            </div>
+                {comment.user_email === userEmail ? (
+                  <>
+                    <DropdownMenuItem
+                      className="text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <Pencil className="w-4 h-4 mr-2" /> 수정
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30">
+                      <Trash2 className="w-4 h-4 mr-2" /> 삭제
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <DropdownMenuItem
+                    className="text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    onClick={() =>
+                      setReportOpen({
+                        open: true,
+                        id: comment.id,
+                      })
+                    }
+                  >
+                    <Flag className="w-4 h-4 mr-2" /> 신고하기
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        )}
 
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`h-8 px-2 ${
-              comment.is_like === 1
-                ? "text-green-600 dark:text-green-400"
-                : "text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-            }`}
-            onClick={() => onClickReaction("like")}
-          >
-            <ThumbsUp className="w-4 h-4 mr-1" />
-            {comment.like_count}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`h-8 px-2 ${
-              comment.is_like === 0
-                ? "text-red-600 dark:text-red-400"
-                : "text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
-            }`}
-            onClick={() => onClickReaction("dislike")}
-          >
-            <ThumbsDown className="w-4 h-4 mr-1" />
-            {comment.dislike_count}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 px-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-            onClick={() => setReplying(true)}
-          >
-            <Reply className="w-4 h-4 mr-1" />
-            답글
-          </Button>
-        </div>
-
-        {replying && (
-          <div className="space-y-2 mt-3">
-            <Textarea
-              placeholder={`${comment.user_email} 님에게 답글...`}
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-              className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-              rows={3}
-            />
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setReplying(false)}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                취소
-              </Button>
-              <Button
-                size="sm"
-                onClick={onSubmitReply}
-                className="bg-orange-500 hover:bg-orange-600 text-white"
-              >
-                답글 작성
-              </Button>
+          {/* Comment content */}
+          {!isEditing ? (
+            <div className="prose prose-sm max-w-none dark:prose-invert">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed m-0 font-semibold">
+                {comment.contents}
+              </p>
             </div>
+          ) : (
+            <div className="space-y-3">
+              <Textarea
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows={3}
+              />
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                >
+                  저장
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setIsEditing(false)}
+                  className="border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  취소
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex items-center space-x-1 pt-2 border-t border-gray-100 dark:border-gray-600">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 px-3 rounded-full transition-colors ${
+                comment.is_like === 1
+                  ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20"
+                  : "text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
+              }`}
+              onClick={() => onClickReaction("like")}
+            >
+              <ThumbsUp className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">{comment.like_count}</span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 px-3 rounded-full transition-colors ${
+                comment.is_like === 0
+                  ? "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20"
+                  : "text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+              }`}
+              onClick={() => onClickReaction("dislike")}
+            >
+              <ThumbsDown className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">
+                {comment.dislike_count}
+              </span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 px-3 rounded-full text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+              onClick={() => setReplying(!replying)}
+            >
+              <Reply className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">답글</span>
+            </Button>
           </div>
-        )}
+
+          {/* Reply form */}
+          {replying && (
+            <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-gray-600">
+              <Textarea
+                placeholder={`${comment.user_email} 님에게 답글을 작성하세요...`}
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows={3}
+              />
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setReplying(false)}
+                  className="border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
+                  취소
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={onSubmitReply}
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                >
+                  답글 작성
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
       <DefaultDialog
         open={alertStatus}
         setOpen={setAlertStatus}

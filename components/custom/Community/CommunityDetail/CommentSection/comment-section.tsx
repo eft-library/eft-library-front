@@ -147,7 +147,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
               </div>
             </div>
           ))} */}
-          <div className="space-y-4">
+          <div className="space-y-4 mb-4">
             {commentData.comments.map((comment) => (
               <Comment
                 comment={comment}
