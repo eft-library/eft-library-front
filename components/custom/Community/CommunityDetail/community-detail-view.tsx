@@ -122,9 +122,9 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   </div>
                 </div>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
                   {postInfo.post_detail.title}
-                </h1>
+                </h2>
 
                 {/* Author row */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

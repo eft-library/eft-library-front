@@ -114,7 +114,7 @@ export default function Comment({
           </div>
         )}
 
-        <div className="p-4 space-y-3">
+        <div className="p-2 pl-4 space-y-3">
           {/* Header with user info and actions */}
           <div className="flex items-start justify-between">
             <div className="flex flex-col">
@@ -211,11 +211,11 @@ export default function Comment({
           )}
 
           {/* Action buttons */}
-          <div className="flex items-center space-x-1 pt-2 border-t border-gray-100 dark:border-gray-600">
+          <div className="flex items-center space-x-1 pt-1 border-t border-gray-100 dark:border-gray-600">
             <Button
               variant="ghost"
               size="sm"
-              className={`h-8 px-3 rounded-full transition-colors ${
+              className={`cursor-pointer h-8 px-3 rounded-full transition-colors ${
                 comment.is_like === 1
                   ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20"
                   : "text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
@@ -229,7 +229,7 @@ export default function Comment({
             <Button
               variant="ghost"
               size="sm"
-              className={`h-8 px-3 rounded-full transition-colors ${
+              className={`cursor-pointer h-8 px-2 rounded-full transition-colors ${
                 comment.is_like === 0
                   ? "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20"
                   : "text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -245,7 +245,7 @@ export default function Comment({
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 px-3 rounded-full text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+              className="cursor-pointer h-8 px-3 rounded-full text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
               onClick={() => setReplying(!replying)}
             >
               <Reply className="w-4 h-4 mr-1" />
@@ -257,7 +257,7 @@ export default function Comment({
           {replying && (
             <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-gray-600">
               <Textarea
-                placeholder={`${comment.user_email} 님에게 답글을 작성하세요...`}
+                placeholder={`${comment.user_email} 님에게 답글을 작성하세요.`}
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -268,14 +268,14 @@ export default function Comment({
                   variant="outline"
                   size="sm"
                   onClick={() => setReplying(false)}
-                  className="border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="cursor-pointer border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   취소
                 </Button>
                 <Button
                   size="sm"
                   onClick={onSubmitReply}
-                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                  className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                 >
                   답글 작성
                 </Button>
