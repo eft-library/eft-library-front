@@ -26,7 +26,7 @@ export default function CommunityDetailData() {
 
   useEffect(() => {
     const fetchCommunityDetail = async () => {
-      if (status === "loading") return; // 세션 로딩 중이면 대기
+      if (status === "loading") return;
       setIsLoading(true);
       setIsError(false);
       try {
@@ -50,7 +50,7 @@ export default function CommunityDetailData() {
     };
 
     fetchCommunityDetail();
-  }, [id, userEmail, status, pageCategory]); // id, 사용자 이메일, 세션 상태 바뀌면 새로 요청
+  }, [id, userEmail, status, pageCategory]);
 
   if (isLoading) return <Loading />;
   if (isError) return <div>게시글 데이터를 불러오지 못했습니다.</div>;

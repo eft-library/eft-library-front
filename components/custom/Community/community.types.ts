@@ -154,3 +154,9 @@ export interface IssueCommentTypes {
   postInfo: CommunityDetail;
   comment: CommentDataTypes;
 }
+
+export interface CommunityWriteTypes {
+  postInfo: CommunityDetail | null;
+  writeType: "create" | "update";
+  pageTitle: string;
+}

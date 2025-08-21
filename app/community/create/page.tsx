@@ -1,5 +1,7 @@
-import CommunityCreateView from "./_components/community-create-view";
+import CommunityWrite from "@/components/custom/Community/Write/write";
 
 export default function CommunityCreate() {
-  return <CommunityCreateView />;
+  return (
+    <CommunityWrite postInfo={null} pageTitle="새 글 작성" writeType="create" />
+  );
 }

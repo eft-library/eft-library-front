@@ -17,13 +17,22 @@ import { ChevronDown, ReceiptText } from "lucide-react";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 import { useRouter } from "next/navigation";
+import { CommunityWriteTypes } from "../community.types";
+import { useAppStore } from "@/store/provider";
 
-export default function CommunityCreateView() {
+export default function CommunityWrite({
+  postInfo,
+  writeType,
+  pageTitle,
+}: CommunityWriteTypes) {
   const router = useRouter();
   const { data: session } = useSession();
-  const [contents, setContents] = useState("");
-  const [category, setCategory] = useState({ id: "free", kr: "자유" });
-  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState(postInfo?.contents ?? "");
+  const { setPageCategory } = useAppStore((state) => state);
+  const [category, setCategory] = useState(
+    CATEGORY_LIST.find((c) => c.id === postInfo?.category) ?? CATEGORY_LIST[1]
+  );
+  const [title, setTitle] = useState(postInfo?.title ?? "");
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
 
@@ -45,23 +54,45 @@ export default function CommunityCreateView() {
           });
           return;
         }
-
-        const data = await requestUserData(
-          COMMUNITY_ENDPOINTS.CREATE_POSTS,
-          {
-            title: title,
-            category: category.id,
-            contents: contents,
-          },
-          session
-        );
-        if (data && data.status === 200) {
-          router.push(`/community/detail/${data.data.url}`);
-        } else {
-          console.error(
-            "Failed to fetch community create:",
-            data?.msg || "Unknown error"
+        setPageCategory(category.id);
+        if (writeType === "create") {
+          const data = await requestUserData(
+            COMMUNITY_ENDPOINTS.CREATE_POSTS,
+            {
+              title: title,
+              category: category.id,
+              contents: contents,
+            },
+            session
           );
+          if (data && data.status === 200) {
+            router.push(`/community/detail/${data.data.url}`);
+          } else {
+            console.error(
+              "Failed to fetch community create:",
+              data?.msg || "Unknown error"
+            );
+          }
+        } else {
+          const data = await requestUserData(
+            COMMUNITY_ENDPOINTS.UPDATE_POST,
+            {
+              id: postInfo?.id,
+              slug: postInfo?.slug,
+              title: title,
+              category: category.id,
+              contents: contents,
+            },
+            session
+          );
+          if (data && data.status === 200) {
+            router.push(`/community/detail/${data.data.url}`);
+          } else {
+            console.error(
+              "Failed to fetch community create:",
+              data?.msg || "Unknown error"
+            );
+          }
         }
       } else {
         setAlertDesc("로그인 사용자만 저장 가능합니다.");
@@ -76,7 +107,9 @@ export default function CommunityCreateView() {
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-extrabold mb-8 text-gray-900">새 글 작성</h1>
+      <h1 className="text-3xl font-extrabold mb-8 text-gray-900">
+        {pageTitle}
+      </h1>
       <div className="flex items-center justify-center gap-4 mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

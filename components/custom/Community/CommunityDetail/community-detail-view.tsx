@@ -26,6 +26,7 @@ import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import PostGrid from "../PostGrid/post-grid";
 import { useAppStore } from "@/store/provider";
 import CommentSection from "./CommentSection/comment-section";
+import Link from "next/link";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
@@ -66,22 +67,22 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
 
                 <div className="flex items-center gap-2">
                   {isOwner && (
-                    <>
+                    <Link href={`/community/update/${postInfo.post_detail.id}`}>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <Edit className="w-4 h-4 mr-1" /> 수정
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 dark:text-red-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="cursor-pointer text-red-500 dark:text-red-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 삭제
                       </Button>
-                    </>
+                    </Link>
                   )}
                   {/* {currentUser.isModerator && !isOwner && (
                     <Badge
