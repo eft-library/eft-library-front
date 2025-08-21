@@ -67,14 +67,18 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
 
                 <div className="flex items-center gap-2">
                   {isOwner && (
-                    <Link href={`/community/update/${postInfo.post_detail.id}`}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    <>
+                      <Link
+                        href={`/community/update/${postInfo.post_detail.id}`}
                       >
-                        <Edit className="w-4 h-4 mr-1" /> 수정
-                      </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          <Edit className="w-4 h-4 mr-1" /> 수정
+                        </Button>
+                      </Link>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -82,7 +86,14 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 삭제
                       </Button>
-                    </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="cursor-pointer text-white bg-red-700 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700 ml-2"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" /> 관리자 삭제
+                      </Button>
+                    </>
                   )}
                   {/* {currentUser.isModerator && !isOwner && (
                     <Badge
