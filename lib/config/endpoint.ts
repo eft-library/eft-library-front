@@ -56,6 +56,10 @@ export const USER_API_ENDPOINTS = {
 export const COMMUNITY_ENDPOINTS = {
   IMAGE_UPLOAD: baseUrl + "/api/community/upload_image",
   CREATE_POSTS: baseUrl + "/api/community/create_posts",
+  UPDATE_POST: baseUrl + "/api/community/update_post",
+  GET_UPDAET_POST_DETAIL: baseUrl + "/api/community/get_update_post_detail",
+  DELETE_POST_BY_USER: baseUrl + "/api/community/delete_post_by_user",
+  DELETE_POST_BY_ADMIN: baseUrl + "/api/community/delete_post_by_admin",
   GET_POSTS: baseUrl + "/api/community",
   GET_DETAIL_POST: baseUrl + "/api/community/detail",
   GET_DETAIL_POST_META_DATA: baseUrl + "/api/community/detail-meta-data",

@@ -8,11 +8,10 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   // 보호하려는 경로
-  const protectedPath = "/community/create";
+  const protectedPaths = ["/community/create", "/community/update"];
 
-  if (req.nextUrl.pathname.startsWith(protectedPath)) {
+  if (protectedPaths.some((path) => req.nextUrl.pathname.startsWith(path))) {
     if (!token) {
-      // 로그인 안 한 경우 → /login으로 리다이렉트
       return NextResponse.redirect(new URL("/community/issue", req.url));
     }
   }
@@ -23,5 +22,5 @@ export async function middleware(req: NextRequest) {
 
 // 적용할 경로 지정
 export const config = {
-  matcher: ["/community/create"],
+  matcher: ["/community/create", "/community/update"],
 };

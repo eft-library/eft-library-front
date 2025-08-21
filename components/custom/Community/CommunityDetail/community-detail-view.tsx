@@ -32,7 +32,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { pageCategory } = useAppStore((state) => state);
   const router = useRouter();
 
-  const isOwner = session && session?.email === postInfo.post_detail.user_email;
+  const isOwner = session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
     (original) => original.id === postInfo.post_detail.category
