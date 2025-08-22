@@ -140,7 +140,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                         <Trash2 className="w-4 h-4 mr-1" /> 삭제
                       </Button>
                     )}
-                    {session && session.userInfo.user.is_admin && (
+                    {session && session.userInfo.is_admin && (
                       <Button
                         variant="ghost"
                         size="sm"
