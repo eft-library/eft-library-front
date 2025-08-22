@@ -270,7 +270,14 @@ export default function Comment({
           {/* Comment content */}
           {!isEditing ? (
             <div className="prose prose-sm max-w-none dark:prose-invert">
-              {/* 댓글 내용 or 삭제 문구 */}
+              {comment.depth > 1 && comment.user_email && (
+                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
+                  ↪️
+                  <span className="font-semibold">@{comment.user_email}</span>
+                  님에게 답글
+                </p>
+              )}
+
               {!comment.delete_by_user && !comment.delete_by_admin ? (
                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed m-0 font-medium">
                   {comment.contents}
@@ -282,11 +289,10 @@ export default function Comment({
                 </p>
               )}
 
-              {/* 수정됨 표시 */}
               {!comment.delete_by_admin &&
                 !comment.delete_by_user &&
                 comment.create_time !== comment.update_time && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left italic">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right italic">
                     ✏️ {formatISODateTime(comment.update_time)} 수정됨
                   </p>
                 )}

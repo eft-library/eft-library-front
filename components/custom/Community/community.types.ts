@@ -140,6 +140,7 @@ export interface CommentDataTypes {
   dislike_count: number;
   depth: number;
   is_like: number;
+  parent_nickname: string;
 }
 
 export interface CommentTypes {
