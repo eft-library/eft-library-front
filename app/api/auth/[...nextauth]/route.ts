@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
@@ -123,9 +124,30 @@ const handler = NextAuth({
       };
       delete (sessionUser as any).refreshToken;
 
-      session = sessionUser as any;
+      // FastAPI에서 사용자 정보 불러오기
+      try {
+        const res = await fetch(USER_API_ENDPOINTS.GET_USER, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token.accessToken}`,
+          },
+        });
 
-      return session;
+        if (res.ok) {
+          const data = await res.json();
+          // 필요에 따라 session에 사용자 정보를 병합
+          sessionUser.userInfo = data.data ?? null;
+        } else {
+          console.error("Failed to fetch user info from API");
+          sessionUser.userInfo = null;
+        }
+      } catch (err) {
+        console.error("Error fetching user info:", err);
+        sessionUser.userInfo = null;
+      }
+      console.log(sessionUser);
+      return sessionUser as any;
     },
   },
 });

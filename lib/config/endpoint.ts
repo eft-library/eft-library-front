@@ -51,6 +51,7 @@ export const USER_API_ENDPOINTS = {
   UPDATE_ROADMAP: baseUrl + "/api/roadmap/save_roadmap",
   UPDATE_STATION: baseUrl + "/api/hideout/save_station",
   UPDATE_USER_QUEST: baseUrl + "/api/planner/quest/update",
+  GET_USER: baseUrl + "/api/user/user_info",
 };
 
 export const COMMUNITY_ENDPOINTS = {
