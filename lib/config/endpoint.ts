@@ -74,4 +74,7 @@ export const COMMUNITY_ENDPOINTS = {
   LIKE_COMMENT: baseUrl + "/api/comment/like_comment",
   DISLIKE_COMMENT: baseUrl + "/api/comment/dislike_comment",
   GET_COMMENTS: baseUrl + "/api/comment/get_comments",
+  UPDATE_COMMENT: baseUrl + "/api/comment/update_comment",
+  DELETE_COMMENT_BY_USER: baseUrl + "/api/comment/delete_comment_by_user",
+  DELETE_COMMENT_BY_ADMIN: baseUrl + "/api/comment/delete_comment_by_admin",
 };

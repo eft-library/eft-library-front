@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@radix-ui/react-dropdown-menu";
 import {
   MoreHorizontal,
@@ -24,6 +25,13 @@ import { useEffect, useState } from "react";
 import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { useSearchParams } from "next/navigation";
+import {
+  DialogHeader,
+  DialogFooter,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function Comment({
   comment,
@@ -33,14 +41,21 @@ export default function Comment({
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const commentId = searchParams.get("comment_id") ?? "";
-  const { likeComment, dislikeComment, createChildComment } =
-    useCommentReaction(postInfo.id, session?.accessToken || "");
+  const {
+    likeComment,
+    dislikeComment,
+    createChildComment,
+    updateComment,
+    deleteCommentByAdmin,
+    deleteCommentByUser,
+  } = useCommentReaction(postInfo.id, session?.accessToken || "");
   const userEmail = session?.email ?? "";
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(comment.contents);
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [replying, setReplying] = useState(false);
+  const [open, setOpen] = useState(false);
   const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
@@ -64,6 +79,45 @@ export default function Comment({
       });
       setReplyText("");
       setReplying(false);
+    } else {
+      setAlertDesc("로그인 사용자만 저장 가능합니다.");
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
+  };
+
+  const onClickupdateComment = () => {
+    if (session && session.email) {
+      updateComment.mutate({
+        contents: editText,
+        comment_id: comment.id,
+      });
+      setReplyText("");
+      setReplying(false);
+      setIsEditing(false);
+    } else {
+      setAlertDesc("로그인 사용자만 저장 가능합니다.");
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
+  };
+
+  const onClickDeleteCommentByUser = () => {
+    if (session && session.email) {
+      deleteCommentByUser.mutate(comment.id);
+    } else {
+      setAlertDesc("로그인 사용자만 저장 가능합니다.");
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
+  };
+
+  const onClickDeleteCommentByAdmin = () => {
+    if (session && session.email) {
+      deleteCommentByAdmin.mutate(comment.id);
     } else {
       setAlertDesc("로그인 사용자만 저장 가능합니다.");
       requestAnimationFrame(() => {
@@ -148,56 +202,94 @@ export default function Comment({
                 <span>{formatISODateTime(comment.create_time)}</span>
               </div>
             </div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-600 shadow-lg"
-              >
-                {comment.user_email === userEmail ? (
-                  <>
-                    <DropdownMenuItem
-                      className="text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <Pencil className="w-4 h-4 mr-2" /> 수정
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30">
-                      <Trash2 className="w-4 h-4 mr-2" /> 삭제
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <DropdownMenuItem
-                    className="text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
-                    onClick={() =>
-                      setReportOpen({
-                        open: true,
-                        id: comment.id,
-                      })
-                    }
+            {session && session.email && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <Flag className="w-4 h-4 mr-2" /> 신고하기
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={6}
+                  className="w-32 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
+                >
+                  {comment.user_email === userEmail ? (
+                    <>
+                      <DropdownMenuItem
+                        className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        <Pencil className="w-4 h-4 mr-2 text-gray-500" />
+                        수정
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator className="my-1 h-px bg-gray-100 dark:bg-gray-700" />
+
+                      <DropdownMenuItem
+                        onClick={() => setOpen(true)}
+                        className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2 text-red-500" />
+                        삭제
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <DropdownMenuItem
+                      className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                      onClick={() =>
+                        setReportOpen({
+                          open: true,
+                          id: comment.id,
+                        })
+                      }
+                    >
+                      <Flag className="w-4 h-4 mr-2 text-yellow-500" />
+                      신고
+                    </DropdownMenuItem>
+                  )}
+                  {session.userInfo.is_admin && (
+                    <DropdownMenuItem
+                      className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
+                      onClick={() => onClickDeleteCommentByAdmin()}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2 text-red-500" />
+                      관리자 삭제
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
 
           {/* Comment content */}
           {!isEditing ? (
             <div className="prose prose-sm max-w-none dark:prose-invert">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed m-0 font-semibold">
-                {comment.contents}
-              </p>
+              {/* 댓글 내용 or 삭제 문구 */}
+              {!comment.delete_by_user && !comment.delete_by_admin ? (
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed m-0 font-medium">
+                  {comment.contents}
+                </p>
+              ) : (
+                <p className="text-gray-400 dark:text-gray-500 italic text-sm m-0">
+                  {comment.delete_by_user && "⚠️ 사용자가 삭제한 댓글입니다."}
+                  {comment.delete_by_admin && "🚫 관리자가 삭제한 댓글입니다."}
+                </p>
+              )}
+
+              {/* 수정됨 표시 */}
+              {!comment.delete_by_admin &&
+                !comment.delete_by_user &&
+                comment.create_time !== comment.update_time && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left italic">
+                    ✏️ {formatISODateTime(comment.update_time)} 수정됨
+                  </p>
+                )}
             </div>
           ) : (
             <div className="space-y-3">
@@ -210,7 +302,8 @@ export default function Comment({
               <div className="flex gap-2">
                 <Button
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                  onClick={() => onClickupdateComment()}
+                  className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                 >
                   저장
                 </Button>
@@ -218,7 +311,7 @@ export default function Comment({
                   size="sm"
                   variant="outline"
                   onClick={() => setIsEditing(false)}
-                  className="border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="cursor-pointer border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   취소
                 </Button>
@@ -307,6 +400,37 @@ export default function Comment({
         title="Notice"
         description={alertDesc}
       />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>댓글을 정말 삭제하시겠습니까?</DialogTitle>
+          </DialogHeader>
+          <div className="text-sm text-gray-600 dark:text-gray-400 my-4">
+            삭제한 댓글은 복구할 수 없습니다.
+          </div>
+          <DialogFooter className="flex justify-end gap-3">
+            <Button
+              className=" cursor-pointer"
+              variant="outline"
+              size="sm"
+              onClick={() => setOpen(false)}
+            >
+              취소
+            </Button>
+            <Button
+              variant="destructive"
+              className=" cursor-pointer"
+              size="sm"
+              onClick={() => {
+                onClickDeleteCommentByUser();
+                setOpen(false);
+              }}
+            >
+              삭제
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

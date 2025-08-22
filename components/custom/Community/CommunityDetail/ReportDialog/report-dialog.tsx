@@ -99,7 +99,7 @@ export function ReportDialog({
           <div>
             <Label
               htmlFor="report-details"
-              className="text-gray-700 dark:text-gray-300"
+              className="text-gray-700 dark:text-gray-300 mb-2"
             >
               상세 내용 (선택)
             </Label>

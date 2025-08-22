@@ -85,68 +85,101 @@ export function useCommentReaction(postId: string, accessToken: string) {
   });
 
   // ---------------- 댓글 수정 ----------------
-  // const updateComment = useMutation({
-  //   mutationFn: async (comment: { id: string; contents: string }) => {
-  //     const res = await fetch(COMMUNITY_ENDPOINTS.UPDATE_COMMENT, {
-  //       method: "PUT",
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(comment),
-  //     });
-  //     if (!res.ok) throw new Error("Failed to update comment");
-  //     return res.json();
-  //   },
-  //   onMutate: async (updatedComment) => {
-  //     await queryClient.cancelQueries({ queryKey: ["commentData", postId] });
-  //     const previous = queryClient.getQueryData<any[]>(["commentData", postId]);
+  const updateComment = useMutation({
+    mutationFn: async (comment: { comment_id: string; contents: string }) => {
+      const res = await fetch(COMMUNITY_ENDPOINTS.UPDATE_COMMENT, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comment),
+      });
+      if (!res.ok) throw new Error("Failed to update comment");
+      return res.json();
+    },
+    onMutate: async (updatedComment) => {
+      await queryClient.cancelQueries({ queryKey: ["commentData", postId] });
+      const previous = queryClient.getQueryData<any[]>(["commentData", postId]);
 
-  //     queryClient.setQueryData(["commentData", postId], (old: any[] = []) =>
-  //       old.map((c) =>
-  //         c.id === updatedComment.id
-  //           ? { ...c, contents: updatedComment.contents, isPending: true }
-  //           : c
-  //       )
-  //     );
+      queryClient.setQueryData(["commentData", postId], (old: any[] = []) =>
+        old.map((c) =>
+          c.id === updatedComment.comment_id
+            ? { ...c, contents: updatedComment.contents, isPending: true }
+            : c
+        )
+      );
 
-  //     return { previous };
-  //   },
-  //   onError: (_err, _vars, ctx) => {
-  //     if (ctx?.previous) queryClient.setQueryData(["commentData", postId], ctx.previous);
-  //   },
-  //   onSettled: invalidate,
-  // });
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(["commentData", postId], ctx.previous);
+    },
+    onSettled: invalidate,
+  });
 
-  // ---------------- 댓글 삭제 ----------------
-  // const deleteComment = useMutation({
-  //   mutationFn: async (commentId: string) => {
-  //     const res = await fetch(COMMUNITY_ENDPOINTS.DELETE_COMMENT, {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ comment_id: commentId }),
-  //     });
-  //     if (!res.ok) throw new Error("Failed to delete comment");
-  //     return res.json();
-  //   },
-  //   onMutate: async (commentId) => {
-  //     await queryClient.cancelQueries({ queryKey: ["commentData", postId] });
-  //     const previous = queryClient.getQueryData<any[]>(["commentData", postId]);
+  // ---------------- 댓글 사용자 삭제 ----------------
+  const deleteCommentByUser = useMutation({
+    mutationFn: async (commentId: string) => {
+      const res = await fetch(COMMUNITY_ENDPOINTS.DELETE_COMMENT_BY_USER, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment_id: commentId }),
+      });
+      if (!res.ok) throw new Error("Failed to delete comment");
+      return res.json();
+    },
+    onMutate: async (commentId) => {
+      await queryClient.cancelQueries({ queryKey: ["commentData", postId] });
+      const previous = queryClient.getQueryData<any[]>(["commentData", postId]);
 
-  //     queryClient.setQueryData(["commentData", postId], (old: any[] = []) =>
-  //       old.filter((c) => c.id !== commentId)
-  //     );
+      queryClient.setQueryData(["commentData", postId], (old: any[] = []) =>
+        old.filter((c) => c.id !== commentId)
+      );
 
-  //     return { previous };
-  //   },
-  //   onError: (_err, _vars, ctx) => {
-  //     if (ctx?.previous) queryClient.setQueryData(["commentData", postId], ctx.previous);
-  //   },
-  //   onSettled: invalidate,
-  // });
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(["commentData", postId], ctx.previous);
+    },
+    onSettled: invalidate,
+  });
+
+  // ---------------- 댓글 관리자 삭제 ----------------
+  const deleteCommentByAdmin = useMutation({
+    mutationFn: async (commentId: string) => {
+      const res = await fetch(COMMUNITY_ENDPOINTS.DELETE_COMMENT_BY_ADMIN, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment_id: commentId }),
+      });
+      if (!res.ok) throw new Error("Failed to delete comment");
+      return res.json();
+    },
+    onMutate: async (commentId) => {
+      await queryClient.cancelQueries({ queryKey: ["commentData", postId] });
+      const previous = queryClient.getQueryData<any[]>(["commentData", postId]);
+
+      queryClient.setQueryData(["commentData", postId], (old: any[] = []) =>
+        old.filter((c) => c.id !== commentId)
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(["commentData", postId], ctx.previous);
+    },
+    onSettled: invalidate,
+  });
 
   // ---------------- 댓글 좋아요 ----------------
   const likeComment = useMutation({
@@ -219,5 +252,8 @@ export function useCommentReaction(postId: string, accessToken: string) {
     createChildComment,
     likeComment,
     dislikeComment,
+    updateComment,
+    deleteCommentByAdmin,
+    deleteCommentByUser,
   };
 }
