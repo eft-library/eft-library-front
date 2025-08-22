@@ -146,7 +146,6 @@ const handler = NextAuth({
         console.error("Error fetching user info:", err);
         sessionUser.userInfo = null;
       }
-      console.log(sessionUser);
       return sessionUser as any;
     },
   },

@@ -9,6 +9,7 @@ declare module "next-auth" {
     refreshToken: string;
     email: string;
     name: string;
+    userInfo: UserInfo;
   }
 
   interface UserInfo {
