@@ -27,10 +27,21 @@ import PostGrid from "../PostGrid/post-grid";
 import { useAppStore } from "@/store/provider";
 import CommentSection from "./CommentSection/comment-section";
 import Link from "next/link";
+import { requestUserData } from "@/lib/config/api";
+import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
   const { pageCategory } = useAppStore((state) => state);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const isOwner = session?.email === postInfo.post_detail.user_email;
@@ -41,6 +52,46 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
 
   const goBack = () => {
     router.push(`/community/${postInfo.post_detail.category}`);
+  };
+
+  const deletePostByUser = async () => {
+    if (session && session.email) {
+      const data = await requestUserData(
+        COMMUNITY_ENDPOINTS.DELETE_POST_BY_USER,
+        { post_id: postInfo.post_detail.id },
+        session
+      );
+
+      if (data && data.status === 200 && data.data) {
+        router.push(`/community/${postInfo.post_detail.category}`);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        router.push("/community/issue");
+      }
+    }
+  };
+
+  const deletePostByAdmin = async () => {
+    if (session && session.email) {
+      const data = await requestUserData(
+        COMMUNITY_ENDPOINTS.DELETE_POST_BY_ADMIN,
+        { post_id: postInfo.post_detail.id },
+        session
+      );
+
+      if (data && data.status === 200 && data.data) {
+        router.push(`/community/${postInfo.post_detail.category}`);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        router.push("/community/issue");
+      }
+    }
   };
 
   return (
@@ -82,6 +133,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       <Button
                         variant="ghost"
                         size="sm"
+                        onClick={() => setOpen(true)}
                         className="cursor-pointer text-red-500 dark:text-red-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 삭제
@@ -89,6 +141,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       <Button
                         variant="ghost"
                         size="sm"
+                        onClick={() => deletePostByAdmin()}
                         className="cursor-pointer text-white bg-red-700 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700 ml-2"
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 관리자 삭제
@@ -223,6 +276,37 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
           </div>
         </div>
       </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>게시물을 정말 삭제하시겠습니까?</DialogTitle>
+          </DialogHeader>
+          <div className="text-sm text-gray-600 dark:text-gray-400 my-4">
+            삭제한 게시물은 복구할 수 없습니다.
+          </div>
+          <DialogFooter className="flex justify-end gap-3">
+            <Button
+              className=" cursor-pointer"
+              variant="outline"
+              size="sm"
+              onClick={() => setOpen(false)}
+            >
+              취소
+            </Button>
+            <Button
+              variant="destructive"
+              className=" cursor-pointer"
+              size="sm"
+              onClick={() => {
+                deletePostByUser();
+                setOpen(false);
+              }}
+            >
+              삭제
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
