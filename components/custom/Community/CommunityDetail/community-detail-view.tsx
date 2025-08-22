@@ -43,7 +43,6 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
   const isOwner = session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
@@ -117,8 +116,8 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                 </Button>
 
                 <div className="flex items-center gap-2">
-                  {isOwner && (
-                    <>
+                  <>
+                    {isOwner && (
                       <Link
                         href={`/community/update/${postInfo.post_detail.id}`}
                       >
@@ -130,6 +129,8 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                           <Edit className="w-4 h-4 mr-1" /> 수정
                         </Button>
                       </Link>
+                    )}
+                    {isOwner && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -138,6 +139,8 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 삭제
                       </Button>
+                    )}
+                    {session && session.userInfo.user.is_admin && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -146,8 +149,8 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                       >
                         <Trash2 className="w-4 h-4 mr-1" /> 관리자 삭제
                       </Button>
-                    </>
-                  )}
+                    )}
+                  </>
                   {/* {currentUser.isModerator && !isOwner && (
                     <Badge
                       variant="outline"

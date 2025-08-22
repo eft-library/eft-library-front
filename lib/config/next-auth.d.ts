@@ -9,7 +9,11 @@ declare module "next-auth" {
     refreshToken: string;
     email: string;
     name: string;
-    userInfo: UserInfo;
+    userInfo: UserWrapper;
+  }
+
+  interface UserWrapper {
+    user: UserInfo;
   }
 
   interface UserInfo {
