@@ -207,7 +207,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     <div>
                       <div className="flex items-center space-x-2 flex-wrap">
                         <span className="font-medium text-gray-900 dark:text-white">
-                          {postInfo.post_detail.user_email}
+                          {postInfo.post_detail.nickname}
                         </span>
                         {/* <Badge
                   variant="outline"

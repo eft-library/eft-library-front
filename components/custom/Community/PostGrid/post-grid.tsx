@@ -79,7 +79,7 @@ export default function PostGrid({
                 <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-500">
                   <div className="flex items-center space-x-4">
                     <span className="font-medium text-gray-700 dark:text-gray-300">
-                      {post.user_email}
+                      {post.nickname}
                     </span>
                     <div className="flex items-center space-x-1">
                       <Clock className="w-3 h-3" />

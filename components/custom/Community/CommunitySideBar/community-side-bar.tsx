@@ -89,7 +89,7 @@ export default function CommunitySideBar({
             </div>
             <div>
               <h4 className="font-medium text-gray-900 dark:text-white">
-                {author_detail.user_email}
+                {author_detail.nickname}
               </h4>
               {/* <Badge
                 variant="outline"

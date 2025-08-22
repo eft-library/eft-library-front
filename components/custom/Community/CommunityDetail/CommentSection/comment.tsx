@@ -190,7 +190,7 @@ export default function Comment({
             <div className="flex flex-col">
               <div className="flex items-center space-x-2 flex-wrap">
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {comment.user_email}
+                  {comment.nickname}
                 </span>
                 {comment.depth > 1 && (
                   <span className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full">
@@ -270,10 +270,12 @@ export default function Comment({
           {/* Comment content */}
           {!isEditing ? (
             <div className="prose prose-sm max-w-none dark:prose-invert">
-              {comment.depth > 1 && comment.user_email && (
+              {comment.depth > 1 && comment.parent_nickname && (
                 <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
                   ↪️
-                  <span className="font-semibold">@{comment.user_email}</span>
+                  <span className="font-semibold">
+                    @{comment.parent_nickname}
+                  </span>
                   님에게 답글
                 </p>
               )}
@@ -372,7 +374,7 @@ export default function Comment({
           {replying && (
             <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-gray-600">
               <Textarea
-                placeholder={`${comment.user_email} 님에게 답글을 작성하세요.`}
+                placeholder={`${comment.nickname} 님에게 답글을 작성하세요.`}
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"

@@ -64,6 +64,7 @@ export interface CommunityDetail {
   follower_count: number;
   view_count: number;
   comment_count: number;
+  nickname: string;
 }
 
 export interface CommunitDetailDataTypes {
@@ -141,6 +142,7 @@ export interface CommentDataTypes {
   depth: number;
   is_like: number;
   parent_nickname: string;
+  nickname: string;
 }
 
 export interface CommentTypes {
