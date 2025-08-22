@@ -7,7 +7,16 @@ declare module "next-auth" {
     accessToken: string;
     provider: string;
     refreshToken: string;
-    email?: string;
+    email: string;
+    name: string;
+  }
+
+  interface UserInfo {
+    email: string;
+    attendance_count: number;
+    nickname: string;
+    is_admin: boolean;
+    last_update_nickname: string;
   }
 }
 

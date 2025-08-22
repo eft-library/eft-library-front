@@ -19,6 +19,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { data: session } = useSession();
+
   const [completeList, setCompleteList] = useState<string[]>(
     hideoutData.complete_list
   );
