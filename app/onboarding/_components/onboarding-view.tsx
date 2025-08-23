@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -11,100 +11,134 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useSession } from "next-auth/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useRouter } from "next/navigation";
-import {
-  DialogHeader,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { useSession } from "next-auth/react";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { nicknameI18N } from "@/lib/consts/i18nConsts";
 
 export default function OnboardingView() {
-  const router = useRouter();
-  const { data: session } = useSession();
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
+  const { data: session, update: updateSession } = useSession();
   const [nickname, setNickname] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [isChecking, setIsChecking] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
-  const [duplicateCheckResult, setDuplicateCheckResult] = useState<number>(0);
+  const [resultMessage, setResultMessage] = useState("");
+  const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
+  const [duplicateCheckResult, setDuplicateCheckResult] = useState<
+    "available" | "duplicate" | null
+  >(null);
 
-  // 중복 검사
+  useEffect(() => {
+    const validateNickname = () => {
+      const newErrors: string[] = [];
+
+      if (nickname.length < 2) {
+        newErrors.push("닉네임은 최소 2글자 이상이어야 합니다.");
+      } else if (nickname.length > 12) {
+        newErrors.push("닉네임은 최대 12글자까지 가능합니다.");
+      }
+
+      const allowedPattern = /^[가-힣a-zA-Z0-9_-]+$/;
+      if (nickname && !allowedPattern.test(nickname)) {
+        newErrors.push("한글, 영문, 숫자, _, - 만 사용 가능합니다.");
+      }
+
+      if (nickname.includes(" ")) {
+        newErrors.push("띄어쓰기는 사용할 수 없습니다.");
+      }
+
+      const forbiddenWords = [
+        "관리자",
+        "운영자",
+        "admin",
+        "moderator",
+        "시발",
+        "개새끼",
+      ];
+      const hasForbiddenWord = forbiddenWords.some((word) =>
+        nickname.toLowerCase().includes(word.toLowerCase())
+      );
+      if (hasForbiddenWord) {
+        newErrors.push("사용할 수 없는 단어가 포함되어 있습니다.");
+      }
+
+      setErrors(newErrors);
+      setIsValid(
+        nickname.length >= 2 && nickname.length <= 12 && newErrors.length === 0
+      );
+    };
+
+    validateNickname();
+    setDuplicateCheckResult(null);
+  }, [nickname]);
+
   const checkDuplicate = async () => {
+    if (!isValid) return;
+
+    setIsChecking(true);
+
     const data = await requestUserData(
-      USER_API_ENDPOINTS.UPDATE_NICKNAME,
-      {},
+      USER_API_ENDPOINTS.CHECK_NICKNAME_DUPLICATE,
+      {
+        nickname: nickname,
+      },
       session
     );
     if (data && data.status === 200 && data.data) {
-      setIsDuplicate(data.data);
+      if (data.data.result === 0) {
+        setDuplicateCheckResult("available");
+      } else {
+        setDuplicateCheckResult("duplicate");
+      }
     } else {
       console.error(
         "Failed to fetch station data:",
         data?.msg || "Unknown error"
       );
-      router.push("/");
+      setDuplicateCheckResult("duplicate");
     }
+    setIsChecking(false);
   };
 
   const handleSubmit = async () => {
+    if (!isValid || duplicateCheckResult !== "available") return;
     const data = await requestUserData(
       USER_API_ENDPOINTS.UPDATE_NICKNAME,
-      {},
+      {
+        nickname: nickname,
+      },
       session
     );
     if (data && data.status === 200 && data.data) {
-      setPostInfo(data.data);
+      setResultMessage(data.data.ko);
+      setShowDuplicateDialog(true);
+      await updateSession({
+        ...session,
+        userInfo: {
+          ...session?.userInfo,
+          nickname: nickname,
+        },
+      });
     } else {
       console.error(
         "Failed to fetch station data:",
         data?.msg || "Unknown error"
       );
-      router.push("/");
+      setResultMessage("Error");
+      setShowDuplicateDialog(true);
     }
-  };
-
-  const validateNickname = (nickname: string) => {
-    const forbiddenWords = [
-      "욕설1",
-      "욕설2",
-      "admin",
-      "운영진",
-      "관리자",
-      "운영자",
-      "시발",
-      "개새끼",
-    ];
-    // 1. 길이 체크
-    if (nickname.length < 2 || nickname.length > 12) {
-      return { valid: false, message: "닉네임은 2~12자 사이여야 합니다." };
-    }
-
-    // 2. 허용 문자 체크 (한글, 영문, 숫자, _, -)
-    const regex = /^[가-힣a-zA-Z0-9_-]+$/;
-    if (!regex.test(nickname)) {
-      return {
-        valid: false,
-        message: "닉네임에는 한글, 영문, 숫자, _, -만 사용할 수 있습니다.",
-      };
-    }
-
-    // 3. 금지 단어 체크
-    const lowerNick = nickname.toLowerCase();
-    if (forbiddenWords.some((word) => lowerNick.includes(word.toLowerCase()))) {
-      return {
-        valid: false,
-        message: "사용할 수 없는 단어가 포함되어 있습니다.",
-      };
-    }
-
-    return { valid: true };
   };
 
   return (
@@ -112,22 +146,25 @@ export default function OnboardingView() {
       <Card className="w-full max-w-md bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-            닉네임 설정
+            {nicknameI18N.cardTitle[localeKey]}
           </CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
-            타르코프 도서관에서 사용할 닉네임을 입력해주세요
+            {nicknameI18N.cardDescription[localeKey]}
+            <p className="text-green-500">
+              {nicknameI18N.cardSubDescription[localeKey]}
+            </p>
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              닉네임
+              {nicknameI18N.labelNickname[localeKey]}
             </label>
             <div className="relative">
               <Input
                 type="text"
-                placeholder="닉네임을 입력하세요"
+                placeholder={nicknameI18N.placeholderNickname[localeKey]}
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 className="bg-gray-50 dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-orange-400 dark:focus:border-orange-400"
@@ -151,9 +188,11 @@ export default function OnboardingView() {
                 disabled={!isValid || isChecking}
                 variant="outline"
                 size="sm"
-                className="border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 disabled:border-gray-300 dark:disabled:border-gray-600 disabled:text-gray-400 bg-transparent text-xs px-3 py-1 h-7"
+                className="cursor-pointer border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 disabled:border-gray-300 dark:disabled:border-gray-600 disabled:text-gray-400 bg-transparent text-xs px-3 py-1 h-7"
               >
-                {isChecking ? "확인 중..." : "중복 확인"}
+                {isChecking
+                  ? nicknameI18N.checking[localeKey]
+                  : nicknameI18N.buttonCheckDuplicate[localeKey]}
               </Button>
             </div>
           </div>
@@ -175,21 +214,21 @@ export default function OnboardingView() {
           {duplicateCheckResult === "duplicate" && (
             <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
               <XCircle className="h-3 w-3" />
-              이미 사용 중인 닉네임입니다.
+              {nicknameI18N.duplicateError[localeKey]}
             </div>
           )}
 
           {duplicateCheckResult === "available" && (
             <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
               <CheckCircle className="h-3 w-3" />
-              사용 가능한 닉네임입니다.
+              {nicknameI18N.available[localeKey]}
             </div>
           )}
 
           <div className="bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 space-y-3">
             <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-              닉네임 작성 안내
+              {nicknameI18N.submitButton[localeKey]}
             </h4>
             <div className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
               <div className="flex flex-wrap gap-1">
@@ -197,21 +236,23 @@ export default function OnboardingView() {
                   variant="outline"
                   className="text-xs border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400"
                 >
-                  2~12글자
+                  {nicknameI18N.guidanceBadges.length[localeKey]}
                 </Badge>
                 <Badge
                   variant="outline"
                   className="text-xs border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400"
                 >
-                  한글, 영문, 숫자, _, -
+                  {nicknameI18N.guidanceBadges.allowedChars[localeKey]}
                 </Badge>
               </div>
               <ul className="space-y-1 list-disc list-inside">
-                <li>띄어쓰기 및 특수문자는 사용할 수 없습니다</li>
-                <li>욕설, 비속어, 특정인 사칭 표현은 금지됩니다</li>
-                <li>운영진/관리자 혼동 표현은 금지됩니다</li>
-                <li>동일 닉네임은 사용할 수 없습니다</li>
-                <li>닉네임 변경은 30일에 1회만 가능합니다</li>
+                <li>{nicknameI18N.guidanceRules.noSpacesSpecial[localeKey]}</li>
+                <li>{nicknameI18N.guidanceRules.noProfanity[localeKey]}</li>
+                <li>
+                  {nicknameI18N.guidanceRules.noAdminConfusion[localeKey]}
+                </li>
+                <li>{nicknameI18N.guidanceRules.uniqueNickname[localeKey]}</li>
+                <li>{nicknameI18N.guidanceRules.changeLimit[localeKey]}</li>
               </ul>
             </div>
           </div>
@@ -220,42 +261,30 @@ export default function OnboardingView() {
             <Button
               onClick={handleSubmit}
               disabled={!isValid || duplicateCheckResult !== "available"}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:text-gray-500 dark:disabled:text-gray-400"
+              className="cursor-pointer w-full bg-orange-500 hover:bg-orange-600 text-white disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:text-gray-500 dark:disabled:text-gray-400"
             >
-              닉네임 설정 완료
+              {nicknameI18N.submitButton[localeKey]}
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      <Dialog open={showDuplicateDialog} onOpenChange={setShowDuplicateDialog}>
         <DialogContent className="bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-              {duplicateCheckResult === "available" ? (
-                <>
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  사용 가능한 닉네임
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-5 w-5 text-red-500" />
-                  사용 불가능한 닉네임
-                </>
-              )}
+              {nicknameI18N.dialogTitle[localeKey]}
             </DialogTitle>
             <DialogDescription className="text-gray-600 dark:text-gray-400">
-              {duplicateCheckResult === "available"
-                ? `"${nickname}" 닉네임을 사용하실 수 있습니다.`
-                : `"${nickname}" 닉네임은 이미 사용 중입니다. 다른 닉네임을 선택해주세요.`}
+              {resultMessage}
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end">
             <Button
-              onClick={() => setShowDialog(false)}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              onClick={() => setShowDuplicateDialog(false)}
+              className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white"
             >
-              확인
+              {nicknameI18N.buttonConfirm[localeKey]}
             </Button>
           </div>
         </DialogContent>

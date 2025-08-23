@@ -23,6 +23,117 @@ export const notFoundI18N = {
     ko: "홈으로 돌아가기",
   },
 };
+export const nicknameI18N = {
+  cardTitle: {
+    en: "Set Nickname",
+    ja: "ニックネーム設定",
+    ko: "닉네임 설정",
+  },
+  cardDescription: {
+    en: "Enter the nickname you will use in the Tarkov Library.",
+    ja: "タルコフ図書館で使用するニックネームを入力してください。",
+    ko: "타르코프 도서관에서 사용할 닉네임을 입력해주세요",
+  },
+  cardSubDescription: {
+    en: "This information will be used when the community is available!",
+    ja: "コミュニティができたときに使用されます！",
+    ko: "커뮤니티가 생기면 사용할 정보입니다!",
+  },
+  labelNickname: {
+    en: "Nickname",
+    ja: "ニックネーム",
+    ko: "닉네임",
+  },
+  placeholderNickname: {
+    en: "Enter your nickname",
+    ja: "ニックネームを入力してください",
+    ko: "닉네임을 입력하세요",
+  },
+  buttonCheckDuplicate: {
+    en: "Check Duplicate",
+    ja: "重複確認",
+    ko: "중복 확인",
+  },
+  checking: {
+    en: "Checking...",
+    ja: "確認中...",
+    ko: "확인 중...",
+  },
+  duplicateError: {
+    en: "This nickname is already in use.",
+    ja: "このニックネームは既に使用されています。",
+    ko: "이미 사용 중인 닉네임입니다.",
+  },
+  available: {
+    en: "This nickname is available.",
+    ja: "このニックネームは使用可能です。",
+    ko: "사용 가능한 닉네임입니다.",
+  },
+  submitButton: {
+    en: "Set Nickname",
+    ja: "ニックネームを設定",
+    ko: "닉네임 설정",
+  },
+  guidanceTitle: {
+    en: "Nickname Guidelines",
+    ja: "ニックネーム作成ガイド",
+    ko: "닉네임 작성 안내",
+  },
+  guidanceBadges: {
+    length: {
+      en: "2~12 characters",
+      ja: "2〜12文字",
+      ko: "2~12글자",
+    },
+    allowedChars: {
+      en: "Korean, English, numbers, _, -",
+      ja: "ハングル、英語、数字、_, -",
+      ko: "한글, 영문, 숫자, _, -",
+    },
+  },
+  guidanceRules: {
+    noSpacesSpecial: {
+      en: "No spaces or special characters allowed",
+      ja: "スペースおよび特殊文字は使用できません",
+      ko: "띄어쓰기 및 특수문자는 사용할 수 없습니다",
+    },
+    noProfanity: {
+      en: "Profanity, vulgar words, or impersonation are prohibited",
+      ja: "悪口、卑猥な言葉、特定人物のなりすましは禁止",
+      ko: "욕설, 비속어, 특정인 사칭 표현은 금지됩니다",
+    },
+    noAdminConfusion: {
+      en: "Avoid confusion with admins/moderators",
+      ja: "運営者/管理者と混同しない表現",
+      ko: "운영진/관리자 혼동 표현은 금지됩니다",
+    },
+    uniqueNickname: {
+      en: "Nickname must be unique",
+      ja: "同じニックネームは使用できません",
+      ko: "동일 닉네임은 사용할 수 없습니다",
+    },
+    changeLimit: {
+      en: "Nickname can be changed once every 30 days",
+      ja: "ニックネームは30日に1回のみ変更可能",
+      ko: "닉네임 변경은 30일에 1회만 가능합니다",
+    },
+  },
+  dialogTitle: {
+    en: "Result",
+    ja: "結果",
+    ko: "결과",
+  },
+  buttonConfirm: {
+    en: "Confirm",
+    ja: "確認",
+    ko: "확인",
+  },
+  errorLabel: {
+    en: "Error",
+    ja: "エラー",
+    ko: "오류",
+  },
+};
 
 export const dashboardI18N = {
   pageStats: {
