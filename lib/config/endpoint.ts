@@ -52,6 +52,7 @@ export const USER_API_ENDPOINTS = {
   UPDATE_STATION: baseUrl + "/api/hideout/save_station",
   UPDATE_USER_QUEST: baseUrl + "/api/planner/quest/update",
   GET_USER: baseUrl + "/api/user/user_info",
+  UPDATE_NICKNAME: baseUrl + "/api/user/update_nickname",
 };
 
 export const COMMUNITY_ENDPOINTS = {
