@@ -8,7 +8,11 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 보호 경로 (로그인 필요)
-  const protectedPaths = ["/community/create", "/community/update"];
+  const protectedPaths = [
+    "/community/create",
+    "/community/update",
+    "/onboarding",
+  ];
 
   // 로그인 안한 경우 → 커뮤니티 이슈 페이지로 이동
   if (protectedPaths.some((path) => pathname.startsWith(path))) {
@@ -35,7 +39,7 @@ export const config = {
   matcher: [
     "/community/create",
     "/community/update",
-    "/onboarding", // 온보딩 경로도 감시
+    "/onboarding",
     "/((?!_next|api|static|favicon.ico).*)", // 다른 경로 전역 확인 원하면 추가
   ],
 };

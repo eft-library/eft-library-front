@@ -100,14 +100,32 @@ const handler = NextAuth({
         token.accessToken = account.access_token ?? "";
         token.accessTokenExpires = account.expires_at ?? 0 * 1000;
         token.refreshToken = account.refresh_token ?? "";
+
+        // 최초 로그인 시 FastAPI에서 닉네임 등 가져오기
+        try {
+          const res = await fetch(USER_API_ENDPOINTS.GET_USER, {
+            headers: {
+              Authorization: `Bearer ${account.access_token}`,
+            },
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            token.nickname = data.data?.nickname ?? null; // ✅ middleware에서 쓸 값
+          }
+        } catch (err) {
+          console.error("Error fetching user info in jwt:", err);
+          token.nickname = null;
+        }
+
         return token;
       }
 
+      // 토큰 만료 갱신 로직
       const nowTime = Date.now();
       const accessTokenExpires = token.accessTokenExpires as number;
-      const TEN_MINUTES_AGO_IN_MS = 60 * 10 * 1000; // 10분 전
+      const TEN_MINUTES_AGO_IN_MS = 60 * 10 * 1000;
 
-      // 10분전에 토큰을 갱신해준다.
       const shouldRefreshTime =
         accessTokenExpires - nowTime - TEN_MINUTES_AGO_IN_MS;
 
