@@ -64,7 +64,7 @@ export const COMMUNITY_ENDPOINTS = {
   GET_UPDAET_POST_DETAIL: baseUrl + "/api/community/get_update_post_detail",
   DELETE_POST_BY_USER: baseUrl + "/api/community/delete_post_by_user",
   DELETE_POST_BY_ADMIN: baseUrl + "/api/community/delete_post_by_admin",
-  GET_POSTS: baseUrl + "/api/community",
+  GET_POSTS: baseUrl + "/api/community/get",
   GET_DETAIL_POST: baseUrl + "/api/community/detail",
   GET_DETAIL_POST_META_DATA: baseUrl + "/api/community/detail-meta-data",
   LIKE_POST: baseUrl + "/api/community/like_post",
