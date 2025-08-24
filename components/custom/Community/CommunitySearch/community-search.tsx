@@ -34,8 +34,10 @@ export default function CommunitySearch() {
           <SelectValue placeholder="검색 범위" />
         </SelectTrigger>
         <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+          <SelectItem value="all">통합검색</SelectItem>
           <SelectItem value="title">제목</SelectItem>
           <SelectItem value="titleContent">제목+내용</SelectItem>
+          <SelectItem value="comment">댓글</SelectItem>
           <SelectItem value="author">글쓴이</SelectItem>
         </SelectContent>
       </Select>

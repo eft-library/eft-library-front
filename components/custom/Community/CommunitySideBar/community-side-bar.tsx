@@ -42,7 +42,7 @@ export default function CommunitySideBar({
                   <div className="flex items-center space-x-1">
                     <MessageSquare className="w-3 h-3 text-gray-400 dark:text-gray-500" />
                     <span className="text-xs text-gray-400 dark:text-gray-500">
-                      {/* {post.comments} */}
+                      {post.comment_count}
                     </span>
                   </div>
                 </div>

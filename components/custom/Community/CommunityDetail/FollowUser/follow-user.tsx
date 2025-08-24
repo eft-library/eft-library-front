@@ -56,13 +56,13 @@ export default function FollowUser({ author_email }: FollowUserTypes) {
       <Button
         variant="ghost"
         className={`w-full  ${
-          followData.is_follow === 1
+          followData.is_follow === 0
             ? " bg-orange-500 hover:bg-orange-600 text-white"
             : "dark:bg-gray-600 bg-gray-200 hover:bg-gray-500 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
         } cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700`}
         onClick={onClickReaction}
       >
-        {followData.is_follow === 1 ? "팔로잉" : "언팔로우"}
+        {followData.is_follow === 1 ? "언팔로우" : "팔로잉"}
       </Button>
       <DefaultDialog
         open={alertStatus}
