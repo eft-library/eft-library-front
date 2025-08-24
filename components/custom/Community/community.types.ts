@@ -163,3 +163,24 @@ export interface CommunityWriteTypes {
   writeType: "create" | "update";
   pageTitle: string;
 }
+
+export interface PostWithComments extends CommunityPost {
+  comment: PostSearchCommentsTypes;
+}
+
+export interface PostSearchCommentsTypes {
+  id: string;
+  user_email: string;
+  contents: string;
+  update_time: string;
+  create_time: string;
+}
+
+export interface PostWithCommentsSearchTypes {
+  total_count: number;
+  max_page_count: number;
+  search_result: PostWithComments[];
+}
+export interface SearchResultViewTypes {
+  postInfo: PostWithCommentsSearchTypes;
+}

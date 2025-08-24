@@ -80,4 +80,5 @@ export const COMMUNITY_ENDPOINTS = {
   UPDATE_COMMENT: baseUrl + "/api/comment/update_comment",
   DELETE_COMMENT_BY_USER: baseUrl + "/api/comment/delete_comment_by_user",
   DELETE_COMMENT_BY_ADMIN: baseUrl + "/api/comment/delete_comment_by_admin",
+  SEARCH_POSTS: baseUrl + "/api/community/search",
 };

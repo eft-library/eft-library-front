@@ -16,19 +16,19 @@ import { useState } from "react";
 export default function CommunitySearch() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchScope, setSearchScope] = useState("title");
+  const [searchScope, setSearchScope] = useState("all");
 
   const handleSearch = () => {
-    router.push(`/community/search`);
+    router.push(
+      `/community/search?word=${searchQuery}&search_type=${searchScope}&page=1`
+    );
   };
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 mt-6">
       <Select
         value={searchScope}
-        onValueChange={(value: "title" | "titleContent" | "author") =>
-          setSearchScope(value)
-        }
+        onValueChange={(value: string) => setSearchScope(value)}
       >
         <SelectTrigger className="w-full sm:w-[150px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
           <SelectValue placeholder="검색 범위" />
