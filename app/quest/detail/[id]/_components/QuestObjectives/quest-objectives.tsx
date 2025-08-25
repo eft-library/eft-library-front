@@ -19,25 +19,26 @@ export default function QuestObjectives({ quest }: QuestDetailTypes) {
           {questI18N.objectives[localeKey]}
         </h2>
         <div className="space-y-3 sm:space-y-4">
-          {quest.objectives.map((objective, index) => (
-            <div key={index} className="flex items-start gap-3">
-              <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-              {objective.type === "shoot" ? (
-                <span className="flex items-center">
-                  {objective[getDescriptionLocaleKey(locale)]}
-                  &nbsp;[
-                  <Skull
-                    className="inline-block w-4 h-4 text-red-400"
-                    strokeWidth={3}
-                  />
-                  x&nbsp;{objective.count}]
-                </span>
-              ) : (
-                <span>{objective[getDescriptionLocaleKey(locale)]}</span>
-              )}
-              <p className="text-gray-700 dark:text-gray-200 leading-relaxed text-sm sm:text-base"></p>
-            </div>
-          ))}
+          {quest.objectives &&
+            quest.objectives.map((objective, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                {objective.type === "shoot" ? (
+                  <span className="flex items-center">
+                    {objective[getDescriptionLocaleKey(locale)]}
+                    &nbsp;[
+                    <Skull
+                      className="inline-block w-4 h-4 text-red-400"
+                      strokeWidth={3}
+                    />
+                    x&nbsp;{objective.count}]
+                  </span>
+                ) : (
+                  <span>{objective[getDescriptionLocaleKey(locale)]}</span>
+                )}
+                <p className="text-gray-700 dark:text-gray-200 leading-relaxed text-sm sm:text-base"></p>
+              </div>
+            ))}
         </div>
       </CardContent>
     </Card>
