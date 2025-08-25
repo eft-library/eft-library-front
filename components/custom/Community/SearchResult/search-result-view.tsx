@@ -217,8 +217,9 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                           <Link
                             href={`/community/detail/${post.id}-${post.slug}?comment_id=${post.comment.id}`}
                             scroll={false}
+                            className="block transition duration-200 ease-in-out transform hover:scale-[1.01] hover:shadow-md"
                           >
-                            <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+                            <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-xl">
                               <div className="pt-4 space-y-3">
                                 <div className="flex items-center justify-between">
                                   <Badge
