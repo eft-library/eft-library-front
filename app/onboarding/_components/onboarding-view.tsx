@@ -25,9 +25,11 @@ import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { nicknameI18N } from "@/lib/consts/i18nConsts";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingView() {
   const locale = useLocale();
+  const router = useRouter();
   const localeKey = getLocaleKey(locale);
   const { data: session, update: updateSession } = useSession();
   const [nickname, setNickname] = useState("");
@@ -36,6 +38,7 @@ export default function OnboardingView() {
   const [isChecking, setIsChecking] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [duplicateCheckResult, setDuplicateCheckResult] = useState<
     "available" | "duplicate" | null
   >(null);
@@ -122,7 +125,8 @@ export default function OnboardingView() {
       session
     );
     if (data && data.status === 200 && data.data) {
-      setResultMessage(data.data.ko);
+      setResultMessage(data.data[localeKey]);
+      setIsSuccess(true);
       setShowDuplicateDialog(true);
       await updateSession({
         ...session,
@@ -136,6 +140,7 @@ export default function OnboardingView() {
         "Failed to fetch station data:",
         data?.msg || "Unknown error"
       );
+      setIsSuccess(false);
       setResultMessage("Error");
       setShowDuplicateDialog(true);
     }
@@ -269,7 +274,15 @@ export default function OnboardingView() {
         </CardContent>
       </Card>
 
-      <Dialog open={showDuplicateDialog} onOpenChange={setShowDuplicateDialog}>
+      <Dialog
+        open={showDuplicateDialog}
+        onOpenChange={(open) => {
+          setShowDuplicateDialog(open);
+          if (!open && isSuccess) {
+            router.push("/");
+          }
+        }}
+      >
         <DialogContent className="bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-white flex items-center gap-2">
@@ -281,7 +294,12 @@ export default function OnboardingView() {
           </DialogHeader>
           <div className="flex justify-end">
             <Button
-              onClick={() => setShowDuplicateDialog(false)}
+              onClick={() => {
+                setShowDuplicateDialog(false);
+                if (isSuccess) {
+                  router.push("/");
+                }
+              }}
               className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white"
             >
               {nicknameI18N.buttonConfirm[localeKey]}
