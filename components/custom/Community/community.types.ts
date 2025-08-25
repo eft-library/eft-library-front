@@ -8,8 +8,6 @@ export interface CommunityPostsResponse {
   total: number;
   max_page_count: number;
   posts: CommunityPost[];
-  issue_posts: CommunityPost[];
-  notice_posts: InformationInfo[];
 }
 
 export interface CommunityViewTypes {
@@ -29,9 +27,12 @@ export interface PostGridTypes {
 }
 
 export interface CommunitySideBarTypes {
+  author_detail?: AuthorDetailDataTypes;
+}
+
+export interface SideBarStateTypes {
   issue_posts: CommunityPost[];
   notice_posts: InformationInfo[];
-  author_detail?: AuthorDetailDataTypes;
 }
 
 export interface ShareDialogTypes {
@@ -69,8 +70,6 @@ export interface CommunityDetail {
 
 export interface CommunitDetailDataTypes {
   post_detail: CommunityDetail;
-  issue_posts: CommunityPost[];
-  notice_posts: InformationInfo[];
   author_detail: AuthorDetailDataTypes;
   posts: DetailPostListsTypes;
 }
@@ -172,6 +171,7 @@ export interface PostSearchCommentsTypes {
   id: string;
   user_email: string;
   contents: string;
+  nickname: string;
   update_time: string;
   create_time: string;
 }

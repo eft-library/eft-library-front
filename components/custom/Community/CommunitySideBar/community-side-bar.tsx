@@ -1,17 +1,38 @@
 "use client";
 
 import { Flame, MessageSquare, Pin } from "lucide-react";
-import { CommunitySideBarTypes } from "../community.types";
+import { CommunitySideBarTypes, SideBarStateTypes } from "../community.types";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import FollowUser from "../CommunityDetail/FollowUser/follow-user";
+import { useEffect, useState } from "react";
+import { requestData } from "@/lib/config/api";
+import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 
 export default function CommunitySideBar({
-  issue_posts,
-  notice_posts,
   author_detail,
 }: CommunitySideBarTypes) {
+  const [sideBarData, setSideBarData] = useState<SideBarStateTypes>();
+
+  useEffect(() => {
+    const fetchCommunityDetail = async () => {
+      try {
+        const data = await requestData(`${COMMUNITY_ENDPOINTS.SIDE_POSTS}`);
+
+        if (!data || data.status !== 200)
+          throw new Error(data?.msg || "Failed to fetch post data");
+        setSideBarData(data.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCommunityDetail();
+  }, []);
+
+  if (!sideBarData) return null;
+
   return (
     <div className="space-y-6">
       <div className="hidden md:block">
@@ -25,7 +46,7 @@ export default function CommunitySideBar({
           인기 게시물
         </h3>
         <div className="space-y-3">
-          {issue_posts.map((post, index) => (
+          {sideBarData.issue_posts.map((post, index) => (
             <Link
               key={post.id}
               href={`/community/detail/${post.id}-${post.slug}`}
@@ -59,7 +80,7 @@ export default function CommunitySideBar({
           {"공지사항"}
         </h3>
         <div className="space-y-3">
-          {notice_posts.map((announcement, index) => (
+          {sideBarData.notice_posts.map((announcement, index) => (
             <Link key={index} href={`/notice/detail/${announcement.id}`}>
               <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
                 <p className="text-gray-700 dark:text-gray-300 text-sm flex-1 line-clamp-1">

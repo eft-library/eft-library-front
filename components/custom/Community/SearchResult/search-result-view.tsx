@@ -1,9 +1,9 @@
 "use client";
 
+import { htmlToText } from "html-to-text";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
-  ImageIcon,
   FileText,
   User,
   Clock,
@@ -13,19 +13,38 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { CATEGORY_LIST } from "@/lib/consts/community-consts";
-import { SearchResultViewTypes } from "../community.types";
+import type { SearchResultViewTypes } from "../community.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { formatISODateTime } from "@/lib/func/formatTime";
 import Link from "next/link";
 import CategoryTab from "../CategoryTab/category-tab";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import Highlighter from "react-highlight-words";
+import CommunitySideBar from "../CommunitySideBar/community-side-bar";
+import Image from "next/image";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
   const word = searchParams.get("word") ?? "";
+
+  const getPureText = (contents: string) => {
+    return htmlToText(contents, {
+      wordwrap: false,
+      selectors: [
+        {
+          selector: "img",
+          format: "skip",
+        },
+        {
+          selector: "a",
+          options: { ignoreHref: true },
+        },
+        { selector: "script", format: "skip" },
+      ],
+    });
+  };
 
   const getScopeLabel = (scope: string) => {
     switch (scope) {
@@ -58,7 +77,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
           <div className="lg:col-span-3">
             <div className="space-y-6">
               {/* 검색 결과 헤더 */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   검색 결과
                 </h2>
@@ -66,14 +85,14 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                   <span>검색어:</span>
                   <Badge
                     variant="outline"
-                    className="text-orange-300 border-gray-300"
+                    className="text-orange-600 dark:text-orange-400 border-orange-300 dark:border-orange-600 bg-orange-50 dark:bg-orange-900/20"
                   >
                     {word}
                   </Badge>
                   <span>검색 범위:</span>
                   <Badge
                     variant="outline"
-                    className="border-gray-300 dark:border-gray-600"
+                    className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   >
                     {getScopeLabel(searchType)}
                   </Badge>
@@ -93,12 +112,12 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                     {postInfo.search_result.map((post, index) => (
                       <div
                         key={`post-with-comment-${post.id}-${index}`}
-                        className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                        className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-gray-900/20"
                       >
                         {/* 게시글 부분 */}
                         <Link
                           href={`/community/detail/${post.id}-${post.slug}`}
-                          className="block p-6 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors duration-200 cursor-pointer group"
+                          className="block p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer group"
                         >
                           <div className="flex items-start gap-4">
                             <div className="flex-1 min-w-0">
@@ -106,10 +125,16 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 dark:text-white dark:group-hover:text-blue-400 flex items-center gap-2">
                                   <span className="inline-flex items-center gap-2">
                                     {post.thumbnail ? (
-                                      <ImageIcon
-                                        aria-hidden="true"
-                                        className="w-5 h-5 text-orange-300 shrink-0"
-                                      />
+                                      <div className="flex-shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-lg">
+                                        <Image
+                                          src={post.thumbnail}
+                                          alt={post.title || "Thumbnail"}
+                                          fill
+                                          className="object-cover"
+                                          sizes="(max-width: 768px) 100vw, 25vw"
+                                          priority={false} // 중요도 낮으면 lazy load
+                                        />
+                                      </div>
                                     ) : (
                                       <FileText
                                         aria-hidden="true"
@@ -118,7 +143,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                     )}
 
                                     <Highlighter
-                                      highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                                      highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
                                       searchWords={[word]}
                                       autoEscape
                                       textToHighlight={post.title}
@@ -127,27 +152,32 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 </h3>
                                 <Badge
                                   className={cn(
-                                    "ml-2 flex-shrink-0 text-white",
+                                    "ml-2 flex-shrink-0 text-white dark:text-gray-100",
                                     CATEGORY_LIST.find(
                                       (original) =>
                                         original.id === post.category
                                     )?.color
                                   )}
                                 >
-                                  {post.category}
+                                  {
+                                    CATEGORY_LIST.find(
+                                      (original) =>
+                                        original.id === post.category
+                                    )?.kr
+                                  }
                                 </Badge>
                               </div>
 
-                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
+                              <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
                                 <Highlighter
-                                  highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                                  highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
                                   searchWords={[word]}
                                   autoEscape
-                                  textToHighlight={post.contents}
+                                  textToHighlight={getPureText(post.contents)}
                                 />
                               </p>
 
-                              <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-500">
+                              <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                                 <div className="flex items-center space-x-4">
                                   <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                     <User className="w-3 h-3" />
@@ -183,19 +213,19 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
 
                         {/* 댓글 부분 */}
                         {post.comment.id && (
-                          <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-750">
+                          <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
                             <div className="pt-4 space-y-3">
                               <div className="flex items-center justify-between">
                                 <Badge
                                   variant="outline"
-                                  className="border-gray-300"
+                                  className="border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                                 >
                                   검색된 댓글
                                 </Badge>
-                                <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-500">
+                                <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
                                   <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                     <User className="w-3 h-3" />
-                                    {post.comment.user_email}
+                                    {post.comment.nickname}
                                   </span>
                                   <div className="flex items-center space-x-1">
                                     <Clock className="w-3 h-3" />
@@ -205,16 +235,12 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                       )}
                                     </span>
                                   </div>
-                                  {/* <div className="flex items-center space-x-1">
-                              <ThumbsUp className="w-3 h-3" />
-                              <span>{post.comment.}</span>
-                            </div> */}
                                 </div>
                               </div>
 
-                              <p className="text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded-lg border-l-4 border-orange-400">
+                              <p className="text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 p-3 rounded-lg border-l-4 border-orange-400 dark:border-orange-500">
                                 <Highlighter
-                                  highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
+                                  highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
                                   searchWords={[word]}
                                   autoEscape
                                   textToHighlight={post.comment.contents}
@@ -239,12 +265,9 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
               )}
             </div>
           </div>
-          {/* <div className="lg:col-span-1">
-                <CommunitySideBar
-                  issue_posts={postInfo.issue_posts}
-                  notice_posts={postInfo.notice_posts}
-                />
-              </div> */}
+          <div className="lg:col-span-1">
+            <CommunitySideBar />
+          </div>
         </div>
       </div>
     </div>

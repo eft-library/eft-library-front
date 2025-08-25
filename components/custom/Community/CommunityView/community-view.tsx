@@ -33,10 +33,7 @@ export default function CommunityView({
             <CommunitySearch />
           </div>
           <div className="lg:col-span-1">
-            <CommunitySideBar
-              issue_posts={postInfo.issue_posts}
-              notice_posts={postInfo.notice_posts}
-            />
+            <CommunitySideBar />
           </div>
         </div>
       </div>

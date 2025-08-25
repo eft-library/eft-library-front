@@ -271,11 +271,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
             </section>
           </div>
           <div className="lg:col-span-1">
-            <CommunitySideBar
-              issue_posts={postInfo.issue_posts}
-              notice_posts={postInfo.notice_posts}
-              author_detail={postInfo.author_detail}
-            />
+            <CommunitySideBar author_detail={postInfo.author_detail} />
           </div>
         </div>
       </div>

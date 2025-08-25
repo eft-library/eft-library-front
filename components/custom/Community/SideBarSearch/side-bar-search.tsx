@@ -11,7 +11,7 @@ export default function SidebarSearch() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
-    router.push(`/community/search`);
+    router.push(`/community/search?word=${searchQuery}&search_type=all&page=1`);
   };
 
   return (
