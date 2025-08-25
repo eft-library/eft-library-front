@@ -42,6 +42,7 @@ export default function RigTable({ rig_data, word }: RigTableTypes) {
             key={item.id}
             target="_blank"
             href={`/item/${item.url_mapping}`}
+            scroll={false}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-4 gap-4 p-4 items-center text-center">
@@ -136,6 +137,7 @@ export default function RigTable({ rig_data, word }: RigTableTypes) {
             key={item.id}
             target="_blank"
             href={`/item/${item.url_mapping}`}
+            scroll={false}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-2 gap-4 p-4 items-center text-center">

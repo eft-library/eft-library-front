@@ -24,7 +24,9 @@ export default function PinnedNotice({ notice }: PinnedNotice) {
             className="text-sm cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400"
           >
             {content.link ? (
-              <Link href={content.link}>{content[localeKey]}</Link>
+              <Link scroll={false} href={content.link}>
+                {content[localeKey]}
+              </Link>
             ) : (
               content[localeKey]
             )}

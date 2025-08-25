@@ -30,6 +30,7 @@ export default function HeadsetTable({ headsetList, word }: HeadsetTableTypes) {
         >
           <Link
             key={item.id}
+            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

@@ -117,6 +117,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                         {/* 게시글 부분 */}
                         <Link
                           href={`/community/detail/${post.id}-${post.slug}`}
+                          scroll={false}
                           className="block p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer group"
                         >
                           <div className="flex items-start gap-4">
@@ -213,41 +214,46 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
 
                         {/* 댓글 부분 */}
                         {post.comment.id && (
-                          <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
-                            <div className="pt-4 space-y-3">
-                              <div className="flex items-center justify-between">
-                                <Badge
-                                  variant="outline"
-                                  className="border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                                >
-                                  검색된 댓글
-                                </Badge>
-                                <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
-                                  <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
-                                    <User className="w-3 h-3" />
-                                    {post.comment.nickname}
-                                  </span>
-                                  <div className="flex items-center space-x-1">
-                                    <Clock className="w-3 h-3" />
-                                    <span>
-                                      {formatISODateTime(
-                                        post.comment.create_time
-                                      )}
+                          <Link
+                            href={`/community/detail/${post.id}-${post.slug}?comment_id=${post.comment.id}`}
+                            scroll={false}
+                          >
+                            <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+                              <div className="pt-4 space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <Badge
+                                    variant="outline"
+                                    className="border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                  >
+                                    검색된 댓글
+                                  </Badge>
+                                  <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
+                                    <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                                      <User className="w-3 h-3" />
+                                      {post.comment.nickname}
                                     </span>
+                                    <div className="flex items-center space-x-1">
+                                      <Clock className="w-3 h-3" />
+                                      <span>
+                                        {formatISODateTime(
+                                          post.comment.create_time
+                                        )}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
 
-                              <p className="text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 p-3 rounded-lg border-l-4 border-orange-400 dark:border-orange-500">
-                                <Highlighter
-                                  highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
-                                  searchWords={[word]}
-                                  autoEscape
-                                  textToHighlight={post.comment.contents}
-                                />
-                              </p>
+                                <p className="text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 p-3 rounded-lg border-l-4 border-orange-400 dark:border-orange-500">
+                                  <Highlighter
+                                    highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                    searchWords={[word]}
+                                    autoEscape
+                                    textToHighlight={post.comment.contents}
+                                  />
+                                </p>
+                              </div>
                             </div>
-                          </div>
+                          </Link>
                         )}
                       </div>
                     ))}

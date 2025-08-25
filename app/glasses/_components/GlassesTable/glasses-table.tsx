@@ -40,6 +40,7 @@ export default function GlassesTable({ glassesData, word }: GlassesTableTypes) {
         >
           <Link
             key={item.id}
+            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >
@@ -134,6 +135,7 @@ export default function GlassesTable({ glassesData, word }: GlassesTableTypes) {
         >
           <Link
             key={item.id}
+            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

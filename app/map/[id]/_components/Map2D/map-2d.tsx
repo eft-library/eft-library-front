@@ -128,6 +128,7 @@ export default function Map2D({ mapData, viewItemList }: Map2DTypes) {
                           {popoverItem.quest_info.map((quest) => (
                             <Link
                               href={`/quest/detail/${quest.url_mapping}`}
+                              scroll={false}
                               target="_blank"
                               key={quest.id}
                               className="group block"

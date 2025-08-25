@@ -13,6 +13,7 @@ export default function GridItem({ main_info }: GridItemTypes) {
       {main_info.map((item) => (
         <Link
           key={`main-info-${item.value}`}
+          scroll={false}
           href={item.link}
           className="flex flex-col"
         >

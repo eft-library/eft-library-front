@@ -31,6 +31,7 @@ export default function IssueComment({ postInfo, comment }: IssueCommentTypes) {
             {/* 바로가기 버튼 */}
             <Link
               href={`/community/detail/${postInfo.id}-${postInfo.slug}?comment_id=${comment.id}`}
+              scroll={false}
             >
               <LinkIcon className="cursor-pointer flex items-center text-yellow-700 dark:text-yellow-300 hover:text-yellow-900 dark:hover:text-yellow-200 transition">
                 <ArrowRight size={18} />

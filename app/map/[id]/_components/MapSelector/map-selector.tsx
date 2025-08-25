@@ -84,6 +84,7 @@ export default function MapSelector({
               <DropdownMenuItem key={map.id} className="p-0">
                 <Link
                   href={map.link}
+                  scroll={false}
                   className="w-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors flex items-center"
                 >
                   <Map className="mr-2 h-4 w-4 opacity-60" />

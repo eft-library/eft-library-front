@@ -37,7 +37,11 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
           key={item.id}
           className="border-b border-border last:border-b-0 hover:bg-muted/30 dark:hover:bg-card-foreground/5 transition-all duration-200"
         >
-          <Link href={`/item/${item.url_mapping}`} target="_blank">
+          <Link
+            href={`/item/${item.url_mapping}`}
+            target="_blank"
+            scroll={false}
+          >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-5 gap-4 p-4 items-center text-center">
               <div className="flex justify-center">

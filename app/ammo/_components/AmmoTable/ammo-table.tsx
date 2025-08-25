@@ -42,6 +42,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
         >
           <Link
             key={item.id}
+            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

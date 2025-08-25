@@ -32,6 +32,7 @@ export default function PurchaseUnlock({ itemInfo }: PurchaseUnlockTypes) {
           {itemInfo.rewarded_by_quests_offer_unlock.map((unlock, index) => (
             <Link
               href={`/quest/detail/${unlock.url_mapping}`}
+              scroll={false}
               key={`rewarded_by_quests_craft_unlock-${unlock.reward.item.id}-${index}`}
               target="_blank"
               className="block"

@@ -13,7 +13,7 @@ export default function InformationSelector() {
   return (
     <div className="mb-6 flex justify-center">
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg overflow-x-auto">
-        <Link href="/notice?id=1">
+        <Link href="/notice?id=1" scroll={false}>
           <button
             className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "notice"
@@ -24,7 +24,7 @@ export default function InformationSelector() {
             {newsI18N.notice[localeKey]}
           </button>
         </Link>
-        <Link href="/patch-notes?id=1">
+        <Link href="/patch-notes?id=1" scroll={false}>
           <button
             className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "patch-notes"
@@ -35,7 +35,7 @@ export default function InformationSelector() {
             {newsI18N.patchNote[localeKey]}
           </button>
         </Link>
-        <Link href="/event?id=1">
+        <Link href="/event?id=1" scroll={false}>
           <button
             className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "event"

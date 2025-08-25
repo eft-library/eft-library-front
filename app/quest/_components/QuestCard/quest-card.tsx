@@ -49,7 +49,10 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                   dark:border-[#2B2B2B] dark:hover:bg-[#2B2B2B]/50 even:dark:bg-[#1A1A1A] odd:dark:bg-[#1E1E1E]`}
                 >
                   <td className="p-2 font-semibold text-center text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400">
-                    <Link href={`/quest/detail/${quest.url_mapping}`}>
+                    <Link
+                      href={`/quest/detail/${quest.url_mapping}`}
+                      scroll={false}
+                    >
                       <Highlighter
                         highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                         searchWords={[word]}
@@ -92,6 +95,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                           •&nbsp;
                           <Link
                             href={`/item/${rewards.item.normalizedName}`}
+                            scroll={false}
                             target="_blank"
                           >
                             {rewards.item[getOtherLocalizedKey(locale)]}
@@ -108,6 +112,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                           • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                           <Link
                             href={`/item/${offer.item.normalizedName}`}
+                            scroll={false}
                             target="_blank"
                           >
                             {offer.item[getOtherLocalizedKey(locale)]}
@@ -146,6 +151,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                               <span>{craft.level}&nbsp;</span>
                               <Link
                                 href={`/item/${crReward.item.normalizedName}`}
+                                scroll={false}
                                 target="_blank"
                               >
                                 {crReward.item[getOtherLocalizedKey(locale)]}

@@ -47,6 +47,7 @@ export default function RenderNavM({
           {navMain.sub_menus.map((navSub) => (
             <Link
               key={`nav-sub-${navSub.value}`}
+              scroll={false}
               href={navSub.link}
               className={`block text-sm transition-colors py-1 text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400`}
               onClick={() => setQuest(navSub.parent_value, navSub.value)}

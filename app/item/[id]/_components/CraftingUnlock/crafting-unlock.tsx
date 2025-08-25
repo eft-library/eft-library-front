@@ -33,6 +33,7 @@ export default function CraftingUnlock({ itemInfo }: CraftingUnlockTypes) {
           {itemInfo.rewarded_by_quests_craft_unlock.map((unlock) => (
             <Link
               key={`required_by_quest_item-${unlock.reward.item.id}`}
+              scroll={false}
               href={`/quest/detail/${unlock.url_mapping}`}
               target="_blank"
               className="block"

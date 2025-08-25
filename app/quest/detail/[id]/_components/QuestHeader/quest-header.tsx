@@ -69,6 +69,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                 >
                   <Link
                     href={`/quest/detail/${prev_quest.task.normalizedName}`}
+                    scroll={false}
                   >
                     {prev_quest.task[getOtherLocalizedKey(localeKey)]}
                   </Link>
@@ -103,6 +104,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                   >
                     <Link
                       href={`/quest/detail/${next_quest.task.normalizedName}`}
+                      scroll={false}
                     >
                       {next_quest.task[getOtherLocalizedKey(localeKey)]}
                     </Link>

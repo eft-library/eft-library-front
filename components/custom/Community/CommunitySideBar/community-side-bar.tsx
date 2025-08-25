@@ -49,6 +49,7 @@ export default function CommunitySideBar({
           {sideBarData.issue_posts.map((post, index) => (
             <Link
               key={post.id}
+              scroll={false}
               href={`/community/detail/${post.id}-${post.slug}`}
             >
               <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
@@ -81,7 +82,11 @@ export default function CommunitySideBar({
         </h3>
         <div className="space-y-3">
           {sideBarData.notice_posts.map((announcement, index) => (
-            <Link key={index} href={`/notice/detail/${announcement.id}`}>
+            <Link
+              key={index}
+              href={`/notice/detail/${announcement.id}`}
+              scroll={false}
+            >
               <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
                 <p className="text-gray-700 dark:text-gray-300 text-sm flex-1 line-clamp-1">
                   {announcement.name.ko}

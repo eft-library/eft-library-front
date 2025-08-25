@@ -120,6 +120,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                     {isOwner && (
                       <Link
                         href={`/community/update/${postInfo.post_detail.id}`}
+                        scroll={false}
                       >
                         <Button
                           variant="ghost"

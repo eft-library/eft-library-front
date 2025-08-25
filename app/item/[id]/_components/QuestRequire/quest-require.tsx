@@ -35,6 +35,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
               <Link
                 key={`required_by_quest_item-${questItem.objective.id}-${index}`}
                 href={`/quest/detail/${questItem.url_mapping}`}
+                scroll={false}
                 target="_blank"
                 className="block"
               >
@@ -103,6 +104,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
             itemInfo.required_by_quest_item_array.map((questItem, index) => (
               <Link
                 key={`required_by_quest_item-array-${questItem.objective.id}-${index}`}
+                scroll={false}
                 href={`/quest/detail/${questItem.url_mapping}`}
                 target="_blank"
                 className="block"

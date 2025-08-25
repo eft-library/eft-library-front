@@ -18,7 +18,7 @@ export default function QuestGuide({ quest }: QuestDetailTypes) {
           <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
             {questI18N.guide[localeKey]}
           </h2>
-          <Link href={quest.wiki_url} target="_blank">
+          <Link href={quest.wiki_url} target="_blank" scroll={false}>
             <Button
               variant="outline"
               className="border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 bg-transparent shrink-0 text-sm sm:text-base cursor-pointer"

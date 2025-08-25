@@ -29,6 +29,7 @@ export default function PostGrid({
         postInfo.posts.map((post) => (
           <Link
             key={post.id}
+            scroll={false}
             href={`/community/detail/${post.id}-${post.slug}`}
             className={`${
               currentPostId === post.id &&
