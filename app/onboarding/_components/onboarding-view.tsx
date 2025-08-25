@@ -25,11 +25,9 @@ import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { nicknameI18N } from "@/lib/consts/i18nConsts";
-import { useRouter } from "next/navigation";
 
 export default function OnboardingView() {
   const locale = useLocale();
-  const router = useRouter();
   const localeKey = getLocaleKey(locale);
   const { data: session, update: updateSession } = useSession();
   const [nickname, setNickname] = useState("");
@@ -126,7 +124,6 @@ export default function OnboardingView() {
     );
     if (data && data.status === 200 && data.data) {
       setResultMessage(data.data[localeKey]);
-      setIsSuccess(true);
       setShowDuplicateDialog(true);
       await updateSession({
         ...session,
@@ -140,7 +137,6 @@ export default function OnboardingView() {
         "Failed to fetch station data:",
         data?.msg || "Unknown error"
       );
-      setIsSuccess(false);
       setResultMessage("Error");
       setShowDuplicateDialog(true);
     }
@@ -278,9 +274,7 @@ export default function OnboardingView() {
         open={showDuplicateDialog}
         onOpenChange={(open) => {
           setShowDuplicateDialog(open);
-          if (!open && isSuccess) {
-            router.push("/");
-          }
+          window.location.reload();
         }}
       >
         <DialogContent className="bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
@@ -296,9 +290,7 @@ export default function OnboardingView() {
             <Button
               onClick={() => {
                 setShowDuplicateDialog(false);
-                if (isSuccess) {
-                  router.push("/");
-                }
+                window.location.reload();
               }}
               className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white"
             >
