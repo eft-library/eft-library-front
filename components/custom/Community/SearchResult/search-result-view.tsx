@@ -22,13 +22,14 @@ import SidebarSearch from "../SideBarSearch/side-bar-search";
 import Highlighter from "react-highlight-words";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import Image from "next/image";
+import CommunitySearch from "../CommunitySearch/community-search";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
   const word = searchParams.get("word") ?? "";
-
+  console.log(postInfo);
   const getPureText = (contents: string) => {
     return htmlToText(contents, {
       wordwrap: false,
@@ -213,7 +214,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                         </Link>
 
                         {/* 댓글 부분 */}
-                        {post.comment.id && (
+                        {post.comment && post.comment.id && (
                           <Link
                             href={`/community/detail/${post.id}-${post.slug}?comment_id=${post.comment.id}`}
                             scroll={false}
@@ -270,6 +271,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                   currentPage={Number(pageNum)}
                 />
               )}
+              <CommunitySearch />
             </div>
           </div>
           <div className="lg:col-span-1">
