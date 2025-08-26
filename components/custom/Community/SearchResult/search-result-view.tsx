@@ -55,7 +55,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
         return "제목";
       case "titleContent":
         return "제목+내용";
-      case "comments":
+      case "comment":
         return "댓글";
       case "author":
         return "글쓴이";
