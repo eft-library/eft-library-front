@@ -29,7 +29,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
   const word = searchParams.get("word") ?? "";
-  console.log(postInfo);
+
   const getPureText = (contents: string) => {
     return htmlToText(contents, {
       wordwrap: false,
@@ -183,7 +183,12 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 <div className="flex items-center space-x-4">
                                   <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                     <User className="w-3 h-3" />
-                                    {post.nickname}
+                                    <Highlighter
+                                      highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                      searchWords={[word]}
+                                      autoEscape
+                                      textToHighlight={post.nickname}
+                                    />
                                   </span>
                                   <div className="flex items-center space-x-1">
                                     <Clock className="w-3 h-3" />
