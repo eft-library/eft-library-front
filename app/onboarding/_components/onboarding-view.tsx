@@ -36,7 +36,6 @@ export default function OnboardingView() {
   const [isChecking, setIsChecking] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [duplicateCheckResult, setDuplicateCheckResult] = useState<
     "available" | "duplicate" | null
   >(null);
