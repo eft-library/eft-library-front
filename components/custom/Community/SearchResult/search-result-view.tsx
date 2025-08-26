@@ -25,6 +25,7 @@ import Image from "next/image";
 import CommunitySearch from "../CommunitySearch/community-search";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
+  console.log(postInfo.search_result);
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
