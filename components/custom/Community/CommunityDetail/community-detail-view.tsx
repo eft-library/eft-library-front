@@ -29,6 +29,8 @@ import CommentSection from "./CommentSection/comment-section";
 import Link from "next/link";
 import { requestUserData } from "@/lib/config/api";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import {
   Dialog,
   DialogContent,
@@ -39,6 +41,8 @@ import {
 import { useState } from "react";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { data: session } = useSession();
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
@@ -169,7 +173,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                   <Badge
                     className={`${postCategory?.color} mb-2 sm:mb-0 text-white flex items-center justify-center`}
                   >
-                    {postCategory?.kr}
+                    {postCategory?.[localeKey] ?? ""}
                   </Badge>
                   <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 flex-wrap justify-end">
                     <div className="flex items-center gap-1">

@@ -7,8 +7,12 @@ import Link from "next/link";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useAppStore } from "@/store/provider";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function CategoryTab() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const { pageCategory } = useAppStore((state) => state);
   const { data: session } = useSession();
   return (
@@ -28,7 +32,7 @@ export default function CategoryTab() {
                   : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               )}
             >
-              <span>{category.kr}</span>
+              <span>{category[localeKey]}</span>
               {/* <span className="text-xs opacity-75">({category.count})</span> */}
             </button>
           </Link>

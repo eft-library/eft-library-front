@@ -10,6 +10,8 @@ import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function PostGrid({
   postInfo,
@@ -17,6 +19,8 @@ export default function PostGrid({
   currentPageNum,
   currentPostId,
 }: PostGridTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
   return (
@@ -69,11 +73,9 @@ export default function PostGrid({
                       )?.color
                     )}
                   >
-                    {
-                      CATEGORY_LIST.find(
-                        (original) => original.id === post.category
-                      )?.kr
-                    }
+                    {CATEGORY_LIST.find(
+                      (original) => original.id === post.category
+                    )?.[localeKey] ?? ""}
                   </Badge>
                 </div>
 

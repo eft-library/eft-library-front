@@ -6,6 +6,8 @@ import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import { requestUserData } from "@/lib/config/api";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -25,6 +27,8 @@ export default function CommunityWrite({
   writeType,
   pageTitle,
 }: CommunityWriteTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const router = useRouter();
   const { data: session } = useSession();
   const [contents, setContents] = useState(postInfo?.contents ?? "");
@@ -135,7 +139,7 @@ export default function CommunityWrite({
             >
               <div className="flex items-center truncate">
                 <ReceiptText className="mr-2 h-5 w-5 opacity-70" />
-                <span className="truncate font-semibold">{category.kr}</span>
+                <span className="truncate font-semibold">{category.ko}</span>
               </div>
 
               <ChevronDown className="ml-2 h-5 w-5 shrink-0 opacity-60" />
@@ -164,7 +168,7 @@ export default function CommunityWrite({
                 >
                   <ReceiptText className="h-5 w-5 opacity-70" />
                   <span className="truncate text-gray-800">
-                    {category_identify.kr}
+                    {category_identify[localeKey]}
                   </span>
                 </DropdownMenuItem>
               )

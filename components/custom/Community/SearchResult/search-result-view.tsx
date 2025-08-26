@@ -12,7 +12,7 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { CATEGORY_LIST } from "@/lib/consts/community-consts";
+import { CATEGORY_LIST, SEARCH_CATEGORY } from "@/lib/consts/community-consts";
 import type { SearchResultViewTypes } from "../community.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { formatISODateTime } from "@/lib/func/formatTime";
@@ -23,8 +23,12 @@ import Highlighter from "react-highlight-words";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import Image from "next/image";
 import CommunitySearch from "../CommunitySearch/community-search";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
@@ -78,11 +82,9 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                     variant="outline"
                     className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   >
-                    {
-                      CATEGORY_LIST.find(
-                        (original) => original.id === searchType
-                      )?.kr
-                    }
+                    {SEARCH_CATEGORY.find(
+                      (original) => original.id === searchType
+                    )?.[localeKey] ?? ""}
                   </Badge>
                   <span>총 {postInfo.total_count}개 결과</span>
                 </div>
@@ -148,12 +150,9 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                     )?.color
                                   )}
                                 >
-                                  {
-                                    CATEGORY_LIST.find(
-                                      (original) =>
-                                        original.id === post.category
-                                    )?.kr
-                                  }
+                                  {CATEGORY_LIST.find(
+                                    (original) => original.id === post.category
+                                  )?.[localeKey] ?? ""}
                                 </Badge>
                               </div>
 
