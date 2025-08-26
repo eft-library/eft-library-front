@@ -25,7 +25,6 @@ import Image from "next/image";
 import CommunitySearch from "../CommunitySearch/community-search";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
-  console.log(postInfo.search_result);
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
@@ -46,23 +45,6 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
         { selector: "script", format: "skip" },
       ],
     });
-  };
-
-  const getScopeLabel = (scope: string) => {
-    switch (scope) {
-      case "all":
-        return "통합검색";
-      case "title":
-        return "제목";
-      case "titleContent":
-        return "제목+내용";
-      case "comment":
-        return "댓글";
-      case "author":
-        return "글쓴이";
-      default:
-        return "전체";
-    }
   };
 
   return (
@@ -96,7 +78,11 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                     variant="outline"
                     className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   >
-                    {getScopeLabel(searchType)}
+                    {
+                      CATEGORY_LIST.find(
+                        (original) => original.id === searchType
+                      )?.kr
+                    }
                   </Badge>
                   <span>총 {postInfo.total_count}개 결과</span>
                 </div>
