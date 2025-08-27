@@ -39,6 +39,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const locale = useLocale();
@@ -211,9 +216,61 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
             </Avatar> */}
                     <div>
                       <div className="flex items-center space-x-2 flex-wrap">
-                        <span className="font-medium text-gray-900 dark:text-white">
-                          {postInfo.post_detail.nickname}
-                        </span>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                              {postInfo.post_detail?.nickname || "사용자"}
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-48 p-2" align="start">
+                            <div className="space-y-1">
+                              <button
+                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                onClick={() => {
+                                  console.log(
+                                    "Block user:",
+                                    postInfo.post_detail?.nickname
+                                  );
+                                }}
+                              >
+                                <span>차단 하기</span>
+                              </button>
+                              <button
+                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                onClick={() => {
+                                  console.log(
+                                    "Report user:",
+                                    postInfo.post_detail?.nickname
+                                  );
+                                }}
+                              >
+                                <span>신고 하기</span>
+                              </button>
+                              <button
+                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                onClick={() => {
+                                  console.log(
+                                    "View posts by:",
+                                    postInfo.post_detail?.nickname
+                                  );
+                                }}
+                              >
+                                <span>작성 글 보기</span>
+                              </button>
+                              <button
+                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                onClick={() => {
+                                  console.log(
+                                    "View posts by:",
+                                    postInfo.post_detail?.nickname
+                                  );
+                                }}
+                              >
+                                <span>사용자 밴</span>
+                              </button>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                         {/* <Badge
                   variant="outline"
                   className="text-xs border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"

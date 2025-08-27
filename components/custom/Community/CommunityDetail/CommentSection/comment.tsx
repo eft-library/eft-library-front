@@ -18,6 +18,9 @@ import {
   ThumbsUp,
   ThumbsDown,
   Reply,
+  Ban,
+  UserRoundX,
+  MessageCircleX,
 } from "lucide-react";
 import { CommentTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
@@ -217,7 +220,7 @@ export default function Comment({
                 <DropdownMenuContent
                   align="end"
                   sideOffset={6}
-                  className="w-32 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
+                  className="z-[9999] w-32 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
                 >
                   {comment.user_email === userEmail ? (
                     <>
@@ -240,28 +243,52 @@ export default function Comment({
                       </DropdownMenuItem>
                     </>
                   ) : (
-                    <DropdownMenuItem
-                      className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-                      onClick={() =>
-                        setReportOpen({
-                          open: true,
-                          id: comment.id,
-                          userEmail: comment.user_email,
-                        })
-                      }
-                    >
-                      <Flag className="w-4 h-4 mr-2 text-yellow-500" />
-                      신고
-                    </DropdownMenuItem>
+                    <>
+                      <DropdownMenuItem
+                        className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                        onClick={() =>
+                          setReportOpen({
+                            open: true,
+                            id: comment.id,
+                            userEmail: comment.user_email,
+                          })
+                        }
+                      >
+                        <Flag className="w-4 h-4 mr-2 text-yellow-500" />
+                        신고
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                        onClick={() =>
+                          setReportOpen({
+                            open: true,
+                            id: comment.id,
+                            userEmail: comment.user_email,
+                          })
+                        }
+                      >
+                        <Ban className="w-4 h-4 mr-2 text-red-500" />
+                        차단
+                      </DropdownMenuItem>
+                    </>
                   )}
                   {session.userInfo.is_admin && (
-                    <DropdownMenuItem
-                      className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
-                      onClick={() => onClickDeleteCommentByAdmin()}
-                    >
-                      <Trash2 className="w-4 h-4 mr-2 text-red-500" />
-                      관리자 삭제
-                    </DropdownMenuItem>
+                    <>
+                      <DropdownMenuItem
+                        className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
+                        onClick={() => onClickDeleteCommentByAdmin()}
+                      >
+                        <MessageCircleX className="w-4 h-4 mr-2 text-red-500" />
+                        관리자 삭제
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
+                        onClick={() => onClickDeleteCommentByAdmin()}
+                      >
+                        <UserRoundX className="w-4 h-4 mr-2 text-red-500" />
+                        사용자 밴
+                      </DropdownMenuItem>
+                    </>
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
