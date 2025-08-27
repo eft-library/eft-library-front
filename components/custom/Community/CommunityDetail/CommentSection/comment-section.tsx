@@ -34,9 +34,11 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const [reportOpen, setReportOpen] = useState<{
     open: boolean;
     id: string;
+    userEmail: string;
   }>({
     open: false,
     id: "",
+    userEmail: "",
   });
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
@@ -178,9 +180,10 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
 
       <ReportDialog
         open={reportOpen.open}
-        onOpenChange={(open) => setReportOpen({ open, id: "" })}
+        onOpenChange={(open) => setReportOpen({ open, id: "", userEmail: "" })}
         subject="comment"
         subjectId={reportOpen.id ?? ""}
+        targetEmail={reportOpen.userEmail ?? ""}
       />
       <DefaultDialog
         open={alertStatus}

@@ -67,6 +67,8 @@ export default function CommunityReaction({
         case "bookmark":
           bookmarkMutation.mutate();
           break;
+        case "report":
+          setReportOpen(true);
         default:
           // 필요 시 처리
           break;
@@ -138,7 +140,7 @@ export default function CommunityReaction({
           <Button
             variant="ghost"
             className="flex cursor-pointer items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-1/3 sm:w-auto justify-center"
-            onClick={() => setReportOpen(true)}
+            onClick={() => onClickReaction("report")}
           >
             <Flag className="w-5 h-5" />
             <span>신고</span>
@@ -156,6 +158,7 @@ export default function CommunityReaction({
         onOpenChange={setReportOpen}
         subject="post"
         subjectId={postInfo.id}
+        targetEmail={postInfo.user_email}
       />
       <DefaultDialog
         open={alertStatus}

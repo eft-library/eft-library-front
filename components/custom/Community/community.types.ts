@@ -47,6 +47,7 @@ export interface ReportDialogTypes {
   onOpenChange: (open: boolean) => void;
   subject: string;
   subjectId: string;
+  targetEmail: string;
 }
 
 export interface CommunityDetail {
@@ -148,7 +149,7 @@ export interface CommentTypes {
   postInfo: CommunityDetail;
   comment: CommentDataTypes;
   setReportOpen: React.Dispatch<
-    React.SetStateAction<{ open: boolean; id: string }>
+    React.SetStateAction<{ open: boolean; id: string; userEmail: string }>
   >;
 }
 

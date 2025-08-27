@@ -62,6 +62,7 @@ export const COMMUNITY_ENDPOINTS = {
   CREATE_POSTS: baseUrl + "/api/community/create_posts",
   UPDATE_POST: baseUrl + "/api/community/update_post",
   GET_UPDAET_POST_DETAIL: baseUrl + "/api/community/get_update_post_detail",
+  REPORT_POST: baseUrl + "/api/community/report_post",
   DELETE_POST_BY_USER: baseUrl + "/api/community/delete_post_by_user",
   DELETE_POST_BY_ADMIN: baseUrl + "/api/community/delete_post_by_admin",
   GET_POSTS: baseUrl + "/api/community/get",
@@ -80,6 +81,7 @@ export const COMMUNITY_ENDPOINTS = {
   UPDATE_COMMENT: baseUrl + "/api/comment/update_comment",
   DELETE_COMMENT_BY_USER: baseUrl + "/api/comment/delete_comment_by_user",
   DELETE_COMMENT_BY_ADMIN: baseUrl + "/api/comment/delete_comment_by_admin",
+  REPORT_COMMENT: baseUrl + "/api/comment/report_comment",
   SEARCH_POSTS: baseUrl + "/api/community/search",
   SIDE_POSTS: baseUrl + "/api/community/side_post",
 };

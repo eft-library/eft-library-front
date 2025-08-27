@@ -14,18 +14,66 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ReportDialogTypes } from "../../community.types";
+import { useSession } from "next-auth/react";
+import { requestUserData } from "@/lib/config/api";
+import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 
 export function ReportDialog({
   open = false,
   onOpenChange,
   subject,
   subjectId,
+  targetEmail,
 }: ReportDialogTypes) {
+  const { data: session } = useSession();
+
   const [reason, setReason] = useState("spam");
   const [details, setDetails] = useState("");
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (subject === "post") {
+      const data = await requestUserData(
+        COMMUNITY_ENDPOINTS.REPORT_POST,
+        {
+          post_id: subjectId,
+          reported_email: targetEmail,
+          reason_type: reason,
+          reason: details,
+        },
+        session
+      );
+      if (data && data.status === 200 && data.data) {
+        onOpenChange(false);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        onOpenChange(false);
+      }
+    } else {
+      const data = await requestUserData(
+        COMMUNITY_ENDPOINTS.REPORT_COMMENT,
+        {
+          comment_id: subjectId,
+          reported_email: targetEmail,
+          reason_type: reason,
+          reason: details,
+        },
+        session
+      );
+      if (data && data.status === 200 && data.data) {
+        onOpenChange(false);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        onOpenChange(false);
+      }
+    }
+
     // Fake submit
     setSent(true);
     setTimeout(() => {

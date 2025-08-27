@@ -246,6 +246,7 @@ export default function Comment({
                         setReportOpen({
                           open: true,
                           id: comment.id,
+                          userEmail: comment.user_email,
                         })
                       }
                     >
