@@ -56,6 +56,7 @@ export const USER_API_ENDPOINTS = {
   CHECK_NICKNAME_DUPLICATE: baseUrl + "/api/user/check_nickname_duplicate",
   CHECK_NICKNAME_LAST_UPDATE: baseUrl + "/api/user/check_last_update_nickname",
   REPORT_USER: baseUrl + "/api/user/report_user",
+  BLOCK_USER: baseUrl + "/api/user/block_user",
 };
 
 export const COMMUNITY_ENDPOINTS = {

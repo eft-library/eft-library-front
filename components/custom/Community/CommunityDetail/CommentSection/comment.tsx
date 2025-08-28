@@ -28,13 +28,7 @@ import { useEffect, useState } from "react";
 import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { useSearchParams } from "next/navigation";
-import {
-  DialogHeader,
-  DialogFooter,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import CommentDelete from "./comment-delete";
 
 export default function Comment({
   comment,
@@ -251,6 +245,7 @@ export default function Comment({
                             open: true,
                             id: comment.id,
                             userEmail: comment.user_email,
+                            reportType: "comment",
                           })
                         }
                       >
@@ -264,6 +259,7 @@ export default function Comment({
                             open: true,
                             id: comment.id,
                             userEmail: comment.user_email,
+                            reportType: "block",
                           })
                         }
                       >
@@ -436,37 +432,11 @@ export default function Comment({
         title="Notice"
         description={alertDesc}
       />
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader>
-            <DialogTitle>댓글을 정말 삭제하시겠습니까?</DialogTitle>
-          </DialogHeader>
-          <div className="text-sm text-gray-600 dark:text-gray-400 my-4">
-            삭제한 댓글은 복구할 수 없습니다.
-          </div>
-          <DialogFooter className="flex justify-end gap-3">
-            <Button
-              className=" cursor-pointer"
-              variant="outline"
-              size="sm"
-              onClick={() => setOpen(false)}
-            >
-              취소
-            </Button>
-            <Button
-              variant="destructive"
-              className=" cursor-pointer"
-              size="sm"
-              onClick={() => {
-                onClickDeleteCommentByUser();
-                setOpen(false);
-              }}
-            >
-              삭제
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CommentDelete
+        open={open}
+        setOpen={setOpen}
+        onClickDeleteCommentByUser={onClickDeleteCommentByUser}
+      />
     </div>
   );
 }

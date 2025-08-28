@@ -72,6 +72,24 @@ export function ReportDialog({
         );
         onOpenChange(false);
       }
+    } else if (subject === "block") {
+      const data = await requestUserData(
+        USER_API_ENDPOINTS.BLOCK_USER,
+        {
+          blocked_email: targetEmail,
+          reason: details,
+        },
+        session
+      );
+      if (data && data.status === 200 && data.data) {
+        onOpenChange(false);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        onOpenChange(false);
+      }
     } else {
       const data = await requestUserData(
         USER_API_ENDPOINTS.REPORT_USER,
@@ -115,76 +133,78 @@ export function ReportDialog({
               : subject === "comment"
               ? "댓글"
               : "사용자"}
-            (ID: {subjectId})을(를) 신고합니다.
+            (ID: {subjectId})을(를) {subject === "block" ? "차단" : "신고"}
+            합니다.
           </DialogDescription>
         </DialogHeader>
+        {subject !== "block" && (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-gray-700 dark:text-gray-300">
+                사유 선택
+              </Label>
+              <RadioGroup
+                value={reason}
+                onValueChange={setReason}
+                className="mt-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="spam" id="r1" />
+                  <Label
+                    htmlFor="r1"
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    스팸/홍보
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="abuse" id="r2" />
+                  <Label
+                    htmlFor="r2"
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    욕설/혐오/괴롭힘
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="illegal" id="r3" />
+                  <Label
+                    htmlFor="r3"
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    불법/부적절한 내용
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="other" id="r4" />
+                  <Label
+                    htmlFor="r4"
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    기타
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
 
-        <div className="space-y-4">
-          <div>
-            <Label className="text-gray-700 dark:text-gray-300">
-              사유 선택
-            </Label>
-            <RadioGroup
-              value={reason}
-              onValueChange={setReason}
-              className="mt-2"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="spam" id="r1" />
-                <Label
-                  htmlFor="r1"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  스팸/홍보
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="abuse" id="r2" />
-                <Label
-                  htmlFor="r2"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  욕설/혐오/괴롭힘
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="illegal" id="r3" />
-                <Label
-                  htmlFor="r3"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  불법/부적절한 내용
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="other" id="r4" />
-                <Label
-                  htmlFor="r4"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  기타
-                </Label>
-              </div>
-            </RadioGroup>
+            <div>
+              <Label
+                htmlFor="report-details"
+                className="text-gray-700 dark:text-gray-300 mb-2"
+              >
+                상세 내용 (선택)
+              </Label>
+              <Textarea
+                id="report-details"
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                placeholder="상세한 설명을 입력해 주세요."
+                className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                rows={4}
+              />
+            </div>
           </div>
-
-          <div>
-            <Label
-              htmlFor="report-details"
-              className="text-gray-700 dark:text-gray-300 mb-2"
-            >
-              상세 내용 (선택)
-            </Label>
-            <Textarea
-              id="report-details"
-              value={details}
-              onChange={(e) => setDetails(e.target.value)}
-              placeholder="상세한 설명을 입력해 주세요."
-              className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-              rows={4}
-            />
-          </div>
-        </div>
+        )}
 
         <DialogFooter>
           <Button

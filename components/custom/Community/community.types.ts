@@ -149,7 +149,12 @@ export interface CommentTypes {
   postInfo: CommunityDetail;
   comment: CommentDataTypes;
   setReportOpen: React.Dispatch<
-    React.SetStateAction<{ open: boolean; id: string; userEmail: string }>
+    React.SetStateAction<{
+      open: boolean;
+      id: string;
+      userEmail: string;
+      reportType: string;
+    }>
   >;
 }
 
@@ -184,4 +189,16 @@ export interface PostWithCommentsSearchTypes {
 }
 export interface SearchResultViewTypes {
   postInfo: PostWithCommentsSearchTypes;
+}
+
+export interface CommentDeleteTypes {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  onClickDeleteCommentByUser: () => void;
+}
+
+export interface CommunityDeleteTypes {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  deletePostByUser: () => void;
 }
