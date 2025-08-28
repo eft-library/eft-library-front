@@ -47,7 +47,17 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [reportOpen, setReportOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState<{
+    open: boolean;
+    id: string;
+    userEmail: string;
+    reportType: string;
+  }>({
+    open: false,
+    id: "",
+    userEmail: "",
+    reportType: "",
+  });
   const isOwner = session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
@@ -225,12 +235,15 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                   postInfo.post_detail.user_email && (
                                   <button
                                     className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                    onClick={() => {
-                                      console.log(
-                                        "Block user:",
-                                        postInfo.post_detail?.nickname
-                                      );
-                                    }}
+                                    onClick={() =>
+                                      setReportOpen({
+                                        open: true,
+                                        id: postInfo.post_detail.user_email,
+                                        userEmail:
+                                          postInfo.post_detail.user_email,
+                                        reportType: "block",
+                                      })
+                                    }
                                   >
                                     <span>차단 하기</span>
                                   </button>
@@ -240,7 +253,15 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                   postInfo.post_detail.user_email && (
                                   <button
                                     className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                    onClick={() => setReportOpen(true)}
+                                    onClick={() =>
+                                      setReportOpen({
+                                        open: true,
+                                        id: postInfo.post_detail.id,
+                                        userEmail:
+                                          postInfo.post_detail.user_email,
+                                        reportType: "post",
+                                      })
+                                    }
                                   >
                                     <span>신고 하기</span>
                                   </button>
@@ -345,11 +366,13 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
         deletePostByUser={deletePostByUser}
       />
       <ReportDialog
-        open={reportOpen}
-        onOpenChange={setReportOpen}
-        subject="user"
-        subjectId={postInfo.post_detail.nickname}
-        targetEmail={postInfo.post_detail.user_email}
+        open={reportOpen.open}
+        onOpenChange={(open) =>
+          setReportOpen({ open, id: "", userEmail: "", reportType: "" })
+        }
+        subject={reportOpen.reportType ?? ""}
+        subjectId={reportOpen.id ?? ""}
+        targetEmail={reportOpen.userEmail ?? ""}
       />
     </div>
   );
