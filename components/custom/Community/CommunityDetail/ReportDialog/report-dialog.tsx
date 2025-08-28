@@ -125,7 +125,9 @@ export function ReportDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100">
         <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-white">{`신고하기`}</DialogTitle>
+          <DialogTitle className="text-gray-900 dark:text-white">
+            {subject === "block" ? "차단하기" : "신고하기"}
+          </DialogTitle>
           <DialogDescription className="text-gray-500 dark:text-gray-400">
             선택한{" "}
             {subject === "post"
@@ -137,8 +139,8 @@ export function ReportDialog({
             합니다.
           </DialogDescription>
         </DialogHeader>
-        {subject !== "block" && (
-          <div className="space-y-4">
+        <div className="space-y-4">
+          {subject !== "block" && (
             <div>
               <Label className="text-gray-700 dark:text-gray-300">
                 사유 선택
@@ -186,25 +188,25 @@ export function ReportDialog({
                 </div>
               </RadioGroup>
             </div>
+          )}
 
-            <div>
-              <Label
-                htmlFor="report-details"
-                className="text-gray-700 dark:text-gray-300 mb-2"
-              >
-                상세 내용 (선택)
-              </Label>
-              <Textarea
-                id="report-details"
-                value={details}
-                onChange={(e) => setDetails(e.target.value)}
-                placeholder="상세한 설명을 입력해 주세요."
-                className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                rows={4}
-              />
-            </div>
+          <div>
+            <Label
+              htmlFor="report-details"
+              className="text-gray-700 dark:text-gray-300 mb-2"
+            >
+              상세 내용 (선택)
+            </Label>
+            <Textarea
+              id="report-details"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="상세한 설명을 입력해 주세요."
+              className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              rows={4}
+            />
           </div>
-        )}
+        </div>
 
         <DialogFooter>
           <Button
@@ -219,7 +221,11 @@ export function ReportDialog({
             disabled={sent}
             className="bg-orange-500 hover:bg-orange-600 text-white"
           >
-            {sent ? "전송 중..." : "신고 전송"}
+            {sent
+              ? "전송 중..."
+              : subject === "block"
+              ? "차단하기"
+              : "신고하기"}
           </Button>
         </DialogFooter>
       </DialogContent>

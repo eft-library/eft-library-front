@@ -259,7 +259,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                         id: postInfo.post_detail.id,
                                         userEmail:
                                           postInfo.post_detail.user_email,
-                                        reportType: "post",
+                                        reportType: "user",
                                       })
                                     }
                                   >
