@@ -25,9 +25,12 @@ import Image from "next/image";
 import CommunitySearch from "../CommunitySearch/community-search";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useAppStore } from "@/store/provider";
+import { useEffect } from "react";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
   const locale = useLocale();
+  const { setPageCategory } = useAppStore((state) => state);
   const localeKey = getLocaleKey(locale);
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
@@ -50,6 +53,11 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
       ],
     });
   };
+
+  useEffect(() => {
+    // 카테고리 초기화
+    setPageCategory("free");
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
