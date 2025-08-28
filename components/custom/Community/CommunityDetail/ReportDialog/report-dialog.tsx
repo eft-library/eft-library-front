@@ -16,7 +16,7 @@ import {
 import { ReportDialogTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
 import { requestUserData } from "@/lib/config/api";
-import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import { COMMUNITY_ENDPOINTS, USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 
 export function ReportDialog({
   open = false,
@@ -52,11 +52,30 @@ export function ReportDialog({
         );
         onOpenChange(false);
       }
-    } else {
+    } else if (subject === "comment") {
       const data = await requestUserData(
         COMMUNITY_ENDPOINTS.REPORT_COMMENT,
         {
           comment_id: subjectId,
+          reported_email: targetEmail,
+          reason_type: reason,
+          reason: details,
+        },
+        session
+      );
+      if (data && data.status === 200 && data.data) {
+        onOpenChange(false);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        onOpenChange(false);
+      }
+    } else {
+      const data = await requestUserData(
+        USER_API_ENDPOINTS.REPORT_USER,
+        {
           reported_email: targetEmail,
           reason_type: reason,
           reason: details,
@@ -90,8 +109,13 @@ export function ReportDialog({
         <DialogHeader>
           <DialogTitle className="text-gray-900 dark:text-white">{`신고하기`}</DialogTitle>
           <DialogDescription className="text-gray-500 dark:text-gray-400">
-            선택한 {subject === "post" ? "게시글" : "댓글"}(ID: {subjectId}
-            )을(를) 신고합니다.
+            선택한{" "}
+            {subject === "post"
+              ? "게시글"
+              : subject === "comment"
+              ? "댓글"
+              : "사용자"}
+            (ID: {subjectId})을(를) 신고합니다.
           </DialogDescription>
         </DialogHeader>
 

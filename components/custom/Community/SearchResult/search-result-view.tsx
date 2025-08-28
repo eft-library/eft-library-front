@@ -57,7 +57,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
   useEffect(() => {
     // 카테고리 초기화
     setPageCategory("free");
-  }, []);
+  }, [setPageCategory]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">

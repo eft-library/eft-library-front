@@ -44,6 +44,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ReportDialog } from "./ReportDialog/report-dialog";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const locale = useLocale();
@@ -52,6 +53,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [reportOpen, setReportOpen] = useState(false);
   const isOwner = session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
@@ -224,28 +226,32 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                           </PopoverTrigger>
                           <PopoverContent className="w-48 p-2" align="start">
                             <div className="space-y-1">
-                              <button
-                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                onClick={() => {
-                                  console.log(
-                                    "Block user:",
-                                    postInfo.post_detail?.nickname
-                                  );
-                                }}
-                              >
-                                <span>차단 하기</span>
-                              </button>
-                              <button
-                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                onClick={() => {
-                                  console.log(
-                                    "Report user:",
-                                    postInfo.post_detail?.nickname
-                                  );
-                                }}
-                              >
-                                <span>신고 하기</span>
-                              </button>
+                              {session &&
+                                session.userInfo.email !==
+                                  postInfo.post_detail.user_email && (
+                                  <button
+                                    className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                    onClick={() => {
+                                      console.log(
+                                        "Block user:",
+                                        postInfo.post_detail?.nickname
+                                      );
+                                    }}
+                                  >
+                                    <span>차단 하기</span>
+                                  </button>
+                                )}
+                              {session &&
+                                session.userInfo.email !==
+                                  postInfo.post_detail.user_email && (
+                                  <button
+                                    className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                    onClick={() => setReportOpen(true)}
+                                  >
+                                    <span>신고 하기</span>
+                                  </button>
+                                )}
+
                               <button
                                 className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                                 onClick={() => {
@@ -257,17 +263,19 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                               >
                                 <span>작성 글 보기</span>
                               </button>
-                              <button
-                                className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                onClick={() => {
-                                  console.log(
-                                    "View posts by:",
-                                    postInfo.post_detail?.nickname
-                                  );
-                                }}
-                              >
-                                <span>사용자 밴</span>
-                              </button>
+                              {session && session.userInfo.is_admin && (
+                                <button
+                                  className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                  onClick={() => {
+                                    console.log(
+                                      "View posts by:",
+                                      postInfo.post_detail?.nickname
+                                    );
+                                  }}
+                                >
+                                  <span>사용자 밴</span>
+                                </button>
+                              )}
                             </div>
                           </PopoverContent>
                         </Popover>
@@ -368,6 +376,13 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <ReportDialog
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+        subject="user"
+        subjectId={postInfo.post_detail.nickname}
+        targetEmail={postInfo.post_detail.user_email}
+      />
     </div>
   );
 }

@@ -52,6 +52,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                     <Link
                       href={`/quest/detail/${quest.url_mapping}`}
                       scroll={false}
+                      target="_blank"
                     >
                       <Highlighter
                         highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
