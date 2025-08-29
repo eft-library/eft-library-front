@@ -202,3 +202,8 @@ export interface CommunityDeleteTypes {
   setOpen: (value: boolean) => void;
   deletePostByUser: () => void;
 }
+
+export interface UserPenaltyTypes {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}

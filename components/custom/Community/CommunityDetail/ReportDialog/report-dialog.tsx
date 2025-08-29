@@ -29,7 +29,6 @@ export function ReportDialog({
 
   const [reason, setReason] = useState("spam");
   const [details, setDetails] = useState("");
-  const [sent, setSent] = useState(false);
 
   const handleSubmit = async () => {
     if (subject === "post") {
@@ -110,15 +109,6 @@ export function ReportDialog({
         onOpenChange(false);
       }
     }
-
-    // Fake submit
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
-      onOpenChange(false);
-      setDetails("");
-      setReason("spam");
-    }, 1200);
   };
 
   return (
@@ -218,14 +208,9 @@ export function ReportDialog({
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={sent}
             className="bg-orange-500 hover:bg-orange-600 text-white"
           >
-            {sent
-              ? "전송 중..."
-              : subject === "block"
-              ? "차단하기"
-              : "신고하기"}
+            {subject === "block" ? "차단하기" : "신고하기"}
           </Button>
         </DialogFooter>
       </DialogContent>
