@@ -25,7 +25,7 @@ export function ReportDialog({
   subjectId,
   targetEmail,
 }: ReportDialogTypes) {
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession();
 
   const [reason, setReason] = useState("spam");
   const [details, setDetails] = useState("");
@@ -81,6 +81,13 @@ export function ReportDialog({
         session
       );
       if (data && data.status === 200 && data.data) {
+        await updateSession({
+          ...session,
+          userInfo: {
+            ...session?.userInfo,
+            user_blocks: data.data.result,
+          },
+        });
         onOpenChange(false);
       } else {
         console.error(

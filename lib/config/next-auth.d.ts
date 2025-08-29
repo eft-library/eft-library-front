@@ -18,6 +18,16 @@ declare module "next-auth" {
     nickname: string;
     is_admin: boolean;
     last_update_nickname: string;
+    end_time: string;
+    start_tiem: string;
+    user_blocks: UserBlock[];
+  }
+
+  interface UserBlock {
+    reason: str;
+    create_time: str;
+    blocked_email: str;
+    blocker_email: str;
   }
 }
 
