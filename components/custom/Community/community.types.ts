@@ -206,4 +206,5 @@ export interface CommunityDeleteTypes {
 export interface UserPenaltyTypes {
   open: boolean;
   setOpen: (value: boolean) => void;
+  targetEmail: string;
 }

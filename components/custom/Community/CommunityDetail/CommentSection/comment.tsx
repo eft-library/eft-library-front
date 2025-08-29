@@ -29,6 +29,7 @@ import { useCommentReaction } from "@/lib/hooks/useCommentReaction";
 import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { useSearchParams } from "next/navigation";
 import CommentDelete from "./comment-delete";
+import UserPenalty from "../../UserPenalty/user-penalty";
 
 export default function Comment({
   comment,
@@ -53,6 +54,7 @@ export default function Comment({
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [replying, setReplying] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openPenalty, setOpenPenalty] = useState(false);
   const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
@@ -279,7 +281,7 @@ export default function Comment({
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer transition-colors"
-                        onClick={() => onClickDeleteCommentByAdmin()}
+                        onClick={() => setOpenPenalty(true)}
                       >
                         <UserRoundX className="w-4 h-4 mr-2 text-red-500" />
                         사용자 밴
@@ -436,6 +438,11 @@ export default function Comment({
         open={open}
         setOpen={setOpen}
         onClickDeleteCommentByUser={onClickDeleteCommentByUser}
+      />
+      <UserPenalty
+        open={openPenalty}
+        setOpen={setOpenPenalty}
+        targetEmail={comment.user_email}
       />
     </div>
   );

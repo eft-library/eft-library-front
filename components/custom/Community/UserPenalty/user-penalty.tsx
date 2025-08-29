@@ -16,8 +16,14 @@ import { Label } from "@/components/ui/label";
 import { UserPenaltyTypes } from "../community.types";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
+import { useSession } from "next-auth/react";
 
-export default function UserPenalty({ open, setOpen }: UserPenaltyTypes) {
+export default function UserPenalty({
+  open,
+  setOpen,
+  targetEmail,
+}: UserPenaltyTypes) {
+  const { data: session } = useSession();
   const [selectedDuration, setSelectedDuration] = useState<string>("");
   const [reason, setReason] = useState("");
 
@@ -25,19 +31,20 @@ export default function UserPenalty({ open, setOpen }: UserPenaltyTypes) {
     const data = await requestUserData(
       USER_API_ENDPOINTS.PENALTY_USER,
       {
-        penalty_email: targetEmail,
+        user_email: targetEmail,
         reason: reason,
+        penalty: selectedDuration,
       },
       session
     );
     if (data && data.status === 200 && data.data) {
-      onOpenChange(false);
+      setOpen(false);
     } else {
       console.error(
         "Failed to fetch station data:",
         data?.msg || "Unknown error"
       );
-      onOpenChange(false);
+      setOpen(false);
     }
   };
 

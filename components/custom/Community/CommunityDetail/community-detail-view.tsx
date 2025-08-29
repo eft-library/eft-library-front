@@ -39,10 +39,12 @@ import {
 } from "@/components/ui/popover";
 import { ReportDialog } from "./ReportDialog/report-dialog";
 import CommunityDelete from "./CommunityDelete/community-delete";
+import UserPenalty from "../UserPenalty/user-penalty";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const [openPenalty, setOpenPenalty] = useState(false);
   const { data: session } = useSession();
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
@@ -281,12 +283,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                               {session && session.userInfo.is_admin && (
                                 <button
                                   className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                  onClick={() => {
-                                    console.log(
-                                      "View posts by:",
-                                      postInfo.post_detail?.nickname
-                                    );
-                                  }}
+                                  onClick={() => setOpenPenalty(true)}
                                 >
                                   <span>사용자 밴</span>
                                 </button>
@@ -373,6 +370,11 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
         subject={reportOpen.reportType ?? ""}
         subjectId={reportOpen.id ?? ""}
         targetEmail={reportOpen.userEmail ?? ""}
+      />
+      <UserPenalty
+        open={openPenalty}
+        setOpen={setOpenPenalty}
+        targetEmail={postInfo.post_detail.user_email}
       />
     </div>
   );
