@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   reactStrictMode: false,
+  experimental: {
+    scrollRestoration: true,
+  },
   async headers() {
     return [
       {

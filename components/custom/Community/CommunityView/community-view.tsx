@@ -17,6 +17,30 @@ export default function CommunityView({
   useEffect(() => {
     setPageCategory(category);
   }, [setPageCategory, category]);
+
+  // 1) 페이지 진입 시 이전 스크롤 위치 복원
+  useEffect(() => {
+    const saved = sessionStorage.getItem("scroll-community-list");
+    if (saved) {
+      window.scrollTo(0, Number(saved));
+    }
+  }, []);
+
+  // 2) 스크롤 이동 시 위치 저장
+  useEffect(() => {
+    const handleScroll = () => {
+      sessionStorage.setItem(
+        "scroll-community-list",
+        window.scrollY.toString()
+      );
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-4 py-6">
