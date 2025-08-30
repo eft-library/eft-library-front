@@ -57,6 +57,7 @@ export const USER_API_ENDPOINTS = {
   CHECK_NICKNAME_LAST_UPDATE: baseUrl + "/api/user/check_last_update_nickname",
   REPORT_USER: baseUrl + "/api/user/report_user",
   BLOCK_USER: baseUrl + "/api/user/block_user",
+  UNBLOCK_USER: baseUrl + "/api/user/unblock_user",
   PENALTY_USER: baseUrl + "/api/user/penalty_user",
 };
 

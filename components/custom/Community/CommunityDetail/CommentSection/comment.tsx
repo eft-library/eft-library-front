@@ -21,6 +21,7 @@ import {
   Ban,
   UserRoundX,
   MessageCircleX,
+  UserCheck,
 } from "lucide-react";
 import { CommentTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
@@ -31,6 +32,7 @@ import { useSearchParams } from "next/navigation";
 import CommentDelete from "./comment-delete";
 import UserPenalty from "../../UserPenalty/user-penalty";
 import { getBanStatus } from "@/lib/func/userFunction";
+import UnblockDialog from "../ReportDialog/unblock-dialog";
 
 export default function Comment({
   comment,
@@ -57,6 +59,7 @@ export default function Comment({
   const [open, setOpen] = useState(false);
   const [openPenalty, setOpenPenalty] = useState(false);
   const [replyText, setReplyText] = useState("");
+  const [unblock, setUnblock] = useState(false);
 
   useEffect(() => {
     if (commentId) {
@@ -263,17 +266,36 @@ export default function Comment({
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-                        onClick={() =>
-                          setReportOpen({
-                            open: true,
-                            id: comment.id,
-                            userEmail: comment.user_email,
-                            reportType: "block",
-                          })
-                        }
+                        onClick={() => {
+                          const isBlocked = session?.userInfo.user_blocks.some(
+                            (block) =>
+                              block.blocked_email === comment.user_email
+                          );
+
+                          if (isBlocked) {
+                            setUnblock(true); // 차단 해제 로직
+                          } else {
+                            setReportOpen({
+                              open: true,
+                              id: comment.id,
+                              userEmail: comment.user_email,
+                              reportType: "block",
+                            });
+                          }
+                        }}
                       >
-                        <Ban className="w-4 h-4 mr-2 text-red-500" />
-                        차단
+                        {session?.userInfo.user_blocks.some(
+                          (block) => block.blocked_email === comment.user_email
+                        ) ? (
+                          <UserCheck className="w-4 h-4 mr-2 text-green-500" />
+                        ) : (
+                          <Ban className="w-4 h-4 mr-2 text-red-500" />
+                        )}
+                        {session?.userInfo.user_blocks.some(
+                          (block) => block.blocked_email === comment.user_email
+                        )
+                          ? "차단 해제"
+                          : "차단"}
                       </DropdownMenuItem>
                     </>
                   )}
@@ -450,6 +472,11 @@ export default function Comment({
       <UserPenalty
         open={openPenalty}
         setOpen={setOpenPenalty}
+        targetEmail={comment.user_email}
+      />
+      <UnblockDialog
+        open={unblock}
+        onOpenChange={setUnblock}
         targetEmail={comment.user_email}
       />
     </div>

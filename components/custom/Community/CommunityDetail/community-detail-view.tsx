@@ -40,6 +40,7 @@ import {
 import { ReportDialog } from "./ReportDialog/report-dialog";
 import CommunityDelete from "./CommunityDelete/community-delete";
 import UserPenalty from "../UserPenalty/user-penalty";
+import UnblockDialog from "./ReportDialog/unblock-dialog";
 
 export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const locale = useLocale();
@@ -48,6 +49,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const { data: session } = useSession();
   const { pageCategory } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
+  const [unblock, setUnblock] = useState(false);
   const router = useRouter();
   const [reportOpen, setReportOpen] = useState<{
     open: boolean;
@@ -234,22 +236,39 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                             <div className="space-y-1">
                               {session &&
                                 session.userInfo.email !==
-                                  postInfo.post_detail.user_email && (
-                                  <button
-                                    className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                    onClick={() =>
-                                      setReportOpen({
-                                        open: true,
-                                        id: postInfo.post_detail.user_email,
-                                        userEmail:
-                                          postInfo.post_detail.user_email,
-                                        reportType: "block",
-                                      })
-                                    }
-                                  >
-                                    <span>차단 하기</span>
-                                  </button>
-                                )}
+                                  postInfo.post_detail.user_email &&
+                                (() => {
+                                  const isBlocked =
+                                    session.userInfo.user_blocks.some(
+                                      (block) =>
+                                        block.blocked_email ===
+                                        postInfo.post_detail.user_email
+                                    );
+
+                                  return isBlocked ? (
+                                    <button
+                                      className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                      onClick={() => setUnblock(true)}
+                                    >
+                                      <span>차단 해제</span>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                                      onClick={() =>
+                                        setReportOpen({
+                                          open: true,
+                                          id: postInfo.post_detail.user_email,
+                                          userEmail:
+                                            postInfo.post_detail.user_email,
+                                          reportType: "block", // 차단
+                                        })
+                                      }
+                                    >
+                                      <span>차단 하기</span>
+                                    </button>
+                                  );
+                                })()}
                               {session &&
                                 session.userInfo.email !==
                                   postInfo.post_detail.user_email && (
@@ -374,6 +393,11 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
       <UserPenalty
         open={openPenalty}
         setOpen={setOpenPenalty}
+        targetEmail={postInfo.post_detail.user_email}
+      />
+      <UnblockDialog
+        open={unblock}
+        onOpenChange={setUnblock}
         targetEmail={postInfo.post_detail.user_email}
       />
     </div>

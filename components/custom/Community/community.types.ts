@@ -50,6 +50,12 @@ export interface ReportDialogTypes {
   targetEmail: string;
 }
 
+export interface UnblockDialogTypes {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  targetEmail: string;
+}
+
 export interface CommunityDetail {
   user_email: string;
   slug: string;
