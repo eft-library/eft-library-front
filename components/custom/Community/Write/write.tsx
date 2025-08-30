@@ -21,6 +21,7 @@ import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 import { useRouter } from "next/navigation";
 import { CommunityWriteTypes } from "../community.types";
 import { useAppStore } from "@/store/provider";
+import { getBanStatus } from "@/lib/func/userFunction";
 
 export default function CommunityWrite({
   postInfo,
@@ -108,6 +109,10 @@ export default function CommunityWrite({
       console.error("Error fetching community create:", error);
     }
   };
+  const banStatus = getBanStatus(
+    session?.userInfo.start_time,
+    session?.userInfo.end_time
+  );
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -184,12 +189,36 @@ export default function CommunityWrite({
         />
       </div>
       <PostEditor onChange={setContents} initialContent={contents} />
-      <button
-        onClick={handleSave}
-        className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg"
-      >
-        저장
-      </button>
+      {banStatus === "none" && (
+        <button
+          onClick={handleSave}
+          className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg"
+        >
+          저장
+        </button>
+      )}
+      {banStatus === "permanent" && (
+        <div className="flex-1 p-4 rounded-lg border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200 text-center">
+          <p className="font-semibold">글 작성이 영구적으로 제한되었습니다.</p>
+          <p className="text-sm mt-1">관리자에게 문의해주세요.</p>
+        </div>
+      )}
+
+      {banStatus === "temporary" && (
+        <div className="flex-1 p-4 rounded-lg border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-center">
+          <p className="font-semibold">
+            현재 글 작성이 일시적으로 제한되었습니다.
+          </p>
+          <p className="text-sm mt-1">
+            제재 해제 시간:{" "}
+            <span className="font-mono">
+              {new Date(session?.userInfo.end_time ?? "").toLocaleString()}
+            </span>
+          </p>
+          <p className="text-xs mt-1">해제 후 다시 시도해주세요.</p>
+        </div>
+      )}
+
       <DefaultDialog
         open={alertStatus}
         setOpen={setAlertStatus}

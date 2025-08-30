@@ -30,6 +30,7 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { useSearchParams } from "next/navigation";
 import CommentDelete from "./comment-delete";
 import UserPenalty from "../../UserPenalty/user-penalty";
+import { getBanStatus } from "@/lib/func/userFunction";
 
 export default function Comment({
   comment,
@@ -145,6 +146,10 @@ export default function Comment({
       });
     }
   };
+  const banStatus = getBanStatus(
+    session?.userInfo.start_time,
+    session?.userInfo.end_time
+  );
 
   return (
     <div className="relative" id={`comment-${comment.id}`}>
@@ -220,13 +225,15 @@ export default function Comment({
                 >
                   {comment.user_email === userEmail ? (
                     <>
-                      <DropdownMenuItem
-                        className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-                        onClick={() => setIsEditing(true)}
-                      >
-                        <Pencil className="w-4 h-4 mr-2 text-gray-500" />
-                        수정
-                      </DropdownMenuItem>
+                      {banStatus === "none" && (
+                        <DropdownMenuItem
+                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                          onClick={() => setIsEditing(true)}
+                        >
+                          <Pencil className="w-4 h-4 mr-2 text-gray-500" />
+                          수정
+                        </DropdownMenuItem>
+                      )}
 
                       <DropdownMenuSeparator className="my-1 h-px bg-gray-100 dark:bg-gray-700" />
 
@@ -384,16 +391,17 @@ export default function Comment({
                 {comment.dislike_count}
               </span>
             </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="cursor-pointer h-8 px-3 rounded-full text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
-              onClick={() => setReplying(!replying)}
-            >
-              <Reply className="w-4 h-4 mr-1" />
-              <span className="text-sm font-medium">답글</span>
-            </Button>
+            {banStatus === "none" && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="cursor-pointer h-8 px-3 rounded-full text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+                onClick={() => setReplying(!replying)}
+              >
+                <Reply className="w-4 h-4 mr-1" />
+                <span className="text-sm font-medium">답글</span>
+              </Button>
+            )}
           </div>
 
           {/* Reply form */}

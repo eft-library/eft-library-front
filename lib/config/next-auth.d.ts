@@ -19,7 +19,7 @@ declare module "next-auth" {
     is_admin: boolean;
     last_update_nickname: string;
     end_time: string;
-    start_tiem: string;
+    start_time: string;
     user_blocks: UserBlock[];
   }
 

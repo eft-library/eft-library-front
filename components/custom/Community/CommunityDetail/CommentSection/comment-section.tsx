@@ -19,6 +19,7 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import CustomPagination from "@/components/custom/CustomPagination/custom-pagination";
 import { useSearchParams } from "next/navigation";
 import IssueComment from "./issue-comment";
+import { getBanStatus } from "@/lib/func/userFunction";
 
 export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const searchParams = useSearchParams();
@@ -80,7 +81,10 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
     queryKey: ["commentData", postInfo.id, userEmail, pageNum, commentId],
     queryFn: () => fetchCommentData(userEmail, Number(pageNum), commentId),
   });
-
+  const banStatus = getBanStatus(
+    session?.userInfo.start_time,
+    session?.userInfo.end_time
+  );
   if (isLoading || !commentData) return <Loading />;
 
   return (
@@ -105,34 +109,62 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
               />
               <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
             </Avatar> */}
-            <div className="flex-1">
-              <Textarea
-                placeholder="댓글을 작성해주세요."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-orange-400 min-h-[100px]"
-              />
-              <div className="flex items-center justify-between mt-2">
-                <div className="flex gap-2">
-                  <Button
-                    onClick={createParentCommentFunc}
-                    className="bg-orange-500 hover:bg-orange-600 text-white cursor-pointer"
-                  >
-                    <Send className="w-4 h-4 mr-1" /> 댓글 작성
-                  </Button>
-                  {newComment.length > 1 && (
+            {banStatus === "permanent" && (
+              <div className="flex-1 p-4 rounded-lg border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200 text-center">
+                <p className="font-semibold">
+                  댓글 작성이 영구적으로 제한되었습니다.
+                </p>
+                <p className="text-sm mt-1">관리자에게 문의해주세요.</p>
+              </div>
+            )}
+
+            {banStatus === "temporary" && (
+              <div className="flex-1 p-4 rounded-lg border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-center">
+                <p className="font-semibold">
+                  현재 댓글 작성이 일시적으로 제한되었습니다.
+                </p>
+                <p className="text-sm mt-1">
+                  제재 해제 시간:{" "}
+                  <span className="font-mono">
+                    {new Date(
+                      session?.userInfo.end_time ?? ""
+                    ).toLocaleString()}
+                  </span>
+                </p>
+                <p className="text-xs mt-1">해제 후 다시 시도해주세요.</p>
+              </div>
+            )}
+
+            {banStatus === "none" && (
+              <div className="flex-1">
+                <Textarea
+                  placeholder="댓글을 작성해주세요."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-orange-400 min-h-[100px]"
+                />
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex gap-2">
                     <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setNewComment("")}
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                      onClick={createParentCommentFunc}
+                      className="bg-orange-500 hover:bg-orange-600 text-white cursor-pointer"
                     >
-                      취소
+                      <Send className="w-4 h-4 mr-1" /> 댓글 작성
                     </Button>
-                  )}
+                    {newComment.length > 1 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setNewComment("")}
+                        className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                      >
+                        취소
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
