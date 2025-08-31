@@ -24,7 +24,8 @@ export default function UnblockDialog({
     const data = await requestUserData(
       USER_API_ENDPOINTS.UNBLOCK_USER,
       {
-        user_email: targetEmail,
+        blocked_email: targetEmail,
+        reason: "",
       },
       session
     );
