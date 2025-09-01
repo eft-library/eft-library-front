@@ -54,21 +54,52 @@ export async function requestPostData(
 
 export async function requestUserData(url: string, body: any, session: any) {
   try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (session?.accessToken) {
+      headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(`Network response was not ok: ${response.status}`);
     }
 
     const result: FetchSchema = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
+export async function requestGetUserData(url: string, session: any) {
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (session?.accessToken) {
+      headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.status}`);
+    }
+
+    const result: FetchSchema = await response.json();
     return result;
   } catch (error) {
     console.error(error);

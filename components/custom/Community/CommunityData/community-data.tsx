@@ -1,6 +1,6 @@
 "use client";
 
-import { requestData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 import { useSearchParams } from "next/navigation";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import Loading from "../../Loading/loading";
@@ -10,10 +10,12 @@ import type {
 } from "../community.types";
 import CommunityView from "../CommunityView/community-view";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 // 여기는 항상 최신 데이터가 보여야 하는 곳이라 캐싱을 쓰면 안되기에 react query 제거
 
 export default function CommunityData({ category }: CommunityDataTypes) {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
 
@@ -26,10 +28,11 @@ export default function CommunityData({ category }: CommunityDataTypes) {
       setIsLoading(true);
       setIsError(false);
       try {
-        const data = await requestData(
+        const data = await requestGetUserData(
           `${
             COMMUNITY_ENDPOINTS.GET_POSTS
-          }/${category}?page_num=${pageNum}&_ts=${Date.now()}`
+          }/${category}?page_num=${pageNum}&_ts=${Date.now()}`,
+          session
         );
         if (!data || data.status !== 200)
           throw new Error(data?.msg || "Failed to fetch posts");
@@ -43,7 +46,7 @@ export default function CommunityData({ category }: CommunityDataTypes) {
     };
 
     fetchCommunity();
-  }, [category, pageNum]);
+  }, [category, pageNum, session]);
 
   if (isLoading) return <Loading />;
   if (isError || !postInfo)
