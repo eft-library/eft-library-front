@@ -10,13 +10,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function CommunitySearch() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchScope, setSearchScope] = useState("all");
+  const searchParams = useSearchParams();
+  const searchType = searchParams.get("search_type") ?? "all";
+  const word = searchParams.get("word") ?? "";
+  const [searchQuery, setSearchQuery] = useState(word);
+  const [searchScope, setSearchScope] = useState(searchType);
 
   const handleSearch = () => {
     router.push(
