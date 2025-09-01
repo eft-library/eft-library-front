@@ -1,14 +1,16 @@
 "use client";
 
-import { requestData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 import { useSearchParams } from "next/navigation";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import Loading from "../../Loading/loading";
 import { useEffect, useState } from "react";
 import type { PostWithCommentsSearchTypes } from "../community.types";
 import SearchResultView from "./search-result-view";
+import { useSession } from "next-auth/react";
 
 export default function SearchResultData() {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") ?? "1";
   const searchType = searchParams.get("search_type") ?? "all";
@@ -23,10 +25,11 @@ export default function SearchResultData() {
       setIsLoading(true);
       setIsError(false);
       try {
-        const data = await requestData(
+        const data = await requestGetUserData(
           `${
             COMMUNITY_ENDPOINTS.SEARCH_POSTS
-          }?page_num=${pageNum}&word=${word}&search_type=${searchType}&_ts=${Date.now()}`
+          }?page_num=${pageNum}&word=${word}&search_type=${searchType}&_ts=${Date.now()}`,
+          session
         );
         if (!data || data.status !== 200)
           throw new Error(data?.msg || "Failed to fetch posts");
@@ -40,7 +43,7 @@ export default function SearchResultData() {
     };
 
     fetchCommunitySearch();
-  }, [searchType, pageNum, word]);
+  }, [searchType, pageNum, word, session]);
 
   if (isLoading) return <Loading />;
   if (isError || !postInfo)

@@ -29,6 +29,7 @@ import { useAppStore } from "@/store/provider";
 import { useEffect } from "react";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
+  console.log(postInfo);
   const locale = useLocale();
   const { setPageCategory } = useAppStore((state) => state);
   const localeKey = getLocaleKey(locale);
