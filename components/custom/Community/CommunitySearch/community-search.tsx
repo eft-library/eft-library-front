@@ -9,11 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { SEARCH_CATEGORY } from "@/lib/consts/community-consts";
 
 export default function CommunitySearch() {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchType = searchParams.get("search_type") ?? "all";
@@ -37,11 +42,11 @@ export default function CommunitySearch() {
           <SelectValue placeholder="검색 범위" />
         </SelectTrigger>
         <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100">
-          <SelectItem value="all">통합검색</SelectItem>
-          <SelectItem value="title">제목</SelectItem>
-          <SelectItem value="titleContent">제목+내용</SelectItem>
-          <SelectItem value="comment">댓글</SelectItem>
-          <SelectItem value="author">글쓴이</SelectItem>
+          {SEARCH_CATEGORY.map((searchCategory) => (
+            <SelectItem key={searchCategory.id} value={searchCategory.id}>
+              {searchCategory[localeKey]}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
       <div className="relative flex-1">
