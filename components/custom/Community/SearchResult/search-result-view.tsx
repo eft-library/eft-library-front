@@ -163,13 +163,18 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                         className="w-5 h-5 text-gray-500 dark:text-gray-400 shrink-0"
                                       />
                                     )}
-
-                                    <Highlighter
-                                      highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
-                                      searchWords={[word]}
-                                      autoEscape
-                                      textToHighlight={post.title}
-                                    />
+                                    {["all", "title", "titleContent"].includes(
+                                      searchType
+                                    ) ? (
+                                      <Highlighter
+                                        highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                        searchWords={[word]}
+                                        autoEscape
+                                        textToHighlight={post.title}
+                                      />
+                                    ) : (
+                                      <span>{post.title}</span>
+                                    )}
                                   </span>
                                 </h3>
                                 <Badge
@@ -188,24 +193,34 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                               </div>
 
                               <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
-                                <Highlighter
-                                  highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
-                                  searchWords={[word]}
-                                  autoEscape
-                                  textToHighlight={getPureText(post.contents)}
-                                />
+                                {["all", "titleContent"].includes(
+                                  searchType
+                                ) ? (
+                                  <Highlighter
+                                    highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                    searchWords={[word]}
+                                    autoEscape
+                                    textToHighlight={getPureText(post.contents)}
+                                  />
+                                ) : (
+                                  <span>{post.contents}</span>
+                                )}
                               </p>
 
                               <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                                 <div className="flex items-center space-x-4">
                                   <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                     <User className="w-3 h-3" />
-                                    <Highlighter
-                                      highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
-                                      searchWords={[word]}
-                                      autoEscape
-                                      textToHighlight={post.nickname}
-                                    />
+                                    {["all", "author"].includes(searchType) ? (
+                                      <Highlighter
+                                        highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                        searchWords={[word]}
+                                        autoEscape
+                                        textToHighlight={post.nickname}
+                                      />
+                                    ) : (
+                                      <span>{post.nickname}</span>
+                                    )}
                                   </span>
                                   <div className="flex items-center space-x-1">
                                     <Clock className="w-3 h-3" />
@@ -254,7 +269,20 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                   <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
                                     <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                       <User className="w-3 h-3" />
-                                      {post.comment.nickname}
+                                      {["all", "author"].includes(
+                                        searchType
+                                      ) ? (
+                                        <Highlighter
+                                          highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                          searchWords={[word]}
+                                          autoEscape
+                                          textToHighlight={
+                                            post.comment.nickname
+                                          }
+                                        />
+                                      ) : (
+                                        <span>{post.comment.nickname}</span>
+                                      )}
                                     </span>
                                     <div className="flex items-center space-x-1">
                                       <Clock className="w-3 h-3" />
@@ -268,12 +296,16 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 </div>
 
                                 <p className="text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 p-3 rounded-lg border-l-4 border-orange-400 dark:border-orange-500">
-                                  <Highlighter
-                                    highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
-                                    searchWords={[word]}
-                                    autoEscape
-                                    textToHighlight={post.comment.contents}
-                                  />
+                                  {["all", "comment"].includes(searchType) ? (
+                                    <Highlighter
+                                      highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
+                                      searchWords={[word]}
+                                      autoEscape
+                                      textToHighlight={post.comment.contents}
+                                    />
+                                  ) : (
+                                    <span>{post.comment.contents}</span>
+                                  )}
                                 </p>
                               </div>
                             </div>
