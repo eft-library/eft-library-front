@@ -34,8 +34,8 @@ export default function CommunitySideBar({
     };
 
     fetchCommunityDetail();
-  }, []);
-  console.log(sideBarData);
+  }, [session]);
+
   if (!sideBarData) return null;
 
   return (
