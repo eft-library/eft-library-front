@@ -67,6 +67,7 @@ export default function CommunityWrite({
               title: title,
               category: category.id,
               contents: contents,
+              nickname: session.userInfo.nickname ?? "",
             },
             session
           );
