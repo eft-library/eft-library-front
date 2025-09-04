@@ -7,18 +7,23 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import FollowUser from "../CommunityDetail/FollowUser/follow-user";
 import { useEffect, useState } from "react";
-import { requestData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import { useSession } from "next-auth/react";
 
 export default function CommunitySideBar({
   author_detail,
 }: CommunitySideBarTypes) {
   const [sideBarData, setSideBarData] = useState<SideBarStateTypes>();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchCommunityDetail = async () => {
       try {
-        const data = await requestData(`${COMMUNITY_ENDPOINTS.SIDE_POSTS}`);
+        const data = await requestGetUserData(
+          `${COMMUNITY_ENDPOINTS.SIDE_POSTS}`,
+          session
+        );
 
         if (!data || data.status !== 200)
           throw new Error(data?.msg || "Failed to fetch post data");
@@ -30,7 +35,7 @@ export default function CommunitySideBar({
 
     fetchCommunityDetail();
   }, []);
-
+  console.log(sideBarData);
   if (!sideBarData) return null;
 
   return (
