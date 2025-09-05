@@ -48,7 +48,11 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
 
   const createParentCommentFunc = () => {
     if (session && session.email) {
-      createParentComment.mutate({ contents: newComment });
+      createParentComment.mutate({
+        contents: newComment,
+        nickname: session.userInfo.nickname ?? "",
+        slug: postInfo.slug,
+      });
       setNewComment("");
     } else {
       setAlertDesc("로그인 사용자만 저장 가능합니다.");

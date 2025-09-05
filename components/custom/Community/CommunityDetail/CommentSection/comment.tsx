@@ -79,6 +79,8 @@ export default function Comment({
       createChildComment.mutate({
         contents: replyText,
         parent_comment_id: comment.id,
+        nickname: session.userInfo.nickname ?? "",
+        slug: postInfo.slug,
       });
       setReplyText("");
       setReplying(false);

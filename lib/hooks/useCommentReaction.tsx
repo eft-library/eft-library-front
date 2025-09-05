@@ -11,7 +11,11 @@ export function useCommentReaction(postId: string, accessToken: string) {
 
   // ---------------- 댓글 작성 ----------------
   const createParentComment = useMutation({
-    mutationFn: async (newComment: { contents: string }) => {
+    mutationFn: async (newComment: {
+      contents: string;
+      nickname: string;
+      slug: string;
+    }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_PARENT_COMMENT, {
         method: "POST",
         headers: {
@@ -50,6 +54,8 @@ export function useCommentReaction(postId: string, accessToken: string) {
     mutationFn: async (newComment: {
       contents: string;
       parent_comment_id: string;
+      nickname: string;
+      slug: string;
     }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_CHILD_COMMENT, {
         method: "POST",
