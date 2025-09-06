@@ -2,7 +2,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { COMMUNITY_ENDPOINTS } from "../config/endpoint";
 
-export function useFollowData(author_email: string, accessToken: string) {
+export function useFollowData(
+  author_email: string,
+  accessToken: string,
+  nickname: string
+) {
   const queryClient = useQueryClient();
 
   const followMutation = useMutation({
@@ -13,7 +17,10 @@ export function useFollowData(author_email: string, accessToken: string) {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ following_user_email: author_email }),
+        body: JSON.stringify({
+          following_user_email: author_email,
+          nickname: nickname,
+        }),
       });
       if (!res.ok) throw new Error("Failed to follow user");
       return res.json();

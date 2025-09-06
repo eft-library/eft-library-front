@@ -15,7 +15,8 @@ export default function FollowUser({ author_email }: FollowUserTypes) {
   const { data: session } = useSession();
   const { followMutation } = useFollowData(
     author_email,
-    session?.accessToken || ""
+    session?.accessToken || "",
+    session?.userInfo.nickname ?? ""
   );
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
