@@ -1483,6 +1483,11 @@ export const headerI18N = {
     ja: "アカウント削除",
     ko: "회원 탈퇴",
   },
+  myPage: {
+    en: "My Page (DEV)",
+    ja: "マイページ（開発中）",
+    ko: "마이 페이지 (개발중)",
+  },
 };
 
 export const exitI18N = {
