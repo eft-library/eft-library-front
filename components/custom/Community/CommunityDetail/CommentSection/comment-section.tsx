@@ -52,6 +52,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
         contents: newComment,
         nickname: session.userInfo.nickname ?? "",
         slug: postInfo.slug,
+        title: postInfo.title,
       });
       setNewComment("");
     } else {

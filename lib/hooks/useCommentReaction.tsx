@@ -15,6 +15,7 @@ export function useCommentReaction(postId: string, accessToken: string) {
       contents: string;
       nickname: string;
       slug: string;
+      title: string;
     }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_PARENT_COMMENT, {
         method: "POST",
@@ -56,6 +57,7 @@ export function useCommentReaction(postId: string, accessToken: string) {
       parent_comment_id: string;
       nickname: string;
       slug: string;
+      title: string;
     }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_CHILD_COMMENT, {
         method: "POST",

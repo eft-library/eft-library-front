@@ -81,6 +81,7 @@ export default function Comment({
         parent_comment_id: comment.id,
         nickname: session.userInfo.nickname ?? "",
         slug: postInfo.slug,
+        title: postInfo.title,
       });
       setReplyText("");
       setReplying(false);
