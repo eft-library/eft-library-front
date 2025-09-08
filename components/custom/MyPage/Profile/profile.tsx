@@ -2,7 +2,8 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Settings, Badge } from "lucide-react";
+import { Settings } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 import { requestGetUserData } from "@/lib/config/api";
@@ -11,6 +12,7 @@ import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import Loading from "../../Loading/loading";
 import { ProfileTypes } from "../my-page.types";
 import { getBanStatus } from "@/lib/func/userFunction";
+import { formatISODate } from "@/lib/func/formatTime";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -76,7 +78,7 @@ export default function Profile() {
                 {new Date(profileData.end_time ?? "").toLocaleString()}
               </span>
             </p>
-            <p className="text-xs mt-1">해제 후 다시 시도해주세요.</p>
+            <p className="text-xs mt-1">{profileData.reason}</p>
           </div>
         )}
 
@@ -90,7 +92,7 @@ export default function Profile() {
               이메일
             </label>
             <Input
-              value="user@example.com"
+              value={profileData.email}
               disabled
               className={`${
                 theme === "dark"
@@ -108,7 +110,7 @@ export default function Profile() {
               가입일
             </label>
             <Input
-              value="2023-05-15"
+              value={formatISODate(profileData.create_time)}
               disabled
               className={`${
                 theme === "dark"
@@ -133,7 +135,7 @@ export default function Profile() {
                     : "bg-gray-800 text-white"
                 }`}
               >
-                15
+                {profileData.attendance_count}
               </Badge>
             </div>
           </div>
@@ -146,7 +148,7 @@ export default function Profile() {
               포인트
             </label>
             <div className="flex items-center space-x-2">
-              <span className="text-orange-400 font-semibold">2,450P</span>
+              <span className="text-orange-400 font-semibold">도입 예정</span>
             </div>
           </div>
         </div>

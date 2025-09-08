@@ -25,6 +25,7 @@ export interface ProfileTypes {
   is_admin: boolean;
   last_update_nickname: string;
   end_time: string;
+  create_time: string;
   start_time: string;
   reason: string;
   user_blocks: UserBlock[];

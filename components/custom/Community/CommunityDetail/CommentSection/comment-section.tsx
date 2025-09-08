@@ -119,7 +119,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
                 <p className="font-semibold">
                   댓글 작성이 영구적으로 제한되었습니다.
                 </p>
-                <p className="text-sm mt-1">관리자에게 문의해주세요.</p>
+                <p className="text-sm mt-1">{session?.userInfo.reason}</p>
               </div>
             )}
 
@@ -136,7 +136,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
                     ).toLocaleString()}
                   </span>
                 </p>
-                <p className="text-xs mt-1">해제 후 다시 시도해주세요.</p>
+                <p className="text-xs mt-1">{session?.userInfo.reason}</p>
               </div>
             )}
 

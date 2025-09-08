@@ -14,6 +14,7 @@ import { useState } from "react";
 import { DefaultInfoTypes, MyPageViewTypes } from "../my-page.types";
 import Link from "next/link";
 import { MYPAGE_TAB_LIST } from "@/lib/consts/community-consts";
+import Profile from "../Profile/profile";
 
 export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
@@ -160,7 +161,7 @@ export default function MyPageView({ route }: MyPageViewTypes) {
             </button>
           </div>
         </div>
-        <div className="flex-1"></div>
+        <div className="flex-1">{route === "profile" && <Profile />}</div>
       </div>
       <UpdateNicknameWrapper open={open} setOpen={setOpen} />
     </div>

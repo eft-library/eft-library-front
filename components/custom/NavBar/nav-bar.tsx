@@ -90,16 +90,18 @@ export default function NavBar({ navData }: NavBarTypes) {
                     }`}
                   >
                     <div className="py-2">
-                      <Button
-                        variant="ghost"
-                        className={`cursor-pointer w-full text-sm transition-colors text-center justify-center h-auto py-2 ${
-                          theme === "dark"
-                            ? "text-gray-300 hover:text-orange-400 hover:bg-gray-700/50"
-                            : "text-gray-700 hover:text-orange-500 hover:bg-gray-100"
-                        }`}
-                      >
-                        {headerI18N.myPage[localeKey]}
-                      </Button>
+                      <Link href={"/mypage/profile"}>
+                        <Button
+                          variant="ghost"
+                          className={`cursor-pointer w-full text-sm transition-colors text-center justify-center h-auto py-2 ${
+                            theme === "dark"
+                              ? "text-gray-300 hover:text-orange-400 hover:bg-gray-700/50"
+                              : "text-gray-700 hover:text-orange-500 hover:bg-gray-100"
+                          }`}
+                        >
+                          {headerI18N.myPage[localeKey]}
+                        </Button>
+                      </Link>
                       <Button
                         variant="ghost"
                         onClick={() => signOut()}
@@ -248,16 +250,18 @@ export default function NavBar({ navData }: NavBarTypes) {
                   }`}
                 >
                   <div className="ml-8 mt-1 space-y-1 pb-1">
-                    <Button
-                      variant="ghost"
-                      className={`cursor-pointer w-full text-left justify-start text-sm transition-colors py-1 h-auto ${
-                        theme === "dark"
-                          ? "text-gray-300 hover:text-orange-400 hover:bg-transparent"
-                          : "text-gray-600 hover:text-orange-500 hover:bg-transparent"
-                      }`}
-                    >
-                      {headerI18N.myPage[localeKey]}
-                    </Button>
+                    <Link href={"/mypage/profile"}>
+                      <Button
+                        variant="ghost"
+                        className={`cursor-pointer w-full text-left justify-start text-sm transition-colors py-1 h-auto ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:text-orange-400 hover:bg-transparent"
+                            : "text-gray-600 hover:text-orange-500 hover:bg-transparent"
+                        }`}
+                      >
+                        {headerI18N.myPage[localeKey]}
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       onClick={() => signOut()}
