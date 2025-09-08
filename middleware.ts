@@ -12,6 +12,7 @@ export async function middleware(req: NextRequest) {
     "/community/create",
     "/community/update",
     "/onboarding",
+    "/mypage",
   ];
 
   // 로그인 안한 경우 → 커뮤니티 이슈 페이지로 이동
@@ -40,6 +41,7 @@ export const config = {
     "/community/create",
     "/community/update",
     "/onboarding",
+    "/mypage",
     "/((?!_next|api|static|favicon.ico).*)", // 다른 경로 전역 확인 원하면 추가
   ],
 };

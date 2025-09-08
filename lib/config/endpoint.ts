@@ -59,6 +59,14 @@ export const USER_API_ENDPOINTS = {
   BLOCK_USER: baseUrl + "/api/user/block_user",
   UNBLOCK_USER: baseUrl + "/api/user/unblock_user",
   PENALTY_USER: baseUrl + "/api/user/penalty_user",
+  MY_PAGE_DEFAULT: baseUrl + "/api/user/my_page/default",
+  MY_PAGE_INFO: baseUrl + "/api/user/my_page/info",
+  MY_PAGE_POSTS: baseUrl + "/api/user/my_page/posts",
+  MY_PAGE_COMMENTS: baseUrl + "/api/user/my_page/comments",
+  MY_PAGE_BOOKMARKS: baseUrl + "/api/user/my_page/bookmarks",
+  MY_PAGE_BLOCKS: baseUrl + "/api/user/my_page/blocks",
+  MY_PAGE_FOLLOW: baseUrl + "/api/user/my_page/follow",
+  MY_PAGE_NOTIFICATION: baseUrl + "/api/user/my_page/notification",
 };
 
 export const COMMUNITY_ENDPOINTS = {
