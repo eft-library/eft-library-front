@@ -20,14 +20,15 @@ declare module "next-auth" {
     last_update_nickname: string;
     end_time: string;
     start_time: string;
+    reason: string;
     user_blocks: UserBlock[];
   }
 
   interface UserBlock {
-    reason: str;
-    create_time: str;
-    blocked_email: str;
-    blocker_email: str;
+    reason: string;
+    create_time: string;
+    blocked_email: string;
+    blocker_email: string;
   }
 }
 

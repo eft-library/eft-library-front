@@ -11,15 +11,13 @@ import { useSession } from "next-auth/react";
 import { requestGetUserData } from "@/lib/config/api";
 import Loading from "../../Loading/loading";
 import { useState } from "react";
-import { DefaultInfoTypes } from "../my-page.types";
+import { DefaultInfoTypes, MyPageViewTypes } from "../my-page.types";
 import Link from "next/link";
 import { MYPAGE_TAB_LIST } from "@/lib/consts/community-consts";
-import { useSearchParams } from "next/navigation";
 
-export default function MyPageView() {
+export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
   const { theme } = useTheme();
-  const param = useSearchParams();
   const [open, setOpen] = useState(false);
 
   const fetchDefaultData = async () => {
@@ -131,7 +129,7 @@ export default function MyPageView() {
               <Link key={tab.id} href={tab.link}>
                 <button
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                    param.get("id") === tab.id
+                    route === tab.id
                       ? theme === "dark"
                         ? "bg-orange-400/20 text-white border border-orange-400/30"
                         : "bg-orange-50 text-orange-800 border border-orange-200"
@@ -162,6 +160,7 @@ export default function MyPageView() {
             </button>
           </div>
         </div>
+        <div className="flex-1"></div>
       </div>
       <UpdateNicknameWrapper open={open} setOpen={setOpen} />
     </div>

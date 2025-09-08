@@ -6,10 +6,33 @@ export interface DefaultInfoTypes {
 }
 
 export interface UpdateNicknameFormProps {
-  onSuccess?: () => void; // 닉네임 변경 완료 후 callback
+  onSuccess?: () => void;
+}
+
+export interface MyPageViewTypes {
+  route: string;
 }
 
 export interface UpdateNicknameWrapperTypes {
   open: boolean;
   setOpen: (open: boolean) => void;
+}
+
+export interface ProfileTypes {
+  email: string;
+  attendance_count: number;
+  nickname: string;
+  is_admin: boolean;
+  last_update_nickname: string;
+  end_time: string;
+  start_time: string;
+  reason: string;
+  user_blocks: UserBlock[];
+}
+
+interface UserBlock {
+  reason: string;
+  create_time: string;
+  blocked_email: string;
+  blocker_email: string;
 }
