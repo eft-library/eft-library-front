@@ -30,7 +30,7 @@ export default function Profile() {
   };
 
   const { data: profileData, isLoading } = useQuery<ProfileTypes>({
-    queryKey: ["myPagePRofileData"],
+    queryKey: ["myPageProfileData"],
     queryFn: () => fetchProfileData(),
   });
 

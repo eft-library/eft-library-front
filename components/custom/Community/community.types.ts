@@ -206,7 +206,8 @@ export interface CommentDeleteTypes {
 export interface CommunityDeleteTypes {
   open: boolean;
   setOpen: (value: boolean) => void;
-  deletePostByUser: () => void;
+  postId: string;
+  routeLink: string;
 }
 
 export interface UserPenaltyTypes {

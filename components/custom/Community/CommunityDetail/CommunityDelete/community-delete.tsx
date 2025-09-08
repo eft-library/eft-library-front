@@ -9,12 +9,39 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CommunityDeleteTypes } from "../../community.types";
+import { requestUserData } from "@/lib/config/api";
+import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function CommunityDelete({
   open,
   setOpen,
-  deletePostByUser,
+  postId,
+  routeLink,
 }: CommunityDeleteTypes) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const deletePostByUser = async () => {
+    if (session && session.email) {
+      const data = await requestUserData(
+        COMMUNITY_ENDPOINTS.DELETE_POST_BY_USER,
+        { post_id: postId },
+        session
+      );
+
+      if (data && data.status === 200 && data.data) {
+        router.push(routeLink);
+      } else {
+        console.error(
+          "Failed to fetch station data:",
+          data?.msg || "Unknown error"
+        );
+        router.push(routeLink);
+      }
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[400px]">

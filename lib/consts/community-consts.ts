@@ -35,12 +35,12 @@ export const SEARCH_CATEGORY = [
 
 export const MYPAGE_TAB_LIST = [
   { id: "profile", ko: "사용자 정보", link: "/mypage/profile" },
-  { id: "posts", ko: "작성 글", link: "/mypage/posts" },
-  { id: "comments", ko: "작성 댓글", link: "/mypage/comments" },
-  { id: "bookmarks", ko: "북마크", link: "/mypage/bookmarks" },
-  { id: "following", ko: "팔로잉", link: "/mypage/following" },
-  { id: "blocked", ko: "차단 목록", link: "/mypage/blocked" },
-  { id: "notifications", ko: "알림", link: "/mypage/notifications" },
+  { id: "posts", ko: "작성 글", link: "/mypage/posts?page=1" },
+  { id: "comments", ko: "작성 댓글", link: "/mypage/comments?page=1" },
+  { id: "bookmarks", ko: "북마크", link: "/mypage/bookmarks?page=1" },
+  { id: "following", ko: "팔로잉", link: "/mypage/following?page=1" },
+  { id: "blocked", ko: "차단 목록", link: "/mypage/blocked?page=1" },
+  { id: "notifications", ko: "알림", link: "/mypage/notifications?page=1" },
 ];
 
 // [ 아이콘만 쓸 거

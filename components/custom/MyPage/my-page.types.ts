@@ -37,3 +37,24 @@ interface UserBlock {
   blocked_email: string;
   blocker_email: string;
 }
+
+export interface PostsTypes {
+  total_count: number;
+  max_page_count: number;
+  posts: PostTypes[];
+}
+
+interface PostTypes {
+  id: string;
+  slug: string;
+  user_email: string;
+  category: string;
+  title: string;
+  contents: string;
+  thumbnail: string;
+  view_count: number;
+  comment_count: number;
+  reaction_score: number;
+  create_time: string;
+  update_time: string;
+}

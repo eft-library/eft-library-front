@@ -72,26 +72,6 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
     router.push(`/community/${postInfo.post_detail.category}`);
   };
 
-  const deletePostByUser = async () => {
-    if (session && session.email) {
-      const data = await requestUserData(
-        COMMUNITY_ENDPOINTS.DELETE_POST_BY_USER,
-        { post_id: postInfo.post_detail.id },
-        session
-      );
-
-      if (data && data.status === 200 && data.data) {
-        router.push(`/community/${postInfo.post_detail.category}`);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        router.push("/community/issue");
-      }
-    }
-  };
-
   const deletePostByAdmin = async () => {
     if (session && session.email) {
       const data = await requestUserData(
@@ -379,7 +359,8 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
       <CommunityDelete
         open={open}
         setOpen={setOpen}
-        deletePostByUser={deletePostByUser}
+        postId={postInfo.post_detail.id}
+        routeLink="/community/issue"
       />
       <ReportDialog
         open={reportOpen.open}
