@@ -13,6 +13,7 @@ import { requestUserData } from "@/lib/config/api";
 import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useDeletePostByUser } from "@/lib/hooks/useDeletePost";
 
 export default function CommunityDelete({
   open,
@@ -21,26 +22,10 @@ export default function CommunityDelete({
   routeLink,
 }: CommunityDeleteTypes) {
   const { data: session } = useSession();
-  const router = useRouter();
-  const deletePostByUser = async () => {
-    if (session && session.email) {
-      const data = await requestUserData(
-        COMMUNITY_ENDPOINTS.DELETE_POST_BY_USER,
-        { post_id: postId },
-        session
-      );
-
-      if (data && data.status === 200 && data.data) {
-        router.push(routeLink);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        router.push(routeLink);
-      }
-    }
-  };
+  const { mutate: deletePostByUser } = useDeletePostByUser(
+    routeLink,
+    session?.accessToken ?? ""
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -65,7 +50,7 @@ export default function CommunityDelete({
             className=" cursor-pointer"
             size="sm"
             onClick={() => {
-              deletePostByUser();
+              deletePostByUser(postId);
               setOpen(false);
             }}
           >
