@@ -71,10 +71,10 @@ export default function Comments() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 mb-4">
           {commentsData.comments.map((comment) => (
             <div
-              key={comment.id}
+              key={comment.comment.id}
               className={`p-4 rounded-lg border transition-colors cursor-pointer relative ${
                 theme === "dark"
                   ? "border-gray-700/50 hover:border-orange-400/50 hover:bg-gray-700/30"

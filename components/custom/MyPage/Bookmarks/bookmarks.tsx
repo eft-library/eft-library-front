@@ -11,6 +11,8 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Loading from "../../Loading/loading";
 import { BookmarksTypes } from "../my-page.types";
+import CustomPagination from "../../CustomPagination/custom-pagination";
+import { formatISODateTime } from "@/lib/func/formatTime";
 
 export default function Bookmarks() {
   const { data: session, status } = useSession();
@@ -25,7 +27,7 @@ export default function Bookmarks() {
   const fetchPostsData = async () => {
     const data = await requestGetUserData(
       `${
-        USER_API_ENDPOINTS.MY_PAGE_POSTS
+        USER_API_ENDPOINTS.MY_PAGE_BOOKMARKS
       }?page_num=${pageNum}&_ts=${Date.now()}`,
       session
     );
@@ -58,12 +60,12 @@ export default function Bookmarks() {
           }`}
         >
           <Bookmark className="w-5 h-5" />
-          <span>북마크한 게시글 ({bookmarkedPosts.length})</span>
+          <span>북마크한 게시글 ({bookmarksData.total_count})</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {getPaginatedData(bookmarkedPosts, bookmarksPage).map((post) => (
+        <div className="space-y-4 mb-4">
+          {bookmarksData.bookmarks.map((post) => (
             <div
               key={post.id}
               className={`p-4 rounded-lg border transition-colors cursor-pointer relative ${
@@ -73,11 +75,11 @@ export default function Bookmarks() {
               }`}
             >
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedBookmarkPost(post);
-                  setShowBookmarkModal(true);
-                }}
+                // onClick={(e) => {
+                //   e.stopPropagation();
+                //   setSelectedBookmarkPost(post);
+                //   setShowBookmarkModal(true);
+                // }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                   theme === "dark"
                     ? "text-gray-400 hover:text-white hover:bg-gray-700"
@@ -100,18 +102,21 @@ export default function Bookmarks() {
                 }`}
               >
                 <span>
-                  작성자: <span className="text-orange-400">{post.author}</span>
+                  작성자:{" "}
+                  <span className="text-orange-400">{post.nickname}</span>
                 </span>
-                <span>{post.date}</span>
+                <span>{formatISODateTime(post.create_time)}</span>
               </div>
             </div>
           ))}
         </div>
-        <SimplePagination
-          currentPage={bookmarksPage}
-          totalPages={getTotalPages(bookmarkedPosts.length)}
-          paginate={setBookmarksPage}
-        />
+        {bookmarksData.total_count > 0 && (
+          <CustomPagination
+            total={bookmarksData.max_page_count}
+            routeLink={`/mypage/posts?page=`}
+            currentPage={Number(pageNum)}
+          />
+        )}
       </CardContent>
     </Card>
   );

@@ -85,3 +85,16 @@ export interface BookmarksTypes {
   max_page_count: number;
   bookmarks: PostTypes[];
 }
+
+export interface FollowingTypes {
+  total_count: number;
+  max_page_count: number;
+  follow: FollowTypes[];
+}
+
+interface FollowTypes {
+  following_email: string;
+  create_time: string;
+  nickname: string;
+  post_count: number;
+}
