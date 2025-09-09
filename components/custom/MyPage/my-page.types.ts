@@ -50,6 +50,7 @@ interface PostTypes {
   slug: string;
   user_email: string;
   category: string;
+  nickname: string;
   title: string;
   contents: string;
   thumbnail: string;
@@ -77,4 +78,10 @@ interface CommentDataTypes {
   create_time: string;
   nickname: string;
   update_time: string;
+}
+
+export interface BookmarksTypes {
+  total_count: number;
+  max_page_count: number;
+  bookmarks: PostTypes[];
 }
