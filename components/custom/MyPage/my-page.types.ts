@@ -59,3 +59,22 @@ interface PostTypes {
   create_time: string;
   update_time: string;
 }
+
+export interface CommentsTypes {
+  total_count: number;
+  max_page_count: number;
+  comments: CommentTypes[];
+}
+
+interface CommentTypes extends PostTypes {
+  comment: CommentDataTypes;
+}
+
+interface CommentDataTypes {
+  id: string;
+  contents: string;
+  user_email: string;
+  create_time: string;
+  nickname: string;
+  update_time: string;
+}

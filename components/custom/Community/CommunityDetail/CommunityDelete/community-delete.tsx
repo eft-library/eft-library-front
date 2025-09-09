@@ -9,11 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CommunityDeleteTypes } from "../../community.types";
-import { requestUserData } from "@/lib/config/api";
-import { COMMUNITY_ENDPOINTS } from "@/lib/config/endpoint";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useDeletePostByUser } from "@/lib/hooks/useDeletePost";
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
 
 export default function CommunityDelete({
   open,
@@ -22,10 +19,7 @@ export default function CommunityDelete({
   routeLink,
 }: CommunityDeleteTypes) {
   const { data: session } = useSession();
-  const { mutate: deletePostByUser } = useDeletePostByUser(
-    routeLink,
-    session?.accessToken ?? ""
-  );
+  const { deletePostByUser } = useMyPageReaction(session?.accessToken ?? "");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -50,7 +44,7 @@ export default function CommunityDelete({
             className=" cursor-pointer"
             size="sm"
             onClick={() => {
-              deletePostByUser(postId);
+              deletePostByUser.mutate({ postId, routeLink });
               setOpen(false);
             }}
           >

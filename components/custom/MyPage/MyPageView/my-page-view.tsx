@@ -17,6 +17,7 @@ import { MYPAGE_TAB_LIST } from "@/lib/consts/community-consts";
 import Profile from "../Profile/profile";
 import Posts from "../Posts/posts";
 import { Badge } from "@/components/ui/badge";
+import Comments from "../Comments/comments";
 
 export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
@@ -166,7 +167,8 @@ export default function MyPageView({ route }: MyPageViewTypes) {
           </div>
         </div>
         <div className="flex-1">
-          {route === "profile" && <Profile />} {route === "posts" && <Posts />}
+          {route === "profile" && <Profile />} {route === "posts" && <Posts />}{" "}
+          {route === "comments" && <Comments />}
         </div>
       </div>
       <UpdateNicknameWrapper open={open} setOpen={setOpen} />
