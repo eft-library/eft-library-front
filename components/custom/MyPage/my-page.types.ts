@@ -131,3 +131,13 @@ export interface NotificationTypes {
 export interface WithdrawModalTypes {
   setShowWithdrawModal: (open: boolean) => void;
 }
+
+export interface UnBlockTypes {
+  blockInfo: BlockTypes;
+  setDeleteBlock: React.Dispatch<
+    React.SetStateAction<{
+      blocked_email: string;
+      deleteOpen: boolean;
+    }>
+  >;
+}

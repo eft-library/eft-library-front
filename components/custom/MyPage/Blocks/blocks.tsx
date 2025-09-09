@@ -72,10 +72,12 @@ export default function Blocks() {
               }`}
             >
               <button
-                // onClick={() => {
-                //   setSelectedBlockedUser(user);
-                //   setShowUnblockModal(true);
-                // }}
+                onClick={() => {
+                  setDeleteBlock({
+                    blocked_email: user.blocked_email,
+                    deleteOpen: true,
+                  });
+                }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                   theme === "dark"
                     ? "text-gray-400 hover:text-red-400 hover:bg-red-500/20"
