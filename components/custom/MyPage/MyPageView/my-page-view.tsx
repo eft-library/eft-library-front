@@ -22,11 +22,13 @@ import Bookmarks from "../Bookmarks/bookmarks";
 import Following from "../Following/following";
 import Blocks from "../Blocks/blocks";
 import Notifications from "../Notifications/notifications";
+import WithdrawModal from "../Modal/withdraw-modal";
 
 export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
   const { theme } = useTheme();
-  const [open, setOpen] = useState(false);
+  const [nicknameUpdateOpen, setNicknameUpdateOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const fetchDefaultData = async () => {
     const data = await requestGetUserData(
@@ -69,7 +71,7 @@ export default function MyPageView({ route }: MyPageViewTypes) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => setOpen(true)}
+                  onClick={() => setNicknameUpdateOpen(true)}
                   className={`${
                     theme === "dark"
                       ? "text-gray-300 hover:text-white hover:bg-gray-700"
@@ -158,7 +160,7 @@ export default function MyPageView({ route }: MyPageViewTypes) {
             ))}
 
             <button
-              // onClick={() => setShowWithdrawModal(true)}
+              onClick={() => setWithdrawOpen(true)}
               className={`w-full flex items-center space-x-3 px-4 py-3 transition-all duration-200 mt-4 border-t pt-4 rounded ${
                 theme === "dark"
                   ? "text-red-300 hover:text-red-200 hover:bg-red-500/10 border-gray-700"
@@ -180,7 +182,11 @@ export default function MyPageView({ route }: MyPageViewTypes) {
           {route === "notifications" && <Notifications />}
         </div>
       </div>
-      <UpdateNicknameWrapper open={open} setOpen={setOpen} />
+      <UpdateNicknameWrapper
+        open={nicknameUpdateOpen}
+        setOpen={setNicknameUpdateOpen}
+      />
+      {withdrawOpen && <WithdrawModal setShowWithdrawModal={setWithdrawOpen} />}
     </div>
   );
 }

@@ -127,3 +127,7 @@ export interface NotificationTypes {
   is_read: string;
   created_time: string;
 }
+
+export interface WithdrawModalTypes {
+  setShowWithdrawModal: (open: boolean) => void;
+}

@@ -198,7 +198,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
 
   return (
     <ViewWrapper>
-      <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* 헤더 */}
           <div className="text-center mb-8">
