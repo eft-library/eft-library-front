@@ -20,6 +20,8 @@ import { Badge } from "@/components/ui/badge";
 import Comments from "../Comments/comments";
 import Bookmarks from "../Bookmarks/bookmarks";
 import Following from "../Following/following";
+import Blocks from "../Blocks/blocks";
+import Notifications from "../Notifications/notifications";
 
 export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
@@ -169,10 +171,13 @@ export default function MyPageView({ route }: MyPageViewTypes) {
           </div>
         </div>
         <div className="flex-1">
-          {route === "profile" && <Profile />} {route === "posts" && <Posts />}
+          {route === "profile" && <Profile />}
           {route === "comments" && <Comments />}
+          {route === "posts" && <Posts />}
           {route === "bookmarks" && <Bookmarks />}
           {route === "following" && <Following />}
+          {route === "blocked" && <Blocks />}
+          {route === "notifications" && <Notifications />}
         </div>
       </div>
       <UpdateNicknameWrapper open={open} setOpen={setOpen} />

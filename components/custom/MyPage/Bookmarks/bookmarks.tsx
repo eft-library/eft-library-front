@@ -105,7 +105,7 @@ export default function Bookmarks() {
                   작성자:{" "}
                   <span className="text-orange-400">{post.nickname}</span>
                 </span>
-                <span>{formatISODateTime(post.create_time)}</span>
+                <span>북마크 날짜: {formatISODateTime(post.create_time)}</span>
               </div>
             </div>
           ))}

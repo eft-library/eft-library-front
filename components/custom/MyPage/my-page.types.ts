@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface DefaultInfoTypes {
   email: string;
   comment_count: number;
@@ -97,4 +98,32 @@ interface FollowTypes {
   create_time: string;
   nickname: string;
   post_count: number;
+}
+
+export interface BlocksTypes {
+  total_count: number;
+  max_page_count: number;
+  blocks: BlockTypes[];
+}
+
+interface BlockTypes {
+  blocker_email: string;
+  blocked_email: string;
+  nickname: string;
+  reason: string;
+  create_time: string;
+}
+
+export interface NotificationsTypes {
+  total_count: number;
+  max_page_count: number;
+  notifications: NotificationTypes[];
+}
+
+export interface NotificationTypes {
+  user_email: string;
+  noti_type: string;
+  payload: any;
+  is_read: string;
+  created_time: string;
 }
