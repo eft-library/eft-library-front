@@ -1,3 +1,13 @@
+import {
+  UserLock,
+  User,
+  Bookmark,
+  Users,
+  MessageSquare,
+  Reply,
+  Bell,
+} from "lucide-react";
+
 export const CATEGORY_LIST = [
   { id: "issue", color: "bg-pink-600", ko: "인기글", ja: "人気", en: "Hot" },
   { id: "free", color: "bg-orange-600", ko: "자유", ja: "自由", en: "Free" },
@@ -34,21 +44,41 @@ export const SEARCH_CATEGORY = [
 ];
 
 export const MYPAGE_TAB_LIST = [
-  { id: "profile", ko: "사용자 정보", link: "/mypage/profile" },
-  { id: "posts", ko: "작성 글", link: "/mypage/posts?page=1" },
-  { id: "comments", ko: "작성 댓글", link: "/mypage/comments?page=1" },
-  { id: "bookmarks", ko: "북마크", link: "/mypage/bookmarks?page=1" },
-  { id: "following", ko: "팔로잉", link: "/mypage/following?page=1" },
-  { id: "blocked", ko: "차단 목록", link: "/mypage/blocked?page=1" },
-  { id: "notifications", ko: "알림", link: "/mypage/notifications?page=1" },
+  { id: "profile", ko: "사용자 정보", link: "/mypage/profile", icon: User },
+  {
+    id: "posts",
+    ko: "작성 글",
+    link: "/mypage/posts?page=1",
+    icon: MessageSquare,
+  },
+  {
+    id: "comments",
+    ko: "작성 댓글",
+    link: "/mypage/comments?page=1",
+    icon: Reply,
+  },
+  {
+    id: "bookmarks",
+    ko: "북마크",
+    link: "/mypage/bookmarks?page=1",
+    icon: Bookmark,
+  },
+  {
+    id: "following",
+    ko: "팔로잉",
+    link: "/mypage/following?page=1",
+    icon: Users,
+  },
+  {
+    id: "blocked",
+    ko: "차단 목록",
+    link: "/mypage/blocked?page=1",
+    icon: UserLock,
+  },
+  {
+    id: "notifications",
+    ko: "알림",
+    link: "/mypage/notifications?page=1",
+    icon: Bell,
+  },
 ];
-
-// [ 아이콘만 쓸 거
-//         { id: "profile", label: "사용자 정보", icon: User },
-//         { id: "posts", label: "작성 글", icon: MessageSquare },
-//         { id: "comments", label: "작성 댓글", icon: Reply },
-//         { id: "bookmarks", label: "북마크", icon: Bookmark },
-//         { id: "following", label: "팔로잉", icon: Users },
-//         { id: "blocked", label: "차단 목록", icon: UserLock }, // UserX에서 UserLock으로 아이콘 변경
-//         { id: "notifications", label: "알림", icon: Bell },
-//       ]

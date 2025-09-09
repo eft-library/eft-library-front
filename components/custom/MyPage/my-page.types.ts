@@ -3,6 +3,7 @@ export interface DefaultInfoTypes {
   comment_count: number;
   post_count: number;
   follow_count: number;
+  notification_count: number;
 }
 
 export interface UpdateNicknameFormProps {

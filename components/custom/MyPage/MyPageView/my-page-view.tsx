@@ -16,6 +16,7 @@ import Link from "next/link";
 import { MYPAGE_TAB_LIST } from "@/lib/consts/community-consts";
 import Profile from "../Profile/profile";
 import Posts from "../Posts/posts";
+import { Badge } from "@/components/ui/badge";
 
 export default function MyPageView({ route }: MyPageViewTypes) {
   const { data: session } = useSession();
@@ -140,11 +141,13 @@ export default function MyPageView({ route }: MyPageViewTypes) {
                       : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
-                  {/* <tab.icon className="w-5 h-5" /> */}
+                  <tab.icon className="w-5 h-5" />
                   <span>{tab.ko}</span>
-                  {/* {tab.id === "notifications" && (
-              <Badge className="ml-auto bg-orange-400 text-white">2</Badge>
-            )} */}
+                  {tab.id === "notifications" && (
+                    <Badge className="ml-auto bg-orange-400 text-white">
+                      {defaultData.notification_count}
+                    </Badge>
+                  )}
                 </button>
               </Link>
             ))}
