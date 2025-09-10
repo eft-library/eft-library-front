@@ -43,10 +43,10 @@ export default function CommunityDelete({
             variant="destructive"
             className=" cursor-pointer"
             size="sm"
-            onClick={() => {
-              deletePostByUser.mutate({ postId, routeLink });
-              setOpen(false);
-            }}
+            // onClick={() => {
+            //   deletePostByUser.mutate({ postId, routeLink });
+            //   setOpen(false);
+            // }}
           >
             삭제
           </Button>
