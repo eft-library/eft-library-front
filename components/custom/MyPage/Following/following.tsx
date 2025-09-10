@@ -11,16 +11,17 @@ import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Loading from "../../Loading/loading";
-import { FollowingTypes } from "../my-page.types";
+import { FollowingTypes, UnfollowStateTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
+import UnFollowModal from "../Modal/unfollow-modal";
 
 export default function Following() {
   const { data: session, status } = useSession();
   const { theme } = useTheme();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  const [deleteFollow, setDeleteFollow] = useState({
-    follwingEmail: "",
+  const [deleteFollow, setDeleteFollow] = useState<UnfollowStateTypes>({
+    followInfo: null,
     deleteOpen: false,
   });
 
@@ -38,7 +39,7 @@ export default function Following() {
   };
 
   const { data: followData, isLoading } = useQuery<FollowingTypes>({
-    queryKey: ["myPageFollowData"],
+    queryKey: ["myPageFollowData", pageNum],
     queryFn: () => fetchFollowsData(),
     enabled: status === "authenticated",
   });
@@ -65,9 +66,9 @@ export default function Following() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4 mb-4">
-          {followData.follow.map((user) => (
+          {followData.follow.map((user, index) => (
             <div
-              key={user.following_email}
+              key={`${index}-${user.following_email}`}
               className={`flex items-center justify-between p-4 rounded-lg border ${
                 theme === "dark" ? "border-gray-700/50" : "border-gray-200"
               }`}
@@ -93,10 +94,9 @@ export default function Following() {
               <Button
                 size="sm"
                 variant="outline"
-                // onClick={() => {
-                //   setSelectedFollowingUser(user);
-                //   setShowUnfollowModal(true);
-                // }}
+                onClick={() => {
+                  setDeleteFollow({ deleteOpen: true, followInfo: user });
+                }}
                 className="border-[#e03131] dark:border-[#ff6b6b] text-[#e03131] dark:text-[#ff6b6b] hover:bg-[#e03131] dark:hover:bg-[#ff6b6b] hover:text-white dark:hover:text-white active:bg-[#c92a2a] dark:active:bg-[#e03131] bg-transparent"
               >
                 언팔로우
@@ -109,6 +109,12 @@ export default function Following() {
             total={followData.max_page_count}
             routeLink={`/mypage/following?page=`}
             currentPage={Number(pageNum)}
+          />
+        )}
+        {deleteFollow.deleteOpen && (
+          <UnFollowModal
+            setDeleteFollow={setDeleteFollow}
+            followInfo={deleteFollow.followInfo}
           />
         )}
       </CardContent>

@@ -18,9 +18,9 @@ export default function UnFollowModal({
   const deleteFollowUser = () => {
     deleteFollow.mutate({
       nickname: session?.userInfo.nickname ?? "",
-      following_user_email: followInfo.follower_email,
+      following_user_email: followInfo?.follower_email || "",
     });
-    setDeleteFollow({ follwingEmail: "", deleteOpen: false });
+    setDeleteFollow({ followInfo: null, deleteOpen: false });
   };
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -42,7 +42,7 @@ export default function UnFollowModal({
             </h3>
             <button
               onClick={() => {
-                setDeleteFollow({ follwingEmail: "", deleteOpen: false });
+                setDeleteFollow({ followInfo: null, deleteOpen: false });
               }}
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
@@ -65,7 +65,7 @@ export default function UnFollowModal({
                   theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
                 }`}
               >
-                {followInfo.nickname}
+                {followInfo?.nickname ?? ""}
               </span>{" "}
               을 팔로우 취소하시겠습니까?
             </p>
@@ -81,7 +81,7 @@ export default function UnFollowModal({
             <Button
               variant="outline"
               onClick={() => {
-                setDeleteFollow({ follwingEmail: "", deleteOpen: false });
+                setDeleteFollow({ followInfo: null, deleteOpen: false });
               }}
               className={`flex-1 ${
                 theme === "dark"

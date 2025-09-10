@@ -16,9 +16,9 @@ export default function UnBlockModal({
   const { deleteBlock } = useMyPageReaction(session?.accessToken ?? "");
 
   const deleteBlockUser = () => {
-    deleteBlock.mutate({ targetEmail: blockInfo.blocked_email });
+    deleteBlock.mutate({ targetEmail: blockInfo?.blocked_email ?? "" });
     setDeleteBlock({
-      blocked_email: "",
+      blockInfo: null,
       deleteOpen: false,
     });
   };
@@ -43,7 +43,7 @@ export default function UnBlockModal({
             </h3>
             <button
               onClick={() => {
-                setDeleteBlock({ blocked_email: "", deleteOpen: false });
+                setDeleteBlock({ blockInfo: null, deleteOpen: false });
               }}
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
@@ -66,11 +66,11 @@ export default function UnBlockModal({
                   theme === "dark" ? "text-[#ff6b6b]" : "text-[#e03131]"
                 }`}
               >
-                {blockInfo.nickname}
+                {blockInfo?.nickname ?? ""}
               </span>{" "}
               사용자의 차단을 해제하시겠습니까?
             </p>
-            <p className="text-sm">차단 사유: {blockInfo.reason}</p>
+            <p className="text-sm">차단 사유: {blockInfo?.reason ?? ""}</p>
           </div>
 
           <div className="flex space-x-3">
@@ -83,7 +83,7 @@ export default function UnBlockModal({
             <Button
               variant="outline"
               onClick={() => {
-                setDeleteBlock({ blocked_email: "", deleteOpen: false });
+                setDeleteBlock({ blockInfo: null, deleteOpen: false });
               }}
               className={`flex-1 border-0 ${
                 theme === "dark"

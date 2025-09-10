@@ -18,8 +18,14 @@ export const useMyPageReaction = (accessToken: string) => {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myPageDefaultData"] });
-      queryClient.invalidateQueries({ queryKey: ["myPagePostsData"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageDefaultData"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myPagePostsData"],
+        exact: false,
+      });
     },
     onError: (error: any) => {
       console.error("Failed to delete post:", error.message);
@@ -41,8 +47,14 @@ export const useMyPageReaction = (accessToken: string) => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myPageDefaultData"] });
-      queryClient.invalidateQueries({ queryKey: ["myPageCommentsData"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageDefaultData"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageCommentsData"],
+        exact: false,
+      });
     },
     onError: (error: any) => {
       console.error("Failed to delete comment:", error.message);
@@ -64,7 +76,10 @@ export const useMyPageReaction = (accessToken: string) => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myPageBookmarksData"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageBookmarksData"],
+        exact: false,
+      });
     },
     onError: (error: any) => {
       console.error("Failed to delete comment:", error.message);
@@ -92,8 +107,14 @@ export const useMyPageReaction = (accessToken: string) => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myPageDefaultData"] });
-      queryClient.invalidateQueries({ queryKey: ["myPageFollowData"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageDefaultData"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageFollowData"],
+        exact: false,
+      });
     },
     onError: (error: any) => {
       console.error("Failed to delete comment:", error.message);
@@ -118,7 +139,10 @@ export const useMyPageReaction = (accessToken: string) => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myPageBlocksData"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myPageBlocksData"],
+        exact: false,
+      });
     },
     onError: (error: any) => {
       console.error("Failed to delete comment:", error.message);

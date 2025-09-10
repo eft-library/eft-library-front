@@ -134,51 +134,76 @@ export interface WithdrawModalTypes {
 }
 
 export interface UnBlockTypes {
-  blockInfo: BlockTypes;
+  blockInfo: BlockTypes | null;
   setDeleteBlock: React.Dispatch<
     React.SetStateAction<{
-      blocked_email: string;
+      blockInfo: BlockTypes | null;
       deleteOpen: boolean;
     }>
   >;
+}
+
+export interface DeleteBlockTypes {
+  blockInfo: BlockTypes | null;
+  deleteOpen: boolean;
 }
 
 export interface UnfollowTypes {
-  followInfo: FollowTypes;
+  followInfo: FollowTypes | null;
   setDeleteFollow: React.Dispatch<
     React.SetStateAction<{
-      follwingEmail: string;
+      followInfo: FollowTypes | null;
       deleteOpen: boolean;
     }>
   >;
+}
+
+export interface UnfollowStateTypes {
+  followInfo: FollowTypes | null;
+  deleteOpen: boolean;
 }
 
 export interface DeleteBookmarkTypes {
-  bookmarkInfo: PostTypes;
+  bookmarkInfo: PostTypes | null;
   setDeleteBookmark: React.Dispatch<
     React.SetStateAction<{
-      postId: string;
+      postInfo: PostTypes | null;
       deleteOpen: boolean;
     }>
   >;
+}
+
+export interface DeleteBookmarkStateTypes {
+  postInfo: PostTypes | null;
+  deleteOpen: boolean;
 }
 
 export interface DeletePostTypes {
-  postInfo: PostTypes;
+  postInfo: PostTypes | null;
   setDeletePost: React.Dispatch<
     React.SetStateAction<{
-      postId: string;
+      postInfo: PostTypes | null;
       deleteOpen: boolean;
     }>
   >;
 }
 
+export interface DeletePostStateTypes {
+  postInfo: PostTypes | null;
+  deleteOpen: boolean;
+}
+
 export interface DeleteCommentTypes {
-  commentInfo: CommentTypes;
+  commentInfo: CommentTypes | null;
   setDeleteComment: React.Dispatch<
     React.SetStateAction<{
-      commentId: string;
+      commentInfo: CommentTypes | null;
       deleteOpen: boolean;
     }>
   >;
+}
+
+export interface DeleteCommentStateTypes {
+  commentInfo: CommentTypes | null;
+  deleteOpen: boolean;
 }

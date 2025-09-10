@@ -8,20 +8,20 @@ import { MessageSquare, X, Calendar, Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Loading from "../../Loading/loading";
-import { PostsTypes } from "../my-page.types";
+import { PostsTypes, DeletePostStateTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { useSearchParams } from "next/navigation";
 import { formatISODateTime } from "@/lib/func/formatTime";
-import CommunityDelete from "../../Community/CommunityDetail/CommunityDelete/community-delete";
 import { useState } from "react";
+import PostDeleteModal from "../Modal/post-delete-modal";
 
 export default function Posts() {
   const { data: session, status } = useSession();
   const { theme } = useTheme();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  const [deletePost, setDeletePost] = useState({
-    postId: "",
+  const [deletePost, setDeletePost] = useState<DeletePostStateTypes>({
+    postInfo: null,
     deleteOpen: false,
   });
 
@@ -39,7 +39,7 @@ export default function Posts() {
   };
 
   const { data: postsData, isLoading } = useQuery<PostsTypes>({
-    queryKey: ["myPagePostsData"],
+    queryKey: ["myPagePostsData", pageNum],
     queryFn: () => fetchPostsData(),
     enabled: status === "authenticated",
   });
@@ -79,7 +79,7 @@ export default function Posts() {
                 onClick={() => {
                   setDeletePost({
                     deleteOpen: true,
-                    postId: post.id,
+                    postInfo: post,
                   });
                 }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
@@ -131,12 +131,12 @@ export default function Posts() {
           />
         )}
       </CardContent>
-      <CommunityDelete
-        open={deletePost.deleteOpen}
-        setOpen={(open) => setDeletePost({ postId: "", deleteOpen: open })}
-        postId={deletePost.postId}
-        routeLink="/mypage/posts"
-      />
+      {deletePost.deleteOpen && (
+        <PostDeleteModal
+          setDeletePost={setDeletePost}
+          postInfo={deletePost.postInfo}
+        />
+      )}
     </Card>
   );
 }

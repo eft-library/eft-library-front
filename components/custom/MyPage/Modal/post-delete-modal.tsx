@@ -14,9 +14,9 @@ export default function PostDeleteModal({
   const { deletePostByUser } = useMyPageReaction(session?.accessToken ?? "");
 
   const deletePost = () => {
-    deletePostByUser.mutate({ postId: postInfo.id });
+    deletePostByUser.mutate({ postId: postInfo?.id ?? "" });
     setDeletePost({
-      postId: "",
+      postInfo: null,
       deleteOpen: false,
     });
   };
@@ -48,7 +48,7 @@ export default function PostDeleteModal({
               theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
             }`}
           >
-            {postInfo.title}
+            {postInfo?.title ?? ""}
           </span>
           {`'`}을 삭제하시겠습니까?
         </p>
@@ -61,7 +61,7 @@ export default function PostDeleteModal({
           </button>
           <button
             onClick={() => {
-              setDeletePost({ postId: "", deleteOpen: false });
+              setDeletePost({ postInfo: null, deleteOpen: false });
             }}
             className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
               theme === "dark"

@@ -33,7 +33,7 @@ export default function Notifications() {
   };
 
   const { data: notificationsData, isLoading } = useQuery<NotificationsTypes>({
-    queryKey: ["myPageNotificationsData"],
+    queryKey: ["myPageNotificationsData", pageNum],
     queryFn: () => fetchNotificationsData(),
     enabled: status === "authenticated",
   });

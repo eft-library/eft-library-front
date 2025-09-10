@@ -10,17 +10,18 @@ import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Loading from "../../Loading/loading";
-import { BlocksTypes } from "../my-page.types";
+import { BlocksTypes, DeleteBlockTypes } from "../my-page.types";
 import { formatISODateTime } from "@/lib/func/formatTime";
 import CustomPagination from "../../CustomPagination/custom-pagination";
+import UnBlockModal from "../Modal/unblock-modal";
 
 export default function Blocks() {
   const { data: session, status } = useSession();
   const { theme } = useTheme();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  const [deleteBlock, setDeleteBlock] = useState({
-    blocked_email: "",
+  const [deleteBlock, setDeleteBlock] = useState<DeleteBlockTypes>({
+    blockInfo: null,
     deleteOpen: false,
   });
 
@@ -38,7 +39,7 @@ export default function Blocks() {
   };
 
   const { data: blocksData, isLoading } = useQuery<BlocksTypes>({
-    queryKey: ["myPageBlocksData"],
+    queryKey: ["myPageBlocksData", pageNum],
     queryFn: () => fetchBlocksData(),
     enabled: status === "authenticated",
   });
@@ -74,7 +75,7 @@ export default function Blocks() {
               <button
                 onClick={() => {
                   setDeleteBlock({
-                    blocked_email: user.blocked_email,
+                    blockInfo: user,
                     deleteOpen: true,
                   });
                 }}
@@ -121,6 +122,12 @@ export default function Blocks() {
           />
         )}
       </CardContent>
+      {deleteBlock.deleteOpen && (
+        <UnBlockModal
+          blockInfo={deleteBlock.blockInfo}
+          setDeleteBlock={setDeleteBlock}
+        />
+      )}
     </Card>
   );
 }

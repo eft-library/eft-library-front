@@ -16,8 +16,8 @@ export default function BookmarkDeleteModal({
   const { deleteBookmark } = useMyPageReaction(session?.accessToken ?? "");
 
   const deleteBookmarkUser = () => {
-    deleteBookmark.mutate({ postId: bookmarkInfo.id });
-    setDeleteBookmark({ postId: "", deleteOpen: false });
+    deleteBookmark.mutate({ postId: bookmarkInfo?.id ?? "" });
+    setDeleteBookmark({ postInfo: null, deleteOpen: false });
   };
 
   return (
@@ -40,7 +40,7 @@ export default function BookmarkDeleteModal({
             </h3>
             <button
               onClick={() => {
-                setDeleteBookmark({ postId: "", deleteOpen: false });
+                setDeleteBookmark({ postInfo: null, deleteOpen: false });
               }}
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
@@ -63,7 +63,7 @@ export default function BookmarkDeleteModal({
                   theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
                 }`}
               >
-                {bookmarkInfo.title}
+                {bookmarkInfo?.title ?? ""}
               </span>{" "}
               을 북마크에서 해제하시겠습니까?
             </p>
@@ -79,7 +79,7 @@ export default function BookmarkDeleteModal({
             <Button
               variant="outline"
               onClick={() => {
-                setDeleteBookmark({ postId: "", deleteOpen: false });
+                setDeleteBookmark({ postInfo: null, deleteOpen: false });
               }}
               className={`flex-1 ${
                 theme === "dark"

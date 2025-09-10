@@ -10,19 +10,21 @@ import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Loading from "../../Loading/loading";
-import { BookmarksTypes } from "../my-page.types";
+import { BookmarksTypes, DeleteBookmarkStateTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { formatISODateTime } from "@/lib/func/formatTime";
+import BookmarkDeleteModal from "../Modal/bookmark-delete-modal";
 
 export default function Bookmarks() {
   const { data: session, status } = useSession();
   const { theme } = useTheme();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  const [deleteBookmark, setDeleteBookmark] = useState({
-    postId: "",
-    deleteOpen: false,
-  });
+  const [deleteBookmark, setDeleteBookmark] =
+    useState<DeleteBookmarkStateTypes>({
+      postInfo: null,
+      deleteOpen: false,
+    });
 
   const fetchPostsData = async () => {
     const data = await requestGetUserData(
@@ -38,7 +40,7 @@ export default function Bookmarks() {
   };
 
   const { data: bookmarksData, isLoading } = useQuery<BookmarksTypes>({
-    queryKey: ["myPageBookmarksData"],
+    queryKey: ["myPageBookmarksData", pageNum],
     queryFn: () => fetchPostsData(),
     enabled: status === "authenticated",
   });
@@ -75,11 +77,9 @@ export default function Bookmarks() {
               }`}
             >
               <button
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                //   setSelectedBookmarkPost(post);
-                //   setShowBookmarkModal(true);
-                // }}
+                onClick={() => {
+                  setDeleteBookmark({ postInfo: post, deleteOpen: true });
+                }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                   theme === "dark"
                     ? "text-gray-400 hover:text-white hover:bg-gray-700"
@@ -118,6 +118,12 @@ export default function Bookmarks() {
           />
         )}
       </CardContent>
+      {deleteBookmark.deleteOpen && (
+        <BookmarkDeleteModal
+          bookmarkInfo={deleteBookmark.postInfo}
+          setDeleteBookmark={setDeleteBookmark}
+        />
+      )}
     </Card>
   );
 }

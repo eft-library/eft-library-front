@@ -14,9 +14,9 @@ export default function CommentDeleteModal({
   const { deleteCommentByUser } = useMyPageReaction(session?.accessToken ?? "");
 
   const deleteComment = () => {
-    deleteCommentByUser.mutate({ commentId: commentInfo.id });
+    deleteCommentByUser.mutate({ commentId: commentInfo?.comment?.id ?? "" });
     setDeleteComment({
-      commentId: "",
+      commentInfo: null,
       deleteOpen: false,
     });
   };
@@ -48,7 +48,7 @@ export default function CommentDeleteModal({
               theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
             }`}
           >
-            {commentInfo.title}
+            {commentInfo?.title ?? ""}
           </span>
           {`'`}의 댓글을 삭제하시겠습니까?
         </p>
@@ -62,7 +62,7 @@ export default function CommentDeleteModal({
               theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
             }`}
           >
-            {commentInfo.comment.contents}
+            {commentInfo?.comment?.contents ?? ""}
           </span>
         </p>
         <div className="flex space-x-3">
@@ -75,7 +75,7 @@ export default function CommentDeleteModal({
           <button
             onClick={() => {
               setDeleteComment({
-                commentId: "",
+                commentInfo: null,
                 deleteOpen: false,
               });
             }}

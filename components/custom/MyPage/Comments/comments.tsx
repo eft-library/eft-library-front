@@ -9,21 +9,19 @@ import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import Loading from "../../Loading/loading";
-import { CommentsTypes } from "../my-page.types";
+import { CommentsTypes, DeleteCommentStateTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { formatISODateTime } from "@/lib/func/formatTime";
-import CommentDelete from "../../Community/CommunityDetail/CommentSection/comment-delete";
 import { useState } from "react";
-import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
+import CommentDeleteModal from "../Modal/comment-delete-modal";
 
 export default function Comments() {
   const { data: session, status } = useSession();
-  const { deleteCommentByUser } = useMyPageReaction(session?.accessToken ?? "");
   const { theme } = useTheme();
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
-  const [deleteComment, setDeleteComment] = useState({
-    commentId: "",
+  const [deleteComment, setDeleteComment] = useState<DeleteCommentStateTypes>({
+    commentInfo: null,
     deleteOpen: false,
   });
 
@@ -41,14 +39,10 @@ export default function Comments() {
   };
 
   const { data: commentsData, isLoading } = useQuery<CommentsTypes>({
-    queryKey: ["myPageCommentsData"],
+    queryKey: ["myPageCommentsData", pageNum],
     queryFn: () => fetchCommentsData(),
     enabled: status === "authenticated",
   });
-
-  const onClickDeleteComment = () => {
-    deleteCommentByUser.mutate({ commentId: deleteComment.commentId });
-  };
 
   if (isLoading || !commentsData) return <Loading />;
 
@@ -85,7 +79,7 @@ export default function Comments() {
                 onClick={() => {
                   setDeleteComment({
                     deleteOpen: true,
-                    commentId: comment.comment.id,
+                    commentInfo: comment,
                   });
                 }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
@@ -137,13 +131,12 @@ export default function Comments() {
           />
         )}
       </CardContent>
-      <CommentDelete
-        open={deleteComment.deleteOpen}
-        setOpen={(open) =>
-          setDeleteComment({ commentId: "", deleteOpen: open })
-        }
-        onClickDeleteCommentByUser={onClickDeleteComment}
-      />
+      {deleteComment.deleteOpen && (
+        <CommentDeleteModal
+          setDeleteComment={setDeleteComment}
+          commentInfo={deleteComment.commentInfo}
+        />
+      )}
     </Card>
   );
 }
