@@ -30,22 +30,22 @@ export default function NavBar({ navData }: NavBarTypes) {
 
   useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    if (!session?.accessToken) return;
+  // useEffect(() => {
+  //   if (!session?.accessToken) return;
 
-    const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`
-    );
+  //   const ws = new WebSocket(
+  //     `ws://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`
+  //   );
 
-    ws.onmessage = () => {
-      setNotificationCount((prev) => prev + 1); // 새로운 알림 올 때마다 +1
-      console.log("test");
-    };
+  //   ws.onmessage = () => {
+  //     setNotificationCount((prev) => prev + 1); // 새로운 알림 올 때마다 +1
+  //     console.log("test");
+  //   };
 
-    return () => {
-      ws.close();
-    };
-  }, [session?.accessToken]);
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, [session?.accessToken]);
 
   if (!mounted) {
     return <Loading />;
