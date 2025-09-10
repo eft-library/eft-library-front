@@ -14,6 +14,7 @@ import Loading from "../../Loading/loading";
 import { FollowingTypes, UnfollowStateTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import UnFollowModal from "../Modal/unfollow-modal";
+import Link from "next/link";
 
 export default function Following() {
   const { data: session, status } = useSession();
@@ -67,41 +68,50 @@ export default function Following() {
       <CardContent>
         <div className="space-y-4 mb-4">
           {followData.follow.map((user, index) => (
-            <div
+            <Link
               key={`${index}-${user.following_email}`}
-              className={`flex items-center justify-between p-4 rounded-lg border ${
-                theme === "dark" ? "border-gray-700/50" : "border-gray-200"
-              }`}
+              target="_blank"
+              href={`/community/search?word=${user.nickname}&search_type=author&page=1`}
             >
-              <div className="flex items-center space-x-3">
-                <div>
-                  <h3
-                    className={`font-medium ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {user.nickname}
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {user.post_count}개 게시글
-                  </p>
-                </div>
-              </div>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  setDeleteFollow({ deleteOpen: true, followInfo: user });
-                }}
-                className="border-[#e03131] dark:border-[#ff6b6b] text-[#e03131] dark:text-[#ff6b6b] hover:bg-[#e03131] dark:hover:bg-[#ff6b6b] hover:text-white dark:hover:text-white active:bg-[#c92a2a] dark:active:bg-[#e03131] bg-transparent"
+              <div
+                className={`m-1 flex items-center justify-between p-4 rounded-lg border ${
+                  theme === "dark"
+                    ? "border-gray-700/50 hover:border-orange-400/50 hover:bg-gray-700/30"
+                    : "border-gray-200 hover:border-orange-500/50 hover:bg-gray-50"
+                }`}
               >
-                언팔로우
-              </Button>
-            </div>
+                <div className="flex items-center space-x-3">
+                  <div>
+                    <h3
+                      className={`font-medium ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {user.nickname}
+                    </h3>
+                    <p
+                      className={`text-sm ${
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {user.post_count}개 게시글
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setDeleteFollow({ deleteOpen: true, followInfo: user });
+                  }}
+                  className="border-[#e03131] dark:border-[#ff6b6b] text-[#e03131] dark:text-[#ff6b6b] hover:bg-[#e03131] dark:hover:bg-[#ff6b6b] hover:text-white dark:hover:text-white active:bg-[#c92a2a] dark:active:bg-[#e03131] bg-transparent"
+                >
+                  언팔로우
+                </Button>
+              </div>
+            </Link>
           ))}
         </div>
         {followData.total_count > 0 && (

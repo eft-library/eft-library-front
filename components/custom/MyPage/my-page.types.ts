@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface DefaultInfoTypes {
   email: string;
   comment_count: number;
@@ -124,7 +123,7 @@ export interface NotificationsTypes {
 export interface NotificationTypes {
   user_email: string;
   noti_type: string;
-  payload: any;
+  payload: NotificationDataTypes;
   is_read: string;
   created_time: string;
 }
@@ -206,4 +205,23 @@ export interface DeleteCommentTypes {
 export interface DeleteCommentStateTypes {
   commentInfo: CommentTypes | null;
   deleteOpen: boolean;
+}
+
+interface NotificationDataTypes {
+  noti_type: string;
+  end_time?: string;
+  start_time?: string;
+  user_email?: string;
+  url?: string;
+  title?: string;
+  author_email?: string;
+  author_nickname?: string;
+  post_id?: number;
+  parent_comment_id?: string;
+  follower_email?: string;
+  following_email?: string;
+}
+
+export interface NotificationRenderTypes {
+  notification: NotificationDataTypes;
 }

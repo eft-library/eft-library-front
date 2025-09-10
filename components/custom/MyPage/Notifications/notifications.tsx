@@ -12,6 +12,7 @@ import Loading from "../../Loading/loading";
 import { NotificationsTypes } from "../my-page.types";
 import CustomPagination from "../../CustomPagination/custom-pagination";
 import { formatISODateTime } from "@/lib/func/formatTime";
+import { NotificationMessage } from "./notification-render";
 
 export default function Notifications() {
   const { data: session, status } = useSession();
@@ -60,6 +61,13 @@ export default function Notifications() {
             알림 (
             {notificationsData.notifications.filter((n) => !n.is_read).length})
           </span>
+          <div
+            className={`flex items-center space-x-1 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
+            <span className="text-xs font-medium">알림은 7일간 저장됩니다</span>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -78,35 +86,8 @@ export default function Notifications() {
               }`}
             >
               <div className="flex items-start space-x-3">
-                <div
-                  className={`p-2 rounded-full ${
-                    theme === "dark" ? "bg-gray-700" : "bg-gray-100"
-                  }`}
-                >
-                  {notification.noti_type === "create_child_comment" && (
-                    <MessageSquare className="w-4 h-4 text-orange-400" />
-                  )}{" "}
-                  {notification.noti_type === "create_parent_comment" && (
-                    <MessageSquare className="w-4 h-4 text-orange-400" />
-                  )}
-                  {notification.noti_type === "penalty_user" && (
-                    <UserLock className="w-4 h-4 text-orange-400" />
-                  )}
-                  {notification.noti_type === "follow_user" && (
-                    <Users className="w-4 h-4 text-orange-400" />
-                  )}
-                  {notification.noti_type === "create_post" && (
-                    <MessageSquare className="w-4 h-4 text-orange-400" />
-                  )}
-                </div>
                 <div className="flex-1">
-                  <p
-                    className={`${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {/* {notification.message} */}
-                  </p>
+                  <NotificationMessage notification={notification.payload} />
                   <div
                     className={`text-sm mt-1 ${
                       theme === "dark" ? "text-gray-400" : "text-gray-600"
