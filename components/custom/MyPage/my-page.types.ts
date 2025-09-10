@@ -94,6 +94,7 @@ export interface FollowingTypes {
 }
 
 interface FollowTypes {
+  follower_email: string;
   following_email: string;
   create_time: string;
   nickname: string;
@@ -137,6 +138,46 @@ export interface UnBlockTypes {
   setDeleteBlock: React.Dispatch<
     React.SetStateAction<{
       blocked_email: string;
+      deleteOpen: boolean;
+    }>
+  >;
+}
+
+export interface UnfollowTypes {
+  followInfo: FollowTypes;
+  setDeleteFollow: React.Dispatch<
+    React.SetStateAction<{
+      follwingEmail: string;
+      deleteOpen: boolean;
+    }>
+  >;
+}
+
+export interface DeleteBookmarkTypes {
+  bookmarkInfo: PostTypes;
+  setDeleteBookmark: React.Dispatch<
+    React.SetStateAction<{
+      postId: string;
+      deleteOpen: boolean;
+    }>
+  >;
+}
+
+export interface DeletePostTypes {
+  postInfo: PostTypes;
+  setDeletePost: React.Dispatch<
+    React.SetStateAction<{
+      postId: string;
+      deleteOpen: boolean;
+    }>
+  >;
+}
+
+export interface DeleteCommentTypes {
+  commentInfo: CommentTypes;
+  setDeleteComment: React.Dispatch<
+    React.SetStateAction<{
+      commentId: string;
       deleteOpen: boolean;
     }>
   >;

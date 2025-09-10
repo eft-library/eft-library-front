@@ -1,6 +1,26 @@
 "use client";
 
-export default function PostDeleteModal() {
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { DeletePostTypes } from "../my-page.types";
+
+export default function PostDeleteModal({
+  postInfo,
+  setDeletePost,
+}: DeletePostTypes) {
+  const { data: session } = useSession();
+  const { theme } = useTheme();
+  const { deletePostByUser } = useMyPageReaction(session?.accessToken ?? "");
+
+  const deletePost = () => {
+    deletePostByUser.mutate({ postId: postInfo.id });
+    setDeletePost({
+      postId: "",
+      deleteOpen: false,
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
@@ -22,30 +42,26 @@ export default function PostDeleteModal() {
             theme === "dark" ? "text-white" : "text-[#2c2f33]"
           }`}
         >
-          '
+          {`'`}
           <span
             className={`font-medium ${
               theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
             }`}
           >
-            {postToDelete.title}
+            {postInfo.title}
           </span>
-          '을 삭제하시겠습니까?
+          {`'`}을 삭제하시겠습니까?
         </p>
         <div className="flex space-x-3">
           <button
-            onClick={() => {
-              setDeletePostPopup(false);
-              setPostToDelete(null);
-            }}
+            onClick={() => deletePost()}
             className="flex-1 px-4 py-2 bg-[#5865f2] text-white rounded-md font-medium hover:bg-[#4752c4] transition-colors"
           >
             삭제
           </button>
           <button
             onClick={() => {
-              setDeletePostPopup(false);
-              setPostToDelete(null);
+              setDeletePost({ postId: "", deleteOpen: false });
             }}
             className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
               theme === "dark"

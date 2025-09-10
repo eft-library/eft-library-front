@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { UnBlockTypes } from "../my-page.types";
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
 
 export default function UnBlockModal({
   setDeleteBlock,
@@ -12,9 +13,15 @@ export default function UnBlockModal({
 }: UnBlockTypes) {
   const { data: session } = useSession();
   const { theme } = useTheme();
+  const { deleteBlock } = useMyPageReaction(session?.accessToken ?? "");
 
-  // mutation으로
-  const deleteBlock = async () => {};
+  const deleteBlockUser = () => {
+    deleteBlock.mutate({ targetEmail: blockInfo.blocked_email });
+    setDeleteBlock({
+      blocked_email: "",
+      deleteOpen: false,
+    });
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -68,7 +75,7 @@ export default function UnBlockModal({
 
           <div className="flex space-x-3">
             <Button
-              onClick={() => deleteBlock()}
+              onClick={() => deleteBlockUser()}
               className="flex-1 bg-[#5865f2] hover:bg-[#4752c4] text-white"
             >
               차단 해제

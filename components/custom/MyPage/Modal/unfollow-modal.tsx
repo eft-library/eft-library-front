@@ -1,6 +1,27 @@
 "use client";
 
-export default function UnFollowModal() {
+import { Button } from "@/components/ui/button";
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
+import { X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { UnfollowTypes } from "../my-page.types";
+
+export default function UnFollowModal({
+  setDeleteFollow,
+  followInfo,
+}: UnfollowTypes) {
+  const { data: session } = useSession();
+  const { theme } = useTheme();
+  const { deleteFollow } = useMyPageReaction(session?.accessToken ?? "");
+
+  const deleteFollowUser = () => {
+    deleteFollow.mutate({
+      nickname: session?.userInfo.nickname ?? "",
+      following_user_email: followInfo.follower_email,
+    });
+    setDeleteFollow({ follwingEmail: "", deleteOpen: false });
+  };
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div
@@ -21,8 +42,7 @@ export default function UnFollowModal() {
             </h3>
             <button
               onClick={() => {
-                setShowUnfollowModal(false);
-                setSelectedFollowingUser(null);
+                setDeleteFollow({ follwingEmail: "", deleteOpen: false });
               }}
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
@@ -45,7 +65,7 @@ export default function UnFollowModal() {
                   theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
                 }`}
               >
-                {selectedFollowingUser.username}
+                {followInfo.nickname}
               </span>{" "}
               을 팔로우 취소하시겠습니까?
             </p>
@@ -53,12 +73,7 @@ export default function UnFollowModal() {
 
           <div className="flex space-x-3">
             <Button
-              onClick={() => {
-                // 언팔로우 로직 구현
-                console.log(`${selectedFollowingUser.username} 언팔로우`);
-                setShowUnfollowModal(false);
-                setSelectedFollowingUser(null);
-              }}
+              onClick={() => deleteFollowUser()}
               className="flex-1 bg-[#5865f2] hover:bg-[#4752c4] text-white"
             >
               팔로우 취소
@@ -66,8 +81,7 @@ export default function UnFollowModal() {
             <Button
               variant="outline"
               onClick={() => {
-                setShowUnfollowModal(false);
-                setSelectedFollowingUser(null);
+                setDeleteFollow({ follwingEmail: "", deleteOpen: false });
               }}
               className={`flex-1 ${
                 theme === "dark"

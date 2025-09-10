@@ -20,8 +20,7 @@ export default function Following() {
   const searchParams = useSearchParams();
   const pageNum = searchParams.get("page") || 1;
   const [deleteFollow, setDeleteFollow] = useState({
-    postId: "",
-    postCategory: "",
+    follwingEmail: "",
     deleteOpen: false,
   });
 

@@ -1,6 +1,25 @@
 "use client";
 
-export default function BookmarkDeleteModal() {
+import { Button } from "@/components/ui/button";
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
+import { X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { DeleteBookmarkTypes } from "../my-page.types";
+
+export default function BookmarkDeleteModal({
+  setDeleteBookmark,
+  bookmarkInfo,
+}: DeleteBookmarkTypes) {
+  const { data: session } = useSession();
+  const { theme } = useTheme();
+  const { deleteBookmark } = useMyPageReaction(session?.accessToken ?? "");
+
+  const deleteBookmarkUser = () => {
+    deleteBookmark.mutate({ postId: bookmarkInfo.id });
+    setDeleteBookmark({ postId: "", deleteOpen: false });
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div
@@ -21,8 +40,7 @@ export default function BookmarkDeleteModal() {
             </h3>
             <button
               onClick={() => {
-                setShowBookmarkModal(false);
-                setSelectedBookmarkPost(null);
+                setDeleteBookmark({ postId: "", deleteOpen: false });
               }}
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
@@ -45,7 +63,7 @@ export default function BookmarkDeleteModal() {
                   theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
                 }`}
               >
-                {selectedBookmarkPost.title}
+                {bookmarkInfo.title}
               </span>{" "}
               을 북마크에서 해제하시겠습니까?
             </p>
@@ -53,12 +71,7 @@ export default function BookmarkDeleteModal() {
 
           <div className="flex space-x-3">
             <Button
-              onClick={() => {
-                // 북마크 해제 로직 구현
-                console.log(`${selectedBookmarkPost.title} 북마크 해제`);
-                setShowBookmarkModal(false);
-                setSelectedBookmarkPost(null);
-              }}
+              onClick={() => deleteBookmarkUser()}
               className="flex-1 bg-[#5865f2] hover:bg-[#4752c4] text-white"
             >
               북마크 해제
@@ -66,8 +79,7 @@ export default function BookmarkDeleteModal() {
             <Button
               variant="outline"
               onClick={() => {
-                setShowBookmarkModal(false);
-                setSelectedBookmarkPost(null);
+                setDeleteBookmark({ postId: "", deleteOpen: false });
               }}
               className={`flex-1 ${
                 theme === "dark"

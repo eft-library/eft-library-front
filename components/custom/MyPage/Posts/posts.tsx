@@ -22,7 +22,6 @@ export default function Posts() {
   const pageNum = searchParams.get("page") || 1;
   const [deletePost, setDeletePost] = useState({
     postId: "",
-    postCategory: "",
     deleteOpen: false,
   });
 
@@ -81,7 +80,6 @@ export default function Posts() {
                   setDeletePost({
                     deleteOpen: true,
                     postId: post.id,
-                    postCategory: post.category,
                   });
                 }}
                 className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
@@ -135,9 +133,7 @@ export default function Posts() {
       </CardContent>
       <CommunityDelete
         open={deletePost.deleteOpen}
-        setOpen={(open) =>
-          setDeletePost({ postId: "", postCategory: "", deleteOpen: open })
-        }
+        setOpen={(open) => setDeletePost({ postId: "", deleteOpen: open })}
         postId={deletePost.postId}
         routeLink="/mypage/posts"
       />

@@ -1,11 +1,26 @@
 "use client";
 
+import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
+import { DeleteCommentTypes } from "../my-page.types";
 
-export default function CommentDeleteModal() {
-  const { data: session, status } = useSession();
+export default function CommentDeleteModal({
+  setDeleteComment,
+  commentInfo,
+}: DeleteCommentTypes) {
+  const { data: session } = useSession();
   const { theme } = useTheme();
+  const { deleteCommentByUser } = useMyPageReaction(session?.accessToken ?? "");
+
+  const deleteComment = () => {
+    deleteCommentByUser.mutate({ commentId: commentInfo.id });
+    setDeleteComment({
+      commentId: "",
+      deleteOpen: false,
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
@@ -27,30 +42,42 @@ export default function CommentDeleteModal() {
             theme === "dark" ? "text-white" : "text-[#2c2f33]"
           }`}
         >
-          '
+          {`'`}
           <span
             className={`font-medium ${
               theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
             }`}
           >
-            {commentToDelete.postTitle}
+            {commentInfo.title}
           </span>
-          '의 댓글을 삭제하시겠습니까?
+          {`'`}의 댓글을 삭제하시겠습니까?
+        </p>
+        <p
+          className={`mb-6 ${
+            theme === "dark" ? "text-white" : "text-[#2c2f33]"
+          }`}
+        >
+          <span
+            className={`font-medium ${
+              theme === "dark" ? "text-[#f4a261]" : "text-[#e76f51]"
+            }`}
+          >
+            {commentInfo.comment.contents}
+          </span>
         </p>
         <div className="flex space-x-3">
           <button
-            onClick={() => {
-              setDeleteCommentPopup(false);
-              setCommentToDelete(null);
-            }}
+            onClick={() => deleteComment()}
             className="flex-1 px-4 py-2 bg-[#5865f2] text-white rounded-md font-medium hover:bg-[#4752c4] transition-colors"
           >
             삭제
           </button>
           <button
             onClick={() => {
-              setDeleteCommentPopup(false);
-              setCommentToDelete(null);
+              setDeleteComment({
+                commentId: "",
+                deleteOpen: false,
+              });
             }}
             className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
               theme === "dark"

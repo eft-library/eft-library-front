@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { COMMUNITY_ENDPOINTS } from "../config/endpoint";
+import { COMMUNITY_ENDPOINTS, USER_API_ENDPOINTS } from "../config/endpoint";
 
 export const useMyPageReaction = (accessToken: string) => {
   const queryClient = useQueryClient();
   const deletePostByUser = useMutation({
-    mutationFn: async (deleteInfo: { postId: string; routeLink: string }) => {
+    mutationFn: async (deleteInfo: { postId: string }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.DELETE_POST_BY_USER, {
         method: "POST",
         headers: {
@@ -101,15 +101,16 @@ export const useMyPageReaction = (accessToken: string) => {
   });
 
   const deleteBlock = useMutation({
-    mutationFn: async (deleteInfo: { postId: string }) => {
-      const res = await fetch(COMMUNITY_ENDPOINTS.BOOKMARK_POST, {
+    mutationFn: async (deleteInfo: { targetEmail: string }) => {
+      const res = await fetch(USER_API_ENDPOINTS.UNBLOCK_USER, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          post_id: deleteInfo.postId,
+          blocked_email: deleteInfo.targetEmail,
+          reason: "",
         }),
       });
       if (!res.ok) throw new Error("Failed to delete comment");
