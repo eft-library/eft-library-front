@@ -72,7 +72,8 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
                   <span className="font-medium">
                     {notification.author_nickname}
                   </span>
-                  님이 새 게시글 "{notification.title}"을 작성했습니다.
+                  님이 새 게시글 &quot;{notification.title}&quot;을
+                  작성했습니다.
                 </p>
               </div>
             </div>
@@ -102,7 +103,8 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
                   <span className="font-medium">
                     {notification.author_nickname}
                   </span>
-                  님이 "{notification.title}" 게시글에 댓글을 남겼습니다.
+                  님이 &quot;{notification.title}&quot; 게시글에 댓글을
+                  남겼습니다.
                 </p>
               </div>
             </div>
@@ -179,7 +181,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
                   theme === "dark" ? "text-gray-300" : "text-gray-600"
                 }`}
               >
-                ""
+                &quot;&quot;
               </p>
             </div>
           </div>

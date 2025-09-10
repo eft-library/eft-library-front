@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { requestGetUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useQuery } from "@tanstack/react-query";
-import { Bell, MessageSquare, Users, UserLock } from "lucide-react";
+import { Bell } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
