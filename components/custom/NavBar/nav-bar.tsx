@@ -39,6 +39,7 @@ export default function NavBar({ navData }: NavBarTypes) {
 
     ws.onmessage = () => {
       setNotificationCount((prev) => prev + 1); // 새로운 알림 올 때마다 +1
+      console.log("test");
     };
 
     return () => {
