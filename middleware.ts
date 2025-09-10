@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
   // 로그인 안한 경우 → 커뮤니티 이슈 페이지로 이동
   if (protectedPaths.some((path) => pathname.startsWith(path))) {
     if (!token) {
-      return NextResponse.redirect(new URL("/community/issue", req.url));
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
 
