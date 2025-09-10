@@ -26,7 +26,24 @@ export default function NavBar({ navData }: NavBarTypes) {
   const localeKey = getLocaleKey(locale);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!session?.user?.email) return;
+
+    const ws = new WebSocket(`ws://localhost:8000/ws/${session?.user?.email}`);
+
+    ws.onmessage = () => {
+      setNotificationCount((prev) => prev + 1); // 새로운 알림 올 때마다 +1
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [session?.user?.email]);
+
   if (!mounted) {
     return <Loading />;
   }
@@ -78,6 +95,11 @@ export default function NavBar({ navData }: NavBarTypes) {
                   }`}
                 >
                   <User className="w-4 h-4" />
+                  {notificationCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+                      {notificationCount}
+                    </span>
+                  )}
                 </Button>
 
                 {/* User Dropdown */}
@@ -104,7 +126,10 @@ export default function NavBar({ navData }: NavBarTypes) {
                       </Link>
                       <Button
                         variant="ghost"
-                        onClick={() => signOut()}
+                        onClick={() => {
+                          setNotificationCount(0);
+                          signOut();
+                        }}
                         className={`cursor-pointer w-full text-sm transition-colors text-center justify-center h-auto py-2 ${
                           theme === "dark"
                             ? "text-gray-300 hover:text-orange-400 hover:bg-gray-700/50"
@@ -264,7 +289,10 @@ export default function NavBar({ navData }: NavBarTypes) {
                     </Link>
                     <Button
                       variant="ghost"
-                      onClick={() => signOut()}
+                      onClick={() => {
+                        setNotificationCount(0);
+                        signOut();
+                      }}
                       className={`cursor-pointer w-full text-left justify-start text-sm transition-colors py-1 h-auto ${
                         theme === "dark"
                           ? "text-gray-300 hover:text-orange-400 hover:bg-transparent"
