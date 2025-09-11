@@ -41,7 +41,6 @@ export default function Notifications() {
 
   if (isLoading || !notificationsData) return <Loading />;
 
-  console.log(notificationsData);
   return (
     <Card
       className={`${

@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
-import type { NavBarTypes } from "./nav-bar.types";
+import type { NavBarTypes, NotificationDataTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { headerI18N } from "@/lib/consts/i18nConsts";
@@ -17,6 +17,7 @@ import Logo from "@/assets/navi/logo";
 import Link from "next/link";
 import NavSearch from "./nav-search";
 import Loading from "../Loading/loading";
+import Notification from "./notification";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,7 +27,9 @@ export default function NavBar({ navData }: NavBarTypes) {
   const localeKey = getLocaleKey(locale);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState<NotificationDataTypes[]>(
+    []
+  );
 
   useEffect(() => setMounted(true), []);
 
@@ -37,9 +40,25 @@ export default function NavBar({ navData }: NavBarTypes) {
       `wss://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`
     );
 
-    ws.onmessage = () => {
-      setNotificationCount((prev) => prev + 1); // 새로운 알림 올 때마다 +1
-      console.log("test");
+    ws.onmessage = (event) => {
+      try {
+        const parsed = JSON.parse(event.data);
+
+        if (parsed.type === "init") {
+          // 초기 알림 → 서버에서 이미 JSON으로 보냈으므로 추가 parsing 불필요
+          const initial = parsed.notifications as NotificationDataTypes[];
+          setNotifications(initial);
+        } else if (parsed.type === "message") {
+          const newNotification = parsed.data as NotificationDataTypes;
+          setNotifications((prev) => [...prev, newNotification]);
+        } else {
+          // type 없는 경우
+          const newNotification = parsed as NotificationDataTypes;
+          setNotifications((prev) => [...prev, newNotification]);
+        }
+      } catch (e) {
+        console.error("알림 데이터 파싱 실패:", e, event.data);
+      }
     };
 
     return () => {
@@ -98,11 +117,11 @@ export default function NavBar({ navData }: NavBarTypes) {
                   }`}
                 >
                   <User className="w-4 h-4" />
-                  {notificationCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+                  {/* {notificationCount > 0 && (
+                    <span className="absolute top-2 right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
                       {notificationCount}
                     </span>
-                  )}
+                  )} */}
                 </Button>
 
                 {/* User Dropdown */}
@@ -130,7 +149,6 @@ export default function NavBar({ navData }: NavBarTypes) {
                       <Button
                         variant="ghost"
                         onClick={() => {
-                          setNotificationCount(0);
                           signOut();
                         }}
                         className={`cursor-pointer w-full text-sm transition-colors text-center justify-center h-auto py-2 ${
@@ -146,7 +164,14 @@ export default function NavBar({ navData }: NavBarTypes) {
                 )}
               </div>
             )}
-
+            {session && (
+              <Notification
+                setActiveMenu={setActiveMenu}
+                activeMenu={activeMenu}
+                notificationList={notifications}
+                setNotifications={setNotifications}
+              />
+            )}
             {!session && (
               <Button
                 variant="ghost"
@@ -293,7 +318,6 @@ export default function NavBar({ navData }: NavBarTypes) {
                     <Button
                       variant="ghost"
                       onClick={() => {
-                        setNotificationCount(0);
                         signOut();
                       }}
                       className={`cursor-pointer w-full text-left justify-start text-sm transition-colors py-1 h-auto ${

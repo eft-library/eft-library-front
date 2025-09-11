@@ -44,3 +44,27 @@ export interface SearchData {
   order: number;
   lang: string;
 }
+
+export interface NotificationTypes {
+  setActiveMenu: (val: string | null) => void;
+  activeMenu: string | null;
+  notificationList: NotificationDataTypes[];
+  setNotifications: React.Dispatch<
+    React.SetStateAction<NotificationDataTypes[]>
+  >;
+}
+
+export interface NotificationDataTypes {
+  noti_type: string;
+  end_time?: string;
+  start_time?: string;
+  user_email?: string;
+  url?: string;
+  title?: string;
+  author_email?: string;
+  author_nickname?: string;
+  post_id?: number;
+  parent_comment_id?: string;
+  follower_email?: string;
+  following_email?: string;
+}
