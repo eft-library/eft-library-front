@@ -16,6 +16,7 @@ export function useCommentReaction(postId: string, accessToken: string) {
       nickname: string;
       slug: string;
       title: string;
+      post_author_email: string;
     }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_PARENT_COMMENT, {
         method: "POST",
@@ -58,6 +59,7 @@ export function useCommentReaction(postId: string, accessToken: string) {
       nickname: string;
       slug: string;
       title: string;
+      post_author_email: string;
     }) => {
       const res = await fetch(COMMUNITY_ENDPOINTS.CREATE_CHILD_COMMENT, {
         method: "POST",

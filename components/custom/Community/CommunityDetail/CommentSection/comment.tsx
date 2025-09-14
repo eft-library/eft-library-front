@@ -82,6 +82,7 @@ export default function Comment({
         nickname: session.userInfo.nickname ?? "",
         slug: postInfo.slug,
         title: postInfo.title,
+        post_author_email: postInfo.user_email,
       });
       setReplyText("");
       setReplying(false);
