@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { CommunityDeleteTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
-import { useMyPageReaction } from "@/lib/hooks/useMyPageReaction";
+import { usePostMetaData } from "@/lib/hooks/usePostReaction";
 
 export default function CommunityDelete({
   open,
@@ -19,7 +19,10 @@ export default function CommunityDelete({
   routeLink,
 }: CommunityDeleteTypes) {
   const { data: session } = useSession();
-  const { deletePostByUser } = useMyPageReaction(session?.accessToken ?? "");
+  const { deletePostMutation } = usePostMetaData(
+    postId,
+    session?.accessToken ?? ""
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,10 +46,10 @@ export default function CommunityDelete({
             variant="destructive"
             className=" cursor-pointer"
             size="sm"
-            // onClick={() => {
-            //   deletePostByUser.mutate({ postId, routeLink });
-            //   setOpen(false);
-            // }}
+            onClick={() => {
+              deletePostMutation.mutate(routeLink);
+              setOpen(false);
+            }}
           >
             삭제
           </Button>
