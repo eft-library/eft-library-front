@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, SquareX } from "lucide-react";
 import Image from "next/image";
 import type { QuestDetailTypes } from "@/app/quest/_components/quest.types";
 import { useLocale } from "next-intl";
@@ -45,9 +45,15 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
           <span className="text-gray-600 dark:text-gray-300 font-semibold">
             Kappa
           </span>
-          <div className="w-6 h-6 bg-lime-400 rounded flex items-center justify-center">
-            <Check className="w-4 h-4 text-black" />
-          </div>
+          {quest.kappa_required ? (
+            <div className="w-6 h-6 bg-lime-400 rounded flex items-center justify-center">
+              <Check className="w-4 h-4 text-black" />
+            </div>
+          ) : (
+            <div className="w-6 h-6 bg-red-400 rounded flex items-center justify-center">
+              <SquareX className="w-4 h-4 text-black" />
+            </div>
+          )}
         </div>
       </div>
 
