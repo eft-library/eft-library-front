@@ -23,6 +23,63 @@ export const notFoundI18N = {
     ko: "홈으로 돌아가기",
   },
 };
+
+export const editorI18N = {
+  imageUploadError: {
+    en: "An error occurred while uploading the image.",
+    ja: "画像のアップロード中にエラーが発生しました。",
+    ko: "이미지 업로드 중 오류가 발생했습니다.",
+  },
+  addChzzkOrSoopClip: {
+    en: "Add Chzzk or Soop Clip",
+    ja: "チジジクまたはスプクリップ追加",
+    ko: "치지직 또는 숲 클립 추가",
+  },
+  openCustomColorPicker: {
+    en: "Open Custom Color Picker",
+    ja: "カスタムカラーピッカーを開く",
+    ko: "커스텀 컬러 피커 열기",
+  },
+  openColorPicker: {
+    en: "Open Color Picker",
+    ja: "カラーピッカーを開く",
+    ko: "색상 선택 열기",
+  },
+
+  iframeOrUrl: {
+    en: "Enter iframe tag or URL",
+    ja: "iframeタグまたはURLを入力してください",
+    ko: "iframe 태그 또는 URL 입력",
+  },
+  youtubeHint: {
+    en: "For YouTube, just paste the video link and it will be embedded automatically!",
+    ja: "YouTubeは動画リンクを貼り付けるだけで自動的に埋め込まれます！",
+    ko: "Youtube는 내용에 주소를 붙여넣기 하면 자동으로 됩니다!",
+  },
+  cancel: {
+    en: "Cancel",
+    ja: "キャンセル",
+    ko: "취소",
+  },
+  insert: {
+    en: "Insert",
+    ja: "挿入",
+    ko: "삽입",
+  },
+  rowAbove: { en: "Insert Row Above", ja: "上に行を追加", ko: "행 위" },
+  rowBelow: { en: "Insert Row Below", ja: "下に行を追加", ko: "행 아래" },
+  deleteRow: { en: "Delete Row", ja: "行を削除", ko: "행 삭제" },
+  columnLeft: { en: "Insert Column Left", ja: "左に列を追加", ko: "열 왼쪽" },
+  columnRight: {
+    en: "Insert Column Right",
+    ja: "右に列を追加",
+    ko: "열 오른쪽",
+  },
+  deleteColumn: { en: "Delete Column", ja: "列を削除", ko: "열 삭제" },
+  deleteTable: { en: "Delete Table", ja: "表を削除", ko: "표 삭제" },
+  image: { en: "Image", ja: "画像", ko: "이미지" },
+};
+
 export const nicknameI18N = {
   cardTitle: {
     en: "Set Nickname",

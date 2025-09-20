@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { HexColorPicker } from "react-colorful";
 import { ColorPaletteTypes } from "./post-editor.types";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { editorI18N } from "@/lib/consts/i18nConsts";
 
 const COLORS = [
   "#000000",
@@ -25,6 +28,8 @@ const COLORS = [
 ];
 
 export default function ColorPalette({ editor }: ColorPaletteTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [open, setOpen] = useState(false);
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   const [color, setColor] = useState("#000000");
@@ -74,7 +79,7 @@ export default function ColorPalette({ editor }: ColorPaletteTypes) {
           setColorPickerOpen(false);
         }}
         className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-400 hover:ring-2 hover:ring-offset-1 hover:ring-blue-500 transition"
-        aria-label="색상 선택 열기"
+        aria-label={editorI18N.openColorPicker[localeKey]}
       >
         <div
           className="w-6 h-6 rounded-full"
@@ -94,7 +99,7 @@ export default function ColorPalette({ editor }: ColorPaletteTypes) {
               }}
               className="w-7 h-7 rounded-full border border-gray-400 hover:ring-2 hover:ring-offset-1 hover:ring-blue-500 transition"
               style={{ backgroundColor: c }}
-              aria-label={`색상 ${c}`}
+              aria-label={`Color ${c}`}
               type="button"
             />
           ))}
@@ -108,7 +113,7 @@ export default function ColorPalette({ editor }: ColorPaletteTypes) {
               setOpen(false);
             }}
             className="flex items-center justify-center w-7 h-7 rounded-full border border-gray-400 hover:ring-2 hover:ring-offset-1 hover:ring-blue-500 transition text-xl font-bold select-none"
-            aria-label="커스텀 컬러 피커 열기"
+            aria-label={editorI18N.openCustomColorPicker[localeKey]}
           >
             +
           </button>
@@ -127,13 +132,13 @@ export default function ColorPalette({ editor }: ColorPaletteTypes) {
               onClick={() => applyColor(color)}
               className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
             >
-              적용
+              {editorI18N.insert[localeKey]}
             </button>
             <button
               onClick={() => setColorPickerOpen(false)}
               className="px-3 py-1 rounded border border-gray-400 hover:bg-gray-100 transition"
             >
-              취소
+              {editorI18N.cancel[localeKey]}
             </button>
           </div>
         </div>

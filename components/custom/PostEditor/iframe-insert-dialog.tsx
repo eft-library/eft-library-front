@@ -12,10 +12,15 @@ import {
 import React, { useState } from "react";
 import { IframeInsertDialogTypes } from "./post-editor.types";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { editorI18N } from "@/lib/consts/i18nConsts";
 
 export default function IframeInsertDialog({
   editor,
 }: IframeInsertDialogTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
 
@@ -71,7 +76,7 @@ export default function IframeInsertDialog({
           variant="outline"
           className="`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150"
         >
-          치지직, 숲 클립 추가
+          {editorI18N.addChzzkOrSoopClip[localeKey]}
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -90,17 +95,17 @@ export default function IframeInsertDialog({
       >
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-semibold text-gray-900 mb-1">
-            iframe 태그 또는 URL 입력
+            {editorI18N.iframeOrUrl[localeKey]}
           </DialogTitle>
           <p className="text-sm text-gray-500">
-            (Youtube는 내용에 주소를 붙여넣기 하면 자동으로 됩니다!)
+            ({editorI18N.youtubeHint[localeKey]})
           </p>
         </DialogHeader>
 
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="iframe 전체 태그 또는 URL을 입력하세요"
+          placeholder={editorI18N.iframeOrUrl[localeKey]}
           className="min-h-[42px] mb-6 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
         />
 
@@ -110,11 +115,11 @@ export default function IframeInsertDialog({
               variant="ghost"
               className="text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md"
             >
-              취소
+              {editorI18N.cancel[localeKey]}
             </Button>
           </DialogClose>
           <Button onClick={handleInsert} className="px-5 py-2.5 rounded-md">
-            삽입
+            {editorI18N.insert[localeKey]}
           </Button>
         </DialogFooter>
       </DialogContent>

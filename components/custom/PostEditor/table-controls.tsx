@@ -1,37 +1,42 @@
 import React from "react";
 import { TableControlsTypes } from "./post-editor.types";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { editorI18N } from "@/lib/consts/i18nConsts";
 
 export default function TableControls({
   editor,
   inTable,
   deleteRowSmart,
 }: TableControlsTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   if (!editor) return null;
 
   const controls = [
     {
-      label: "행 위",
+      label: editorI18N.rowAbove[localeKey],
       onClick: () => editor.chain().focus().addRowBefore().run(),
     },
     {
-      label: "행 아래",
+      label: editorI18N.rowBelow[localeKey],
       onClick: () => editor.chain().focus().addRowAfter().run(),
     },
-    { label: "행 삭제", onClick: deleteRowSmart },
+    { label: editorI18N.deleteRow[localeKey], onClick: deleteRowSmart },
     {
-      label: "열 왼쪽",
+      label: editorI18N.columnLeft[localeKey],
       onClick: () => editor.chain().focus().addColumnBefore().run(),
     },
     {
-      label: "열 오른쪽",
+      label: editorI18N.columnRight[localeKey],
       onClick: () => editor.chain().focus().addColumnAfter().run(),
     },
     {
-      label: "열 삭제",
+      label: editorI18N.deleteColumn[localeKey],
       onClick: () => editor.chain().focus().deleteColumn().run(),
     },
     {
-      label: "표 삭제",
+      label: editorI18N.deleteTable[localeKey],
       onClick: () => editor.chain().focus().deleteTable().run(),
     },
   ];

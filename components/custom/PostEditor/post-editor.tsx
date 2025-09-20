@@ -20,11 +20,16 @@ import { YoutubeAutoPaste } from "./youtube-auto-paste";
 import { Color } from "@tiptap/extension-color";
 import TableControls from "./table-controls";
 import Toolbar from "./toolbar";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { editorI18N } from "@/lib/consts/i18nConsts";
 
 export default function PostEditor({
   initialContent = "",
   onChange,
 }: PostEditorTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const lowlight = createLowlight(common);
   const [mounted, setMounted] = useState(false);
 
@@ -60,7 +65,7 @@ export default function PostEditor({
       body: formData,
     });
 
-    if (!res.ok) throw new Error("이미지 업로드 실패");
+    if (!res.ok) throw new Error(editorI18N.imageUploadError[localeKey]);
     const response = await res.json();
 
     return response.data.image_url;
@@ -83,7 +88,7 @@ export default function PostEditor({
           const url = await uploadFileToFastAPI(file);
           editor.chain().focus().setImage({ src: url }).run();
         } catch (error) {
-          alert("이미지 업로드 중 오류가 발생했습니다.");
+          alert(editorI18N.imageUploadError[localeKey]);
           console.error(error);
         }
       }
@@ -105,7 +110,7 @@ export default function PostEditor({
         const url = await uploadFileToFastAPI(file);
         editor.chain().focus().setImage({ src: url }).run();
       } catch (error) {
-        alert("이미지 업로드 중 오류가 발생했습니다.");
+        alert(editorI18N.imageUploadError[localeKey]);
         console.error(error);
       }
     }
@@ -134,7 +139,6 @@ export default function PostEditor({
 
     if (!tableNode) {
       // 테이블이 아닌 위치에서 호출되면 아무것도 안 함
-      console.warn("표 노드를 찾을 수 없습니다. 커서가 표 내부에 있나요?");
       return;
     }
 

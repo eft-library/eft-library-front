@@ -2,9 +2,14 @@ import React, { useRef } from "react";
 import { ToolbarTypes } from "./post-editor.types";
 import ColorPalette from "./color-palette";
 import IframeInsertDialog from "./iframe-insert-dialog";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { editorI18N } from "@/lib/consts/i18nConsts";
 
 export default function Toolbar({ editor, handleFileChange }: ToolbarTypes) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   if (!editor) return null;
 
@@ -50,7 +55,7 @@ export default function Toolbar({ editor, handleFileChange }: ToolbarTypes) {
       isActive: editor.isActive("blockquote"),
     },
     {
-      name: "표",
+      name: "Table",
       action: () =>
         editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run(),
       isActive: false,
@@ -89,7 +94,7 @@ export default function Toolbar({ editor, handleFileChange }: ToolbarTypes) {
         onClick={() => fileInputRef.current?.click()}
         className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
       >
-        이미지
+        {editorI18N.image[localeKey]}
       </button>
       <IframeInsertDialog editor={editor} />
       <ColorPalette editor={editor} />
