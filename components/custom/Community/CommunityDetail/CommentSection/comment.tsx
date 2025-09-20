@@ -60,7 +60,7 @@ export default function Comment({
   const [openPenalty, setOpenPenalty] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [unblock, setUnblock] = useState(false);
-
+  console.log(session?.userInfo);
   useEffect(() => {
     if (commentId) {
       const el = document.getElementById(`comment-${commentId}`);
@@ -329,17 +329,14 @@ export default function Comment({
           {/* Comment content */}
           {!isEditing ? (
             <div className="prose prose-sm max-w-none dark:prose-invert">
-              {comment.depth > 1 && comment.parent_nickname && (
-                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
-                  ↪️
-                  <span className="font-semibold">
-                    @{comment.parent_nickname}
-                  </span>
-                  님에게 답글
+              {session?.userInfo.user_blocks.some(
+                (block: { blocked_email: string }) =>
+                  block.blocked_email === comment.user_email
+              ) ? (
+                <p className="text-gray-400 dark:text-gray-500 italic text-sm m-0">
+                  🙅 차단한 사용자입니다.
                 </p>
-              )}
-
-              {!comment.delete_by_user && !comment.delete_by_admin ? (
+              ) : !comment.delete_by_user && !comment.delete_by_admin ? (
                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed m-0 font-medium">
                   {comment.contents}
                 </p>
@@ -482,6 +479,7 @@ export default function Comment({
         open={unblock}
         onOpenChange={setUnblock}
         targetEmail={comment.user_email}
+        targetNickname={comment.nickname}
       />
     </div>
   );

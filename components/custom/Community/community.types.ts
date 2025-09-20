@@ -54,6 +54,7 @@ export interface UnblockDialogTypes {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   targetEmail: string;
+  targetNickname: string;
 }
 
 export interface CommunityDetail {

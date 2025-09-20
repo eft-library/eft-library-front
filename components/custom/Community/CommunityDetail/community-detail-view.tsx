@@ -380,6 +380,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
         open={unblock}
         onOpenChange={setUnblock}
         targetEmail={postInfo.post_detail.user_email}
+        targetNickname={postInfo.post_detail.nickname}
       />
     </div>
   );

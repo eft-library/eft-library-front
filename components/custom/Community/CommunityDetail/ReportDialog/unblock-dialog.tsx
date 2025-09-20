@@ -18,6 +18,7 @@ export default function UnblockDialog({
   open,
   onOpenChange,
   targetEmail,
+  targetNickname,
 }: UnblockDialogTypes) {
   const { data: session, update: updateSession } = useSession();
   const handleUnblock = async () => {
@@ -61,7 +62,7 @@ export default function UnblockDialog({
 
         <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md">
           <p className="text-sm text-gray-700 dark:text-gray-300">
-            사용자: <span className="font-medium">{targetEmail}</span>
+            사용자: <span className="font-medium">{targetNickname}</span>
           </p>
         </div>
 
