@@ -3,12 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import { COMMUNITY_ENDPOINTS, USER_API_ENDPOINTS } from "../config/endpoint";
 import { requestUserData } from "../config/api";
 
-export function useUserAction(
+export function useReport(
   session: any,
   onOpenChange: (open: boolean) => void,
-  updateSession?: (data: any) => Promise<void>
+  updateSession?: any
 ) {
-  // 🔹 게시글 신고
+  // 게시글 신고
   const reportPostMutation = useMutation({
     mutationFn: async ({ postId, targetEmail, reason, details }: any) => {
       const data = await requestUserData(
@@ -35,7 +35,7 @@ export function useUserAction(
     },
   });
 
-  // 🔹 댓글 신고
+  // 댓글 신고
   const reportCommentMutation = useMutation({
     mutationFn: async ({ commentId, targetEmail, reason, details }: any) => {
       const data = await requestUserData(
@@ -62,7 +62,7 @@ export function useUserAction(
     },
   });
 
-  // 🔹 사용자 신고
+  // 사용자 신고
   const reportUserMutation = useMutation({
     mutationFn: async ({ targetEmail, reason, details }: any) => {
       const data = await requestUserData(
@@ -88,7 +88,7 @@ export function useUserAction(
     },
   });
 
-  // 🔹 사용자 차단
+  // 사용자 차단
   const blockUserMutation = useMutation({
     mutationFn: async ({ targetEmail, details }: any) => {
       const data = await requestUserData(
@@ -106,13 +106,13 @@ export function useUserAction(
     },
     onSuccess: async (result) => {
       if (updateSession) {
-        await updateSession((prev: any) => ({
-          ...prev,
+        await updateSession({
+          ...session,
           userInfo: {
-            ...prev?.userInfo,
+            ...session?.userInfo,
             user_blocks: result.result,
           },
-        }));
+        });
       }
       onOpenChange(false);
     },
@@ -122,10 +122,45 @@ export function useUserAction(
     },
   });
 
+  // 사용자 차단해제
+  const unblockUserMutation = useMutation({
+    mutationFn: async ({ targetEmail }: any) => {
+      const data = await requestUserData(
+        USER_API_ENDPOINTS.UNBLOCK_USER,
+        {
+          blocked_email: targetEmail,
+          reason: "",
+        },
+        session
+      );
+      if (!data || data.status !== 200 || !data.data) {
+        throw new Error(data?.msg || "Unknown error");
+      }
+      return data.data;
+    },
+    onSuccess: async (result) => {
+      if (updateSession) {
+        await updateSession({
+          ...session,
+          userInfo: {
+            ...session?.userInfo,
+            user_blocks: result.result,
+          },
+        });
+      }
+      onOpenChange(false);
+    },
+    onError: (err: any) => {
+      console.error("Failed to unblock user:", err.message);
+      onOpenChange(false);
+    },
+  });
+
   return {
     reportPostMutation,
     reportCommentMutation,
     reportUserMutation,
     blockUserMutation,
+    unblockUserMutation,
   };
 }

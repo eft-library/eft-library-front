@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { ReportDialogTypes } from "../../community.types";
 import { useSession } from "next-auth/react";
-import { requestUserData } from "@/lib/config/api";
-import { COMMUNITY_ENDPOINTS, USER_API_ENDPOINTS } from "@/lib/config/endpoint";
+import { useReport } from "@/lib/hooks/useReport";
 
 export function ReportDialog({
   open = false,
@@ -26,95 +25,35 @@ export function ReportDialog({
   targetEmail,
 }: ReportDialogTypes) {
   const { data: session, update: updateSession } = useSession();
+  const {
+    reportPostMutation,
+    reportCommentMutation,
+    reportUserMutation,
+    blockUserMutation,
+  } = useReport(session, onOpenChange, updateSession);
 
   const [reason, setReason] = useState("spam");
   const [details, setDetails] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (subject === "post") {
-      const data = await requestUserData(
-        COMMUNITY_ENDPOINTS.REPORT_POST,
-        {
-          post_id: subjectId,
-          reported_email: targetEmail,
-          reason_type: reason,
-          reason: details,
-        },
-        session
-      );
-      if (data && data.status === 200 && data.data) {
-        onOpenChange(false);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        onOpenChange(false);
-      }
+      reportPostMutation.mutate({
+        postId: subjectId,
+        targetEmail,
+        reason,
+        details,
+      });
     } else if (subject === "comment") {
-      const data = await requestUserData(
-        COMMUNITY_ENDPOINTS.REPORT_COMMENT,
-        {
-          comment_id: subjectId,
-          reported_email: targetEmail,
-          reason_type: reason,
-          reason: details,
-        },
-        session
-      );
-      if (data && data.status === 200 && data.data) {
-        onOpenChange(false);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        onOpenChange(false);
-      }
+      reportCommentMutation.mutate({
+        commentId: subjectId,
+        targetEmail,
+        reason,
+        details,
+      });
     } else if (subject === "block") {
-      const data = await requestUserData(
-        USER_API_ENDPOINTS.BLOCK_USER,
-        {
-          blocked_email: targetEmail,
-          reason: details,
-        },
-        session
-      );
-      if (data && data.status === 200 && data.data) {
-        await updateSession({
-          ...session,
-          userInfo: {
-            ...session?.userInfo,
-            user_blocks: data.data.result,
-          },
-        });
-        onOpenChange(false);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        onOpenChange(false);
-      }
+      blockUserMutation.mutate({ targetEmail, details });
     } else {
-      const data = await requestUserData(
-        USER_API_ENDPOINTS.REPORT_USER,
-        {
-          reported_email: targetEmail,
-          reason_type: reason,
-          reason: details,
-        },
-        session
-      );
-      if (data && data.status === 200 && data.data) {
-        onOpenChange(false);
-      } else {
-        console.error(
-          "Failed to fetch station data:",
-          data?.msg || "Unknown error"
-        );
-        onOpenChange(false);
-      }
+      reportUserMutation.mutate({ targetEmail, reason, details });
     }
   };
 

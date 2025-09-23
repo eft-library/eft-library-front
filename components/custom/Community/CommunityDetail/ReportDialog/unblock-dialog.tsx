@@ -10,9 +10,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UnblockDialogTypes } from "../../community.types";
-import { requestUserData } from "@/lib/config/api";
-import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useSession } from "next-auth/react";
+import { useReport } from "@/lib/hooks/useReport";
 
 export default function UnblockDialog({
   open,
@@ -21,31 +20,13 @@ export default function UnblockDialog({
   targetNickname,
 }: UnblockDialogTypes) {
   const { data: session, update: updateSession } = useSession();
+  const { unblockUserMutation } = useReport(
+    session,
+    onOpenChange,
+    updateSession
+  );
   const handleUnblock = async () => {
-    const data = await requestUserData(
-      USER_API_ENDPOINTS.UNBLOCK_USER,
-      {
-        blocked_email: targetEmail,
-        reason: "",
-      },
-      session
-    );
-    if (data && data.status === 200 && data.data) {
-      await updateSession({
-        ...session,
-        userInfo: {
-          ...session?.userInfo,
-          user_blocks: data.data.result,
-        },
-      });
-      onOpenChange(false);
-    } else {
-      console.error(
-        "Failed to fetch unblock data:",
-        data?.msg || "Unknown error"
-      );
-      onOpenChange(false);
-    }
+    unblockUserMutation.mutate({ targetEmail });
   };
 
   return (
