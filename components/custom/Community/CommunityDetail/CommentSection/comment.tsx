@@ -60,7 +60,7 @@ export default function Comment({
   const [openPenalty, setOpenPenalty] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [unblock, setUnblock] = useState(false);
-  console.log(session?.userInfo);
+
   useEffect(() => {
     if (commentId) {
       const el = document.getElementById(`comment-${commentId}`);
