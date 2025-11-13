@@ -5,22 +5,20 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 import { useState } from "react";
-import { useItemFilter } from "@/lib/hooks/useItemFilter";
-import ItemFilter from "./ItemFilter/item-filter";
-import MapSelector from "./MapSelector/map-selector";
-import Map2D from "./Map2D/map-2d";
-import Map3D from "./Map3D/map-3d";
+// import { useItemFilter } from "@/lib/hooks/useItemFilter";
+import Map3DNoItem from "./Map3D/map-3d-no-item";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import MapSelector from "./MapSelector/map-selector";
 
 export default function MapView({ mapInfo }: MapViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [mapData, setMapData] = useState<MapData>(mapInfo.map);
-  const [mapType, setMapType] = useState<string>("2D");
-  const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
-    mapData.jpg_item_path
-  );
+  // const [mapType, setMapType] = useState<string>("2D");
+  // const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
+  //   mapData.jpg_item_path
+  // );
 
   return (
     <ViewWrapper>
@@ -37,16 +35,22 @@ export default function MapView({ mapInfo }: MapViewTypes) {
           dataAdSlot="2690838054"
           maxWidth={1220}
         />
-        {/* Main Content Area - Centered with max-w */}
-        <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6">
-          {/* <MapSelection /> */}
+        <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6 mt-4">
+          <MapSelector
+            onClickMapAction={setMapData}
+            mapData={mapData}
+            mapSelector={mapInfo.map_selector}
+          />
+          <Map3DNoItem mapData={mapData} />
+        </div>
+        {/* 지금은 안쓰는 2D 코드들 */}
+        {/* <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6">
           <MapSelector
             onClickMapAction={setMapData}
             mapData={mapData}
             mapSelector={mapInfo.map_selector}
           />
 
-          {/* ItemFilter now receives mapType and setMapType */}
           <ItemFilter
             originItemList={mapData.jpg_item_path}
             viewItemList={viewItemList}
@@ -56,14 +60,12 @@ export default function MapView({ mapInfo }: MapViewTypes) {
             setMapType={setMapType}
           />
 
-          {/* Map View - ToggleGroup is now inside ItemFilter */}
           {mapType === "2D" ? (
             <Map2D viewItemList={viewItemList} mapData={mapData} />
           ) : (
             <Map3D viewItemList={viewItemList} mapData={mapData} />
           )}
-          {/* <MapView mapType={mapType} /> */}
-        </div>
+        </div> */}
       </div>
     </ViewWrapper>
   );

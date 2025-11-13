@@ -4,6 +4,8 @@ import type { MainViewTypes } from "./news-view.types";
 import PinnedNotice from "./PinnedNotice/pinned-notice";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (
@@ -53,12 +55,20 @@ export default function MainView({ homeData }: MainViewTypes) {
 
               {/* Pinned Notices */}
               <PinnedNotice notice={homeData.news} />
-              <AdBanner
-                dataAdFormat={"auto"}
-                dataFullWidthResponsive={true}
-                dataAdSlot="8601640289"
-                maxWidth={340}
-              />
+              <div className="rounded-lg p-2 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
+                <Link
+                  href="https://aff.gearupglobal.com/product/download/HSMniDfsEY6c"
+                  target="_blank"
+                >
+                  <Image
+                    src="/gearupboosterlogo.webp"
+                    alt="gearupbooster"
+                    width={300}
+                    height={60}
+                    className="w-full h-auto"
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

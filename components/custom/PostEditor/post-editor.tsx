@@ -56,20 +56,23 @@ export default function PostEditor({
     onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
   });
 
-  const uploadFileToFastAPI = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append("file", file);
+  const uploadFileToFastAPI = useCallback(
+    async (file: File): Promise<string> => {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    const res = await fetch(COMMUNITY_ENDPOINTS.IMAGE_UPLOAD, {
-      method: "POST",
-      body: formData,
-    });
+      const res = await fetch(COMMUNITY_ENDPOINTS.IMAGE_UPLOAD, {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!res.ok) throw new Error(editorI18N.imageUploadError[localeKey]);
-    const response = await res.json();
+      if (!res.ok) throw new Error(editorI18N.imageUploadError[localeKey]);
+      const response = await res.json();
 
-    return response.data.image_url;
-  };
+      return response.data.image_url;
+    },
+    [localeKey]
+  );
 
   const onDrop = useCallback(
     async (event: React.DragEvent<HTMLDivElement>) => {
@@ -93,7 +96,7 @@ export default function PostEditor({
         }
       }
     },
-    [editor]
+    [editor, localeKey, uploadFileToFastAPI]
   );
 
   const handleFileChange = async (

@@ -68,7 +68,7 @@ interface UserNextQuest {
 
 export interface Map3DTypes {
   mapData: MapData;
-  viewItemList: string[];
+  viewItemList?: string[];
 }
 export interface MapSelectorTypes {
   onClickMapAction: (val: MapData) => void;

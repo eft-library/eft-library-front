@@ -180,20 +180,22 @@ export default function BossSelector({ bossData }: BossDetail) {
                   <td className="text-center p-3 sm:p-4 font-bold text-sm sm:text-base text-primary">
                     {bossData.boss.health_total}
                   </td>
-                  <td className="flex flex-col text-center p-3 sm:p-4 text-sm sm:text-base">
-                    {bossData.boss.children &&
-                    bossData.boss.children.some((child) => !child.is_boss) ? (
-                      bossData.boss.children.map(
-                        (childData, index) =>
-                          !childData.is_boss && (
-                            <span key={`${index}-follower-${childData.id}`}>
-                              {childData.name[localeKey]}
-                            </span>
-                          )
-                      )
-                    ) : (
-                      <span>-</span>
-                    )}
+                  <td className="p-3 sm:p-4 text-sm sm:text-base">
+                    <div className="flex flex-col items-center justify-center text-center h-full min-h-[64px]">
+                      {bossData.boss.children &&
+                      bossData.boss.children.some((child) => !child.is_boss) ? (
+                        bossData.boss.children.map(
+                          (childData, index) =>
+                            !childData.is_boss && (
+                              <span key={`${index}-follower-${childData.id}`}>
+                                {childData.name[localeKey]}
+                              </span>
+                            )
+                        )
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tbody>
