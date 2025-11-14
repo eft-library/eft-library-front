@@ -52,6 +52,35 @@ export default function CommunityDetailData() {
     fetchCommunityDetail();
   }, [id, userEmail, status, pageCategory]);
 
+  useEffect(() => {
+    if (!id) return;
+
+    // localStorage 가져오기
+    const viewed = JSON.parse(
+      localStorage.getItem("viewed_community_posts") || "[]"
+    );
+
+    // 이미 조회한 게시글이면 return
+    if (viewed.includes(id)) return;
+
+    // 조회수 증가 API 호출
+    fetch(COMMUNITY_ENDPOINTS.POST_VIEW_COUNT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ post_id: id }),
+    })
+      .then(() => {
+        // 성공 시 localStorage 업데이트
+        viewed.push(id);
+        localStorage.setItem("viewed_community_posts", JSON.stringify(viewed));
+      })
+      .catch((err) => {
+        console.error("조회수 증가 실패:", err);
+      });
+  }, [id]);
+
   if (isLoading) return <Loading />;
   if (isError) return <div>게시글 데이터를 불러오지 못했습니다.</div>;
   if (!postInfo) return <div>게시글이 없습니다.</div>;
