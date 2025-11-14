@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { CommunityWriteTypes } from "../community.types";
 import { useAppStore } from "@/store/provider";
 import { getBanStatus } from "@/lib/func/userFunction";
+import Loading from "../../Loading/loading";
 
 export default function CommunityWrite({
   postInfo,
@@ -40,6 +41,7 @@ export default function CommunityWrite({
   const [title, setTitle] = useState(postInfo?.title ?? "");
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const handleSave = async () => {
     try {
@@ -60,6 +62,7 @@ export default function CommunityWrite({
           return;
         }
         setPageCategory(category.id);
+        setLoading(true);
         if (writeType === "create") {
           const data = await requestUserData(
             COMMUNITY_ENDPOINTS.CREATE_POSTS,
@@ -71,6 +74,7 @@ export default function CommunityWrite({
             },
             session
           );
+          setLoading(false);
           if (data && data.status === 200) {
             router.push(`/community/detail/${data.data.url}`);
           } else {
@@ -91,6 +95,7 @@ export default function CommunityWrite({
             },
             session
           );
+          setLoading(false);
           if (data && data.status === 200) {
             router.push(`/community/detail/${data.data.url}`);
           } else {
@@ -107,6 +112,7 @@ export default function CommunityWrite({
         });
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching community create:", error);
     }
   };
@@ -193,7 +199,7 @@ export default function CommunityWrite({
       {banStatus === "none" && (
         <button
           onClick={handleSave}
-          className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg"
+          className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg cursor-pointer"
         >
           저장
         </button>
@@ -226,6 +232,7 @@ export default function CommunityWrite({
         title="Notice"
         description={alertDesc}
       />
+      {isLoading && <Loading />}
     </div>
   );
 }
