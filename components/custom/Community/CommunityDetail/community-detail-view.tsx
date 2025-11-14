@@ -334,7 +334,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
               {/* Reactions / Actions */}
               <CommunityReaction postInfo={postInfo.post_detail} />
 
-              <Separator className="bg-gray-200 dark:bg-gray-700" />
+              <div className="" />
             </article>
             <CommentSection postInfo={postInfo.post_detail} />
 

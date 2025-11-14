@@ -123,10 +123,10 @@ export default function Comments() {
                   <span>
                     최종 수정: {formatISODateTime(comment.comment.update_time)}
                   </span>
-                  <span className="flex items-center space-x-1">
+                  {/* <span className="flex items-center space-x-1">
                     <Heart className="w-4 h-4" />
                     <span>{comment.comment.id}</span>
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </Link>

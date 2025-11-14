@@ -80,8 +80,11 @@ export default function MapSelector({
             align="start"
             sideOffset={4}
           >
-            {mapSelector.map((map) => (
-              <DropdownMenuItem key={map.id} className="p-0">
+            {mapSelector.map((map, index) => (
+              <DropdownMenuItem
+                key={map.id}
+                className={`p-0  ${index > 5 && "opacity-50"}`}
+              >
                 <Link
                   href={map.link}
                   scroll={false}

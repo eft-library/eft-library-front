@@ -853,7 +853,7 @@ export const rankI18N = {
 };
 
 export const interactiveMapI18N = {
-  title: { en: "Interactive Maps", ja: "Interactive Maps", ko: "대화형 지도" },
+  title: { en: "Interactive Maps", ja: "Interactive Maps", ko: "3D 지도" },
   itemFilter: {
     en: "Item Filter",
     ja: "アイテムフィルター",

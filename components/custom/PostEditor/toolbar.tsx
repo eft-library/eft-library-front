@@ -30,14 +30,14 @@ export default function Toolbar({ editor, handleFileChange }: ToolbarTypes) {
       isActive: editor.isActive("underline"),
     },
     {
-      name: "H1",
-      action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-      isActive: editor.isActive("heading", { level: 1 }),
-    },
-    {
       name: "H2",
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: editor.isActive("heading", { level: 2 }),
+    },
+    {
+      name: "H3",
+      action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      isActive: editor.isActive("heading", { level: 3 }),
     },
     {
       name: "•",

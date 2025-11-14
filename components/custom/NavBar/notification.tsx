@@ -39,7 +39,7 @@ export default function Notification({
       {/* 알림 드롭다운 */}
       {activeMenu === "notifications" && (
         <div
-          className={`absolute top-full right-0 mt-0 w-80 border rounded-md shadow-lg z-50 ${
+          className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-80 border rounded-md shadow-lg z-50 ${
             theme === "dark"
               ? "bg-[#2a2d35] border-gray-600"
               : "bg-white border-gray-200"
