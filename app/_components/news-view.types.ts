@@ -1,3 +1,4 @@
+import { CommunityPost } from "@/components/custom/Community/community.types";
 import { LocaleName } from "@/components/types/common";
 
 export interface MainViewTypes {
@@ -12,6 +13,7 @@ interface HomeDataType {
   main_info: MainInfoType[];
   menu: ParentMenuType[];
   news: NewsMapColumn;
+  issue_posts: CommunityPost[];
 }
 
 interface MainInfoType {

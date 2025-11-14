@@ -6,6 +6,7 @@ import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
 import Link from "next/link";
 import Image from "next/image";
+import { Flame, MessageSquare } from "lucide-react";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (
@@ -29,32 +30,48 @@ export default function MainView({ homeData }: MainViewTypes) {
 
             {/* Sidebar */}
             <div className="lg:w-80 space-y-6">
-              {/* Trending Posts */}
-              {/* <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
-              <div className="flex items-center space-x-2 mb-4">
-                <Fire className="w-5 h-5 text-orange-400" />
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  인기 게시물
-                </h2>
-              </div>
-              <div className="space-y-3">
-                <div className="text-sm cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400">
-                  최신 패치 0.16.7.0 변경사항 정리
-                </div>
-                <div className="text-sm cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400">
-                  초보자를 위한 타르코프 생존 가이드
-                </div>
-                <div className="text-sm cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400">
-                  효율적인 퀘스트 진행 순서
-                </div>
-                <div className="text-sm cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400">
-                  은신처 업그레이드 우선순위
-                </div>
-              </div>
-            </div> */}
-
               {/* Pinned Notices */}
               <PinnedNotice notice={homeData.news} />
+
+              {/* Trending Posts */}
+              {homeData.issue_posts.length > 3 && (
+                <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Flame className="w-5 h-5 mr-2 text-orange-400" />
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      인기 게시물
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3">
+                    {homeData.issue_posts.map((post, index) => (
+                      <Link
+                        key={post.id}
+                        scroll={false}
+                        href={`/community/detail/${post.id}-${post.slug}`}
+                      >
+                        <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
+                          <span className="text-xs font-bold text-orange-400 mt-1">
+                            {index + 1}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-2 mb-1">
+                              {post.title}
+                              <Flame className="inline w-3 h-3 ml-1 text-red-500" />
+                            </p>
+                            <div className="flex items-center space-x-1">
+                              <MessageSquare className="w-3 h-3 text-gray-400 dark:text-gray-500" />
+                              <span className="text-xs text-gray-400 dark:text-gray-500">
+                                {post.comment_count}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="rounded-lg p-2 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
                 <Link
                   href="https://aff.gearupglobal.com/product/download/HSMniDfsEY6c"
