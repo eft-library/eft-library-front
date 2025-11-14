@@ -7,7 +7,7 @@ import Link from "next/link";
 import type { RenderNavTypes } from "./nav-bar.types";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Info, Package, Target, Map } from "lucide-react";
+import { Info, Package, Target, Map, UserRoundPen } from "lucide-react";
 
 export default function RenderNavM({
   navMain,
@@ -30,6 +30,8 @@ export default function RenderNavM({
         return <Package className="w-5 h-5" />;
       case "INFO":
         return <Info className="w-5 h-5" />;
+      case "COMMUNITY":
+        return <UserRoundPen className="w-5 h-5" />;
       default:
         return null;
     }
