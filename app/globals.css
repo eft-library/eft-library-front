@@ -131,6 +131,10 @@
 .ProseMirror:focus {
   outline: none;
 }
+.ProseMirror p {
+  @apply my-1;
+  line-height: 1.3; /* 원하는 줄 간격 */
+}
 
 .ProseMirror img {
   @apply rounded-lg my-4;
