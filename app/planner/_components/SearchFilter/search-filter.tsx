@@ -81,7 +81,8 @@ export default function SearchFilter({
     },
     onCompositionEnd: (e) => {
       composing.current = false;
-      setKeyword(e.target.value);
+      const value = (e.target as HTMLInputElement).value;
+      setKeyword(value);
     },
   });
 

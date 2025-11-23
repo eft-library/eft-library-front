@@ -37,7 +37,7 @@ interface PlannerInfo {
 
 export interface SearchFilterTypes {
   selectedItems: Quest[];
-  setSelectedItems: (val: Quest[]) => void;
+  setSelectedItems: React.Dispatch<React.SetStateAction<Quest[]>>;
 }
 
 export interface PlannerViewTypes {
