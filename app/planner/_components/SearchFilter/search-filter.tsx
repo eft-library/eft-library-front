@@ -19,30 +19,25 @@ export default function SearchFilter({
 }: SearchFilterTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+
   const [questList, setQuestList] = useState<Quest[]>([]);
-  const [input, setInput] = useState("");
 
   useEffect(() => {
     const getQuestList = async () => {
       const data = await requestData(API_ENDPOINTS.GET_ALL_QUEST);
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch quest data:",
-          data?.msg || "Unknown error"
-        );
-        return null;
+      if (data?.status === 200) {
+        setQuestList(data.data);
       }
-      setQuestList(data.data);
     };
     getQuestList();
   }, []);
 
-  const getFilteredQuests = (inputValue: string) => {
-    const lower = inputValue.toLowerCase();
+  const getFilteredQuests = (keyword: string) => {
+    const lower = keyword.toLowerCase();
 
     return questList.filter(
       (quest) =>
-        !selectedItems.some((selected) => selected.id === quest.id) &&
+        !selectedItems.some((s) => s.id === quest.id) &&
         (quest.name[localeKey].toLowerCase().includes(lower) ||
           quest.npc_name[localeKey].toLowerCase().includes(lower))
     );
@@ -50,54 +45,49 @@ export default function SearchFilter({
 
   const {
     isOpen,
-    getLabelProps,
-    getMenuProps,
-    getInputProps,
     highlightedIndex,
+    getMenuProps,
     getItemProps,
+    getInputProps,
     inputValue,
-    reset,
+    setInputValue,
+    selectItem,
   } = useCombobox<Quest>({
-    items: getFilteredQuests(input), // ✅ 외부 상태 사용
-    inputValue: input, // ✅ 직접 컨트롤
-    onInputValueChange: ({ inputValue }) => {
-      setInput(inputValue ?? "");
-    },
-    itemToString: (item) => (item ? item.name[localeKey] : ""),
-    onSelectedItemChange: ({ selectedItem }) => {
-      if (
-        selectedItem &&
-        !selectedItems.find((item) => item.id === selectedItem.id)
-      ) {
-        setSelectedItems([...selectedItems, selectedItem]);
-        setInput(""); // ✅ inputValue 상태 초기화
-      }
+    items: getFilteredQuests(""), // 초기값
 
-      reset(); // ✅ focus 상태 초기화
+    itemToString: (item) => (item ? item.name[localeKey] : ""),
+
+    onInputValueChange: ({ inputValue }) => {
+      setInputValue(inputValue ?? "");
+    },
+
+    onSelectedItemChange: ({ selectedItem }) => {
+      if (selectedItem) {
+        setSelectedItems([...selectedItems, selectedItem]); // prev 사용 X
+        setInputValue("");
+      }
     },
   });
 
-  const filteredQuests = getFilteredQuests(inputValue);
+  const filteredQuests = getFilteredQuests(inputValue ?? "");
 
   return (
     <div className="mb-4 mt-4">
-      {/* Combobox Container */}
       <div className="relative">
-        <label {...getLabelProps()} className="sr-only">
-          {planner18N.selectQuest[localeKey]}
-        </label>
-
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 z-10" />
+
+          {/* 최중요: getInputProps 적용 */}
           <Input
-            {...getInputProps()}
-            type="text"
-            placeholder={planner18N.selectQuest[localeKey]}
-            className="pl-10 h-12 text-lg rounded-2xl border-2 focus:border-orange-500 dark:bg-gray-800 dark:border-gray-600 text-white"
+            {...getInputProps({
+              placeholder: planner18N.selectQuest[localeKey],
+              className:
+                "pl-10 h-12 text-lg rounded-2xl border-2 focus:border-orange-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-gray-900",
+            })}
           />
         </div>
 
-        {/* Dropdown Menu */}
+        {/* 드롭다운 영역 */}
         <div
           {...getMenuProps()}
           className={`absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow-lg z-20 max-h-60 overflow-y-auto ${
