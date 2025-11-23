@@ -7,7 +7,7 @@ import { Search } from "lucide-react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { Quest } from "@/app/quest/_components/quest.types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useCombobox } from "downshift";
@@ -21,6 +21,8 @@ export default function SearchFilter({
   const localeKey = getLocaleKey(locale);
 
   const [questList, setQuestList] = useState<Quest[]>([]);
+  const [keyword, setKeyword] = useState(""); // 내가 직접 관리하는 검색어
+  const composing = useRef(false);
 
   useEffect(() => {
     const getQuestList = async () => {
@@ -32,44 +34,56 @@ export default function SearchFilter({
     getQuestList();
   }, []);
 
-  const getFilteredQuests = (keyword: string) => {
+  const filteredQuests = questList.filter((quest) => {
     const lower = keyword.toLowerCase();
-
-    return questList.filter(
-      (quest) =>
-        !selectedItems.some((s) => s.id === quest.id) &&
-        (quest.name[localeKey].toLowerCase().includes(lower) ||
-          quest.npc_name[localeKey].toLowerCase().includes(lower))
+    return (
+      !selectedItems.some((s) => s.id === quest.id) &&
+      (quest.name[localeKey].toLowerCase().includes(lower) ||
+        quest.npc_name[localeKey].toLowerCase().includes(lower))
     );
-  };
+  });
 
   const {
     isOpen,
     highlightedIndex,
     getMenuProps,
     getItemProps,
-    getInputProps,
-    inputValue,
-    setInputValue,
     selectItem,
+    getInputProps,
   } = useCombobox<Quest>({
-    items: getFilteredQuests(""), // 초기값
+    items: filteredQuests,
 
     itemToString: (item) => (item ? item.name[localeKey] : ""),
 
+    // Downshift의 inputValue는 완전히 무시 → 한글 100% 정상
     onInputValueChange: ({ inputValue }) => {
-      setInputValue(inputValue ?? "");
+      if (!composing.current) {
+        setKeyword(inputValue ?? "");
+      }
     },
 
     onSelectedItemChange: ({ selectedItem }) => {
       if (selectedItem) {
-        setSelectedItems([...selectedItems, selectedItem]); // prev 사용 X
-        setInputValue("");
+        setSelectedItems((prev) => [...prev, selectedItem]);
+        setKeyword("");
+        selectItem(null);
       }
     },
   });
 
-  const filteredQuests = getFilteredQuests(inputValue ?? "");
+  const inputProps = getInputProps({
+    placeholder: planner18N.selectQuest[localeKey],
+    className:
+      "pl-10 h-12 text-lg rounded-2xl border-2 focus:border-orange-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-gray-900",
+
+    onCompositionStart: () => {
+      composing.current = true;
+    },
+    onCompositionEnd: (e) => {
+      composing.current = false;
+      setKeyword(e.target.value);
+    },
+  });
 
   return (
     <div className="mb-4 mt-4">
@@ -77,17 +91,9 @@ export default function SearchFilter({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 z-10" />
 
-          {/* 최중요: getInputProps 적용 */}
-          <Input
-            {...getInputProps({
-              placeholder: planner18N.selectQuest[localeKey],
-              className:
-                "pl-10 h-12 text-lg rounded-2xl border-2 focus:border-orange-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white text-gray-900",
-            })}
-          />
+          <Input {...inputProps} />
         </div>
 
-        {/* 드롭다운 영역 */}
         <div
           {...getMenuProps()}
           className={`absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow-lg z-20 max-h-60 overflow-y-auto ${
@@ -121,7 +127,7 @@ export default function SearchFilter({
               </div>
             ))}
 
-          {isOpen && inputValue && filteredQuests.length === 0 && (
+          {isOpen && keyword && filteredQuests.length === 0 && (
             <div className="p-4 text-center text-gray-500 dark:text-gray-400">
               No quests found matching
             </div>
