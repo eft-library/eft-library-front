@@ -15,9 +15,14 @@ export default function QuestGuide({ quest }: QuestDetailTypes) {
     <Card className="mx-4 sm:mx-0 bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700/50 shadow-xl">
       <CardContent className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-4 border-b pb-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-            {questI18N.guide[localeKey]}
-          </h2>
+          <div className="flex flex-col">
+            <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+              {questI18N.guide[localeKey]}
+            </h2>
+            <span className="font-semibold text-sm">
+              ※{questI18N.imageZoomGuide[localeKey]}
+            </span>
+          </div>
           <Link href={quest.wiki_url} target="_blank" scroll={false}>
             <Button
               variant="outline"

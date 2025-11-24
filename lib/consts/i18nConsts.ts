@@ -1025,6 +1025,12 @@ export const questI18N = {
     ja: "ガイド",
     ko: "가이드",
   },
+  imageZoomGuide: {
+    en: "You can zoom images with the mouse wheel and close them with ESC.",
+    ja: "画像はマウスホイールで拡大・縮小でき、ESCで閉じることができます。",
+    ko: "이미지는 마우스 휠로 확대·축소가 가능하며 ESC로 닫을 수 있습니다.",
+  },
+
   name: {
     en: "Title",
     ja: "タイトル",
