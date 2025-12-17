@@ -8,7 +8,7 @@
 
 EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
 
-<img width="1923" height="1366" alt="arc" src="https://github.com/user-attachments/assets/ee949526-d6ce-4f69-bf64-6c350097a593" />
+<img width="1923" height="1366" alt="last" src="https://github.com/user-attachments/assets/3a17adc2-e80b-4042-93fa-dda30bbaf947" />
 
 ## 주요 사항
 
@@ -60,5 +60,6 @@ EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 �
 - [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
 - [프론트엔드 개발 비하인드 – 3번의 마이그레이션 여정](https://github.com/eft-library/eft-library-history/blob/main/frontend//migration.md)
 - [사이트 통계 대시보드 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/dashboard.md)
+
 
 
