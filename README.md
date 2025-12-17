@@ -6,7 +6,7 @@
 
 # EFT Library의 Frontend 운영 방식
 
-EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
+EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
 
 ![architecture](https://github.com/user-attachments/assets/0aad4cb2-2a18-48e1-832c-436507af67fd)
 
@@ -16,27 +16,27 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 - 가능하면 **FastAPI로 부터 최종 가공되어 바로 사용할 수 있는 데이터**를 가져옵니다.
 - 서버의 부하를 줄이기 위해 **SSG의 장점을 최대한 살리려고 노력**했습니다.
 - Typescript를 사용하여 최대한 Type이 일치하게 노력했습니다.
+- WebSocket을 사용하여 사용자 알림을 구현합니다.
 
 ## 패키지 정보
 
 | 패키지명                        | 버전    |
 | ------------------------------- | ------- |
-| next                            | 15.3.2  |
-| react                           | 19.1.0  |
-| next-auth                       | 4.24.11 |
-| tailwindcss                     | 3.4.1   |
-| @react-three/drei               | 10.0.7  |
-| @react-three/fiber              | 9.1.2   |
-| downshift                       | 9.0.9   |
+| next                            | 16.0.7  |
+| react                           | 19.2.1  |
+| next-auth                       | 4.24.13 |
+| tailwindcss                     | 4.1.17   |
+| @react-three/drei               | 10.7.7  |
+| @react-three/fiber              | 9.4.2   |
+| downshift                       | 9.0.12   |
 | react-leaflet                   | 5.0.0   |
-| recharts                        | 2.15.3  |
-| next-intl                       | 4.1.0   |
-| react-infinite-scroll-component | 6.1.0   |
-| react-photoswipe-gallery        | 3.1.1   |
+| recharts                        | 3.5.1  |
+| next-intl                       | 4.5.8   |
+| react-infinite-scroll-component | 6.1.1   |
+| react-photoswipe-gallery        | 4.0.0   |
 | react-zoom-pan-pinch            | 3.7.0   |
-| @xyflow/react                   | 12.6.3  |
-| zustand                         | 5.0.4   |
-| adblock detect react            | 1.3.1   |
+| @xyflow/react                   | 12.10.0  |
+| zustand                         | 5.0.9   |
 
 ## 구조
 
@@ -52,14 +52,12 @@ EFT Library Frontend는 NextJS 15를 사용하여 구축하였고, FastAPI와 �
 
 ## 개발 History
 
-- 🎗️ [폐지된 커뮤니티 기능](https://github.com/eft-library/eft-library-history/blob/main/frontend/community.md)
-- 🎨 [디자인 리뉴얼 이슈 및 요청](https://github.com/eft-library/eft-library-history/blob/main/frontend/design.md)
-- 👍 [로드맵 - 최고의 컨텐츠](https://github.com/eft-library/eft-library-history/blob/main/frontend/roadmap.md)
-- 🍱 [다국어 지원을 위하여](https://github.com/eft-library/eft-library-history/blob/main/frontend/i18n.md)
-- 🗺️ [3D Map 도입 및 성능 개선 과정](https://github.com/eft-library/eft-library-history/blob/main/frontend/3dmap.md)
-- 📊 [Analytics, Search Console, AdSense 도입기 및 경험 공유](https://github.com/eft-library/eft-library-history/blob/main/frontend/google.md)
-- 🔐 [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
-- 🛠️ [프론트엔드 개발 비하인드 – 3번의 마이그레이션 여정](https://github.com/eft-library/eft-library-history/blob/main/frontend//migration.md)
-- 🚀 [사이트 통계 대시보드 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/dashboard.md)
+- [디자인 리뉴얼 이슈 및 요청](https://github.com/eft-library/eft-library-history/blob/main/frontend/design.md)
+- [로드맵 - 최고의 컨텐츠](https://github.com/eft-library/eft-library-history/blob/main/frontend/roadmap.md)
+- [다국어 지원을 위하여](https://github.com/eft-library/eft-library-history/blob/main/frontend/i18n.md)
+- [3D Map 도입 및 성능 개선 과정](https://github.com/eft-library/eft-library-history/blob/main/frontend/3dmap.md)
+- [Analytics, Search Console, AdSense 도입기 및 경험 공유](https://github.com/eft-library/eft-library-history/blob/main/frontend/google.md)
+- [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
+- [프론트엔드 개발 비하인드 – 3번의 마이그레이션 여정](https://github.com/eft-library/eft-library-history/blob/main/frontend//migration.md)
+- [사이트 통계 대시보드 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/dashboard.md)
 
-<!-- 메인페이지 Search 구현 방법 설계 해야 함 - 나머지는 전체 완료 -->
