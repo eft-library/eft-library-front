@@ -1,6 +1,6 @@
 "use client";
 
-import { requestPostData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -14,10 +14,8 @@ export default function HideoutData() {
   useEffect(() => {
     if (status === "loading") return;
 
-    const getStation = async (email: string) => {
-      const data = await requestPostData(API_ENDPOINTS.GET_ALL_STATION, {
-        user_email: email,
-      });
+    const getStation = async () => {
+      const data = await requestGetUserData(API_ENDPOINTS.GET_ALL_STATION, session);
       if (data && data.status === 200) {
         setStationData(data.data);
       } else {
@@ -27,9 +25,7 @@ export default function HideoutData() {
         );
       }
     };
-
-    const userEmail = session?.email || "";
-    getStation(userEmail);
+    getStation();
   }, [status, session?.email]);
 
   if (!stationData) return <Loading />;
