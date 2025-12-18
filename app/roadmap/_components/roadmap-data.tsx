@@ -7,15 +7,13 @@ import type { RoadmapDataTypes } from "./roadmap.types";
 import { ReactFlowProvider } from "@xyflow/react";
 import RoadmapView from "./roadmap-view";
 import Loading from "@/components/custom/Loading/loading";
-import { requestPostData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 
 export default function RoadmapData() {
   const { data: session, status } = useSession();
 
-  const fetchRoadmap = async (email: string): Promise<RoadmapDataTypes> => {
-    const data = await requestPostData(API_ENDPOINTS.GET_QUEST_LOADMAP, {
-      user_email: email,
-    });
+  const fetchRoadmap = async (): Promise<RoadmapDataTypes> => {
+    const data = await requestGetUserData(API_ENDPOINTS.GET_QUEST_LOADMAP, session);
 
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch roadmap data");
@@ -33,7 +31,7 @@ export default function RoadmapData() {
     isLoading,
   } = useQuery({
     queryKey: ["roadmap", userEmail],
-    queryFn: () => fetchRoadmap(userEmail),
+    queryFn: () => fetchRoadmap(),
     // 항상 요청, 단 email은 빈 문자열일 수 있음
     enabled: status !== "loading",
     retry: 1,
