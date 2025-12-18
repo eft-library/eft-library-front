@@ -1,6 +1,6 @@
 "use client";
 
-import { requestPostData } from "@/lib/config/api";
+import { requestGetUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useSession } from "next-auth/react";
 import type { Planner } from "./planner.types";
@@ -11,10 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 export default function PlannerData() {
   const { data: session, status } = useSession();
 
-  const fetchPlanner = async (email: string): Promise<Planner[]> => {
-    const data = await requestPostData(USER_API_ENDPOINTS.GET_USER_QUEST, {
-      user_email: email,
-    });
+  const fetchPlanner = async (): Promise<Planner[]> => {
+    const data = await requestGetUserData(USER_API_ENDPOINTS.GET_USER_QUEST, session);
 
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch planner data");
@@ -32,7 +30,7 @@ export default function PlannerData() {
     isLoading,
   } = useQuery({
     queryKey: ["planner", userEmail],
-    queryFn: () => fetchPlanner(userEmail),
+    queryFn: () => fetchPlanner(),
     // 항상 요청, 단 email은 빈 문자열일 수 있음
     enabled: status !== "loading",
     retry: 1,
