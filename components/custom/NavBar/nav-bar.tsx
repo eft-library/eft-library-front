@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
-import type { NavBarTypes, NotificationDataTypes } from "./nav-bar.types";
+import type { NavBarTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { headerI18N } from "@/lib/consts/i18nConsts";
@@ -18,8 +18,11 @@ import Link from "next/link";
 import NavSearch from "./nav-search";
 import Loading from "../Loading/loading";
 import Notification from "./notification";
+import { useWebSocket } from "@/lib/hooks/useWebSocket";
+import { wsStore } from "@/store/wsStore";
 
 export default function NavBar({ navData }: NavBarTypes) {
+  const { notifications } = wsStore((state) => state);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const { data: session } = useSession();
@@ -27,44 +30,10 @@ export default function NavBar({ navData }: NavBarTypes) {
   const localeKey = getLocaleKey(locale);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationDataTypes[]>(
-    []
-  );
 
   useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    if (!session?.accessToken) return;
-
-    const ws = new WebSocket(
-      `wss://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`
-    );
-
-    ws.onmessage = (event) => {
-      try {
-        const parsed = JSON.parse(event.data);
-
-        if (parsed.type === "init") {
-          // 초기 알림 → 서버에서 이미 JSON으로 보냈으므로 추가 parsing 불필요
-          const initial = parsed.notifications as NotificationDataTypes[];
-          setNotifications(initial);
-        } else if (parsed.type === "message") {
-          const newNotification = parsed.data as NotificationDataTypes;
-          setNotifications((prev) => [...prev, newNotification]);
-        } else {
-          // type 없는 경우
-          const newNotification = parsed as NotificationDataTypes;
-          setNotifications((prev) => [...prev, newNotification]);
-        }
-      } catch (e) {
-        console.error("알림 데이터 파싱 실패:", e, event.data);
-      }
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [session?.accessToken]);
+  useWebSocket(session?.accessToken);
 
   if (!mounted) {
     return <Loading />;
@@ -169,7 +138,6 @@ export default function NavBar({ navData }: NavBarTypes) {
                 setActiveMenu={setActiveMenu}
                 activeMenu={activeMenu}
                 notificationList={notifications}
-                setNotifications={setNotifications}
               />
             )}
             {!session && (
