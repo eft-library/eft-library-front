@@ -11,9 +11,8 @@ import { wsStore } from "@/store/wsStore";
 export default function Notification({
   setActiveMenu,
   activeMenu,
-  notificationList,
 }: NotificationTypes) {
-  const { setNotifications } = wsStore((state) => state);
+  const { notifications, setNotifications } = wsStore((state) => state);
   const { theme } = useTheme();
   return (
     <div
@@ -30,9 +29,9 @@ export default function Notification({
         }`}
       >
         <Bell className="w-4 h-4" />
-        {notificationList.length > 0 && (
+        {notifications.length > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {notificationList.length}
+            {notifications.length}
           </span>
         )}
       </Button>
@@ -57,12 +56,12 @@ export default function Notification({
                   theme === "dark" ? "text-white" : "text-gray-900"
                 }`}
               >
-                알림 ({notificationList.length}개의 새 알림)
+                알림 ({notifications.length}개의 새 알림)
               </h3>
             </div>
             <div className="max-h-96 overflow-y-auto">
-              {notificationList.length > 0 &&
-                notificationList.map((notification, index) => (
+              {notifications.length > 0 &&
+                notifications.map((notification, index) => (
                   <NotificationMessage
                     notification={notification}
                     key={`notification-${index}`}

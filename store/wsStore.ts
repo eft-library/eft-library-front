@@ -6,7 +6,12 @@ interface WsState {
   notifications: NotificationDataTypes[];
   location: string;
 
-  setNotifications: (n: NotificationDataTypes[]) => void;
+  setNotifications: (
+    updater:
+      | NotificationDataTypes[]
+      | ((prev: NotificationDataTypes[]) => NotificationDataTypes[])
+  ) => void;
+
   setLocation: (n: string) => void;
 }
 
@@ -16,7 +21,14 @@ export const wsStore = create<WsState>()(
       notifications: [],
       location: "",
 
-      setNotifications: (n) => set({ notifications: n }),
+      setNotifications: (updater) =>
+        set((state) => ({
+          notifications:
+            typeof updater === "function"
+              ? updater(state.notifications)
+              : updater,
+        })),
+
       setLocation: (n) => set({ location: n }),
     }),
     {

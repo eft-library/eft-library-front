@@ -48,7 +48,6 @@ export interface SearchData {
 export interface NotificationTypes {
   setActiveMenu: (val: string | null) => void;
   activeMenu: string | null;
-  notificationList: NotificationDataTypes[];
 }
 
 export interface NotificationDataTypes {

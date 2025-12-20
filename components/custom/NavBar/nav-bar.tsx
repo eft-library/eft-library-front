@@ -137,7 +137,6 @@ export default function NavBar({ navData }: NavBarTypes) {
               <Notification
                 setActiveMenu={setActiveMenu}
                 activeMenu={activeMenu}
-                notificationList={notifications}
               />
             )}
             {!session && (

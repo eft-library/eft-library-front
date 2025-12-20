@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { wsStore } from "@/store/wsStore";
+import { NotificationDataTypes } from "@/components/custom/NavBar/nav-bar.types";
 
 export const useWebSocket = (accessToken?: string) => {
   const setNotifications = wsStore((s) => s.setNotifications);
@@ -16,15 +17,19 @@ export const useWebSocket = (accessToken?: string) => {
       const parsed = JSON.parse(event.data);
 
       switch (parsed.type) {
-        case "init":
-          setNotifications(parsed.notifications);
+        case "init": {
+          const initial = parsed.notifications as NotificationDataTypes[];
+          setNotifications(initial);
           break;
+        }
 
-        case "message":
-          setNotifications(parsed.data);
+        case "message": {
+          const newNotification = parsed.data as NotificationDataTypes;
+          setNotifications((prev = []) => [...prev, newNotification]);
           break;
+        }
 
-        case "wpf-user":
+        case "wpf_location":
           setWpfLocation(parsed.payload);
           break;
       }
