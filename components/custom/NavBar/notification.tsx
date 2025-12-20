@@ -6,13 +6,14 @@ import { useTheme } from "next-themes";
 import { NotificationTypes } from "./nav-bar.types";
 import Link from "next/link";
 import { NotificationMessage } from "../MyPage/Notifications/notification-render";
+import { wsStore } from "@/store/wsStore";
 
 export default function Notification({
   setActiveMenu,
   activeMenu,
   notificationList,
-  setNotifications,
 }: NotificationTypes) {
+  const { setNotifications } = wsStore((state) => state);
   const { theme } = useTheme();
   return (
     <div

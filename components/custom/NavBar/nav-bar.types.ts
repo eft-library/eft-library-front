@@ -49,9 +49,6 @@ export interface NotificationTypes {
   setActiveMenu: (val: string | null) => void;
   activeMenu: string | null;
   notificationList: NotificationDataTypes[];
-  setNotifications: React.Dispatch<
-    React.SetStateAction<NotificationDataTypes[]>
-  >;
 }
 
 export interface NotificationDataTypes {
