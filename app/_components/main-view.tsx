@@ -34,17 +34,17 @@ export default function MainView({ homeData }: MainViewTypes) {
               <PinnedNotice notice={homeData.news} />
 
               {/* Trending Posts */}
-              {homeData.issue_posts.length > 3 && (
+              {homeData.home_posts.length > 3 && (
                 <div className="rounded-lg p-6 border bg-white border-gray-200 shadow-sm dark:bg-gray-800/30 dark:border-gray-700/50">
                   <div className="flex items-center space-x-2 mb-4">
                     <Flame className="w-5 h-5 mr-2 text-orange-400" />
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      인기 게시물
+                      최근 게시물
                     </h2>
                   </div>
 
                   <div className="space-y-3">
-                    {homeData.issue_posts.map((post, index) => (
+                    {homeData.home_posts.map((post, index) => (
                       <Link
                         key={post.id}
                         scroll={false}
@@ -57,14 +57,7 @@ export default function MainView({ homeData }: MainViewTypes) {
                           <div className="flex-1 min-w-0">
                             <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-2 mb-1">
                               {post.title}
-                              <Flame className="inline w-3 h-3 ml-1 text-red-500" />
                             </p>
-                            <div className="flex items-center space-x-1">
-                              <MessageSquare className="w-3 h-3 text-gray-400 dark:text-gray-500" />
-                              <span className="text-xs text-gray-400 dark:text-gray-500">
-                                {post.comment_count}
-                              </span>
-                            </div>
                           </div>
                         </div>
                       </Link>
