@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,12 +11,17 @@ import { MapPin, HelpCircle, Search } from "lucide-react";
 import { FindLocationTypes, LatLng } from "../map-of-tarkov.types";
 import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 import FindLocationModal from "./find-location-modal";
+import { useWebSocket } from "@/lib/hooks/useWebSocket";
+import { wsStore } from "@/store/wsStore";
+import { useSession } from "next-auth/react";
 
 const FindLocationInner = dynamic(() => import("./find-location-inner"), {
   ssr: false,
 });
 
 export default function FindLocation({ findInfo }: FindLocationTypes) {
+  const { location } = wsStore((state) => state);
+  const { data: session } = useSession();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [popupStatus, setPopupStatus] = useState<boolean>(false);
@@ -27,6 +32,9 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
     lat: 0,
     lng: 0,
   });
+  const prevLocationRef = useRef<string | null>(null);
+
+  useWebSocket(session?.accessToken);
 
   const onClickWhere = () => {
     if (where.length > 0) {
@@ -83,6 +91,14 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
       }
     }
   };
+
+  useEffect(() => {
+    if (!location) return;
+    if (location === prevLocationRef.current) return;
+
+    prevLocationRef.current = location;
+    onClickWhereDirect(location);
+  }, [location]);
 
   return (
     <div className="w-full">

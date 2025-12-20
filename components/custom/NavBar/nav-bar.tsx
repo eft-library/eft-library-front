@@ -19,10 +19,8 @@ import NavSearch from "./nav-search";
 import Loading from "../Loading/loading";
 import Notification from "./notification";
 import { useWebSocket } from "@/lib/hooks/useWebSocket";
-import { wsStore } from "@/store/wsStore";
 
 export default function NavBar({ navData }: NavBarTypes) {
-  const { notifications } = wsStore((state) => state);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const { data: session } = useSession();
