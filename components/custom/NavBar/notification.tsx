@@ -61,12 +61,13 @@ export default function Notification({
               </h3>
             </div>
             <div className="max-h-96 overflow-y-auto">
-              {notificationList.map((notification, index) => (
-                <NotificationMessage
-                  notification={notification}
-                  key={`notification-${index}`}
-                />
-              ))}
+              {notificationList.length > 0 &&
+                notificationList.map((notification, index) => (
+                  <NotificationMessage
+                    notification={notification}
+                    key={`notification-${index}`}
+                  />
+                ))}
             </div>
             <div
               className={`px-4 py-2 border-t ${
