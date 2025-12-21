@@ -36,78 +36,49 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
 
   useWebSocket(session?.accessToken);
 
-  const onClickWhere = () => {
-    if (where.length > 0) {
-      const splitStr = where.split("]_")[1];
+  const parseWhereText = (text: string) => {
+    if (!text || text.length === 0) return null;
 
-      if (splitStr) {
-        const matches = splitStr.match(/[-+]?\d*\.\d+/g);
+    const splitStr = text.split("]_")[1];
+    if (!splitStr) return null;
 
-        if (matches && matches.length >= 7) {
-          // 좌표
-          const x = parseFloat(matches[0]);
-          const y = parseFloat(matches[2]);
+    const matches = splitStr.match(/[-+]?\d*\.\d+/g);
+    if (!matches || matches.length < 7) return null;
 
-          // Quaternion 값
-          const qx = parseFloat(matches[3]);
-          const qy = parseFloat(matches[4]);
-          const qz = parseFloat(matches[5]);
-          const qw = parseFloat(matches[6]);
+    // 좌표
+    const x = parseFloat(matches[0]);
+    const y = parseFloat(matches[2]);
 
-          // Quaternion → Euler 변환 (Tarkov 기준)
-          const siny_cosp = 2 * (qw * qy - qz * qx);
-          const cosy_cosp = 1 - 2 * (qy * qy + qx * qx);
-          let yaw = Math.atan2(siny_cosp, cosy_cosp); // 라디안
-          if (yaw < 0) yaw += 2 * Math.PI; // 0~2π 범위로 보정
-          const yawDegrees = yaw * (180 / Math.PI); // CSS rotate용 도 단위
+    // Quaternion
+    const qx = parseFloat(matches[3]);
+    const qy = parseFloat(matches[4]);
+    const qz = parseFloat(matches[5]);
+    const qw = parseFloat(matches[6]);
 
-          setImageCoord({ x, y, yaw: yawDegrees });
-        } else {
-          setImageCoord({ x: 0, y: 0, yaw: 0 });
-        }
+    // Quaternion → Yaw (Tarkov 기준)
+    const siny_cosp = 2 * (qw * qy - qz * qx);
+    const cosy_cosp = 1 - 2 * (qy * qy + qx * qx);
 
-        setIsViewWhere(true);
-      } else {
-        setImageCoord({ x: 0, y: 0, yaw: 0 });
-      }
-    }
+    let yaw = Math.atan2(siny_cosp, cosy_cosp);
+    if (yaw < 0) yaw += 2 * Math.PI;
+
+    const yawDegrees = (yaw * 180) / Math.PI;
+
+    return { x, y, yaw: yawDegrees };
   };
-  // 복사 붙여넣기 전용 함수
+
+  const onClickWhere = () => {
+    const result = parseWhereText(where);
+
+    setImageCoord(result ?? { x: 0, y: 0, yaw: 0 });
+    setIsViewWhere(true);
+  };
+
   const onClickWhereDirect = (text: string) => {
-    if (text.length > 0) {
-      const splitStr = text.split("]_")[1];
+    const result = parseWhereText(text);
 
-      if (splitStr) {
-        const matches = splitStr.match(/[-+]?\d*\.\d+/g);
-
-        if (matches && matches.length >= 7) {
-          // 좌표
-          const x = parseFloat(matches[0]);
-          const y = parseFloat(matches[2]);
-
-          // Quaternion 값
-          const qx = parseFloat(matches[3]);
-          const qy = parseFloat(matches[4]);
-          const qz = parseFloat(matches[5]);
-          const qw = parseFloat(matches[6]);
-
-          // Quaternion → Euler 변환 (Tarkov 기준)
-          const siny_cosp = 2 * (qw * qy - qz * qx);
-          const cosy_cosp = 1 - 2 * (qy * qy + qx * qx);
-          let yaw = Math.atan2(siny_cosp, cosy_cosp); // 라디안
-          if (yaw < 0) yaw += 2 * Math.PI; // 0~2π 범위로 보정
-          const yawDegrees = yaw * (180 / Math.PI); // CSS rotate용 도 단위
-
-          setImageCoord({ x, y, yaw: yawDegrees });
-        } else {
-          setImageCoord({ x: 0, y: 0, yaw: 0 });
-        }
-
-        setIsViewWhere(true);
-      } else {
-        setImageCoord({ x: 0, y: 0, yaw: 0 });
-      }
-    }
+    setImageCoord(result ?? { x: 0, y: 0, yaw: 0 });
+    setIsViewWhere(true);
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
