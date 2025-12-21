@@ -93,6 +93,7 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
   };
 
   useEffect(() => {
+    console.log(location);
     if (!location) return;
     if (location === prevLocationRef.current) return;
 
