@@ -49,35 +49,37 @@ export const PlayerIcon = (rotation: number) =>
     html: `
       <div style="
         transform: rotate(${rotation}deg);
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         position: relative;
       ">
-        <!-- 몸통 -->
+        <!-- 몸통 (완전 둥글게, 20px) -->
         <div style="
-          width: 16px;
-          height: 16px;
-          background: linear-gradient(135deg, #A3E635, #4ADE80); /* 밝은 연두 → 민트 */
-          border-radius: 4px;
+          width: 20px;
+          height: 20px;
+          background: linear-gradient(135deg, #A3E635, #4ADE80);
+          border-radius: 50%;
           position: absolute;
           top: 4px;
           left: 4px;
-          border: 2px solid rgba(0,0,0,0.5); /* 테두리 강조 */
+          border: 2px solid rgba(0,0,0,0.5);
+          box-sizing: border-box;
         "></div>
-        <!-- 앞부분 화살표 -->
+        <!-- 앞부분 삼각형 화살표 -->
         <div style="
           width: 0;
           height: 0;
-          border-left: 6px solid transparent;
-          border-right: 6px solid transparent;
-          border-bottom: 12px solid #FFD60A; /* 밝은 노랑 */
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-bottom: 12px solid #FF0000; /* 빨강 */
           position: absolute;
-          top: -2px;
-          left: 6px;
-          filter: drop-shadow(0 0 3px rgba(0,0,0,0.6));
+          top: -8px; /* 몸통 위쪽 위치 조정 */
+          left: 50%; /* 몸통 중앙 맞춤 */
+          transform: translateX(-50%);
+          filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));
         "></div>
       </div>
     `,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
+    iconSize: [28, 28],
+    iconAnchor: [14, 14], // 중앙 기준 회전
   });
