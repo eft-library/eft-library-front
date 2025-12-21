@@ -268,7 +268,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                   </button>
                                 )}
 
-                              <button
+                              {/* <button
                                 className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                                 onClick={() => {
                                   console.log(
@@ -278,7 +278,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                 }}
                               >
                                 <span>작성 글 보기</span>
-                              </button>
+                              </button> */}
                               {session && session.userInfo.is_admin && (
                                 <button
                                   className="font-semibold w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
