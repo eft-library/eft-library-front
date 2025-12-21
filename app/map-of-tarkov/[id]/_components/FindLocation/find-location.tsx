@@ -27,7 +27,7 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
   const [popupStatus, setPopupStatus] = useState<boolean>(false);
   const [where, setWhere] = useState<string>("");
   const [isViewWhere, setIsViewWhere] = useState<boolean>(false);
-  const [imageCoord, setImageCoord] = useState({ x: 0, y: 0 });
+  const [imageCoord, setImageCoord] = useState({ x: 0, y: 0, yaw: 0 });
   const [mousePosition, setMousePosition] = useState<LatLng>({
     lat: 0,
     lng: 0,
@@ -43,17 +43,31 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
       if (splitStr) {
         const matches = splitStr.match(/[-+]?\d*\.\d+/g);
 
-        if (matches && matches.length >= 3) {
+        if (matches && matches.length >= 7) {
+          // 좌표
           const x = parseFloat(matches[0]);
           const y = parseFloat(matches[2]);
-          setImageCoord({ x, y });
+
+          // Quaternion 값
+          const qx = parseFloat(matches[3]);
+          const qy = parseFloat(matches[4]);
+          const qz = parseFloat(matches[5]);
+          const qw = parseFloat(matches[6]);
+
+          // Quaternion → Euler 변환 (Yaw 계산)
+          const t3 = 2.0 * (qw * qz + qx * qy);
+          const t4 = 1.0 - 2.0 * (qy * qy + qz * qz);
+          let yaw = Math.atan2(t3, t4); // 라디안
+          const yawDegrees = yaw * (180 / Math.PI); // 도 단위
+
+          setImageCoord({ x, y, yaw: yawDegrees });
         } else {
-          setImageCoord({ x: 0, y: 0 });
+          setImageCoord({ x: 0, y: 0, yaw: 0 });
         }
 
         setIsViewWhere(true);
       } else {
-        setImageCoord({ x: 0, y: 0 });
+        setImageCoord({ x: 0, y: 0, yaw: 0 });
       }
     }
   };
@@ -77,17 +91,31 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
       if (splitStr) {
         const matches = splitStr.match(/[-+]?\d*\.\d+/g);
 
-        if (matches && matches.length >= 3) {
+        if (matches && matches.length >= 7) {
+          // 좌표
           const x = parseFloat(matches[0]);
           const y = parseFloat(matches[2]);
-          setImageCoord({ x, y });
+
+          // Quaternion 값
+          const qx = parseFloat(matches[3]);
+          const qy = parseFloat(matches[4]);
+          const qz = parseFloat(matches[5]);
+          const qw = parseFloat(matches[6]);
+
+          // Quaternion → Euler 변환 (Yaw 계산)
+          const t3 = 2.0 * (qw * qz + qx * qy);
+          const t4 = 1.0 - 2.0 * (qy * qy + qz * qz);
+          let yaw = Math.atan2(t3, t4); // 라디안
+          const yawDegrees = yaw * (180 / Math.PI); // 도 단위
+
+          setImageCoord({ x, y, yaw: yawDegrees });
         } else {
-          setImageCoord({ x: 0, y: 0 });
+          setImageCoord({ x: 0, y: 0, yaw: 0 });
         }
 
         setIsViewWhere(true);
       } else {
-        setImageCoord({ x: 0, y: 0 });
+        setImageCoord({ x: 0, y: 0, yaw: 0 });
       }
     }
   };

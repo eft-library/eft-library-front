@@ -89,6 +89,7 @@ export interface FindLocationTypes {
 interface ImageCoord {
   x: number;
   y: number;
+  yaw: number;
 }
 
 export interface FindLocationControllerTypes {

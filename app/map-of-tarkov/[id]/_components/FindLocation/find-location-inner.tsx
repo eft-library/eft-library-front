@@ -1,6 +1,6 @@
 import { CRS } from "leaflet"; // ✔ 이제 안전
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
-import { MouseMoveEvent, FindLocationIcon } from "@/lib/func/leafletFunction";
+import { MouseMoveEvent, PlayerIcon } from "@/lib/func/leafletFunction";
 import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
 
@@ -12,7 +12,7 @@ export default function FindLocationInner({
 }: FindLocationInnerTypes) {
   const getMarkerPosition = (
     mapId: string,
-    coord: { x: number; y: number }
+    coord: { x: number; y: number; yaw: number }
   ): [number, number] => {
     switch (mapId) {
       case "FACTORY":
@@ -21,6 +21,17 @@ export default function FindLocationInner({
         return [-coord.x, coord.y];
       default:
         return [-coord.y, -coord.x];
+    }
+  };
+
+  const getMarkerYaw = (mapId: string, yaw: number) => {
+    switch (mapId) {
+      case "FACTORY":
+        return yaw; // 그대로 사용
+      case "THE_LAB":
+        return -yaw; // x좌표 뒤집었으므로 회전 반대로
+      default:
+        return yaw + 180; // x,y 뒤집음 → 180도 회전
     }
   };
 
@@ -45,7 +56,7 @@ export default function FindLocationInner({
       {isViewWhere && (
         <Marker
           position={getMarkerPosition(findInfo.id, imageCoord)}
-          icon={FindLocationIcon}
+          icon={PlayerIcon(getMarkerYaw(findInfo.id, imageCoord.yaw))}
         />
       )}
 
