@@ -1665,53 +1665,164 @@ export const newsI18N = {
   },
 };
 
-export const findLocationI18N = [
-  {
-    step: "1",
-    ko: "게임 내에서 PrintScreen(PrtSc) 키를 눌러 스크린샷을 찍습니다.",
-    en: "Press the PrintScreen (PrtSc) key in the game to take a screenshot.",
-    ja: "ゲーム内で PrintScreen（PrtSc）キーを押してスクリーンショットを撮ります。",
-    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/game-screenshot.webp",
-    alt: "Taking a screenshot in game",
+export const findLocationI18N = {
+  ko: {
+    title: "내 위치 찾기 가이드",
+    subtitle: "프로그램 사용 여부에 따라 방법이 달라집니다",
+    notice: "아래에서 본인에게 해당하는 방법을 확인하세요.",
+
+    auto_title: "프로그램 사용 시 – 자동 위치 표시",
+    auto_description:
+      "프로그램을 설치한 경우, 스크린샷을 찍는 즉시 위치가 자동으로 표시됩니다.",
+    auto_step1: "where-am-i.exe 파일을 실행합니다.",
+    auto_step2: "이메일 입력합니다.",
+    auto_step3: "홈페이지 로그인합니다.",
+    auto_step4:
+      "타르코프 도서관에서 알맞은 지도 선택 후 내 위치 찾기로 위치시킵니다.",
+    auto_step5: "게임 내에서",
+    auto_step5_key: "PrintScreen(PrtSc)",
+    auto_step5_suffix: "키를 누릅니다.",
+    auto_step6: "자신의 위치가 자동으로 표시됩니다.",
+
+    unnecessary_title: "필요 없는 작업:",
+    unnecessary_1: "파일 탐색기 이동",
+    unnecessary_2: "파일명 복사",
+    unnecessary_3: "수동 입력",
+
+    download_title:
+      "프로그램을 설치하면 스크린샷 촬영만으로 자동 위치 확인이 가능합니다.",
+    download_button: "프로그램 다운로드 (v1.0)",
+    download_note:
+      "현재 v1.0 릴리스 버전이며, 추후 지속적으로 업데이트될 예정입니다.",
+    trust_1: "VirusTotal 바이러스 점검 완료",
+    trust_2: "오픈된 GitHub 릴리스를 통해 배포",
+
+    manual_title: "프로그램 미사용 시 – 수동 위치 확인",
+    manual_step1: "PrintScreen 키로 스크린샷 촬영",
+    manual_step2: "파일 탐색기 실행",
+    manual_step3: "다음 경로로 이동:",
+    manual_step4: "가장 최근 스크린샷 선택",
+    manual_step5: "이름 바꾸기 후",
+    manual_step5_suffix: "로 파일명 복사",
+    manual_step6: "위치 확인 도구에",
+    manual_step6_suffix: "로 붙여넣기",
+    manual_step7: "지도에서 위치 확인",
+
+    warning_title: "주의사항",
+    warning_1:
+      "본 프로그램은 사용자의 스크린샷 폴더에 새로 추가되는 파일을 감지하여 해당 정보를 웹사이트와 연동하는 방식으로 동작합니다.",
+    warning_2:
+      "본 프로그램 사용으로 발생할 수 있는 게임 이용 제한, 계정 제재 등 모든 책임은 사용자 본인에게 있습니다.",
+    warning_3:
+      "프로그램 사용 전, 각 게임의 이용 약관 및 정책을 확인하시기 바랍니다.",
+
+    button_confirm: "확인",
+    button_close: "닫기",
   },
-  {
-    step: "2",
-    ko: "바탕화면 아래 작업 표시줄에서 파일 탐색기(폴더 아이콘)를 엽니다.",
-    en: "Open File Explorer (folder icon) from the taskbar at the bottom of the desktop.",
-    ja: "デスクトップ下部のタスクバーからファイルエクスプローラー（フォルダーアイコン）を開きます。",
+  en: {
+    title: "Location Guide",
+    subtitle: "Different methods depending on program usage",
+    notice: "Select the method that applies to you below.",
+
+    auto_title: "With Program – Automatic Location Display",
+    auto_description:
+      "When you have the program installed, your location will be automatically displayed when you take a screenshot.",
+    auto_step1: "Run the where-am-i.exe file.",
+    auto_step2: "Enter your email.",
+    auto_step3: "Log in to the website.",
+    auto_step4:
+      "Select the appropriate map from Tarkov Library and set to Find My Location.",
+    auto_step5: "In-game, press the",
+    auto_step5_key: "PrintScreen(PrtSc)",
+    auto_step5_suffix: "key.",
+    auto_step6: "Your location will be automatically displayed.",
+
+    unnecessary_title: "Unnecessary steps:",
+    unnecessary_1: "Open file explorer",
+    unnecessary_2: "Copy file name",
+    unnecessary_3: "Manual input",
+
+    download_title:
+      "Install the program to automatically find your location just by taking screenshots.",
+    download_button: "Download Program (v1.0)",
+    download_note:
+      "Current release version is v1.0, with continuous updates planned.",
+    trust_1: "VirusTotal scan completed",
+    trust_2: "Distributed through open GitHub releases",
+
+    manual_title: "Without Program – Manual Location Check",
+    manual_step1: "Take screenshot with PrintScreen key",
+    manual_step2: "Open File Explorer",
+    manual_step3: "Navigate to:",
+    manual_step4: "Select the most recent screenshot",
+    manual_step5: "Rename and press",
+    manual_step5_suffix: "to copy filename",
+    manual_step6: "Paste with",
+    manual_step6_suffix: "in the location checker tool",
+    manual_step7: "Check location on the map",
+
+    warning_title: "Warning",
+    warning_1:
+      "This program detects new files added to your screenshot folder and links that information to the website.",
+    warning_2:
+      "You are solely responsible for any game restrictions or account sanctions that may result from using this program.",
+    warning_3:
+      "Please review the terms of service and policies of each game before using the program.",
+
+    button_confirm: "Confirm",
+    button_close: "Close",
   },
-  {
-    step: "3",
-    ko: "왼쪽 메뉴에서 다음 경로로 이동합니다: 내 PC > 사진 > 스크린샷 (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
-    en: "In the left menu, navigate to: This PC > Pictures > Screenshots (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
-    ja: "左側のメニューから次のパスに移動します： このPC > ピクチャ > スクリーンショット (C:\\Users\\Documents\\Escape from Tarkov\\Screenshots)",
-    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/folder.webp",
-    alt: "Screenshot folder location",
+  ja: {
+    title: "位置確認ガイド",
+    subtitle: "プログラムの使用有無により方法が異なります",
+    notice: "以下から該当する方法を確認してください。",
+
+    auto_title: "プログラム使用時 – 自動位置表示",
+    auto_description:
+      "プログラムをインストールすると、スクリーンショットを撮るだけで位置が自動的に表示されます。",
+    auto_step1: "where-am-i.exeファイルを実行します。",
+    auto_step2: "メールアドレスを入力します。",
+    auto_step3: "ホームページにログインします。",
+    auto_step4:
+      "タルコフライブラリから適切な地図を選択し、自分の位置を見つけるに設定します。",
+    auto_step5: "ゲーム内で",
+    auto_step5_key: "PrintScreen(PrtSc)",
+    auto_step5_suffix: "キーを押します。",
+    auto_step6: "自分の位置が自動的に表示されます。",
+
+    unnecessary_title: "不要な作業:",
+    unnecessary_1: "ファイルエクスプローラーを開く",
+    unnecessary_2: "ファイル名をコピー",
+    unnecessary_3: "手動入力",
+
+    download_title:
+      "プログラムをインストールすると、スクリーンショットを撮るだけで自動的に位置を確認できます。",
+    download_button: "プログラムダウンロード (v1.0)",
+    download_note:
+      "現在のリリースバージョンはv1.0で、今後も継続的にアップデートされる予定です。",
+    trust_1: "VirusTotalウイルスチェック完了",
+    trust_2: "オープンなGitHubリリースで配布",
+
+    manual_title: "プログラム未使用時 – 手動位置確認",
+    manual_step1: "PrintScreenキーでスクリーンショット撮影",
+    manual_step2: "ファイルエクスプローラーを起動",
+    manual_step3: "次のパスに移動:",
+    manual_step4: "最新のスクリーンショットを選択",
+    manual_step5: "名前を変更して",
+    manual_step5_suffix: "でファイル名をコピー",
+    manual_step6: "位置確認ツールに",
+    manual_step6_suffix: "で貼り付け",
+    manual_step7: "マップで位置を確認",
+
+    warning_title: "注意事項",
+    warning_1:
+      "本プログラムは、ユーザーのスクリーンショットフォルダに新しく追加されたファイルを検出し、その情報をウェブサイトと連携する方式で動作します。",
+    warning_2:
+      "本プログラムの使用により発生する可能性のあるゲーム利用制限、アカウント制裁などすべての責任は、ユーザー本人にあります。",
+    warning_3:
+      "プログラムを使用する前に、各ゲームの利用規約とポリシーを確認してください。",
+
+    button_confirm: "確認",
+    button_close: "閉じる",
   },
-  {
-    step: "4",
-    ko: "가장 최근에 찍은 스크린샷 파일을 클릭한 후 이름 바꾸기 모드로 진입합니다.",
-    en: "Click the most recent screenshot file and enter rename mode.",
-    ja: "最新のスクリーンショットファイルをクリックし、名前変更モードに入ります。",
-  },
-  {
-    step: "5",
-    ko: "Ctrl + C 를 눌러 파일 이름을 복사합니다. (.png 같은 확장자 포함 가능)",
-    en: "Press Ctrl + C to copy the file name (extensions like .png can be included).",
-    ja: "Ctrl + C を押してファイル名をコピーします（.pngなどの拡張子も含めて構いません）。",
-  },
-  {
-    step: "6",
-    ko: "위치 확인 도구에 Ctrl + V로 붙여넣고 엔터를 입력하거나, 오른쪽에 있는 버튼을 클릭합니다.",
-    en: "Paste it into the location tool with Ctrl + V and click the button.",
-    ja: "位置確認ツールに Ctrl + V で貼り付けて、ボタンをクリックします。",
-  },
-  {
-    step: "7",
-    ko: "지도 위에 점으로 표시된 자신의 위치를 확인할 수 있습니다.",
-    en: "You can check your location marked as a dot on the map.",
-    ja: "地図上に点で表示された自分の位置を確認できます。",
-    img: "https://image.eftlibrary.com/eftlibrary/tkl_map/find-location.webp",
-    alt: "Checking location on the map",
-  },
-];
+};
