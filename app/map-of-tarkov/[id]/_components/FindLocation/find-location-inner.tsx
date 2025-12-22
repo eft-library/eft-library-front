@@ -30,11 +30,11 @@ export default function FindLocationInner({
   const getMarkerYaw = (mapId: string, yaw: number) => {
     switch (mapId) {
       case "FACTORY":
-        return (yaw + 270) % 360; // y 뒤집힘 고려
+        return (yaw + 270) % 360; 
       case "THE_LAB":
-        return (yaw + 90) % 360; // x 뒤집힘 고려
+        return (yaw + 90) % 360; 
       default:
-        return (yaw + 180) % 360; // x,y 뒤집힘 고려
+        return (yaw + 180) % 360;
     }
   };
 
