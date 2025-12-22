@@ -3,7 +3,6 @@ import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
 import {
   MouseMoveEvent,
   PlayerIcon,
-  FindLocationIcon,
 } from "@/lib/func/leafletFunction";
 import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
@@ -28,14 +27,14 @@ export default function FindLocationInner({
     }
   };
 
-  const getMarkerYaw = (mapId: string, yawDegrees: number) => {
+  const getMarkerYaw = (mapId: string, yaw: number) => {
     switch (mapId) {
       case "FACTORY":
-        return -yawDegrees; // y 뒤집힘 고려
+        return (yaw + 270) % 360; // y 뒤집힘 고려
       case "THE_LAB":
-        return yawDegrees; // x 뒤집힘 고려
+        return (yaw + 90) % 360; // x 뒤집힘 고려
       default:
-        return (yawDegrees + 180) % 360; // x,y 뒤집힘 고려
+        return (yaw + 180) % 360; // x,y 뒤집힘 고려
     }
   };
 
