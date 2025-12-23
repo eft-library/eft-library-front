@@ -40,3 +40,6 @@
   flex-basis: calc(33.333% - 8px);
   max-width: calc(33.333% - 8px);
 }
+.leaflet-container {
+  background-color: #1e1e24 !important;
+}

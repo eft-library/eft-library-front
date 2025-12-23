@@ -1,9 +1,6 @@
 import { CRS } from "leaflet"; // ✔ 이제 안전
 import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
-import {
-  MouseMoveEvent,
-  PlayerIcon,
-} from "@/lib/func/leafletFunction";
+import { MouseMoveEvent, PlayerIcon } from "@/lib/func/leafletFunction";
 import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
 
@@ -30,9 +27,9 @@ export default function FindLocationInner({
   const getMarkerYaw = (mapId: string, yaw: number) => {
     switch (mapId) {
       case "FACTORY":
-        return (yaw + 270) % 360; 
+        return (yaw + 270) % 360;
       case "THE_LAB":
-        return (yaw + 90) % 360; 
+        return (yaw + 90) % 360;
       default:
         return (yaw + 180) % 360;
     }
