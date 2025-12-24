@@ -1,8 +1,15 @@
+"use client";
+
 import { CRS } from "leaflet"; // ✔ 이제 안전
-import { MapContainer, ImageOverlay, Marker } from "react-leaflet";
-import { MouseMoveEvent, PlayerIcon } from "@/lib/func/leafletFunction";
+import { MapContainer, ImageOverlay, Marker, Tooltip } from "react-leaflet";
+import {
+  MouseMoveEvent,
+  PlayerIcon,
+  QuestIcon,
+} from "@/lib/func/leafletFunction";
 import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
+import { useState } from "react";
 
 export default function FindLocationInner({
   findInfo,
@@ -10,6 +17,20 @@ export default function FindLocationInner({
   isViewWhere,
   setMousePosition,
 }: FindLocationInnerTypes) {
+  const [openTooltips, setOpenTooltips] = useState<Record<string, boolean>>({});
+
+  const openAllTooltips = () => {
+    const next: Record<string, boolean> = {};
+    // markers.forEach((m) => {
+    //   next[m.id] = true;
+    // });
+    setOpenTooltips(next);
+  };
+
+  const closeAllTooltips = () => {
+    setOpenTooltips({});
+  };
+
   const getMarkerPosition = (
     mapId: string,
     coord: { x: number; y: number; yaw: number }
@@ -46,6 +67,7 @@ export default function FindLocationInner({
       className="w-full h-[800px]"
       maxBounds={findInfo.map_bounds}
       maxBoundsViscosity={1.0}
+      doubleClickZoom={false}
     >
       <FindLocationController
         imageCoord={imageCoord}
@@ -57,9 +79,22 @@ export default function FindLocationInner({
         <Marker
           position={getMarkerPosition(findInfo.id, imageCoord)}
           icon={PlayerIcon(getMarkerYaw(findInfo.id, imageCoord.yaw))}
-        />
+          eventHandlers={{
+            click: () => {
+              console.log("마커 클릭됨", findInfo.id);
+            },
+          }}
+        >
+          <Tooltip direction="top" offset={[0, -10]} opacity={1}>
+            플레이어 위치
+          </Tooltip>
+        </Marker>
       )}
-
+      {/* <Marker position={[10, 20]} icon={QuestIcon()}>
+        <Tooltip direction="top" offset={[0, -30]} opacity={1}>
+          퀘스트 위치
+        </Tooltip>
+      </Marker> */}
       <ImageOverlay url={findInfo.image} bounds={findInfo.image_bounds} />
     </MapContainer>
   );

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMapEvent } from "react-leaflet";
-import L, { DivIcon } from "leaflet";
+import L from "leaflet";
 
 export const dynamic = "force-dynamic";
 
@@ -75,4 +75,45 @@ export const PlayerIcon = (rotation: number) =>
     `,
     iconSize: [28, 28],
     iconAnchor: [14, 14], // 중앙 기준 회전
+  });
+
+export const QuestIcon = () =>
+  L.divIcon({
+    className: "quest-icon",
+    html: `
+      <div style="
+        width: 30px;
+        height: 30px;
+        position: relative;
+      ">
+        <!-- 핀 몸통 -->
+        <div style="
+          width: 20px;
+          height: 20px;
+          background: linear-gradient(135deg, #FACC15, #F59E0B);
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          position: absolute;
+          top: 2px;
+          left: 5px;
+          border: 2px solid rgba(0,0,0,0.6);
+          box-sizing: border-box;
+        "></div>
+
+        <!-- 중앙 퀘스트 표시 (정중앙 고정) -->
+        <div style="
+          position: absolute;
+          top: 12px;
+          left: 15px;
+          transform: translate(-50%, -50%);
+          font-size: 12px;
+          color: #1F2937;
+          font-weight: bold;
+          z-index: 2;
+          pointer-events: none;
+        ">★</div>
+      </div>
+    `,
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
   });
