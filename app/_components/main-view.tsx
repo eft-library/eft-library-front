@@ -6,7 +6,7 @@ import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
 import Link from "next/link";
 import Image from "next/image";
-import { Flame, MessageSquare } from "lucide-react";
+import { Flame } from "lucide-react";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (

@@ -17,6 +17,7 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { plannerSampleData } from "@/lib/consts/libraryConsts";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import ProgressData from "@/components/custom/Progress/progress-data";
 
 export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   const locale = useLocale();
@@ -308,6 +309,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
             </div>
           )}
         </div>
+        {/* <ProgressData /> */}
         <DefaultDialog
           open={alertStatus}
           setOpen={setAlertStatus}

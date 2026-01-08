@@ -67,6 +67,8 @@ export const USER_API_ENDPOINTS = {
   MY_PAGE_BLOCKS: baseUrl + "/api/user/my-page/blocks",
   MY_PAGE_FOLLOW: baseUrl + "/api/user/my-page/follow",
   MY_PAGE_NOTIFICATION: baseUrl + "/api/user/my-page/notification",
+  GET_USER_PROGRESS: baseUrl + "/api/progress/progress-item",
+  UPDATE_USER_PROGRESS: baseUrl + "/api/progress/update-progress-item",
 };
 
 export const COMMUNITY_ENDPOINTS = {
