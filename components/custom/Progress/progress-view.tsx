@@ -56,6 +56,11 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
         session
       );
       if (response?.status === 200) {
+        if (activeTab === "Rebirth") {
+          setUserRebirth(response.data.userRebirthList);
+        } else {
+          setUserKappa(response.data.userKappaList);
+        }
         setAlertDesc(alertMessageI18N.save[localeKey]);
         requestAnimationFrame(() => {
           setAlertStatus(true);
