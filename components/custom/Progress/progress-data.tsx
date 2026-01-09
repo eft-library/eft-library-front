@@ -19,7 +19,6 @@ export default function ProgressData() {
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch progress data");
     }
-    console.log(data.data);
     return data.data;
   };
   const userEmail = session?.email ?? "";

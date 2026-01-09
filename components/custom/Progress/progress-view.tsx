@@ -1,25 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import type { ProgressItemTypes, ProgressViewTypes } from "./progress.types";
+import type { ProgressViewTypes } from "./progress.types";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronDown, ChevronUp, RotateCcw, Save } from "lucide-react";
+import { ChevronDown, ChevronUp, RotateCcw, Save } from "lucide-react";
 import Image from "next/image";
 import ProgressItem from "./progress-item";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
+import { progressI18N } from "@/lib/consts/i18nConsts";
+import { progressTabList } from "@/lib/consts/libraryConsts";
 
 export default function ProgressView({ progress }: ProgressViewTypes) {
-  const tabList = [
-    {
-      id: "Kappa",
-      title: "Kappa",
-      image: "https://assets.tarkov.dev/5c093ca986f7740a1867ab12-8x.webp",
-    },
-    {
-      id: "Rebirth",
-      title: "Rebirth",
-      image: "https://assets.tarkov.dev/prestige-1-image.webp",
-    },
-  ];
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("Kappa");
   const [userRebirth, setUserRebirth] = useState<string[]>(
@@ -44,7 +38,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
       );
     }
   };
-  const currentTab = tabList.find((tab) => tab.id === activeTab);
+  const currentTab = progressTabList.find((tab) => tab.id === activeTab);
 
   // 저장
   const handleSave = () => {};
@@ -59,26 +53,30 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
   };
 
   return (
-    <div className="mx-auto max-w-[1504px]">
-      {/* Header Box */}
-      <div className="rounded-xl border border-border bg-card shadow-sm dark:bg-[#171717]">
-        <div className="flex w-full items-center justify-between p-6">
+    <div className="mx-auto">
+      {/* Header Box - Applied modern design with gradients and shadows */}
+      <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800/50 border-0 shadow-lg shadow-gray-200/20 dark:shadow-gray-900/40 hover:shadow-xl hover:shadow-gray-200/30 dark:hover:shadow-gray-900/60 transition-all duration-300 hover:-translate-y-1">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 dark:from-blue-400/10 dark:via-purple-400/10 dark:to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        <div className="relative flex w-full items-center justify-between p-6">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex flex-1 items-center gap-4 text-left transition-colors hover:opacity-80"
           >
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-muted/50">
-              <Image
-                src={currentTab?.image || ""}
-                alt={currentTab?.id || ""}
-                width={120}
-                height={120}
-                className="w-32 h-30 object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
-              />
+            <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br p-0.5">
+              <div className="w-full h-full bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center">
+                <Image
+                  src={currentTab?.image || ""}
+                  alt={currentTab?.id || ""}
+                  width={64}
+                  height={64}
+                  className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-200"
+                />
+              </div>
             </div>
-            {/* Title */}
-            <h2 className="text-lg font-semibold text-foreground md:text-xl">
-              아이템
+            {/* Title - Updated text styling */}
+            <h2 className="font-bold text-xl text-gray-900 dark:text-white">
+              {progressI18N.title[localeKey]}
             </h2>
           </button>
 
@@ -87,31 +85,35 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
               variant="outline"
               size="sm"
               onClick={handleReset}
-              className="gap-2 bg-transparent"
+              className="gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200"
             >
               <RotateCcw className="h-4 w-4" />
-              <span className="hidden sm:inline">초기화</span>
+              <span className="hidden sm:inline">
+                {progressI18N.reset[localeKey]}
+              </span>
             </Button>
             <Button
               variant="default"
               size="sm"
               onClick={handleSave}
-              className="gap-2"
+              className="gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-200 hover:-translate-y-0.5"
             >
               <Save className="h-4 w-4" />
-              <span className="hidden sm:inline">저장</span>
+              <span className="hidden sm:inline">
+                {progressI18N.save[localeKey]}
+              </span>
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="shrink-0"
+              className="shrink-0 rounded-xl bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-600/50 transition-all duration-200"
               aria-label={isExpanded ? "접기" : "펼치기"}
             >
               {isExpanded ? (
-                <ChevronUp className="h-5 w-5" />
+                <ChevronUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
               ) : (
-                <ChevronDown className="h-5 w-5" />
+                <ChevronDown className="h-5 w-5 text-gray-600 dark:text-gray-400" />
               )}
             </Button>
           </div>
@@ -119,24 +121,30 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
 
         {/* Expandable Content */}
         {isExpanded && (
-          <div className="border-t border-border">
-            <div className="flex gap-2 border-b border-border px-6 pt-4">
-              {tabList.map((tab) => (
+          <div className="border-t border-gray-200/50 dark:border-gray-700/50">
+            <div className="flex gap-2 border-b border-gray-200/50 dark:border-gray-700/50 px-6 pt-4">
+              {progressTabList.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 rounded-t-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                     activeTab === tab.id
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                      ? "bg-gradient-to-br from-blue-500/90 to-blue-600/90 text-white shadow-md"
+                      : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
                   }`}
                 >
-                  <img
-                    src={tab.image}
-                    alt={activeTab}
-                    className="h-6 w-6 rounded object-contain"
-                  />
-                  <span className="hidden sm:inline">{tab.title}</span>
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+                    <Image
+                      src={tab.image || "/placeholder.svg"}
+                      alt={activeTab}
+                      width={64}
+                      height={64}
+                      className="w-6 h-6 object-contain"
+                    />
+                  </div>
+                  <span className="hidden sm:inline">
+                    {tab.tab_title[localeKey]}
+                  </span>
                 </button>
               ))}
             </div>
@@ -149,6 +157,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
                       <ProgressItem
                         item={rebirth}
                         handleClick={handleClick}
+                        currentUserList={userRebirth}
                         key={`rebirth-box-${id}`}
                       />
                     ))
@@ -156,6 +165,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
                       <ProgressItem
                         item={kappa}
                         handleClick={handleClick}
+                        currentUserList={userKappa}
                         key={`kappa-box-${id}`}
                       />
                     ))}

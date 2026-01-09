@@ -272,6 +272,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
                     successUserQuest={successUserQuest}
                   />
                 ))}
+                <ProgressData />
               </div>
             ) : (
               <div className="text-center py-12">
@@ -306,10 +307,10 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
                   successUserQuest={successUserQuest}
                 />
               ))}
+              <ProgressData />
             </div>
           )}
         </div>
-        {/* <ProgressData /> */}
         <DefaultDialog
           open={alertStatus}
           setOpen={setAlertStatus}

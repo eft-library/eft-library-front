@@ -255,6 +255,23 @@ export const rankCategoryList = [
   { value: "Mods", en: "Mods", ja: "改造パーツ", ko: "부품" },
 ];
 
+export const progressTabList = [
+  {
+    id: "Kappa",
+    image: "https://assets.tarkov.dev/5c093ca986f7740a1867ab12-8x.webp",
+    tab_title: { en: "Collector", ja: "Collector", ko: "수집가 (Collector)" },
+  },
+  {
+    id: "Rebirth",
+    image: "https://assets.tarkov.dev/prestige-1-image.webp",
+    tab_title: {
+      en: "New Beginning",
+      ja: "New Beginning",
+      ko: "환생 (New Beginning)",
+    },
+  },
+];
+
 export const defaultRankCategory = [
   "Keys",
   "Weapon",

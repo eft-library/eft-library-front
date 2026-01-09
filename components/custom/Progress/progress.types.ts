@@ -25,4 +25,5 @@ export interface ProgressViewTypes {
 export interface ProgressItemBoxTypes {
   item: ProgressItemTypes;
   handleClick: (itemId: string) => void;
+  currentUserList: string[];
 }

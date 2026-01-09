@@ -1110,6 +1110,12 @@ export const buttonI18N = {
   },
 };
 
+export const progressI18N = {
+  title: { en: "Items", ja: "アイテム", ko: "아이템" },
+  reset: { en: "Reset", ja: "初期化", ko: "초기화" },
+  save: { en: "Save", ja: "保存", ko: "저장" },
+};
+
 export const planner18N = {
   title: { en: "Quest Planner", ja: "Quest Planner", ko: "퀘스트 플래너" },
   add: {
