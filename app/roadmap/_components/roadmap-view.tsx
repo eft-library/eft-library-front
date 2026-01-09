@@ -41,6 +41,7 @@ import {
 } from "./roadmap-func";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import ProgressData from "@/components/custom/Progress/progress-data";
 
 export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
   const locale = useLocale();
@@ -370,6 +371,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
               </CardContent>
             </Card>
           </div>
+          <ProgressData />
         </div>
         <DefaultDialog
           open={alertStatus}

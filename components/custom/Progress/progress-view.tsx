@@ -8,14 +8,21 @@ import Image from "next/image";
 import ProgressItem from "./progress-item";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { progressI18N } from "@/lib/consts/i18nConsts";
+import { alertMessageI18N, progressI18N } from "@/lib/consts/i18nConsts";
 import { progressTabList } from "@/lib/consts/libraryConsts";
+import { useSession } from "next-auth/react";
+import DefaultDialog from "../DefaultDialog/default-dialog";
+import { requestUserData } from "@/lib/config/api";
+import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 
 export default function ProgressView({ progress }: ProgressViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const { data: session } = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("Kappa");
+  const [alertDesc, setAlertDesc] = useState<string>("");
+  const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [userRebirth, setUserRebirth] = useState<string[]>(
     progress.userRebirthList
   );
@@ -41,7 +48,32 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
   const currentTab = progressTabList.find((tab) => tab.id === activeTab);
 
   // 저장
-  const handleSave = () => {};
+  const handleSave = async () => {
+    if (session && session.email) {
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_USER_PROGRESS,
+        { userRebirth: userRebirth, userKappa: userKappa },
+        session
+      );
+      if (response?.status === 200) {
+        setAlertDesc(alertMessageI18N.save[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+      } else {
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        window.location.reload();
+      }
+    } else {
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+    }
+  };
 
   // 그냥 초기화만 저장은 안함 - 저장이 필요하면 handleSave 호출하면 된다.
   const handleReset = () => {
@@ -174,6 +206,12 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
           </div>
         )}
       </div>
+      <DefaultDialog
+        open={alertStatus}
+        setOpen={setAlertStatus}
+        title="Notice"
+        description={alertDesc}
+      />
     </div>
   );
 }
