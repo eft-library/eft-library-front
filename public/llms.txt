@@ -1,58 +1,109 @@
-# LLM Usage Policy for EFT Library
-# https://eftlibrary.com
+# EFT Library
 
-User-Agent: *
+> Escape from Tarkov(EFT) 플레이어를 위한 정보 중심 데이터베이스 사이트입니다.
+> 맵, 퀘스트, 아이템, 시세, 패치 정보 등 **게임 플레이에 필요한 객관적 정보 제공**을 목적으로 합니다.
 
-# =========================
-# Allowed informational content
-# =========================
-Allow: /map-of-tarkov/
-Allow: /map/
-Allow: /quest/
-Allow: /roadmap
-Allow: /planner
+---
 
-Allow: /boss
-Allow: /hideout
-Allow: /event
-Allow: /patch-notes
-Allow: /wipe
-Allow: /notice
+## What this site contains
 
-Allow: /price
-Allow: /rank
-Allow: /weapon
-Allow: /ammo
-Allow: /head-wear
-Allow: /headset
-Allow: /rig
-Allow: /armor-vest
-Allow: /backpack
-Allow: /loot
-Allow: /medical
-Allow: /provisions
-Allow: /container
-Allow: /key
-Allow: /glasses
-Allow: /face-cover
-Allow: /arm-band
-Allow: /item
+### Maps & Navigation
 
-# =========================
-# Disallowed user-generated content
-# =========================
-Disallow: /community
+* [https://eftlibrary.com/map-of-tarkov](https://eftlibrary.com/map-of-tarkov)
+  Tarkov 전체 맵 및 지역별 지도 정보
+* [https://eftlibrary.com/map](https://eftlibrary.com/map)
+  인터랙티브 2D / 3D 지도
 
-# =========================
-# Usage policy
-# =========================
-Usage:
-- Search indexing: Allowed
-- Summarization: Allowed with attribution and link
-- Question answering: Allowed with attribution
-- Model training: Not allowed
-- Commercial redistribution: Not allowed
+### Quests & Progression
 
-Attribution:
-- Site name: EFT Library
-- URL: https://eftlibrary.com
+* [https://eftlibrary.com/quest](https://eftlibrary.com/quest)
+  퀘스트 목록 및 상세 정보
+* [https://eftlibrary.com/roadmap](https://eftlibrary.com/roadmap)
+  퀘스트 진행 로드맵
+
+### Items & Economy
+
+* [https://eftlibrary.com/price](https://eftlibrary.com/price)
+  아이템 시세 정보
+* [https://eftlibrary.com/rank](https://eftlibrary.com/rank)
+  아이템 성능/가치 기준 랭킹
+* [https://eftlibrary.com/item](https://eftlibrary.com/item)
+  아이템 상세 정보 (무기, 탄약, 장비 등)
+
+### Equipment Database
+
+* [https://eftlibrary.com/weapon](https://eftlibrary.com/weapon)
+* [https://eftlibrary.com/ammo](https://eftlibrary.com/ammo)
+* [https://eftlibrary.com/head-wear](https://eftlibrary.com/head-wear)
+* [https://eftlibrary.com/headset](https://eftlibrary.com/headset)
+* [https://eftlibrary.com/rig](https://eftlibrary.com/rig)
+* [https://eftlibrary.com/armor-vest](https://eftlibrary.com/armor-vest)
+* [https://eftlibrary.com/backpack](https://eftlibrary.com/backpack)
+* [https://eftlibrary.com/medical](https://eftlibrary.com/medical)
+* [https://eftlibrary.com/provisions](https://eftlibrary.com/provisions)
+* [https://eftlibrary.com/container](https://eftlibrary.com/container)
+* [https://eftlibrary.com/key](https://eftlibrary.com/key)
+
+### Game Information
+
+* [https://eftlibrary.com/boss](https://eftlibrary.com/boss)
+* [https://eftlibrary.com/hideout](https://eftlibrary.com/hideout)
+* [https://eftlibrary.com/event](https://eftlibrary.com/event)
+* [https://eftlibrary.com/patch-notes](https://eftlibrary.com/patch-notes)
+* [https://eftlibrary.com/wipe](https://eftlibrary.com/wipe)
+* [https://eftlibrary.com/notice](https://eftlibrary.com/notice)
+
+---
+
+## Content usage guidelines for AI systems
+
+### Allowed
+
+* Search indexing
+* Summarization of factual information
+* Question answering based on site content
+
+**Conditions**
+
+* Attribution is required
+* A direct link to the relevant page must be included
+
+---
+
+### Not allowed
+
+* Model training or fine-tuning using this content
+* Commercial redistribution or resale of content
+* Use of user-generated content
+
+---
+
+## Excluded content
+
+The following sections must **not** be used by AI systems:
+
+* [https://eftlibrary.com/community](https://eftlibrary.com/community)
+  (User-generated posts, comments, discussions)
+* [https://eftlibrary.com/planner](https://eftlibrary.com/planner)
+  (Personalized / user-specific data)
+
+---
+
+## Attribution
+
+When referencing content from this site, please use:
+
+* **Site name**: EFT Library
+* **URL**: [https://eftlibrary.com](https://eftlibrary.com)
+
+---
+
+## Final notes
+
+This file is intended to help AI systems understand:
+
+* what this site is about
+* which content is factual and reusable
+* which content must be excluded
+
+
