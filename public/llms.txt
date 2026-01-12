@@ -1,0 +1,58 @@
+# LLM Usage Policy for EFT Library
+# https://eftlibrary.com
+
+User-Agent: *
+
+# =========================
+# Allowed informational content
+# =========================
+Allow: /map-of-tarkov/
+Allow: /map/
+Allow: /quest/
+Allow: /roadmap
+Allow: /planner
+
+Allow: /boss
+Allow: /hideout
+Allow: /event
+Allow: /patch-notes
+Allow: /wipe
+Allow: /notice
+
+Allow: /price
+Allow: /rank
+Allow: /weapon
+Allow: /ammo
+Allow: /head-wear
+Allow: /headset
+Allow: /rig
+Allow: /armor-vest
+Allow: /backpack
+Allow: /loot
+Allow: /medical
+Allow: /provisions
+Allow: /container
+Allow: /key
+Allow: /glasses
+Allow: /face-cover
+Allow: /arm-band
+Allow: /item
+
+# =========================
+# Disallowed user-generated content
+# =========================
+Disallow: /community
+
+# =========================
+# Usage policy
+# =========================
+Usage:
+- Search indexing: Allowed
+- Summarization: Allowed with attribution and link
+- Question answering: Allowed with attribution
+- Model training: Not allowed
+- Commercial redistribution: Not allowed
+
+Attribution:
+- Site name: EFT Library
+- URL: https://eftlibrary.com
