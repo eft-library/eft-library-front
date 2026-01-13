@@ -56,10 +56,16 @@ export default function HourlyDistributionChart({
             />
             <YAxis tick={{ fill: ALL_COLOR.White }} />
             <Tooltip
-              formatter={(value) => [
-                `${value.toLocaleString()} ${dashboardI18N.request[localeKey]}`,
-                `${dashboardI18N.requestCount[localeKey]}`,
-              ]}
+              formatter={(value) => {
+                const safeValue = value ?? 0;
+
+                return [
+                  `${safeValue.toLocaleString()} ${
+                    dashboardI18N.request[localeKey]
+                  }`,
+                  `${dashboardI18N.requestCount[localeKey]}`,
+                ];
+              }}
               labelFormatter={(label) =>
                 `${dashboardI18N.time[localeKey]}: ${label}`
               }

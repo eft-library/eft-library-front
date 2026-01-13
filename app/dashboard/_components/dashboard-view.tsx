@@ -89,7 +89,7 @@ export default function DashboardView() {
               </span>
               <DatePicker
                 selected={startDate}
-                onChange={(date) => setStartDate(date ?? null)}
+                onChange={(date: Date | null) => setStartDate(date)}
                 dateFormat="yyyy-MM-dd"
                 className="
                   text-black dark:text-white
@@ -119,7 +119,7 @@ export default function DashboardView() {
               </span>
               <DatePicker
                 selected={endDate}
-                onChange={(date) => setEndDate(date ?? null)}
+                onChange={(date: Date | null) => setEndDate(date ?? null)}
                 dateFormat="yyyy-MM-dd"
                 className="
                   text-black dark:text-white

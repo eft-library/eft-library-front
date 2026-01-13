@@ -73,7 +73,7 @@ export default function TopEndpointsChart({
               />
               <Tooltip
                 formatter={(value) => [
-                  `${value.toLocaleString()} ${
+                  `${(value ?? 0).toLocaleString()} ${
                     dashboardI18N.request[localeKey]
                   }`,
                   "요청 수",
