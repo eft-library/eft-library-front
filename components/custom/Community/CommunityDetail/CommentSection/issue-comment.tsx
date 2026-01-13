@@ -52,7 +52,7 @@ export default function IssueComment({ postInfo, comment }: IssueCommentTypes) {
             )}
 
             {!comment.delete_by_user && !comment.delete_by_admin ? (
-              <p className="text-gray-800 dark:text-gray-200 leading-relaxed m-0 font-medium">
+              <p className="text-gray-800 dark:text-gray-200 leading-relaxed m-0 font-medium whitespace-pre-line">
                 {comment.contents}
               </p>
             ) : (
