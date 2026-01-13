@@ -47,7 +47,9 @@ export default function HealthCheck({ health_check }: HealthCheckTypes) {
                   : dashboardI18N.failureRate[localeKey];
               const extra = ` (${dashboardI18N.success[localeKey]} ${payload.ok_count} / ${dashboardI18N.failure[localeKey]} ${payload.fail_count} / ${dashboardI18N.totalCount[localeKey]} ${payload.total})`;
 
-              return [`${value.toLocaleString()} %${extra}`, label];
+              if (value) {
+                return [`${value.toLocaleString()} %${extra}`, label];
+              }
             }}
             contentStyle={{
               backgroundColor: "#1f2937",
