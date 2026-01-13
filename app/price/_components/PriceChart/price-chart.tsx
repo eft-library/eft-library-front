@@ -115,9 +115,9 @@ export default function PriceChart({ item, priceType }: PriceChartTypes) {
                   color: "#F97316",
                   fontWeight: "bold",
                 }}
-                formatter={(value: number) => [
-                  `${value.toLocaleString()} ₽`,
-                  `${price18N.fleaMarketPrice[localeKey]}`,
+                formatter={(value) => [
+                  `${(value ?? 0).toLocaleString()} ₽`,
+                  price18N.fleaMarketPrice[localeKey],
                 ]}
                 labelFormatter={(label) =>
                   dayjs(label).format(`YYYY/MM/DD·HH:mm`)
