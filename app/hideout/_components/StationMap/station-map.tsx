@@ -24,7 +24,7 @@ export default function StationMap({
   setUserItemList,
   onClickSaveItem,
 }: StationMapTypes) {
-  const MAX_COUNT = 999999999;
+  const MAX_COUNT = 999;
 
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
