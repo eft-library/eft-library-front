@@ -254,7 +254,7 @@ export const getMaxSuffixNumber = (
     const filteredList = completeList
       .filter((item) => item.startsWith(id + "-"))
       .map((item) => parseInt(item.split("-")[1], 10));
-    level = filteredList.length > 0 ? Math.max(...filteredList) : 1;
+    level = filteredList.length > 0 ? Math.max(...filteredList) : 0;
   } else {
     level = parseInt(id.split("-")[1], 10);
   }
