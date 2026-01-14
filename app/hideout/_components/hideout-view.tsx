@@ -86,9 +86,9 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       setLoading(false);
       if (!response) return;
 
-      // allItemList 갱신 추가
       if (response.status === 200) {
         setCompleteList(changeList);
+        setAllItemList(response.data.item_require_info);
         setAlertDesc(alertMessageI18N.save[localeKey]);
 
         requestAnimationFrame(() => {
@@ -165,9 +165,10 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
 
       setMaster("5d484fe3654e76006657e0ac-1");
       setLevel("5d484fe3654e76006657e0ac-1");
-      // allItemList 갱신 추가
+
       if (response.status === 200) {
         setCompleteList([]);
+        setAllItemList(response.data.item_require_info);
         setAlertDesc(alertMessageI18N.save[localeKey]);
         requestAnimationFrame(() => {
           setAlertStatus(true);

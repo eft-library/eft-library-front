@@ -412,6 +412,154 @@ export const hideoutI18n = {
   reset: { en: "Reset", ja: "初期化", ko: "초기화" },
   material: { en: "Material", ja: "材料", ko: "재료" },
   result: { en: "Result", ja: "結果", ko: "결과" },
+  usageGuide: {
+    section1: {
+      title: {
+        en: "Build / Destroy",
+        ja: "建設 / 破壊",
+        ko: "건설 / 파괴 동작",
+      },
+      contents: {
+        en: [
+          "You can build or destroy facilities at any time regardless of item ownership.",
+          "This feature is intended for planning or adjusting your current hideout state.",
+          "Entered item counts are not automatically deducted.",
+        ],
+        ja: [
+          "施設の建設・破壊は、アイテム所持数に関係なくいつでも可能です。",
+          "現在の隠れ家状態を調整したり、計画を立てるための機能です。",
+          "入力したアイテム数は自動で差し引かれません。",
+        ],
+        ko: [
+          "시설 건설 및 파괴는 아이템 보유량과 관계없이 언제든지 가능합니다.",
+          "이 기능은 현재 은신처 상태를 맞추거나, 계획을 세우기 위한 용도입니다.",
+          "직접 입력한 아이템 개수를 자동으로 차감하지 않습니다.",
+        ],
+      },
+    },
+
+    section2: {
+      title: {
+        en: "Item Count Display",
+        ja: "アイテム数量表示",
+        ko: "총 아이템 숫자 표기 안내",
+      },
+      blocks: {
+        en: [
+          {
+            label: "Left number",
+            lines: [
+              "→ Enter and save the amount currently in your in-game inventory.",
+            ],
+          },
+          {
+            label: "Right number",
+            lines: [
+              "→ Total amount still required based on your current hideout status.",
+            ],
+          },
+          {
+            label: "When changing facility level",
+            lines: ["→ Only the right number will be updated automatically."],
+          },
+        ],
+        ja: [
+          {
+            label: "左の数字は",
+            lines: [
+              "→ ゲーム内インベントリにある数量を手動で入力して保存する値です。",
+            ],
+          },
+          {
+            label: "右の数字は",
+            lines: [
+              "→ 現在の隠れ家状態を基準に、完成までに必要な残り数量です。",
+            ],
+          },
+          {
+            label: "施設レベルを変更すると",
+            lines: ["→ 右側の数字のみが自動で更新されます。"],
+          },
+        ],
+        ko: [
+          {
+            label: "왼쪽 숫자는",
+            lines: [
+              "→ 현재 인게임 인벤토리에 있는 수량을 직접 입력하고 저장하는 값입니다.",
+            ],
+          },
+          {
+            label: "오른쪽 숫자는",
+            lines: [
+              "→ 현재 은신처 상태 기준으로",
+              "→ 완성까지 남아 있는 총 필요 수량입니다.",
+            ],
+          },
+          {
+            label: "시설 레벨을 올리거나 내리면",
+            lines: ["→ 오른쪽 숫자만 자동으로 변경됩니다."],
+          },
+        ],
+      },
+    },
+
+    section3: {
+      title: {
+        en: "Input Owned Amount",
+        ja: "所持数の入力",
+        ko: "보유량 입력",
+      },
+      blocks: {
+        en: [
+          {
+            lines: [
+              "You can use the hideout calculator even without entering owned amounts.",
+            ],
+          },
+          {
+            lines: [
+              "→ If you obtain or use items in-game,",
+              "→ please manually update the values based on your inventory.",
+            ],
+          },
+        ],
+        ja: [
+          {
+            lines: ["所持数を入力しなくても、隠れ家の進行計算は利用できます。"],
+          },
+          {
+            lines: [
+              "→ ゲーム内でアイテムを入手または使用した場合、",
+              "→ インベントリ基準で数値を手動で修正してください。",
+            ],
+          },
+        ],
+        ko: [
+          {
+            lines: [
+              "보유량을 입력하지 않아도",
+              "은신처 진행 계산은 정상적으로 이용할 수 있습니다.",
+            ],
+          },
+          {
+            lines: [
+              "→ 인게임에서 아이템을 획득하거나 사용한 경우,",
+              "→ 현재 인벤토리 기준으로 숫자를 직접 수정해 주세요.",
+            ],
+          },
+        ],
+      },
+    },
+
+    summary: {
+      en: ["Left: items you own,", "Right: items still required."],
+      ja: ["左は「所持している数量」、", "右は「今後さらに必要な数量」です。"],
+      ko: [
+        "왼쪽은 '내가 가진 수량',",
+        "오른쪽은 '앞으로 더 필요한 수량'입니다.",
+      ],
+    },
+  },
 };
 
 export const itemI18N = {

@@ -224,7 +224,19 @@ export default function StationMap({
                         }
                         onFocus={(e) => e.target.select()}
                         onClick={(e) => e.stopPropagation()}
-                        className="h-6 w-8 p-0 text-xs font-semibold text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none bg-transparent text-foreground border-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="
+                          h-6 w-[4rem] p-0
+                          text-xs font-semibold text-center
+                          bg-muted/40
+                          border border-border/40
+                          rounded-sm
+                          hover:border-border
+                          focus:border-primary
+                          focus-visible:ring-1 focus-visible:ring-primary/40
+                          [appearance:textfield]
+                          [&::-webkit-outer-spin-button]:appearance-none
+                          [&::-webkit-inner-spin-button]:appearance-none
+                        "
                       />
                       <span className="text-xs font-semibold text-foreground">
                         /&nbsp;{reqItem.quantity}
@@ -316,7 +328,9 @@ export default function StationMap({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 bg-card border-b border-border p-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">사용법</h2>
+              <h2 className="text-lg font-semibold text-foreground">
+                {hideoutI18n.usage[localeKey]}
+              </h2>
               <button
                 onClick={() => setShowUsageGuide(false)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -328,75 +342,78 @@ export default function StationMap({
               {/* Section 1 */}
               <div className="space-y-2">
                 <h3 className="text-base font-semibold text-foreground">
-                  1️⃣ 건설 / 파괴 동작
+                  1️⃣ {hideoutI18n.usageGuide.section1.title[localeKey]}
                 </h3>
                 <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
-                  <p>
-                    시설 건설 및 파괴는 아이템 보유량과 관계없이 언제든지
-                    가능합니다.
-                  </p>
-                  <p>
-                    이 기능은 현재 은신처 상태를 맞추거나, 계획을 세우기 위한
-                    용도입니다.
-                  </p>
-                  <p>직접 입력한 아이템 개수를 자동으로 차감하지 않습니다.</p>
+                  {hideoutI18n.usageGuide.section1.contents[localeKey].map(
+                    (text, idx) => (
+                      <p key={idx}>{text}</p>
+                    )
+                  )}
                 </div>
               </div>
 
               {/* Section 2 */}
               <div className="space-y-2">
                 <h3 className="text-base font-semibold text-foreground">
-                  2️⃣ 총 아이템 숫자 표기 안내
+                  2️⃣ {hideoutI18n.usageGuide.section2.title[localeKey]}
                 </h3>
+
                 <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
-                  <p>
-                    <span className="text-foreground font-medium">
-                      왼쪽 숫자는
-                    </span>
-                    <br />→ 현재 인게임 인벤토리에 있는 수량을 직접 입력하고
-                    저장하는 값입니다.
-                  </p>
-                  <p>
-                    <span className="text-foreground font-medium">
-                      오른쪽 숫자는
-                    </span>
-                    <br />→ 현재 은신처 상태 기준으로
-                    <br />
-                    완성까지 남아 있는 총 필요 수량입니다.
-                  </p>
-                  <p>
-                    <span className="text-foreground font-medium">
-                      시설 레벨을 올리거나 내리면
-                    </span>
-                    <br />→ 오른쪽 숫자만 자동으로 변경됩니다.
-                  </p>
+                  {hideoutI18n.usageGuide.section2.blocks[localeKey].map(
+                    (block, idx) => (
+                      <p key={idx}>
+                        <span className="text-foreground font-medium">
+                          {block.label}
+                        </span>
+                        <br />
+                        {block.lines.map((line, lineIdx) => (
+                          <span key={lineIdx}>
+                            {line}
+                            {lineIdx < block.lines.length - 1 && <br />}
+                          </span>
+                        ))}
+                      </p>
+                    )
+                  )}
                 </div>
               </div>
 
               {/* Section 3 */}
               <div className="space-y-2">
                 <h3 className="text-base font-semibold text-foreground">
-                  3️⃣ 보유량 입력
+                  3️⃣ {hideoutI18n.usageGuide.section3.title[localeKey]}
                 </h3>
+
                 <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
-                  <p>
-                    보유량을 입력하지 않아도
-                    <br />
-                    은신처 진행 계산은 정상적으로 이용할 수 있습니다.
-                  </p>
-                  <p>
-                    인게임에서 아이템을 획득하거나 사용한 경우,
-                    <br />→ 현재 인벤토리 기준으로 숫자를 직접 수정해 주세요.
-                  </p>
+                  {hideoutI18n.usageGuide.section3.blocks[localeKey].map(
+                    (block, idx) => (
+                      <p key={idx}>
+                        {block.lines.map((line, lineIdx) => (
+                          <span key={lineIdx}>
+                            {line}
+                            {lineIdx < block.lines.length - 1 && <br />}
+                          </span>
+                        ))}
+                      </p>
+                    )
+                  )}
                 </div>
               </div>
 
               {/* Summary */}
               <div className="pt-4 border-t border-border">
                 <p className="text-base font-semibold text-foreground text-center">
-                  왼쪽은 '내가 가진 수량',
-                  <br />
-                  오른쪽은 '앞으로 더 필요한 수량'입니다.
+                  {hideoutI18n.usageGuide.summary[localeKey].map(
+                    (line, idx) => (
+                      <span key={idx}>
+                        {line}
+                        {idx <
+                          hideoutI18n.usageGuide.summary[localeKey].length -
+                            1 && <br />}
+                      </span>
+                    )
+                  )}
                 </p>
               </div>
             </div>
