@@ -50,6 +50,7 @@ export const USER_API_ENDPOINTS = {
   DELETE_USER_QUEST: baseUrl + "/api/planner/quest/delete",
   UPDATE_ROADMAP: baseUrl + "/api/roadmap/save-roadmap",
   UPDATE_STATION: baseUrl + "/api/hideout/save-station",
+  UPDATE_STATION_ITEM: baseUrl + "/api/hideout/save-station-item",
   UPDATE_USER_QUEST: baseUrl + "/api/planner/quest/update",
   GET_USER: baseUrl + "/api/user/user-info",
   UPDATE_NICKNAME: baseUrl + "/api/user/update-nickname",

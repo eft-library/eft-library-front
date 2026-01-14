@@ -242,6 +242,26 @@ export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
   }
 };
 
+export const getMaxSuffixNumber = (
+  id: number | string,
+  completeList?: string[]
+) => {
+  let level: number;
+
+  if (typeof id === "number") {
+    level = id;
+  } else if (completeList) {
+    const filteredList = completeList
+      .filter((item) => item.startsWith(id + "-"))
+      .map((item) => parseInt(item.split("-")[1], 10));
+    level = filteredList.length > 0 ? Math.max(...filteredList) : -1;
+  } else {
+    level = parseInt(id.split("-")[1], 10);
+  }
+
+  return level;
+};
+
 export const changeTime = (sec: number | undefined) => {
   if (!sec) return `${0} M`;
 

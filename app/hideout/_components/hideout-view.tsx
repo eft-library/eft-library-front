@@ -4,7 +4,11 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { signOut, useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
-import type { HideoutViewTypes } from "./hideout.types";
+import type {
+  HideoutViewTypes,
+  UserItemTypes,
+  ItemRequireInfoTypes,
+} from "./hideout.types";
 import { requestUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { alertMessageI18N, hideoutI18n } from "@/lib/consts/i18nConsts";
@@ -23,6 +27,12 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const [completeList, setCompleteList] = useState<string[]>(
     hideoutData.complete_list
   );
+  const [userItemList, setUserItemList] = useState<UserItemTypes[]>(
+    hideoutData.item_list
+  );
+  const [allItemList, setAllItemList] = useState<ItemRequireInfoTypes[]>(
+    hideoutData.item_require_info
+  );
   const [master, setMaster] = useState<string>("5d484fcd654e7668ec2ec322");
   const [level, setLevel] = useState<string>("5d484fcd654e7668ec2ec322-1");
   const [alertDesc, setAlertDesc] = useState<string>("");
@@ -31,6 +41,8 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
 
   useEffect(() => {
     setCompleteList(hideoutData.complete_list);
+    setUserItemList(hideoutData.item_list);
+    setAllItemList(hideoutData.item_require_info);
   }, [hideoutData]);
 
   const onClickSave = async (id: string, type: string) => {
@@ -74,6 +86,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       setLoading(false);
       if (!response) return;
 
+      // allItemList 갱신 추가
       if (response.status === 200) {
         setCompleteList(changeList);
         setAlertDesc(alertMessageI18N.save[localeKey]);
@@ -152,6 +165,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
 
       setMaster("5d484fe3654e76006657e0ac-1");
       setLevel("5d484fe3654e76006657e0ac-1");
+      // allItemList 갱신 추가
       if (response.status === 200) {
         setCompleteList([]);
         setAlertDesc(alertMessageI18N.save[localeKey]);
@@ -161,6 +175,77 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
         setLoading(false);
       } else {
         setCompleteList([]);
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+        signOut();
+        window.location.reload();
+      }
+    } else {
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+      setLoading(false);
+    }
+  };
+
+  const onClickResetItem = async () => {
+    if (session && session.email) {
+      setLoading(true);
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_STATION_ITEM,
+        { user_item_list: [] },
+        session
+      );
+      setLoading(false);
+      if (!response) return;
+
+      setUserItemList([]);
+      if (response.status === 200) {
+        setAlertDesc(alertMessageI18N.save[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+      } else {
+        setAlertDesc(alertMessageI18N.reLogin[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+        signOut();
+        window.location.reload();
+      }
+    } else {
+      setAlertDesc(alertMessageI18N.onlyUser[localeKey]);
+      requestAnimationFrame(() => {
+        setAlertStatus(true);
+      });
+      setLoading(false);
+    }
+  };
+
+  const onClickSaveItem = async () => {
+    if (session && session.email) {
+      setLoading(true);
+      const response = await requestUserData(
+        USER_API_ENDPOINTS.UPDATE_STATION_ITEM,
+        { user_item_list: userItemList },
+        session
+      );
+      setLoading(false);
+      if (!response) return;
+
+      if (response.status === 200) {
+        setAlertDesc(alertMessageI18N.save[localeKey]);
+        requestAnimationFrame(() => {
+          setAlertStatus(true);
+        });
+        setLoading(false);
+      } else {
         setAlertDesc(alertMessageI18N.reLogin[localeKey]);
         requestAnimationFrame(() => {
           setAlertStatus(true);
@@ -200,9 +285,15 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
               <div className="mb-8">
                 <StationMap
                   masterId={master}
+                  hideoutInfo={hideoutData.hideout_info}
+                  userItemList={userItemList}
+                  itemRequireInfo={allItemList}
                   onChangeMaster={onClickChangeMaster}
                   completeList={completeList}
                   onClickReset={onClickReset}
+                  onClickResetItem={onClickResetItem}
+                  setUserItemList={setUserItemList}
+                  onClickSaveItem={onClickSaveItem}
                 />
               </div>
 

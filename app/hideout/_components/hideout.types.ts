@@ -27,6 +27,20 @@ export interface HideoutViewTypes {
 interface HideoutData {
   hideout_info: Hideout[];
   complete_list: string[];
+  item_list: UserItemTypes[];
+  item_require_info: ItemRequireInfoTypes[];
+}
+
+export interface ItemRequireInfoTypes {
+  image: string;
+  item_id: string;
+  name: LocaleName;
+  quantity: number;
+}
+
+export interface UserItemTypes {
+  id: string;
+  count: number;
 }
 
 interface Hideout {
@@ -156,8 +170,14 @@ export interface StationMapStateTypes {
 export interface StationMapTypes {
   onChangeMaster: (val: string) => void;
   onClickReset: () => void;
+  onClickResetItem: () => void;
+  onClickSaveItem: () => void;
   masterId: string;
   completeList: string[];
+  userItemList: UserItemTypes[];
+  itemRequireInfo: ItemRequireInfoTypes[];
+  hideoutInfo: Hideout[];
+  setUserItemList: React.Dispatch<React.SetStateAction<UserItemTypes[]>>;
 }
 
 export interface LevelSelector {

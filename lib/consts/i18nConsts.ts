@@ -388,6 +388,12 @@ export const alertMessageI18N = {
 
 export const hideoutI18n = {
   title: { en: "Hideout", ja: "隠れ家", ko: "은신처" },
+  usage: {
+    en: "How to use",
+    ja: "使い方",
+    ko: "사용법",
+  },
+  item: { en: "Items", ja: "アイテム", ko: "아이템" },
   craft: { en: "Craft", ja: "製作", ko: "제작" },
   hour: { en: "h", ja: "時間", ko: "시간" },
   min: { en: "m", ja: "分", ko: "분" },
