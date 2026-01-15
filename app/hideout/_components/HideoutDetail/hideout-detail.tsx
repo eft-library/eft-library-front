@@ -259,7 +259,7 @@ export default function HideoutDetail({
                           </span>
                           <Badge
                             variant="outline"
-                            className="ml-2 bg-secondary text-secondary-foreground border-border text-yellow-400"
+                            className="ml-2 bg-secondary text-secondary-foreground border-border "
                           >
                             {changeTime(craft.duration)}
                           </Badge>

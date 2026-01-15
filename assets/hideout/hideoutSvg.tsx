@@ -24,6 +24,7 @@ import Vents from "./vents";
 import WaterCollector from "./waterCollector";
 import WeaponRack from "./weaponRack";
 import Workbench from "./workbench";
+import ChristmasTree from "./christmasTree";
 
 export const StationSvg = {
   AirFilteringUnit,
@@ -52,6 +53,7 @@ export const StationSvg = {
   WaterCollector,
   WeaponRack,
   Workbench,
+  ChristmasTree,
 };
 
 export const StationSvgComponents = {
@@ -81,6 +83,7 @@ export const StationSvgComponents = {
   "5d484fc8654e760065037abf": StationSvg.WaterCollector,
   "63db64cbf9963741dc0d741f": StationSvg.WeaponRack,
   "5d484fda654e7600681d9315": StationSvg.Workbench,
+  "5df8a81f8f77747fcf5f5702": StationSvg.ChristmasTree,
 };
 
 export const getStationSVG = (
