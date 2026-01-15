@@ -79,7 +79,7 @@ export default function RequireTab({ items, type }: RequireTabTypes) {
               {type === "item" &&
                 "found_in_raid" in item &&
                 item.found_in_raid && (
-                  <CheckCircle className="absolute bottom-0 right-0 w-4 h-4 text-white rounded-full" />
+                  <CheckCircle className="absolute bottom-0 right-0 w-4 h-4 text-white rounded-full bg-red-600" />
                 )}
             </div>
           )}

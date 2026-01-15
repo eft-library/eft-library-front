@@ -8,8 +8,17 @@ import { getMaxSuffix, getMaxSuffixNumber } from "@/lib/func/jsxfunction";
 import { hideoutI18n, roadmapI18N } from "@/lib/consts/i18nConsts";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { Check, HelpCircle, Minus, Plus, Search, X } from "lucide-react";
+import {
+  Check,
+  CheckCircle,
+  HelpCircle,
+  Minus,
+  Plus,
+  Search,
+  X,
+} from "lucide-react";
 import Image from "next/image";
+import type { UserItemTypes } from "../hideout.types";
 import { Input } from "@/components/ui/input";
 
 export default function StationMap({
@@ -25,44 +34,70 @@ export default function StationMap({
   onClickSaveItem,
 }: StationMapTypes) {
   const MAX_COUNT = 999;
-
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [tabState, setTabState] = useState<"station" | "items">("station");
   const [searchWord, setSearchWord] = useState<string>("");
   const [showUsageGuide, setShowUsageGuide] = useState(false);
 
-  const userItemCountMap = useMemo(() => {
-    const map = new Map<string, number>();
+  const makeItemKey = (id: string, isRaid: boolean) =>
+    `${id}_${isRaid ? "raid" : "normal"}`;
 
-    userItemList.forEach((item) => {
-      map.set(item.id, item.count);
-    });
+  const userItemMap = useMemo(() => {
+    const map = new Map();
+
+    for (const item of userItemList) {
+      const key = makeItemKey(item.id, item.found_in_raid);
+      map.set(key, item.count);
+    }
 
     return map;
   }, [userItemList]);
 
-  const handleIncrease = (id: string) => {
-    setUserItemList((prev) => {
-      const found = prev.find((item) => item.id === id);
+  const isSameItem = (item: UserItemTypes, id: string, isRaid: boolean) =>
+    item.id === id && item.found_in_raid === isRaid;
 
-      if (!found) {
-        return [{ id, count: 1 }, ...prev];
+  const handleIncrease = (id: string, isRaid: boolean) => {
+    setUserItemList((prev) => {
+      let updated = false;
+
+      const next = prev.map((item) => {
+        // 정확히 같은 아이템
+        if (item.id === id && item.found_in_raid === isRaid) {
+          updated = true;
+          return {
+            ...item,
+            count: Math.min(MAX_COUNT, item.count + 1),
+          };
+        }
+
+        // id는 같은데 found_in_raid가 없는 기존 데이터 보정
+        if (item.id === id && item.found_in_raid === undefined) {
+          updated = true;
+          return {
+            ...item,
+            found_in_raid: isRaid,
+            count: Math.min(MAX_COUNT, item.count + 1),
+          };
+        }
+
+        return item;
+      });
+
+      // 아예 없으면 새로 추가
+      if (!updated) {
+        return [{ id, count: 1, found_in_raid: isRaid }, ...prev];
       }
 
-      return prev.map((item) =>
-        item.id === id
-          ? { ...item, count: Math.min(MAX_COUNT, item.count + 1) }
-          : item
-      );
+      return next;
     });
   };
 
-  const handleDecrease = (id: string) => {
+  const handleDecrease = (id: string, isRaid: boolean) => {
     setUserItemList((prev) =>
       prev
         .map((item) =>
-          item.id === id
+          isSameItem(item, id, isRaid)
             ? { ...item, count: Math.max(0, item.count - 1) }
             : item
         )
@@ -70,26 +105,47 @@ export default function StationMap({
     );
   };
 
-  const handleChange = (id: string, value: number) => {
+  const handleChange = (id: string, isRaid: boolean, value: number) => {
     setUserItemList((prev) => {
-      if (Number.isNaN(value)) {
-        return prev;
-      }
+      if (Number.isNaN(value)) return prev;
 
       const clamped = Math.min(Math.max(0, value), MAX_COUNT);
 
+      // 0이면 해당 타입 제거
       if (clamped === 0) {
-        return prev.filter((item) => item.id !== id);
+        return prev.filter(
+          (item) => !(item.id === id && item.found_in_raid === isRaid)
+        );
       }
 
-      const exists = prev.find((item) => item.id === id);
-      if (!exists) {
-        return [...prev, { id, count: clamped }];
+      let updated = false;
+
+      const next = prev.map((item) => {
+        // 정확히 같은 아이템
+        if (item.id === id && item.found_in_raid === isRaid) {
+          updated = true;
+          return { ...item, count: clamped };
+        }
+
+        // id는 같은데 found_in_raid가 없는 기존 데이터 보정
+        if (item.id === id && item.found_in_raid === undefined) {
+          updated = true;
+          return {
+            ...item,
+            found_in_raid: isRaid,
+            count: clamped,
+          };
+        }
+
+        return item;
+      });
+
+      // 아예 없으면 새로 추가
+      if (!updated) {
+        return [...prev, { id, count: clamped, found_in_raid: isRaid }];
       }
 
-      return prev.map((item) =>
-        item.id === id ? { ...item, count: clamped } : item
-      );
+      return next;
     });
   };
 
@@ -174,21 +230,31 @@ export default function StationMap({
             ))}
 
           {tabState == "items" &&
-            filteredItemRequireInfo.map((reqItem, seq) => {
-              const currentCount = userItemCountMap.get(reqItem.item_id) ?? 0;
-              const isCompleted =
-                reqItem.quantity === 0 || currentCount >= reqItem.quantity;
+            filteredItemRequireInfo.map((reqItem) => {
+              const raidCount = userItemMap.get(`${reqItem.item_id}_raid`) ?? 0;
+
+              const normalCount =
+                userItemMap.get(`${reqItem.item_id}_normal`) ?? 0;
+
+              const currentCount =
+                userItemMap.get(
+                  makeItemKey(reqItem.item_id, reqItem.found_in_raid)
+                ) ?? 0;
+
+              const isCardCompleted = reqItem.found_in_raid
+                ? raidCount >= reqItem.quantity
+                : normalCount >= reqItem.quantity;
 
               return (
                 <div
-                  key={`item-select-${reqItem.item_id}-${seq}`}
+                  key={`item-select-${reqItem.item_id}-${reqItem.found_in_raid}`}
                   className={`relative rounded-lg border ${
-                    isCompleted
+                    isCardCompleted
                       ? `bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800`
                       : "bg-muted border-border"
                   }`}
                 >
-                  {isCompleted && (
+                  {isCardCompleted && (
                     <div className="absolute top-1 right-1 z-10">
                       <div
                         className="
@@ -206,9 +272,9 @@ export default function StationMap({
                     </div>
                   )}
 
-                  <button className="w-full py-3 px-2 flex flex-col items-center gap-1 rounded-lg">
-                    {/* 이미지 전용 영역 */}
-                    <div className="w-14 h-14 flex items-center justify-center overflow-hidden">
+                  <button className="relative w-full py-3 px-2 flex flex-col items-center gap-1 rounded-lg">
+                    {/* 이미지 영역 */}
+                    <div className="relative w-14 h-14 flex items-center justify-center overflow-hidden">
                       <Image
                         src={reqItem.image || "/placeholder.svg"}
                         alt={reqItem.name.en}
@@ -216,6 +282,21 @@ export default function StationMap({
                         height={56}
                         className="object-contain"
                       />
+
+                      {reqItem.found_in_raid && (
+                        <div className="absolute bottom-0 right-0">
+                          <div
+                            className="
+                              flex items-center justify-center
+                              w-4 h-4 rounded-full
+                              bg-red-600 text-white
+                              shadow
+                            "
+                          >
+                            <CheckCircle className="absolute bottom-0 right-0 w-4 h-4 text-white rounded-full" />
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* 텍스트 영역 */}
@@ -230,7 +311,7 @@ export default function StationMap({
                       variant="ghost"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDecrease(reqItem.item_id);
+                        handleDecrease(reqItem.item_id, reqItem.found_in_raid);
                       }}
                       className="h-6 w-6 p-0 hover:bg-muted"
                       disabled={currentCount === 0}
@@ -244,7 +325,11 @@ export default function StationMap({
                         min={0}
                         value={currentCount.toString()}
                         onChange={(e) =>
-                          handleChange(reqItem.item_id, Number(e.target.value))
+                          handleChange(
+                            reqItem.item_id,
+                            reqItem.found_in_raid,
+                            Number(e.target.value)
+                          )
                         }
                         onFocus={(e) => e.target.select()}
                         onClick={(e) => e.stopPropagation()}
@@ -272,7 +357,7 @@ export default function StationMap({
                       variant="ghost"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleIncrease(reqItem.item_id);
+                        handleIncrease(reqItem.item_id, reqItem.found_in_raid);
                       }}
                       className="h-6 w-6 p-0 hover:bg-muted"
                     >

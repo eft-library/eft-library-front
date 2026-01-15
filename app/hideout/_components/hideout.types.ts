@@ -36,11 +36,13 @@ export interface ItemRequireInfoTypes {
   item_id: string;
   name: LocaleName;
   quantity: number;
+  found_in_raid: boolean;
 }
 
 export interface UserItemTypes {
   id: string;
   count: number;
+  found_in_raid: boolean;
 }
 
 interface Hideout {
@@ -148,24 +150,6 @@ interface HideoutJson {
 export interface RequireTabTypes {
   items: ItemRequire[] | SkillRequire[] | TraderRequire[] | StationRequire[];
   type: string;
-}
-
-interface JsonValue {
-  width: number;
-  height: number;
-  station_list: StationMapList[];
-}
-
-interface StationMapList {
-  id: string;
-  top: number;
-  left: number;
-  image: string;
-}
-
-export interface StationMapStateTypes {
-  id: string;
-  json_value: JsonValue;
 }
 
 export interface StationMapTypes {
