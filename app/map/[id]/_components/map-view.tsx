@@ -5,8 +5,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { interactiveMapI18N } from "@/lib/consts/i18nConsts";
 import { useState } from "react";
-// import { useItemFilter } from "@/lib/hooks/useItemFilter";
-import Map3DNoItem from "./Map3D/map-3d-no-item";
+import Map3D from "./Map3D/map-3d";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
 import MapSelector from "./MapSelector/map-selector";
@@ -15,10 +14,6 @@ export default function MapView({ mapInfo }: MapViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [mapData, setMapData] = useState<MapData>(mapInfo.map);
-  // const [mapType, setMapType] = useState<string>("2D");
-  // const { viewItemList, onClickItem, onClickAllItem } = useItemFilter(
-  //   mapData.jpg_item_path
-  // );
 
   return (
     <ViewWrapper>
@@ -41,31 +36,8 @@ export default function MapView({ mapInfo }: MapViewTypes) {
             mapData={mapData}
             mapSelector={mapInfo.map_selector}
           />
-          <Map3DNoItem mapData={mapData} />
+          <Map3D mapData={mapData} />
         </div>
-        {/* 지금은 안쓰는 2D 코드들 */}
-        {/* <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto space-y-6">
-          <MapSelector
-            onClickMapAction={setMapData}
-            mapData={mapData}
-            mapSelector={mapInfo.map_selector}
-          />
-
-          <ItemFilter
-            originItemList={mapData.jpg_item_path}
-            viewItemList={viewItemList}
-            onClickItemAction={onClickItem}
-            onClickAllItemAction={onClickAllItem}
-            mapType={mapType}
-            setMapType={setMapType}
-          />
-
-          {mapType === "2D" ? (
-            <Map2D viewItemList={viewItemList} mapData={mapData} />
-          ) : (
-            <Map3D viewItemList={viewItemList} mapData={mapData} />
-          )}
-        </div> */}
       </div>
     </ViewWrapper>
   );

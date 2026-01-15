@@ -25,17 +25,16 @@ EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 �
 | next                            | 16.0.7  |
 | react                           | 19.2.1  |
 | next-auth                       | 4.24.13 |
-| tailwindcss                     | 4.1.17   |
+| tailwindcss                     | 4.1.17  |
 | @react-three/drei               | 10.7.7  |
 | @react-three/fiber              | 9.4.2   |
-| downshift                       | 9.0.12   |
+| downshift                       | 9.0.12  |
 | react-leaflet                   | 5.0.0   |
-| recharts                        | 3.5.1  |
+| recharts                        | 3.5.1   |
 | next-intl                       | 4.5.8   |
 | react-infinite-scroll-component | 6.1.1   |
 | react-photoswipe-gallery        | 4.0.0   |
-| react-zoom-pan-pinch            | 3.7.0   |
-| @xyflow/react                   | 12.10.0  |
+| @xyflow/react                   | 12.10.0 |
 | zustand                         | 5.0.9   |
 
 ## 구조
@@ -60,6 +59,3 @@ EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 �
 - [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
 - [프론트엔드 개발 비하인드 – 3번의 마이그레이션 여정](https://github.com/eft-library/eft-library-history/blob/main/frontend//migration.md)
 - [사이트 통계 대시보드 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/dashboard.md)
-
-
-

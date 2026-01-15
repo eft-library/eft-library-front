@@ -12,7 +12,10 @@ export default function PlannerData() {
   const { data: session, status } = useSession();
 
   const fetchPlanner = async (): Promise<Planner[]> => {
-    const data = await requestGetUserData(USER_API_ENDPOINTS.GET_USER_QUEST, session);
+    const data = await requestGetUserData(
+      USER_API_ENDPOINTS.GET_USER_QUEST,
+      session
+    );
 
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch planner data");
@@ -43,7 +46,7 @@ export default function PlannerData() {
     return <div>로드맵 데이터를 불러오지 못했습니다.</div>;
   }
 
-  if (!userQuestList) return <div>로드맵 데이터가 없습니다.</div>;
+  if (!userQuestList) return <div />;
 
   return <PlannerView userQuestList={userQuestList} />;
 }

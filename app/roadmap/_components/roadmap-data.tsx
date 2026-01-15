@@ -13,7 +13,10 @@ export default function RoadmapData() {
   const { data: session, status } = useSession();
 
   const fetchRoadmap = async (): Promise<RoadmapDataTypes> => {
-    const data = await requestGetUserData(API_ENDPOINTS.GET_QUEST_LOADMAP, session);
+    const data = await requestGetUserData(
+      API_ENDPOINTS.GET_QUEST_LOADMAP,
+      session
+    );
 
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch roadmap data");
@@ -44,7 +47,7 @@ export default function RoadmapData() {
     return <div>로드맵 데이터를 불러오지 못했습니다.</div>;
   }
 
-  if (!roadmapList) return <div>로드맵 데이터가 없습니다.</div>;
+  if (!roadmapList) return <div />;
 
   return (
     <ReactFlowProvider>

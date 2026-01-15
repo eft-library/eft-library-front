@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useProgress, Html } from "@react-three/drei";
 import Image from "next/image";
 
@@ -13,7 +12,7 @@ export default function Loader3D() {
           src="/loading.png"
           alt="3d map loading"
           width={120}
-          height={120} // ✅ 명시적으로 설정
+          height={120}
           unoptimized
         />
         <p className="font-bold mt-2 text-black">

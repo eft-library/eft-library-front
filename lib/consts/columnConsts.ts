@@ -1,6 +1,4 @@
 export const COLUMN_KEY = {
-  stationType: "STATION_TYPE",
-  news: "NEWS_COLUMN",
   terms: "TERMS_COLUMN",
   privacyPolicy: "PRIVACY_POLICY_COLUMN",
 } as const;

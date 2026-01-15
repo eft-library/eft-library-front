@@ -37,7 +37,7 @@ export default function QuestDetailData() {
     return <div>데이터를 불러오는 데 실패했습니다.</div>;
   }
 
-  if (!data) return <div>데이터가 없습니다.</div>;
+  if (!data) return <div />;
 
   return <QuestDetailView quest={data} />;
 }
