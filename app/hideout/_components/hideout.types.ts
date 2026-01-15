@@ -89,6 +89,7 @@ export interface ItemRequire {
   name_ko: string;
   name_ja: string;
   quantity: number;
+  found_in_raid: boolean;
 }
 
 export interface SkillRequire {

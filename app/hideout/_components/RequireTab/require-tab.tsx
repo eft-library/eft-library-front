@@ -9,6 +9,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import Image from "next/image";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import { ALL_COLOR } from "@/lib/consts/colorConsts";
+import { CheckCircle } from "lucide-react";
 
 export default function RequireTab({ items, type }: RequireTabTypes) {
   const locale = useLocale();
@@ -67,13 +68,20 @@ export default function RequireTab({ items, type }: RequireTabTypes) {
           className="bg-muted rounded-lg p-3 text-center m-2"
         >
           {type !== "station" && (
-            <Image
-              src={item.image || ""}
-              alt={item.name.en || ""}
-              width={60}
-              height={60}
-              className="w-14 h-14 mx-auto mb-2 rounded"
-            />
+            <div className="relative w-14 h-14 mx-auto mb-2">
+              <Image
+                src={item.image || ""}
+                alt={item.name.en || ""}
+                fill
+                className="rounded object-contain"
+              />
+
+              {type === "item" &&
+                "found_in_raid" in item &&
+                item.found_in_raid && (
+                  <CheckCircle className="absolute bottom-0 right-0 w-4 h-4 text-white rounded-full" />
+                )}
+            </div>
           )}
           {type === "station" && (
             <div className="w-14 h-14 mx-auto mb-2 rounded">

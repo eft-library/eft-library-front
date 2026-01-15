@@ -174,18 +174,18 @@ export default function StationMap({
             ))}
 
           {tabState == "items" &&
-            filteredItemRequireInfo.map((reqItem) => {
+            filteredItemRequireInfo.map((reqItem, seq) => {
               const currentCount = userItemCountMap.get(reqItem.item_id) ?? 0;
               const isCompleted =
                 reqItem.quantity === 0 || currentCount >= reqItem.quantity;
 
               return (
                 <div
-                  key={`item-select-${reqItem.item_id}`}
+                  key={`item-select-${reqItem.item_id}-${seq}`}
                   className={`relative rounded-lg border ${
                     isCompleted
                       ? `bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800`
-                      : "bg-background border-border"
+                      : "bg-muted border-border"
                   }`}
                 >
                   {isCompleted && (
