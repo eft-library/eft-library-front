@@ -8,7 +8,7 @@ import { getMaxSuffix, getMaxSuffixNumber } from "@/lib/func/jsxfunction";
 import { hideoutI18n, roadmapI18N } from "@/lib/consts/i18nConsts";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useLocale } from "next-intl";
-import { HelpCircle, Minus, Plus, Search, X } from "lucide-react";
+import { Check, HelpCircle, Minus, Plus, Search, X } from "lucide-react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 
@@ -176,12 +176,36 @@ export default function StationMap({
           {tabState == "items" &&
             filteredItemRequireInfo.map((reqItem) => {
               const currentCount = userItemCountMap.get(reqItem.item_id) ?? 0;
+              const isCompleted =
+                reqItem.quantity === 0 || currentCount >= reqItem.quantity;
 
               return (
                 <div
                   key={`item-select-${reqItem.item_id}`}
-                  className={`relative rounded-lg border`}
+                  className={`relative rounded-lg border ${
+                    isCompleted
+                      ? `bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800`
+                      : "bg-background border-border"
+                  }`}
                 >
+                  {isCompleted && (
+                    <div className="absolute top-1 right-1 z-10">
+                      <div
+                        className="
+                          flex items-center justify-center
+                          h-5 min-w-[20px] px-1.5
+                          rounded-full
+                          bg-green-200 text-green-800
+                          dark:bg-green-900 dark:text-green-200
+                          border border-green-300 dark:border-green-700
+                          shadow-sm
+                        "
+                      >
+                        <Check className="h-3.5 w-3.5 stroke-[3]" />
+                      </div>
+                    </div>
+                  )}
+
                   <button className="w-full py-3 px-2 flex flex-col items-center gap-1 rounded-lg">
                     {/* 이미지 전용 영역 */}
                     <div className="w-14 h-14 flex items-center justify-center overflow-hidden">
