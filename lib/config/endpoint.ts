@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
   GET_ALL_SITEMAP: baseUrl + "/api/search/new-sitemap",
   GET_ALL_QUEST: baseUrl + "/api/quest/all",
   GET_QUEST_BY_NPC: baseUrl + "/api/quest/list-with-trader",
-  GET_ALL_DETAIL_QUEST: "http://localhost:9022/api/quest/feed",
+  GET_ALL_DETAIL_QUEST: baseUrl + "/api/quest/feed",
   GET_BOSS: baseUrl + "/api/boss/info",
   GET_DYNAMIC_INFO: baseUrl + "/api/dynamic-info/info",
   GET_EVENT: baseUrl + "/api/event/board",
