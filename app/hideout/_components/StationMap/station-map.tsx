@@ -190,14 +190,14 @@ export default function StationMap({
                 key={`station-select-${station.master_id}`}
                 className={`group relative rounded-lg border transition-all cursor-pointer ${
                   masterId === station.master_id
-                    ? "bg-blue-50 border-blue-300 hover:bg-blue-100"
+                    ? "bg-blue-50 border-blue-300 hover:bg-blue-100 dark:bg-[#1A2533] dark:border-[#3498DB]"
                     : "bg-muted border-border hover:bg-muted/80"
                 }`}
               >
                 <button
                   className={`w-full py-3 px-2 flex flex-col items-center gap-1 rounded-lg transition-colors ${
                     masterId === station.master_id
-                      ? "text-blue-900"
+                      ? "text-blue-900 dark:text-white"
                       : "text-muted-foreground"
                   }`}
                 >
@@ -219,7 +219,7 @@ export default function StationMap({
                   <span
                     className={`text-sm font-semibold text-center transition-colors ${
                       masterId === station.master_id
-                        ? "text-blue-700 group-hover:text-blue-800"
+                        ? "text-blue-700 group-hover:text-blue-800 dark:text-white"
                         : "text-foreground group-hover:text-foreground"
                     }`}
                   >
