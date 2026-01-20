@@ -20,15 +20,15 @@ export default function BackpackTable({
     <div className="mb-6 border border-border rounded-xl dark:bg-gray-800/30 bg-white shadow-sm dark:shadow-lg">
       {/* Desktop Header */}
       <div className="hidden md:grid grid-cols-4 gap-4 p-4 border-b border-border font-semibold text-center bg-muted/50 dark:bg-card-foreground/10 text-foreground rounded-t-xl">
-        <div>{itemI18N.armorVest.photo[localeKey]}</div>
+        <div>{itemI18N.backpack.photo[localeKey]}</div>
         <div className="flex items-center justify-center cursor-pointer hover:text-primary transition-colors">
-          {itemI18N.armorVest.name[localeKey]}
+          {itemI18N.backpack.name[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer hover:text-primary transition-colors">
-          {itemI18N.armorVest.armorClass[localeKey]}
+          {itemI18N.backpack.slot[localeKey]}
         </div>
         <div className="flex items-center justify-center cursor-pointer hover:text-primary transition-colors">
-          {itemI18N.armorVest.durability[localeKey]}
+          {itemI18N.backpack.grid[localeKey]}
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export default function BackpackTable({
               <div className="grid grid-cols-2 gap-3 mt-4">
                 <div className="p-3 rounded-lg bg-muted/50 border border-border">
                   <div className="font-semibold text-xs uppercase tracking-wide mb-2 text-muted-foreground">
-                    {itemI18N.armorVest.armorClass[localeKey]}
+                    {itemI18N.backpack.slot[localeKey]}
                   </div>
                   <div className="text-lg font-bold text-foreground">
                     {item.info.capacity}
@@ -107,7 +107,7 @@ export default function BackpackTable({
                 </div>
                 <div className="p-3 rounded-lg bg-muted/50 border border-border">
                   <div className="font-semibold text-xs uppercase tracking-wide mb-2 text-muted-foreground">
-                    {itemI18N.armorVest.durability[localeKey]}
+                    {itemI18N.backpack.grid[localeKey]}
                   </div>
                   <div className="text-lg font-bold text-foreground">
                     {item.info.grids[0].width} X {item.info.grids[0].height}
