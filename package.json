@@ -67,6 +67,7 @@
     "react-highlight-words": "^0.21.0",
     "react-infinite-scroll-component": "^6.1.1",
     "react-leaflet": "^5.0.0",
+    "react-photo-album": "^3.4.0",
     "react-photoswipe-gallery": "^4.0.0",
     "recharts": "^3.6.0",
     "rss": "^1.2.2",
