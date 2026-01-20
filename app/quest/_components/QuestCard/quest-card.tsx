@@ -51,7 +51,6 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                   <td className="p-2 font-semibold text-center text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400">
                     <Link
                       href={`/quest/detail/${quest.url_mapping}`}
-                      scroll={false}
                       target="_blank"
                     >
                       <Highlighter
@@ -96,7 +95,6 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                           •&nbsp;
                           <Link
                             href={`/item/${rewards.item.normalizedName}`}
-                            scroll={false}
                             target="_blank"
                           >
                             {rewards.item[getOtherLocalizedKey(locale)]}
@@ -113,7 +111,6 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                           • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                           <Link
                             href={`/item/${offer.item.normalizedName}`}
-                            scroll={false}
                             target="_blank"
                           >
                             {offer.item[getOtherLocalizedKey(locale)]}
@@ -152,7 +149,6 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                               <span>{craft.level}&nbsp;</span>
                               <Link
                                 href={`/item/${crReward.item.normalizedName}`}
-                                scroll={false}
                                 target="_blank"
                               >
                                 {crReward.item[getOtherLocalizedKey(locale)]}

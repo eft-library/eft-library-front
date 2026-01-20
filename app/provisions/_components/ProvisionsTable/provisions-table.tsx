@@ -46,7 +46,6 @@ export default function ProvisionsTable({
             key={item.id}
             target="_blank"
             href={`/item/${item.url_mapping}`}
-            scroll={false}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-5 gap-4 p-4 items-center text-center">

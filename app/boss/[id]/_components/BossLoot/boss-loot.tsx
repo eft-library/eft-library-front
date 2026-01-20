@@ -51,7 +51,6 @@ export default function BossLoot({ follower }: FollowerLoot) {
             {follower.item_info.map((loot, index) => (
               <Link
                 key={`boss-loot-${index}-${loot.item.name_en}`}
-                scroll={false}
                 href={`/item/${loot.item.normalizedName}`}
                 target="_blank"
               >

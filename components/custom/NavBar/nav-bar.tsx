@@ -49,7 +49,7 @@ export default function NavBar({ navData }: NavBarTypes) {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="text-xl font-bold text-orange-400">
-              <Link href="/" aria-label="EFT Library" scroll={false}>
+              <Link href="/" aria-label="EFT Library">
                 <Logo width={200} height={100} />
               </Link>
             </div>

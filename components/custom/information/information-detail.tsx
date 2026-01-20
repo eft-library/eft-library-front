@@ -27,7 +27,7 @@ export default function InformationDetail({
     <ViewWrapper>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          <Link href={`${routeLink}?id=1`} scroll={false}>
+          <Link href={`${routeLink}?id=1`}>
             <Button
               variant="ghost"
               className="mb-6 font-semibold cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -95,11 +95,7 @@ export default function InformationDetail({
             </h3>
             <div className="grid gap-3">
               {informationInfo.information_group.map((item) => (
-                <Link
-                  href={`${routeLink}/detail/${item.id}`}
-                  key={item.id}
-                  scroll={false}
-                >
+                <Link href={`${routeLink}/detail/${item.id}`} key={item.id}>
                   <Card className="cursor-pointer transition-all duration-200 hover:shadow-md bg-white border-gray-200 hover:shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">

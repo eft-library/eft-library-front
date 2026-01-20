@@ -40,7 +40,6 @@ export default function BackpackTable({
         >
           <Link
             key={item.id}
-            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

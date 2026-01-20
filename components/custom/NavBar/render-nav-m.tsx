@@ -82,7 +82,6 @@ export default function RenderNavM({
           {navMain.sub_menus.map((navSub) => (
             <Link
               key={`nav-sub-${navSub.value}`}
-              scroll={false}
               href={navSub.link}
               onClick={() => setQuest(navSub.parent_value, navSub.value)}
             >

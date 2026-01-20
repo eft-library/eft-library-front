@@ -92,7 +92,6 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
                       item.type === "giveQuestItem" ? (
                         <Link
                           href={`/item/${item.itemData.normalizedName}`}
-                          scroll={false}
                           className="hover:text-yellow-400"
                           target="_blank"
                         >

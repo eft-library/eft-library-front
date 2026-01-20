@@ -66,11 +66,7 @@ export default function Information({
                     .includes(word.toLowerCase())
                 )
                 .map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`${routeLink}/detail/${item.id}`}
-                    scroll={false}
-                  >
+                  <Link key={item.id} href={`${routeLink}/detail/${item.id}`}>
                     <Card className="cursor-pointer transition-all duration-200 hover:shadow-lg bg-white border-gray-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between">

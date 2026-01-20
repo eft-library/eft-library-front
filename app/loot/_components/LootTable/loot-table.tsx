@@ -30,7 +30,6 @@ export default function LootTable({ lootList, word }: LootTableTypes) {
         >
           <Link
             key={item.id}
-            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

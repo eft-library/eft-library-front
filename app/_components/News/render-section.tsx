@@ -26,7 +26,7 @@ export default function RenderSection({
             className="text-xs cursor-pointer transition-colors text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400"
           >
             {item.link ? (
-              <Link rel="noopener noreferrer" href={item.link} scroll={false}>
+              <Link rel="noopener noreferrer" href={item.link}>
                 - {item[localeKey]}
               </Link>
             ) : (

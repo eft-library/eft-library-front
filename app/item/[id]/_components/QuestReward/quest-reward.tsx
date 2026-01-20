@@ -32,7 +32,6 @@ export default function QuestReward({ itemInfo }: QuestRewardTypes) {
           {itemInfo.rewarded_by_quests.map((reward, index) => (
             <Link
               href={`/quest/detail/${reward.url_mapping}`}
-              scroll={false}
               target="_blank"
               key={`reward-${reward.quest_id}-${index}`}
               className="block"

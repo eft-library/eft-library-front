@@ -31,7 +31,6 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               <div className={`text-blue-400`}>{<Package />}</div>
               <Link
                 href={`/item/${rewards.item.normalizedName}`}
-                scroll={false}
                 target="_blank"
                 className="hover:text-yellow-400"
               >
@@ -55,7 +54,6 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
               </span>
               <Link
                 href={`/item/${offer.item.normalizedName}`}
-                scroll={false}
                 target="_blank hover:text-yellow-400"
               >
                 <span className={`font-semibold`}>
@@ -99,7 +97,6 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
                 <span className="font-semibold">{craft.level}</span>
                 <Link
                   href={`/item/${crReward.item.normalizedName}`}
-                  scroll={false}
                   target="_blank"
                 >
                   <span className="font-semibold hover:text-yellow-400">

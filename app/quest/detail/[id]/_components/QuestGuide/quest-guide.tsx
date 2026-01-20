@@ -23,7 +23,7 @@ export default function QuestGuide({ quest }: QuestDetailTypes) {
               ※{questI18N.imageZoomGuide[localeKey]}
             </span>
           </div>
-          <Link href={quest.wiki_url} target="_blank" scroll={false}>
+          <Link href={quest.wiki_url} target="_blank">
             <Button
               variant="outline"
               className="border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 bg-transparent shrink-0 text-sm sm:text-base cursor-pointer"

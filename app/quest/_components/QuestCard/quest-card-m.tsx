@@ -27,7 +27,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold text-[#FF8C00] hover:text-yellow-400 dark:text-[#FFB82E] dark:hover:text-yellow-400">
-            <Link href={`/quest/detail/${quest.url_mapping}`} scroll={false}>
+            <Link href={`/quest/detail/${quest.url_mapping}`}>
               <Highlighter
                 highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-1 rounded"
                 searchWords={[word]}
@@ -93,7 +93,6 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
                 •&nbsp;
                 <Link
                   href={`/item/${rewards.item.normalizedName}`}
-                  scroll={false}
                   target="_blank"
                 >
                   {rewards.item[getOtherLocalizedKey(locale)]}&nbsp;x&nbsp;
@@ -109,7 +108,6 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
                 • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                 <Link
                   href={`/item/${offer.item.normalizedName}`}
-                  scroll={false}
                   target="_blank"
                 >
                   {offer.item[getOtherLocalizedKey(locale)]}
@@ -143,7 +141,6 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
                     <span>{craft.level}&nbsp;</span>
                     <Link
                       href={`/item/${crReward.item.normalizedName}`}
-                      scroll={false}
                       target="_blank"
                     >
                       {crReward.item[getOtherLocalizedKey(locale)]}

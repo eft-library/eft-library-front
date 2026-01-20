@@ -138,7 +138,6 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                         {/* 게시글 부분 */}
                         <Link
                           href={`/community/detail/${post.id}-${post.slug}`}
-                          scroll={false}
                           className="block p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer group"
                         >
                           <div className="flex items-start gap-4">
@@ -254,7 +253,6 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                         {post.comment && post.comment.id && (
                           <Link
                             href={`/community/detail/${post.id}-${post.slug}?comment_id=${post.comment.id}`}
-                            scroll={false}
                             className="block transition duration-200 ease-in-out transform hover:scale-[1.01] hover:shadow-md"
                           >
                             <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-xl">

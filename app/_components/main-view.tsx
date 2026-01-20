@@ -47,7 +47,6 @@ export default function MainView({ homeData }: MainViewTypes) {
                     {homeData.home_posts.map((post, index) => (
                       <Link
                         key={post.id}
-                        scroll={false}
                         href={`/community/detail/${post.id}-${post.slug}`}
                       >
                         <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">

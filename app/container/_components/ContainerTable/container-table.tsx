@@ -41,7 +41,6 @@ export default function ContainerTable({
           <Link
             key={item.id}
             target="_blank"
-            scroll={false}
             href={`/item/${item.url_mapping}`}
           >
             {/* Desktop Layout */}

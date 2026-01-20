@@ -44,11 +44,7 @@ export default function MapSelector({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-full min-w-[200px] bg-popover border border-border text-popover-foreground">
               {mapData.map_selector.map((map) => (
-                <Link
-                  href={`/map-of-tarkov/${map.id}`}
-                  key={map.id}
-                  scroll={false}
-                >
+                <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
                   <DropdownMenuItem
                     className={`
                       ${

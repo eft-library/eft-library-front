@@ -43,7 +43,6 @@ export default function HeadWearTable({
         >
           <Link
             key={item.id}
-            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >
@@ -138,7 +137,6 @@ export default function HeadWearTable({
         >
           <Link
             key={item.id}
-            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

@@ -32,7 +32,6 @@ export default function Footer() {
             <div className="flex space-x-4">
               <Link
                 href={footerData.info.privacyLink}
-                scroll={false}
                 target="_blank"
                 className="text-sm text-gray-600 hover:text-orange-500 dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
               >
@@ -40,7 +39,6 @@ export default function Footer() {
               </Link>
               <Link
                 href={footerData.info.termsLink}
-                scroll={false}
                 target="_blank"
                 className="text-sm text-gray-600 hover:text-orange-500 dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
               >
@@ -58,7 +56,6 @@ export default function Footer() {
           <div className="flex justify-center sm:justify-end space-x-4">
             <Link
               href={footerData.manager.gitLink}
-              scroll={false}
               target="_blank"
               className="text-xs text-gray-600 hover:text-orange-500 dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
             >
@@ -66,7 +63,6 @@ export default function Footer() {
             </Link>
             <Link
               href={footerData.manager.chzzkLink}
-              scroll={false}
               target="_blank"
               className="text-xs text-gray-600 hover:text-orange-500 dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
             >
@@ -74,7 +70,6 @@ export default function Footer() {
             </Link>
             <Link
               href={footerData.manager.discordLink}
-              scroll={false}
               target="_blank"
               className="text-xs text-gray-600 hover:text-orange-500 dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
             >

@@ -31,7 +31,6 @@ export default function ArmBandTable({ armBandList, word }: ArmBandTableTypes) {
         >
           <Link
             key={item.id}
-            scroll={false}
             target="_blank"
             href={`/item/${item.url_mapping}`}
           >

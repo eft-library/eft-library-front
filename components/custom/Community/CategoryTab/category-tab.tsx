@@ -19,11 +19,7 @@ export default function CategoryTab() {
     <div className="bg-white dark:bg-gray-800 rounded-lg p-1 flex items-center justify-between">
       <div className="flex flex-wrap gap-1">
         {CATEGORY_LIST.map((category) => (
-          <Link
-            key={category.id}
-            href={`/community/${category.id}`}
-            scroll={false}
-          >
+          <Link key={category.id} href={`/community/${category.id}`}>
             <button
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 flex items-center space-x-2 cursor-pointer",
@@ -39,7 +35,7 @@ export default function CategoryTab() {
         ))}
       </div>
       {session && session.email && (
-        <Link href={"/community/create"} scroll={false}>
+        <Link href={"/community/create"}>
           <Button className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-md flex items-center gap-1 ml-2">
             <Pencil className="w-4 h-4" />
             글쓰기
