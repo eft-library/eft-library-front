@@ -5,7 +5,11 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { useInvalidateRngItemsAt20, useRngItemList } from "./get-rng-item";
 import RngItemNav from "./RngItemNav/rng-item-nav";
 import { useEffect, useState } from "react";
-import { DEFAULT_PLAY_TIME } from "@/lib/consts/libraryConsts";
+import {
+  BACKPACK_HEIGHT,
+  CELL_SIZE,
+  DEFAULT_PLAY_TIME,
+} from "@/lib/consts/libraryConsts";
 import BackpackGrid from "./BackpackGrid/backpack-grid";
 import type { PlacedItem, DragState, RngItemTypes } from "../minigame-types";
 import { getRandomItems } from "@/lib/func/rngItemFunction";
@@ -58,26 +62,34 @@ export default function RngItem() {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col">
+      {/* 상단 고정 */}
       <RngItemNav
         playTime={playTime}
         score={score}
         onClickReset={onClickReset}
       />
-      <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 overflow-auto">
-        <div className="flex-1 flex items-start justify-center md:justify-end">
+
+      {/* 메인 영역 */}
+      {/* Backpack + Pool 영역 */}
+      <div className="flex justify-start gap-4 p-4 items-start">
+        {/* 기준 높이 컨테이너 */}
+        <div
+          className="flex gap-4"
+          style={{
+            height: BACKPACK_HEIGHT * CELL_SIZE,
+          }}
+        >
+          {/* Backpack */}
           <BackpackGrid
             dragState={dragState}
             placedItems={placedItems}
             setPlacedItems={setPlacedItems}
             setDragState={setDragState}
           />
-        </div>
 
-        <div className="flex-1 flex items-start justify-center md:justify-start">
-          <div className="w-full max-w-sm">
-            <ItemPool itemList={playItemList} setDragState={setDragState} />
-          </div>
+          {/* Item Pool */}
+          <ItemPool itemList={playItemList} setDragState={setDragState} />
         </div>
       </div>
     </div>

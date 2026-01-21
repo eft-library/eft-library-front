@@ -72,37 +72,35 @@ export default function BackpackGrid({
   };
 
   return (
-    <div
-      className="relative"
-      onMouseUp={onDrop}
-      style={{
-        width: BACKPACK_WIDTH * CELL_SIZE,
-        height: BACKPACK_HEIGHT * CELL_SIZE,
-      }}
-    >
-      {/* Grid */}
-      <div
-        className="grid gap-0.5 p-2 bg-secondary/50 rounded-lg border"
-        style={{
-          gridTemplateColumns: `repeat(${BACKPACK_WIDTH}, ${CELL_SIZE}px)`,
-        }}
-      >
-        {Array.from({ length: BACKPACK_HEIGHT }).map((_, y) =>
-          Array.from({ length: BACKPACK_WIDTH }).map((_, x) => (
-            <div
-              key={`${x},${y}`}
-              onMouseEnter={() => onHoverCell(x, y)}
-              className={cn(
-                "h-16 w-16 border rounded-sm relative",
-                "bg-gray-100 dark:bg-gray-700/50",
-                dragState &&
-                  dragState.hoverX === x &&
-                  dragState.hoverY === y &&
-                  (dragState.canPlace ? "bg-green-300/50" : "bg-red-300/50"),
-              )}
-            />
-          )),
-        )}
+    <div className="relative" onMouseUp={onDrop}>
+      <div className="inline-block bg-secondary/50 rounded-lg border">
+        <div
+          className="grid gap-0"
+          style={{
+            gridTemplateColumns: `repeat(${BACKPACK_WIDTH}, ${CELL_SIZE}px)`,
+          }}
+        >
+          {Array.from({ length: BACKPACK_HEIGHT }).map((_, y) =>
+            Array.from({ length: BACKPACK_WIDTH }).map((_, x) => (
+              <div
+                key={`${x},${y}`}
+                onMouseEnter={() => onHoverCell(x, y)}
+                className={cn(
+                  "box-border border rounded-sm",
+                  "bg-gray-100 dark:bg-gray-700/50",
+                  dragState &&
+                    dragState.hoverX === x &&
+                    dragState.hoverY === y &&
+                    (dragState.canPlace ? "bg-green-300/50" : "bg-red-300/50"),
+                )}
+                style={{
+                  width: CELL_SIZE,
+                  height: CELL_SIZE,
+                }}
+              />
+            )),
+          )}
+        </div>
       </div>
 
       {/* Placed Items */}

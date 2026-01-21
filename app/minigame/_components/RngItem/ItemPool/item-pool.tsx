@@ -1,6 +1,7 @@
 "use client";
 
 import type { ItemPoolTypes, RngItemTypes } from "../../minigame-types";
+import { CELL_SIZE, POOL_WIDTH } from "@/lib/consts/libraryConsts";
 
 export default function ItemPool({ itemList, setDragState }: ItemPoolTypes) {
   const startDragFromPool = (item: RngItemTypes) => {
@@ -15,26 +16,38 @@ export default function ItemPool({ itemList, setDragState }: ItemPoolTypes) {
   };
 
   return (
-    <div className="p-3 rounded-lg border bg-secondary/50">
-      <div className="grid grid-cols-5 gap-2">
+    <div className="flex-1 min-w-[900px] min-h-0 overflow-y-auto overflow-x-hidden">
+      <div
+        className="grid gap-2"
+        style={{
+          gridTemplateColumns: `repeat(auto-fill, minmax(${CELL_SIZE * 2}px, 1fr))`,
+        }}
+      >
         {itemList.map((item) => (
           <div
             key={item.id}
             onMouseDown={() => startDragFromPool(item)}
-            className="relative cursor-pointer select-none rounded border bg-white dark:bg-gray-800
-                       hover:scale-105 transition"
+            className="relative rounded border bg-white dark:bg-gray-800
+                   flex items-center justify-center cursor-grab
+                   hover:ring-2 hover:ring-blue-400 transition"
             style={{
-              width: item.width * 32,
-              height: item.height * 32,
+              width: CELL_SIZE * 2,
+              height: CELL_SIZE * 2,
+              justifySelf: "start",
             }}
           >
-            {/* 이미지 */}
             <img
               src={item.image}
-              alt={item.name.ko}
               draggable={false}
-              className="w-full h-full object-contain pointer-events-none"
+              className="max-w-full max-h-full object-contain pointer-events-none"
             />
+
+            <div
+              className="absolute bottom-0 right-0 text-xs
+                        bg-black/60 text-white px-1 rounded-tl font-bold"
+            >
+              {item.width}×{item.height}
+            </div>
           </div>
         ))}
       </div>
