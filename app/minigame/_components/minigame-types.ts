@@ -26,6 +26,28 @@ export interface RngItemTypes {
   name: LocaleName;
 }
 
+export interface PlacedItem extends RngItemTypes {
+  x: number;
+  y: number;
+  rotated: boolean;
+}
+
 export interface BackpackGridTypes {
+  dragState: DragState | null;
+  setDragState: React.Dispatch<React.SetStateAction<DragState | null>>;
+  placedItems: PlacedItem[];
+  setPlacedItems: React.Dispatch<React.SetStateAction<PlacedItem[]>>;
+}
+
+export interface DragState {
+  item: RngItemTypes | PlacedItem;
+  from: "pool" | "backpack";
+  rotated: boolean;
+  hoverX: number;
+  hoverY: number;
+  canPlace: boolean;
+}
+export interface ItemPoolTypes {
   itemList: RngItemTypes[];
+  setDragState: React.Dispatch<React.SetStateAction<DragState | null>>;
 }

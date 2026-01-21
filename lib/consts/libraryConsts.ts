@@ -343,3 +343,4 @@ export const rankTierInfo = {
 export const DEFAULT_PLAY_TIME = 30;
 export const BACKPACK_WIDTH = 6;
 export const BACKPACK_HEIGHT = 8;
+export const CELL_SIZE = 64;
