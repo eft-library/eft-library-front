@@ -1,6 +1,8 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { useLocale } from "next-intl";
+import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { ProgressItemBoxTypes } from "./progress.types";
 import Image from "next/image";
 
@@ -9,6 +11,8 @@ export default function ProgressItem({
   handleClick,
   currentUserList,
 }: ProgressItemBoxTypes) {
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
   const isInclude = currentUserList.includes(item.id);
 
   return (
@@ -45,7 +49,7 @@ export default function ProgressItem({
         </div>
 
         <p className="relative text-center text-xs font-semibold text-gray-900 dark:text-white line-clamp-2">
-          {item.name.en}
+          {item.name[localeKey]}
         </p>
       </div>
     </button>
