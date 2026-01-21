@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMsUntilNext20 } from "@/lib/func/formatTime";
 import { useEffect } from "react";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { RngItemResponseTypes } from "../minigame-types";
 
-const getRngItemList = async () => {
+const getRngItemList = async (): Promise<RngItemResponseTypes> => {
   const response = await fetch(API_ENDPOINTS.GET_RNG_ITEM_MINIGAME);
 
   if (!response.ok) {
@@ -14,7 +15,7 @@ const getRngItemList = async () => {
 };
 
 export const useRngItemList = () => {
-  return useQuery({
+  return useQuery<RngItemResponseTypes>({
     queryKey: ["rng-item-list"],
     queryFn: getRngItemList,
     staleTime: getMsUntilNext20(),

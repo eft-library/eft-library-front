@@ -37,7 +37,6 @@ export default function RngItemNav({
           </span>
           <span className="font-mono font-bold text-xl text-foreground tabular-nums">
             {formatScore(score)}&nbsp;₽
-            <span className="text-accent ml-1">P</span>
           </span>
         </div>
       </div>
@@ -70,10 +69,12 @@ export default function RngItemNav({
         variant="outline"
         size="sm"
         onClick={onClickReset}
-        className="relative gap-2 px-4 py-2 bg-transparent border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+        className="relative gap-2 px-4 py-2 bg-transparent border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200 cursor-pointer"
       >
         <RotateCcw className="h-4 w-4" />
-        <span className="font-medium">{minigameI18N.reset[localeKey]}</span>
+        <span className="font-medium pointer-events-none">
+          {minigameI18N.reset[localeKey]}
+        </span>
       </Button>
     </div>
   );

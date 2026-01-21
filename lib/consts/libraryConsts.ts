@@ -341,3 +341,5 @@ export const rankTierInfo = {
 } as const;
 
 export const DEFAULT_PLAY_TIME = 30;
+export const BACKPACK_WIDTH = 6;
+export const BACKPACK_HEIGHT = 8;
