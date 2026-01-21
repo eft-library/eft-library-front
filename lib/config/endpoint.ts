@@ -39,6 +39,7 @@ export const API_ENDPOINTS = {
   GET_MAP_OF_TARKOV_BOSS: baseUrl + "/api/map-of-tarkov/boss",
   GET_MAP_OF_TARKOV_FIND_INFO: baseUrl + "/api/map-of-tarkov/find",
   GET_DASHBOARD_ANALYSIS: baseUrl + "/api/dashboard/analysis",
+  GET_RNG_ITEM_MINIGAME: baseUrl + "/api/minigame/rng_item",
 };
 
 export const USER_API_ENDPOINTS = {

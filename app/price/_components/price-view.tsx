@@ -75,7 +75,9 @@ export default function PriceView() {
           <div className="container mx-auto px-4 py-4 sm:py-6">
             <div className="flex flex-col gap-4 items-center justify-center">
               {/* Title and Theme Toggle Row */}
-              <h1 className={`text-xl font-bold dark:text-white text-gray-900`}>
+              <h1
+                className={`text-3xl font-bold dark:text-white text-gray-900`}
+              >
                 {price18N.title[localeKey]}
               </h1>
               <AdBanner

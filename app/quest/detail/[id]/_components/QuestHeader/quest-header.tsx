@@ -30,7 +30,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
         </div>
       </div>
 
-      <h1 className="text-xl sm:text-4xl font-bold mb-4 text-black dark:text-white">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-black dark:text-white">
         {quest.name[localeKey]}
       </h1>
 

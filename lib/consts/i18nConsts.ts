@@ -1787,6 +1787,19 @@ export const adBlockI18N = {
   },
 };
 
+export const minigameI18N = {
+  title: {
+    en: "Minigame",
+    ja: "ミニゲーム",
+    ko: "미니게임",
+  },
+  rngItem: {
+    en: "RNG Slot Efficiency Game",
+    ja: "スロット効率RNGゲーム",
+    ko: "칸성비 운빨 망겜",
+  },
+};
+
 export const newsI18N = {
   recommendationFeature: {
     en: "Recommend",

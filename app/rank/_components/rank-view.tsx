@@ -87,7 +87,7 @@ export default function RankView() {
       <div className="dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 shadow-sm">
         <div className="container mx-auto px-3 sm:px-4 py-4">
           <div className="flex items-center justify-center mb-4">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               {rankI18N.title[localeKey]}
             </h1>
           </div>
