@@ -6,6 +6,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
 import { minigameI18N } from "@/lib/consts/i18nConsts";
+import RngItem from "./RngItem/rng-item";
 
 export default function MinigameView() {
   const locale = useLocale();
@@ -35,6 +36,10 @@ export default function MinigameView() {
               <MinigameTab tabState={tabState} setTabState={setTabState} />
             </div>
           </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-6 sm:py-8">
+          {tabState === "RNG-ITEM" && <RngItem />}
         </div>
       </div>
     </ViewWrapper>

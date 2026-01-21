@@ -28,3 +28,18 @@ export const formatISODateTime = (isoDateString: string) => {
   // `2024.05.23. 14:05` → 점 하나 제거
   return formatted.replace(/\./g, ".").replace(/\s*\.$/, "");
 };
+
+// 미니게임 매 시간 20분에 데이터 업데이트 -> 데이터가 15분에 들어옴
+export const getMsUntilNext20 = () => {
+  const now = new Date();
+
+  const next = new Date(now);
+  next.setMinutes(20, 0, 0);
+
+  // 이미 20분이 지났으면 다음 시간 20분
+  if (now.getMinutes() >= 20) {
+    next.setHours(next.getHours() + 1);
+  }
+
+  return next.getTime() - now.getTime();
+};

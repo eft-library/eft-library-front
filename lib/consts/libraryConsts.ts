@@ -339,3 +339,5 @@ export const rankTierInfo = {
     borderColor: "border-gray-200 dark:border-gray-800",
   },
 } as const;
+
+export const DEFAULT_PLAY_TIME = 30;

@@ -1798,6 +1798,7 @@ export const minigameI18N = {
     ja: "スロット効率RNGゲーム",
     ko: "칸성비 운빨 망겜",
   },
+  reset: { en: "Reset", ja: "初期化", ko: "불판 교체" },
 };
 
 export const newsI18N = {
