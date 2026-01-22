@@ -335,10 +335,14 @@ export default function RngItem() {
   /** Pool 렌더링 */
   const renderPool = () => (
     <div
-      className="overflow-y-auto border rounded-lg p-2 flex flex-wrap gap-2"
+      className="overflow-y-auto border rounded-lg p-2 grid gap-2"
       style={{
         maxHeight: BACKPACK_HEIGHT * CELL_SIZE,
-        minWidth: BACKPACK_WIDTH * CELL_SIZE * 1.5,
+        width: "fit-content", // 내용물에 딱 맞게
+        maxWidth: "100%",
+        gridTemplateColumns: `repeat(auto-fit, ${CELL_SIZE}px)`,
+        gridAutoRows: `${CELL_SIZE}px`,
+        gridAutoFlow: "dense",
       }}
     >
       {playItemList.map((item) => (
@@ -348,17 +352,15 @@ export default function RngItem() {
           onDragStart={(e) => e.preventDefault()}
           className="relative cursor-pointer select-none rounded border bg-white dark:bg-gray-800 hover:scale-105 transition"
           style={{
-            width: item.width * CELL_SIZE,
-            height: item.height * CELL_SIZE,
+            gridColumn: `span ${item.width}`,
+            gridRow: `span ${item.height}`,
           }}
         >
-          <Image
+          <img
             src={item.image}
             alt={item.name.ko}
-            width={item.width * CELL_SIZE}
-            height={item.height * CELL_SIZE}
             draggable={false}
-            style={{ objectFit: "contain", pointerEvents: "none" }}
+            className="w-full h-full object-contain pointer-events-none"
           />
           <div className="absolute bottom-1 right-1 text-xs font-bold text-white bg-black/70 rounded px-1">
             {item.flea_market_price.toLocaleString()}
