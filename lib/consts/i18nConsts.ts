@@ -1799,6 +1799,47 @@ export const minigameI18N = {
     ko: "칸성비 운빨 망겜",
   },
   reset: { en: "Reset", ja: "初期化", ko: "불판 교체" },
+  startOverlay: {
+    title: {
+      en: "Ready?",
+      ja: "準備はできましたか？",
+      ko: "준비되셨나요?",
+    },
+    description: {
+      en: "Press the button to start the game",
+      ja: "ボタンを押してゲームを開始してください",
+      ko: "버튼을 눌러 게임을 시작하세요",
+    },
+    button: {
+      en: "Start Game",
+      ja: "ゲーム開始",
+      ko: "게임 시작",
+    },
+  },
+  gameOverOverlay: {
+    title: {
+      en: "Game Over",
+      ja: "ゲーム終了",
+      ko: "게임 종료",
+    },
+    finalScore: {
+      en: "Final Score",
+      ja: "最終スコア",
+      ko: "최종 점수",
+    },
+    buttons: {
+      restart: {
+        en: "Restart",
+        ja: "もう一度",
+        ko: "다시하기",
+      },
+      ranking: {
+        en: "View Ranking",
+        ja: "ランキングを見る",
+        ko: "랭킹 보기",
+      },
+    },
+  },
 };
 
 export const newsI18N = {

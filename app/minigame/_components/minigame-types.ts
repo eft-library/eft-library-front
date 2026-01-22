@@ -51,3 +51,12 @@ export interface ItemPoolTypes {
   itemList: RngItemTypes[];
   setDragState: React.Dispatch<React.SetStateAction<DragState | null>>;
 }
+
+export interface RngStartOverlayTypes {
+  onClickStart: (val: boolean) => void;
+}
+
+export interface RngEndOverlayTypes {
+  onClickReset: () => void;
+  score: number;
+}

@@ -13,6 +13,8 @@ import {
 import type { PlacedItem, DragState, RngItemTypes } from "../minigame-types";
 import { checkCanPlace, getRandomItems } from "@/lib/func/rngItemFunction";
 import { cn } from "@/lib/utils";
+import RngStartOverlay from "./RngOverlay/RngStartOverlay";
+import RngEndOverlay from "./RngOverlay/RngEndOverlay";
 
 export default function RngItem() {
   const [score, setScore] = useState<number>(0);
@@ -207,6 +209,11 @@ export default function RngItem() {
         height: BACKPACK_HEIGHT * CELL_SIZE,
       }}
     >
+      {/* 게임 오버레이 */}
+      {!isStart && <RngStartOverlay onClickStart={setIsStart} />}
+      {playTime === 0 && (
+        <RngEndOverlay score={score} onClickReset={onClickReset} />
+      )}
       {/* Grid */}
       <div
         className="grid gap-0"
