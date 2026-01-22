@@ -1827,6 +1827,20 @@ export const minigameI18N = {
       ja: "最終スコア",
       ko: "최종 점수",
     },
+
+    nickname: {
+      placeholder: {
+        en: "Enter a nickname to register in the ranking",
+        ja: "ランキングに登録するニックネームを入力してください",
+        ko: "랭킹에 등록할 닉네임을 입력하세요",
+      },
+      success: {
+        en: "Successfully registered in the ranking!",
+        ja: "ランキングに登録されました！",
+        ko: "랭킹에 등록되었습니다!",
+      },
+    },
+
     buttons: {
       restart: {
         en: "Restart",

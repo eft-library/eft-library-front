@@ -2,9 +2,10 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { RotateCcw, Trophy } from "lucide-react";
+import { Check, RotateCcw, Send, Trophy } from "lucide-react";
 import { RngEndOverlayTypes } from "../../minigame-types";
 import { minigameI18N } from "@/lib/consts/i18nConsts";
+import { useState } from "react";
 
 export default function RngEndOverlay({
   score,
@@ -12,13 +13,29 @@ export default function RngEndOverlay({
 }: RngEndOverlayTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
+  const [nickname, setNickname] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  //   const handleSubmit = async () => {
+  //   if (!nickname.trim() || score === undefined) return
+
+  //   setIsSubmitting(true)
+  //   try {
+  //     await onSubmitScore?.(nickname.trim(), score)
+  //     setIsSubmitted(true)
+  //   } finally {
+  //     setIsSubmitting(false)
+  //   }
+  // }
+
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/70 to-white/80 dark:from-black/70 dark:via-black/60 dark:to-black/70 backdrop-blur-sm flex items-center justify-center z-20">
       <div className="relative">
         {/* Glow effect */}
         <div className="absolute inset-0 bg-rose-500/20 blur-3xl rounded-full scale-150" />
 
-        <div className="relative bg-gradient-to-b from-white/95 to-zinc-50/95 dark:from-zinc-900/90 dark:to-zinc-950/90 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl p-10 shadow-2xl">
+        <div className="relative bg-gradient-to-b from-white/95 to-zinc-50/95 dark:from-zinc-900/90 dark:to-zinc-950/90 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl p-10 shadow-2xl min-w-[320px]">
           <div className="text-center space-y-6">
             {/* Game Over Title */}
             <div className="space-y-3">
@@ -41,11 +58,62 @@ export default function RngEndOverlay({
             {/* Divider */}
             <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-300 dark:via-zinc-600 to-transparent" />
 
+            {/* Nickname Input Section */}
+            {score !== undefined && (
+              <div className="space-y-3">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {minigameI18N.gameOverOverlay.nickname.placeholder[localeKey]}
+                </p>
+
+                {!isSubmitted ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={nickname}
+                      onChange={(e) => setNickname(e.target.value)}
+                      placeholder="Nickname"
+                      maxLength={12}
+                      disabled={isSubmitting}
+                      className="flex-1 px-4 py-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all disabled:opacity-50"
+                      // onKeyDown={(e) => {
+                      //   if (e.key === "Enter" && nickname.trim()) {
+                      //     handleSubmit();
+                      //   }
+                      // }}
+                    />
+                    <button
+                      // onClick={handleSubmit}
+                      disabled={!nickname.trim() || isSubmitting}
+                      className="px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:from-amber-400 hover:to-orange-400 transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? (
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <Send className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2 py-3 px-4 bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/30 rounded-xl">
+                    <Check className="w-5 h-5 text-emerald-500" />
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                      {minigameI18N.gameOverOverlay.nickname.success[localeKey]}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Divider */}
+            {score !== undefined && (
+              <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-300 dark:via-zinc-600 to-transparent" />
+            )}
+
             {/* Buttons */}
             <div className="flex flex-col gap-3 pt-2">
               <button
                 onClick={() => onClickReset()}
-                className="cursor-pointer group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:from-emerald-400 hover:to-teal-400 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:from-emerald-400 hover:to-teal-400 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 <RotateCcw className="w-5 h-5" />
                 <span>
@@ -58,7 +126,7 @@ export default function RngEndOverlay({
 
               <button
                 onClick={() => onClickReset()}
-                className="cursor-pointer group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 <Trophy className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                 <span>
