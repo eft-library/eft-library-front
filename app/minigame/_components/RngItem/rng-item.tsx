@@ -160,6 +160,7 @@ export default function RngItem() {
 
   /** Pool에서 드래그 시작 */
   const startDragFromPool = (item: RngItemTypes, e: React.MouseEvent) => {
+    if (!isStart || playTime === 0) return;
     e.preventDefault();
     setDragState({
       item,
@@ -173,6 +174,7 @@ export default function RngItem() {
 
   /** Backpack에서 아이템 이동 시작 */
   const startMoveItem = (item: PlacedItem) => {
+    if (!isStart || playTime === 0) return;
     setPlacedItems((prev) => prev.filter((i) => i.id !== item.id));
     setDragState({
       item,
