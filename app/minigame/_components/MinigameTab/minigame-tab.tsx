@@ -29,6 +29,7 @@ export default function MinigameTab({
           </TabsTrigger>
           <TabsTrigger
             value="TO_BE"
+            disabled
             className="flex-1 sm:flex-initial px-6 py-2 rounded-md font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-700 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white dark:data-[state=active]:shadow-md"
           >
             TO BE Continued

@@ -1,3 +1,12 @@
+import {
+  Play,
+  MousePointerClick,
+  Trash2,
+  XCircle,
+  RotateCw,
+  Trophy,
+} from "lucide-react";
+
 export const placeHolderText = {
   search: {
     en: "Please enter at least 2 characters for the name.",
@@ -1853,6 +1862,149 @@ export const minigameI18N = {
         ko: "랭킹 보기",
       },
     },
+  },
+
+  help: {
+    title: {
+      en: "How to Play",
+      ja: "遊び方",
+      ko: "게임 사용방법",
+    },
+
+    hint: {
+      keyboard: {
+        en: "Keyboard",
+        ja: "キーボード",
+        ko: "키보드",
+      },
+      pressKey: {
+        en: "Press the key",
+        ja: "キーを押してください",
+        ko: "키를 누르세요",
+      },
+    },
+    steps: [
+      {
+        id: 1,
+        icon: Play,
+        color: "bg-emerald-500",
+        image: {
+          en: "/minigame/rng-item/main.png",
+          ja: "/minigame/rng-item/main.png",
+          ko: "/minigame/rng-item/main.png",
+        },
+        title: {
+          en: "Main Screen",
+          ja: "メイン画面",
+          ko: "메인 화면",
+        },
+        description: {
+          en: "Press the start button to begin. Inventory is on the left, item list is on the right.",
+          ja: "開始ボタンを押してゲームを始めましょう。左がインベントリ、右がアイテム一覧です。",
+          ko: "게임 시작 버튼을 눌러 게임을 시작하세요. 좌측은 인벤토리, 우측은 아이템 목록입니다.",
+        },
+      },
+      {
+        id: 2,
+        icon: MousePointerClick,
+        color: "bg-blue-500",
+        image: {
+          en: "/minigame/rng-item/drag.png",
+          ja: "/minigame/rng-item/drag.png",
+          ko: "/minigame/rng-item/drag.png",
+        },
+        title: {
+          en: "Drag Items",
+          ja: "アイテムをドラッグ",
+          ko: "아이템 드래그",
+        },
+        description: {
+          en: "Drag items from the right into the inventory. Green areas indicate valid placement.",
+          ja: "右側のアイテムを左のインベントリにドラッグしてください。緑色の領域が配置可能です。",
+          ko: "우측 아이템을 드래그하여 좌측 인벤토리에 배치하세요. 초록색 영역은 배치 가능한 위치입니다.",
+        },
+      },
+      {
+        id: 3,
+        icon: Trash2,
+        color: "bg-amber-500",
+        image: {
+          en: "/minigame/rng-item/remove.png",
+          ja: "/minigame/rng-item/remove.png",
+          ko: "/minigame/rng-item/remove.png",
+        },
+        title: {
+          en: "Remove Items",
+          ja: "アイテム削除",
+          ko: "아이템 제거",
+        },
+        description: {
+          en: "Drag placed items to the right to remove them.",
+          ja: "配置したアイテムを右にドラッグすると削除できます。",
+          ko: "인벤토리에 배치된 아이템을 오른쪽으로 드래그하면 제거됩니다.",
+        },
+      },
+      {
+        id: 4,
+        icon: XCircle,
+        color: "bg-red-500",
+        image: {
+          en: "/minigame/rng-item/cant_position.png",
+          ja: "/minigame/rng-item/cant_position.png",
+          ko: "/minigame/rng-item/cant_position.png",
+        },
+        title: {
+          en: "Invalid Placement",
+          ja: "配置不可エリア",
+          ko: "배치 불가 위치",
+        },
+        description: {
+          en: "Red areas indicate positions where items cannot be placed.",
+          ja: "赤く表示された領域には配置できません。",
+          ko: "빨간색으로 표시되는 영역에는 아이템을 배치할 수 없습니다.",
+        },
+      },
+      {
+        id: 5,
+        icon: RotateCw,
+        color: "bg-purple-500",
+        image: {
+          en: "/minigame/rng-item/transform.png",
+          ja: "/minigame/rng-item/transform.png",
+          ko: "/minigame/rng-item/transform.png",
+        },
+        title: {
+          en: "Rotate Items",
+          ja: "アイテム回転",
+          ko: "아이템 회전",
+        },
+        description: {
+          en: "Press the R key to rotate the item while dragging.",
+          ja: "ドラッグ中に R キーを押すとアイテムを回転できます。",
+          ko: "키보드 R 키를 눌러 드래그 중인 아이템을 회전시킬 수 있습니다.",
+        },
+      },
+      {
+        id: 6,
+        icon: Trophy,
+        color: "bg-orange-500",
+        image: {
+          en: "/minigame/rng-item/end.png",
+          ja: "/minigame/rng-item/end.png",
+          ko: "/minigame/rng-item/end.png",
+        },
+        title: {
+          en: "Game Over",
+          ja: "ゲーム終了",
+          ko: "게임 종료",
+        },
+        description: {
+          en: "When time runs out, the final score will be displayed. Try again with Restart!",
+          ja: "制限時間が終了すると最終スコアが表示されます。「もう一度」で再挑戦できます。",
+          ko: "제한 시간이 끝나면 최종 점수가 표시됩니다. 다시하기 버튼으로 재도전하세요!",
+        },
+      },
+    ],
   },
 };
 
