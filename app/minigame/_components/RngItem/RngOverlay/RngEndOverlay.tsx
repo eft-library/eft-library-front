@@ -6,6 +6,8 @@ import { Check, RotateCcw, Send, Trophy } from "lucide-react";
 import { RngEndOverlayTypes } from "../../minigame-types";
 import { minigameI18N } from "@/lib/consts/i18nConsts";
 import { useState } from "react";
+import { requestPostData } from "@/lib/config/api";
+import { API_ENDPOINTS } from "@/lib/config/endpoint";
 
 export default function RngEndOverlay({
   score,
@@ -17,17 +19,25 @@ export default function RngEndOverlay({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  //   const handleSubmit = async () => {
-  //   if (!nickname.trim() || score === undefined) return
+  const handleSubmit = async () => {
+    if (!nickname.trim() || score === undefined) return;
 
-  //   setIsSubmitting(true)
-  //   try {
-  //     await onSubmitScore?.(nickname.trim(), score)
-  //     setIsSubmitted(true)
-  //   } finally {
-  //     setIsSubmitting(false)
-  //   }
-  // }
+    setIsSubmitting(true);
+    try {
+      const data = await requestPostData(API_ENDPOINTS.SAVE_RNG_ITEM_SCORE, {
+        nickname: nickname.trim(),
+        score: score,
+        game_type: "RNG-ITEM",
+      });
+
+      if (!data || data.status !== 200)
+        throw new Error(data?.msg || "Failed to fetch score data");
+
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/70 to-white/80 dark:from-black/70 dark:via-black/60 dark:to-black/70 backdrop-blur-sm flex items-center justify-center z-20">
@@ -75,14 +85,14 @@ export default function RngEndOverlay({
                       maxLength={12}
                       disabled={isSubmitting}
                       className="flex-1 px-4 py-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all disabled:opacity-50"
-                      // onKeyDown={(e) => {
-                      //   if (e.key === "Enter" && nickname.trim()) {
-                      //     handleSubmit();
-                      //   }
-                      // }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && nickname.trim()) {
+                          handleSubmit();
+                        }
+                      }}
                     />
                     <button
-                      // onClick={handleSubmit}
+                      onClick={handleSubmit}
                       disabled={!nickname.trim() || isSubmitting}
                       className="px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:from-amber-400 hover:to-orange-400 transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                     >
