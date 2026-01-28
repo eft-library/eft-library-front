@@ -31,7 +31,7 @@ export async function generateSitemaps() {
 
     const data: Data = await res.json();
     const uniqueValues = Array.from(
-      new Set(data.data.map((item) => item.value))
+      new Set(data.data.map((item) => item.value)),
     );
 
     return uniqueValues.map((value) => ({ id: value }));
@@ -50,22 +50,18 @@ export default async function sitemap({
   try {
     // id를 await으로 풀기
     const resolvedId = await id;
-    console.log("resolvedId:", resolvedId);
 
     const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP, {
       next: { revalidate: 2592000 },
     });
-    console.log("fetch status:", res.status);
 
     if (!res.ok) {
       throw new Error("Failed to fetch sitemap data");
     }
 
     const data: Data = await res.json();
-    console.log("total items:", data.data.length);
 
     const items = data.data.filter((item) => item.value === resolvedId);
-    console.log("filtered items for", resolvedId, ":", items.length);
 
     return items.map((item) => ({
       url: item.link,
