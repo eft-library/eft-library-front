@@ -2006,6 +2006,21 @@ export const minigameI18N = {
       },
     ],
   },
+  ranking: {
+    en: "Ranking",
+    ja: "ランキング",
+    ko: "랭킹",
+  },
+  myRank: {
+    en: "My Rank",
+    ja: "自分の順位",
+    ko: "내 순위",
+  },
+  myScore: {
+    en: "My Score",
+    ja: "自分のスコア",
+    ko: "내 점수",
+  },
 };
 
 export const newsI18N = {

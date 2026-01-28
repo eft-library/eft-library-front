@@ -2,12 +2,13 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { Check, RotateCcw, Send, Trophy } from "lucide-react";
+import { Check, RotateCcw, Send } from "lucide-react";
 import { RngEndOverlayTypes } from "../../minigame-types";
 import { minigameI18N } from "@/lib/consts/i18nConsts";
 import { useState } from "react";
 import { requestPostData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import RngRanking from "../RngRanking/rng-ranking";
 
 export default function RngEndOverlay({
   score,
@@ -18,6 +19,7 @@ export default function RngEndOverlay({
   const [nickname, setNickname] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [rankOpen, setRankOpen] = useState(false);
 
   const handleSubmit = async () => {
     if (!nickname.trim() || score === undefined) return;
@@ -133,16 +135,12 @@ export default function RngEndOverlay({
                 {/* Shine effect */}
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </button>
-
-              <button
-                onClick={() => onClickReset()}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                <Trophy className="w-5 h-5 text-amber-500 dark:text-amber-400" />
-                <span>
-                  {minigameI18N.gameOverOverlay.buttons.ranking[localeKey]}
-                </span>
-              </button>
+              <RngRanking
+                rankOpen={rankOpen}
+                setRankOpen={setRankOpen}
+                score={score}
+                nickname={nickname}
+              />
             </div>
           </div>
         </div>

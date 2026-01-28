@@ -60,3 +60,22 @@ export interface RngEndOverlayTypes {
   onClickReset: () => void;
   score: number;
 }
+
+export interface RngRankTypes {
+  rankOpen: boolean;
+  setRankOpen: (val: boolean) => void;
+  score: number;
+  nickname: string;
+}
+
+export interface RngAllRankTypes {
+  rankOpen: boolean;
+  setRankOpen: (val: boolean) => void;
+}
+
+export interface RngRankDataTypes {
+  rank: number;
+  nickname: string;
+  score: number;
+  create_time: string;
+}

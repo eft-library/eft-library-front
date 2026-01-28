@@ -26,7 +26,7 @@ export default function RankView() {
   const [realWord, setSearchRealWord] = useState<string>("");
   const [priceType, setPriceType] = useState<string>("PVP");
   const [tooltipItem, setTooltipItem] = useState<TopListDetailData | null>(
-    null
+    null,
   );
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [listCategory, setListCategory] =
@@ -50,7 +50,7 @@ export default function RankView() {
 
       return data.data;
     },
-    placeholderData: keepPreviousData, // ✅ v5에서는 이렇게!
+    placeholderData: keepPreviousData,
   });
 
   const onChangeCategory = (clickCategory: string) => {
@@ -68,7 +68,7 @@ export default function RankView() {
 
   const handleTooltipShow = (
     item: TopListDetailData | null,
-    position?: { x: number; y: number }
+    position?: { x: number; y: number },
   ) => {
     if (item && position) {
       setTooltipItem(item);

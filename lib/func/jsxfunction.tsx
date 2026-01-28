@@ -3,8 +3,9 @@ import { getOtherLocalizedKey } from "./localeFunction";
 import { Price, TradeOption } from "@/app/price/_components/price.types";
 import { ALL_COLOR } from "../consts/colorConsts";
 import DOMPurify from "dompurify";
+import { Crown, Medal } from "lucide-react";
 
-// ✅ 어제 날짜와 8일 전 날짜 구하는 함수
+// 어제 날짜와 8일 전 날짜 구하는 함수
 export const getDefaultDates = () => {
   const end = new Date(); // 오늘
   end.setDate(end.getDate() - 1); // 어제
@@ -32,7 +33,7 @@ export const getYesterday = () => {
 // 변동률 계산
 export const calcChangeRate = (
   item: Price,
-  priceType: string
+  priceType: string,
 ): { raw: number; formatted: string } => {
   const history =
     priceType === "PVP" ? item.history_by_type.pvp : item.history_by_type.pve;
@@ -41,8 +42,8 @@ export const calcChangeRate = (
 
   const traderList =
     priceType === "PVP"
-      ? item.trader?.pvp_trader ?? []
-      : item.trader?.pve_trader ?? [];
+      ? (item.trader?.pvp_trader ?? [])
+      : (item.trader?.pve_trader ?? []);
 
   if (traderList.length === 0 || !beforePrice || beforePrice === 0) {
     return { raw: 0, formatted: "+0.00%" };
@@ -63,12 +64,12 @@ export const calcChangeRate = (
 export const findExpensiveTrader = (traders: TradeOption[]) => {
   if (!traders) return null;
   const filteredTraders = traders.filter(
-    (t) => t.trader.npc_id !== "FLEA_MARKET"
+    (t) => t.trader.npc_id !== "FLEA_MARKET",
   );
   if (filteredTraders.length === 0) return null;
   const resultTrader = filteredTraders.reduce(
     (max, current) => (current.price > max.price ? current : max),
-    filteredTraders[0]
+    filteredTraders[0],
   );
   return `${resultTrader.price.toLocaleString()} ₽`;
 };
@@ -82,7 +83,7 @@ export const findFleaMarketPrice = (traders: TradeOption[]) => {
 
 export const node_color = (
   id: string,
-  isDarkMode: string | undefined
+  isDarkMode: string | undefined,
 ): string => {
   const colorMap: Record<string, { light: string; dark: string }> = {
     "5935c25fb3acc3127c3d8cd9": {
@@ -178,7 +179,7 @@ export const getFirstParagraph = (htmlString: string) => {
 
 export const groupAndSummarizeChances = (
   spawnChances: SpawnChance[],
-  localeKey: string
+  localeKey: string,
 ) => {
   const grouped = new Map<string, number[]>();
 
@@ -244,7 +245,7 @@ export const getMaxSuffix = (id: number | string, completeList?: string[]) => {
 
 export const getMaxSuffixNumber = (
   id: number | string,
-  completeList?: string[]
+  completeList?: string[],
 ) => {
   let level: number;
 
@@ -292,4 +293,49 @@ export const purifyHtml = (html: string) => {
     ADD_TAGS: ["iframe"],
     ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
   });
+};
+
+export const rngItemRankStype = (rank: number) => {
+  switch (rank) {
+    case 1:
+      return "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200";
+    case 2:
+      return "bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200";
+    case 3:
+      return "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200";
+    default:
+      return "bg-white border-gray-100";
+  }
+};
+
+export const rngItemRankIcon = (rank: number) => {
+  switch (rank) {
+    case 1:
+      return <Crown className="w-5 h-5 text-yellow-500" />;
+    case 2:
+      return <Medal className="w-5 h-5 text-gray-400" />;
+    case 3:
+      return <Medal className="w-5 h-5 text-amber-600" />;
+    default:
+      return (
+        <span className="w-5 h-5 flex items-center justify-center text-sm font-bold text-gray-500">
+          {rank}
+        </span>
+      );
+  }
+};
+
+export const ordinalEn = (n: number): string => {
+  if (n % 100 >= 11 && n % 100 <= 13) return `${n}th`;
+
+  switch (n % 10) {
+    case 1:
+      return `${n}st`;
+    case 2:
+      return `${n}nd`;
+    case 3:
+      return `${n}rd`;
+    default:
+      return `${n}th`;
+  }
 };

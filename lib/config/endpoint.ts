@@ -41,6 +41,8 @@ export const API_ENDPOINTS = {
   GET_DASHBOARD_ANALYSIS: baseUrl + "/api/dashboard/analysis",
   GET_RNG_ITEM_MINIGAME: baseUrl + "/api/minigame/rng-item",
   SAVE_RNG_ITEM_SCORE: baseUrl + "/api/minigame/rng-item/save",
+  GET_ALL_RNG_ITEM_RANK: baseUrl + "/api/minigame/rng-item/all-rank",
+  GET_MY_RNG_ITEM_RANK: baseUrl + "/api/minigame/rng-item/my-rank",
 };
 
 export const USER_API_ENDPOINTS = {
