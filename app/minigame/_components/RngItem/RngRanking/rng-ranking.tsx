@@ -46,14 +46,16 @@ export default function RngRanking({
           score,
         });
 
-        if (!res || res.status !== 200) {
-          setRankList([]);
-          setMyRank(0);
-          return;
+        let list: RngRankDataTypes[] = [];
+
+        if (!res || res.status !== 200 || !res.data) {
+          // 실패 시도 빈 배열
+          list = [];
+        } else {
+          list = res.data;
         }
 
-        let list: RngRankDataTypes[] = res.data;
-
+        // 이미 같은 score 가 있으면 그대로 사용
         const alreadyExist = list.find(
           (item) => item.score === score && item.nickname === nickname,
         );
@@ -64,12 +66,16 @@ export default function RngRanking({
           return;
         }
 
+        // 들어갈 위치 계산
         const insertIndex = list.findIndex((item) => item.score < score);
 
+        // 빈 리스트면 본인이 1등
         const myRankValue =
-          insertIndex === -1
-            ? list[list.length - 1].rank + 1
-            : list[insertIndex].rank;
+          list.length === 0
+            ? 1
+            : insertIndex === -1
+              ? list[list.length - 1].rank + 1
+              : list[insertIndex].rank;
 
         const myRankItem: RngRankDataTypes = {
           nickname,
@@ -78,17 +84,20 @@ export default function RngRanking({
           create_time: new Date().toISOString(),
         };
 
+        // 순서 유지하면서 끼워 넣기
         const newList =
-          insertIndex === -1
-            ? [...list, myRankItem]
-            : [
-                ...list.slice(0, insertIndex),
-                myRankItem,
-                ...list.slice(insertIndex).map((item) => ({
-                  ...item,
-                  rank: item.rank + 1,
-                })),
-              ];
+          list.length === 0
+            ? [myRankItem] // 빈 리스트 → 본인 1등
+            : insertIndex === -1
+              ? [...list, myRankItem]
+              : [
+                  ...list.slice(0, insertIndex),
+                  myRankItem,
+                  ...list.slice(insertIndex).map((item) => ({
+                    ...item,
+                    rank: item.rank + 1,
+                  })),
+                ];
 
         setRankList(newList);
         setMyRank(myRankValue);

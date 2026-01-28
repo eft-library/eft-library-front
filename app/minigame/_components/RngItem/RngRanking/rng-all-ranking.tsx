@@ -33,13 +33,14 @@ export default function RngAllRanking({
 
     const getAllRank = async () => {
       setIsLoading(true);
-      const data = await requestData(API_ENDPOINTS.GET_ALL_RNG_ITEM_RANK);
+      const data = await fetch(API_ENDPOINTS.GET_ALL_RNG_ITEM_RANK);
+      const result = await data.json();
 
-      if (!data || data.status !== 200) {
-        console.error("Failed to fetch data:", data?.msg || "Unknown error");
+      if (!result || result.status !== 200) {
+        console.error("Failed to fetch data:", result?.msg || "Unknown error");
         setRankList([]);
       } else {
-        setRankList(data.data);
+        setRankList(result.data);
       }
       setIsLoading(false);
     };
@@ -85,6 +86,24 @@ export default function RngAllRanking({
                 />
               ))}
             </div>
+          ) : rankList.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 0h6"
+                />
+              </svg>
+              <p className="text-sm font-medium">No Rank</p>
+            </div>
           ) : (
             <div className="space-y-2">
               {rankList.map((player) => (
@@ -107,7 +126,9 @@ export default function RngAllRanking({
                   </div>
                   <div className="text-right">
                     <p
-                      className={`font-bold text-sm ${player.rank <= 3 ? "text-emerald-600" : "text-gray-700"}`}
+                      className={`font-bold text-sm ${
+                        player.rank <= 3 ? "text-emerald-600" : "text-gray-700"
+                      }`}
                     >
                       {player.score.toLocaleString()} ₽
                     </p>
@@ -117,7 +138,6 @@ export default function RngAllRanking({
             </div>
           )}
         </div>
-
         {/* Footer */}
         <div className="px-6 py-4 bg-gray-50 border-t">
           <Button
