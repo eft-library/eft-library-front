@@ -59,3 +59,4 @@ EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 �
 - [NextAuth 도입기 – 프론트 중심 인증 경험](https://github.com/eft-library/eft-library-history/blob/main/frontend/auth.md)
 - [프론트엔드 개발 비하인드 – 3번의 마이그레이션 여정](https://github.com/eft-library/eft-library-history/blob/main/frontend//migration.md)
 - [사이트 통계 대시보드 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/dashboard.md)
+- [미니게임 - 칸성비 운빨 망겜 개발기](https://github.com/eft-library/eft-library-history/blob/main/frontend/minigame-rng-item.md)
