@@ -15,33 +15,73 @@ interface SitemapItemAPI {
   create_date: string;
 }
 
+// 1달 = 30일 = 2,592,000초
+export const revalidate = 2592000;
+
 export async function generateSitemaps() {
-  const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP);
-  const data: Data = await res.json();
+  try {
+    const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP, {
+      next: { revalidate: 2592000 },
+    });
 
-  // 중복 없는 value 추출
-  const uniqueValues = Array.from(new Set(data.data.map((item) => item.value)));
+    if (!res.ok) {
+      console.error("Failed to fetch sitemap data");
+      return [];
+    }
 
-  // 각 value를 id처럼 사용
-  return uniqueValues.map((value) => ({ id: value }));
+    const data: Data = await res.json();
+    const uniqueValues = Array.from(
+      new Set(data.data.map((item) => item.value))
+    );
+
+    return uniqueValues.map((value) => ({ id: value }));
+  } catch (error) {
+    console.error("Error in generateSitemaps:", error);
+    return [];
+  }
 }
 
+// id를 Promise로 받아서 await 처리
 export default async function sitemap({
   id,
 }: {
-  id: string; // 숫자가 아닌 value 문자열
+  id: Promise<string>; // Promise 타입으로 변경
 }): Promise<MetadataRoute.Sitemap> {
-  const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP);
-  const data: Data = await res.json();
+  try {
+    // id를 await으로 풀기
+    const resolvedId = await id;
+    console.log("resolvedId:", resolvedId);
 
-  // value가 id와 같은 항목만 필터
-  const items = data.data.filter((item) => item.value === id);
+    const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP, {
+      next: { revalidate: 2592000 },
+    });
+    console.log("fetch status:", res.status);
 
-  // SitemapItem 형식으로 변환
-  return items.map((item) => ({
-    url: item.link,
-    lastModified: item.update_time,
-    changefreq: item.change_freq,
-    priority: item.priority,
-  }));
+    if (!res.ok) {
+      throw new Error("Failed to fetch sitemap data");
+    }
+
+    const data: Data = await res.json();
+    console.log("total items:", data.data.length);
+
+    const items = data.data.filter((item) => item.value === resolvedId);
+    console.log("filtered items for", resolvedId, ":", items.length);
+
+    return items.map((item) => ({
+      url: item.link,
+      lastModified: new Date(item.update_time),
+      changeFrequency: item.change_freq as
+        | "always"
+        | "hourly"
+        | "daily"
+        | "weekly"
+        | "monthly"
+        | "yearly"
+        | "never",
+      priority: item.priority,
+    }));
+  } catch (error) {
+    console.error(`Error generating sitemap:`, error);
+    return [];
+  }
 }
