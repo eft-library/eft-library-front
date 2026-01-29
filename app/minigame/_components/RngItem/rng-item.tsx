@@ -40,7 +40,7 @@ export default function RngItem() {
   // 아이템 풀 초기화
   useEffect(() => {
     if (!res?.data) return;
-    setPlayItemList(getRandomItems(res.data, 50));
+    setPlayItemList(getRandomItems(res.data, 70));
   }, [res]);
 
   // 드래그 이벤트
@@ -154,7 +154,7 @@ export default function RngItem() {
     setPlayTime(DEFAULT_PLAY_TIME);
     setScore(0);
     setPlacedItems([]);
-    setPlayItemList(getRandomItems(res.data, 50));
+    setPlayItemList(getRandomItems(res.data, 70));
     setDragState(null);
   };
 
