@@ -16,7 +16,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
   const localeKey = getLocaleKey(locale);
 
   const filteredList = quest_list.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return filteredList.map((quest) => (
@@ -92,7 +92,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
               >
                 •&nbsp;
                 <Link
-                  href={`/item/${rewards.item.normalizedName}`}
+                  href={`/item/info/${rewards.item.normalizedName}`}
                   target="_blank"
                 >
                   {rewards.item[getOtherLocalizedKey(locale)]}&nbsp;x&nbsp;
@@ -107,7 +107,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
               >
                 • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                 <Link
-                  href={`/item/${offer.item.normalizedName}`}
+                  href={`/item/info/${offer.item.normalizedName}`}
                   target="_blank"
                 >
                   {offer.item[getOtherLocalizedKey(locale)]}
@@ -140,7 +140,7 @@ export default function QuestCardM({ quest_list, word }: QuestCardTypes) {
                     <span>* {questI18N.workbenchLevel[localeKey]}&nbsp;</span>
                     <span>{craft.level}&nbsp;</span>
                     <Link
-                      href={`/item/${crReward.item.normalizedName}`}
+                      href={`/item/info/${crReward.item.normalizedName}`}
                       target="_blank"
                     >
                       {crReward.item[getOtherLocalizedKey(locale)]}

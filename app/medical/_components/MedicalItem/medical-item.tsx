@@ -10,7 +10,7 @@ export default function MedicalItem({ medicalList, word }: MedicalItemTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = medicalList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
   return (
     <div className="mb-6 border border-border rounded-xl dark:bg-gray-800/30 bg-white shadow-sm dark:shadow-lg">
@@ -36,7 +36,7 @@ export default function MedicalItem({ medicalList, word }: MedicalItemTypes) {
           key={item.id}
           className="border-b border-border last:border-b-0 hover:bg-muted/30 dark:hover:bg-card-foreground/5 transition-all duration-200"
         >
-          <Link href={`/item/${item.url_mapping}`} target="_blank">
+          <Link href={`/item/info/${item.url_mapping}`} target="_blank">
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-5 gap-4 p-4 items-center">
               <div className="flex justify-center">

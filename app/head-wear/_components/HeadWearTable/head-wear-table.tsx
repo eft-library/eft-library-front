@@ -13,10 +13,10 @@ export default function HeadWearTable({
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredClassList = headWearData.class_headwear.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
   const filteredNoClassList = headWearData.no_class_headwear.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -44,7 +44,7 @@ export default function HeadWearTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-4 gap-4 p-4 items-center text-center">
@@ -138,7 +138,7 @@ export default function HeadWearTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-2 gap-4 p-4 items-center text-center">

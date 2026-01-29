@@ -10,7 +10,7 @@ export default function LootTable({ lootList, word }: LootTableTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = lootList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
   return (
     <div className="mb-6 border border-border rounded-xl dark:bg-gray-800/30 bg-white shadow-sm dark:shadow-lg">
@@ -31,7 +31,7 @@ export default function LootTable({ lootList, word }: LootTableTypes) {
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-2 gap-4 p-4 items-center text-center">

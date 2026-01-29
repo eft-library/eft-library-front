@@ -10,7 +10,7 @@ export default function Drug({ medicalList, word }: DrugTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = medicalList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -41,7 +41,7 @@ export default function Drug({ medicalList, word }: DrugTypes) {
           key={item.id}
           className="border-b border-border last:border-b-0 hover:bg-muted/30 dark:hover:bg-card-foreground/5 transition-all duration-200"
         >
-          <Link href={`/item/${item.url_mapping}`} target="_blank">
+          <Link href={`/item/info/${item.url_mapping}`} target="_blank">
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-6 gap-4 p-4 items-center text-center">
               <div className="flex justify-center">

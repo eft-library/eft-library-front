@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   // fetch data
   const product = await fetch(`${API_ENDPOINTS.GET_ITEM_DETAIL}/${id}`).then(
-    (res) => res.json()
+    (res) => res.json(),
   );
 
   const res = product.data;
@@ -28,7 +28,7 @@ export async function generateMetadata({
       title: `타르코프 ${res.name.ko} - EFT Library`,
       description: `Escape from Tarkov (타르코프) ${res.name.ko}. Escape from Tarkov(타르코프) 아이템별로 무기, 방어구, 의료품, 탄약, 모딩 부품, 퀘스트 아이템 등 다양한 장비에 대한 정보를 제공하며, 상인 교환, 은신처 건설 및 제작, 퀘스트 재료와 보상까지 폭넓은 정보를 제공합니다.`,
       images: [res.image],
-      url: `https://eftlibrary.com/item/${id}`,
+      url: `https://eftlibrary.com/item/info/${id}`,
       siteName: "EFT Library",
     },
     twitter: {

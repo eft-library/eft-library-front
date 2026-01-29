@@ -10,7 +10,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = keyList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -38,7 +38,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-4 gap-4 p-4 items-center text-center">
@@ -72,7 +72,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
                         >
                           {value}
                         </span>
-                      )
+                      ),
                     )}
                 </div>
               </div>
@@ -117,7 +117,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
                           >
                             {value}
                           </span>
-                        )
+                        ),
                       )}
                   </div>
                 </div>

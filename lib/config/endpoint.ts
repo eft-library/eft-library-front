@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
   GET_DYNAMIC_INFO: baseUrl + "/api/dynamic-info/info",
   GET_EVENT: baseUrl + "/api/event/board",
   GET_EVENT_BY_ID: baseUrl + "/api/event/detail",
-  GET_ITEM_DETAIL: baseUrl + "/api/item/detail",
+  GET_ITEM_DETAIL: baseUrl + "/api/item/info",
   GET_MAP: baseUrl + "/api/map/info",
   GET_MENU_INFO: baseUrl + "/api/menu/info",
   GET_NAVI_MENU: baseUrl + "/api/menu/navi",

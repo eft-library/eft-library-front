@@ -12,7 +12,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
   const localeKey = getLocaleKey(locale);
 
   const filteredList = ammoList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -43,7 +43,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-6 gap-4 p-4 items-center text-center">
@@ -78,7 +78,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
                     <div
                       key={`ammo-efficiency-${idx}`}
                       className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center text-sm font-bold shadow-sm hover:scale-110 transition-transform duration-200 ${getEffectivenessColor(
-                        value
+                        value,
                       )}`}
                     >
                       {value}
@@ -142,7 +142,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
                       <div
                         key={`mobile-ammo-efficiency-${idx}`}
                         className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-sm font-bold shadow-sm hover:scale-110 transition-transform duration-200 ${getEffectivenessColor(
-                          value
+                          value,
                         )}`}
                       >
                         {value}

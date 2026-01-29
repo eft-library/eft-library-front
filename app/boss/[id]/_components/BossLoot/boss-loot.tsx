@@ -24,7 +24,7 @@ export default function BossLoot({ follower }: FollowerLoot) {
   ];
 
   const uniqueItemInfo = Array.from(
-    new Map(combinedItemInfo.map((data) => [data.item.id, data])).values()
+    new Map(combinedItemInfo.map((data) => [data.item.id, data])).values(),
   );
 
   return (
@@ -51,7 +51,7 @@ export default function BossLoot({ follower }: FollowerLoot) {
             {follower.item_info.map((loot, index) => (
               <Link
                 key={`boss-loot-${index}-${loot.item.name_en}`}
-                href={`/item/${loot.item.normalizedName}`}
+                href={`/item/info/${loot.item.normalizedName}`}
                 target="_blank"
               >
                 <div className="group flex flex-col items-center p-2 border-2 rounded-xl hover:bg-muted/20 hover:border-muted hover:shadow-md transition-all duration-300 cursor-pointer">

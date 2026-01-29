@@ -44,7 +44,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
   });
 
   const questItems = Array.from(
-    new Map(mergedItems.map((entry) => [entry.itemData.id, entry])).values()
+    new Map(mergedItems.map((entry) => [entry.itemData.id, entry])).values(),
   );
   if (questItems.length < 1) return null;
 
@@ -91,7 +91,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
                       {item.type === "findQuestItem" ||
                       item.type === "giveQuestItem" ? (
                         <Link
-                          href={`/item/${item.itemData.normalizedName}`}
+                          href={`/item/info/${item.itemData.normalizedName}`}
                           className="hover:text-yellow-400"
                           target="_blank"
                         >

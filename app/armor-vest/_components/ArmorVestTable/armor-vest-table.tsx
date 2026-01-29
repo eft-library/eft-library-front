@@ -13,7 +13,7 @@ export default function ArmorVestTable({
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = armorVestList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -41,7 +41,7 @@ export default function ArmorVestTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-4 gap-4 p-4 items-center text-center">

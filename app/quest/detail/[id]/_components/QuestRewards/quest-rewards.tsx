@@ -30,7 +30,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
             >
               <div className={`text-blue-400`}>{<Package />}</div>
               <Link
-                href={`/item/${rewards.item.normalizedName}`}
+                href={`/item/info/${rewards.item.normalizedName}`}
                 target="_blank"
                 className="hover:text-yellow-400"
               >
@@ -53,7 +53,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
                 {offer.trader[getOtherLocalizedKey(locale)]}
               </span>
               <Link
-                href={`/item/${offer.item.normalizedName}`}
+                href={`/item/info/${offer.item.normalizedName}`}
                 target="_blank hover:text-yellow-400"
               >
                 <span className={`font-semibold`}>
@@ -96,7 +96,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
                 </span>
                 <span className="font-semibold">{craft.level}</span>
                 <Link
-                  href={`/item/${crReward.item.normalizedName}`}
+                  href={`/item/info/${crReward.item.normalizedName}`}
                   target="_blank"
                 >
                   <span className="font-semibold hover:text-yellow-400">
@@ -107,7 +107,7 @@ export default function QuestRewards({ quest }: QuestDetailTypes) {
                   {questI18N.craftUnlock[localeKey]}
                 </span>
               </div>
-            ))
+            )),
           )}
 
           {quest.finish_rewards.skillLevelReward.map((skill, rIndex) => (

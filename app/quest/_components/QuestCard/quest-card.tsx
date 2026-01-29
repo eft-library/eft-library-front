@@ -16,7 +16,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
   const localeKey = getLocaleKey(locale);
 
   const filteredList = quest_list.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -94,7 +94,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                         >
                           •&nbsp;
                           <Link
-                            href={`/item/${rewards.item.normalizedName}`}
+                            href={`/item/info/${rewards.item.normalizedName}`}
                             target="_blank"
                           >
                             {rewards.item[getOtherLocalizedKey(locale)]}
@@ -110,7 +110,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                         >
                           • {offer.trader[getOtherLocalizedKey(locale)]}&nbsp;
                           <Link
-                            href={`/item/${offer.item.normalizedName}`}
+                            href={`/item/info/${offer.item.normalizedName}`}
                             target="_blank"
                           >
                             {offer.item[getOtherLocalizedKey(locale)]}
@@ -131,7 +131,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                             {questI18N.standing[localeKey]}&nbsp;
                             <span>{standing.standing}</span>
                           </div>
-                        )
+                        ),
                       )}
                       {quest.finish_rewards.craftUnlock.map((craft, rIndex) => (
                         <div
@@ -148,7 +148,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                               </span>
                               <span>{craft.level}&nbsp;</span>
                               <Link
-                                href={`/item/${crReward.item.normalizedName}`}
+                                href={`/item/info/${crReward.item.normalizedName}`}
                                 target="_blank"
                               >
                                 {crReward.item[getOtherLocalizedKey(locale)]}
@@ -169,7 +169,7 @@ export default function QuestCard({ quest_list, word }: QuestCardTypes) {
                             * {skill[getOtherLocalizedKey(locale)]}
                             <span>&nbsp;LV&nbsp;{skill.level}</span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </td>

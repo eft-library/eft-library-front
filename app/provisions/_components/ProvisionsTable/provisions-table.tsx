@@ -14,7 +14,7 @@ export default function ProvisionsTable({
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredList = provisionsList.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -45,7 +45,7 @@ export default function ProvisionsTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-5 gap-4 p-4 items-center text-center">
@@ -137,11 +137,11 @@ export default function ProvisionsTable({
                                 ))}
                               </div>
                             );
-                          }
+                          },
                         )}
                       </div>
                     );
-                  }
+                  },
                 )}
               </div>
             </div>
@@ -259,11 +259,11 @@ export default function ProvisionsTable({
                                     ))}
                                   </div>
                                 );
-                              }
+                              },
                             )}
                           </div>
                         );
-                      }
+                      },
                     )}
                   </div>
                 </div>

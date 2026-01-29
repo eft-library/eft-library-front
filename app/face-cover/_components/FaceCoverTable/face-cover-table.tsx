@@ -13,10 +13,10 @@ export default function FaceCoverTable({
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const filteredClassList = face_cover_data.class_face_cover.filter((item) =>
-    item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
   const filteredNoClassList = face_cover_data.no_class_face_cover.filter(
-    (item) => item.name[localeKey].toLowerCase().includes(word.toLowerCase())
+    (item) => item.name[localeKey].toLowerCase().includes(word.toLowerCase()),
   );
 
   return (
@@ -44,7 +44,7 @@ export default function FaceCoverTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-4 gap-4 p-4 items-center text-center">
@@ -138,7 +138,7 @@ export default function FaceCoverTable({
           <Link
             key={item.id}
             target="_blank"
-            href={`/item/${item.url_mapping}`}
+            href={`/item/info/${item.url_mapping}`}
           >
             {/* Desktop Layout */}
             <div className="hidden md:grid grid-cols-2 gap-4 p-4 items-center text-center">
