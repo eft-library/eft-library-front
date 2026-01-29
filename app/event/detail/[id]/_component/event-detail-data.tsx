@@ -20,13 +20,13 @@ export default function EventDetailData() {
   useEffect(() => {
     const getEventById = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_EVENT_BY_ID}/${param.id}`
+        `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/EVENT/detail/${param.id}`,
       );
 
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch event data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         return null;
       }

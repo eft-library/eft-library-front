@@ -20,15 +20,15 @@ export default function EventData() {
   useEffect(() => {
     const getEventPage = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_EVENT}?page=${Number(
-          param.get("id")
-        )}&page_size=10`
+        `${API_ENDPOINTS.GET_INFORMATION_LIST}?page=${Number(
+          param.get("id"),
+        )}&page_size=10&info_type=EVENT`,
       );
 
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch event data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         return null;
       }

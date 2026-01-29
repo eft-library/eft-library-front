@@ -20,15 +20,15 @@ export default function PatchNotesData() {
   useEffect(() => {
     const getPatchNotesPage = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_PATCH_NOTES}?page=${Number(
-          param.get("id")
-        )}&page_size=10`
+        `${API_ENDPOINTS.GET_INFORMATION_LIST}?page=${Number(
+          param.get("id"),
+        )}&page_size=10&info_type=PATCH-NOTES`,
       );
 
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch patch notes data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         return null;
       }

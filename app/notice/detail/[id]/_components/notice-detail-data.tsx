@@ -20,13 +20,13 @@ export default function NoticeDetailData() {
   useEffect(() => {
     const getNoticeById = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_NOTICE_BY_ID}/${param.id}`
+        `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/NOTICE/detail/${param.id}`,
       );
 
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch notice data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         return null;
       }

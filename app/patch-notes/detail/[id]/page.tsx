@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   // fetch data
   const product = await fetch(
-    `${API_ENDPOINTS.GET_PATCH_NOTES_BY_ID}/${id}`
+    `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/PATCH-NOTES/detail/${id}`,
   ).then((res) => res.json());
 
   const res = product.data;
