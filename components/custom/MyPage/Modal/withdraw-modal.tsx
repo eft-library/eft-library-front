@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { requestGetUserData } from "@/lib/config/api";
 import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 import { X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { WithdrawModalTypes } from "../my-page.types";
@@ -20,16 +20,17 @@ export default function WithdrawModal({
     if (session && session.email) {
       const data = await requestGetUserData(
         USER_API_ENDPOINTS.DELETE_USER,
-        session
+        session,
       );
 
       if (data && data.status === 200 && data.data) {
         setShowWithdrawModal(false);
+        signOut();
         router.push("/");
       } else {
         console.error(
           "Failed to fetch station data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         alert("Error가 발생했습니다. 관리자에게 문의해주세요");
         setShowWithdrawModal(false);
