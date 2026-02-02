@@ -2232,3 +2232,42 @@ export const findLocationI18N = {
     button_close: "閉じる",
   },
 };
+
+export const storyI18N = {
+  objectives: {
+    en: "Objectives",
+    ja: "目標",
+    ko: "목표",
+  },
+  guide: {
+    en: "Guide",
+    ja: "ガイド",
+    ko: "가이드",
+  },
+
+  prerequisites: {
+    en: "Prerequisites",
+    ja: "前提条件",
+    ko: "선행 조건",
+  },
+  unlockConditionDesc: {
+    en: "To unlock this story, you must meet the following conditions.",
+    ja: "このストーリーを解放するには、次の条件を満たす必要があります。",
+    ko: "이 스토리를 해금하려면 다음 조건을 충족해야 합니다.",
+  },
+  objectivesDesc: {
+    en: "Complete the objectives below to finish the story.",
+    ja: "ストーリーを完了するには、以下の目標を達成してください。",
+    ko: "스토리를 완료하기 위해 아래 목표를 달성하세요.",
+  },
+  guideDesc: {
+    en: "Check tips and hints to help you succeed.",
+    ja: "成功を助けるヒントやガイドを確認してください。",
+    ko: "성공을 돕는 팁과 힌트를 확인하세요.",
+  },
+  story: {
+    en: "Story",
+    ja: "ストーリー",
+    ko: "스토리",
+  },
+};
