@@ -23,16 +23,16 @@ export const StorySvg = {
 };
 
 export const StorySvgComponents = {
-  test: StorySvg.AccidentalWitness,
-  test2: StorySvg.Batya,
-  "3": StorySvg.BlueFire,
-  "4": StorySvg.FallingSkies,
-  "5": StorySvg.Roadmap,
-  "6": StorySvg.TheLabyrinth,
-  "7": StorySvg.TheTicket,
-  "8": StorySvg.TheUnheard,
-  "9": StorySvg.TheyAreAlreadyHere,
-  "10": StorySvg.Tour,
+  "accidental-witness": StorySvg.AccidentalWitness,
+  batya: StorySvg.Batya,
+  "blue-fire": StorySvg.BlueFire,
+  "falling-skies": StorySvg.FallingSkies,
+  roadmap: StorySvg.Roadmap,
+  "the-labyrinth": StorySvg.TheLabyrinth,
+  "the-ticket": StorySvg.TheTicket,
+  "the-unheard": StorySvg.TheUnheard,
+  "they-are-already-here": StorySvg.TheyAreAlreadyHere,
+  tour: StorySvg.Tour,
 };
 
 export const getStorySVG = (

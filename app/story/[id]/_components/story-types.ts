@@ -8,8 +8,8 @@ export interface StoryDetailTypes {
   id: string;
   name: LocaleName;
   guide: LocaleName;
-  objectives: LocaleName[];
-  requirements: LocaleName[];
+  objectives: LocaleName;
+  requirements: LocaleName;
   order: number;
 }
 
