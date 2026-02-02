@@ -22,7 +22,7 @@ export default function NavSearch({ searchList }: NavSearchTypes) {
     setInputValue("");
     router.push(item.link);
   };
-
+  console.log(searchList);
   return (
     <Downshift
       inputValue={inputValue}
@@ -45,7 +45,7 @@ export default function NavSearch({ searchList }: NavSearchTypes) {
             {...getInputProps({
               placeholder: "검색...",
               className: cn(
-                "w-full pl-10 h-9 focus:ring-orange-400 dark:bg-[#36393f] dark:border-[#36393f] dark:text-white dark:placeholder-gray-400 dark:focus:border-orange-400 bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-orange-500"
+                "w-full pl-10 h-9 focus:ring-orange-400 dark:bg-[#36393f] dark:border-[#36393f] dark:text-white dark:placeholder-gray-400 dark:focus:border-orange-400 bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-orange-500",
               ),
             })}
           />
@@ -63,11 +63,11 @@ export default function NavSearch({ searchList }: NavSearchTypes) {
                     ? item.value
                         .toLowerCase()
                         .includes(inputValue.toLowerCase())
-                    : true
+                    : true,
                 )
                 .map((item, index) => (
                   <div
-                    key={item.value}
+                    key={`${item.lang}-${item.value}-${item.page_value}`}
                     {...getItemProps({
                       item,
                       index,
@@ -75,7 +75,7 @@ export default function NavSearch({ searchList }: NavSearchTypes) {
                         "cursor-pointer px-4 py-2 text-sm font-medium",
                         highlightedIndex === index
                           ? "bg-gray-200 dark:bg-slate-600"
-                          : "bg-white dark:bg-[#1e2124] text-gray-900 dark:text-white"
+                          : "bg-white dark:bg-[#1e2124] text-gray-900 dark:text-white",
                       ),
                     })}
                   >
