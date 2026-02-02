@@ -31,6 +31,7 @@ import StationaryDetail from "./ItemDetail/stationary-detail";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import ArmorVestDetail from "./ItemDetail/armor-vest-detail";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import OtherDetail from "./ItemDetail/other-detail";
 
 export default function ItemView({ itemInfo }: ItemViewTypes) {
   const locale = useLocale();
@@ -89,6 +90,7 @@ export default function ItemView({ itemInfo }: ItemViewTypes) {
             <ContainerDetail itemInfo={itemInfo} />
           )}
           {itemInfo.category === "Loot" && <LootDetail itemInfo={itemInfo} />}
+          {itemInfo.category === "Other" && <OtherDetail itemInfo={itemInfo} />}
           {itemInfo.category === "FaceCover" && (
             <FaceCoverDetail itemInfo={itemInfo} />
           )}
