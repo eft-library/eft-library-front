@@ -8,11 +8,20 @@ import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { WithdrawModalTypes } from "../my-page.types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 export default function WithdrawModal({
   setShowWithdrawModal,
 }: WithdrawModalTypes) {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
   const { theme } = useTheme();
   const router = useRouter();
 
@@ -24,9 +33,7 @@ export default function WithdrawModal({
       );
 
       if (data && data.status === 200 && data.data) {
-        setShowWithdrawModal(false);
-        signOut();
-        router.push("/");
+        setIsOpen(true);
       } else {
         console.error(
           "Failed to fetch station data:",
@@ -74,23 +81,17 @@ export default function WithdrawModal({
             }`}
           >
             <p className="mb-4 leading-relaxed">
-              탈퇴를 하시면{" "}
-              <span
-                className={`font-medium ${
-                  theme === "dark" ? "text-[#ff6b6b]" : "text-[#e03131]"
-                }`}
-              >
-                30일간 유예기간
-              </span>
-              이 적용됩니다. 이 기간 동안 마음이 바뀌면 다시 로그인하여 탈퇴를
-              철회할 수 있습니다.
+              탈퇴 시 계정 및 모든 데이터는 영구적으로 삭제되며 복구할 수
+              없습니다.
+              <br />
+              이후 언제든지 다시 가입하여 서비스를 이용하실 수 있습니다.
             </p>
             <p
               className={`text-sm ${
                 theme === "dark" ? "text-red-400" : "text-red-600"
               } font-medium`}
             >
-              30일이 지나면 계정과 데이터는 영구 삭제되며 복구가 불가능합니다.
+              계정과 데이터는 영구 삭제되며 복구가 불가능합니다.
             </p>
           </div>
 
@@ -117,6 +118,37 @@ export default function WithdrawModal({
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          setIsOpen(open);
+        }}
+      >
+        <DialogContent className="bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+              탈퇴가 완료되었습니다.
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
+              그동안 이용해 주셔서 감사합니다!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end">
+            <Button
+              onClick={async () => {
+                setIsOpen(false);
+                setShowWithdrawModal(false);
+                await signOut({ redirect: false });
+                router.push("/");
+              }}
+              className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              종료
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
