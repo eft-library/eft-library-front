@@ -23,6 +23,17 @@ interface FindInfo {
   name: string;
   image: string;
   default_zoom_level: number;
+  quests: Quests[];
+}
+
+interface Quests {
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  id: string;
+  x: number;
+  y: number;
+  normalizedName: string;
 }
 
 export interface ExtractionsTransitsTypes {

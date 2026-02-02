@@ -9,7 +9,8 @@ import {
 } from "@/lib/func/leafletFunction";
 import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
-import { useState } from "react";
+import { useLocale } from "next-intl";
+import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 
 export default function FindLocationInner({
   findInfo,
@@ -17,23 +18,12 @@ export default function FindLocationInner({
   isViewWhere,
   setMousePosition,
 }: FindLocationInnerTypes) {
-  const [openTooltips, setOpenTooltips] = useState<Record<string, boolean>>({});
-
-  const openAllTooltips = () => {
-    const next: Record<string, boolean> = {};
-    // markers.forEach((m) => {
-    //   next[m.id] = true;
-    // });
-    setOpenTooltips(next);
-  };
-
-  const closeAllTooltips = () => {
-    setOpenTooltips({});
-  };
+  const locale = useLocale();
+  const localeKey = getLocaleKey(locale);
 
   const getMarkerPosition = (
     mapId: string,
-    coord: { x: number; y: number; yaw: number }
+    coord: { x: number; y: number; yaw: number },
   ): [number, number] => {
     switch (mapId) {
       case "FACTORY":
@@ -90,11 +80,32 @@ export default function FindLocationInner({
           </Tooltip>
         </Marker>
       )}
-      {/* <Marker position={[10, 20]} icon={QuestIcon()}>
-        <Tooltip direction="top" offset={[0, -30]} opacity={1}>
-          퀘스트 위치
-        </Tooltip>
-      </Marker> */}
+      {/* {findInfo.quests.map((quest) => (
+        <Marker
+          position={[quest.x, quest.y]}
+          icon={QuestIcon()}
+          key={quest.id}
+          eventHandlers={{
+            click: () => {
+              window.open(
+                `/quest/detail/${quest.normalizedName}`,
+                "_blank",
+                "noopener,noreferrer",
+              );
+            },
+          }}
+        >
+          <Tooltip
+            direction="top"
+            offset={[0, -30]}
+            opacity={1}
+            className="quest-tooltip"
+          >
+            {quest[getOtherLocalizedKey(localeKey)]}
+          </Tooltip>
+        </Marker>
+      ))} */}
+
       <ImageOverlay url={findInfo.image} bounds={findInfo.image_bounds} />
     </MapContainer>
   );

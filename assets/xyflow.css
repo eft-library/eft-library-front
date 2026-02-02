@@ -8,3 +8,10 @@
   color: #fff;
   border-color: #555;
 }
+
+.quest-tooltip.leaflet-tooltip {
+  font-size: 15px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+}
