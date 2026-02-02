@@ -22,7 +22,7 @@ export default function NavSearch({ searchList }: NavSearchTypes) {
     setInputValue("");
     router.push(item.link);
   };
-  console.log(searchList);
+
   return (
     <Downshift
       inputValue={inputValue}
