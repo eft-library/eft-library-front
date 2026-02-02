@@ -154,8 +154,8 @@ export interface RequireTabTypes {
 
 export interface StationMapTypes {
   onChangeMaster: (val: string) => void;
-  onClickReset: () => void;
-  onClickResetItem: () => void;
+  onClickResetBtn: (val: boolean) => void;
+  onClickResetItemBtn: (val: boolean) => void;
   onClickSaveItem: () => void;
   masterId: string;
   completeList: string[];

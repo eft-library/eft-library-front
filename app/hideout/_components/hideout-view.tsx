@@ -18,6 +18,14 @@ import HideoutDetail from "./HideoutDetail/hideout-detail";
 import Loading from "@/components/custom/Loading/loading";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const locale = useLocale();
@@ -25,19 +33,20 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
   const { data: session } = useSession();
 
   const [completeList, setCompleteList] = useState<string[]>(
-    hideoutData.complete_list
+    hideoutData.complete_list,
   );
   const [userItemList, setUserItemList] = useState<UserItemTypes[]>(
-    hideoutData.item_list
+    hideoutData.item_list,
   );
   const [allItemList, setAllItemList] = useState<ItemRequireInfoTypes[]>(
-    hideoutData.item_require_info
+    hideoutData.item_require_info,
   );
   const [master, setMaster] = useState<string>("5d484fcd654e7668ec2ec322");
   const [level, setLevel] = useState<string>("5d484fcd654e7668ec2ec322-1");
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setCompleteList(hideoutData.complete_list);
@@ -49,7 +58,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
     if (session && session.email) {
       const masterId = id.split("-")[0];
       const masterInfo = hideoutData.hideout_info.find(
-        (station) => station.master_id === masterId
+        (station) => station.master_id === masterId,
       );
       const allList = masterInfo?.data.map((sub) => sub.level_id);
       const downList = masterInfo?.data
@@ -81,7 +90,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_STATION,
         { complete_list: changeList },
-        session
+        session,
       );
       setLoading(false);
       if (!response) return;
@@ -131,7 +140,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
     setMaster(masterId);
 
     const masterInfo = hideoutData.hideout_info.find(
-      (station) => station.master_id === masterId
+      (station) => station.master_id === masterId,
     );
 
     const allList = masterInfo?.data.map((sub) => sub.level_id) || [];
@@ -158,7 +167,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_STATION,
         { complete_list: [] },
-        session
+        session,
       );
       setLoading(false);
       if (!response) return;
@@ -199,7 +208,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_STATION_ITEM,
         { user_item_list: [] },
-        session
+        session,
       );
       setLoading(false);
       if (!response) return;
@@ -235,7 +244,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_STATION_ITEM,
         { user_item_list: userItemList },
-        session
+        session,
       );
       setLoading(false);
       if (!response) return;
@@ -291,8 +300,8 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
                   itemRequireInfo={allItemList}
                   onChangeMaster={onClickChangeMaster}
                   completeList={completeList}
-                  onClickReset={onClickReset}
-                  onClickResetItem={onClickResetItem}
+                  onClickResetBtn={setIsOpen}
+                  onClickResetItemBtn={setIsOpen}
                   setUserItemList={setUserItemList}
                   onClickSaveItem={onClickSaveItem}
                 />
@@ -318,6 +327,44 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
         />
         {isLoading && <Loading />}
       </div>
+
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          setIsOpen(open);
+        }}
+      >
+        <DialogContent className="bg-white dark:bg-[#2a2d35] border-gray-200 dark:border-gray-700">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+              {hideoutI18n.reset[localeKey]}
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
+              {hideoutI18n.resetInfo[localeKey]}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-2 justify-end">
+            <Button
+              onClick={async () => {
+                await onClickReset();
+                await onClickResetItem();
+                setIsOpen(false);
+              }}
+              className="cursor-pointer bg-red-500 hover:bg-orange-600 text-white"
+            >
+              {hideoutI18n.reset[localeKey]}
+            </Button>
+            <Button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              {hideoutI18n.cancel[localeKey]}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </ViewWrapper>
   );
 }

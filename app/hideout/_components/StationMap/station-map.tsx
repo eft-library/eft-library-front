@@ -22,8 +22,8 @@ import type { UserItemTypes } from "../hideout.types";
 import { Input } from "@/components/ui/input";
 
 export default function StationMap({
-  onClickReset,
-  onClickResetItem,
+  onClickResetBtn,
+  onClickResetItemBtn,
   onChangeMaster,
   completeList,
   masterId,
@@ -99,9 +99,9 @@ export default function StationMap({
         .map((item) =>
           isSameItem(item, id, isRaid)
             ? { ...item, count: Math.max(0, item.count - 1) }
-            : item
+            : item,
         )
-        .filter((item) => item.count > 0)
+        .filter((item) => item.count > 0),
     );
   };
 
@@ -114,7 +114,7 @@ export default function StationMap({
       // 0이면 해당 타입 제거
       if (clamped === 0) {
         return prev.filter(
-          (item) => !(item.id === id && item.found_in_raid === isRaid)
+          (item) => !(item.id === id && item.found_in_raid === isRaid),
         );
       }
 
@@ -159,7 +159,7 @@ export default function StationMap({
     return itemRequireInfo.filter((reqItem) =>
       [reqItem.name.en, reqItem.name.ko, reqItem.name.ja]
         .filter(Boolean)
-        .some((name) => name.toLowerCase().includes(keyword))
+        .some((name) => name.toLowerCase().includes(keyword)),
     );
   }, [itemRequireInfo, searchWord]);
 
@@ -206,7 +206,7 @@ export default function StationMap({
                       station.master_id,
                       40,
                       40,
-                      getMaxSuffix(station.master_id, completeList)
+                      getMaxSuffix(station.master_id, completeList),
                     )}
                   </div>
 
@@ -238,7 +238,7 @@ export default function StationMap({
 
               const currentCount =
                 userItemMap.get(
-                  makeItemKey(reqItem.item_id, reqItem.found_in_raid)
+                  makeItemKey(reqItem.item_id, reqItem.found_in_raid),
                 ) ?? 0;
 
               const isCardCompleted = reqItem.found_in_raid
@@ -328,7 +328,7 @@ export default function StationMap({
                           handleChange(
                             reqItem.item_id,
                             reqItem.found_in_raid,
-                            Number(e.target.value)
+                            Number(e.target.value),
                           )
                         }
                         onFocus={(e) => e.target.select()}
@@ -385,7 +385,7 @@ export default function StationMap({
           {tabState === "station" && (
             <Button
               size="sm"
-              onClick={onClickReset}
+              onClick={() => onClickResetBtn(true)}
               style={{ backgroundColor: "#F43F5E", color: "#FFFFFF" }}
               className="hover:opacity-90 focus-visible:ring-0 focus-visible:ring-offset-0"
             >
@@ -396,7 +396,7 @@ export default function StationMap({
             <>
               <Button
                 size="sm"
-                onClick={onClickResetItem}
+                onClick={() => onClickResetItemBtn(true)}
                 style={{ backgroundColor: "#F43F5E", color: "#FFFFFF" }}
                 className="hover:opacity-90 focus-visible:ring-0 focus-visible:ring-offset-0"
               >
@@ -457,7 +457,7 @@ export default function StationMap({
                   {hideoutI18n.usageGuide.section1.contents[localeKey].map(
                     (text, idx) => (
                       <p key={idx}>{text}</p>
-                    )
+                    ),
                   )}
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function StationMap({
                           </span>
                         ))}
                       </p>
-                    )
+                    ),
                   )}
                 </div>
               </div>
@@ -505,7 +505,7 @@ export default function StationMap({
                           </span>
                         ))}
                       </p>
-                    )
+                    ),
                   )}
                 </div>
               </div>
@@ -521,7 +521,7 @@ export default function StationMap({
                           hideoutI18n.usageGuide.summary[localeKey].length -
                             1 && <br />}
                       </span>
-                    )
+                    ),
                   )}
                 </p>
               </div>

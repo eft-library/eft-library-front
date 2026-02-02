@@ -421,6 +421,16 @@ export const hideoutI18n = {
   reset: { en: "Reset", ja: "初期化", ko: "초기화" },
   material: { en: "Material", ja: "材料", ko: "재료" },
   result: { en: "Result", ja: "結果", ko: "결과" },
+  cancel: {
+    en: "Cancel",
+    ja: "キャンセル",
+    ko: "취소",
+  },
+  resetInfo: {
+    en: "Do you want to reset the information?",
+    ja: "情報を初期化しますか？",
+    ko: "정보를 초기화하시겠습니까?",
+  },
   usageGuide: {
     section1: {
       title: {
