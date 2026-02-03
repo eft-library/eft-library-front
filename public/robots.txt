@@ -1,5 +1,12 @@
 User-agent: *
 
-Sitemap: https://eftlibrary.com/sitemap.xml
+Sitemap: https://eftlibrary.com/sitemap/main.xml
+Sitemap: https://eftlibrary.com/sitemap/boss.xml
+Sitemap: https://eftlibrary.com/sitemap/quest.xml
+Sitemap: https://eftlibrary.com/sitemap/legal.xml
+Sitemap: https://eftlibrary.com/sitemap/information.xml
+Sitemap: https://eftlibrary.com/sitemap/map.xml
+Sitemap: https://eftlibrary.com/sitemap/item.xml
+Sitemap: https://eftlibrary.com/sitemap/features.xml
 
 #DaumWebMasterTool:f9f3c352224a2c2a460baed45afaad021ca93fb7f26302959c7b4441d6f411da:KwfSfnXgL1bn4FKLKNMlhA==
