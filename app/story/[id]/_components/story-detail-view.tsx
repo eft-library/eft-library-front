@@ -6,13 +6,14 @@ import StorySelector from "./StorySelector/story-selector";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { storyI18N } from "@/lib/consts/i18nConsts";
+import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 
 export default function StoryView({ story }: StoryViewTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
   return (
-    <div className="min-h-screen bg-background">
+    <ViewWrapper>
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h1 className="text-balance font-sans font-bold tracking-tight text-foreground text-5xl">
@@ -23,6 +24,6 @@ export default function StoryView({ story }: StoryViewTypes) {
         <StorySelector selector={story.selector} />
         <StoryContents storyDetail={story.detail} />
       </div>
-    </div>
+    </ViewWrapper>
   );
 }
