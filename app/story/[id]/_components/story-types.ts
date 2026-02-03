@@ -30,3 +30,7 @@ export interface SelectorTypes {
 export interface StoryContentsTypes {
   storyDetail: StoryDetailTypes;
 }
+
+export interface StoryGuideTypes {
+  guide: LocaleName;
+}

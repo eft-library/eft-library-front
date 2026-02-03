@@ -1,0 +1,30 @@
+import { memo } from "react";
+
+interface Props {
+  html: string;
+  onImageClick: (src: string) => void;
+}
+
+const StoryGuideContent = memo(function StoryGuideContent({
+  html,
+  onImageClick,
+}: Props) {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "IMG") {
+      onImageClick((target as HTMLImageElement).src);
+    }
+  };
+
+  return (
+    <div
+      className="prose prose-sm dark:prose-invert max-w-none
+        [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:mb-4
+        [&_p]:leading-relaxed [&_p]:mb-3"
+      dangerouslySetInnerHTML={{ __html: html }}
+      onClick={handleClick}
+    />
+  );
+});
+
+export default StoryGuideContent;

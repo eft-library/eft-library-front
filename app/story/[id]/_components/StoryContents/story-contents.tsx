@@ -13,65 +13,18 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { StoryContentsTypes } from "../story-types";
 import { storyI18N } from "@/lib/consts/i18nConsts";
-import { useState, useRef } from "react";
-import {
-  DialogHeader,
-  DialogTitle,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import StoryGuide from "./story-guide";
+import { useState, useCallback } from "react";
+import StoryGuideContent from "./story-guide";
+import ImageViewerDialog from "./image-viewer-dialog";
 
 export default function StoryContents({ storyDetail }: StoryContentsTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-
-  const [selectedImage, setSelectedImage] = useState<string>("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [scale, setScale] = useState(1);
-  const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const lastPos = useRef({ x: 0, y: 0 });
-
-  const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    const img = event.target as HTMLImageElement;
-    if (img.tagName === "IMG") {
-      setSelectedImage(img.src);
-      setIsOpen(true);
-      setScale(1);
-      setPosition({ x: 0, y: 0 });
-    }
-  };
-
-  // 마우스 휠로 확대/축소
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const delta = -event.deltaY * 0.001;
-    setScale((prev) => Math.min(Math.max(prev + delta, 0.5), 3));
-  };
-
-  // 마우스 드래그 시작
-  const handleMouseDown = (event: React.MouseEvent) => {
-    if (scale <= 1) return; // 확대 상태에서만 드래그 가능
-    setIsDragging(true);
-    lastPos.current = { x: event.clientX, y: event.clientY };
-  };
-
-  // 드래그 중
-  const handleMouseMove = (event: React.MouseEvent) => {
-    if (!isDragging) return;
-    const dx = event.clientX - lastPos.current.x;
-    const dy = event.clientY - lastPos.current.y;
-    lastPos.current = { x: event.clientX, y: event.clientY };
-    setPosition((prev) => ({
-      x: prev.x + dx,
-      y: prev.y + dy,
-    }));
-  };
-
-  // 드래그 종료
-  const handleMouseUp = () => setIsDragging(false);
-  const handleMouseLeave = () => setIsDragging(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const handleImageClick = useCallback((src: string) => {
+    setSelectedImage(src);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -136,52 +89,15 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div
-              className="prose  prose-sm  dark:prose-invert  max-w-none [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:mb-4 
-              [&_h3]:mt-8 [&_h3:first-child]:mt-0 [&_h3]:text-foreground dark:[&_h3]:text-white/90[&_p]:leading-relaxed [&_p]:text-foreground 
-              [&_p]:mb-3 [&_table]:w-full [&_table]:border-collapse [&_table]:my-6 [&_th]:border [&_th]:border-border [&_th]:bg-muted/70 [&_th]:p-3 
-              [&_th]:text-center [&_th]:align-middle [&_th]:font-semibold dark:[&_th]:border-white/10 dark:[--tw-prose-body:var(--color-white)]
-              dark:[&_th]:bg-white/10 [&_td]:border [&_td]:border-border [&_td]:p-3 [&_td]:text-center [&_td]:align-middle dark:[&_td]:border-white/10 
-              [&_td_img]:inline-block [&_td_img]:h-12 [&_td_img]:w-12 [&_td_img]:mx-auto"
-              dangerouslySetInnerHTML={{
-                __html: storyDetail.guide[localeKey],
-              }}
-              onClick={handleImageClick}
+            <StoryGuideContent
+              html={storyDetail.guide[localeKey]}
+              onImageClick={handleImageClick}
             />
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogContent className="sm:max-w-400 sm:min-h-225 bg-transparent border-none shadow-none">
-                <DialogHeader>
-                  <DialogTitle />
-                  <DialogDescription>
-                    <div
-                      onWheel={handleWheel}
-                      onMouseDown={handleMouseDown}
-                      onMouseMove={handleMouseMove}
-                      onMouseUp={handleMouseUp}
-                      onMouseLeave={handleMouseLeave}
-                      className="w-full h-200 flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none"
-                    >
-                      <img
-                        src={selectedImage}
-                        alt="selected"
-                        draggable={false}
-                        style={{
-                          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                          transition: isDragging
-                            ? "none"
-                            : "transform 0.1s ease",
-                          transformOrigin: "center center",
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          userSelect: "none",
-                          pointerEvents: "none", // 드래그 이벤트 방해 방지
-                        }}
-                      />
-                    </div>
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
+
+            <ImageViewerDialog
+              src={selectedImage}
+              onClose={() => setSelectedImage(null)}
+            />
           </CardContent>
         </Card>
       )}
