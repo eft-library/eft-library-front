@@ -31,7 +31,7 @@ export default function HideoutDetail({
   const splitLevel = levelId.split("-");
 
   const masterInfo = hideoutData.hideout_info.find(
-    (station) => station.master_id === splitLevel[0]
+    (station) => station.master_id === splitLevel[0],
   );
 
   const levelItem = masterInfo?.data.find((sub) => sub.level_id === levelId);
@@ -78,7 +78,7 @@ export default function HideoutDetail({
                     masterInfo?.master_id,
                     60,
                     60,
-                    getMaxSuffix(levelId)
+                    getMaxSuffix(levelId),
                   )
                 : ""}
             </div>
@@ -134,7 +134,7 @@ export default function HideoutDetail({
                 hover:scale-105 hover:shadow-md
                 
                 /* 라이트 모드 - 활성 상태 */
-                data-[state=active]:bg-gradient-to-r 
+                data-[state=active]:bg-linear-to-r 
                 data-[state=active]:${getGradient(index)}
                 data-[state=active]:text-white 
                 data-[state=active]:shadow-lg
@@ -146,7 +146,7 @@ export default function HideoutDetail({
                 data-[state=inactive]:hover:text-slate-800
                 
                 /* 다크 모드 - 활성 상태 */
-                dark:data-[state=active]:bg-gradient-to-r 
+                dark:data-[state=active]:bg-linear-to-r 
                 dark:data-[state=active]:${getGradient(index)}
                 dark:data-[state=active]:text-white
                 dark:data-[state=active]:shadow-xl
@@ -181,7 +181,7 @@ export default function HideoutDetail({
                 data-[state=active]:opacity-20 
                 transition-opacity duration-300 blur-sm
                 hidden dark:block
-                bg-gradient-to-r ${getGradient(index)}
+                bg-linear-to-r ${getGradient(index)}
               `}
                 />
 
@@ -192,7 +192,7 @@ export default function HideoutDetail({
                 data-[state=active]:opacity-100
                 transition-opacity duration-300
                 hidden dark:block
-                bg-gradient-to-r ${getGradient(index)}
+                bg-linear-to-r ${getGradient(index)}
                 blur-md -z-10 scale-110
               `}
                 />

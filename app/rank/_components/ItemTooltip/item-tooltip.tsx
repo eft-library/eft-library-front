@@ -72,7 +72,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipTypes) {
 
   return (
     <div
-      className={`fixed z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-3 sm:p-4 pointer-events-none w-[260px] sm:min-w-[280px] sm:max-w-[320px] transition-opacity duration-150 ${
+      className={`fixed z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-3 sm:p-4 pointer-events-none w-65 sm:min-w-70 sm:max-w-[320px] transition-opacity duration-150 ${
         isPositionCalculated ? "opacity-100" : "opacity-0"
       }`}
       style={{
@@ -82,7 +82,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipTypes) {
       }}
     >
       <div className="flex items-start gap-2 sm:gap-3">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 dark:bg-gray-800 rounded-lg flex-shrink-0 overflow-hidden border border-gray-200 dark:border-gray-700 relative">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 dark:bg-gray-800 rounded-lg shrink-0 overflow-hidden border border-gray-200 dark:border-gray-700 relative">
           <Image
             src={item.image || "/placeholder.svg"}
             alt={item.name.en}

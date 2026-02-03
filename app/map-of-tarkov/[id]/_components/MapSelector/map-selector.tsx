@@ -36,13 +36,13 @@ export default function MapSelector({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full sm:w-auto min-w-[140px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+                className="w-full sm:w-auto min-w-35 justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
               >
                 {selectedMap?.name[localeKey] || ""}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-full min-w-[200px] bg-popover border border-border text-popover-foreground">
+            <DropdownMenuContent className="w-full min-w-50 bg-popover border border-border text-popover-foreground">
               {mapData.map_selector.map((map) => (
                 <Link href={`/map-of-tarkov/${map.id}`} key={map.id}>
                   <DropdownMenuItem
@@ -74,15 +74,15 @@ export default function MapSelector({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto min-w-[160px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+                    className="w-full sm:w-auto min-w-40 justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
                   >
                     {mapData.map_info.children.find(
-                      (sub) => sub.id === imageSelect
+                      (sub) => sub.id === imageSelect,
                     )?.name[localeKey] || "Sub"}
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full min-w-[220px] bg-popover border border-border text-popover-foreground">
+                <DropdownMenuContent className="w-full min-w-55 bg-popover border border-border text-popover-foreground">
                   {mapData.map_info.children.map((subMap) => (
                     <DropdownMenuItem
                       key={`sub-map-${subMap.id}`}

@@ -91,7 +91,7 @@ export default function RngHelp() {
             </div>
 
             {/* Image */}
-            <div className="relative aspect-[16/9] min-h-[360px] bg-gray-200">
+            <div className="relative aspect-video min-h-90 bg-gray-200">
               <Image
                 src={step.image[localeKey]}
                 alt={step.title[localeKey]}

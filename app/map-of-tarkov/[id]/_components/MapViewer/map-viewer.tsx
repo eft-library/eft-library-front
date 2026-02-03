@@ -32,7 +32,7 @@ export default function MapViewer({ mapData, imageSelect }: MapViewTypes) {
                   <div
                     ref={ref}
                     onClick={open}
-                    className="flex justify-center items-center cursor-pointer min-h-[600px] relative"
+                    className="flex justify-center items-center cursor-pointer min-h-150 relative"
                   >
                     <Image
                       src={map.mot_image[localeKey] || "/placeholder.svg"}
@@ -47,7 +47,7 @@ export default function MapViewer({ mapData, imageSelect }: MapViewTypes) {
                   </div>
                 )}
               </Item>
-            )
+            ),
         )}
       </Gallery>
     </div>

@@ -24,7 +24,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
   const [alertDesc, setAlertDesc] = useState<string>("");
   const [alertStatus, setAlertStatus] = useState<boolean>(false);
   const [userRebirth, setUserRebirth] = useState<string[]>(
-    progress.userRebirthList
+    progress.userRebirthList,
   );
   const [userKappa, setUserKappa] = useState<string[]>(progress.userKappaList);
 
@@ -35,13 +35,13 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
         (prev) =>
           prev.includes(itemId)
             ? prev.filter((id) => id !== itemId) // 있으면 삭제
-            : [...prev, itemId] // 없으면 추가
+            : [...prev, itemId], // 없으면 추가
       );
     } else if (activeTab === "Kappa") {
       setUserKappa((prev) =>
         prev.includes(itemId)
           ? prev.filter((id) => id !== itemId)
-          : [...prev, itemId]
+          : [...prev, itemId],
       );
     }
   };
@@ -53,7 +53,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_USER_PROGRESS,
         { userRebirth: userRebirth, userKappa: userKappa },
-        session
+        session,
       );
       if (response?.status === 200) {
         if (activeTab === "Rebirth") {
@@ -92,15 +92,15 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
   return (
     <div className="mx-auto">
       {/* Header Box - Applied modern design with gradients and shadows */}
-      <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800/50 border-0 shadow-lg shadow-gray-200/20 dark:shadow-gray-900/40 hover:shadow-xl hover:shadow-gray-200/30 dark:hover:shadow-gray-900/60 transition-all duration-300 hover:-translate-y-1">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 dark:from-blue-400/10 dark:via-purple-400/10 dark:to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="group relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-white to-gray-50/50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800/50 border-0 shadow-lg shadow-gray-200/20 dark:shadow-gray-900/40 hover:shadow-xl hover:shadow-gray-200/30 dark:hover:shadow-gray-900/60 transition-all duration-300 hover:-translate-y-1">
+        <div className="absolute inset-0 bg-linear-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 dark:from-blue-400/10 dark:via-purple-400/10 dark:to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
         <div className="relative flex w-full items-center justify-between p-6">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex flex-1 items-center gap-4 text-left transition-colors hover:opacity-80"
           >
-            <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br p-0.5">
+            <div className="relative w-14 h-14 rounded-2xl bg-linear-to-br p-0.5">
               <div className="w-full h-full bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center">
                 <Image
                   src={currentTab?.image || ""}
@@ -133,7 +133,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
               variant="default"
               size="sm"
               onClick={handleSave}
-              className="gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-200 hover:-translate-y-0.5"
+              className="gap-2 bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-200 hover:-translate-y-0.5"
             >
               <Save className="h-4 w-4" />
               <span className="hidden sm:inline">
@@ -166,7 +166,7 @@ export default function ProgressView({ progress }: ProgressViewTypes) {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 rounded-t-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                     activeTab === tab.id
-                      ? "bg-gradient-to-br from-blue-500/90 to-blue-600/90 text-white shadow-md"
+                      ? "bg-linear-to-br from-blue-500/90 to-blue-600/90 text-white shadow-md"
                       : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
                   }`}
                 >

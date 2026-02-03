@@ -27,9 +27,9 @@ export default function QuestNode(props: any) {
   return (
     <div
       className={cn(
-        "group relative flex flex-col rounded-xl min-w-[240px] min-h-[140px]",
+        "group relative flex flex-col rounded-xl min-w-60 min-h-35",
         "transition-all duration-300 ease-in-out",
-        "hover:scale-105 hover:shadow-2xl"
+        "hover:scale-105 hover:shadow-2xl",
       )}
       style={{
         opacity:
@@ -44,20 +44,20 @@ export default function QuestNode(props: any) {
       <div
         className={cn(
           "relative w-full h-full rounded-xl p-1",
-          "bg-gradient-to-br",
+          "bg-linear-to-br",
           node_color(props.data.npc_id, theme),
-          "shadow-lg hover:shadow-xl transition-shadow duration-300"
+          "shadow-lg hover:shadow-xl transition-shadow duration-300",
         )}
       >
         {/* Inner content container */}
         <div
           className={cn(
-            "relative w-full h-full rounded-lg min-h-[132px]",
+            "relative w-full h-full rounded-lg min-h-33",
             "bg-white dark:bg-gray-900",
             "border-2 transition-colors duration-200",
             props.data.isCheck
               ? "border-emerald-400 dark:border-emerald-500"
-              : "border-gray-200 dark:border-gray-700"
+              : "border-gray-200 dark:border-gray-700",
           )}
         >
           {/* Checkbox section */}
@@ -80,7 +80,7 @@ export default function QuestNode(props: any) {
                   "hover:scale-110 active:scale-95",
                   props.data.isCheck
                     ? "bg-emerald-500 border-emerald-500 text-white"
-                    : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-emerald-400"
+                    : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-emerald-400",
                 )}
               >
                 {props.data.isCheck && <Check className="w-4 h-4" />}
@@ -97,7 +97,7 @@ export default function QuestNode(props: any) {
                   "text-gray-800 dark:text-gray-100",
                   "hover:text-blue-600 dark:hover:text-blue-400",
                   "transition-colors duration-200",
-                  "group-hover:scale-105 transition-transform duration-200"
+                  "group-hover:scale-105 transition-transform duration-200",
                 )}
                 onClick={() => onClickTitle(props.data.url_mapping)}
               >
@@ -117,9 +117,9 @@ export default function QuestNode(props: any) {
               <div
                 className={cn(
                   "flex items-center gap-1 px-2 py-1 rounded-full",
-                  "bg-gradient-to-r from-yellow-400 to-orange-500",
+                  "bg-linear-to-r from-yellow-400 to-orange-500",
                   "text-white font-bold text-sm",
-                  "shadow-md"
+                  "shadow-md",
                 )}
               >
                 <Zap className="w-3 h-3" />
@@ -145,8 +145,8 @@ export default function QuestNode(props: any) {
               isConnectable={props.isConnectable}
               className={cn(
                 "w-3 h-3 border-2 border-white dark:border-gray-800",
-                "bg-gradient-to-br from-blue-400 to-purple-500",
-                "hover:scale-125 transition-transform duration-200"
+                "bg-linear-to-br from-blue-400 to-purple-500",
+                "hover:scale-125 transition-transform duration-200",
               )}
             />
           )}
@@ -158,8 +158,8 @@ export default function QuestNode(props: any) {
               isConnectable={props.isConnectable}
               className={cn(
                 "w-3 h-3 border-2 border-white dark:border-gray-800",
-                "bg-gradient-to-br from-blue-400 to-purple-500",
-                "hover:scale-125 transition-transform duration-200"
+                "bg-linear-to-br from-blue-400 to-purple-500",
+                "hover:scale-125 transition-transform duration-200",
               )}
             />
           )}
@@ -173,8 +173,8 @@ export default function QuestNode(props: any) {
               isConnectable={props.isConnectable}
               className={cn(
                 "w-3 h-3 border-2 border-white dark:border-gray-800",
-                "bg-gradient-to-br from-blue-400 to-purple-500",
-                "hover:scale-125 transition-transform duration-200"
+                "bg-linear-to-br from-blue-400 to-purple-500",
+                "hover:scale-125 transition-transform duration-200",
               )}
             />
           )}
@@ -185,8 +185,8 @@ export default function QuestNode(props: any) {
               isConnectable={props.isConnectable}
               className={cn(
                 "w-3 h-3 border-2 border-white dark:border-gray-800",
-                "bg-gradient-to-br from-blue-400 to-purple-500",
-                "hover:scale-125 transition-transform duration-200"
+                "bg-linear-to-br from-blue-400 to-purple-500",
+                "hover:scale-125 transition-transform duration-200",
               )}
             />
           )}

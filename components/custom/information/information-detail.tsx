@@ -96,14 +96,14 @@ export default function InformationDetail({
             <div className="grid gap-3">
               {informationInfo.information_group.map((item) => (
                 <Link href={`${routeLink}/detail/${item.id}`} key={item.id}>
-                  <Card className="cursor-pointer transition-all duration-200 hover:shadow-md bg-white border-gray-200 hover:shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
+                  <Card className="cursor-pointer transition-all duration-200 hover:shadow-md bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <Badge
                               className={`text-xs ${returnBadgeColor(
-                                routeLink
+                                routeLink,
                               )}`}
                             >
                               {title}

@@ -28,7 +28,7 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
   };
 
   const maxDuration = Math.max(
-    ...wipeList.map((w) => getDateRange(w.season_start, w.season_end))
+    ...wipeList.map((w) => getDateRange(w.season_start, w.season_end)),
   );
 
   return (
@@ -102,7 +102,7 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
                           <DurationBar
                             duration={getDateRange(
                               wipe.season_start,
-                              wipe.season_end
+                              wipe.season_end,
                             )}
                             maxDuration={maxDuration}
                             isActive={index === 0}
@@ -128,11 +128,11 @@ export default function WipeView({ wipeList }: WipeViewTypes) {
 
               <div className="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-linear-to-r from-blue-400 to-cyan-400"></div>
                   <span>Active</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-rose-400 to-pink-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-linear-to-r from-rose-400 to-pink-400"></div>
                   <span>Completed</span>
                 </div>
                 <div className="ml-auto">

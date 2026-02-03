@@ -19,7 +19,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
   return (
     <div className="text-center mb-8 sm:mb-12">
       <div className="relative inline-block mb-6">
-        <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-2xl border-2 border-lime-400/30 shadow-lg shadow-lime-400/20 overflow-hidden bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900">
+        <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-2xl border-2 border-lime-400/30 shadow-lg shadow-lime-400/20 overflow-hidden bg-linear-to-b from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900">
           <Image
             src={quest.npc_image}
             alt="Therapist"
@@ -113,7 +113,7 @@ export default function QuestHeader({ quest }: QuestDetailTypes) {
                       {next_quest.task[getOtherLocalizedKey(localeKey)]}
                     </Link>
                   </div>
-                )
+                ),
               )}
             {quest.task_next && quest.task_next.length > 5 && (
               <button

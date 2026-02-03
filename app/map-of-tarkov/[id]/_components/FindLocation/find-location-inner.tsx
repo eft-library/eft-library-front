@@ -54,7 +54,7 @@ export default function FindLocationInner({
       minZoom={-2}
       maxZoom={4}
       crs={CRS.Simple}
-      className="w-full h-[800px]"
+      className="w-full h-200"
       maxBounds={findInfo.map_bounds}
       maxBoundsViscosity={1.0}
       doubleClickZoom={false}

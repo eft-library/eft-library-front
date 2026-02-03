@@ -16,7 +16,7 @@ export default function TraderTab({
   return (
     <div className="w-full">
       <Tabs value={tabState} onValueChange={setTabState} className="w-full">
-        <TabsList className="w-full grid grid-cols-6 lg:grid-cols-12 gap-2 h-auto p-2 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
+        <TabsList className="w-full grid grid-cols-6 lg:grid-cols-12 gap-2 h-auto p-2 bg-linear-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
           <TabsTrigger
             value={"all"}
             className="
@@ -29,7 +29,7 @@ export default function TraderTab({
               data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100
               data-[state=active]:shadow-md dark:data-[state=active]:shadow-slate-900/20
               data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600
-              before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r 
+              before:absolute before:inset-0 before:rounded-lg before:bg-linear-to-r 
               before:from-blue-500/0 before:to-purple-500/0
               data-[state=active]:before:from-blue-500/10 data-[state=active]:before:to-purple-500/10
               dark:data-[state=active]:before:from-blue-400/10 dark:data-[state=active]:before:to-purple-400/10
@@ -54,7 +54,7 @@ export default function TraderTab({
                 data-[state=active]:shadow-md dark:data-[state=active]:shadow-slate-900/20
                 data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600
                 data-[state=active]:scale-105
-                before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r 
+                before:absolute before:inset-0 before:rounded-lg before:bg-linear-to-r 
                 before:from-blue-500/0 before:to-purple-500/0
                 data-[state=active]:before:from-blue-500/10 data-[state=active]:before:to-purple-500/10
                 dark:data-[state=active]:before:from-blue-400/10 dark:data-[state=active]:before:to-purple-400/10

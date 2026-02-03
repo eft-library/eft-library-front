@@ -12,7 +12,7 @@ export default function TotalRequestCard({
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-lg shadow-2xl border border-gray-700">
+    <div className="bg-linear-to-r from-blue-600 to-purple-700 text-white rounded-lg shadow-2xl border border-gray-700">
       <div className="p-8 text-center space-y-2">
         <div className="flex items-center justify-center space-x-2">
           <Activity className="h-8 w-8" />

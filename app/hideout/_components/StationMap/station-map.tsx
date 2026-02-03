@@ -180,7 +180,7 @@ export default function StationMap({
         )}
       </div>
 
-      <div className="h-[600px] overflow-y-scroll pr-2">
+      <div className="h-150 overflow-y-scroll pr-2">
         {/* Facility/Items Grid Layout */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {tabState === "station" &&
@@ -259,7 +259,7 @@ export default function StationMap({
                       <div
                         className="
                           flex items-center justify-center
-                          h-5 min-w-[20px] px-1.5
+                          h-5 min-w-5 px-1.5
                           rounded-full
                           bg-green-200 text-green-800
                           dark:bg-green-900 dark:text-green-200
@@ -267,7 +267,7 @@ export default function StationMap({
                           shadow-sm
                         "
                       >
-                        <Check className="h-3.5 w-3.5 stroke-[3]" />
+                        <Check className="h-3.5 w-3.5 stroke-3" />
                       </div>
                     </div>
                   )}
@@ -334,7 +334,7 @@ export default function StationMap({
                         onFocus={(e) => e.target.select()}
                         onClick={(e) => e.stopPropagation()}
                         className="
-                          h-6 w-[4rem] p-0
+                          h-6 w-16 p-0
                           text-xs font-semibold text-center
                           bg-muted/40
                           border border-border/40

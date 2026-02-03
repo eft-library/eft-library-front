@@ -33,14 +33,14 @@ export default function FindLocationModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
         className="
-    !w-[90vw]
-    md:!w-[70vw]
-    xl:!w-[60vw]
-    !max-w-[1600px]
+    w-[90vw]!
+    md:w-[70vw]!
+    xl:w-[60vw]!
+    max-w-400!
     max-h-[90vh]
     bg-white border border-gray-200
     dark:bg-[#1e2124] dark:border-gray-700
-    rounded-lg z-[8888]
+    rounded-lg z-8888
   "
       >
         {/* Header */}
@@ -141,7 +141,6 @@ export default function FindLocationModal({
                   >
                     <a
                       href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/where-am-i"
-                      // href="https://github.com/eft-library/eft-library-where-am-i/releases/download/where-am-i/where-am-i.zip"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

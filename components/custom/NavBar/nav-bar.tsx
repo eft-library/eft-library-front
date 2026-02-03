@@ -38,7 +38,7 @@ export default function NavBar({ navData }: NavBarTypes) {
   }
   return (
     <nav
-      className={`sticky top-0 z-[1000] border-b ${
+      className={`sticky top-0 z-1000 border-b ${
         theme === "dark"
           ? "bg-[#2a2d35] border-gray-700"
           : "bg-white border-gray-200"

@@ -15,7 +15,7 @@ export default function InformationSelector() {
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg overflow-x-auto">
         <Link href="/notice?id=1">
           <button
-            className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
+            className={`shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "notice"
                 ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
                 : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -26,7 +26,7 @@ export default function InformationSelector() {
         </Link>
         <Link href="/patch-notes?id=1">
           <button
-            className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
+            className={`shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "patch-notes"
                 ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
                 : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -37,7 +37,7 @@ export default function InformationSelector() {
         </Link>
         <Link href="/event?id=1">
           <button
-            className={`flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
+            className={`shrink-0 px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
               pathname.split("/").filter(Boolean)[0] === "event"
                 ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
                 : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"

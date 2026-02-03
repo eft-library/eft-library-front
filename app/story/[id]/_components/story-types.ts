@@ -32,5 +32,11 @@ export interface StoryContentsTypes {
 }
 
 export interface StoryGuideTypes {
-  guide: LocaleName;
+  html: string;
+  onImageClick: (src: string) => void;
+}
+
+export interface ImageViewerDialogTypes {
+  src: string | null;
+  onClose: () => void;
 }

@@ -24,10 +24,10 @@ export default function TraderNode(props: any) {
     <div
       className={cn(
         "group relative flex flex-col rounded-2xl",
-        "min-w-[200px] sm:min-w-[220px] min-h-[220px] sm:min-h-[240px]",
+        "min-w-50 sm:min-w-55 min-h-55 sm:min-h-60",
         "transition-all duration-300 ease-in-out",
         "hover:scale-105 hover:shadow-2xl",
-        "cursor-pointer"
+        "cursor-pointer",
       )}
       onClick={() => moveQuest(props.data.id)}
     >
@@ -35,9 +35,9 @@ export default function TraderNode(props: any) {
       <div
         className={cn(
           "relative w-full h-full rounded-2xl p-1",
-          "bg-gradient-to-br",
+          "bg-linear-to-br",
           node_color(props.data.id, theme),
-          "shadow-lg hover:shadow-xl transition-shadow duration-300"
+          "shadow-lg hover:shadow-xl transition-shadow duration-300",
         )}
       >
         {/* 메인 컨테이너 */}
@@ -46,7 +46,7 @@ export default function TraderNode(props: any) {
             "relative w-full h-full rounded-xl",
             "bg-white dark:bg-gray-900",
             "border-2 transition-colors duration-200",
-            "overflow-hidden"
+            "overflow-hidden",
           )}
         >
           {/* 이미지 컨테이너 */}
@@ -56,7 +56,7 @@ export default function TraderNode(props: any) {
                 className={cn(
                   "relative rounded-full overflow-hidden",
                   "ring-4 ring-white dark:ring-gray-800",
-                  "shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                  "shadow-lg group-hover:shadow-xl transition-shadow duration-300",
                 )}
               >
                 <Image
@@ -81,7 +81,7 @@ export default function TraderNode(props: any) {
                   "text-gray-800 dark:text-gray-100",
                   "group-hover:text-blue-600 dark:group-hover:text-blue-400",
                   "transition-colors duration-200",
-                  "truncate"
+                  "truncate",
                 )}
                 title={props.data.name[localeKey]}
               >
@@ -101,8 +101,8 @@ export default function TraderNode(props: any) {
             isConnectable={props.isConnectable}
             className={cn(
               "w-3 h-3 border-2 border-white dark:border-gray-800",
-              "bg-gradient-to-br from-blue-400 to-purple-500",
-              "hover:scale-125 transition-transform duration-200"
+              "bg-linear-to-br from-blue-400 to-purple-500",
+              "hover:scale-125 transition-transform duration-200",
             )}
           />
           <Handle
@@ -112,8 +112,8 @@ export default function TraderNode(props: any) {
             isConnectable={props.isConnectable}
             className={cn(
               "w-3 h-3 border-2 border-white dark:border-gray-800",
-              "bg-gradient-to-br from-blue-400 to-purple-500",
-              "hover:scale-125 transition-transform duration-200"
+              "bg-linear-to-br from-blue-400 to-purple-500",
+              "hover:scale-125 transition-transform duration-200",
             )}
           />
         </>
@@ -125,8 +125,8 @@ export default function TraderNode(props: any) {
             isConnectable={props.isConnectable}
             className={cn(
               "w-3 h-3 border-2 border-white dark:border-gray-800",
-              "bg-gradient-to-br from-blue-400 to-purple-500",
-              "hover:scale-125 transition-transform duration-200"
+              "bg-linear-to-br from-blue-400 to-purple-500",
+              "hover:scale-125 transition-transform duration-200",
             )}
           />
           <Handle
@@ -135,8 +135,8 @@ export default function TraderNode(props: any) {
             isConnectable={props.isConnectable}
             className={cn(
               "w-3 h-3 border-2 border-white dark:border-gray-800",
-              "bg-gradient-to-br from-blue-400 to-purple-500",
-              "hover:scale-125 transition-transform duration-200"
+              "bg-linear-to-br from-blue-400 to-purple-500",
+              "hover:scale-125 transition-transform duration-200",
             )}
           />
         </>

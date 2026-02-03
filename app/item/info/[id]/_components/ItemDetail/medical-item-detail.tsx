@@ -79,12 +79,12 @@ export default function MedicalItemDetail({ itemInfo }: ItemDetailTypes) {
                       key={`${itemInfo.id}-cures-${index}`}
                       className="flex items-center gap-3 py-2 px-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
                     >
-                      <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
                       <span className="text-sm sm:text-base text-foreground font-medium flex-1">
                         {buff}
                       </span>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>

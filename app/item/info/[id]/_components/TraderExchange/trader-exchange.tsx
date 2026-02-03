@@ -37,7 +37,7 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
             className="flex flex-col sm:grid sm:grid-cols-3 gap-4 py-3 px-4 rounded-lg hover:bg-secondary transition-colors items-start sm:items-center border-b border-border last:border-b-0"
           >
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-mdflex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-mdflex items-center justify-center overflow-hidden shrink-0">
                 <Image
                   src={trader.npc_image}
                   alt={trader.npc_name.en}
@@ -65,7 +65,7 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                   key={`trader-req-${reqItem.item.id}-${sIndex}`}
                   className="flex items-center gap-2 mt-2 sm:mt-0 w-full sm:w-auto flex-nowrap"
                 >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0">
                     <Image
                       src={reqItem.item.gridImageLink}
                       alt={reqItem.item.name_en}
@@ -74,10 +74,10 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                       className="w-full h-full object-contain rounded-lg"
                     />
                   </div>
-                  <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
+                  <span className="text-sm font-medium text-black dark:text-white grow-0">
                     {reqItem.item[getOtherLocalizedKey(localeKey)]}
                   </span>
-                  <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
+                  <span className="text-sm font-semibold text-black dark:text-white shrink-0">
                     x {reqItem.quantity}
                   </span>
                 </div>
@@ -86,7 +86,7 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
 
             <div>
               <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:justify-center w-full sm:w-auto flex-nowrap">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0">
                   <Image
                     src={trader.barter_info.rewardItems.item.gridImageLink}
                     alt={trader.barter_info.rewardItems.item.name_en}
@@ -95,14 +95,14 @@ export default function TraderExchange({ itemInfo }: TraderExchangeTypes) {
                     className="w-full h-full object-contain rounded-lg"
                   />
                 </div>
-                <span className="text-sm font-medium text-black dark:text-white flex-grow-0">
+                <span className="text-sm font-medium text-black dark:text-white grow-0">
                   {
                     trader.barter_info.rewardItems.item[
                       getOtherLocalizedKey(localeKey)
                     ]
                   }
                 </span>
-                <span className="text-sm font-semibold text-black dark:text-white flex-shrink-0">
+                <span className="text-sm font-semibold text-black dark:text-white shrink-0">
                   x {trader.barter_info.rewardItems.quantity}
                 </span>
               </div>

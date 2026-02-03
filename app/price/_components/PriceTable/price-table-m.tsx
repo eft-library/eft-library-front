@@ -54,7 +54,7 @@ export default function PriceTableM({
                   alt={item.name.en}
                   width={48}
                   height={48}
-                  className="w-12 h-12 rounded bg-gray-200 dark:bg-slate-700 flex-shrink-0"
+                  className="w-12 h-12 rounded bg-gray-200 dark:bg-slate-700 shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-sm leading-tight text-gray-900 dark:text-white">
@@ -81,14 +81,14 @@ export default function PriceTableM({
                     {(() => {
                       const { raw, formatted } = calcChangeRate(
                         item,
-                        priceType
+                        priceType,
                       );
                       const badgeClass =
                         raw > 0
                           ? "bg-green-500 hover:bg-green-600 text-white"
                           : raw < 0
-                          ? "bg-red-500 hover:bg-red-600 text-white"
-                          : "bg-gray-400 hover:bg-gray-500 text-white";
+                            ? "bg-red-500 hover:bg-red-600 text-white"
+                            : "bg-gray-400 hover:bg-gray-500 text-white";
                       return (
                         <Badge
                           variant="default"

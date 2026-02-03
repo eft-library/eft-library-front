@@ -67,7 +67,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImageTypes) {
         onClick={handleImageClick}
       />
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[1600px] sm:min-h-[900px] bg-transparent border-none shadow-none">
+        <DialogContent className="sm:max-w-400 sm:min-h-225 bg-transparent border-none shadow-none">
           <DialogHeader>
             <DialogTitle />
             <DialogDescription>
@@ -77,7 +77,7 @@ export default function HtmlWithImage({ contents }: HtmlWithImageTypes) {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
-                className="w-full h-[800px] flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none"
+                className="w-full h-200 flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none"
               >
                 <img
                   src={selectedImage}

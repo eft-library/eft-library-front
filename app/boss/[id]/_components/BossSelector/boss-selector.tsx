@@ -34,7 +34,7 @@ export default function BossSelector({ bossData }: BossDetail) {
   };
 
   const selectedBoss = bossData.boss_selector.find(
-    (boss) => boss.url_mapping === param.id
+    (boss) => boss.url_mapping === param.id,
   );
 
   return (
@@ -51,13 +51,13 @@ export default function BossSelector({ bossData }: BossDetail) {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto min-w-[140px] justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+                  className="w-full sm:w-auto min-w-35 justify-between bg-background border border-border text-foreground hover:bg-accent hover:text-accent-foreground"
                 >
                   {selectedBoss?.name[localeKey] || ""}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full min-w-[200px] bg-popover border border-border text-popover-foreground">
+              <DropdownMenuContent className="w-full min-w-50 bg-popover border border-border text-popover-foreground">
                 {bossData.boss_selector.map((boss) => (
                   <DropdownMenuItem
                     key={boss.url_mapping}
@@ -85,7 +85,7 @@ export default function BossSelector({ bossData }: BossDetail) {
       <Card className="dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 p-0">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px]">
+            <table className="w-full min-w-150">
               <thead>
                 <tr className="border-b-2 bg-muted/30">
                   <th className="text-center p-3 sm:p-4 font-semibold text-sm sm:text-base">
@@ -147,32 +147,32 @@ export default function BossSelector({ bossData }: BossDetail) {
                             {groupSpawnAreas(bossData.boss.spawn_chance)
                               .length !==
                               index + 1 && (
-                              <Separator className="my-[3px] bg-white w-[60%]" />
+                              <Separator className="my-0.75 bg-white w-[60%]" />
                             )}
                           </React.Fragment>
-                        )
+                        ),
                       )}
                   </td>
                   <td className="text-center p-3 sm:p-4 text-sm sm:text-base">
                     {bossData.boss.spawn_chance &&
                       groupAndSummarizeChances(
                         bossData.boss.spawn_chance,
-                        localeKey
+                        localeKey,
                       ).map((spawn, index) => (
                         <React.Fragment key={`${spawn.name_en}-${index}`}>
                           <span>
                             {spawn.min === spawn.max
                               ? `${Math.round(spawn.min * 100)} %`
                               : `${Math.round(spawn.min * 100)} ~ ${Math.round(
-                                  spawn.max * 100
+                                  spawn.max * 100,
                                 )} %`}
                           </span>
                           {groupAndSummarizeChances(
                             bossData.boss.spawn_chance,
-                            localeKey
+                            localeKey,
                           ).length !==
                             index + 1 && (
-                            <Separator className="my-[3px] bg-white w-[60%]" />
+                            <Separator className="my-0.75 bg-white w-[60%]" />
                           )}
                         </React.Fragment>
                       ))}
@@ -181,7 +181,7 @@ export default function BossSelector({ bossData }: BossDetail) {
                     {bossData.boss.health_total}
                   </td>
                   <td className="p-3 sm:p-4 text-sm sm:text-base">
-                    <div className="flex flex-col items-center justify-center text-center h-full min-h-[64px]">
+                    <div className="flex flex-col items-center justify-center text-center h-full min-h-16">
                       {bossData.boss.children &&
                       bossData.boss.children.some((child) => !child.is_boss) ? (
                         bossData.boss.children.map(
@@ -190,7 +190,7 @@ export default function BossSelector({ bossData }: BossDetail) {
                               <span key={`${index}-follower-${childData.id}`}>
                                 {childData.name[localeKey]}
                               </span>
-                            )
+                            ),
                         )
                       ) : (
                         <span>-</span>

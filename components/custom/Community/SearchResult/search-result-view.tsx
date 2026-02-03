@@ -72,7 +72,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
     const handleScroll = () => {
       sessionStorage.setItem(
         "scroll-community-list-search",
-        window.scrollY.toString()
+        window.scrollY.toString(),
       );
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -114,7 +114,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                     className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   >
                     {SEARCH_CATEGORY.find(
-                      (original) => original.id === searchType
+                      (original) => original.id === searchType,
                     )?.[localeKey] ?? ""}
                   </Badge>
                   <span>총 {postInfo.total_count}개 결과</span>
@@ -146,7 +146,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 dark:text-white dark:group-hover:text-blue-400 flex items-center gap-2">
                                   <span className="inline-flex items-center gap-2">
                                     {post.thumbnail ? (
-                                      <div className="flex-shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-lg">
+                                      <div className="shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-lg">
                                         <Image
                                           src={post.thumbnail}
                                           alt={post.title || "Thumbnail"}
@@ -163,7 +163,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                       />
                                     )}
                                     {["all", "title", "titleContent"].includes(
-                                      searchType
+                                      searchType,
                                     ) ? (
                                       <Highlighter
                                         highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
@@ -178,22 +178,22 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                 </h3>
                                 <Badge
                                   className={cn(
-                                    "ml-2 flex-shrink-0 text-white dark:text-gray-100",
+                                    "ml-2 shrink-0 text-white dark:text-gray-100",
                                     CATEGORY_LIST.find(
                                       (original) =>
-                                        original.id === post.category
-                                    )?.color
+                                        original.id === post.category,
+                                    )?.color,
                                   )}
                                 >
                                   {CATEGORY_LIST.find(
-                                    (original) => original.id === post.category
+                                    (original) => original.id === post.category,
                                   )?.[localeKey] ?? ""}
                                 </Badge>
                               </div>
 
                               <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
                                 {["all", "titleContent"].includes(
-                                  searchType
+                                  searchType,
                                 ) ? (
                                   <Highlighter
                                     highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
@@ -268,7 +268,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                     <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
                                       <User className="w-3 h-3" />
                                       {["all", "author"].includes(
-                                        searchType
+                                        searchType,
                                       ) ? (
                                         <Highlighter
                                           highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 font-bold text-gray-900 dark:text-yellow-200 px-1 rounded"
@@ -286,7 +286,7 @@ export default function SearchResultView({ postInfo }: SearchResultViewTypes) {
                                       <Clock className="w-3 h-3" />
                                       <span>
                                         {formatISODateTime(
-                                          post.comment.create_time
+                                          post.comment.create_time,
                                         )}
                                       </span>
                                     </div>

@@ -155,7 +155,7 @@ export default function Comment({
   };
   const banStatus = getBanStatus(
     session?.userInfo.start_time,
-    session?.userInfo.end_time
+    session?.userInfo.end_time,
   );
 
   return (
@@ -163,7 +163,7 @@ export default function Comment({
       {/* Connection line for nested comments */}
       {comment.depth > 1 && (
         <div
-          className="absolute left-0 top-0 w-px bg-gradient-to-b from-blue-200 via-blue-300 to-transparent dark:from-blue-800 dark:via-blue-700 dark:to-transparent"
+          className="absolute left-0 top-0 w-px bg-linear-to-b from-blue-200 via-blue-300 to-transparent dark:from-blue-800 dark:via-blue-700 dark:to-transparent"
           style={{
             left: `${(comment.depth - 2) * 24 + 12}px`,
             height: "60px",
@@ -174,7 +174,7 @@ export default function Comment({
       {/* Reply connector */}
       {comment.depth > 1 && (
         <div
-          className="absolute top-6 w-3 h-px bg-gradient-to-r from-blue-300 to-transparent dark:from-blue-700 dark:to-transparent"
+          className="absolute top-6 w-3 h-px bg-linear-to-r from-blue-300 to-transparent dark:from-blue-700 dark:to-transparent"
           style={{ left: `${(comment.depth - 2) * 24 + 12}px` }}
         />
       )}
@@ -273,7 +273,7 @@ export default function Comment({
                         onClick={() => {
                           const isBlocked = session?.userInfo.user_blocks.some(
                             (block) =>
-                              block.blocked_email === comment.user_email
+                              block.blocked_email === comment.user_email,
                           );
 
                           if (isBlocked) {
@@ -289,14 +289,14 @@ export default function Comment({
                         }}
                       >
                         {session?.userInfo.user_blocks.some(
-                          (block) => block.blocked_email === comment.user_email
+                          (block) => block.blocked_email === comment.user_email,
                         ) ? (
                           <UserCheck className="w-4 h-4 mr-2 text-green-500" />
                         ) : (
                           <Ban className="w-4 h-4 mr-2 text-red-500" />
                         )}
                         {session?.userInfo.user_blocks.some(
-                          (block) => block.blocked_email === comment.user_email
+                          (block) => block.blocked_email === comment.user_email,
                         )
                           ? "차단 해제"
                           : "차단"}
@@ -331,7 +331,7 @@ export default function Comment({
             <div className="prose prose-sm max-w-none dark:prose-invert">
               {session?.userInfo.user_blocks.some(
                 (block: { blocked_email: string }) =>
-                  block.blocked_email === comment.user_email
+                  block.blocked_email === comment.user_email,
               ) ? (
                 <p className="text-gray-400 dark:text-gray-500 italic text-sm m-0">
                   🙅 차단한 사용자입니다.

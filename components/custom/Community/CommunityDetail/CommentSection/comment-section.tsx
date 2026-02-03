@@ -29,7 +29,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const { data: session } = useSession();
   const { createParentComment } = useCommentReaction(
     postInfo.id,
-    session?.accessToken || ""
+    session?.accessToken || "",
   );
   const [newComment, setNewComment] = useState("");
   const [reportOpen, setReportOpen] = useState<{
@@ -67,7 +67,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
   const fetchCommentData = async (
     email: string,
     pageNum: number,
-    commentId: string
+    commentId: string,
   ): Promise<CommentListsTypes> => {
     const data = await requestPostData(`${COMMUNITY_ENDPOINTS.GET_COMMENTS}`, {
       post_id: postInfo.id,
@@ -89,7 +89,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
   });
   const banStatus = getBanStatus(
     session?.userInfo.start_time,
-    session?.userInfo.end_time
+    session?.userInfo.end_time,
   );
   if (isLoading || !commentData) return <Loading />;
 
@@ -133,7 +133,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
                   제재 해제 시간:{" "}
                   <span className="font-mono">
                     {new Date(
-                      session?.userInfo.end_time ?? ""
+                      session?.userInfo.end_time ?? "",
                     ).toLocaleString()}
                   </span>
                 </p>
@@ -179,7 +179,7 @@ export default function CommentSection({ postInfo }: CommentSectionTypes) {
           {/* {commentData.issue_comments.map((issue) => (
             <div key={`issue-${issue.id}`} className="space-y-4">
               <div className="flex space-x-4">
-                <Avatar className="w-10 h-10 flex-shrink-0">
+                <Avatar className="w-10 h-10 shrink-0">
                     <AvatarImage
                       src={comment.author.avatar || "/placeholder.svg"}
                       alt={comment.author.name}

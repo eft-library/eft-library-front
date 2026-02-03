@@ -24,10 +24,10 @@ export default function RngItemNav({
   return (
     <div className="relative flex items-center gap-6 px-6 py-4 bg-card rounded-2xl border border-border shadow-lg overflow-hidden">
       {/* 배경 글로우 효과 */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
 
       {/* 점수 영역 */}
-      <div className="relative flex items-center gap-3 min-w-[160px]">
+      <div className="relative flex items-center gap-3 min-w-40">
         <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/20">
           <Coins className="w-5 h-5 text-accent" />
         </div>
@@ -47,14 +47,14 @@ export default function RngItemNav({
           <div
             className={`h-full rounded-full transition-all duration-300 ease-linear ${
               isLowTime
-                ? "bg-gradient-to-r from-destructive to-destructive/80 animate-pulse"
-                : "bg-gradient-to-r from-primary to-primary/80"
+                ? "bg-linear-to-r from-destructive to-destructive/80 animate-pulse"
+                : "bg-linear-to-r from-primary to-primary/80"
             }`}
             style={{ width: `${progress}%` }}
           />
         </div>
         <div
-          className={`flex items-center justify-center min-w-[64px] px-3 py-1.5 rounded-lg font-mono text-sm font-bold tabular-nums ${
+          className={`flex items-center justify-center min-w-16 px-3 py-1.5 rounded-lg font-mono text-sm font-bold tabular-nums ${
             isLowTime
               ? "bg-destructive/20 text-destructive"
               : "bg-primary/20 text-primary"

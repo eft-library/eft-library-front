@@ -33,28 +33,31 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
 
   // 선택된 활성 퀘스트들
   const [selectedActiveQuests, setSelectedActiveQuests] = useState<string[]>(
-    []
+    [],
   );
 
   useEffect(() => {
     setUserQuest(userQuestList);
     // 초기 NPC 상태 설정 (모두 닫힌 상태로 시작)
-    const initialOpenState = userQuestList.reduce((acc, npc) => {
-      acc[npc.npc_id] = false;
-      return acc;
-    }, {} as Record<string, boolean>);
+    const initialOpenState = userQuestList.reduce(
+      (acc, npc) => {
+        acc[npc.npc_id] = false;
+        return acc;
+      },
+      {} as Record<string, boolean>,
+    );
     setOpenNPCs(initialOpenState);
   }, [userQuestList]);
 
   const removeSelected = (quest: Quest) => {
     setSelectedItems(
-      selectedItems.filter((originQuest) => originQuest.id !== quest.id)
+      selectedItems.filter((originQuest) => originQuest.id !== quest.id),
     );
   };
 
   const makeOnlyQuestIds = () => {
     const onlyQuestIds = userQuest.flatMap((npc) =>
-      npc.quest_info.map((quest) => quest.quest_id)
+      npc.quest_info.map((quest) => quest.quest_id),
     );
     return onlyQuestIds.filter((questId) => questId !== null);
   };
@@ -71,13 +74,13 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   const toggleNPCSelection = (npc: Planner) => {
     const npcQuestIds = npc.quest_info.map((quest) => quest.quest_id);
     const allSelected = npcQuestIds.every((id) =>
-      selectedActiveQuests.includes(id)
+      selectedActiveQuests.includes(id),
     );
 
     if (allSelected) {
       // 모든 퀘스트가 선택되어 있으면 모두 해제
       setSelectedActiveQuests((prev) =>
-        prev.filter((id) => !npcQuestIds.includes(id))
+        prev.filter((id) => !npcQuestIds.includes(id)),
       );
     } else {
       // 일부 또는 아무것도 선택되지 않았으면 모두 선택
@@ -108,7 +111,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
   const getNPCSelectionState = (npc: Planner) => {
     const npcQuestIds = npc.quest_info.map((quest) => quest.quest_id);
     const selectedCount = npcQuestIds.filter((id) =>
-      selectedActiveQuests.includes(id)
+      selectedActiveQuests.includes(id),
     ).length;
 
     return selectedCount === npcQuestIds.length && npcQuestIds.length > 0;
@@ -119,13 +122,13 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
     if (session && session.email) {
       const onlyQuestIdList = makeOnlyQuestIds();
       const newQuestList = onlyQuestIdList.filter(
-        (quest_id) => !selectedActiveQuests.includes(quest_id)
+        (quest_id) => !selectedActiveQuests.includes(quest_id),
       );
 
       const response = await requestUserData(
         USER_API_ENDPOINTS.DELETE_USER_QUEST,
         { userQuestList: newQuestList },
-        session
+        session,
       );
       if (response?.status === 200) {
         setUserQuest(response.data);
@@ -155,7 +158,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_USER_QUEST,
         { userQuestList: uniqueQuestList },
-        session
+        session,
       );
       if (response?.status === 200) {
         setUserQuest(response.data);
@@ -181,7 +184,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_USER_QUEST,
         { userQuestList: newQuestList },
-        session
+        session,
       );
 
       if (response?.status === 200) {
@@ -250,7 +253,7 @@ export default function PlannerView({ userQuestList }: PlannerViewTypes) {
                       }`}
                     >
                       {/* Hover overlay effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      <div className="absolute inset-0 bg-linear-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                       <Trash2 className="h-4 w-4 relative z-10 group-hover:rotate-12 transition-transform duration-200" />
                       <span className="relative z-10">
                         {planner18N.delete[localeKey]} (

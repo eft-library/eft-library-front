@@ -63,7 +63,7 @@ export default function RngAllRanking({
           <DialogTitle />
         </DialogHeader>
 
-        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-8 text-white text-center">
+        <div className="bg-linear-to-br from-emerald-500 to-teal-600 px-6 py-8 text-white text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
             <Trophy className="w-8 h-8 text-white" />
           </div>

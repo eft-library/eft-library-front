@@ -45,7 +45,7 @@ export default function PostGrid({
                   <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 dark:text-white dark:group-hover:text-blue-400 flex items-center gap-2">
                     <span className="inline-flex items-center gap-2">
                       {post.thumbnail ? (
-                        <div className="flex-shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-lg">
+                        <div className="shrink-0 relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-lg">
                           <Image
                             src={post.thumbnail}
                             alt={post.title || "Thumbnail"}
@@ -66,14 +66,14 @@ export default function PostGrid({
                   </h3>
                   <Badge
                     className={cn(
-                      "ml-2 flex-shrink-0 text-white",
+                      "ml-2 shrink-0 text-white",
                       CATEGORY_LIST.find(
-                        (original) => original.id === post.category
-                      )?.color
+                        (original) => original.id === post.category,
+                      )?.color,
                     )}
                   >
                     {CATEGORY_LIST.find(
-                      (original) => original.id === post.category
+                      (original) => original.id === post.category,
                     )?.[localeKey] ?? ""}
                   </Badge>
                 </div>

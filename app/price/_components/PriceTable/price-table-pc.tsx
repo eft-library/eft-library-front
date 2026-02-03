@@ -36,7 +36,7 @@ export default function PriceTablePC({
           scrollThreshold={0.9}
           className="overflow-auto"
         >
-          <table className="w-full table-fixed min-w-[800px]">
+          <table className="w-full table-fixed min-w-200">
             <thead className="sticky top-0 z-10">
               <tr className="border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-800">
                 <th className="text-center py-3 px-3 w-32 text-gray-700 dark:text-slate-300">
@@ -113,14 +113,14 @@ export default function PriceTablePC({
                       {(() => {
                         const { raw, formatted } = calcChangeRate(
                           item,
-                          priceType
+                          priceType,
                         );
                         const badgeClass =
                           raw > 0
                             ? "bg-green-500 hover:bg-green-600 text-white"
                             : raw < 0
-                            ? "bg-red-500 hover:bg-red-600 text-white"
-                            : "bg-gray-400 hover:bg-gray-500 text-white";
+                              ? "bg-red-500 hover:bg-red-600 text-white"
+                              : "bg-gray-400 hover:bg-gray-500 text-white";
 
                         return (
                           <Badge

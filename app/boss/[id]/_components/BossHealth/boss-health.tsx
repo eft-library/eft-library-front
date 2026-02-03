@@ -30,7 +30,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
   }
 
   const selectedFollower = subFollowers.find(
-    (follower) => follower.id === healthId
+    (follower) => follower.id === healthId,
   );
 
   return (
@@ -48,7 +48,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
               key={`${follower.id}-health-${index}`}
               variant={healthId === follower.id ? "default" : "outline"}
               onClick={() => clickHealth(follower.id)}
-              className="flex-1 min-w-[120px] sm:flex-none sm:min-w-[140px]"
+              className="flex-1 min-w-30 sm:flex-none sm:min-w-35"
             >
               {follower.name[localeKey]}
             </Button>
@@ -60,7 +60,7 @@ export default function BossHealth({ subFollowers }: BossHealth) {
           {/* Character Image */}
           <div className="order-2 lg:order-1">
             <div className="relative w-full max-w-md mx-auto lg:max-w-none">
-              <div className="aspect-[3/4] sm:aspect-[4/5] relative rounded-xl overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border shadow-lg">
+              <div className="aspect-3/4 sm:aspect-4/5 relative rounded-xl overflow-hidden bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border shadow-lg">
                 <Image
                   src={selectedFollower?.health_image || "/placeholder.svg"}
                   alt={selectedFollower?.name.en || "Boss character"}

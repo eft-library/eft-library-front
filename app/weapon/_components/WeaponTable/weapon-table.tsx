@@ -60,7 +60,7 @@ export default function WeaponTable({ weaponList, word }: WeaponTableTypes) {
             {/* Mobile Layout */}
             <div className="md:hidden p-2">
               <div className="flex items-center space-x-4 p-3 rounded-lg bg-muted/50 border border-border">
-                <div className="relative group flex-shrink-0">
+                <div className="relative group shrink-0">
                   <Image
                     src={item.image || "/placeholder.svg"}
                     alt={item.name.en}

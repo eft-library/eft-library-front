@@ -15,7 +15,7 @@ export default function StatsPanel({
   const localeKey = getLocaleKey(locale);
 
   return (
-    <div className="bg-gradient-to-br from-card to-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-5 shadow-xl w-full">
+    <div className="bg-linear-to-br from-card to-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-5 shadow-xl w-full">
       <div className="flex items-center gap-2 mb-4">
         <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
         <h3 className="font-bold text-base text-foreground">
@@ -145,7 +145,7 @@ export default function StatsPanel({
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
+              className="bg-linear-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
               style={{
                 width: `${(getKappaCompleteCount / getAllKappaCount) * 100}%`,
               }}
@@ -164,7 +164,7 @@ export default function StatsPanel({
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
+              className="bg-linear-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
               style={{
                 width: `${(getCompleteCount / getAllCount) * 100}%`,
               }}

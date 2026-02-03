@@ -38,10 +38,10 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                 target="_blank"
                 className="block"
               >
-                <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]">
+                <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-20 sm:min-h-25">
                   {/* Quest Info */}
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 bg-secondary/30">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden shrink-0 bg-secondary/30">
                       <Image
                         src={questItem.npc_image || "/placeholder.svg"}
                         alt={questItem.npc_name.en}
@@ -67,7 +67,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
 
                   {/* Material Info */}
                   <div className="flex items-center gap-2 justify-start sm:justify-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0 bg-secondary/30">
                       <Image
                         src={
                           questItem.objective.questItem.gridImageLink ||
@@ -89,7 +89,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                             ]
                           }
                         </span>
-                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white flex-shrink-0">
+                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white shrink-0">
                           ×{questItem.objective.count}
                         </span>
                       </div>
@@ -110,7 +110,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                 <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]">
                   {/* Quest Info */}
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 bg-secondary/30">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden shrink-0 bg-secondary/30">
                       <Image
                         src={questItem.npc_image || "/placeholder.svg"}
                         alt={questItem.npc_name.en}
@@ -136,11 +136,11 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
 
                   {/* Material Info */}
                   <div className="flex items-center gap-2 justify-start sm:justify-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0 bg-secondary/30">
                       <Image
                         src={
                           questItem.objective.items.find(
-                            (qItem) => qItem.id === itemInfo.id
+                            (qItem) => qItem.id === itemInfo.id,
                           )?.gridImageLink ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
@@ -148,7 +148,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         }
                         alt={
                           questItem.objective.items.find(
-                            (qItem) => qItem.id === itemInfo.id
+                            (qItem) => qItem.id === itemInfo.id,
                           )?.name_en || ""
                         }
                         width={80}
@@ -161,11 +161,11 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                         <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                           {
                             questItem.objective.items.find(
-                              (qItem) => qItem.id === itemInfo.id
+                              (qItem) => qItem.id === itemInfo.id,
                             )?.name_en
                           }
                         </span>
-                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white flex-shrink-0">
+                        <span className="text-sm sm:text-base font-semibold text-black dark:text-white shrink-0">
                           ×{questItem.objective.count}
                         </span>
                       </div>

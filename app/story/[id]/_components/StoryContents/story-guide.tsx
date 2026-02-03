@@ -1,14 +1,10 @@
 import { memo } from "react";
-
-interface Props {
-  html: string;
-  onImageClick: (src: string) => void;
-}
+import { StoryGuideTypes } from "../story-types";
 
 const StoryGuideContent = memo(function StoryGuideContent({
   html,
   onImageClick,
-}: Props) {
+}: StoryGuideTypes) {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
     if (target.tagName === "IMG") {

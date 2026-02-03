@@ -22,7 +22,7 @@ export default function QuestObjectives({ quest }: QuestDetailTypes) {
           {quest.objectives &&
             quest.objectives.map((objective, index) => (
               <div key={index} className="flex items-start gap-3">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mt-0.5 shrink-0" />
                 {objective.type === "shoot" ? (
                   <span className="flex items-center">
                     {objective[getDescriptionLocaleKey(locale)]}

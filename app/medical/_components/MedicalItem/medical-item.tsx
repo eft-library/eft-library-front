@@ -86,7 +86,7 @@ export default function MedicalItem({ medicalList, word }: MedicalItemTypes) {
                   alt={item.name.en}
                   width={64}
                   height={64}
-                  className="w-20 h-20 object-contain rounded-lg flex-shrink-0"
+                  className="w-20 h-20 object-contain rounded-lg shrink-0"
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-base text-foreground">

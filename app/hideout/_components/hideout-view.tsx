@@ -277,7 +277,7 @@ export default function HideoutView({ hideoutData }: HideoutViewTypes) {
     <ViewWrapper>
       <div className="min-h-screen dark:bg-[#1e2124] dark:text-white bg-gray-50 text-black">
         <div className="container mx-auto px-4 py-8">
-          <div className="flex-grow text-center mb-4">
+          <div className="grow text-center mb-4">
             <h1 className="text-3xl font-bold">
               {hideoutI18n.title[localeKey]}
             </h1>

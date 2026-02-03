@@ -37,19 +37,19 @@ export default function HideoutConstruction({
           {itemInfo.hideout_items.map((hideout, index) => (
             <div
               key={`hideout-${hideout.level_id}-${index}`}
-              className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]"
+              className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-20 sm:min-h-25"
             >
               {/* Hideout Info */}
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0 bg-secondary/30">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md flex items-center justify-center">
                     {getStationSVG(
                       hideout.master_id,
                       80,
                       80,
                       getMaxSuffix(
-                        Number.parseInt(hideout.level_id.split("-")[1], 10)
-                      )
+                        Number.parseInt(hideout.level_id.split("-")[1], 10),
+                      ),
                     )}
                   </div>
                 </div>
@@ -72,7 +72,7 @@ export default function HideoutConstruction({
 
               {/* Material Info */}
               <div className="flex items-center gap-2 mt-2 sm:mt-0 justify-start sm:justify-end">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center flex-shrink-0 bg-secondary/30">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center shrink-0 bg-secondary/30">
                   <Image
                     src={hideout.image || "/placeholder.svg"}
                     alt={hideout.name.en}
@@ -85,7 +85,7 @@ export default function HideoutConstruction({
                   <span className="text-xs sm:text-sm font-medium text-black dark:text-white truncate">
                     {hideout.name[localeKey]}
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold text-black dark:text-white flex-shrink-0 ml-1">
+                  <span className="text-xs sm:text-sm font-semibold text-black dark:text-white shrink-0 ml-1">
                     ×{hideout.quantity}
                   </span>
                 </div>

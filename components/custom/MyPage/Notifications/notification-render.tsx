@@ -17,7 +17,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
       case "penalty_user":
         return (
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+            <div className="shrink-0 w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
               <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400" />
             </div>
             <div className="flex-1">
@@ -53,7 +53,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
         return (
           <Link target="_blank" href={`/community/detail/${notification.url}`}>
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+              <div className="shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
                 <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="flex-1">
@@ -84,7 +84,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
         return (
           <Link target="_blank" href={`/community/detail/${notification.url}`}>
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+              <div className="shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                 <MessageCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
               </div>
               <div className="flex-1">
@@ -115,7 +115,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
         return (
           <Link target="_blank" href={`/community/detail/${notification.url}`}>
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+              <div className="shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
                 <MessageCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               </div>
               <div className="flex-1">
@@ -144,7 +144,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
       case "follow_user":
         return (
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
+            <div className="shrink-0 w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
               <UserPlus className="w-4 h-4 text-orange-600 dark:text-orange-400" />
             </div>
             <div className="flex-1">
@@ -172,7 +172,7 @@ export function NotificationMessage({ notification }: NotificationRenderTypes) {
       default:
         return (
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+            <div className="shrink-0 w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
               <Bell className="w-4 h-4 text-gray-600 dark:text-gray-400" />
             </div>
             <div className="flex-1">

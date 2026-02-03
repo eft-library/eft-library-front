@@ -298,11 +298,11 @@ export const purifyHtml = (html: string) => {
 export const rngItemRankStype = (rank: number) => {
   switch (rank) {
     case 1:
-      return "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200";
+      return "bg-linear-to-r from-yellow-50 to-amber-50 border-yellow-200";
     case 2:
-      return "bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200";
+      return "bg-linear-to-r from-gray-50 to-slate-50 border-gray-200";
     case 3:
-      return "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200";
+      return "bg-linear-to-r from-orange-50 to-amber-50 border-orange-200";
     default:
       return "bg-white border-gray-100";
   }

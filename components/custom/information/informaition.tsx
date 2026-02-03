@@ -63,11 +63,11 @@ export default function Information({
                 .filter((item) =>
                   item.name[localeKey]
                     .toLowerCase()
-                    .includes(word.toLowerCase())
+                    .includes(word.toLowerCase()),
                 )
                 .map((item) => (
                   <Link key={item.id} href={`${routeLink}/detail/${item.id}`}>
-                    <Card className="cursor-pointer transition-all duration-200 hover:shadow-lg bg-white border-gray-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
+                    <Card className="cursor-pointer transition-all duration-200 hover:shadow-lg bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:dark:bg-gray-750">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -88,7 +88,7 @@ export default function Information({
                               className="text-sm mb-3 line-clamp-2 text-gray-600 dark:text-gray-400"
                               dangerouslySetInnerHTML={{
                                 __html: getFirstParagraph(
-                                  item.description[localeKey]
+                                  item.description[localeKey],
                                 ),
                               }}
                             />

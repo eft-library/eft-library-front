@@ -39,12 +39,12 @@ export default function PreviewSelect({
               </Button>
               <div className="pr-8">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white break-words">
+                  <h3 className="font-semibold text-gray-900 dark:text-white wrap-break-word">
                     {quest.name[localeKey]}
                   </h3>
                   <Badge
                     variant="secondary"
-                    className="text-xs self-start sm:self-center flex-shrink-0"
+                    className="text-xs self-start sm:self-center shrink-0"
                   >
                     Lv.{quest.min_player_level}
                   </Badge>

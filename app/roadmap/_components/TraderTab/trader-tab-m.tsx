@@ -35,7 +35,7 @@ export default function TraderTabM({
               className="w-full justify-between h-12 px-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-white/70 dark:hover:bg-gray-900/70 transition-all duration-200 shadow-sm dark:shadow-gray-900/20"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center shadow-md">
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center shadow-md">
                   <Store className="h-4 w-4 text-white" />
                 </div>
                 <span className="font-semibold text-gray-900 dark:text-gray-100">
@@ -50,7 +50,7 @@ export default function TraderTabM({
               className="w-full justify-between h-12 px-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-white/70 dark:hover:bg-gray-900/70 transition-all duration-200 shadow-sm dark:shadow-gray-900/20"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center shadow-md">
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center shadow-md">
                   <Image
                     src={trader?.image || ""}
                     alt={trader?.name[localeKey] || ""}
@@ -70,11 +70,11 @@ export default function TraderTabM({
 
         <SheetContent
           side="bottom"
-          className="h-[60vh] rounded-t-2xl border-t-0 shadow-2xl bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 dark:shadow-black/40"
+          className="h-[60vh] rounded-t-2xl border-t-0 shadow-2xl bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 dark:shadow-black/40"
         >
           <SheetHeader className="pb-6">
             <SheetTitle className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-linear-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 flex items-center justify-center">
                 {tabState === "all" ? (
                   <Store className="h-4 w-4 text-white" />
                 ) : (
@@ -104,7 +104,7 @@ export default function TraderTabM({
                     h-16 p-4 justify-start rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
                     ${
                       tabState === "all"
-                        ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-300 dark:border-blue-600 shadow-md dark:shadow-blue-900/20"
+                        ? "bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-300 dark:border-blue-600 shadow-md dark:shadow-blue-900/20"
                         : "bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70"
                     }
                   `}
@@ -115,8 +115,8 @@ export default function TraderTabM({
                       w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md
                       ${
                         tabState === "all"
-                          ? "bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 shadow-blue-200 dark:shadow-blue-900/50"
-                          : "bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 shadow-gray-200 dark:shadow-gray-800"
+                          ? "bg-linear-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 shadow-blue-200 dark:shadow-blue-900/50"
+                          : "bg-linear-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 shadow-gray-200 dark:shadow-gray-800"
                       }
                     `}
                   >
@@ -148,7 +148,7 @@ export default function TraderTabM({
                     h-16 p-4 justify-start rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
                     ${
                       tabState === traderItem.id
-                        ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-300 dark:border-blue-600 shadow-md dark:shadow-blue-900/20"
+                        ? "bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-300 dark:border-blue-600 shadow-md dark:shadow-blue-900/20"
                         : "bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/70"
                     }
                   `}
@@ -159,8 +159,8 @@ export default function TraderTabM({
                       w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md
                       ${
                         tabState === traderItem.id
-                          ? "bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 shadow-blue-200 dark:shadow-blue-900/50"
-                          : "bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 shadow-gray-200 dark:shadow-gray-800"
+                          ? "bg-linear-to-br from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 shadow-blue-200 dark:shadow-blue-900/50"
+                          : "bg-linear-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 shadow-gray-200 dark:shadow-gray-800"
                       }
                     `}
                     >

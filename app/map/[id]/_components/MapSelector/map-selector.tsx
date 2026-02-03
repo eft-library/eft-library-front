@@ -32,12 +32,12 @@ export default function MapSelector({
   useEffect(() => {
     const getSubMapById = async () => {
       const data = await requestData(
-        `${API_ENDPOINTS.GET_SUB_MAP}/${param.id}`
+        `${API_ENDPOINTS.GET_SUB_MAP}/${param.id}`,
       );
       if (!data || data.status !== 200) {
         console.error(
           "Failed to fetch sub map data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         return null;
       }
@@ -54,7 +54,7 @@ export default function MapSelector({
   return (
     <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 dark:bg-gray-800/30 dark:border-gray-700/50 bg-white border-gray-200 rounded-xl shadow-sm">
       {/* Main Map Selector */}
-      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
+      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-50">
         <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">
           <Map className="h-4 w-4" />
           <span>{interactiveMapI18N.map[localeKey]}</span>
@@ -63,7 +63,7 @@ export default function MapSelector({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full lg:w-[220px] justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="w-full lg:w-55 justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <div className="flex items-center">
                 <Map className="mr-2 h-4 w-4 opacity-60" />
@@ -76,7 +76,7 @@ export default function MapSelector({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[220px] p-1"
+            className="w-55 p-1"
             align="start"
             sideOffset={4}
           >
@@ -100,10 +100,10 @@ export default function MapSelector({
 
       {/* Separator */}
       <div className="hidden lg:flex items-center justify-center mt-6">
-        <ChevronDown className="h-4 w-4 text-muted-foreground rotate-[-90deg]" />
+        <ChevronDown className="h-4 w-4 text-muted-foreground -rotate-90" />
       </div>
       {/* Sub Map Selector */}
-      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-[200px]">
+      <div className="flex flex-col space-y-2 w-full lg:w-auto min-w-50">
         <div className="flex items-center space-x-2 text-sm font-semibold text-muted-foreground">
           <MapPin className="h-4 w-4" />
           <span>{interactiveMapI18N.subMap[localeKey]}</span>
@@ -112,7 +112,7 @@ export default function MapSelector({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full lg:w-[220px] justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="w-full lg:w-55 justify-between h-11 px-4 py-2 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <div className="flex items-center">
                 <MapPin className="mr-2 h-4 w-4 opacity-60" />
@@ -124,7 +124,7 @@ export default function MapSelector({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[220px] p-1"
+            className="w-55 p-1"
             align="start"
             sideOffset={4}
           >

@@ -90,7 +90,7 @@ export default function AmmoTable({ ammoList, word }: AmmoTableTypes) {
             {/* Mobile Layout */}
             <div className="md:hidden p-2">
               <div className="flex items-start space-x-4 mb-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="relative group">
                     <Image
                       src={item.image || "/placeholder.svg"}

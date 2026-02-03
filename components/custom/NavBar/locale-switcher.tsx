@@ -35,7 +35,7 @@ export default function LocalSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-        className={`cursor-pointer flex items-center space-x-2 px-2 py-2 rounded-lg border transition-all duration-200 min-w-[110px] ${
+        className={`cursor-pointer flex items-center space-x-2 px-2 py-2 rounded-lg border transition-all duration-200 min-w-27.5 ${
           theme === "dark"
             ? "bg-[#36393f] border-gray-600 text-white hover:border-orange-400 hover:bg-[#40444b]"
             : "bg-white border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-gray-50"
@@ -72,8 +72,8 @@ export default function LocalSwitcher() {
                         ? "bg-orange-400/20 text-orange-400 border-l-2 border-orange-400"
                         : "bg-orange-50 text-orange-600 border-l-2 border-orange-500"
                       : theme === "dark"
-                      ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <span className="text-base">{language.flag}</span>

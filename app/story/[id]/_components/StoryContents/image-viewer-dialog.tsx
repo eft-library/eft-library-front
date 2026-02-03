@@ -1,17 +1,13 @@
 "use client";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useEffect, useRef, useState } from "react";
-
-interface ImageViewerDialogProps {
-  src: string | null;
-  onClose: () => void;
-}
+import { ImageViewerDialogTypes } from "../story-types";
 
 export default function ImageViewerDialog({
   src,
   onClose,
-}: ImageViewerDialogProps) {
+}: ImageViewerDialogTypes) {
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   const scaleRef = useRef(1);
@@ -79,7 +75,8 @@ export default function ImageViewerDialog({
 
   return (
     <Dialog open={!!src} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1600px] sm:min-h-[900px] bg-transparent border-none shadow-none">
+      <DialogTitle />
+      <DialogContent className="sm:max-w-400 sm:min-h-225 bg-transparent border-none shadow-none">
         <div
           className="w-full h-200 flex items-center justify-center overflow-hidden
                      select-none cursor-grab active:cursor-grabbing"

@@ -53,7 +53,7 @@ export default function QuestItems({ quest }: QuestDetailTypes) {
       <CardContent className="p-4 sm:p-6">
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <div className="min-w-full inline-block align-middle">
-            <table className="w-full min-w-[600px]">
+            <table className="w-full min-w-150">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th className="py-3 sm:py-4 px-2 text-gray-600 dark:text-gray-300 font-semibold text-center text-sm sm:text-base">

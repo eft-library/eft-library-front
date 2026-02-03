@@ -22,8 +22,8 @@ export default function DurationBar({
         <div
           className={`h-full rounded-full transition-all duration-300 ${
             isActive
-              ? "bg-gradient-to-r from-blue-400 to-cyan-400"
-              : "bg-gradient-to-r from-rose-400 to-pink-400"
+              ? "bg-linear-to-r from-blue-400 to-cyan-400"
+              : "bg-linear-to-r from-rose-400 to-pink-400"
           }`}
           style={{ width: `${percentage}%` }}
         />

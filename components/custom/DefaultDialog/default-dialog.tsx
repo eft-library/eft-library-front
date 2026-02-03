@@ -37,7 +37,7 @@ export default function DefaultDialog({
         <DialogFooter>
           <Button
             onClick={() => setOpen(false)}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+            className="w-full bg-linear-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
           >
             {alertMessageI18N.close[localeKey]}
           </Button>

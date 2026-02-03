@@ -59,7 +59,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   textToHighlight={item.name[localeKey]}
                 />
               </div>
-              <div className="text-center font-bold text-green-500 text-sm font-semibold">
+              <div className="text-center text-green-500 text-sm font-semibold">
                 {item.info.hitpoints}
               </div>
               <div className="text-sm space-y-1 text-foreground/80">
@@ -88,7 +88,7 @@ export default function Medikit({ medicalList, word }: MediKitTypes) {
                   alt={item.name.en}
                   width={64}
                   height={64}
-                  className="w-20 h-20 object-contain rounded-lg flex-shrink-0"
+                  className="w-20 h-20 object-contain rounded-lg shrink-0"
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-base text-foreground">

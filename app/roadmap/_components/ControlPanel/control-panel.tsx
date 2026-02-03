@@ -22,10 +22,10 @@ export default function ControlPanel({
   const localeKey = getLocaleKey(locale);
 
   return (
-    <div className="flex flex-col sm:flex-row justify-end items-end sm:items-center gap-4 w-full p-4 bg-gradient-to-r from-slate-50/50 to-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm">
+    <div className="flex flex-col sm:flex-row justify-end items-end sm:items-center gap-4 w-full p-4 bg-linear-to-r from-slate-50/50 to-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm">
       {/* 검색바 */}
       <div className="relative w-full sm:w-80 group">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-blue-500/10 to-purple-500/10 rounded-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm"></div>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4 transition-colors duration-200 group-focus-within:text-blue-500 dark:group-focus-within:text-blue-400" />
           <Input
@@ -108,7 +108,7 @@ export default function ControlPanel({
           onClick={() => onClickSave()}
           className="
             flex items-center gap-2 h-10 px-4
-            bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600
+            bg-linear-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600
             hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-blue-700
             text-white
             border-0
