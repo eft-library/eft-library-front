@@ -23,13 +23,11 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
         storyDetail.requirements[localeKey].length > 0 && (
           <Card className="border-border/50 shadow-xl dark:bg-white/[0.02] dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-2xl dark:text-white/85">
-                <span className="text-primary dark:text-blue-400/70">
-                  {"🔑"}
-                </span>
+              <CardTitle className="flex items-center gap-2 text-2xl dark:text-white">
+                <span className="text-primary dark:text-blue-400">{"🔑"}</span>
                 <span>{storyI18N.prerequisites[localeKey]}</span>
               </CardTitle>
-              <CardDescription className="dark:text-white/45">
+              <CardDescription className="dark:text-white">
                 {storyI18N.unlockConditionDesc[localeKey]}
               </CardDescription>
             </CardHeader>
@@ -49,19 +47,17 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
         storyDetail.objectives[localeKey].length > 0 && (
           <Card className="border-border/50 shadow-xl dark:bg-white/[0.02] dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-2xl dark:text-white/85">
-                <span className="text-primary dark:text-blue-400/70">
-                  {"🎯"}
-                </span>
+              <CardTitle className="flex items-center gap-2 text-2xl dark:text-white">
+                <span className="text-primary dark:text-blue-400">{"🎯"}</span>
                 <span>{storyI18N.objectives[localeKey]}</span>
               </CardTitle>
-              <CardDescription className="dark:text-white/45">
+              <CardDescription className="dark:text-white">
                 {storyI18N.objectivesDesc[localeKey]}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div
-                className="prose prose-sm dark:prose-invert max-w-none [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_li]:text-foreground dark:[&_li]:text-white/65 [&_ul_ul]:list-circle [&_ul_ul]:mt-2"
+                className="prose prose-sm dark:prose-invert max-w-none [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_li]:text-foreground dark:[&_li]:text-white [&_ul_ul]:list-circle [&_ul_ul]:mt-2"
                 dangerouslySetInnerHTML={{
                   __html: storyDetail.objectives[localeKey],
                 }}
@@ -74,11 +70,11 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
       {storyDetail.guide && storyDetail.guide[localeKey].length > 0 && (
         <Card className="border-border/50 shadow-xl dark:bg-white/[0.02] dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl dark:text-white/85">
-              <span className="text-primary dark:text-blue-400/70">{"📖"}</span>
+            <CardTitle className="flex items-center gap-2 text-2xl dark:text-white">
+              <span className="text-primary dark:text-blue-400">{"📖"}</span>
               <span>{storyI18N.guide[localeKey]}</span>
             </CardTitle>
-            <CardDescription className="dark:text-white/45">
+            <CardDescription className="dark:text-white">
               {storyI18N.guideDesc[localeKey]}
             </CardDescription>
           </CardHeader>

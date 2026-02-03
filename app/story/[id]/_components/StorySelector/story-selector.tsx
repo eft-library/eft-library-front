@@ -20,7 +20,7 @@ export default function StorySelector({ selector }: StorySelectorTypes) {
             <button
               className={cn(
                 "group relative overflow-hidden rounded-lg border-2 p-4 transition-all duration-200 bg-secondary",
-                "dark:bg-white/[0.02] dark:border-gray-600 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03),0_2px_8px_rgba(0,0,0,0.4)]",
+                "dark:bg-white/10 dark:border-gray-600 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03),0_2px_8px_rgba(0,0,0,0.4)]",
                 "hover:border-primary hover:bg-card/80 hover:shadow-lg hover:shadow-primary/20",
                 "dark:hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03),0_3px_12px_rgba(0,0,0,0.5)]",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer",
