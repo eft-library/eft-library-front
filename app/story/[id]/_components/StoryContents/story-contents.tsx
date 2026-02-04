@@ -44,13 +44,13 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
                 <span className="text-primary dark:text-blue-400">{"🔑"}</span>
                 <span>{storyI18N.prerequisites[localeKey]}</span>
               </CardTitle>
-              <CardDescription className="dark:text-white">
+              <CardDescription className="text-green-500">
                 {storyI18N.unlockConditionDesc[localeKey]}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div
-                className="prose prose-sm dark:prose-invert max-w-none [&_p]:leading-relaxed [&_p]:text-foreground dark:[&_p]:text-white/65 [&_p]:mb-2 [&_p:last-child]:mb-0"
+                className="prose prose-sm dark:prose-invert max-w-none [&_p]:leading-relaxed [&_p]:text-foreground dark:[&_p]:text-white [&_p]:mb-2 [&_p:last-child]:mb-0 "
                 dangerouslySetInnerHTML={{
                   __html: storyDetail.requirements[localeKey],
                 }}
@@ -68,7 +68,7 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
                 <span className="text-primary dark:text-blue-400">{"🎯"}</span>
                 <span>{storyI18N.objectives[localeKey]}</span>
               </CardTitle>
-              <CardDescription className="dark:text-white">
+              <CardDescription className="text-green-500">
                 {storyI18N.objectivesDesc[localeKey]}
               </CardDescription>
             </CardHeader>
@@ -97,7 +97,7 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
               <span className="text-primary dark:text-blue-400">{"📖"}</span>
               <span>{storyI18N.guide[localeKey]}</span>
             </CardTitle>
-            <CardDescription className="dark:text-white">
+            <CardDescription className="text-green-500">
               {storyI18N.guideDesc[localeKey]}
             </CardDescription>
           </CardHeader>
