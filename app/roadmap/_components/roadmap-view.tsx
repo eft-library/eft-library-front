@@ -68,12 +68,12 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
       questNode: QuestNode,
       npcNode: TraderNode,
     }),
-    []
+    [],
   );
 
   const npcIdList = useMemo(
     () => roadmapInfo.node_info.map((npc) => npc.id),
-    [roadmapInfo.node_info]
+    [roadmapInfo.node_info],
   );
 
   const questIdSet = useMemo(() => new Set(questList), [questList]);
@@ -107,15 +107,15 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
               ? quest.total_kappa_x_coordinate
               : quest.single_kappa_x_coordinate
             : tabState === "all"
-            ? quest.total_x_coordinate
-            : quest.single_x_coordinate,
+              ? quest.total_x_coordinate
+              : quest.single_x_coordinate,
           y: onlyKappa
             ? tabState === "all"
               ? quest.total_kappa_y_coordinate
               : quest.single_kappa_y_coordinate
             : tabState === "all"
-            ? quest.total_y_coordinate
-            : quest.single_y_coordinate,
+              ? quest.total_y_coordinate
+              : quest.single_y_coordinate,
         },
         draggable: false,
       }));
@@ -124,7 +124,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
   const [nodes, setNodes, onNodesChange] = useNodesState(generateNodes());
   const [edges, setEdges, onEdgesChange] = useEdgesState(
-    generateEdges(roadmapInfo.edge_info)
+    generateEdges(roadmapInfo.edge_info),
   );
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
   const onConnect = useCallback(
     (params: any) => setEdges((els) => addEdge(params, els)),
-    [setEdges]
+    [setEdges],
   );
 
   const onNodeChange = useCallback(
@@ -151,7 +151,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
       const updateNodeCheckStatus = (
         nodeId: string,
         checkStatus: boolean,
-        nodes: any[]
+        nodes: any[],
       ): any[] => {
         const updatedNodes = new Map(nodes.map((node) => [node.id, node]));
 
@@ -179,7 +179,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
         setQuestList((prevQuestList) => {
           const filteredQuestList = prevQuestList.filter(
-            (id) => !nodes.some((node) => node.data.id === id)
+            (id) => !nodes.some((node) => node.data.id === id),
           );
 
           return [...new Set([...filteredQuestList, ...nodesCheckList])];
@@ -190,7 +190,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
 
       setNodes((nds) => updateNodeCheckStatus(data.id, isCheck, nds));
     },
-    [setNodes, setQuestList]
+    [setNodes, setQuestList],
   );
 
   const enhancedNodes = useMemo(
@@ -199,7 +199,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
         ...node,
         data: { ...node.data, onChange: onNodeChange },
       })),
-    [nodes, onNodeChange]
+    [nodes, onNodeChange],
   );
 
   const onChangeNpcTab = (tab: string) => {
@@ -214,7 +214,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
       const response = await requestUserData(
         USER_API_ENDPOINTS.UPDATE_ROADMAP,
         { questList: questList },
-        session
+        session,
       );
       if (!response) return;
 
@@ -255,7 +255,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
       (node) =>
         node.data.name.ko.toLowerCase().includes(searchQuery.toLowerCase()) ||
         node.data.name.ja.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        node.data.name.en.toLowerCase().includes(searchQuery.toLowerCase())
+        node.data.name.en.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
     if (matchingNodes.length > 0) {
@@ -345,7 +345,7 @@ export default function RoadmapView({ roadmapInfo }: RoadmapViewTypes) {
             />
 
             {/* Quest Flow */}
-            <Card className="h-[500px] sm:h-[600px] lg:h-[700px]">
+            <Card className="h-125 sm:h-150 lg:h-175">
               <CardContent className="p-0 h-full relative">
                 <ReactFlow
                   nodes={enhancedNodes}

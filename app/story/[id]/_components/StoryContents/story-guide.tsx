@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { StoryGuideTypes } from "../story-types";
 
-const StoryGuideContent = memo(function StoryGuideContent({
+const StoryGuide = memo(function StoryGuide({
   html,
   onImageClick,
 }: StoryGuideTypes) {
@@ -23,4 +23,4 @@ const StoryGuideContent = memo(function StoryGuideContent({
   );
 });
 
-export default StoryGuideContent;
+export default StoryGuide;

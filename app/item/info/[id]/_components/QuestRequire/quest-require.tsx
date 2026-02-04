@@ -107,7 +107,7 @@ export default function QuestRequire({ itemInfo }: QuestRequireTypes) {
                 target="_blank"
                 className="block"
               >
-                <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-[80px] sm:min-h-[100px]">
+                <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 py-3 px-3 sm:px-4 rounded-lg hover:bg-secondary transition-colors border-b border-border last:border-b-0 min-h-20 sm:min-h-25">
                   {/* Quest Info */}
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-md flex items-center justify-center overflow-hidden shrink-0 bg-secondary/30">
