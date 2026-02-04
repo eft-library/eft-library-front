@@ -28,10 +28,17 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
 
   return (
     <div className="space-y-6">
+      <AdBanner
+        dataAdFormat={"auto"}
+        dataFullWidthResponsive={true}
+        dataAdSlot="2690838054"
+        maxWidth={1220}
+      />
+
       {/* Prerequisites */}
       {storyDetail.requirements &&
         storyDetail.requirements[localeKey].length > 0 && (
-          <Card className="border-border/50 shadow-xl dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary">
+          <Card className="border-border/50 shadow-xl dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary mt-6">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-2xl dark:text-white">
                 <span className="text-primary dark:text-blue-400">{"🔑"}</span>
@@ -52,16 +59,10 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
           </Card>
         )}
 
-      <AdBanner
-        dataAdFormat={"auto"}
-        dataFullWidthResponsive={true}
-        dataAdSlot="2690838054"
-        maxWidth={1220}
-      />
       {/* Objectives */}
       {storyDetail.objectives &&
         storyDetail.objectives[localeKey].length > 0 && (
-          <Card className="border-border/50 shadow-xl dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary mt-6">
+          <Card className="border-border/50 shadow-xl dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)] bg-secondary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-2xl dark:text-white">
                 <span className="text-primary dark:text-blue-400">{"🎯"}</span>
