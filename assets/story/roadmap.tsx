@@ -3,51 +3,61 @@ import type { StationSize } from "../assetTypes";
 export default function Roadmap({ color, width, height }: StationSize) {
   return (
     <svg
-      viewBox="0 0 48 48"
+      id="레이어_1"
+      data-name="레이어 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 36.85 36.85"
       width={width}
       height={height}
-      fill={"none"}
-      xmlns="http://www.w3.org/2000/svg"
     >
+      <title>1dd</title>
       <rect
-        x="10"
-        y="8"
+        className="cls-1"
+        x="5.3"
+        y="2.68"
         width="12"
         height="8"
         rx="2"
-        stroke="#CFE8FF"
-        stroke-width="2"
-      ></rect>
+        ry="2"
+        stroke="#cee4f6"
+        strokeWidth="2px"
+      />
       <rect
-        x="26"
-        y="20"
+        className="cls-1"
+        x="21.3"
+        y="14.68"
         width="12"
         height="8"
         rx="2"
-        stroke="#CFE8FF"
-        stroke-width="2"
-      ></rect>
+        ry="2"
+        stroke="#cee4f6"
+        strokeWidth="2px"
+      />
       <rect
-        x="10"
-        y="32"
+        className="cls-1"
+        x="5.3"
+        y="26.68"
         width="12"
         height="8"
         rx="2"
-        stroke="#CFE8FF"
-        stroke-width="2"
-      ></rect>
+        ry="2"
+        stroke="#cee4f6"
+        strokeWidth="2px"
+      />
       <path
-        d="M22 12H26V24"
-        stroke="#CFE8FF"
-        stroke-width="2"
-        stroke-linecap="round"
-      ></path>
+        className="cls-2"
+        d="M17.3,6.68h4v12"
+        strokeLinecap="round"
+        stroke="#cee4f6"
+        strokeWidth="2px"
+      />
       <path
-        d="M26 24H22V36"
-        stroke="#CFE8FF"
-        stroke-width="2"
-        stroke-linecap="round"
-      ></path>
+        className="cls-2"
+        d="M21.3,18.68h-4v12"
+        strokeLinecap="round"
+        stroke="#cee4f6"
+        strokeWidth="2px"
+      />
     </svg>
   );
 }
