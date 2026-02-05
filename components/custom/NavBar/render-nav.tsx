@@ -19,7 +19,6 @@ export default function RenderNav({
   const { theme } = useTheme();
 
   const setQuest = (parent: string, value: string) => {
-    console.log(parent, value);
     if (
       parent === "QUEST" &&
       value !== "ROADMAP" &&
