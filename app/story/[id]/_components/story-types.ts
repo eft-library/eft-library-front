@@ -1,4 +1,5 @@
 import { LocaleName } from "@/components/types/common";
+import { XYPosition, type Node, type MarkerType } from "@xyflow/react";
 
 export interface StorySelectorTypes {
   selector: SelectorTypes[];
@@ -39,4 +40,62 @@ export interface StoryGuideTypes {
 export interface ImageViewerDialogTypes {
   src: string | null;
   onClose: () => void;
+}
+
+interface MarkerEndTypes {
+  type: MarkerType;
+  color: string;
+}
+
+interface EdgeStyleTypes {
+  stroke: string;
+  strokeWidth: string;
+  filter: string;
+}
+
+interface EdgeInfo {
+  id: string;
+  source: string;
+  target: string;
+  animated: boolean;
+  style: EdgeStyleTypes;
+  markerEnd: MarkerEndTypes;
+}
+
+export type CustomNodeTypes = Node<{
+  nodeType:
+    | "default"
+    | "image"
+    | "condition"
+    | "craft"
+    | "pay"
+    | "achievements"
+    | "penalty"
+    | "end";
+  title: LocaleName;
+  image: string;
+  contents: LocaleName;
+  storyId: string;
+  // node_meta: any;
+}>;
+
+export interface NodeData {
+  id: string;
+  node_type:
+    | "default"
+    | "image"
+    | "condition"
+    | "craft"
+    | "pay"
+    | "achievements"
+    | "penalty"
+    | "end";
+  title: LocaleName;
+  image: string;
+  y_coordinate: number;
+  x_coordinate: number;
+  contents: LocaleName;
+  story_id: string;
+  // node_meta: any;
+  edge: EdgeInfo[];
 }

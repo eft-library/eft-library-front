@@ -7,6 +7,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { storyI18N } from "@/lib/consts/i18nConsts";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
+import StoryRoadmap from "./StoryRoadmap/story-roadmap";
 
 export default function StoryView({ story }: StoryViewTypes) {
   const locale = useLocale();
@@ -22,7 +23,11 @@ export default function StoryView({ story }: StoryViewTypes) {
         </div>
 
         <StorySelector selector={story.selector} />
-        <StoryContents storyDetail={story.detail} />
+        {story.detail.id !== "roadmap" ? (
+          <StoryContents storyDetail={story.detail} />
+        ) : (
+          <StoryRoadmap />
+        )}
       </div>
     </ViewWrapper>
   );

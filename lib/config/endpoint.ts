@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
   GET_ALL_RNG_ITEM_RANK: baseUrl + "/api/minigame/rng-item/all-rank",
   GET_MY_RNG_ITEM_RANK: baseUrl + "/api/minigame/rng-item/my-rank",
   GET_STORY: baseUrl + "/api/story/detail",
+  GET_STORY_ROADMAP: baseUrl + "/api/story/roadmap",
 };
 
 export const USER_API_ENDPOINTS = {
