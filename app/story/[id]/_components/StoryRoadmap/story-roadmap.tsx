@@ -18,14 +18,14 @@ import { useEffect } from "react";
 import { NodeData } from "../story-types";
 
 const nodeTypes = {
-  default: CustomNode,
-  image: CustomNode,
+  base: CustomNode,
+  timegate: CustomNode,
   craft: CustomNode,
-  condition: CustomNode,
-  pay: CustomNode,
+  branch: CustomNode,
+  payment: CustomNode,
   achievement: CustomNode,
   penalty: CustomNode,
-  end: CustomNode,
+  ending: CustomNode,
 };
 
 export default function StoryRoadmap() {
@@ -78,7 +78,7 @@ export default function StoryRoadmap() {
   };
 
   return (
-    <div className="w-full h-300 rounded-lg overflow-hidden border border-border/50 shadow-xl dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.4)]">
+    <div className="w-full h-300 rounded-lg overflow-hidden border border-border/50 shadow-xl bg-white/80 dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.45)]">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -90,9 +90,9 @@ export default function StoryRoadmap() {
           console.log("y:", node.position.y);
         }}
         nodeTypes={nodeTypes}
-        className="dark:bg-[#1a1a1a] bg-gray-900"
-        minZoom={0.5}
-        maxZoom={1.5}
+        className="bg-slate-50 dark:bg-[#1a1a1a]"
+        minZoom={0.05}
+        maxZoom={2}
         fitView
         zoomOnDoubleClick={false}
       >
@@ -100,12 +100,13 @@ export default function StoryRoadmap() {
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
-          className="dark:opacity-30 opacity-20"
+          className="opacity-100 dark:opacity-30"
         />
-        <Controls className="dark:bg-white/10 bg-gray-800 dark:border-white/10 border-gray-700" />
+        <Controls className="bg-white border-slate-300 dark:bg-white/10 dark:border-white/10" />
+
         <MiniMap
-          className="dark:bg-white/5 bg-gray-800 dark:border-white/10 border-gray-700"
-          maskColor="rgba(0, 0, 0, 0.6)"
+          className="bg-white border-slate-300 dark:bg-white/5 dark:border-white/10"
+          maskColor="rgba(29, 15, 15, 0.6)"
         />
       </ReactFlow>
     </div>

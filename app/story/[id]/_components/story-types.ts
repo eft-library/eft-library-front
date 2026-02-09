@@ -64,14 +64,14 @@ interface EdgeInfo {
 
 export type CustomNodeTypes = Node<{
   nodeType:
-    | "default"
-    | "image"
-    | "condition"
+    | "base"
+    | "branch"
     | "craft"
-    | "pay"
-    | "achievements"
+    | "payment"
+    | "achievement"
     | "penalty"
-    | "end";
+    | "timegate"
+    | "ending";
   title: LocaleName;
   image: string;
   contents: LocaleName;
@@ -82,14 +82,14 @@ export type CustomNodeTypes = Node<{
 export interface NodeData {
   id: string;
   node_type:
-    | "default"
-    | "image"
-    | "condition"
+    | "base"
+    | "branch"
     | "craft"
-    | "pay"
-    | "achievements"
+    | "payment"
+    | "achievement"
     | "penalty"
-    | "end";
+    | "timegate"
+    | "ending";
   title: LocaleName;
   image: string;
   y_coordinate: number;
