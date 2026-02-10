@@ -42,5 +42,6 @@ export const config = {
     "/community/update/:path*",
     "/onboarding",
     "/mypage/:path*",
+    "/((?!_next|api|static|favicon.ico).*)", // 다른 경로 전역 확인 원하면 추가
   ],
 };
