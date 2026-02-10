@@ -17,6 +17,7 @@ import "@xyflow/react/dist/style.css";
 import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
 import "react-datepicker/dist/react-datepicker.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,43 +69,52 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
-
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
-        <script
+        <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
             process.env.NEXT_PUBLIC_ADSENSE || ""
           }`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive" // 또는 "lazyOnload"
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider locale={locale}>
-          <AuthContext>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Suspense>
-                <AppStoreProvider>
-                  <QueryProvider>
-                    <NavData />
-                    {children}
-                    <Footer />
-                  </QueryProvider>
-                </AppStoreProvider>
-              </Suspense>
-            </ThemeProvider>
-          </AuthContext>
-        </NextIntlClientProvider>
+        <Suspense fallback={null}>
+          <RootLayoutContent>{children}</RootLayoutContent>
+        </Suspense>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
     </html>
+  );
+}
+
+// next-intl의 locale.ts에서 use cahce 활성화시 Suspense 에러로 인해 분리
+async function RootLayoutContent({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+
+  return (
+    <NextIntlClientProvider locale={locale}>
+      <AuthContext>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppStoreProvider>
+            <QueryProvider>
+              <NavData />
+              {children}
+              <Footer />
+            </QueryProvider>
+          </AppStoreProvider>
+        </ThemeProvider>
+      </AuthContext>
+    </NextIntlClientProvider>
   );
 }
