@@ -13,7 +13,12 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!session?.accessToken) return;
-    if (wsRef.current) return;
+
+    // 토큰 변경 시 재연결
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
 
     const ws = new WebSocket(
       `wss://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`,
@@ -41,9 +46,10 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
           break;
         }
 
-        case "wpf_location":
+        case "wpf_location": {
           setWpfLocation(parsed.payload);
           break;
+        }
       }
     };
 
@@ -53,9 +59,18 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
 
     ws.onclose = () => {
       console.log("WebSocket disconnected");
+      wsRef.current = null;
     };
 
+    // keep-alive ping
+    const pingInterval = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send("ping");
+      }
+    }, 30000);
+
     return () => {
+      clearInterval(pingInterval);
       if (
         ws.readyState === WebSocket.OPEN ||
         ws.readyState === WebSocket.CONNECTING
