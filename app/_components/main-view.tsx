@@ -74,6 +74,7 @@ export default function MainView({ homeData }: MainViewTypes) {
                     alt="gearupbooster"
                     width={300}
                     height={60}
+                    loading="eager"
                     className="w-full h-auto"
                   />
                 </Link>
