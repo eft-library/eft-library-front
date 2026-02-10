@@ -18,7 +18,6 @@ import Link from "next/link";
 import NavSearch from "./nav-search";
 import Loading from "../Loading/loading";
 import Notification from "./notification";
-import { useWebSocket } from "@/lib/hooks/useWebSocket";
 
 export default function NavBar({ navData }: NavBarTypes) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,8 +29,6 @@ export default function NavBar({ navData }: NavBarTypes) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-
-  useWebSocket(session?.accessToken);
 
   if (!mounted) {
     return <Loading />;

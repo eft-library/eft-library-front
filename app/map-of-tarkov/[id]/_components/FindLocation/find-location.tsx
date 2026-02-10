@@ -11,9 +11,7 @@ import { MapPin, HelpCircle, Search } from "lucide-react";
 import { FindLocationTypes, LatLng } from "../map-of-tarkov.types";
 import { mapOfTarkovI18n } from "@/lib/consts/i18nConsts";
 import FindLocationModal from "./find-location-modal";
-import { useWebSocket } from "@/lib/hooks/useWebSocket";
 import { wsStore } from "@/store/wsStore";
-import { useSession } from "next-auth/react";
 
 const FindLocationInner = dynamic(() => import("./find-location-inner"), {
   ssr: false,
@@ -21,7 +19,6 @@ const FindLocationInner = dynamic(() => import("./find-location-inner"), {
 
 export default function FindLocation({ findInfo }: FindLocationTypes) {
   const { location } = wsStore((state) => state);
-  const { data: session } = useSession();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [popupStatus, setPopupStatus] = useState<boolean>(false);
@@ -33,8 +30,6 @@ export default function FindLocation({ findInfo }: FindLocationTypes) {
     lng: 0,
   });
   const prevLocationRef = useRef<string | null>(null);
-
-  useWebSocket(session?.accessToken);
 
   const parseWhereText = (text: string) => {
     if (!text || text.length === 0) return null;

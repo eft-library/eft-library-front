@@ -18,6 +18,7 @@ import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Script from "next/script";
+import { WebSocketProvider } from "@/store/websocket-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -107,9 +108,11 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
         >
           <AppStoreProvider>
             <QueryProvider>
-              <NavData />
-              {children}
-              <Footer />
+              <WebSocketProvider>
+                <NavData />
+                {children}
+                <Footer />
+              </WebSocketProvider>
             </QueryProvider>
           </AppStoreProvider>
         </ThemeProvider>
