@@ -38,10 +38,9 @@ export async function proxy(req: NextRequest) {
 // matcher 확장
 export const config = {
   matcher: [
-    "/community/create",
-    "/community/update",
+    "/community/create/:path*",
+    "/community/update/:path*",
     "/onboarding",
-    "/mypage",
-    "/((?!_next|api|static|favicon.ico).*)", // 다른 경로 전역 확인 원하면 추가
+    "/mypage/:path*",
   ],
 };

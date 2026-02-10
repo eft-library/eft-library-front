@@ -33,7 +33,7 @@ export default function MyPageView({ route }: MyPageViewTypes) {
   const fetchDefaultData = async () => {
     const data = await requestGetUserData(
       `${USER_API_ENDPOINTS.MY_PAGE_DEFAULT}`,
-      session
+      session,
     );
     if (!data || data.status !== 200) {
       throw new Error(data?.msg || "Failed to fetch post reaction data");
@@ -144,8 +144,8 @@ export default function MyPageView({ route }: MyPageViewTypes) {
                         ? "bg-orange-400/20 text-white border border-orange-400/30"
                         : "bg-orange-50 text-orange-800 border border-orange-200"
                       : theme === "dark"
-                      ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <tab.icon className="w-5 h-5" />
