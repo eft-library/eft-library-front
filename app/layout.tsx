@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import AuthContext from "@/store/AuthContext";
-import { AppStoreProvider } from "@/store/provider";
 import { Suspense } from "react";
 import NavData from "@/components/custom/NavBar/nav-data";
-import { ThemeProvider } from "@/lib/config/theme-provider";
+import { AuthProvider } from "@/components/provider/auth-provider";
+import { AppStoreProvider } from "@/components/provider/app-store-provider";
+import { ThemeProvider } from "@/components/provider/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
+import { WebSocketProvider } from "@/components/provider/websocket-provider";
+import { QueryProvider } from "@/components/provider/query-provider";
 import { getLocale } from "next-intl/server";
-import QueryProvider from "@/store/queryProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Footer from "@/components/custom/Footer/footer";
 import "./globals.css";
@@ -17,8 +18,6 @@ import "@xyflow/react/dist/style.css";
 import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
 import "react-datepicker/dist/react-datepicker.css";
-import Script from "next/script";
-import { WebSocketProvider } from "@/store/websocket-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,12 +72,11 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <head>
-        <Script
+        <script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
             process.env.NEXT_PUBLIC_ADSENSE || ""
           }`}
-          crossOrigin="anonymous"
         />
       </head>
       <body
@@ -99,7 +97,7 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <NextIntlClientProvider locale={locale}>
-      <AuthContext>
+      <AuthProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -116,7 +114,7 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
             </QueryProvider>
           </AppStoreProvider>
         </ThemeProvider>
-      </AuthContext>
+      </AuthProvider>
     </NextIntlClientProvider>
   );
 }

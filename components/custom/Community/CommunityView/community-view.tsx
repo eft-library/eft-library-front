@@ -6,7 +6,7 @@ import PostGrid from "../PostGrid/post-grid";
 import SidebarSearch from "../SideBarSearch/side-bar-search";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import CommunitySearch from "../CommunitySearch/community-search";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import { useEffect } from "react";
 
 export default function CommunityView({
@@ -31,7 +31,7 @@ export default function CommunityView({
     const handleScroll = () => {
       sessionStorage.setItem(
         "scroll-community-list",
-        window.scrollY.toString()
+        window.scrollY.toString(),
       );
     };
     window.addEventListener("scroll", handleScroll, { passive: true });

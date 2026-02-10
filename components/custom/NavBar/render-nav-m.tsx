@@ -2,7 +2,7 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import Link from "next/link";
 import type { RenderNavTypes } from "./nav-bar.types";
 import { useTheme } from "next-themes";

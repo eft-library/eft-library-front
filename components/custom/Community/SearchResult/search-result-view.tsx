@@ -25,7 +25,7 @@ import Image from "next/image";
 import CommunitySearch from "../CommunitySearch/community-search";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import { useEffect } from "react";
 
 export default function SearchResultView({ postInfo }: SearchResultViewTypes) {

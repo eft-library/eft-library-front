@@ -1,7 +1,7 @@
 "use client";
 
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import type { QuestDataTypes } from "./quest.types";
 import QuestView from "./quest-view";
 import Loading from "@/components/custom/Loading/loading";

@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import { useTheme } from "next-themes";
 import { node_color } from "@/lib/func/jsxfunction";
 

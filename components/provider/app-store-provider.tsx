@@ -2,10 +2,10 @@
 
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { type StoreApi, useStore } from "zustand";
-import { type AppStoreType, createAppStore } from "./store";
+import { type AppStoreType, createAppStore } from "@/store/store";
 
 export const AppStoreContext = createContext<StoreApi<AppStoreType> | null>(
-  null
+  null,
 );
 
 export interface AppStoreProviderProps {

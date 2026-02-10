@@ -8,7 +8,7 @@ import type { CommunitDetailDataTypes } from "../community.types";
 import { CommunityDetailView } from "./community-detail-view";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 
 // 여기는 항상 최신 데이터가 보여야 하는 곳이라 캐싱을 쓰면 안되기에 react query 제거
 
@@ -19,7 +19,7 @@ export default function CommunityDetailData() {
   const userEmail = session?.email ?? "";
 
   const [postInfo, setPostInfo] = useState<CommunitDetailDataTypes | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -36,7 +36,7 @@ export default function CommunityDetailData() {
             url: id,
             user_email: userEmail,
             page_category: pageCategory,
-          }
+          },
         );
         if (!data || data.status !== 200)
           throw new Error(data?.msg || "Failed to fetch post data");
@@ -57,7 +57,7 @@ export default function CommunityDetailData() {
 
     // localStorage 가져오기
     const viewed = JSON.parse(
-      localStorage.getItem("viewed_community_posts") || "[]"
+      localStorage.getItem("viewed_community_posts") || "[]",
     );
 
     // 이미 조회한 게시글이면 return

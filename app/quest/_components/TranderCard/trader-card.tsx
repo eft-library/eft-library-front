@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import Image from "next/image";
 import type { TraderCardTypes } from "../quest.types";
 import { useLocale } from "next-intl";

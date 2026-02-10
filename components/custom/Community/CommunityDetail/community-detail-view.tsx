@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import CommunityReaction from "./CommunityReaction/community-reaction";
 import CommunitySideBar from "../CommunitySideBar/community-side-bar";
 import PostGrid from "../PostGrid/post-grid";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import CommentSection from "./CommentSection/comment-section";
 import Link from "next/link";
 import { requestUserData } from "@/lib/config/api";
@@ -65,7 +65,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
   const isOwner = session?.email === postInfo.post_detail.user_email;
 
   const postCategory = CATEGORY_LIST.find(
-    (original) => original.id === postInfo.post_detail.category
+    (original) => original.id === postInfo.post_detail.category,
   );
 
   const goBack = () => {
@@ -77,7 +77,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
       const data = await requestUserData(
         COMMUNITY_ENDPOINTS.DELETE_POST_BY_ADMIN,
         { post_id: postInfo.post_detail.id },
-        session
+        session,
       );
 
       if (data && data.status === 200 && data.data) {
@@ -85,7 +85,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
       } else {
         console.error(
           "Failed to fetch station data:",
-          data?.msg || "Unknown error"
+          data?.msg || "Unknown error",
         );
         router.push("/community/issue");
       }
@@ -221,7 +221,7 @@ export function CommunityDetailView({ postInfo }: CommunityDetailTypes) {
                                     session.userInfo.user_blocks.some(
                                       (block) =>
                                         block.blocked_email ===
-                                        postInfo.post_detail.user_email
+                                        postInfo.post_detail.user_email,
                                     );
 
                                   return isBlocked ? (

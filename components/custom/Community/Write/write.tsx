@@ -20,7 +20,7 @@ import DefaultDialog from "@/components/custom/DefaultDialog/default-dialog";
 import { CATEGORY_LIST } from "@/lib/consts/community-consts";
 import { useRouter } from "next/navigation";
 import { CommunityWriteTypes } from "../community.types";
-import { useAppStore } from "@/store/provider";
+import { useAppStore } from "@/components/provider/app-store-provider";
 import { getBanStatus } from "@/lib/func/userFunction";
 import Loading from "../../Loading/loading";
 
@@ -36,7 +36,7 @@ export default function CommunityWrite({
   const [contents, setContents] = useState(postInfo?.contents ?? "");
   const { setPageCategory } = useAppStore((state) => state);
   const [category, setCategory] = useState(
-    CATEGORY_LIST.find((c) => c.id === postInfo?.category) ?? CATEGORY_LIST[1]
+    CATEGORY_LIST.find((c) => c.id === postInfo?.category) ?? CATEGORY_LIST[1],
   );
   const [title, setTitle] = useState(postInfo?.title ?? "");
   const [alertDesc, setAlertDesc] = useState<string>("");
@@ -72,7 +72,7 @@ export default function CommunityWrite({
               contents: contents,
               nickname: session.userInfo.nickname ?? "",
             },
-            session
+            session,
           );
           setLoading(false);
           if (data && data.status === 200) {
@@ -80,7 +80,7 @@ export default function CommunityWrite({
           } else {
             console.error(
               "Failed to fetch community create:",
-              data?.msg || "Unknown error"
+              data?.msg || "Unknown error",
             );
           }
         } else {
@@ -93,7 +93,7 @@ export default function CommunityWrite({
               category: category.id,
               contents: contents,
             },
-            session
+            session,
           );
           setLoading(false);
           if (data && data.status === 200) {
@@ -101,7 +101,7 @@ export default function CommunityWrite({
           } else {
             console.error(
               "Failed to fetch community create:",
-              data?.msg || "Unknown error"
+              data?.msg || "Unknown error",
             );
           }
         }
@@ -118,7 +118,7 @@ export default function CommunityWrite({
   };
   const banStatus = getBanStatus(
     session?.userInfo.start_time,
-    session?.userInfo.end_time
+    session?.userInfo.end_time,
   );
 
   return (
@@ -183,7 +183,7 @@ export default function CommunityWrite({
                     {category_identify[localeKey]}
                   </span>
                 </DropdownMenuItem>
-              )
+              ),
             )}
           </DropdownMenuContent>
         </DropdownMenu>
