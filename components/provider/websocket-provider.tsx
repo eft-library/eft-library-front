@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { wsStore } from "@/store/wsStore";
 import { NotificationDataTypes } from "@/components/custom/NavBar/nav-bar.types";
@@ -9,13 +9,17 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const setNotifications = wsStore((s) => s.setNotifications);
   const setWpfLocation = wsStore((s) => s.setLocation);
+  const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     if (!session?.accessToken) return;
+    if (wsRef.current) return;
 
     const ws = new WebSocket(
       `wss://${process.env.NEXT_PUBLIC_REDIS_HOST}/ws?token=${session.accessToken}`,
     );
+
+    wsRef.current = ws;
 
     ws.onopen = () => {
       console.log("WebSocket connected");
