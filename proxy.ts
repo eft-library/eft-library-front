@@ -7,6 +7,10 @@ export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = req.nextUrl;
   console.log(token);
+  console.log("cookies:", req.headers.get("cookie"));
+  console.log("host:", req.headers.get("host"));
+  console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+
   // 보호 경로 (로그인 필요)
   const protectedPaths = [
     "/community/create",
