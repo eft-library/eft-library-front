@@ -5,19 +5,16 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useAppStore } from "@/components/provider/app-store-provider";
 import { useTheme } from "next-themes";
 import { node_color } from "@/lib/func/jsxfunction";
 
 export default function TraderNode(props: any) {
   const { theme } = useTheme();
-  const { setNpcId } = useAppStore((state) => state);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
 
   const moveQuest = (value: string) => {
-    setNpcId(value);
-    window.open("/quest", "_blank");
+    window.open(`/quest/${value}`, "_blank");
   };
 
   return (

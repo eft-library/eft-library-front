@@ -3,7 +3,6 @@
 import type { RenderNavTypes } from "./nav-bar.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useAppStore } from "@/components/provider/app-store-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
@@ -13,20 +12,9 @@ export default function RenderNav({
   activeMenu,
   setActiveMenu,
 }: RenderNavTypes) {
-  const { setNpcId } = useAppStore((state) => state);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
-
-  const setQuest = (parent: string, value: string) => {
-    if (
-      parent === "QUEST" &&
-      value !== "ROADMAP" &&
-      value !== "QUEST_PLANNER"
-    ) {
-      setNpcId(value);
-    }
-  };
 
   return (
     <div
@@ -56,11 +44,7 @@ export default function RenderNav({
         >
           <div className="py-2">
             {navMain.sub_menus.map((navSub) => (
-              <Link
-                key={`nav-sub-${navSub.value}`}
-                href={navSub.link}
-                onClick={() => setQuest(navSub.parent_value, navSub.value)}
-              >
+              <Link key={`nav-sub-${navSub.value}`} href={navSub.link}>
                 <Button
                   variant="ghost"
                   className={`cursor-pointer w-full text-sm transition-colors text-center justify-center h-auto py-2 ${

@@ -2,7 +2,6 @@
 
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { useAppStore } from "@/components/provider/app-store-provider";
 import Link from "next/link";
 import type { RenderNavTypes } from "./nav-bar.types";
 import { useTheme } from "next-themes";
@@ -15,7 +14,6 @@ export default function RenderNavM({
   setActiveMenu,
   setIsMobileMenuOpen,
 }: RenderNavTypes) {
-  const { setNpcId } = useAppStore((state) => state);
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const { theme } = useTheme();
@@ -35,13 +33,6 @@ export default function RenderNavM({
       default:
         return null;
     }
-  };
-
-  const setQuest = (parent: string, value: string) => {
-    if (parent === "QUEST") {
-      setNpcId(value);
-    }
-    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -83,7 +74,7 @@ export default function RenderNavM({
             <Link
               key={`nav-sub-${navSub.value}`}
               href={navSub.link}
-              onClick={() => setQuest(navSub.parent_value, navSub.value)}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               <Button
                 variant="ghost"
