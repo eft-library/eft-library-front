@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
               "default-src 'self';",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.googletagmanager.com https://*.google.com https://*.google-analytics.com https://googleads.g.doubleclick.net https://static.cloudflareinsights.com https://*.adtrafficquality.google;",
               "connect-src 'self' https://*.google.com https://*.google-analytics.com https://*.doubleclick.net https://*.googlesyndication.com https://cloudflareinsights.com https://*.adtrafficquality.google;",
-              "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net;",
+              "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://*.adtrafficquality.google;",
               "img-src 'self' data: https: blob:;",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
               "font-src 'self' data: https://fonts.gstatic.com;",
