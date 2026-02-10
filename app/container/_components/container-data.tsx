@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import ContainerView from "./container-view";
 import { cacheLife } from "next/cache";
 
-async function fetchContainer() {
+async function fetchItem() {
   "use cache";
   cacheLife({
     stale: 86400, // 24시간 fresh
@@ -17,7 +17,7 @@ async function fetchContainer() {
 }
 
 export default async function ContainerData() {
-  const data = await fetchContainer();
+  const data = await fetchItem();
 
   if (!data || data.status !== 200) {
     console.error(

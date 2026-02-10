@@ -1,28 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { AdBannerTypes } from "./adsense.types";
 
 export default function AdBanner({ ...props }: AdBannerTypes) {
-  const [showAd, setShowAd] = useState(false);
+  const adRef = useRef<HTMLModElement>(null);
+  const pathname = usePathname();
+  const isLoaded = useRef(false);
 
   useEffect(() => {
-    setShowAd(true);
-  }, []);
+    const currentIns = adRef.current;
 
-  useEffect(() => {
-    if (showAd) {
+    // 이미 광고가 로드되었는지 확인
+    if (!currentIns || currentIns.getAttribute("data-ad-status")) {
+      return;
+    }
+
+    // 이미 이 인스턴스에서 push했으면 스킵
+    if (isLoaded.current) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
       try {
         (window as any).adsbygoogle = (window as any).adsbygoogle || [];
         (window as any).adsbygoogle.push({});
+        isLoaded.current = true;
       } catch (e) {
         console.error("Google AdSense script load error:", e);
       }
-    }
-  }, [showAd]);
+    }, 100);
 
-  if (!showAd) return null;
+    return () => {
+      clearTimeout(timer);
+      isLoaded.current = false; // 클린업 시 리셋
+    };
+  }, [pathname]); // pathname 변경 시에만 재실행
 
   return (
     <div
@@ -30,6 +45,7 @@ export default function AdBanner({ ...props }: AdBannerTypes) {
       style={{ maxWidth: `${props.maxWidth ?? 970}px`, margin: "0 auto" }}
     >
       <ins
+        ref={adRef}
         className="adsbygoogle"
         style={{
           display: "block",
