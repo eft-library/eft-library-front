@@ -400,7 +400,7 @@ export const getNodeStyles = (nodeType: string, dataId: string) => {
             bg: "bg-yellow-50/80 dark:bg-yellow-950/30",
           };
 
-        case "Debtor-ending":
+        case "debtor-ending":
           return {
             border:
               "border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.45)] dark:shadow-[0_0_15px_rgba(168,85,247,0.55)]",
