@@ -6,7 +6,7 @@ import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import AdBanner from "@/components/custom/Adsense/ad-banner";
 import Link from "next/link";
 import Image from "next/image";
-import { Flame } from "lucide-react";
+import { Flame, Star } from "lucide-react";
 
 export default function MainView({ homeData }: MainViewTypes) {
   return (
@@ -50,8 +50,12 @@ export default function MainView({ homeData }: MainViewTypes) {
                         href={`/community/detail/${post.id}-${post.slug}`}
                       >
                         <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
-                          <span className="text-xs font-bold text-orange-400 mt-1">
-                            {index + 1}
+                          <span className="text-xs font-bold text-orange-400 mt-1 flex items-center">
+                            {[0, 1].includes(index) ? (
+                              <Star className="w-4 h-4 text-yellow-400 animate-bounce mr-[-2px]" />
+                            ) : (
+                              index + 1
+                            )}
                           </span>
                           <div className="flex-1 min-w-0">
                             <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-2 mb-1">
