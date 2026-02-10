@@ -4,7 +4,10 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { alertMessageI18N, planner18N } from "@/lib/consts/i18nConsts";
 import type { Planner, PlannerViewTypes } from "./planner.types";
 import SearchFilter from "./SearchFilter/search-filter";
-import type { Quest, TaskWrapper } from "@/app/quest/_components/quest.types";
+import type {
+  Quest,
+  TaskWrapper,
+} from "@/app/quest/[id]/_components/quest.types";
 import { useEffect, useState } from "react";
 import PreviewSelect from "./PreviewSelect/preview-select";
 import { useSession } from "next-auth/react";

@@ -1,4 +1,4 @@
-import type { QuestDetailTypes } from "@/app/quest/_components/quest.types";
+import type { QuestDetailTypes } from "@/app/quest/[id]/_components/quest.types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skull, Star } from "lucide-react";
 import { questI18N } from "@/lib/consts/i18nConsts";

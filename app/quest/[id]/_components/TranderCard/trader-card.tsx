@@ -1,22 +1,27 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useAppStore } from "@/components/provider/app-store-provider";
 import Image from "next/image";
 import type { TraderCardTypes } from "../quest.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
+import { useParams, useRouter } from "next/navigation";
 
 export default function TraderCard({ trader_list }: TraderCardTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
-  const { npcId, setNpcId } = useAppStore((state) => state);
+  const param = useParams<{ id: string }>();
+  const router = useRouter();
+
+  const handleTraderClick = (traderId: string) => {
+    router.push(`/quest/${traderId}`);
+  };
 
   return (
     <div className="mb-8 md:mb-12">
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-6 max-w-5xl mx-auto">
         {trader_list.map((trader) => {
-          const isSelected = npcId === trader.id;
+          const isSelected = param.id === trader.id;
 
           return (
             <Card
@@ -34,7 +39,7 @@ export default function TraderCard({ trader_list }: TraderCardTypes) {
                 }
                 hover:shadow-[#FFB82E]/10 dark:hover:shadow-[#FFB82E]/20
               `}
-              onClick={() => setNpcId(trader.id)}
+              onClick={() => handleTraderClick(trader.id)}
             >
               <CardContent className="p-2 md:p-4 text-center">
                 <div className="relative mb-2 md:mb-3">

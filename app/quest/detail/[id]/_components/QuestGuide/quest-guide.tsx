@@ -1,4 +1,4 @@
-import { QuestDetailTypes } from "@/app/quest/_components/quest.types";
+import { QuestDetailTypes } from "@/app/quest/[id]/_components/quest.types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";

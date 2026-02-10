@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Check, SquareX } from "lucide-react";
 import Image from "next/image";
-import type { QuestDetailTypes } from "@/app/quest/_components/quest.types";
+import type { QuestDetailTypes } from "@/app/quest/[id]/_components/quest.types";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
 import { questI18N } from "@/lib/consts/i18nConsts";

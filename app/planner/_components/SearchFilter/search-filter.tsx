@@ -6,7 +6,7 @@ import { planner18N } from "@/lib/consts/i18nConsts";
 import { Search } from "lucide-react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import type { Quest } from "@/app/quest/_components/quest.types";
+import type { Quest } from "@/app/quest/[id]/_components/quest.types";
 import { useEffect, useState, useRef } from "react";
 import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";

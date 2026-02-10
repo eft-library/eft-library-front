@@ -1,12 +1,12 @@
 "use server";
 
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import type { Quest } from "@/app/quest/[id]/_components/quest.types";
-import QuestDetailView from "./quest-detail-view";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+import type { QuestDataTypes } from "./quest.types";
+import QuestView from "./quest-view";
 
-async function fetchQusetData(id: string): Promise<Quest> {
+async function fetchQuestData(id: string): Promise<QuestDataTypes> {
   "use cache";
   cacheLife({
     stale: 86400, // 24시간 fresh
@@ -14,7 +14,7 @@ async function fetchQusetData(id: string): Promise<Quest> {
     expire: 604800, // 7일 후 완전 만료
   });
 
-  const res = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`);
+  const res = await fetch(`${API_ENDPOINTS.GET_QUEST_BY_NPC}/${id}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch quest data");
@@ -29,7 +29,7 @@ async function fetchQusetData(id: string): Promise<Quest> {
   return json.data;
 }
 
-export default async function QuestDetailData({
+export default async function QuestData({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -37,13 +37,13 @@ export default async function QuestDetailData({
   const { id } = await params;
 
   try {
-    const data = await fetchQusetData(id);
+    const data = await fetchQuestData(id);
 
     if (!data) {
       notFound(); // 404 페이지로
     }
 
-    return <QuestDetailView quest={data} />;
+    return <QuestView questData={data} />;
   } catch (error) {
     console.error(error);
     notFound(); // 또는 에러 페이지로

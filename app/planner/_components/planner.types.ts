@@ -1,4 +1,4 @@
-import { Quest } from "@/app/quest/_components/quest.types";
+import { Quest } from "@/app/quest/[id]/_components/quest.types";
 
 export interface Planner {
   npc_id: string;

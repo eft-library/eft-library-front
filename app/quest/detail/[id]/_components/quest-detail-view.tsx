@@ -1,4 +1,4 @@
-import type { QuestDetailViewTypes } from "@/app/quest/_components/quest.types";
+import type { QuestDetailViewTypes } from "@/app/quest/[id]/_components/quest.types";
 import QuestHeader from "./QuestHeader/quest-header";
 import QuestObjectives from "./QuestObjectives/quest-objectives";
 import QuestRewards from "./QuestRewards/quest-rewards";
