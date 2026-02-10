@@ -1,5 +1,5 @@
 import { LocaleName } from "@/components/types/common";
-import { XYPosition, type Node, type MarkerType } from "@xyflow/react";
+import { type Node, type MarkerType } from "@xyflow/react";
 
 export interface StorySelectorTypes {
   selector: SelectorTypes[];
@@ -62,7 +62,13 @@ interface EdgeInfo {
   markerEnd: MarkerEndTypes;
 }
 
+interface NodeMeta {
+  value: string;
+  desc: LocaleName;
+}
+
 export type CustomNodeTypes = Node<{
+  id: string;
   nodeType:
     | "base"
     | "branch"
@@ -75,8 +81,7 @@ export type CustomNodeTypes = Node<{
   title: LocaleName;
   image: string;
   contents: LocaleName;
-  storyId: string;
-  // node_meta: any;
+  nodeMeta: NodeMeta;
 }>;
 
 export interface NodeData {
@@ -95,7 +100,6 @@ export interface NodeData {
   y_coordinate: number;
   x_coordinate: number;
   contents: LocaleName;
-  story_id: string;
-  // node_meta: any;
+  node_meta: NodeMeta;
   edge: EdgeInfo[];
 }

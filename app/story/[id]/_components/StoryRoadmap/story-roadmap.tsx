@@ -65,12 +65,12 @@ export default function StoryRoadmap() {
         type: node.node_type,
         // draggable: false,
         data: {
+          id: node.id,
           title: node.title,
           contents: node.contents,
           nodeType: node.node_type,
-          storyId: node.story_id,
           image: node.image,
-          //   nodeMeta: node.node_meta
+          nodeMeta: node.node_meta,
         },
       };
     });
@@ -91,7 +91,7 @@ export default function StoryRoadmap() {
         }}
         nodeTypes={nodeTypes}
         className="bg-slate-50 dark:bg-[#1a1a1a]"
-        minZoom={0.05}
+        minZoom={0.1}
         maxZoom={2}
         fitView
         zoomOnDoubleClick={false}
