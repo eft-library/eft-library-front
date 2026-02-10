@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   // fetch data
   const product = await fetch(`${API_ENDPOINTS.GET_MAP}/${id}`).then((res) =>
-    res.json()
+    res.json(),
   );
 
   const res = product.data;
@@ -39,6 +39,6 @@ export async function generateMetadata({
   };
 }
 
-export default function Map() {
-  return <MapData />;
+export default function Map({ params }: MetaProps) {
+  return <MapData params={params} />;
 }

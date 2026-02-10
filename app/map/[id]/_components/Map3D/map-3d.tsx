@@ -27,6 +27,7 @@ export default function Map3D({ mapData }: Map3DTypes) {
   return (
     <div className="w-full flex-1 min-h-125 rounded-lg overflow-hidden shadow-lg bg-card">
       <Canvas
+        key={`3d-map-${mapData.id}--${Date.now()}`}
         style={{ width: "100%", height: "720px", display: "block" }}
         camera={{ position: [0, 60, 0] }}
         onCreated={({ gl }) => {

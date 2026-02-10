@@ -1,43 +1,51 @@
-"use client";
+"use server";
 
-import Loading from "@/components/custom/Loading/loading";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useParams } from "next/navigation";
 import { MapInfoData } from "./map.types";
 import MapView from "./map-view";
-import { useQuery } from "@tanstack/react-query";
+import { cacheLife } from "next/cache";
+import { notFound } from "next/navigation";
 
-export default function MapData() {
-  const { id } = useParams<{ id: string }>();
-
-  const fetchMapData = async (id: string): Promise<MapInfoData> => {
-    const res = await fetch(`${API_ENDPOINTS.GET_MAP}/${id}`);
-    if (!res.ok) {
-      throw new Error("Failed to fetch map data");
-    }
-    const json = await res.json();
-
-    if (json.status !== 200) {
-      throw new Error(json.msg || "Unknown error");
-    }
-
-    return json.data;
-  };
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["mapData", id],
-    queryFn: () => fetchMapData(id),
-    enabled: !!id,
+async function fetchMapData(id: string): Promise<MapInfoData> {
+  "use cache";
+  cacheLife({
+    stale: 86400, // 24시간 fresh
+    revalidate: 86400, // 24시간 후 재검증
+    expire: 604800, // 7일 후 완전 만료
   });
 
-  if (isLoading) return <Loading />;
+  const res = await fetch(`${API_ENDPOINTS.GET_MAP}/${id}`);
 
-  if (error) {
-    console.error(error);
-    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  if (!res.ok) {
+    throw new Error("Failed to fetch map data");
   }
 
-  if (!data) return <div />;
+  const json = await res.json();
 
-  return <MapView mapInfo={data} />;
+  if (json.status !== 200) {
+    throw new Error(json.msg || "Unknown error");
+  }
+
+  return json.data;
+}
+
+export default async function MapData({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  try {
+    const data = await fetchMapData(id);
+
+    if (!data) {
+      notFound(); // 404 페이지로
+    }
+
+    return <MapView mapInfo={data} />;
+  } catch (error) {
+    console.error(error);
+    notFound(); // 또는 에러 페이지로
+  }
 }

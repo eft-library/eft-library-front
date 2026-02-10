@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   // fetch data
   const product = await fetch(`${API_ENDPOINTS.GET_BOSS}/${id}`).then((res) =>
-    res.json()
+    res.json(),
   );
 
   const res = product.data;
@@ -39,6 +39,6 @@ export async function generateMetadata({
   };
 }
 
-export default function Boss() {
-  return <BossData />;
+export default async function Boss({ params }: MetaProps) {
+  return <BossData params={params} />;
 }

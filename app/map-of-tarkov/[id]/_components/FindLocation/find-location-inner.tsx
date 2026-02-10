@@ -11,6 +11,7 @@ import { FindLocationInnerTypes } from "../map-of-tarkov.types";
 import FindLocationController from "./find-location-controller";
 import { useLocale } from "next-intl";
 import { getLocaleKey, getOtherLocalizedKey } from "@/lib/func/localeFunction";
+import { usePathname } from "next/navigation";
 
 export default function FindLocationInner({
   findInfo,
@@ -19,6 +20,7 @@ export default function FindLocationInner({
   setMousePosition,
 }: FindLocationInnerTypes) {
   const locale = useLocale();
+  const pathname = usePathname();
   const localeKey = getLocaleKey(locale);
 
   const getMarkerPosition = (
@@ -48,6 +50,7 @@ export default function FindLocationInner({
 
   return (
     <MapContainer
+      key={`${findInfo.id}-${pathname}`}
       center={[0, 0]}
       zoom={findInfo.default_zoom_level}
       zoomSnap={0.5}

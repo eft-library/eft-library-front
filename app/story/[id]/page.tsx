@@ -39,6 +39,6 @@ export async function generateMetadata({
   };
 }
 
-export default function Story() {
-  return <StoryDetailData />;
+export default function Story({ params }: MetaProps) {
+  return <StoryDetailData params={params} />;
 }

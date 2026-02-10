@@ -43,6 +43,6 @@ export async function generateMetadata({
   };
 }
 
-export default function Item() {
-  return <ItemData />;
+export default function Item({ params }: MetaProps) {
+  return <ItemData params={params} />;
 }

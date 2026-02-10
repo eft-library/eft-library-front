@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   // fetch data
   const product = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`).then((res) =>
-    res.json()
+    res.json(),
   );
 
   const res = product.data;
@@ -39,6 +39,6 @@ export async function generateMetadata({
   };
 }
 
-export default function QuestDetail() {
-  return <QuestDetailData />;
+export default function QuestDetail({ params }: MetaProps) {
+  return <QuestDetailData params={params} />;
 }

@@ -1,43 +1,51 @@
-"use client";
+"use server";
 
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useParams } from "next/navigation";
 import type { Quest } from "@/app/quest/_components/quest.types";
 import QuestDetailView from "./quest-detail-view";
-import Loading from "@/components/custom/Loading/loading";
-import { useQuery } from "@tanstack/react-query";
+import { cacheLife } from "next/cache";
+import { notFound } from "next/navigation";
 
-export default function QuestDetailData() {
-  const { id } = useParams<{ id: string }>();
-
-  const fetchQuestData = async (id: string): Promise<Quest> => {
-    const res = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`);
-    if (!res.ok) {
-      throw new Error("Failed to fetch quest data");
-    }
-    const json = await res.json();
-
-    if (json.status !== 200) {
-      throw new Error(json.msg || "Unknown error");
-    }
-
-    return json.data;
-  };
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["questData", id],
-    queryFn: () => fetchQuestData(id),
-    enabled: !!id,
+async function fetchQusetData(id: string): Promise<Quest> {
+  "use cache";
+  cacheLife({
+    stale: 86400, // 24시간 fresh
+    revalidate: 86400, // 24시간 후 재검증
+    expire: 604800, // 7일 후 완전 만료
   });
 
-  if (isLoading) return <Loading />;
+  const res = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`);
 
-  if (error) {
-    console.error(error);
-    return <div>데이터를 불러오는 데 실패했습니다.</div>;
+  if (!res.ok) {
+    throw new Error("Failed to fetch quest data");
   }
 
-  if (!data) return <div />;
+  const json = await res.json();
 
-  return <QuestDetailView quest={data} />;
+  if (json.status !== 200) {
+    throw new Error(json.msg || "Unknown error");
+  }
+
+  return json.data;
+}
+
+export default async function QuestDetailData({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  try {
+    const data = await fetchQusetData(id);
+
+    if (!data) {
+      notFound(); // 404 페이지로
+    }
+
+    return <QuestDetailView quest={data} />;
+  } catch (error) {
+    console.error(error);
+    notFound(); // 또는 에러 페이지로
+  }
 }
