@@ -112,7 +112,6 @@ const handler = NextAuth({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: user.id,
             name: user.name,
             email: user.email,
             image: user.image ?? "",
