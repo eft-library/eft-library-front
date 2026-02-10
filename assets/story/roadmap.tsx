@@ -20,6 +20,7 @@ export default function Roadmap({ color, width, height }: StationSize) {
         rx="2"
         ry="2"
         stroke="#cee4f6"
+        fill="none"
         strokeWidth="2px"
       />
       <rect
@@ -31,6 +32,7 @@ export default function Roadmap({ color, width, height }: StationSize) {
         rx="2"
         ry="2"
         stroke="#cee4f6"
+        fill="none"
         strokeWidth="2px"
       />
       <rect
@@ -42,6 +44,7 @@ export default function Roadmap({ color, width, height }: StationSize) {
         rx="2"
         ry="2"
         stroke="#cee4f6"
+        fill="none"
         strokeWidth="2px"
       />
       <path
@@ -49,6 +52,7 @@ export default function Roadmap({ color, width, height }: StationSize) {
         d="M17.3,6.68h4v12"
         strokeLinecap="round"
         stroke="#cee4f6"
+        fill="none"
         strokeWidth="2px"
       />
       <path
@@ -56,6 +60,7 @@ export default function Roadmap({ color, width, height }: StationSize) {
         d="M21.3,18.68h-4v12"
         strokeLinecap="round"
         stroke="#cee4f6"
+        fill="none"
         strokeWidth="2px"
       />
     </svg>
