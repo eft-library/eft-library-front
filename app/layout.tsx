@@ -78,7 +78,6 @@ export default async function RootLayout({
             process.env.NEXT_PUBLIC_ADSENSE || ""
           }`}
           crossOrigin="anonymous"
-          strategy="afterInteractive" // 또는 "lazyOnload"
         />
       </head>
       <body
