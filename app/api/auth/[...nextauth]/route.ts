@@ -45,7 +45,13 @@ const handler = NextAuth({
     Google({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_ID || "",
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET || "",
-      authorization: process.env.NEXT_PUBLIC_GOOGLE_AUTHORIZATION || "",
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
   session: {
@@ -56,6 +62,46 @@ const handler = NextAuth({
   jwt: {
     maxAge: 2 * 60 * 60, // 2시간
   },
+  // 추가: 쿠키 설정
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+    state: {
+      name: "next-auth.state",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+    callbackUrl: {
+      name: "next-auth.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+    sessionToken: {
+      name: "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
+  useSecureCookies: true,
   callbacks: {
     // 로그인 시 사용자 추가
     async signIn({ user }) {
@@ -82,7 +128,7 @@ const handler = NextAuth({
 
     // JWT 콜백
     async jwt({ token, account, user, trigger, session }) {
-      // 1️⃣ 최초 로그인 시 항상 새 토큰 세팅
+      // 최초 로그인 시 항상 새 토큰 세팅
       if (account && user) {
         const accessTokenExpires = account.expires_at
           ? account.expires_at * 1000
@@ -110,12 +156,12 @@ const handler = NextAuth({
         };
       }
 
-      // 2️⃣ 세션 업데이트 시 nickname 반영
+      // 세션 업데이트 시 nickname 반영
       if (trigger === "update" && session?.userInfo?.nickname) {
         token.nickname = session.userInfo.nickname;
       }
 
-      // 3️⃣ 토큰 만료 체크
+      // 토큰 만료 체크
       if (
         token.accessTokenExpires &&
         Date.now() < (token.accessTokenExpires as number)
@@ -123,7 +169,7 @@ const handler = NextAuth({
         return token;
       }
 
-      // 4️⃣ 만료 시 refresh
+      // 만료 시 refresh
       return refreshAccessToken(token);
     },
 
