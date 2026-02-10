@@ -27,8 +27,8 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self';",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.googletagmanager.com https://*.google.com https://*.google-analytics.com https://googleads.g.doubleclick.net https://static.cloudflareinsights.com;",
-              "connect-src 'self' https://*.google.com https://*.google-analytics.com https://*.doubleclick.net https://*.googlesyndication.com https://cloudflareinsights.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google;",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.googletagmanager.com https://*.google.com https://*.google-analytics.com https://googleads.g.doubleclick.net https://static.cloudflareinsights.com https://*.adtrafficquality.google;",
+              "connect-src 'self' https://*.google.com https://*.google-analytics.com https://*.doubleclick.net https://*.googlesyndication.com https://cloudflareinsights.com https://*.adtrafficquality.google;",
               "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net;",
               "img-src 'self' data: https: blob:;",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
