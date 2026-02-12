@@ -84,11 +84,6 @@ export default function StoryRoadmap() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onNodeDragStop={(_, node) => {
-          console.log("node id:", node.id);
-          console.log("x:", node.position.x);
-          console.log("y:", node.position.y);
-        }}
         nodeTypes={nodeTypes}
         className="bg-slate-50 dark:bg-[#1a1a1a]"
         minZoom={0.1}

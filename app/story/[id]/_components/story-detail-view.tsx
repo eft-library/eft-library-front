@@ -8,6 +8,7 @@ import { getLocaleKey } from "@/lib/func/localeFunction";
 import { storyI18N } from "@/lib/consts/i18nConsts";
 import ViewWrapper from "@/components/custom/ViewWrapper/view-wrapper";
 import StoryRoadmap from "./StoryRoadmap/story-roadmap";
+import AdBanner from "@/components/custom/Adsense/ad-banner";
 
 export default function StoryView({ story }: StoryViewTypes) {
   const locale = useLocale();
@@ -21,8 +22,15 @@ export default function StoryView({ story }: StoryViewTypes) {
             {storyI18N.story[localeKey]}
           </h1>
         </div>
-
         <StorySelector selector={story.selector} />
+
+        <AdBanner
+          dataAdFormat={"auto"}
+          dataFullWidthResponsive={true}
+          dataAdSlot="2690838054"
+          maxWidth={1220}
+        />
+
         {story.detail.id !== "roadmap" ? (
           <StoryContents storyDetail={story.detail} />
         ) : (

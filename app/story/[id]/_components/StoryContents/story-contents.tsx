@@ -26,13 +26,6 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
 
   return (
     <div className="space-y-6">
-      <AdBanner
-        dataAdFormat={"auto"}
-        dataFullWidthResponsive={true}
-        dataAdSlot="2690838054"
-        maxWidth={1220}
-      />
-
       {/* Prerequisites */}
       {storyDetail.requirements &&
         storyDetail.requirements[localeKey].length > 0 && (
