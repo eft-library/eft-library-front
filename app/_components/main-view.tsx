@@ -52,7 +52,7 @@ export default function MainView({ homeData }: MainViewTypes) {
                         <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
                           <span className="text-xs font-bold text-orange-400 mt-1 flex items-center">
                             {[0, 1].includes(index) ? (
-                              <Star className="w-4 h-4 text-yellow-400 animate-bounce mr-[-2px]" />
+                              <Star className="w-4 h-4 text-yellow-400 animate-bounce -mr-0.5" />
                             ) : (
                               index + 1
                             )}

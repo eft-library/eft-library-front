@@ -63,7 +63,7 @@ export default function StoryRoadmap() {
           y: node.y_coordinate,
         },
         type: node.node_type,
-        // draggable: false,
+        draggable: false,
         data: {
           id: node.id,
           title: node.title,
