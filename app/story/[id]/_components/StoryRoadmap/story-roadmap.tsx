@@ -78,7 +78,7 @@ export default function StoryRoadmap() {
   };
 
   return (
-    <div className="w-full h-300 rounded-lg overflow-hidden border border-border/50 shadow-xl bg-white/80 dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.45)]">
+    <div className="w-full h-300 rounded-lg overflow-hidden border border-border/50 shadow-xl bg-white/80 dark:bg-white/2 dark:border-transparent dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_4px_16px_rgba(0,0,0,0.45)] mt-6">
       <ReactFlow
         nodes={nodes}
         edges={edges}
