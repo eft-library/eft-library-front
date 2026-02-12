@@ -345,3 +345,4 @@ export const BACKPACK_WIDTH = 8;
 export const BACKPACK_HEIGHT = 10;
 export const CELL_SIZE = 64;
 export const POOL_WIDTH = BACKPACK_WIDTH * CELL_SIZE * 2;
+export const ITEM_COUNT = 100;

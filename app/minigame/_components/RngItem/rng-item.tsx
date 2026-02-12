@@ -9,6 +9,7 @@ import {
   BACKPACK_WIDTH,
   CELL_SIZE,
   DEFAULT_PLAY_TIME,
+  ITEM_COUNT,
 } from "@/lib/consts/libraryConsts";
 import type { PlacedItem, DragState, RngItemTypes } from "../minigame-types";
 import { checkCanPlace, getRandomItems } from "@/lib/func/rngItemFunction";
@@ -40,7 +41,7 @@ export default function RngItem() {
   // 아이템 풀 초기화
   useEffect(() => {
     if (!res?.data) return;
-    setPlayItemList(getRandomItems(res.data, 70));
+    setPlayItemList(getRandomItems(res.data, ITEM_COUNT));
   }, [res]);
 
   // 드래그 이벤트
@@ -154,7 +155,7 @@ export default function RngItem() {
     setPlayTime(DEFAULT_PLAY_TIME);
     setScore(0);
     setPlacedItems([]);
-    setPlayItemList(getRandomItems(res.data, 70));
+    setPlayItemList(getRandomItems(res.data, ITEM_COUNT));
     setDragState(null);
   };
 
