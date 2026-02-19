@@ -1,35 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 import { AdBannerTypes } from "./adsense.types";
 
-export default function AdBanner({ ...props }: AdBannerTypes) {
+export default function AdBanner(props: AdBannerTypes) {
   const adRef = useRef<HTMLModElement>(null);
-  const pathname = usePathname();
 
   useEffect(() => {
-    const currentIns = adRef.current;
-    if (!currentIns) return;
+    try {
+      if (!adRef.current) return;
 
-    if (currentIns.getAttribute("data-ad-status")) {
-      currentIns.innerHTML = ""; // 내용 초기화
-      currentIns.removeAttribute("data-ad-status");
-      currentIns.removeAttribute("data-adsbygoogle-status");
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+
+      (window as any).adsbygoogle.push({});
+    } catch (e) {
+      console.error("AdSense error:", e);
     }
-
-    const timer = setTimeout(() => {
-      try {
-        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-        (window as any).adsbygoogle.push({});
-      } catch (e) {
-        console.error("Google AdSense script load error:", e);
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [pathname]);
+  }, []);
 
   return (
     <div
@@ -38,7 +25,6 @@ export default function AdBanner({ ...props }: AdBannerTypes) {
     >
       <ins
         ref={adRef}
-        key={pathname}
         className="adsbygoogle"
         style={{
           display: "block",
