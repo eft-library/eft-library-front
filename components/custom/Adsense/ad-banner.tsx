@@ -1,22 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { AdBannerTypes } from "./adsense.types";
 
-export default function AdBanner(props: AdBannerTypes) {
-  const adRef = useRef<HTMLModElement>(null);
+export default function AdBanner({ ...props }: AdBannerTypes) {
+  const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
-    try {
-      if (!adRef.current) return;
-
-      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-
-      (window as any).adsbygoogle.push({});
-    } catch (e) {
-      console.error("AdSense error:", e);
-    }
+    setShowAd(true);
   }, []);
+
+  useEffect(() => {
+    if (showAd) {
+      try {
+        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+        (window as any).adsbygoogle.push({});
+      } catch (e) {
+        console.error("Google AdSense script load error:", e);
+      }
+    }
+  }, [showAd]);
+
+  if (!showAd) return null;
 
   return (
     <div
@@ -24,7 +30,6 @@ export default function AdBanner(props: AdBannerTypes) {
       style={{ maxWidth: `${props.maxWidth ?? 970}px`, margin: "0 auto" }}
     >
       <ins
-        ref={adRef}
         className="adsbygoogle"
         style={{
           display: "block",
