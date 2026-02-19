@@ -18,7 +18,6 @@ import "@xyflow/react/dist/style.css";
 import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
 import "react-datepicker/dist/react-datepicker.css";
-import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,10 +72,9 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <head>
-        <Script
+        <script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
-          strategy="afterInteractive"
           crossOrigin="anonymous"
         />
       </head>
