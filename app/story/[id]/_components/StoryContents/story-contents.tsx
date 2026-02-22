@@ -40,11 +40,14 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div
-                className="prose prose-sm dark:prose-invert max-w-none [&_p]:leading-relaxed [&_p]:text-foreground dark:[&_p]:text-white [&_p]:mb-2 [&_p:last-child]:mb-0 "
-                dangerouslySetInnerHTML={{
-                  __html: storyDetail.requirements[localeKey],
-                }}
+              <StoryGuide
+                html={storyDetail.requirements[localeKey]}
+                onImageClick={handleImageClick}
+              />
+
+              <ImageViewerDialog
+                src={selectedImage}
+                onClose={() => setSelectedImage(null)}
               />
             </CardContent>
           </Card>
@@ -64,11 +67,14 @@ export default function StoryContents({ storyDetail }: StoryContentsTypes) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div
-                className="prose prose-sm dark:prose-invert max-w-none [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_li]:text-foreground dark:[&_li]:text-white [&_ul_ul]:list-circle [&_ul_ul]:mt-2"
-                dangerouslySetInnerHTML={{
-                  __html: storyDetail.objectives[localeKey],
-                }}
+              <StoryGuide
+                html={storyDetail.objectives[localeKey]}
+                onImageClick={handleImageClick}
+              />
+
+              <ImageViewerDialog
+                src={selectedImage}
+                onClose={() => setSelectedImage(null)}
               />
             </CardContent>
           </Card>
