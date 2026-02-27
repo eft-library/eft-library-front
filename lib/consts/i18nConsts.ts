@@ -2271,3 +2271,46 @@ export const storyI18N = {
     ko: "스토리",
   },
 };
+
+export const llmI18N = {
+  aiAssistant: {
+    en: "AI Assistant",
+    ja: "AIアシスタント",
+    ko: "AI 어시스턴트",
+  },
+  online: {
+    en: "Online",
+    ja: "オンライン",
+    ko: "온라인",
+  },
+  typing: {
+    en: "Typing",
+    ja: "入力中",
+    ko: "입력 중",
+  },
+  howCanIHelp: {
+    en: "How can I help you?",
+    ja: "どのようにお手伝いできますか？",
+    ko: "어떻게 도와드릴까요?",
+  },
+  moreDetailsHelpFriendly: {
+    en: "The more details you share, the better I can help!",
+    ja: "詳しく教えていただけるほど、より良いサポートができます！",
+    ko: "자세히 알려주실수록 더 잘 도와드릴 수 있어요!",
+  },
+  startConversation: {
+    en: "Send a message to start a conversation.",
+    ja: "メッセージを送信して会話を開始してください。",
+    ko: "대화를 시작하려면 메시지를 보내세요.",
+  },
+  typeMessage: {
+    en: "Type a message",
+    ja: "メッセージを入力",
+    ko: "메시지를 입력하세요",
+  },
+  sendMessage: {
+    en: "Send message",
+    ja: "メッセージを送信",
+    ko: "메시지 보내기",
+  },
+};

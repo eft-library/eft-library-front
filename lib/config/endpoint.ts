@@ -90,3 +90,7 @@ export const COMMUNITY_ENDPOINTS = {
   SEARCH_POSTS: baseUrl + "/api/community/search",
   SIDE_POSTS: baseUrl + "/api/community/side-post",
 };
+
+export const LLM_ENDPOINTS = {
+  STREAM_CHAT: baseUrl + "/api/chat/stream",
+};

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^3.0.105",
     "@next/third-parties": "^16.1.6",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -46,6 +47,7 @@
     "@tiptap/react": "^3.19.0",
     "@tiptap/starter-kit": "^3.19.0",
     "@xyflow/react": "^12.10.0",
+    "ai": "^6.0.103",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
@@ -67,6 +69,7 @@
     "react-highlight-words": "^0.21.0",
     "react-infinite-scroll-component": "^6.1.1",
     "react-leaflet": "^5.0.0",
+    "react-markdown": "^10.1.0",
     "react-photo-album": "^3.4.0",
     "react-photoswipe-gallery": "^4.0.0",
     "recharts": "^3.7.0",
