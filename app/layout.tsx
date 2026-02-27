@@ -108,7 +108,7 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
             <QueryProvider>
               <WebSocketProvider>
                 <NavData />
-                <Chat />
+                {/* <Chat /> */}
                 {children}
                 <Footer />
               </WebSocketProvider>
