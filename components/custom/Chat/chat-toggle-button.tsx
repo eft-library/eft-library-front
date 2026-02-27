@@ -16,7 +16,7 @@ export default function ChatToggleButton({
       onClick={onClick}
       size="icon"
       className={cn(
-        "fixed bottom-6 right-6 z-50 size-14 rounded-full shadow-lg transition-all duration-300",
+        "fixed bottom-10 right-70 z-9999 size-14 rounded-full shadow-lg transition-all duration-300",
         "bg-primary text-primary-foreground hover:bg-primary/90",
         "dark:bg-white dark:text-black dark:hover:bg-white/90",
         "dark:shadow-[0_4px_24px_rgba(255,255,255,0.1)]",

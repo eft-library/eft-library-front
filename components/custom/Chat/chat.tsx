@@ -63,7 +63,7 @@ export default function Chat() {
 
       <div
         className={cn(
-          "fixed bottom-6 right-6 z-9999 flex flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-300 ease-out",
+          "fixed bottom-10 right-70 z-9999 flex flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-300 ease-out",
           "bg-card text-card-foreground border-border",
           "dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]",
           "w-125 h-155",
