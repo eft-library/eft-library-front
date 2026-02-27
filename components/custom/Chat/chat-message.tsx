@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { User, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ChatMessage({
   role,
@@ -46,7 +47,9 @@ export default function ChatMessage({
                     : "prose-headings:text-neutral-800 prose-p:text-neutral-800 prose-strong:text-neutral-800 prose-li:text-neutral-800 dark:prose-headings:text-neutral-50 dark:prose-p:text-neutral-50 dark:prose-strong:text-neutral-50 dark:prose-li:text-neutral-50",
                 )}
               >
-                <ReactMarkdown>{part.text ?? ""}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {part.text ?? ""}
+                </ReactMarkdown>
               </div>
             );
           }

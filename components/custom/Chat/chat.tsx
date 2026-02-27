@@ -66,7 +66,7 @@ export default function Chat() {
           "fixed bottom-10 right-70 z-9999 flex flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-300 ease-out",
           "bg-card text-card-foreground border-border",
           "dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]",
-          "w-125 h-155",
+          "w-[800px] h-[600px]",
           "max-sm:bottom-0 max-sm:right-0 max-sm:w-full max-sm:h-full max-sm:rounded-none",
           isOpen
             ? "scale-100 opacity-100 translate-y-0"
