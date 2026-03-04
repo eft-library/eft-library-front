@@ -43,11 +43,53 @@ export default function ChatMessage({
                   "prose prose-sm max-w-none",
                   "prose-headings:font-semibold prose-p:my-1 prose-ul:my-1 prose-li:my-0",
                   isUser
-                    ? "prose-headings:text-white prose-p:text-white prose-strong:text-white prose-li:text-white prose-code:text-white/90 prose-code:bg-white/20 dark:prose-headings:text-neutral-900 dark:prose-p:text-neutral-900 dark:prose-strong:text-neutral-900 dark:prose-li:text-neutral-900"
-                    : "prose-headings:text-neutral-800 prose-p:text-neutral-800 prose-strong:text-neutral-800 prose-li:text-neutral-800 dark:prose-headings:text-neutral-50 dark:prose-p:text-neutral-50 dark:prose-strong:text-neutral-50 dark:prose-li:text-neutral-50",
+                    ? `
+      prose-headings:text-white 
+      prose-p:text-white 
+      prose-strong:text-white 
+      prose-li:text-white 
+      prose-code:text-white/90 
+      prose-code:bg-white/20
+      prose-a:text-white
+      dark:prose-headings:text-neutral-900 
+      dark:prose-p:text-neutral-900 
+      dark:prose-strong:text-neutral-900 
+      dark:prose-li:text-neutral-900
+      dark:prose-a:text-neutral-900
+    `
+                    : `
+      prose-headings:text-neutral-800 
+      prose-p:text-neutral-800 
+      prose-strong:text-neutral-800 
+      prose-li:text-neutral-800
+      prose-a:text-neutral-800
+      dark:prose-headings:text-neutral-50 
+      dark:prose-p:text-neutral-50 
+      dark:prose-strong:text-neutral-50 
+      dark:prose-li:text-neutral-50
+      dark:prose-a:text-neutral-50
+    `,
                 )}
               >
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    a: ({ href = "", children }) => {
+                      const isExternal = href.startsWith("http");
+
+                      return (
+                        <a
+                          href={href}
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                          className="underline hover:opacity-80"
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                  }}
+                >
                   {part.text ?? ""}
                 </ReactMarkdown>
               </div>
