@@ -2274,9 +2274,9 @@ export const storyI18N = {
 
 export const llmI18N = {
   aiAssistant: {
-    en: "AI Assistant",
-    ja: "AIアシスタント",
-    ko: "AI 어시스턴트",
+    en: "Tarkov Curator",
+    ja: "タルコフキュレーター",
+    ko: "타르코프 큐레이터",
   },
   online: {
     en: "Online",
