@@ -12,36 +12,33 @@ import ChatToggleButton from "./chat-toggle-button";
 import ChatMessage from "./chat-message";
 import { llmI18N } from "@/lib/consts/i18nConsts";
 import StreamingMessage from "./streaming-message";
+import { SearchData } from "../NavBar/nav-bar.types";
+import Downshift from "downshift";
+import Highlighter from "react-highlight-words";
 
-export default function Chat() {
+export default function Chat({ searchList }: { searchList: SearchData[] }) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-
   const shouldAutoScroll = useRef(true);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-
     const handleScroll = () => {
       const threshold = 100;
-
       const isNearBottom =
         el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
-
       shouldAutoScroll.current = isNearBottom;
     };
-
     el.addEventListener("scroll", handleScroll);
-
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
-  const sessionIdRef = useRef<string>("");
 
+  const sessionIdRef = useRef<string>("");
   useEffect(() => {
     let sessionId = localStorage.getItem("chat_session_id");
     if (!sessionId) {
@@ -84,9 +81,7 @@ export default function Chat() {
     setInput("");
   };
 
-  const visibleMessages = useMemo(() => {
-    return messages.slice(-80);
-  }, [messages]);
+  const visibleMessages = useMemo(() => messages.slice(-80), [messages]);
   const lastMessage = visibleMessages.at(-1);
 
   const stableMessages = useMemo(() => {
@@ -96,6 +91,14 @@ export default function Chat() {
     return visibleMessages;
   }, [visibleMessages, lastMessage, isLoading]);
 
+  // 자동완성 후보: 현재 locale + input 포함 항목
+  const suggestions = useMemo(() => {
+    if (!input.trim()) return [];
+    return searchList
+      .filter((item) => item.lang === localeKey)
+      .filter((item) => item.value.toLowerCase().includes(input.toLowerCase()))
+      .slice(0, 8); // 최대 8개
+  }, [searchList, input, localeKey]);
   return (
     <>
       <ChatToggleButton onClick={() => setIsOpen(true)} isOpen={isOpen} />
@@ -202,29 +205,100 @@ export default function Chat() {
           </div>
         </div>
 
-        {/* Input */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center gap-2 border-t px-4 py-3 bg-card dark:bg-neutral-900 dark:border-neutral-800"
-        >
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={llmI18N.typeMessage[localeKey]}
-            disabled={isLoading}
-            className="flex-1 bg-transparent text-sm font-medium text-neutral-900 outline-none placeholder:text-neutral-400 disabled:opacity-50 dark:text-white dark:placeholder:text-neutral-500"
-          />
-          <Button
-            type="submit"
-            size="icon"
-            disabled={!input.trim() || isLoading}
-            className="size-9 shrink-0 rounded-full dark:bg-white dark:text-black dark:hover:bg-white/90 dark:disabled:bg-neutral-700 dark:disabled:text-neutral-500"
-            aria-label={llmI18N.sendMessage[localeKey]}
+        {/* Input with Autocomplete */}
+        <div className="border-t bg-card dark:bg-neutral-900 dark:border-neutral-800">
+          <Downshift
+            inputValue={input}
+            onInputValueChange={(value) => setInput(value)}
+            onChange={(selection) => {
+              if (selection) setInput(selection.value);
+            }}
+            itemToString={(item) => (item ? item.value : "")}
+            // 선택 후 드롭다운 닫기
+            stateReducer={(state, changes) => {
+              switch (changes.type) {
+                case Downshift.stateChangeTypes.keyDownEnter:
+                case Downshift.stateChangeTypes.clickItem:
+                  return {
+                    ...changes,
+                    isOpen: false,
+                    highlightedIndex: -1,
+                  };
+                default:
+                  return changes;
+              }
+            }}
           >
-            <Send className="size-4" />
-          </Button>
-        </form>
+            {({
+              getInputProps,
+              getItemProps,
+              getMenuProps,
+              getRootProps,
+              isOpen,
+              highlightedIndex,
+            }) => (
+              <div className="relative" {...getRootProps()}>
+                {/* 자동완성 드롭다운 - input 위쪽으로 */}
+                {isOpen && suggestions.length > 0 && (
+                  <div
+                    {...getMenuProps()}
+                    className="absolute bottom-full left-0 right-0 mb-1 max-h-52 overflow-auto rounded-xl border bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700"
+                  >
+                    {suggestions.map((item, index) => (
+                      <div
+                        key={`${item.lang}-${item.value}-${item.page_value}`}
+                        {...getItemProps({ item, index })}
+                        className={cn(
+                          "cursor-pointer px-4 py-2.5 text-sm font-medium",
+                          highlightedIndex === index
+                            ? "bg-neutral-100 dark:bg-neutral-700"
+                            : "text-neutral-900 dark:text-neutral-100",
+                        )}
+                      >
+                        <Highlighter
+                          highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-0.5 rounded"
+                          searchWords={[input]}
+                          autoEscape
+                          textToHighlight={item.value}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Input 영역 */}
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex items-center gap-2 px-4 py-3"
+                >
+                  <input
+                    {...getInputProps({
+                      placeholder: llmI18N.typeMessage[localeKey],
+                      disabled: isLoading,
+                      onKeyDown: (e) => {
+                        // 드롭다운 열려있을 때 Enter는 자동완성 선택, 닫혀있을 때 전송
+                        if (e.key === "Enter" && !isOpen) {
+                          handleSubmit(e as unknown as React.FormEvent);
+                        }
+                      },
+                      className:
+                        "flex-1 bg-transparent text-sm font-medium text-neutral-900 outline-none placeholder:text-neutral-400 disabled:opacity-50 dark:text-white dark:placeholder:text-neutral-500",
+                    })}
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={!input.trim() || isLoading}
+                    className="size-9 shrink-0 rounded-full dark:bg-white dark:text-black dark:hover:bg-white/90 dark:disabled:bg-neutral-700 dark:disabled:text-neutral-500"
+                    aria-label={llmI18N.sendMessage[localeKey]}
+                  >
+                    <Send className="size-4" />
+                  </Button>
+                </form>
+              </div>
+            )}
+          </Downshift>
+        </div>
       </div>
     </>
   );

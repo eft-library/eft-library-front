@@ -82,6 +82,8 @@ dark:prose-p:text-neutral-900
 dark:prose-strong:text-neutral-900 
 dark:prose-li:text-neutral-900
 dark:prose-a:text-neutral-900
+dark:prose-code:text-neutral-50
+dark:prose-code:bg-white/10
 `
                   : `
 prose-headings:text-neutral-800 
@@ -98,6 +100,8 @@ dark:prose-li:text-neutral-50
 dark:prose-a:text-neutral-50
 dark:prose-td:text-neutral-50
 dark:prose-th:text-neutral-50
+dark:prose-code:text-neutral-50
+dark:prose-code:bg-white/10
 `,
               )}
             >

@@ -32,6 +32,8 @@ export default function StreamingMessage({
                 dark:prose-li:text-neutral-50
                 dark:prose-td:text-neutral-50
                 dark:prose-th:text-neutral-50
+                dark:prose-code:text-neutral-50
+                dark:prose-code:bg-white/10
               "
             >
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
