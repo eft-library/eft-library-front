@@ -12,11 +12,11 @@ import ChatToggleButton from "./chat-toggle-button";
 import ChatMessage from "./chat-message";
 import { llmI18N } from "@/lib/consts/i18nConsts";
 import StreamingMessage from "./streaming-message";
-import { SearchData } from "../NavBar/nav-bar.types";
 import Downshift from "downshift";
 import Highlighter from "react-highlight-words";
+import { RagSearchData } from "./chat.types";
 
-export default function Chat({ searchList }: { searchList: SearchData[] }) {
+export default function Chat({ searchList }: { searchList: RagSearchData[] }) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [isOpen, setIsOpen] = useState(false);
@@ -246,7 +246,7 @@ export default function Chat({ searchList }: { searchList: SearchData[] }) {
                   >
                     {suggestions.map((item, index) => (
                       <div
-                        key={`${item.lang}-${item.value}-${item.page_value}`}
+                        key={`${item.lang}-${item.value}`}
                         {...getItemProps({ item, index })}
                         className={cn(
                           "cursor-pointer px-4 py-2.5 text-sm font-medium",
