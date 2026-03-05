@@ -23,7 +23,26 @@ type MarkdownProps = {
 export const Markdown = memo(
   function Markdown({ children }: MarkdownProps) {
     return (
-      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        skipHtml
+        components={{
+          a: ({ href = "", children }) => {
+            const isExternal = href.startsWith("http");
+
+            return (
+              <a
+                href={href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="underline hover:opacity-80"
+              >
+                {children}
+              </a>
+            );
+          },
+        }}
+      >
         {children}
       </ReactMarkdown>
     );

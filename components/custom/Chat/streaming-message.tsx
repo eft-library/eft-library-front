@@ -36,7 +36,25 @@ export default function StreamingMessage({
                 dark:prose-code:bg-white/10
               "
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ href = "", children }) => {
+                    const isExternal = href.startsWith("http");
+
+                    return (
+                      <a
+                        href={href}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                        className="underline hover:opacity-80"
+                      >
+                        {children}
+                      </a>
+                    );
+                  },
+                }}
+              >
                 {part.text ?? ""}
               </ReactMarkdown>
             </div>
