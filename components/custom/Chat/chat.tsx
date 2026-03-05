@@ -100,6 +100,13 @@ export default function Chat() {
     <>
       <ChatToggleButton onClick={() => setIsOpen(true)} isOpen={isOpen} />
 
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-9998"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
       <div
         className={cn(
           "fixed bottom-6 right-6 z-9999 flex flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-300 ease-out",

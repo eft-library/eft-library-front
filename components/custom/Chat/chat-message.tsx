@@ -89,11 +89,15 @@ prose-p:text-neutral-800
 prose-strong:text-neutral-800 
 prose-li:text-neutral-800
 prose-a:text-neutral-800
+prose-td:text-neutral-800
+prose-th:text-neutral-800
 dark:prose-headings:text-neutral-50 
 dark:prose-p:text-neutral-50 
 dark:prose-strong:text-neutral-50 
 dark:prose-li:text-neutral-50
 dark:prose-a:text-neutral-50
+dark:prose-td:text-neutral-50
+dark:prose-th:text-neutral-50
 `,
               )}
             >

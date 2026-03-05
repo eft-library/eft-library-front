@@ -20,9 +20,24 @@ export default function StreamingMessage({
           if (part.type !== "text") return null;
 
           return (
-            <ReactMarkdown key={index} remarkPlugins={[remarkGfm]}>
-              {part.text ?? ""}
-            </ReactMarkdown>
+            <div
+              key={index}
+              className="
+                prose prose-sm max-w-none
+                prose-td:text-neutral-800
+                prose-th:text-neutral-800
+                dark:prose-p:text-neutral-50
+                dark:prose-headings:text-neutral-50
+                dark:prose-strong:text-neutral-50
+                dark:prose-li:text-neutral-50
+                dark:prose-td:text-neutral-50
+                dark:prose-th:text-neutral-50
+              "
+            >
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {part.text ?? ""}
+              </ReactMarkdown>
+            </div>
           );
         })}
       </div>
