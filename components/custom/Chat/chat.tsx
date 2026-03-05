@@ -4,21 +4,42 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useChat } from "@ai-sdk/react";
 import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
-import { DefaultChatTransport, UIMessage } from "ai";
+import { DefaultChatTransport } from "ai";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import ChatToggleButton from "./chat-toggle-button";
 import ChatMessage from "./chat-message";
 import { llmI18N } from "@/lib/consts/i18nConsts";
+import StreamingMessage from "./streaming-message";
 
 export default function Chat() {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const shouldAutoScroll = useRef(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      const threshold = 100;
+
+      const isNearBottom =
+        el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
+
+      shouldAutoScroll.current = isNearBottom;
+    };
+
+    el.addEventListener("scroll", handleScroll);
+
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
   const sessionIdRef = useRef<string>("");
 
   useEffect(() => {
@@ -50,12 +71,30 @@ export default function Chat() {
   const { messages, sendMessage, status } = useChat({ transport });
   const isLoading = status === "streaming" || status === "submitted";
 
+  useEffect(() => {
+    if (shouldAutoScroll.current) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
     sendMessage({ text: input });
     setInput("");
   };
+
+  const visibleMessages = useMemo(() => {
+    return messages.slice(-80);
+  }, [messages]);
+  const lastMessage = visibleMessages.at(-1);
+
+  const stableMessages = useMemo(() => {
+    if (lastMessage?.role === "assistant" && isLoading) {
+      return visibleMessages.slice(0, -1);
+    }
+    return visibleMessages;
+  }, [visibleMessages, lastMessage, isLoading]);
 
   return (
     <>
@@ -66,7 +105,7 @@ export default function Chat() {
           "fixed bottom-6 right-6 z-9999 flex flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-300 ease-out",
           "bg-card text-card-foreground border-border",
           "dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]",
-          "w-300 h-180",
+          "w-300 h-220",
           "max-sm:bottom-0 max-sm:right-0 max-sm:w-full max-sm:h-full max-sm:rounded-none",
           isOpen
             ? "scale-100 opacity-100 translate-y-0"
@@ -104,9 +143,12 @@ export default function Chat() {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="min-h-0 flex-1 dark:bg-neutral-950">
+        <div
+          ref={containerRef}
+          className="flex-1 overflow-y-auto min-h-0 dark:bg-neutral-950"
+        >
           <div className="flex flex-col gap-4 p-5">
-            {messages.length === 0 && (
+            {visibleMessages.length === 0 && (
               <div className="flex flex-1 flex-col items-center justify-center gap-3 py-12 text-center">
                 <div className="flex size-12 items-center justify-center rounded-full bg-muted dark:bg-white/6">
                   <MessageCircle className="size-6 text-muted-foreground dark:text-neutral-500" />
@@ -121,16 +163,23 @@ export default function Chat() {
                 </div>
               </div>
             )}
-            {messages.map((message) => (
+            {stableMessages.map((message) => (
               <ChatMessage
                 key={message.id}
                 role={message.role}
                 parts={message.parts as Array<{ type: string; text?: string }>}
               />
             ))}
+            {lastMessage?.role === "assistant" && isLoading && (
+              <StreamingMessage
+                parts={
+                  lastMessage.parts as Array<{ type: string; text?: string }>
+                }
+              />
+            )}
             {isLoading &&
               messages.length > 0 &&
-              messages[messages.length - 1].role === "user" && (
+              messages.at(-1)?.role === "user" && (
                 <div className="flex gap-3">
                   <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground dark:bg-white/10 dark:text-neutral-400">
                     <Bot className="size-4" />
@@ -144,7 +193,7 @@ export default function Chat() {
               )}
             <div ref={bottomRef} />
           </div>
-        </ScrollArea>
+        </div>
 
         {/* Input */}
         <form

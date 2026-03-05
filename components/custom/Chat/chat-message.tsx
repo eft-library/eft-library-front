@@ -4,18 +4,39 @@ import { cn } from "@/lib/utils";
 import { User, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { memo } from "react";
 
-export default function ChatMessage({
-  role,
-  parts,
-}: {
+type MessagePart = {
+  type: string;
+  text?: string;
+};
+
+type ChatMessageProps = {
   role: string;
-  parts: Array<{ type: string; text?: string }>;
-}) {
+  parts: MessagePart[];
+};
+
+type MarkdownProps = {
+  children: string;
+};
+
+export const Markdown = memo(
+  function Markdown({ children }: MarkdownProps) {
+    return (
+      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>
+        {children}
+      </ReactMarkdown>
+    );
+  },
+  (prev, next) => prev.children === next.children,
+);
+
+function ChatMessage({ role, parts }: ChatMessageProps) {
   const isUser = role === "user";
 
   return (
     <div className={cn("flex gap-3", isUser ? "flex-row-reverse" : "flex-row")}>
+      {/* Avatar */}
       <div
         className={cn(
           "flex size-8 shrink-0 items-center justify-center rounded-full",
@@ -26,6 +47,8 @@ export default function ChatMessage({
       >
         {isUser ? <User className="size-4" /> : <Bot className="size-4" />}
       </div>
+
+      {/* Message Bubble */}
       <div
         className={cn(
           "max-w-[75%] rounded-2xl px-4 py-2.5 text-sm font-medium leading-relaxed",
@@ -35,69 +58,59 @@ export default function ChatMessage({
         )}
       >
         {parts.map((part, index) => {
-          if (part.type === "text") {
-            return (
-              <div
-                key={index}
-                className={cn(
-                  "prose prose-sm max-w-none",
-                  "prose-headings:font-semibold prose-p:my-1 prose-ul:my-1 prose-li:my-0",
-                  isUser
-                    ? `
-      prose-headings:text-white 
-      prose-p:text-white 
-      prose-strong:text-white 
-      prose-li:text-white 
-      prose-code:text-white/90 
-      prose-code:bg-white/20
-      prose-a:text-white
-      dark:prose-headings:text-neutral-900 
-      dark:prose-p:text-neutral-900 
-      dark:prose-strong:text-neutral-900 
-      dark:prose-li:text-neutral-900
-      dark:prose-a:text-neutral-900
-    `
-                    : `
-      prose-headings:text-neutral-800 
-      prose-p:text-neutral-800 
-      prose-strong:text-neutral-800 
-      prose-li:text-neutral-800
-      prose-a:text-neutral-800
-      dark:prose-headings:text-neutral-50 
-      dark:prose-p:text-neutral-50 
-      dark:prose-strong:text-neutral-50 
-      dark:prose-li:text-neutral-50
-      dark:prose-a:text-neutral-50
-    `,
-                )}
-              >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    a: ({ href = "", children }) => {
-                      const isExternal = href.startsWith("http");
+          if (part.type !== "text") return null;
 
-                      return (
-                        <a
-                          href={href}
-                          target={isExternal ? "_blank" : undefined}
-                          rel={isExternal ? "noopener noreferrer" : undefined}
-                          className="underline hover:opacity-80"
-                        >
-                          {children}
-                        </a>
-                      );
-                    },
-                  }}
-                >
-                  {part.text ?? ""}
-                </ReactMarkdown>
-              </div>
-            );
-          }
-          return null;
+          const text = part.text ?? "";
+
+          return (
+            <div
+              key={index}
+              className={cn(
+                "prose prose-sm max-w-none",
+                "prose-headings:font-semibold prose-p:my-1 prose-ul:my-1 prose-li:my-0",
+                isUser
+                  ? `
+prose-headings:text-white 
+prose-p:text-white 
+prose-strong:text-white 
+prose-li:text-white 
+prose-code:text-white/90 
+prose-code:bg-white/20
+prose-a:text-white
+dark:prose-headings:text-neutral-900 
+dark:prose-p:text-neutral-900 
+dark:prose-strong:text-neutral-900 
+dark:prose-li:text-neutral-900
+dark:prose-a:text-neutral-900
+`
+                  : `
+prose-headings:text-neutral-800 
+prose-p:text-neutral-800 
+prose-strong:text-neutral-800 
+prose-li:text-neutral-800
+prose-a:text-neutral-800
+dark:prose-headings:text-neutral-50 
+dark:prose-p:text-neutral-50 
+dark:prose-strong:text-neutral-50 
+dark:prose-li:text-neutral-50
+dark:prose-a:text-neutral-50
+`,
+              )}
+            >
+              {isUser ? (
+                <span className="text-white dark:text-black">{text}</span>
+              ) : (
+                <Markdown>{text}</Markdown>
+              )}
+            </div>
+          );
         })}
       </div>
     </div>
   );
 }
+
+export default memo(
+  ChatMessage,
+  (prev, next) => prev.role === next.role && prev.parts === next.parts,
+);
