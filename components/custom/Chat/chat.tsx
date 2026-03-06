@@ -12,7 +12,6 @@ import ChatToggleButton from "./chat-toggle-button";
 import ChatMessage from "./chat-message";
 import { llmI18N } from "@/lib/consts/i18nConsts";
 import StreamingMessage from "./streaming-message";
-import Downshift from "downshift";
 import Highlighter from "react-highlight-words";
 import { RagSearchData } from "./chat.types";
 
@@ -21,6 +20,8 @@ export default function Chat({ searchList }: { searchList: RagSearchData[] }) {
   const localeKey = getLocaleKey(locale);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const shouldAutoScroll = useRef(true);
@@ -74,11 +75,23 @@ export default function Chat({ searchList }: { searchList: RagSearchData[] }) {
     }
   }, [messages]);
 
+  const clearInput = () => {
+    setInput("");
+    setShowSuggestions(false);
+    setHighlightedIndex(-1);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
     sendMessage({ text: input });
-    setInput("");
+    clearInput();
+  };
+
+  const handleSelect = (value: string) => {
+    setInput(value);
+    setShowSuggestions(false);
+    setHighlightedIndex(-1);
   };
 
   const visibleMessages = useMemo(() => messages.slice(-80), [messages]);
@@ -91,14 +104,14 @@ export default function Chat({ searchList }: { searchList: RagSearchData[] }) {
     return visibleMessages;
   }, [visibleMessages, lastMessage, isLoading]);
 
-  // 자동완성 후보: 현재 locale + input 포함 항목
   const suggestions = useMemo(() => {
     if (!input.trim()) return [];
     return searchList
       .filter((item) => item.lang === localeKey)
       .filter((item) => item.value.toLowerCase().includes(input.toLowerCase()))
-      .slice(0, 8); // 최대 8개
+      .slice(0, 8);
   }, [searchList, input, localeKey]);
+
   return (
     <>
       <ChatToggleButton onClick={() => setIsOpen(true)} isOpen={isOpen} />
@@ -207,97 +220,86 @@ export default function Chat({ searchList }: { searchList: RagSearchData[] }) {
 
         {/* Input with Autocomplete */}
         <div className="border-t bg-card dark:bg-neutral-900 dark:border-neutral-800">
-          <Downshift
-            inputValue={input}
-            onInputValueChange={(value) => setInput(value)}
-            onChange={(selection) => {
-              if (selection) setInput(selection.value);
-            }}
-            itemToString={(item) => (item ? item.value : "")}
-            // 선택 후 드롭다운 닫기
-            stateReducer={(state, changes) => {
-              switch (changes.type) {
-                case Downshift.stateChangeTypes.keyDownEnter:
-                case Downshift.stateChangeTypes.clickItem:
-                  return {
-                    ...changes,
-                    isOpen: false,
-                    highlightedIndex: -1,
-                  };
-                default:
-                  return changes;
-              }
-            }}
-          >
-            {({
-              getInputProps,
-              getItemProps,
-              getMenuProps,
-              getRootProps,
-              isOpen,
-              highlightedIndex,
-            }) => (
-              <div className="relative" {...getRootProps()}>
-                {/* 자동완성 드롭다운 - input 위쪽으로 */}
-                {isOpen && suggestions.length > 0 && (
+          <div className="relative">
+            {/* 자동완성 드롭다운 */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute bottom-full left-0 right-0 mb-1 max-h-52 overflow-auto rounded-xl border bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700">
+                {suggestions.map((item, index) => (
                   <div
-                    {...getMenuProps()}
-                    className="absolute bottom-full left-0 right-0 mb-1 max-h-52 overflow-auto rounded-xl border bg-white shadow-lg dark:bg-neutral-800 dark:border-neutral-700"
+                    key={`${item.lang}-${item.value}`}
+                    onMouseDown={(e) => {
+                      e.preventDefault(); // input blur 방지
+                      handleSelect(item.value);
+                    }}
+                    className={cn(
+                      "cursor-pointer px-4 py-2.5 text-sm font-medium",
+                      highlightedIndex === index
+                        ? "bg-neutral-100 dark:bg-neutral-700"
+                        : "text-neutral-900 dark:text-neutral-100",
+                    )}
                   >
-                    {suggestions.map((item, index) => (
-                      <div
-                        key={`${item.lang}-${item.value}`}
-                        {...getItemProps({ item, index })}
-                        className={cn(
-                          "cursor-pointer px-4 py-2.5 text-sm font-medium",
-                          highlightedIndex === index
-                            ? "bg-neutral-100 dark:bg-neutral-700"
-                            : "text-neutral-900 dark:text-neutral-100",
-                        )}
-                      >
-                        <Highlighter
-                          highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-0.5 rounded"
-                          searchWords={[input]}
-                          autoEscape
-                          textToHighlight={item.value}
-                        />
-                      </div>
-                    ))}
+                    <Highlighter
+                      highlightClassName="bg-yellow-200 dark:bg-yellow-600/50 font-bold text-foreground px-0.5 rounded"
+                      searchWords={[input]}
+                      autoEscape
+                      textToHighlight={item.value}
+                    />
                   </div>
-                )}
-
-                {/* Input 영역 */}
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex items-center gap-2 px-4 py-3"
-                >
-                  <input
-                    {...getInputProps({
-                      placeholder: llmI18N.typeMessage[localeKey],
-                      disabled: isLoading,
-                      onKeyDown: (e) => {
-                        // 드롭다운 열려있을 때 Enter는 자동완성 선택, 닫혀있을 때 전송
-                        if (e.key === "Enter" && !isOpen) {
-                          handleSubmit(e as unknown as React.FormEvent);
-                        }
-                      },
-                      className:
-                        "flex-1 bg-transparent text-sm font-medium text-neutral-900 outline-none placeholder:text-neutral-400 disabled:opacity-50 dark:text-white dark:placeholder:text-neutral-500",
-                    })}
-                  />
-                  <Button
-                    type="submit"
-                    size="icon"
-                    disabled={!input.trim() || isLoading}
-                    className="size-9 shrink-0 rounded-full dark:bg-white dark:text-black dark:hover:bg-white/90 dark:disabled:bg-neutral-700 dark:disabled:text-neutral-500"
-                    aria-label={llmI18N.sendMessage[localeKey]}
-                  >
-                    <Send className="size-4" />
-                  </Button>
-                </form>
+                ))}
               </div>
             )}
-          </Downshift>
+
+            {/* Input 영역 */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center gap-2 px-4 py-3"
+            >
+              <input
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  setShowSuggestions(true);
+                  setHighlightedIndex(-1);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    setHighlightedIndex((i) =>
+                      Math.min(i + 1, suggestions.length - 1),
+                    );
+                  } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    setHighlightedIndex((i) => Math.max(i - 1, 0));
+                  } else if (e.key === "Enter") {
+                    if (highlightedIndex >= 0 && showSuggestions) {
+                      e.preventDefault();
+                      handleSelect(suggestions[highlightedIndex].value);
+                    }
+                    // highlightedIndex < 0이면 form onSubmit으로 자연스럽게 처리
+                  } else if (e.key === "Escape") {
+                    setShowSuggestions(false);
+                    setHighlightedIndex(-1);
+                  }
+                }}
+                onBlur={() => {
+                  // 약간의 딜레이로 onMouseDown 이벤트가 먼저 처리되도록
+                  setTimeout(() => setShowSuggestions(false), 150);
+                }}
+                placeholder={llmI18N.typeMessage[localeKey]}
+                disabled={isLoading}
+                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 outline-none placeholder:text-neutral-400 disabled:opacity-50 dark:text-white dark:placeholder:text-neutral-500"
+              />
+              <Button
+                type="submit"
+                size="icon"
+                disabled={!input.trim() || isLoading}
+                className="size-9 shrink-0 rounded-full dark:bg-white dark:text-black dark:hover:bg-white/90 dark:disabled:bg-neutral-700 dark:disabled:text-neutral-500"
+                aria-label={llmI18N.sendMessage[localeKey]}
+              >
+                <Send className="size-4" />
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </>
