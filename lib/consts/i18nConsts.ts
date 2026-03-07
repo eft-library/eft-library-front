@@ -2283,6 +2283,11 @@ export const llmI18N = {
     ja: "オンライン",
     ko: "온라인",
   },
+  askAnything: {
+    en: "Ask anything!",
+    ja: "何でも聞いてください！",
+    ko: "무엇이든 물어보세요!",
+  },
   typing: {
     en: "Typing",
     ja: "入力中",
