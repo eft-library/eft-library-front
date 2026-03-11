@@ -1,43 +1,10 @@
-"use server";
-
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import type { Quest } from "@/app/quest/[id]/_components/quest.types";
 import QuestDetailView from "./quest-detail-view";
-import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+import { fetchQusetDetailData } from "../_lib/fetch-quest-detail";
 
-async function fetchQusetData(id: string): Promise<Quest> {
-  "use cache";
-  cacheLife({
-    stale: 86400, // 24시간 fresh
-    revalidate: 86400, // 24시간 후 재검증
-    expire: 172800, // 2일 후 만료
-  });
-
-  const res = await fetch(`${API_ENDPOINTS.GET_QUEST}/${id}`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch quest data");
-  }
-
-  const json = await res.json();
-
-  if (json.status !== 200) {
-    throw new Error(json.msg || "Unknown error");
-  }
-
-  return json.data;
-}
-
-export default async function QuestDetailData({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
+export default async function QuestDetailData({ id }: { id: string }) {
   try {
-    const data = await fetchQusetData(id);
+    const data = await fetchQusetDetailData(id);
 
     if (!data) {
       notFound(); // 404 페이지로

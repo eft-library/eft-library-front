@@ -1,5 +1,3 @@
-"use server";
-
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import type { StoryTypes } from "./story-types";
 import StoryView from "./story-detail-view";

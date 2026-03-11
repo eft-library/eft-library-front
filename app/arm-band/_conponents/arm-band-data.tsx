@@ -1,5 +1,3 @@
-"use server";
-
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import ArmBandView from "./arm-band-view";
 import { cacheLife } from "next/cache";

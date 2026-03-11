@@ -1,5 +1,3 @@
-"use server";
-
 import { cacheLife } from "next/cache";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { COLUMN_KEY } from "@/lib/consts/columnConsts";

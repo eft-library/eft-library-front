@@ -1,5 +1,3 @@
-"use server";
-
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import AmmoView from "./ammo-view";
 import { cacheLife } from "next/cache";

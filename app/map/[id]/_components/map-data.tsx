@@ -1,5 +1,3 @@
-"use server";
-
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { MapInfoData } from "./map.types";
 import MapView from "./map-view";

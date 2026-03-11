@@ -1,5 +1,3 @@
-"use server";
-
 import { cacheLife } from "next/cache";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import BackpackView from "./backpack-view";

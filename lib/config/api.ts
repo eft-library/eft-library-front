@@ -28,7 +28,7 @@ export async function requestData(url: string): Promise<FetchSchema | null> {
 
 export async function requestPostData(
   url: string,
-  body: any
+  body: any,
 ): Promise<FetchSchema | null> {
   try {
     const response = await fetch(url, {

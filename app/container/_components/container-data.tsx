@@ -1,5 +1,3 @@
-"use server";
-
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import ContainerView from "./container-view";
 import { cacheLife } from "next/cache";

@@ -1,44 +1,40 @@
 import MapOfTarkovData from "./_components/map-of-tarkov-data";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { fetchMotData } from "./_lib/fetch-mot-data";
 import { Metadata } from "next";
 
 type paramsType = Promise<{ id: string }>;
-
-type MetaProps = {
-  params: paramsType;
-};
+type MetaProps = { params: paramsType };
 
 export async function generateMetadata({
   params,
 }: MetaProps): Promise<Metadata> {
-  // params에서 id 추출
-  const id = (await params).id;
+  const { id } = await params;
 
-  // fetch data
-  const product = await fetch(
-    `${API_ENDPOINTS.GET_MAP_OF_TARKOV_MAP}/${id}`,
-  ).then((res) => res.json());
+  try {
+    const res = await fetchMotData(id);
 
-  const res = product.data;
-
-  return {
-    title: `타르코프 지도 ${res.name.ko} - EFT Library`,
-    description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
-    openGraph: {
-      title: `타르코프 지도 ${res.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
-      images: [res.mot_image.ko],
-      url: `https://eftlibrary.com/map-of-tarkov/${id}`,
-      siteName: "EFT Library",
-    },
-    twitter: {
-      title: `타르코프 지도 ${res.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
-      images: [res.mot_image.ko],
-    },
-  };
+    return {
+      title: `타르코프 지도 ${res.map_info.name.ko} - EFT Library`,
+      description: `Escape from Tarkov (타르코프) 한글 지도. ${res.map_info.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+      openGraph: {
+        title: `타르코프 지도 ${res.map_info.name.ko} - EFT Library`,
+        description: `Escape from Tarkov (타르코프) 한글 지도. ${res.map_info.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+        images: [res.map_info.mot_image.ko],
+        url: `https://eftlibrary.com/map-of-tarkov/${id}`,
+        siteName: "EFT Library",
+      },
+      twitter: {
+        title: `타르코프 지도 ${res.map_info.name.ko} - EFT Library`,
+        description: `Escape from Tarkov (타르코프) 한글 지도. ${res.map_info.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
+        images: [res.map_info.mot_image.ko],
+      },
+    };
+  } catch {
+    return { title: "EFT Library" }; // fallback
+  }
 }
 
-export default function MapOfTarkov({ params }: MetaProps) {
-  return <MapOfTarkovData params={params} />;
+export default async function MapOfTarkov({ params }: MetaProps) {
+  const { id } = await params;
+  return <MapOfTarkovData id={id} />;
 }
