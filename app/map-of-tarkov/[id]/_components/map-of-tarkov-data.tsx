@@ -11,7 +11,7 @@ async function fetchMotData(id: string): Promise<MapOfTarkov> {
   cacheLife({
     stale: 86400, // 24시간 fresh
     revalidate: 86400, // 24시간 후 재검증
-    expire: 604800, // 7일 후 완전 만료
+    expire: 172800, // 2일 후 만료
   });
 
   const res = await fetch(`${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${id}`);

@@ -9,7 +9,7 @@ async function fetchItem() {
   cacheLife({
     stale: 86400,
     revalidate: 86400,
-    expire: 604800,
+    expire: 172800,
   });
 
   const res = await fetch(API_ENDPOINTS.GET_ITEM_LIST + "/ammo");
