@@ -1,10 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { cacheLife } from "next/cache";
+import { getCacheLife } from "../func/cache-jitter";
+
 interface FetchSchema {
   status: number;
   msg: string;
   data: any;
+}
+
+export async function cacheRequestData(url: string) {
+  "use cache";
+  cacheLife(getCacheLife());
+
+  const res = await fetch(url, {
+    signal: AbortSignal.timeout(5000),
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch data");
+
+  const json = await res.json();
+
+  if (json.status !== 200) throw new Error(json.msg || "Unknown error");
+
+  return json;
 }
 
 export async function requestData(url: string): Promise<FetchSchema | null> {

@@ -4,7 +4,7 @@ export interface QuestSelectorClient {
   npcList: QuestJson[];
 }
 
-interface QuestJson {
+export interface QuestJson {
   id: string;
   order: number;
   name: LocaleName;

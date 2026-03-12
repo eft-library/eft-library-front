@@ -1,29 +1,15 @@
-import { cacheLife } from "next/cache";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import HeadsetView from "./headset-view";
-
-async function fetchItem() {
-  "use cache";
-  cacheLife({
-    stale: 86400, // 24시간 fresh
-    revalidate: 86400, // 24시간 후 재검증
-    expire: 172800, // 2일 후 만료
-  });
-
-  const res = await fetch(API_ENDPOINTS.GET_ITEM_LIST + "/headset");
-  return res.json();
-}
+import { cacheRequestData } from "@/lib/config/api";
 
 export default async function HeadsetData() {
-  const data = await fetchItem();
-
-  if (!data || data.status !== 200) {
-    console.error(
-      "Failed to fetch headset data:",
-      data?.msg || "Unknown error",
+  try {
+    const data = await cacheRequestData(
+      API_ENDPOINTS.GET_ITEM_LIST + "/headset",
     );
+    return <HeadsetView headsetList={data.data} />;
+  } catch (e) {
+    console.error("Failed to fetch data:", e);
     return null;
   }
-
-  return <HeadsetView headsetList={data.data} />;
 }

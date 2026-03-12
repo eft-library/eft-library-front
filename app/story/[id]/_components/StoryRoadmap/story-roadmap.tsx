@@ -12,7 +12,7 @@ import {
   type Node,
   type Edge,
 } from "@xyflow/react";
-import { requestData } from "@/lib/config/api";
+import { cacheRequestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect } from "react";
 import { NodeData } from "../story-types";
@@ -34,14 +34,7 @@ export default function StoryRoadmap() {
 
   useEffect(() => {
     const getStoryRoadmap = async () => {
-      const data = await requestData(API_ENDPOINTS.GET_STORY_ROADMAP);
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch story roadmap data:",
-          data?.msg || "Unknown error",
-        );
-        return;
-      }
+      const data = await cacheRequestData(API_ENDPOINTS.GET_STORY_ROADMAP);
       processNode(data.data);
       processEdge(data.data);
     };

@@ -1,6 +1,8 @@
 import QuestData from "./_components/quest-data";
 import { Metadata } from "next";
-import { fetchQuestData } from "./_lib/fetch-quest";
+import { cacheRequestData } from "@/lib/config/api";
+import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { QuestJson } from "./_components/quest.types";
 
 type paramsType = Promise<{ id: string }>;
 type MetaProps = { params: paramsType };
@@ -11,8 +13,11 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const res = await fetchQuestData(id); // ← 직접 fetch 대신 재사용
-    const trader = res.trader_list.find((info) => info.id === id);
+    const res = await cacheRequestData(
+      `${API_ENDPOINTS.GET_QUEST_BY_NPC}/${id}`,
+    );
+    const data = res.data;
+    const trader = data.trader_list.find((info: QuestJson) => info.id === id);
 
     return {
       title: `타르코프 퀘스트 ${trader?.name.ko} - EFT Library`,
