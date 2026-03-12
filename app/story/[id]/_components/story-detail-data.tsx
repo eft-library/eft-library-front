@@ -1,49 +1,18 @@
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import type { StoryTypes } from "./story-types";
 import StoryView from "./story-detail-view";
-import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+import { fetchStoryData } from "../_lib/fetch-story-data";
 
-async function fetchStoryData(id: string): Promise<StoryTypes> {
-  "use cache";
-  cacheLife({
-    stale: 86400, // 24시간 fresh
-    revalidate: 86400, // 24시간 후 재검증
-    expire: 172800, // 2일 후 만료
-  });
-
-  const res = await fetch(`${API_ENDPOINTS.GET_STORY}/${id}`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch story data");
-  }
-
-  const json = await res.json();
-
-  if (json.status !== 200) {
-    throw new Error(json.msg || "Unknown error");
-  }
-
-  return json.data;
-}
-
-export default async function StoryDetailData({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
+export default async function StoryDetailData({ id }: { id: string }) {
   try {
     const data = await fetchStoryData(id);
 
     if (!data) {
-      notFound(); // 404 페이지로
+      notFound();
     }
 
     return <StoryView story={data} />;
   } catch (error) {
     console.error(error);
-    notFound(); // 또는 에러 페이지로
+    notFound();
   }
 }
