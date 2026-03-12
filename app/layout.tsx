@@ -12,7 +12,6 @@ import { getLocale } from "next-intl/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Footer from "@/components/custom/Footer/footer";
 import ChatData from "@/components/custom/Chat/chat-data";
-import { VersionCheck } from "@/components/custom/VersionCheck/version-check";
 import "./globals.css";
 import "../assets/editor.css";
 import "../assets/xyflow.css";
@@ -108,7 +107,6 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
           <AppStoreProvider>
             <QueryProvider>
               <WebSocketProvider>
-                <VersionCheck />
                 <NavData />
                 <ChatData />
                 {children}
