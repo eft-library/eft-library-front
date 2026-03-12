@@ -39,6 +39,9 @@ start_server() {
   echo "Next.js 빌드 시작..."
   $NODE run build --prefix "$APP_DIR"
 
+  # 빌드 후 버전 파일 생성
+  echo "$(date +%s)" > "$APP_DIR/public/version.txt"
+
   echo "Next.js 서버를 포트 $PORT에서 시작합니다."
   $NOHUP bash -c "PORT=$PORT $NODE run start --prefix $APP_DIR" > "$APP_DIR/log.out" 2>&1 &
 }
