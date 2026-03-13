@@ -18,11 +18,17 @@ export async function cacheRequestData(url: string) {
     signal: AbortSignal.timeout(5000),
   });
 
-  if (!res.ok) throw new Error("Failed to fetch data");
+  if (!res.ok) {
+    console.error("[API] fetch failed:", res.status, res.statusText, url);
+    throw new Error("Failed to fetch data");
+  }
 
   const json = await res.json();
 
-  if (json.status !== 200) throw new Error(json.msg || "Unknown error");
+  if (json.status !== 200) {
+    console.error("[API] response error:", json.status, json.msg, url);
+    throw new Error(json.msg || "Unknown error");
+  }
 
   return json;
 }

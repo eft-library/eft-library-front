@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   experimental: {
     serverSourceMaps: true,
   },
