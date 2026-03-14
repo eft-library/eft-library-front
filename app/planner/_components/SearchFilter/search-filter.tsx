@@ -8,7 +8,7 @@ import { useLocale } from "next-intl";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import type { Quest } from "@/app/quest/[id]/_components/quest.types";
 import { useEffect, useState, useRef } from "react";
-import { requestData } from "@/lib/config/api";
+import { cacheRequestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useCombobox } from "downshift";
 import { SearchFilterTypes } from "../planner.types";
@@ -26,10 +26,8 @@ export default function SearchFilter({
 
   useEffect(() => {
     const getQuestList = async () => {
-      const data = await requestData(API_ENDPOINTS.GET_ALL_QUEST);
-      if (data?.status === 200) {
-        setQuestList(data.data);
-      }
+      const data = await cacheRequestData(API_ENDPOINTS.GET_ALL_QUEST);
+      setQuestList(data.data);
     };
     getQuestList();
   }, []);

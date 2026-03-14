@@ -8,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { requestData } from "@/lib/config/api";
+import { cacheRequestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { ChevronDown, Map, MapPin } from "lucide-react";
@@ -31,16 +31,9 @@ export default function MapSelector({
 
   useEffect(() => {
     const getSubMapById = async () => {
-      const data = await requestData(
+      const data = await cacheRequestData(
         `${API_ENDPOINTS.GET_SUB_MAP}/${param.id}`,
       );
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch sub map data:",
-          data?.msg || "Unknown error",
-        );
-        return null;
-      }
       setSubMap(data.data);
     };
     getSubMapById();
