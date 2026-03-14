@@ -1,51 +1,18 @@
-"use client";
-
 import InformationDetail from "@/components/custom/information/information-detail";
-import { InformationInfoDetail } from "@/components/custom/information/information.types";
-import { requestData } from "@/lib/config/api";
+import { cacheRequestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { information18N } from "@/lib/consts/i18nConsts";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useLocale } from "next-intl";
-import { getLocaleKey } from "@/lib/func/localeFunction";
-import Loading from "@/components/custom/Loading/loading";
 
-export default function NoticeDetailData() {
-  const locale = useLocale();
-  const localeKey = getLocaleKey(locale);
-  const [noticeInfo, setNoticeInfo] = useState<InformationInfoDetail>();
-  const param = useParams<{ id: string }>();
-
-  useEffect(() => {
-    const getNoticeById = async () => {
-      const data = await requestData(
-        `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/NOTICE/detail/${param.id}`,
-      );
-
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch notice data:",
-          data?.msg || "Unknown error",
-        );
-        return null;
-      }
-
-      setNoticeInfo(data.data);
-    };
-
-    if (param.id) {
-      getNoticeById();
-    }
-  }, [param.id]);
-
-  if (!noticeInfo) return <Loading />;
+export default async function NoticeDetailData({ id }: { id: string }) {
+  const data = await cacheRequestData(
+    `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/NOTICE/detail/${id}`,
+  );
 
   return (
     <InformationDetail
-      informationInfo={noticeInfo}
+      informationInfo={data.data}
       routeLink="/notice"
-      title={information18N.notice.title[localeKey]}
+      title={information18N.notice.title}
     />
   );
 }

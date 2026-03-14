@@ -22,6 +22,11 @@ export const metadata = {
   },
 };
 
-export default function Notice() {
-  return <NoticeData />;
+export default async function Notice({
+  searchParams,
+}: {
+  searchParams: Promise<{ id: string }>;
+}) {
+  const { id } = await searchParams;
+  return <NoticeData id={id} />;
 }

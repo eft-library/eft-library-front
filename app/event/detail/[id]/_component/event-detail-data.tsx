@@ -1,51 +1,17 @@
-"use client";
-
-import { requestData } from "@/lib/config/api";
+import { cacheRequestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useLocale } from "next-intl";
-import { getLocaleKey } from "@/lib/func/localeFunction";
-import { InformationInfoDetail } from "@/components/custom/information/information.types";
 import { information18N } from "@/lib/consts/i18nConsts";
 import InformationDetail from "@/components/custom/information/information-detail";
-import Loading from "@/components/custom/Loading/loading";
 
-export default function EventDetailData() {
-  const locale = useLocale();
-  const localeKey = getLocaleKey(locale);
-  const [eventInfo, setEventInfo] = useState<InformationInfoDetail>();
-  const param = useParams<{ id: string }>();
-
-  useEffect(() => {
-    const getEventById = async () => {
-      const data = await requestData(
-        `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/EVENT/detail/${param.id}`,
-      );
-
-      if (!data || data.status !== 200) {
-        console.error(
-          "Failed to fetch event data:",
-          data?.msg || "Unknown error",
-        );
-        return null;
-      }
-
-      setEventInfo(data.data);
-    };
-
-    if (param.id) {
-      getEventById();
-    }
-  }, [param.id]);
-
-  if (!eventInfo) return <Loading />;
-
+export default async function EventDetailData({ id }: { id: string }) {
+  const data = await cacheRequestData(
+    `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/EVENT/detail/${id}`,
+  );
   return (
     <InformationDetail
-      informationInfo={eventInfo}
+      informationInfo={data.data}
       routeLink="/event"
-      title={information18N.event.title[localeKey]}
+      title={information18N.event.title}
     />
   );
 }

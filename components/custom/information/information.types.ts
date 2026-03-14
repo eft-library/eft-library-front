@@ -20,7 +20,7 @@ export interface InformationCardTypes {
 export interface InformationTypes {
   informationData: InformationData;
   routeLink: string;
-  title: string;
+  title: LocaleName;
 }
 
 interface LocaleName {
@@ -37,5 +37,5 @@ export interface InformationInfoDetail {
 export interface InformationDetailTypes {
   informationInfo: InformationInfoDetail;
   routeLink: string;
-  title: string;
+  title: LocaleName;
 }

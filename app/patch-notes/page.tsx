@@ -25,6 +25,11 @@ export const metadata = {
   },
 };
 
-export default function PatchNotes() {
-  return <PatchNotesData />;
+export default async function PatchNotes({
+  searchParams,
+}: {
+  searchParams: Promise<{ id: string }>;
+}) {
+  const { id } = await searchParams;
+  return <PatchNotesData id={id} />;
 }

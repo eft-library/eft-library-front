@@ -14,7 +14,6 @@ import { RngAllRankTypes, RngRankDataTypes } from "../../minigame-types";
 import { alertMessageI18N, minigameI18N } from "@/lib/consts/i18nConsts";
 import { DialogHeader } from "@/components/ui/dialog";
 import { rngItemRankIcon, rngItemRankStype } from "@/lib/func/jsxfunction";
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import { useEffect, useState } from "react";
 import { formatISODate } from "@/lib/func/formatTime";

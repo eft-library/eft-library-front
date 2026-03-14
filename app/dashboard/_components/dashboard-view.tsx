@@ -13,7 +13,6 @@ import {
 import { ChartData } from "./dashboard.types";
 import { useEffect, useState } from "react";
 import Loading from "@/components/custom/Loading/loading";
-import { requestData } from "@/lib/config/api";
 import { API_ENDPOINTS } from "@/lib/config/endpoint";
 import TotalRequestCard from "./TotalRequestCard/total-request-card";
 import TopEndpointsChart from "./TopEndPointsChart/top-end-points-chart";
@@ -47,17 +46,18 @@ export default function DashboardView() {
       const endStr = formatDate(end, true); // 23:59:59
 
       const url = `${API_ENDPOINTS.GET_DASHBOARD_ANALYSIS}?start_date=${startStr}&end_date=${endStr}`;
-      const data = await requestData(url);
+      const data = await fetch(url);
+      const result = await data.json();
 
-      if (!data || data.status !== 200) {
+      if (!result || result.status !== 200) {
         console.error(
           "Failed to fetch chart data:",
-          data?.msg || "Unknown error"
+          result?.msg || "Unknown error",
         );
         return;
       }
 
-      setChartData(data.data);
+      setChartData(result.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -107,7 +107,7 @@ export default function DashboardView() {
                     ? new Date(
                         endDate.getFullYear(),
                         endDate.getMonth(),
-                        endDate.getDate() - 1
+                        endDate.getDate() - 1,
                       )
                     : undefined
                 }
@@ -137,7 +137,7 @@ export default function DashboardView() {
                     ? new Date(
                         startDate.getFullYear(),
                         startDate.getMonth(),
-                        startDate.getDate() + 1
+                        startDate.getDate() + 1,
                       )
                     : undefined
                 }

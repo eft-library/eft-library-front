@@ -33,25 +33,6 @@ export async function cacheRequestData(url: string) {
   return json;
 }
 
-export async function requestData(url: string): Promise<FetchSchema | null> {
-  try {
-    const response = await fetch(url, {
-      next: { revalidate: 14400 },
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const result: FetchSchema = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
 export async function requestPostData(
   url: string,
   body: any,

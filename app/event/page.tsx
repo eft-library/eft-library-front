@@ -25,6 +25,11 @@ export const metadata = {
   },
 };
 
-export default function Event() {
-  return <EventData />;
+export default async function Event({
+  searchParams,
+}: {
+  searchParams: Promise<{ id: string }>;
+}) {
+  const { id } = await searchParams;
+  return <EventData id={id} />;
 }

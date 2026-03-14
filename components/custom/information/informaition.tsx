@@ -35,7 +35,7 @@ export default function Information({
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-3xl text-center font-bold mb-2 text-gray-900 dark:text-white">
-              {title}
+              {title[localeKey]}
             </h1>
             <InformationSelector />
 
@@ -73,7 +73,7 @@ export default function Information({
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
                               <Badge className={returnBadgeColor(routeLink)}>
-                                {title}
+                                {title[localeKey]}
                               </Badge>
                             </div>
                             <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">

@@ -43,7 +43,7 @@ export default function InformationDetail({
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge className={returnBadgeColor(routeLink)}>
-                      {title}
+                      {title[localeKey]}
                     </Badge>
                   </div>
                   <CardTitle className="text-2xl mb-2 text-gray-900 dark:text-white">
@@ -91,7 +91,7 @@ export default function InformationDetail({
           {/* 다른 공지사항 목록 */}
           <div className="mt-4">
             <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {title}
+              {title[localeKey]}
             </h3>
             <div className="grid gap-3">
               {informationInfo.information_group.map((item) => (
@@ -106,7 +106,7 @@ export default function InformationDetail({
                                 routeLink,
                               )}`}
                             >
-                              {title}
+                              {title[localeKey]}
                             </Badge>
                           </div>
                           <h4 className="font-semibold mb-1 text-gray-900 dark:text-white">
