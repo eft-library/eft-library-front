@@ -8,7 +8,6 @@ export default async function StoryDetailData({ id }: { id: string }) {
     const data = await cacheRequestData(`${API_ENDPOINTS.GET_STORY}/${id}`);
     return <StoryView story={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

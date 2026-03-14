@@ -10,7 +10,6 @@ export default async function MapOfTarkovData({ id }: { id: string }) {
     );
     return <MapOfTarkovView mapData={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

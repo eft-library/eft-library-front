@@ -10,7 +10,6 @@ export default async function ItemData({ id }: { id: string }) {
     );
     return <ItemView itemInfo={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

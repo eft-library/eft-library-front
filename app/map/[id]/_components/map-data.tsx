@@ -8,7 +8,6 @@ export default async function MapData({ id }: { id: string }) {
     const data = await cacheRequestData(`${API_ENDPOINTS.GET_MAP}/${id}`);
     return <MapView mapInfo={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

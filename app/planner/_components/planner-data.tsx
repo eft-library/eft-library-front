@@ -14,7 +14,7 @@ export default function PlannerData() {
   const fetchPlanner = async (): Promise<Planner[]> => {
     const data = await requestGetUserData(
       USER_API_ENDPOINTS.GET_USER_QUEST,
-      session
+      session,
     );
 
     if (!data || data.status !== 200) {
@@ -43,7 +43,7 @@ export default function PlannerData() {
 
   if (error) {
     console.error(error);
-    return <div>로드맵 데이터를 불러오지 못했습니다.</div>;
+    return <div>데이터를 불러오지 못했습니다.</div>;
   }
 
   if (!userQuestList) return <div />;

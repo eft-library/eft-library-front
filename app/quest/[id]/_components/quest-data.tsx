@@ -10,7 +10,6 @@ export default async function QuestData({ id }: { id: string }) {
     );
     return <QuestView questData={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

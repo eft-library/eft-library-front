@@ -8,7 +8,6 @@ export default async function QuestDetailData({ id }: { id: string }) {
     const data = await cacheRequestData(`${API_ENDPOINTS.GET_QUEST}/${id}`);
     return <QuestDetailView quest={data.data} />;
   } catch (error) {
-    console.error(error);
-    notFound(); // 또는 에러 페이지로
+    notFound();
   }
 }

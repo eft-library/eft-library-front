@@ -9,7 +9,6 @@ export default async function BossData({ id }: { id: string }) {
     const data = await cacheRequestData(`${API_ENDPOINTS.GET_BOSS}/${id}`);
     return <BossView bossData={data.data} />;
   } catch (error) {
-    console.error(error);
     notFound();
   }
 }

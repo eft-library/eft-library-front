@@ -16,7 +16,6 @@ export async function generateMetadata({
       `${API_ENDPOINTS.GET_MAP_OF_TARKOV}/${id}`,
     );
     const data = res.data;
-
     return {
       title: `타르코프 지도 ${data.map_info.name.ko} - EFT Library`,
       description: `Escape from Tarkov (타르코프) 한글 지도. ${data.map_info.name.ko} 한글화 지도, 보스, 탈출구, Transits에 대한 정보를 제공합니다.`,
