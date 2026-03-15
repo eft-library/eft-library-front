@@ -177,12 +177,8 @@ export const getPlusMinus = (text: number) => {
 };
 
 export const getFirstParagraph = (htmlString: string) => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, "text/html");
-
-  const firstParagraph = doc.querySelector("p");
-
-  return firstParagraph ? firstParagraph.outerHTML : "";
+  const match = htmlString.match(/<p[^>]*>[\s\S]*?<\/p>/);
+  return match ? match[0] : "";
 };
 
 export const groupAndSummarizeChances = (
