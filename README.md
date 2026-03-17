@@ -1,12 +1,12 @@
-- [EFT Library의 Frontend 운영 방식](#eft-library의-frontend-운영-방식)
+- [타르코프 도서관의 운영 방식](#타르코프-도서관의-운영-방식)
   - [주요 사항](#주요-사항)
   - [패키지 정보](#패키지-정보)
   - [구조](#구조)
   - [개발 History](#개발-history)
 
-# EFT Library의 Frontend 운영 방식
+# 타르코프 도서관의 운영 방식
 
-EFT Library Frontend는 NextJS 16을 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
+타르코프 도서관은 NextJS 16을 사용하여 구축하였고, FastAPI와 통신하여 데이터를 주고 받습니다.
 
 <img width="1314" height="1275" alt="arch_v4" src="https://github.com/user-attachments/assets/0392b55e-14b0-45d8-9aa6-4b83a9cd640f" />
 
