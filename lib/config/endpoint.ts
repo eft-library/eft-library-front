@@ -1,4 +1,7 @@
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl =
+  typeof window === "undefined"
+    ? process.env.NEXT_PUBLIC_LOCAL_URL
+    : process.env.NEXT_PUBLIC_API_URL;
 
 export const API_ENDPOINTS = {
   GET_HOME: baseUrl + "/api/home/home",
