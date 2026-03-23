@@ -100,7 +100,7 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
