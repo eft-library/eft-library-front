@@ -6,6 +6,12 @@ import { getToken } from "next-auth/jwt";
 export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = req.nextUrl;
+  const clientIp =
+    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("x-real-ip") ||
+    "unknown";
+  const headers = new Headers(req.headers);
+  headers.set("x-client-real-ip", clientIp);
 
   // 보호 경로 (로그인 필요)
   const protectedPaths = [
@@ -32,7 +38,7 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  return NextResponse.next();
+  return NextResponse.next({ request: { headers } });
 }
 
 // matcher 확장
