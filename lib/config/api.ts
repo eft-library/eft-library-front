@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { headers } from "next/headers";
 import { cacheLife } from "next/cache";
 import { getCacheLife } from "../func/cache-jitter";
 
@@ -15,14 +14,8 @@ export async function cacheRequestData(url: string) {
   "use cache";
   cacheLife(getCacheLife());
 
-  const headersList = await headers();
-  const clientIp = headersList.get("x-client-real-ip") || "unknown";
-
   const res = await fetch(url, {
     signal: AbortSignal.timeout(5000),
-    headers: {
-      "x-client-real-ip": clientIp,
-    },
   });
 
   if (!res.ok) {
@@ -45,14 +38,10 @@ export async function requestPostData(
   body: any,
 ): Promise<FetchSchema | null> {
   try {
-    const headersList = await headers();
-    const clientIp = headersList.get("x-client-real-ip") || "unknown";
-
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-client-real-ip": clientIp,
       },
       body: JSON.stringify(body),
     });
@@ -72,20 +61,17 @@ export async function requestPostData(
 
 export async function requestUserData(url: string, body: any, session: any) {
   try {
-    const headersList = await headers();
-    const clientIp = headersList.get("x-client-real-ip") || "unknown";
-    const head: Record<string, string> = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      "x-client-real-ip": clientIp,
     };
 
     if (session?.accessToken) {
-      head.Authorization = `Bearer ${session.accessToken}`;
+      headers.Authorization = `Bearer ${session.accessToken}`;
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers: head,
+      headers,
       body: JSON.stringify(body),
     });
 
@@ -103,20 +89,17 @@ export async function requestUserData(url: string, body: any, session: any) {
 
 export async function requestGetUserData(url: string, session: any) {
   try {
-    const headersList = await headers();
-    const clientIp = headersList.get("x-client-real-ip") || "unknown";
-    const head: Record<string, string> = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      "x-client-real-ip": clientIp,
     };
 
     if (session?.accessToken) {
-      head.Authorization = `Bearer ${session.accessToken}`;
+      headers.Authorization = `Bearer ${session.accessToken}`;
     }
 
     const response = await fetch(url, {
       method: "GET",
-      headers: head,
+      headers,
     });
 
     if (!response.ok) {
