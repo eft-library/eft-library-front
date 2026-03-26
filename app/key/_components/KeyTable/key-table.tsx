@@ -63,7 +63,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
               </div>
               <div className="text-center font-normal text-foreground/80">
                 <div className="flex flex-col items-center space-y-2">
-                  {item.info.use_map.en &&
+                  {item.info.use_map &&
                     item.info.use_map[getLocaleKey(locale)].map(
                       (value, index) => (
                         <span
@@ -108,7 +108,7 @@ export default function KeyTable({ keyList, word }: KeyTableTypes) {
                     {itemI18N.key.useMap[localeKey]}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {item.info.use_map.en &&
+                    {item.info.use_map &&
                       item.info.use_map[getLocaleKey(locale)].map(
                         (value, index) => (
                           <span
