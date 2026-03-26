@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Handle, Position } from "@xyflow/react";
 import { useLocale } from "next-intl";
@@ -7,8 +6,10 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { node_color } from "@/lib/func/jsxfunction";
+import type { NodeProps } from "@xyflow/react";
+import type { RoadmapFlowNode } from "../roadmap.types";
 
-export default function TraderNode(props: any) {
+export default function TraderNode(props: NodeProps<RoadmapFlowNode>) {
   const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);

@@ -5,11 +5,8 @@ import { roadmapI18N } from "@/lib/consts/i18nConsts";
 import type { StatsPanelTypes } from "../roadmap.types";
 
 export default function StatsPanel({
-  getAllCount,
-  getAllKappaCount,
-  getKappaCompleteCount,
+  stats,
   onlyKappa,
-  getCompleteCount,
 }: StatsPanelTypes) {
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
@@ -37,7 +34,7 @@ export default function StatsPanel({
               variant="secondary"
               className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 font-semibold"
             >
-              {getAllCount}
+              {stats.allCount}
             </Badge>
           </div>
           <div className="w-full bg-muted rounded-full h-1.5">
@@ -61,14 +58,14 @@ export default function StatsPanel({
               variant="secondary"
               className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 font-semibold"
             >
-              {getAllKappaCount}
+              {stats.allKappaCount}
             </Badge>
           </div>
           <div className="w-full bg-muted rounded-full h-1.5">
             <div
               className="bg-orange-500 h-1.5 rounded-full transition-all duration-500"
               style={{
-                width: `${(getAllKappaCount / getAllCount) * 100}%`,
+                width: `${stats.kappaQuestRate}%`,
               }}
             ></div>
           </div>
@@ -87,17 +84,14 @@ export default function StatsPanel({
               variant="outline"
               className="border-green-300 text-green-700 dark:border-green-700 dark:text-green-400 font-semibold"
             >
-              {getKappaCompleteCount}
+              {stats.kappaCompleteCount}
             </Badge>
           </div>
           <div className="w-full bg-muted rounded-full h-1.5">
             <div
               className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
               style={{
-                width:
-                  getKappaCompleteCount > 0
-                    ? `${(getKappaCompleteCount / getAllKappaCount) * 100}%`
-                    : "0%",
+                width: `${stats.kappaCompleteRate}%`,
               }}
             ></div>
           </div>
@@ -117,14 +111,14 @@ export default function StatsPanel({
                 variant="outline"
                 className="border-purple-300 text-purple-700 dark:border-purple-700 dark:text-purple-400 font-semibold"
               >
-                {getCompleteCount}
+                {stats.completeCount}
               </Badge>
             </div>
             <div className="w-full bg-muted rounded-full h-1.5">
               <div
                 className="bg-purple-500 h-1.5 rounded-full transition-all duration-500"
                 style={{
-                  width: `${(getCompleteCount / getAllCount) * 100}%`,
+                  width: `${stats.completeRate}%`,
                 }}
               ></div>
             </div>
@@ -140,14 +134,14 @@ export default function StatsPanel({
               {roadmapI18N.overallProgress[localeKey]}
             </span>
             <span className="text-sm font-bold text-primary">
-              {Math.round((getKappaCompleteCount / getAllKappaCount) * 100)}%
+              {Math.round(stats.overallProgressRate)}%
             </span>
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div
               className="bg-linear-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
               style={{
-                width: `${(getKappaCompleteCount / getAllKappaCount) * 100}%`,
+                width: `${stats.overallProgressRate}%`,
               }}
             ></div>
           </div>
@@ -159,14 +153,14 @@ export default function StatsPanel({
               {roadmapI18N.overallProgress[localeKey]}
             </span>
             <span className="text-sm font-bold text-primary">
-              {Math.round((getCompleteCount / getAllCount) * 100)}%
+              {Math.round(stats.overallProgressRate)}%
             </span>
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div
               className="bg-linear-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-700 shadow-sm"
               style={{
-                width: `${(getCompleteCount / getAllCount) * 100}%`,
+                width: `${stats.overallProgressRate}%`,
               }}
             ></div>
           </div>

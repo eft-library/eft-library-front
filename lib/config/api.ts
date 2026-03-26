@@ -4,13 +4,15 @@
 import { cacheLife } from "next/cache";
 import { getCacheLife } from "../func/cache-jitter";
 
-interface FetchSchema {
+export interface FetchSchema<TData = unknown> {
   status: number;
   msg: string;
-  data: any;
+  data: TData;
 }
 
-export async function cacheRequestData(url: string) {
+export async function cacheRequestData<TData = unknown>(
+  url: string,
+): Promise<FetchSchema<TData>> {
   "use cache";
   cacheLife(getCacheLife());
 
@@ -23,7 +25,7 @@ export async function cacheRequestData(url: string) {
     throw new Error("Failed to fetch data");
   }
 
-  const json = await res.json();
+  const json = (await res.json()) as FetchSchema<TData>;
 
   if (json.status !== 200) {
     console.error("[API] response error:", json.status, json.msg, url);
@@ -59,7 +61,11 @@ export async function requestPostData(
   }
 }
 
-export async function requestUserData(url: string, body: any, session: any) {
+export async function requestUserData<TData = unknown>(
+  url: string,
+  body: any,
+  session: any,
+): Promise<FetchSchema<TData> | null> {
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -79,7 +85,7 @@ export async function requestUserData(url: string, body: any, session: any) {
       throw new Error(`Network response was not ok: ${response.status}`);
     }
 
-    const result: FetchSchema = await response.json();
+    const result: FetchSchema<TData> = await response.json();
     return result;
   } catch (error) {
     console.error(error);
@@ -87,7 +93,10 @@ export async function requestUserData(url: string, body: any, session: any) {
   }
 }
 
-export async function requestGetUserData(url: string, session: any) {
+export async function requestGetUserData<TData = unknown>(
+  url: string,
+  session: any,
+): Promise<FetchSchema<TData> | null> {
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -106,7 +115,7 @@ export async function requestGetUserData(url: string, session: any) {
       throw new Error(`Network response was not ok: ${response.status}`);
     }
 
-    const result: FetchSchema = await response.json();
+    const result: FetchSchema<TData> = await response.json();
     return result;
   } catch (error) {
     console.error(error);

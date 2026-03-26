@@ -1,11 +1,20 @@
+import type {
+  Connection,
+  Edge as ReactFlowEdge,
+  Node,
+} from "@xyflow/react";
+
 export interface RoadmapViewTypes {
   roadmapInfo: RoadmapDataTypes;
 }
 
-export interface RoadmapDataTypes {
+export interface RoadmapServerDataTypes {
   node_info: NPCData[];
-  quest_list: string[];
   edge_info: Edge[];
+}
+
+export interface RoadmapDataTypes extends RoadmapServerDataTypes {
+  quest_list: string[];
 }
 
 export interface ControlPanelTypes {
@@ -20,10 +29,7 @@ export interface ControlPanelTypes {
 }
 
 export interface StatsPanelTypes {
-  getAllCount: number;
-  getAllKappaCount: number;
-  getKappaCompleteCount: number;
-  getCompleteCount: number;
+  stats: RoadmapStatsSummary;
   onlyKappa: boolean;
 }
 
@@ -32,6 +38,9 @@ export interface Edge {
   source_id: string;
   target_id: string;
 }
+
+export type RoadmapNodeType = "npcNode" | "questNode";
+export type RoadmapDataType = "npc" | "quest";
 
 // 최상위 인터페이스
 export interface NPCData {
@@ -67,14 +76,45 @@ export interface TraderTabTypes {
   tabState: string;
 }
 
-interface TabNpc {
+export interface TabNpc {
   id: string;
   name: LocaleName;
   color: string;
   image: string;
 }
-interface LocaleName {
+export interface LocaleName {
   en: string;
   ja: string;
   ko: string;
+}
+
+export interface RoadmapNodeData extends Record<string, unknown> {
+  name: LocaleName;
+  id: string;
+  type: RoadmapDataType;
+  image: string;
+  kappa_required: boolean;
+  url_mapping: string;
+  isCheck: boolean;
+  task_requirements: string[];
+  task_next: string[];
+  npc_id: string;
+  node_color: string;
+  view_only_kappa: boolean;
+  onChange?: (data: RoadmapNodeData, isCheck: boolean) => void;
+}
+
+export type RoadmapFlowNode = Node<RoadmapNodeData, RoadmapNodeType>;
+export type RoadmapFlowEdge = ReactFlowEdge;
+export type RoadmapConnection = Connection;
+
+export interface RoadmapStatsSummary {
+  allCount: number;
+  allKappaCount: number;
+  kappaCompleteCount: number;
+  completeCount: number;
+  kappaQuestRate: number;
+  kappaCompleteRate: number;
+  completeRate: number;
+  overallProgressRate: number;
 }

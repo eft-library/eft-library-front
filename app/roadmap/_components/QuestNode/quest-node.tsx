@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { useCallback } from "react";
@@ -10,8 +8,10 @@ import { cn } from "@/lib/utils";
 import { getLocaleKey } from "@/lib/func/localeFunction";
 import { node_color } from "@/lib/func/jsxfunction";
 import { useTheme } from "next-themes";
+import type { NodeProps } from "@xyflow/react";
+import type { RoadmapFlowNode } from "../roadmap.types";
 
-export default function QuestNode(props: any) {
+export default function QuestNode(props: NodeProps<RoadmapFlowNode>) {
   const { theme } = useTheme();
   const locale = useLocale();
   const localeKey = getLocaleKey(locale);
@@ -67,7 +67,7 @@ export default function QuestNode(props: any) {
                 type="checkbox"
                 className="sr-only"
                 onChange={(e) =>
-                  props.data.onChange(props.data, e.target.checked)
+                  props.data.onChange?.(props.data, e.target.checked)
                 }
                 checked={props.data.isCheck}
                 id={`quest-${props.data.url_mapping}`}
