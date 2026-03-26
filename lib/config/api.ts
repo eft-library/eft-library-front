@@ -4,13 +4,13 @@
 import { cacheLife } from "next/cache";
 import { getCacheLife } from "../func/cache-jitter";
 
-export interface FetchSchema<TData = unknown> {
+export interface FetchSchema<TData = any> {
   status: number;
   msg: string;
   data: TData;
 }
 
-export async function cacheRequestData<TData = unknown>(
+export async function cacheRequestData<TData = any>(
   url: string,
 ): Promise<FetchSchema<TData>> {
   "use cache";
@@ -61,7 +61,7 @@ export async function requestPostData(
   }
 }
 
-export async function requestUserData<TData = unknown>(
+export async function requestUserData<TData = any>(
   url: string,
   body: any,
   session: any,
@@ -93,7 +93,7 @@ export async function requestUserData<TData = unknown>(
   }
 }
 
-export async function requestGetUserData<TData = unknown>(
+export async function requestGetUserData<TData = any>(
   url: string,
   session: any,
 ): Promise<FetchSchema<TData> | null> {
