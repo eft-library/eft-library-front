@@ -28,7 +28,6 @@ export const API_ENDPOINTS = {
   GET_USER_ROADMAP: baseUrl + "/api/roadmap/get-user-roadmap",
   GET_PRICE: baseUrl + "/api/price/search",
   GET_TOP_PRICE: baseUrl + "/api/price/top",
-  GET_MAP_OF_TARKOV_MAP: baseUrl + "/api/map-of-tarkov/info",
   GET_DASHBOARD_ANALYSIS: baseUrl + "/api/dashboard/analysis",
   GET_RNG_ITEM_MINIGAME: baseUrl + "/api/minigame/rng-item",
   SAVE_RNG_ITEM_SCORE: baseUrl + "/api/minigame/rng-item/save",
