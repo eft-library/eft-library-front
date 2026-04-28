@@ -4,10 +4,15 @@ export interface MapSelectorEntry extends LocalizedName {
   normalized_name: string;
 }
 
+export interface MapMeshLayer {
+  geometry: string;
+  material: string;
+}
+
 export interface MapDetailModel extends MapSelectorEntry {
   id: string;
   three_image: string | null;
-  three_json: Array<Record<string, unknown>>;
+  three_json: MapMeshLayer[];
 }
 
 export interface MapDetailResponse {

@@ -1,3 +1,5 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "tailwindcss";
 
 :root {
@@ -27,16 +29,15 @@
   --font-mono: var(--font-mono-custom);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1e2124;
-    --foreground: #f9fafb;
-    --surface: #2a2d35;
-    --surface-elevated: #36393f;
-    --line: rgba(255, 255, 255, 0.08);
-    --accent: #fb923c;
-    --accent-warm: #fdba74;
-  }
+html.dark,
+:root.dark {
+  --background: #1e2124;
+  --foreground: #f9fafb;
+  --surface: #2a2d35;
+  --surface-elevated: #36393f;
+  --line: rgba(255, 255, 255, 0.08);
+  --accent: #fb923c;
+  --accent-warm: #fdba74;
 }
 
 * {

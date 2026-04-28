@@ -11,6 +11,7 @@ export interface NavigationCopy {
   logout: string;
   myPage: string;
   guestLabel: string;
+  themeToggle: string;
 }
 
 export interface FooterCopy {
@@ -62,6 +63,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       logout: "로그아웃",
       myPage: "내 정보",
       guestLabel: "게스트",
+      themeToggle: "테마 전환",
     },
     footer: {
       title: "EFT Library Front Migration",
@@ -103,6 +105,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       logout: "Log out",
       myPage: "My page",
       guestLabel: "Guest",
+      themeToggle: "Toggle theme",
     },
     footer: {
       title: "EFT Library Front Migration",
@@ -144,6 +147,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       logout: "ログアウト",
       myPage: "マイページ",
       guestLabel: "ゲスト",
+      themeToggle: "テーマ切替",
     },
     footer: {
       title: "EFT Library Front Migration",

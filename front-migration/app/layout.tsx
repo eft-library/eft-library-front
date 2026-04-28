@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getHomeMenu } from "@/features/home/api";
 import { defaultLocale } from "@/i18n/config";
 import { getUserLocale } from "@/i18n/locale";
@@ -36,13 +37,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={defaultLocale} className="h-full antialiased">
+    <html lang={defaultLocale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full bg-background text-foreground">
-        <AuthProvider>
-          <Suspense fallback={<LayoutFallback />}>
-            <ResolvedLayout>{children}</ResolvedLayout>
-          </Suspense>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Suspense fallback={<LayoutFallback />}>
+              <ResolvedLayout>{children}</ResolvedLayout>
+            </Suspense>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
@@ -70,6 +73,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
           logoutLabel={copy.navigation.logout}
           myPageLabel={copy.navigation.myPage}
           guestLabel={copy.navigation.guestLabel}
+          themeToggleLabel={copy.navigation.themeToggle}
           locale={locale}
         />
         <div className="flex-1">{children}</div>

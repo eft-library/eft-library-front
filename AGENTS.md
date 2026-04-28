@@ -4,6 +4,10 @@ The frontend is being migrated due to a complete redesign of the PostgreSQL sche
 FastAPI has already been fully migrated to the new schema (V3).
 This document defines the rules for migrating the Next.js frontend.
 
+Please use `nvm use 22` because pnpm install at node 22.
+
+Check website design in https://eftlibrary.com
+
 ---
 
 ## Package Manager Rules

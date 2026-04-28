@@ -4,13 +4,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import {
   ChevronDown,
   Info,
   Map,
   Menu,
+  Moon,
   Package,
   Search,
+  Sun,
   Target,
   User,
   UserRoundPen,
@@ -36,6 +39,7 @@ interface SiteHeaderProps {
   logoutLabel: string;
   myPageLabel: string;
   guestLabel: string;
+  themeToggleLabel: string;
   locale: Locale;
 }
 
@@ -235,6 +239,29 @@ function SearchAutocomplete({
   );
 }
 
+function ThemeToggle({ label }: { label: string }) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const isDark = isMounted ? resolvedTheme === "dark" : false;
+
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  );
+}
+
 export function SiteHeader({
   menuGroups,
   autocompleteItems,
@@ -248,6 +275,7 @@ export function SiteHeader({
   logoutLabel,
   myPageLabel,
   guestLabel,
+  themeToggleLabel,
   locale,
 }: SiteHeaderProps) {
   const { data: session, status } = useSession();
@@ -385,6 +413,7 @@ export function SiteHeader({
                 {loginLabel}
               </button>
             )}
+            <ThemeToggle label={themeToggleLabel} />
             <LocaleSwitcher label={localeLabel} locale={locale} />
           </div>
 
@@ -417,7 +446,10 @@ export function SiteHeader({
               <span className="text-sm font-medium text-gray-900 dark:text-white">
                 {browseSectionsLabel}
               </span>
-              <LocaleSwitcher label={localeLabel} locale={locale} />
+              <div className="flex items-center gap-2">
+                <ThemeToggle label={themeToggleLabel} />
+                <LocaleSwitcher label={localeLabel} locale={locale} />
+              </div>
             </div>
 
             {status === "authenticated" ? (
