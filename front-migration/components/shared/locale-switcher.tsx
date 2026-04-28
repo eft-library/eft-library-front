@@ -43,7 +43,7 @@ export function LocaleSwitcher({ label, locale }: LocaleSwitcherProps) {
         type="button"
         onClick={() => setIsOpen((value) => !value)}
         disabled={isPending}
-        className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-orange-300 hover:text-orange-500 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+        className="flex h-9 items-center gap-2 rounded-md bg-gray-100 px-3 text-sm font-semibold text-gray-700 transition hover:text-orange-500 disabled:opacity-60 dark:bg-[#36393f] dark:text-gray-100 dark:hover:text-orange-300"
       >
         <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
         <span>{currentLanguage.label}</span>

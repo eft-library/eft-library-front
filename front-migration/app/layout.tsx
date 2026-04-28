@@ -63,10 +63,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
         <SiteHeader
           menuGroups={navigation.nav_list}
           autocompleteItems={navigation.autocomplete_items}
-          browseSectionsLabel={copy.navigation.browseSections}
-          statusLabel={copy.navigation.status}
           localeLabel={copy.navigation.languageLabel}
-          brandSubtitle={copy.navigation.brandSubtitle}
           searchPlaceholder={copy.navigation.searchPlaceholder}
           noSearchResultsLabel={copy.navigation.noSearchResults}
           loginLabel={copy.navigation.login}

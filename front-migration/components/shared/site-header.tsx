@@ -29,10 +29,7 @@ import type { HomeAutocompleteItem, HomeMenuGroup } from "@/types/api/home";
 interface SiteHeaderProps {
   menuGroups: HomeMenuGroup[];
   autocompleteItems: HomeAutocompleteItem[];
-  browseSectionsLabel: string;
-  statusLabel: string;
   localeLabel: string;
-  brandSubtitle: string;
   searchPlaceholder: string;
   noSearchResultsLabel: string;
   loginLabel: string;
@@ -175,7 +172,7 @@ function SearchAutocomplete({
   };
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-sm">
+    <div ref={wrapperRef} className="relative w-full">
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
       <input
         value={query}
@@ -207,7 +204,7 @@ function SearchAutocomplete({
           }
         }}
         placeholder={placeholder}
-        className="h-10 w-full rounded-lg border border-gray-300 bg-white pl-10 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-400 dark:border-gray-600 dark:bg-[#36393f] dark:text-white dark:placeholder:text-gray-400 dark:focus:border-orange-400"
+        className="h-9 w-full rounded-md border border-gray-200 bg-gray-50 pl-10 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 hover:bg-white focus:border-orange-300 focus:bg-white dark:border-transparent dark:bg-[#36393f] dark:text-white dark:placeholder:text-gray-400 dark:hover:bg-[#36393f] dark:hover:text-white dark:focus:border-orange-400 dark:focus:bg-[#36393f] dark:focus:text-white"
       />
 
       {isShowingPanel ? (
@@ -255,7 +252,7 @@ function ThemeToggle({ label }: { label: string }) {
       aria-label={label}
       title={label}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:bg-white dark:text-orange-500 dark:hover:bg-orange-50"
     >
       {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
@@ -265,10 +262,7 @@ function ThemeToggle({ label }: { label: string }) {
 export function SiteHeader({
   menuGroups,
   autocompleteItems,
-  browseSectionsLabel,
-  statusLabel,
   localeLabel,
-  brandSubtitle,
   searchPlaceholder,
   noSearchResultsLabel,
   loginLabel,
@@ -317,67 +311,60 @@ export function SiteHeader({
     guestLabel;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-gray-700 dark:bg-[#2a2d35]/95">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 text-sm font-semibold text-white shadow-sm">
-              EFT
-            </span>
-            <div>
-              <p className="text-base font-semibold text-gray-900 dark:text-white">
-                EFT Library
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {brandSubtitle}
-              </p>
-            </div>
-          </Link>
+    <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-[#3a4048] dark:bg-[#292d35]/95">
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-5 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center">
+          <span className="text-xl font-black uppercase text-gray-900 drop-shadow-sm dark:text-white dark:[text-shadow:0_0_8px_rgba(251,146,60,0.55)]">
+            EFT Library
+          </span>
+        </Link>
 
-          <div className="hidden items-center gap-3 lg:flex">
-            <nav className="flex items-center gap-2">
-              {menuGroups.map((group) => (
-                <div
-                  key={group.id}
-                  className="relative"
-                  onMouseEnter={() => setActiveMenu(group.id)}
-                  onMouseLeave={() => setActiveMenu(null)}
+        <div className="hidden min-w-0 flex-1 items-center gap-5 lg:flex">
+          <nav className="flex min-w-0 flex-1 items-center justify-center gap-7">
+            {menuGroups.map((group) => (
+              <div
+                key={group.id}
+                className="relative"
+                onMouseEnter={() => setActiveMenu(group.id)}
+                onMouseLeave={() => setActiveMenu(null)}
+              >
+                <button
+                  type="button"
+                  className="flex h-14 items-center gap-1 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
                 >
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-400"
-                  >
-                    {pickLocalizedText(group, locale)}
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
+                  {pickLocalizedText(group, locale)}
+                  <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                </button>
 
-                  {activeMenu === group.id ? (
-                    <div className="absolute left-1/2 top-full z-20 mt-0 w-56 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-600 dark:bg-[#2a2d35]">
-                      <div className="grid gap-1">
-                        {group.sub_menus.map((item) => (
-                          <Link
-                            key={item.id}
-                            href={item.url}
-                            className="px-3 py-2 text-center text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
-                          >
-                            {pickLocalizedText(item, locale)}
-                          </Link>
-                        ))}
-                      </div>
+                {activeMenu === group.id ? (
+                  <div className="absolute left-1/2 top-full z-20 mt-0 w-52 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-[#3a4048] dark:bg-[#25282e]">
+                    <div className="grid gap-1">
+                      {group.sub_menus.map((item) => (
+                        <Link
+                          key={item.id}
+                          href={item.url}
+                          className="px-3 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-orange-300"
+                        >
+                          {pickLocalizedText(item, locale)}
+                        </Link>
+                      ))}
                     </div>
-                  ) : null}
-                </div>
-              ))}
-            </nav>
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-3">
             {status === "authenticated" ? (
               <div ref={userMenuRef} className="relative">
                 <button
                   type="button"
                   onClick={() => setIsUserMenuOpen((value) => !value)}
-                  className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+                  className="flex h-9 items-center gap-2 rounded-md px-2 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
                 >
                   <User className="h-4 w-4" />
-                  <span className="max-w-28 truncate">{userLabel}</span>
+                  <span className="max-w-24 truncate">{userLabel}</span>
                   <ChevronDown
                     className={cn(
                       "h-4 w-4 transition-transform",
@@ -387,17 +374,17 @@ export function SiteHeader({
                 </button>
 
                 {isUserMenuOpen ? (
-                  <div className="absolute right-0 top-full z-20 mt-2 w-40 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-600 dark:bg-[#2a2d35]">
+                  <div className="absolute right-0 top-full z-20 mt-2 w-40 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-600 dark:bg-[#25282e]">
                     <Link
                       href="/mypage/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
+                      className="block px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
                     >
                       {myPageLabel}
                     </Link>
                     <button
                       type="button"
                       onClick={() => signOut()}
-                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
+                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
                     >
                       {logoutLabel}
                     </button>
@@ -408,56 +395,56 @@ export function SiteHeader({
               <button
                 type="button"
                 onClick={() => signIn("google")}
-                className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+                className="h-9 rounded-md px-2 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
               >
                 {loginLabel}
               </button>
             )}
             <ThemeToggle label={themeToggleLabel} />
             <LocaleSwitcher label={localeLabel} locale={locale} />
+            <div className="w-52 xl:w-60">
+              <SearchAutocomplete
+                autocompleteItems={autocompleteItems}
+                locale={locale}
+                placeholder={searchPlaceholder}
+                noResultsLabel={noSearchResultsLabel}
+              />
+            </div>
           </div>
+        </div>
 
+        <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <ThemeToggle label={themeToggleLabel} />
           <button
             type="button"
             onClick={() => setIsMobileOpen((value) => !value)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-gray-700 transition hover:text-orange-500 dark:border-gray-700 dark:text-gray-100 dark:hover:text-orange-400 lg:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:text-orange-500 dark:bg-transparent dark:text-gray-100 dark:hover:text-orange-300"
           >
             {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-3 border-t border-gray-200 pt-3 dark:border-gray-700 lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-sm text-gray-600 dark:text-gray-300">
-            {statusLabel}
-          </div>
-          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+      {isMobileOpen ? (
+        <div className="border-t border-gray-200 bg-white px-4 py-4 shadow-lg dark:border-[#3a4048] dark:bg-[#1c2026] lg:hidden">
+          <div className="mx-auto grid max-w-7xl gap-4">
+            <div className="flex items-center justify-end">
+              <LocaleSwitcher label={localeLabel} locale={locale} />
+            </div>
+
             <SearchAutocomplete
               autocompleteItems={autocompleteItems}
               locale={locale}
               placeholder={searchPlaceholder}
               noResultsLabel={noSearchResultsLabel}
             />
-          </div>
-        </div>
-
-        {isMobileOpen ? (
-          <div className="grid gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/40 lg:hidden">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-900 dark:text-white">
-                {browseSectionsLabel}
-              </span>
-              <div className="flex items-center gap-2">
-                <ThemeToggle label={themeToggleLabel} />
-                <LocaleSwitcher label={localeLabel} locale={locale} />
-              </div>
-            </div>
 
             {status === "authenticated" ? (
-              <div className="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-[#2a2d35]">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-[#1f2329]">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-orange-400" />
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
                       {userLabel}
                     </span>
                   </div>
@@ -466,14 +453,14 @@ export function SiteHeader({
                   <Link
                     href="/mypage/profile"
                     onClick={() => setIsMobileOpen(false)}
-                    className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
+                    className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-white hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
                   >
                     {myPageLabel}
                   </Link>
                   <button
                     type="button"
                     onClick={() => signOut()}
-                    className="rounded-md px-3 py-2 text-left text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
+                    className="rounded-md px-3 py-2 text-left text-sm text-gray-700 transition hover:bg-white hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
                   >
                     {logoutLabel}
                   </button>
@@ -483,22 +470,15 @@ export function SiteHeader({
               <button
                 type="button"
                 onClick={() => signIn("google")}
-                className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-[#2a2d35] dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-400"
+                className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-[#1f2329] dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
               >
                 {loginLabel}
               </button>
             )}
 
-            <SearchAutocomplete
-              autocompleteItems={autocompleteItems}
-              locale={locale}
-              placeholder={searchPlaceholder}
-              noResultsLabel={noSearchResultsLabel}
-            />
-
             {menuGroups.map((group) => (
-              <details key={group.id} className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-[#2a2d35]">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+              <details key={group.id} className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f2329]">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">
                   <span className="flex items-center gap-2">
                     {getMenuIcon(group.id)}
                     {pickLocalizedText(group, locale)}
@@ -511,7 +491,7 @@ export function SiteHeader({
                       key={item.id}
                       href={item.url}
                       onClick={() => setIsMobileOpen(false)}
-                      className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-gray-700/50 dark:hover:text-orange-400"
+                      className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-white hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
                     >
                       {pickLocalizedText(item, locale)}
                     </Link>
@@ -520,8 +500,8 @@ export function SiteHeader({
               </details>
             ))}
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </header>
   );
 }
