@@ -142,22 +142,27 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
           </div>
 
           <aside className="space-y-6">
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-              <div className="mb-4 flex items-center space-x-2">
+            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#303846] dark:bg-[#20262e]">
+              <div className="mb-5 flex items-center gap-3">
                 <Pin className="h-5 w-5 text-orange-400" />
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                   {labels.notice}
                 </h2>
               </div>
               <div className="space-y-3">
                 {home.news.notice.length > 0 ? (
-                  home.news.notice.map((item) => (
+                  home.news.notice.map((item, index) => (
                     <Link
                       key={`notice-${item.id}`}
                       href={item.link ?? "/"}
-                      className="block text-sm text-gray-600 transition hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400"
+                      className="group flex items-start gap-3 rounded-md py-1 text-sm transition hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
                     >
-                      {getNewsTitle(item, locale)}
+                      <span className="mt-0.5 w-4 shrink-0 text-center text-xs font-bold text-orange-400">
+                        {index + 1}
+                      </span>
+                      <span className="line-clamp-2 text-gray-600 group-hover:text-orange-500 dark:text-gray-300 dark:group-hover:text-orange-300">
+                        {getNewsTitle(item, locale)}
+                      </span>
                     </Link>
                   ))
                 ) : (
@@ -169,10 +174,10 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
             </div>
 
             {home.home_posts.length > 0 ? (
-              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-                <div className="mb-4 flex items-center space-x-2">
+              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#303846] dark:bg-[#20262e]">
+                <div className="mb-5 flex items-center gap-3">
                   <Flame className="h-5 w-5 text-orange-400" />
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                     {labels.recentPosts}
                   </h2>
                 </div>
@@ -183,15 +188,15 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                       href={`/community/detail/${String(post.id)}-${String(post.slug ?? "")}`}
                       className="block"
                     >
-                      <div className="flex items-start gap-3 rounded-lg p-2 transition hover:bg-gray-100 dark:hover:bg-gray-700/30">
-                        <span className="mt-1 flex text-xs font-bold text-orange-400">
+                      <div className="group flex items-start gap-3 rounded-md py-1 transition">
+                        <span className="mt-0.5 flex w-4 shrink-0 justify-center text-xs font-bold text-orange-400">
                           {[0, 1].includes(index) ? (
                             <Star className="h-4 w-4 text-yellow-400" />
                           ) : (
                             index + 1
                           )}
                         </span>
-                        <p className="line-clamp-2 text-sm text-gray-700 dark:text-gray-300">
+                        <p className="line-clamp-2 text-sm text-gray-600 transition group-hover:text-orange-500 dark:text-gray-300 dark:group-hover:text-orange-300">
                           {String(post.title ?? "")}
                         </p>
                       </div>
@@ -200,12 +205,12 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                 </div>
               </div>
             ) : (
-              <div className="rounded-lg border border-gray-200 bg-white p-6 text-sm text-gray-400 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30 dark:text-gray-500">
+              <div className="rounded-lg border border-gray-200 bg-white p-6 text-sm text-gray-400 shadow-sm dark:border-[#303846] dark:bg-[#20262e] dark:text-gray-500">
                 {labels.noPosts}
               </div>
             )}
 
-            <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
+            <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm dark:border-[#303846] dark:bg-[#20262e]">
               <Link
                 href="https://aff.gearupglobal.com/product/download/HSMniDfsEY6c"
                 target="_blank"

@@ -8,6 +8,10 @@ Please use `nvm use 22` because pnpm install at node 22.
 
 Check website design in https://eftlibrary.com
 
+Make sure to account for both light mode and dark mode in the implementation.
+
+All UI work must account for both light mode and dark mode. Avoid theme-specific hardcoding unless explicitly required. Every visual state, including default, hover, focus, active, disabled, and empty states, must remain readable and visually polished in both themes.
+
 ---
 
 ## Package Manager Rules
