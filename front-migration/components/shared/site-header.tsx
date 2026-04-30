@@ -322,15 +322,7 @@ export function SiteHeader({
         <div className="hidden min-w-0 flex-1 items-center gap-5 lg:flex">
           <nav className="flex min-w-0 flex-1 items-center justify-center gap-7">
             {menuGroups.map((group) =>
-              group.id === "ITEM" ? (
-                <Link
-                  key={group.id}
-                  href="/item/weapon"
-                  className="flex h-14 items-center text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
-                >
-                  {pickLocalizedText(group, locale)}
-                </Link>
-              ) : (
+               (
                 <div
                   key={group.id}
                   className="relative"
@@ -487,17 +479,7 @@ export function SiteHeader({
             )}
 
             {menuGroups.map((group) =>
-              group.id === "ITEM" ? (
-                <Link
-                  key={group.id}
-                  href="/item/weapon"
-                  onClick={() => setIsMobileOpen(false)}
-                  className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-900 transition hover:text-orange-500 dark:border-gray-700 dark:bg-[#1f2329] dark:text-white dark:hover:text-orange-300"
-                >
-                  {getMenuIcon(group.id)}
-                  {pickLocalizedText(group, locale)}
-                </Link>
-              ) : (
+              (
                 <details key={group.id} className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f2329]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">
                     <span className="flex items-center gap-2">

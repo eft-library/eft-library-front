@@ -1,21 +1,22 @@
 import type { Locale } from "@/i18n/config";
 
 export const itemTypeSlugs = [
+  "weapon",
   "ammo",
-  "arm-band",
-  "armor-vest",
-  "backpack",
+  "headwear",
+  "medical",
   "container",
+  "rig",
+  "armor-vest",
+  "key",
+  "headset",
+  "backpack",
+  "provisions",
+  "loot",
   "face-cover",
   "glasses",
-  "headwear",
-  "headset",
-  "key",
-  "loot",
-  "medical",
-  "provisions",
-  "rig",
-  "weapon",
+  "arm-band",
+  
 ] as const;
 
 export type ItemTypeSlug = (typeof itemTypeSlugs)[number];

@@ -21,7 +21,7 @@ export function getQuestFeed() {
 
 export function getQuestListWithTrader(traderNormalizedName: string) {
   return apiGet<QuestListWithTraderResponse>(getQuestListWithTraderEndpoint(traderNormalizedName), {
-    revalidate: 60 * 10,
+    revalidate: 0,
   });
 }
 

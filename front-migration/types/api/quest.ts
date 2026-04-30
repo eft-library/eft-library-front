@@ -34,11 +34,6 @@ export interface QuestTraderEntry {
   image: string;
 }
 
-export interface QuestListWithTraderResponse {
-  quest_list: QuestListEntry[];
-  trader_list: QuestTraderEntry[];
-}
-
 export interface QuestRelatedEntry {
   id: string;
   normalized_name: string;
@@ -113,19 +108,44 @@ export interface QuestRewardCraftUnlock {
   reward_item: QuestDetailItem | null;
 }
 
+export interface QuestBase {
+  id: string;
+  normalized_name: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  experience: number | null;
+  delay_max: number | null;
+  delay_min: number | null;
+  kappa_required: boolean;
+  min_player_level: number | null;
+  wiki_url: string | null;
+}
+
+export interface QuestRewardGroup {
+  skill_level_reward: QuestRewardSkill[];
+  trader_standing: QuestRewardStanding[];
+  offer_unlock: QuestRewardOfferUnlock[];
+  items: QuestRewardItem[];
+  craft_unlock: QuestRewardCraftUnlock[];
+}
+
+export interface QuestListWithTraderEntry {
+  quest: QuestBase;
+  trader: QuestTraderEntry | null;
+  require_quests: QuestRelatedEntry[];
+  next_quests: QuestRelatedEntry[];
+  objectives: QuestObjective[];
+  finish_rewards: QuestRewardGroup;
+}
+
+export interface QuestListWithTraderResponse {
+  quest_list: QuestListWithTraderEntry[];
+  trader_list: QuestTraderEntry[];
+}
+
 export interface QuestDetailResponse {
-  quest: {
-    id: string;
-    normalized_name: string;
-    name_en: string;
-    name_ko: string;
-    name_ja: string;
-    experience: number | null;
-    delay_max: number | null;
-    delay_min: number | null;
-    kappa_required: boolean;
-    min_player_level: number | null;
-    wiki_url: string | null;
+  quest: QuestBase & {
     guide_en: string | null;
     guide_ko: string | null;
     guide_ja: string | null;
@@ -134,11 +154,5 @@ export interface QuestDetailResponse {
   require_quests: QuestRelatedEntry[];
   next_quests: QuestRelatedEntry[];
   objectives: QuestObjective[];
-  finish_rewards: {
-    skill_level_reward: QuestRewardSkill[];
-    trader_standing: QuestRewardStanding[];
-    offer_unlock: QuestRewardOfferUnlock[];
-    items: QuestRewardItem[];
-    craft_unlock: QuestRewardCraftUnlock[];
-  };
+  finish_rewards: QuestRewardGroup;
 }
