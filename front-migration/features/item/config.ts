@@ -162,11 +162,6 @@ const itemListUiCopy = {
     en: "Total items",
     ja: "総アイテム数",
   },
-  sizeLabel: {
-    ko: "크기",
-    en: "Size",
-    ja: "サイズ",
-  },
   noResultsLabel: {
     ko: "검색 결과가 없습니다.",
     en: "No matching items found.",
@@ -182,7 +177,6 @@ export function getItemSectionConfig(itemType: ItemTypeSlug, locale: Locale) {
     description: section.description[locale],
     searchPlaceholder: itemListUiCopy.searchPlaceholder[locale],
     totalLabel: itemListUiCopy.totalLabel[locale],
-    sizeLabel: itemListUiCopy.sizeLabel[locale],
     noResultsLabel: itemListUiCopy.noResultsLabel[locale],
   };
 }

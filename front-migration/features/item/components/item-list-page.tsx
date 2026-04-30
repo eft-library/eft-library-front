@@ -152,9 +152,12 @@ export function ItemListPage({
               const previewSize = getPreviewFrameSize(item.width, item.height);
 
               return (
-                <article
+                <Link
                   key={item.id}
-                  className="group flex h-full gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:border-orange-300 hover:shadow-md dark:border-[#2a3038] dark:bg-[#181c21] dark:hover:border-orange-500 sm:gap-5"
+                  href={`/item/info/${item.normalized_name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:border-orange-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 dark:border-[#2a3038] dark:bg-[#181c21] dark:hover:border-orange-500 dark:focus:ring-offset-[#111418] sm:gap-5"
                 >
                   <div
                     className={cn(
@@ -185,17 +188,9 @@ export function ItemListPage({
                       <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-orange-700 dark:bg-orange-500/15 dark:text-orange-300">
                         {itemType}
                       </span>
-                      <span
-                        className={cn(
-                          "rounded-full px-2.5 py-1 text-[11px] font-medium",
-                        "bg-gray-100 text-gray-600 dark:bg-[#20242b] dark:text-gray-200",
-                        )}
-                      >
-                        {labels.sizeLabel} {item.width}x{item.height}
-                      </span>
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </section>

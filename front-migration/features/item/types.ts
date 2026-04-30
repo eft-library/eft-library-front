@@ -16,7 +16,6 @@ export interface ItemListLabels {
   description: string;
   searchPlaceholder: string;
   totalLabel: string;
-  sizeLabel: string;
   noResultsLabel: string;
   locale: Locale;
 }
