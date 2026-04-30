@@ -2,6 +2,7 @@ import { ItemListPage } from "@/features/item/components/item-list-page";
 import { getItemList } from "@/features/item/api";
 import {
   getItemSectionConfig,
+  getItemTypeTabs,
   type ItemTypeSlug,
 } from "@/features/item/config";
 import { getUserLocale } from "@/i18n/locale";
@@ -12,10 +13,12 @@ export async function ItemListRoute({ itemType }: { itemType: ItemTypeSlug }) {
     getUserLocale(),
   ]);
   const copy = getItemSectionConfig(itemType, locale);
+  const itemTabs = getItemTypeTabs(locale);
 
   return (
     <ItemListPage
       itemType={itemType}
+      itemTabs={itemTabs}
       items={items}
       labels={{
         ...copy,

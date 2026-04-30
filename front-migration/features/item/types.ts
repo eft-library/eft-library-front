@@ -21,8 +21,15 @@ export interface ItemListLabels {
   locale: Locale;
 }
 
+export interface ItemTypeTab {
+  href: string;
+  label: string;
+  slug: string;
+}
+
 export interface ItemListPageProps {
   itemType: string;
+  itemTabs: ItemTypeTab[];
   items: ItemListEntry[];
   labels: ItemListLabels;
 }

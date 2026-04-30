@@ -185,3 +185,15 @@ export function getItemSectionConfig(itemType: ItemTypeSlug, locale: Locale) {
     noResultsLabel: itemListUiCopy.noResultsLabel[locale],
   };
 }
+
+export function isItemTypeSlug(value: string): value is ItemTypeSlug {
+  return itemTypeSlugs.includes(value as ItemTypeSlug);
+}
+
+export function getItemTypeTabs(locale: Locale) {
+  return itemTypeSlugs.map((slug) => ({
+    href: `/item/${slug}`,
+    label: itemSectionConfig[slug].title[locale],
+    slug,
+  }));
+}

@@ -1,5 +1,5 @@
-import { ItemListRoute } from "@/features/item/route";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <ItemListRoute itemType="rig" />;
+  redirect("/item/rig");
 }

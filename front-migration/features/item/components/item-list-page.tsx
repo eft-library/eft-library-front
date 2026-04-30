@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
@@ -39,7 +40,12 @@ function getPreviewFrameSize(width: number, height: number) {
   };
 }
 
-export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
+export function ItemListPage({
+  itemType,
+  itemTabs,
+  items,
+  labels,
+}: ItemListPageProps) {
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
 
@@ -68,7 +74,7 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
   }, [deferredQuery, items, labels.locale]);
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
+    <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
@@ -83,7 +89,40 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
                 {labels.description}
               </p>
             </div>
+          </div>
+        </section>
 
+        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+          <nav className="flex gap-2 overflow-x-auto pb-1" aria-label={labels.title}>
+            {itemTabs.map((tab) => {
+              const isActive = tab.slug === itemType;
+
+              return (
+                <Link
+                  key={tab.slug}
+                  href={tab.href}
+                  className={cn(
+                    "shrink-0 rounded-md border px-3 py-2 text-sm font-bold transition",
+                    isActive
+                      ? "border-orange-300 bg-orange-50 text-orange-600 dark:border-orange-400/40 dark:bg-orange-400/10 dark:text-orange-300"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300",
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </section>
+
+        <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-bold text-gray-900 dark:text-gray-100">
+                {filteredItems.length}
+              </span>{" "}
+              / {items.length}
+            </div>
             <div className="w-full max-w-md">
               <label className="relative block">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -91,37 +130,9 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder={labels.searchPlaceholder}
-                  className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-orange-400 dark:border-gray-700 dark:bg-[#2a2d35] dark:text-white"
+                  className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-orange-400 dark:border-[#2f3742] dark:bg-[#20242b] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-orange-500"
                 />
               </label>
-            </div>
-          </div>
-        </section>
-
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-            <div className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
-              {labels.totalLabel}
-            </div>
-            <div className="mt-2 text-2xl font-semibold">{items.length}</div>
-          </div>
-          <div className="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-            <div className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
-              {labels.searchPlaceholder}
-            </div>
-            <div className="mt-2 truncate text-sm text-gray-600 dark:text-gray-300">
-              {query.trim() || "-"}
-            </div>
-          </div>
-          <div className="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30 sm:col-span-2">
-            <div className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
-              {labels.totalLabel}
-            </div>
-            <div className="mt-2 text-2xl font-semibold">
-              {filteredItems.length}
-              <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
-                / {items.length}
-              </span>
             </div>
           </div>
         </section>
@@ -143,11 +154,11 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
               return (
                 <article
                   key={item.id}
-                  className="group flex h-full gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:border-orange-300 hover:shadow-md dark:border-gray-700/50 dark:bg-gray-800/30 dark:hover:border-orange-400/60 sm:gap-5"
+                  className="group flex h-full gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:border-orange-300 hover:shadow-md dark:border-[#2a3038] dark:bg-[#181c21] dark:hover:border-orange-500 sm:gap-5"
                 >
                   <div
                     className={cn(
-                      "relative flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]",
+                      "relative flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]",
                     )}
                     style={{
                       width: `${previewSize.width}px`,
@@ -177,7 +188,7 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
                       <span
                         className={cn(
                           "rounded-full px-2.5 py-1 text-[11px] font-medium",
-                          "bg-gray-100 text-gray-600 dark:bg-gray-700/60 dark:text-gray-200",
+                        "bg-gray-100 text-gray-600 dark:bg-[#20242b] dark:text-gray-200",
                         )}
                       >
                         {labels.sizeLabel} {item.width}x{item.height}
@@ -189,7 +200,7 @@ export function ItemListPage({ itemType, items, labels }: ItemListPageProps) {
             })}
           </section>
         ) : (
-          <section className="rounded-lg border border-dashed border-gray-300 bg-white px-6 py-12 text-center shadow-sm dark:border-gray-700 dark:bg-gray-800/30">
+          <section className="rounded-lg border border-dashed border-gray-300 bg-white px-6 py-12 text-center shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {labels.noResultsLabel}
             </p>

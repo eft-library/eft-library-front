@@ -321,38 +321,48 @@ export function SiteHeader({
 
         <div className="hidden min-w-0 flex-1 items-center gap-5 lg:flex">
           <nav className="flex min-w-0 flex-1 items-center justify-center gap-7">
-            {menuGroups.map((group) => (
-              <div
-                key={group.id}
-                className="relative"
-                onMouseEnter={() => setActiveMenu(group.id)}
-                onMouseLeave={() => setActiveMenu(null)}
-              >
-                <button
-                  type="button"
-                  className="flex h-14 items-center gap-1 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
+            {menuGroups.map((group) =>
+              group.id === "ITEM" ? (
+                <Link
+                  key={group.id}
+                  href="/item/weapon"
+                  className="flex h-14 items-center text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
                 >
                   {pickLocalizedText(group, locale)}
-                  <ChevronDown className="h-3.5 w-3.5 opacity-60" />
-                </button>
+                </Link>
+              ) : (
+                <div
+                  key={group.id}
+                  className="relative"
+                  onMouseEnter={() => setActiveMenu(group.id)}
+                  onMouseLeave={() => setActiveMenu(null)}
+                >
+                  <button
+                    type="button"
+                    className="flex h-14 items-center gap-1 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
+                  >
+                    {pickLocalizedText(group, locale)}
+                    <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                  </button>
 
-                {activeMenu === group.id ? (
-                  <div className="absolute left-1/2 top-full z-20 mt-0 w-52 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-[#3a4048] dark:bg-[#25282e]">
-                    <div className="grid gap-1">
-                      {group.sub_menus.map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.url}
-                          className="px-3 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-orange-300"
-                        >
-                          {pickLocalizedText(item, locale)}
-                        </Link>
-                      ))}
+                  {activeMenu === group.id ? (
+                    <div className="absolute left-1/2 top-full z-20 mt-0 w-52 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg dark:border-[#3a4048] dark:bg-[#25282e]">
+                      <div className="grid gap-1">
+                        {group.sub_menus.map((item) => (
+                          <Link
+                            key={item.id}
+                            href={item.url}
+                            className="px-3 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-orange-300"
+                          >
+                            {pickLocalizedText(item, locale)}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-              </div>
-            ))}
+                  ) : null}
+                </div>
+              ),
+            )}
           </nav>
 
           <div className="flex shrink-0 items-center gap-3">
@@ -476,29 +486,41 @@ export function SiteHeader({
               </button>
             )}
 
-            {menuGroups.map((group) => (
-              <details key={group.id} className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f2329]">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">
-                  <span className="flex items-center gap-2">
-                    {getMenuIcon(group.id)}
-                    {pickLocalizedText(group, locale)}
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </summary>
-                <div className="grid gap-1 px-3 pb-3">
-                  {group.sub_menus.map((item) => (
-                    <Link
-                      key={item.id}
-                      href={item.url}
-                      onClick={() => setIsMobileOpen(false)}
-                      className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-white hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
-                    >
-                      {pickLocalizedText(item, locale)}
-                    </Link>
-                  ))}
-                </div>
-              </details>
-            ))}
+            {menuGroups.map((group) =>
+              group.id === "ITEM" ? (
+                <Link
+                  key={group.id}
+                  href="/item/weapon"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-900 transition hover:text-orange-500 dark:border-gray-700 dark:bg-[#1f2329] dark:text-white dark:hover:text-orange-300"
+                >
+                  {getMenuIcon(group.id)}
+                  {pickLocalizedText(group, locale)}
+                </Link>
+              ) : (
+                <details key={group.id} className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f2329]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">
+                    <span className="flex items-center gap-2">
+                      {getMenuIcon(group.id)}
+                      {pickLocalizedText(group, locale)}
+                    </span>
+                    <ChevronDown className="h-4 w-4" />
+                  </summary>
+                  <div className="grid gap-1 px-3 pb-3">
+                    {group.sub_menus.map((item) => (
+                      <Link
+                        key={item.id}
+                        href={item.url}
+                        onClick={() => setIsMobileOpen(false)}
+                        className="rounded-md px-3 py-2 text-sm text-gray-700 transition hover:bg-white hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
+                      >
+                        {pickLocalizedText(item, locale)}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+              ),
+            )}
           </div>
         </div>
       ) : null}
