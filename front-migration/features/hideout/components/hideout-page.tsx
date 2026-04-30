@@ -51,7 +51,13 @@ function RequirementItemCard({
       className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3 py-3 shadow-sm transition hover:border-orange-300 dark:border-gray-700 dark:bg-[#1f222a]"
     >
       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]">
-        <Image src={item.image} alt={getLocalizedName(item, locale)} fill className="object-contain p-1.5" />
+        <Image
+          src={item.image}
+          alt={getLocalizedName(item, locale)}
+          fill
+          sizes="64px"
+          className="object-contain p-1.5"
+        />
       </div>
       <div className="min-w-0">
         <p className="line-clamp-2 text-sm font-semibold">{getLocalizedName(item, locale)}</p>
@@ -91,7 +97,13 @@ function CraftCard({ craft, locale }: { craft: HideoutCraft; locale: Locale }) {
     <article className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#1f222a]">
       <div className="flex items-center gap-3">
         <div className="relative h-16 w-16 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]">
-          <Image src={craft.image} alt={getLocalizedName(craft, locale)} fill className="object-contain p-1.5" />
+          <Image
+            src={craft.image}
+            alt={getLocalizedName(craft, locale)}
+            fill
+            sizes="64px"
+            className="object-contain p-1.5"
+          />
         </div>
         <div>
           <h4 className="font-semibold">{getLocalizedName(craft, locale)}</h4>

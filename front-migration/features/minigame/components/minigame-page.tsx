@@ -29,7 +29,13 @@ function ItemCard({
   return (
     <article className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-[#252830]">
       <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f222a]">
-        <Image src={item.image} alt={getLocalizedName(item, locale)} fill className="object-contain p-2" />
+        <Image
+          src={item.image}
+          alt={getLocalizedName(item, locale)}
+          fill
+          sizes="96px"
+          className="object-contain p-2"
+        />
       </div>
       <h3 className="mt-4 line-clamp-2 text-sm font-semibold">{getLocalizedName(item, locale)}</h3>
       <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{item.category}</p>
@@ -68,6 +74,7 @@ function ProgressColumn({
                 src={entry.item.image}
                 alt={getLocalizedName(entry.item, locale)}
                 fill
+                sizes="56px"
                 className="object-contain p-1.5"
               />
             </div>

@@ -259,7 +259,13 @@ function TierSection({ tier, locale }: { tier: PriceTopTier; locale: Locale }) {
               className="flex gap-4 rounded-lg border border-gray-200 p-4 dark:border-gray-700"
             >
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]">
-                <Image src={item.image} alt={localizedName} fill className="object-contain p-2" />
+                <Image
+                  src={item.image}
+                  alt={localizedName}
+                  fill
+                  sizes="80px"
+                  className="object-contain p-2"
+                />
               </div>
               <div className="min-w-0 flex-1">
                 <h3 className="line-clamp-2 text-sm font-semibold">{localizedName}</h3>

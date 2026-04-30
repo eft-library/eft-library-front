@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getHomeMenu } from "@/features/home/api";
 import { defaultLocale } from "@/i18n/config";
@@ -41,9 +42,11 @@ export default async function RootLayout({
       <body className="min-h-full bg-background text-foreground">
         <ThemeProvider>
           <AuthProvider>
-            <Suspense fallback={<LayoutFallback />}>
-              <ResolvedLayout>{children}</ResolvedLayout>
-            </Suspense>
+            <QueryProvider>
+              <Suspense fallback={<LayoutFallback />}>
+                <ResolvedLayout>{children}</ResolvedLayout>
+              </Suspense>
+            </QueryProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

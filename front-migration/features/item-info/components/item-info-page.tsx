@@ -30,7 +30,13 @@ export function ItemInfoPage({
         <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-[#252830]">
           <div className="flex flex-col gap-6 md:flex-row md:items-start">
             <div className="relative h-44 w-44 overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f222a]">
-              <Image src={item.image} alt={itemName} fill className="object-contain p-4" />
+              <Image
+                src={item.image}
+                alt={itemName}
+                fill
+                sizes="176px"
+                className="object-contain p-4"
+              />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">

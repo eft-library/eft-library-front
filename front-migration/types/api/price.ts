@@ -1,9 +1,18 @@
 export interface PriceTraderInfo {
-  npc_id: string;
-  npc_image: string;
-  npc_name_en: string;
-  npc_name_ko: string;
-  npc_name_ja: string;
+  id: string;
+  normalized_name: string;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  image: string;
+}
+
+export interface PriceTraderRow {
+  id: string;
+  game_mode: string;
+  trader_id: string;
+  price: number | null;
+  trader: PriceTraderInfo;
 }
 
 export interface PriceSummaryRow {
@@ -40,6 +49,10 @@ export interface PriceSearchItem {
   history_by_type: {
     pvp: PriceHistoryRow[];
     pve: PriceHistoryRow[];
+  };
+  trader_prices: {
+    pvp: PriceTraderRow[];
+    pve: PriceTraderRow[];
   };
 }
 

@@ -1,7 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Search, Store } from "lucide-react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import { getPriceSearchEndpoint } from "@/lib/config/api-endpoints";
@@ -12,7 +23,13 @@ import type {
   PriceSearchItem,
   PriceSearchResponse,
   PriceSummaryRow,
+  PriceTraderRow,
 } from "@/types/api/price";
+
+interface PriceSearchApiPayload {
+  msg: string;
+  data: PriceSearchResponse | null;
+}
 
 const copyByLocale = {
   ko: {
@@ -22,18 +39,14 @@ const copyByLocale = {
     searchButton: "검색",
     totalLabel: "검색 결과",
     selectedLabel: "선택된 아이템",
-    historyLabel: "최근 기록",
     trendLabel: "가격 흐름",
-    marketSnapshotLabel: "시세 요약",
-    modeGapLabel: "플리-상인 차이",
-    hasFleaLabel: "플리 등록",
-    categoryLabel: "분류",
     sizeLabel: "크기",
     noResults: "검색 결과가 없습니다.",
     backendIssue: "시세 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
     fleaLabel: "플리 마켓",
     traderLabel: "최고 상인 판매가",
-    traderCountLabel: "상인 수",
+    traderPricesLabel: "상인 시세",
+    noTraderPrices: "상인별 시세 데이터가 없습니다.",
     updatedLabel: "업데이트",
     previousLabel: "이전",
     nextLabel: "다음",
@@ -47,18 +60,14 @@ const copyByLocale = {
     searchButton: "Search",
     totalLabel: "Results",
     selectedLabel: "Selected item",
-    historyLabel: "Recent history",
     trendLabel: "Trend",
-    marketSnapshotLabel: "Market snapshot",
-    modeGapLabel: "Flea vs trader",
-    hasFleaLabel: "Flea listing",
-    categoryLabel: "Category",
     sizeLabel: "Size",
     noResults: "No search results found.",
     backendIssue: "Failed to load the price data. Please try again shortly.",
     fleaLabel: "Flea market",
     traderLabel: "Best trader price",
-    traderCountLabel: "Trader count",
+    traderPricesLabel: "Trader prices",
+    noTraderPrices: "No trader price data.",
     updatedLabel: "Updated",
     previousLabel: "Previous",
     nextLabel: "Next",
@@ -72,18 +81,14 @@ const copyByLocale = {
     searchButton: "検索",
     totalLabel: "検索結果",
     selectedLabel: "選択中のアイテム",
-    historyLabel: "最近の履歴",
     trendLabel: "価格推移",
-    marketSnapshotLabel: "相場概要",
-    modeGapLabel: "フリマとトレーダー差額",
-    hasFleaLabel: "フリマ出品",
-    categoryLabel: "分類",
     sizeLabel: "サイズ",
     noResults: "検索結果がありません。",
     backendIssue: "価格データの読み込みに失敗しました。しばらくしてからもう一度お試しください。",
     fleaLabel: "フリーマーケット",
     traderLabel: "最高トレーダー価格",
-    traderCountLabel: "トレーダー数",
+    traderPricesLabel: "トレーダー価格",
+    noTraderPrices: "トレーダー別価格データがありません。",
     updatedLabel: "更新日時",
     previousLabel: "前へ",
     nextLabel: "次へ",
@@ -97,17 +102,43 @@ function formatPrice(value: number | null, locale: Locale) {
     return "-";
   }
 
-  return new Intl.NumberFormat(locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US").format(
+  const formattedValue = new Intl.NumberFormat(locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US").format(
     value,
   );
+
+  return `${formattedValue} ₽`;
 }
 
-function getPriceDelta(summary: PriceSummaryRow | null) {
-  if (!summary || summary.flea_market_price === null || summary.highest_trader_price === null) {
-    return null;
+function hasFleaPrice(
+  summary: PriceSummaryRow | null,
+): summary is PriceSummaryRow & { flea_market_price: number } {
+  return summary?.flea_market_price !== null &&
+    summary?.flea_market_price !== undefined;
+}
+
+async function fetchPriceSearch({
+  page,
+  searchWord,
+}: {
+  page: number;
+  searchWord: string;
+}) {
+  const response = await fetch(
+    `${getApiBaseUrl()}${getPriceSearchEndpoint(page, 20, searchWord)}`,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    throw new Error(String(response.status));
   }
 
-  return summary.flea_market_price - summary.highest_trader_price;
+  const payload = (await response.json()) as PriceSearchApiPayload;
+
+  if (payload.msg !== "OK" || payload.data === null) {
+    throw new Error("invalid-payload");
+  }
+
+  return payload.data;
 }
 
 export function PricePage({ locale }: { locale: Locale }) {
@@ -116,67 +147,40 @@ export function PricePage({ locale }: { locale: Locale }) {
   const [searchWord, setSearchWord] = useState("");
   const [priceType, setPriceType] = useState<"pvp" | "pve">("pvp");
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<PriceSearchResponse | null>(null);
   const [selectedItem, setSelectedItem] = useState<PriceSearchItem | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const {
+    data,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["price-search", page, searchWord],
+    queryFn: () => fetchPriceSearch({ page, searchWord }),
+    placeholderData: keepPreviousData,
+  });
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function load() {
-      try {
-        setIsLoading(true);
-        setErrorMessage(null);
-        const response = await fetch(
-          `${getApiBaseUrl()}${getPriceSearchEndpoint(page, 20, searchWord)}`,
-          { cache: "no-store" },
-        );
-
-        if (!response.ok) {
-          throw new Error(String(response.status));
-        }
-
-        const payload = await response.json();
-        if (payload.msg !== "OK" || payload.data === null) {
-          throw new Error("invalid-payload");
-        }
-
-        if (!isMounted) {
-          return;
-        }
-
-        setData(payload.data as PriceSearchResponse);
-        setSelectedItem((current) =>
-          current && payload.data.data.some((item: PriceSearchItem) => item.id === current.id)
-            ? current
-            : (payload.data.data[0] ?? null),
-        );
-      } catch {
-        if (!isMounted) {
-          return;
-        }
-
-        setData(null);
-        setSelectedItem(null);
-        setErrorMessage(copy.backendIssue);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
+    if (!data) {
+      setSelectedItem(null);
+      return;
     }
 
-    load();
+    const nextSelectedItem =
+      data.data.find((item) => hasFleaPrice(item.prices[priceType])) ??
+      data.data.find((item) => item.history_by_type[priceType].length > 0) ??
+      data.data[0] ??
+      null;
 
-    return () => {
-      isMounted = false;
-    };
-  }, [copy.backendIssue, page, searchWord]);
+    setSelectedItem((current) =>
+      current && data.data.some((item) => item.id === current.id)
+        ? current
+        : nextSelectedItem,
+    );
+  }, [data, priceType]);
 
   const selectedPrice = selectedItem?.prices[priceType] ?? null;
   const selectedHistory = selectedItem?.history_by_type[priceType] ?? [];
-  const fleaTraderDelta = getPriceDelta(selectedPrice);
+  const selectedTraderPrices = selectedItem?.trader_prices[priceType] ?? [];
 
   const localizedSelectedName = useMemo(() => {
     if (!selectedItem) {
@@ -193,84 +197,83 @@ export function PricePage({ locale }: { locale: Locale }) {
   }, [locale, selectedItem]);
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
-        <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
-                {copy.title}
-              </p>
-              <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{copy.title}</h1>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-300">
-                {copy.description}
-              </p>
+    <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
+      <div className="mx-auto flex min-w-0 w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+        <section className="flex flex-col items-center gap-6 pt-4 text-center">
+          <div>
+            <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
+              {copy.description}
+            </p>
+          </div>
+          <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <div className="inline-flex self-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+              <button
+                type="button"
+                onClick={() => setPriceType("pvp")}
+                className={`px-5 py-2.5 text-sm font-bold transition ${
+                  priceType === "pvp"
+                    ? "bg-orange-500 text-white"
+                    : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
+                }`}
+              >
+                {copy.pvp}
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceType("pve")}
+                className={`px-5 py-2.5 text-sm font-bold transition ${
+                  priceType === "pve"
+                    ? "bg-orange-500 text-white"
+                    : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
+                }`}
+              >
+                {copy.pve}
+              </button>
             </div>
             <form
-              className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"
+              className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row"
               onSubmit={(event) => {
                 event.preventDefault();
                 setPage(1);
                 setSearchWord(query.trim());
               }}
             >
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={copy.searchPlaceholder}
-                className="h-11 flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm outline-none transition focus:border-orange-400 dark:border-gray-700 dark:bg-[#2a2d35] dark:text-white"
-              />
+              <label className="relative min-w-0 flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={copy.searchPlaceholder}
+                  className="h-11 w-full rounded-lg border border-gray-300 bg-white pl-10 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-300 dark:border-[#2f3742] dark:bg-[#181c21] dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-orange-500"
+                />
+              </label>
               <button
                 type="submit"
-                className="h-11 rounded-lg bg-orange-500 px-4 text-sm font-semibold text-white transition hover:bg-orange-400"
+                className="h-11 rounded-lg bg-orange-500 px-5 text-sm font-bold text-white transition hover:bg-orange-400"
               >
                 {copy.searchButton}
               </button>
             </form>
           </div>
-
-          <div className="mt-6 inline-flex overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-            <button
-              type="button"
-              onClick={() => setPriceType("pvp")}
-              className={`px-4 py-2 text-sm font-medium ${
-                priceType === "pvp"
-                  ? "bg-orange-500 text-white"
-                  : "bg-white text-gray-700 dark:bg-[#2a2d35] dark:text-gray-200"
-              }`}
-            >
-              {copy.pvp}
-            </button>
-            <button
-              type="button"
-              onClick={() => setPriceType("pve")}
-              className={`px-4 py-2 text-sm font-medium ${
-                priceType === "pve"
-                  ? "bg-orange-500 text-white"
-                  : "bg-white text-gray-700 dark:bg-[#2a2d35] dark:text-gray-200"
-              }`}
-            >
-              {copy.pve}
-            </button>
-          </div>
         </section>
 
-        {errorMessage ? (
+        {isError ? (
           <section className="rounded-lg border border-amber-300 bg-amber-50 px-6 py-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100">
-            {errorMessage}
+            {copy.backendIssue}
           </section>
         ) : null}
 
-        <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-            <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-4 dark:border-gray-700">
-              <h2 className="text-lg font-semibold">{copy.totalLabel}</h2>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+        <section className="grid min-w-0 gap-6 lg:grid-cols-[0.92fr_1.08fr]">
+          <div className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21] lg:max-h-[calc(100vh-7rem)]">
+            <div className="shrink-0 flex items-center justify-between gap-3 border-b border-gray-100 pb-4 dark:border-[#2a3038]">
+              <h2 className="text-lg font-black">{copy.totalLabel}</h2>
+              <span className="shrink-0 text-sm text-gray-500 dark:text-gray-400">
                 {data?.total_count ?? 0}
               </span>
             </div>
 
-            <div className="mt-4 grid gap-3">
+            <div className="mt-4 grid min-h-0 auto-rows-max gap-3 pr-1 lg:overflow-y-auto">
               {data?.data.length ? (
                 data.data.map((item) => {
                   const localizedName = String(
@@ -287,17 +290,25 @@ export function PricePage({ locale }: { locale: Locale }) {
                       type="button"
                       key={item.id}
                       onClick={() => setSelectedItem(item)}
-                      className={`flex items-center gap-4 rounded-lg border p-3 text-left transition ${
+                      className={`flex min-w-0 w-full shrink-0 items-center gap-4 overflow-hidden rounded-lg border p-3 text-left transition ${
                         selectedItem?.id === item.id
-                          ? "border-orange-400 bg-orange-50 dark:bg-orange-500/10"
-                          : "border-gray-200 hover:border-orange-300 dark:border-gray-700 dark:hover:border-orange-400"
+                          ? "border-orange-300 bg-orange-50 text-orange-600 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300"
+                          : "border-gray-200 bg-white text-gray-800 hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
                       }`}
                     >
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]">
-                        <Image src={item.image} alt={localizedName} fill className="object-contain p-1.5" />
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]">
+                        <Image
+                          src={item.image}
+                          alt={localizedName}
+                          fill
+                          sizes="64px"
+                          className="object-contain p-1.5"
+                        />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="line-clamp-2 text-sm font-semibold">{localizedName}</h3>
+                        <h3 className="line-clamp-2 break-words text-sm font-semibold">
+                          {localizedName}
+                        </h3>
                         <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px]">
                           <span className="truncate text-gray-500 dark:text-gray-400">
                             {item.normalized_name}
@@ -307,16 +318,25 @@ export function PricePage({ locale }: { locale: Locale }) {
                           </span>
                         </div>
                         <div className="mt-3 flex items-center justify-between gap-3">
-                          <p className="text-xs text-orange-500">
-                            {copy.fleaLabel}: {formatPrice(summary?.flea_market_price ?? null, locale)}
-                          </p>
-                          <MiniTrend history={item.history_by_type[priceType]} />
+                          {hasFleaPrice(summary) ? (
+                            <p className="flex min-w-0 items-center gap-1.5 truncate text-xs text-orange-500">
+                              <Store className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                              <span className="min-w-0 truncate">
+                                {copy.fleaLabel}: {formatPrice(summary.flea_market_price, locale)}
+                              </span>
+                            </p>
+                          ) : (
+                            <span />
+                          )}
+                          {item.history_by_type[priceType].length ? (
+                            <MiniTrend history={item.history_by_type[priceType]} />
+                          ) : null}
                         </div>
                       </div>
                     </button>
                   );
                 })
-              ) : !isLoading && !errorMessage ? (
+              ) : !isLoading && !isError ? (
                 <p className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
                   {copy.noResults}
                 </p>
@@ -324,12 +344,12 @@ export function PricePage({ locale }: { locale: Locale }) {
             </div>
 
             {data && data.max_pages > 1 ? (
-              <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-700">
+              <div className="mt-6 shrink-0 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-[#2a3038]">
                 <button
                   type="button"
                   onClick={() => setPage((current) => Math.max(1, current - 1))}
                   disabled={data.current_page <= 1}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700"
+                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition hover:border-orange-300 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] dark:hover:border-orange-500 dark:hover:text-orange-300"
                 >
                   {copy.previousLabel}
                 </button>
@@ -342,7 +362,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                     setPage((current) => Math.min(data.max_pages, current + 1))
                   }
                   disabled={data.current_page >= data.max_pages}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700"
+                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition hover:border-orange-300 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] dark:hover:border-orange-500 dark:hover:text-orange-300"
                 >
                   {copy.nextLabel}
                 </button>
@@ -350,14 +370,20 @@ export function PricePage({ locale }: { locale: Locale }) {
             ) : null}
           </div>
 
-          <div className="space-y-6">
-            <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-              <h2 className="text-lg font-semibold">{copy.selectedLabel}</h2>
+          <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
+            <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+              <h2 className="text-lg font-black">{copy.selectedLabel}</h2>
               {selectedItem && localizedSelectedName ? (
                 <div className="mt-5 space-y-5">
                   <div className="flex flex-col gap-5 sm:flex-row">
-                    <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#252830]">
-                      <Image src={selectedItem.image} alt={localizedSelectedName} fill className="object-contain p-3" />
+                    <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]">
+                      <Image
+                        src={selectedItem.image}
+                        alt={localizedSelectedName}
+                        fill
+                        sizes="128px"
+                        className="object-contain p-3"
+                      />
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-xl font-semibold">{localizedSelectedName}</h3>
@@ -371,89 +397,70 @@ export function PricePage({ locale }: { locale: Locale }) {
                         <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600 dark:bg-gray-700/60 dark:text-gray-200">
                           {copy.sizeLabel} {selectedItem.width}x{selectedItem.height}
                         </span>
-                        <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
-                          selectedPrice?.has_flea
-                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
-                            : "bg-gray-100 text-gray-600 dark:bg-gray-700/60 dark:text-gray-200"
-                        }`}>
-                          {copy.hasFleaLabel} {selectedPrice?.has_flea ? "Yes" : "No"}
-                        </span>
+                        {selectedPrice?.has_flea ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                            <Store className="h-3 w-3" aria-hidden="true" />
+                            {copy.fleaLabel}
+                          </span>
+                        ) : null}
                       </div>
-                      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 xl:grid-cols-[1fr_1.1fr]">
+                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                      {hasFleaPrice(selectedPrice) ? (
                         <PriceMetric
                           label={copy.fleaLabel}
-                          value={formatPrice(selectedPrice?.flea_market_price ?? null, locale)}
+                          value={formatPrice(selectedPrice.flea_market_price, locale)}
+                          icon={<Store className="h-4 w-4" aria-hidden="true" />}
                         />
-                        <PriceMetric
-                          label={copy.traderLabel}
-                          value={formatPrice(selectedPrice?.highest_trader_price ?? null, locale)}
-                        />
-                        <PriceMetric
-                          label={copy.traderCountLabel}
-                          value={String(selectedPrice?.trader_count ?? 0)}
-                        />
-                        <PriceMetric
-                          label={copy.updatedLabel}
-                          value={
-                            selectedPrice
-                              ? formatIsoDateTime(selectedPrice.update_time, locale)
-                              : "-"
-                          }
+                      ) : null}
+                      <PriceMetric
+                        label={copy.traderLabel}
+                        value={formatPrice(selectedPrice?.highest_trader_price ?? null, locale)}
+                      />
+                      <PriceMetric
+                        label={copy.updatedLabel}
+                        value={
+                          selectedPrice
+                            ? formatIsoDateTime(selectedPrice.update_time, locale)
+                            : "-"
+                        }
+                      />
+                    </div>
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-[#2a3038] dark:bg-[#20242b]">
+                      <h3 className="text-sm font-semibold">{copy.traderPricesLabel}</h3>
+                      <div className="mt-4">
+                        <TraderPriceList
+                          traders={selectedTraderPrices}
+                          highestTraderPrice={selectedPrice?.highest_trader_price ?? null}
+                          locale={locale}
+                          emptyLabel={copy.noTraderPrices}
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-[#252830]">
+                  {selectedHistory.length ? (
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-[#2a3038] dark:bg-[#20242b]">
                       <div className="flex items-center justify-between gap-3">
                         <h3 className="text-sm font-semibold">{copy.trendLabel}</h3>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           {selectedHistory.length} pts
                         </span>
                       </div>
-                      <div className="mt-4">
-                        <HistoryBars history={selectedHistory} locale={locale} />
+                      <div className="mt-4 min-h-64 min-w-0">
+                        <PriceLineChart history={selectedHistory} locale={locale} />
                       </div>
                     </div>
-
-                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-[#252830]">
-                      <h3 className="text-sm font-semibold">{copy.marketSnapshotLabel}</h3>
-                      <div className="mt-4 grid gap-3">
-                        <PriceMetric
-                          label={copy.modeGapLabel}
-                          value={formatPrice(fleaTraderDelta, locale)}
-                        />
-                        <PriceMetric
-                          label={copy.categoryLabel}
-                          value={selectedItem.category ?? "-"}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  ) : null}
                 </div>
               ) : (
                 <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">{copy.noResults}</p>
               )}
             </section>
 
-            <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-              <h2 className="text-lg font-semibold">{copy.historyLabel}</h2>
-              {selectedHistory.length ? (
-                <div className="mt-5 grid gap-3">
-                  {selectedHistory.slice(-12).reverse().map((row, index) => (
-                    <HistoryRow
-                      key={`${row.price_time}-${index}`}
-                      row={row}
-                      locale={locale}
-                      price={selectedPrice}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">{copy.noResults}</p>
-              )}
-            </section>
           </div>
         </section>
       </div>
@@ -461,10 +468,21 @@ export function PricePage({ locale }: { locale: Locale }) {
   );
 }
 
-function PriceMetric({ label, value }: { label: string; value: string }) {
+function PriceMetric({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string;
+  icon?: ReactNode;
+}) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-[#252830]">
-      <div className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">{label}</div>
+    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-[#2a3038] dark:bg-[#20242b]">
+      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
+        {icon ? <span className="text-orange-500 dark:text-orange-300">{icon}</span> : null}
+        <span>{label}</span>
+      </div>
       <div className="mt-2 text-sm font-semibold">{value}</div>
     </div>
   );
@@ -476,7 +494,7 @@ function MiniTrend({
   history: Array<{ price: number }>;
 }) {
   if (!history.length) {
-    return <div className="h-6 w-16 rounded bg-gray-100 dark:bg-gray-700/60" />;
+    return <div className="h-6 w-16 rounded bg-gray-100 dark:bg-[#20242b]" />;
   }
 
   const points = history.slice(-8);
@@ -492,7 +510,7 @@ function MiniTrend({
         return (
           <span
             key={`${point.price}-${index}`}
-            className="w-1.5 rounded-sm bg-orange-400/80"
+            className="w-1.5 rounded-sm bg-orange-400/80 dark:bg-orange-300/80"
             style={{ height: `${height}px` }}
           />
         );
@@ -501,7 +519,7 @@ function MiniTrend({
   );
 }
 
-function HistoryBars({
+function PriceLineChart({
   history,
   locale,
 }: {
@@ -512,31 +530,123 @@ function HistoryBars({
     return <div className="text-sm text-gray-500 dark:text-gray-400">-</div>;
   }
 
-  const points = history.slice(-10);
-  const max = Math.max(...points.map((point) => point.price));
-  const min = Math.min(...points.map((point) => point.price));
-  const range = max - min || 1;
+  const points = history.map((point) => ({
+    ...point,
+    timeLabel: new Date(point.price_time).toLocaleDateString(
+      locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US",
+      { month: "numeric", day: "numeric" },
+    ),
+    formattedTime: formatIsoDateTime(point.price_time, locale),
+  }));
 
   return (
-    <div className="flex items-end gap-2">
-      {points.map((point, index) => {
-        const height = Math.max(12, Math.round(((point.price - min) / range) * 128));
+    <ResponsiveContainer width="100%" height={256} minWidth={0}>
+      <LineChart data={points} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.22)" />
+        <XAxis
+          dataKey="timeLabel"
+          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tickLine={false}
+          axisLine={false}
+          interval="preserveStartEnd"
+        />
+        <YAxis
+          width={58}
+          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tickFormatter={(value) => formatPrice(Number(value), locale)}
+          tickLine={false}
+          axisLine={false}
+        />
+        <Tooltip
+          cursor={{ stroke: "#fb923c", strokeWidth: 1 }}
+          content={({ active, payload }) => {
+            const first = payload?.[0];
+            const row = first?.payload as
+              | { formattedTime?: string; price?: number }
+              | undefined;
+
+            if (!active || !row) {
+              return null;
+            }
+
+            return (
+              <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg dark:border-[#2a3038] dark:bg-[#181c21]">
+                <div className="font-semibold text-gray-900 dark:text-gray-100">
+                  {row.formattedTime ?? "-"}
+                </div>
+                <div className="mt-1 text-orange-500 dark:text-orange-300">
+                  {formatPrice(row.price ?? null, locale)}
+                </div>
+              </div>
+            );
+          }}
+        />
+        <Line
+          type="monotone"
+          dataKey="price"
+          connectNulls
+          stroke="#f97316"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#f97316", strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: "#fb923c", strokeWidth: 0 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+function TraderPriceList({
+  traders,
+  highestTraderPrice,
+  locale,
+  emptyLabel,
+}: {
+  traders: PriceTraderRow[];
+  highestTraderPrice: number | null;
+  locale: Locale;
+  emptyLabel: string;
+}) {
+  if (!traders.length) {
+    return (
+      <div className="rounded-lg border border-dashed border-gray-200 bg-white px-4 py-3 text-sm text-gray-500 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-400">
+        {emptyLabel}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-2">
+      {traders.map((trader) => {
+        const traderName = getLocalizedTraderName(trader, locale);
+        const isHighest =
+          trader.price !== null &&
+          highestTraderPrice !== null &&
+          trader.price === highestTraderPrice;
 
         return (
-          <div key={`${point.price_time}-${index}`} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-            <div className="flex h-36 w-full items-end">
-              <div
-                className="w-full rounded-t-md bg-gradient-to-t from-orange-600 to-orange-300"
-                style={{ height: `${height}px` }}
-                title={`${formatIsoDateTime(point.price_time, locale)} · ${formatPrice(point.price, locale)}`}
+          <div
+            key={trader.id}
+            className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${
+              isHighest
+                ? "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300"
+                : "border-gray-200 bg-white text-gray-700 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300"
+            }`}
+          >
+            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md bg-gray-100 dark:bg-[#20242b]">
+              <Image
+                src={trader.trader.image}
+                alt={traderName}
+                fill
+                sizes="36px"
+                className="object-cover"
               />
-            </div>
-            <div className="w-full truncate text-center text-[10px] text-gray-500 dark:text-gray-400">
-              {new Date(point.price_time).toLocaleDateString(
-                locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US",
-                { month: "numeric", day: "numeric" },
-              )}
-            </div>
+            </span>
+            <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+              {traderName}
+            </span>
+            <span className="shrink-0 text-sm font-black">
+              {formatPrice(trader.price, locale)}
+            </span>
           </div>
         );
       })}
@@ -544,32 +654,14 @@ function HistoryBars({
   );
 }
 
-function HistoryRow({
-  row,
-  locale,
-  price,
-}: {
-  row: { price: number; price_time: string };
-  locale: Locale;
-  price: PriceSummaryRow | null;
-}) {
-  const difference =
-    price?.flea_market_price !== null && price?.flea_market_price !== undefined
-      ? row.price - price.flea_market_price
-      : null;
-
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 px-4 py-3 dark:border-gray-700">
-      <div className="text-sm">{formatIsoDateTime(row.price_time, locale)}</div>
-      <div className="text-right">
-        <div className="text-sm font-semibold">{formatPrice(row.price, locale)}</div>
-        {difference !== null ? (
-          <div className={`text-xs ${difference >= 0 ? "text-emerald-500" : "text-red-500"}`}>
-            {difference >= 0 ? "+" : ""}
-            {formatPrice(difference, locale)}
-          </div>
-        ) : null}
-      </div>
-    </div>
-  );
+function getLocalizedTraderName(trader: PriceTraderRow, locale: Locale) {
+  switch (locale) {
+    case "en":
+      return trader.trader.name_en;
+    case "ja":
+      return trader.trader.name_ja;
+    case "ko":
+    default:
+      return trader.trader.name_ko;
+  }
 }
