@@ -8,6 +8,8 @@ export const apiEndpoints = {
   storyRoadmap: "/api/story/v3/roadmap",
   rngItemList: "/api/minigame/v3/rng-item",
   rngItemAllRank: "/api/minigame/v3/rng-item/all-rank",
+  rngItemMyRank: "/api/minigame/v3/rng-item/my-rank",
+  rngItemSaveScore: "/api/minigame/v3/rng-item/save",
   progressItem: "/api/progress/v3/progress-item",
   userAdd: "/api/user/v3/add",
   userInfo: "/api/user/v3/user-info",
