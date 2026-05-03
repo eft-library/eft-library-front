@@ -344,6 +344,8 @@ export function QuestListPage({
                 <Link
                   key={quest.id}
                   href={`/quest/detail/${quest.normalized_name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group grid gap-3 border-b border-gray-100 px-5 py-4 transition last:border-b-0 hover:bg-orange-50/40 dark:border-[#2a3038] dark:hover:bg-[#20242b] md:grid-cols-[minmax(180px,0.7fr)_minmax(300px,1.45fr)_minmax(300px,1.45fr)_80px] md:items-center md:gap-5"
                 >
                   <div className="min-w-0">

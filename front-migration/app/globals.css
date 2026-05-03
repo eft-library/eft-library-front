@@ -1,6 +1,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
 
 :root {
   --background: #f9fafb;

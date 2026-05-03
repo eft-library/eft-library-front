@@ -590,6 +590,8 @@ function ItemCard({
   return (
     <Link
       href={`/item/info/${item.normalized_name}`}
+      target="_blank"
+      rel="noopener noreferrer"
       className="flex min-w-0 w-full items-center gap-3 overflow-hidden rounded-lg border border-gray-200 bg-white p-3 text-sm transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
     >
       {item.image ? (

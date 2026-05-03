@@ -85,36 +85,36 @@ export const storyNodeTypeMeta: Record<
   { accentClass: string; badgeClass: string }
 > = {
   base: {
-    accentClass: "border-sky-500/40 bg-sky-500/10",
-    badgeClass: "bg-sky-500/15 text-sky-200",
+    accentClass: "border-sky-200 bg-sky-50 dark:border-sky-500/40 dark:bg-sky-500/10",
+    badgeClass: "border-sky-200 bg-sky-100 text-sky-700 dark:border-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200",
   },
   branch: {
-    accentClass: "border-indigo-500/40 bg-indigo-500/10",
-    badgeClass: "bg-indigo-500/15 text-indigo-200",
+    accentClass: "border-indigo-200 bg-indigo-50 dark:border-indigo-500/40 dark:bg-indigo-500/10",
+    badgeClass: "border-indigo-200 bg-indigo-100 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200",
   },
   craft: {
-    accentClass: "border-emerald-500/40 bg-emerald-500/10",
-    badgeClass: "bg-emerald-500/15 text-emerald-200",
+    accentClass: "border-emerald-200 bg-emerald-50 dark:border-emerald-500/40 dark:bg-emerald-500/10",
+    badgeClass: "border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200",
   },
   payment: {
-    accentClass: "border-amber-500/40 bg-amber-500/10",
-    badgeClass: "bg-amber-500/15 text-amber-200",
+    accentClass: "border-amber-200 bg-amber-50 dark:border-amber-500/40 dark:bg-amber-500/10",
+    badgeClass: "border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/15 dark:text-amber-200",
   },
   achievement: {
-    accentClass: "border-fuchsia-500/40 bg-fuchsia-500/10",
-    badgeClass: "bg-fuchsia-500/15 text-fuchsia-200",
+    accentClass: "border-fuchsia-200 bg-fuchsia-50 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10",
+    badgeClass: "border-fuchsia-200 bg-fuchsia-100 text-fuchsia-700 dark:border-fuchsia-500/20 dark:bg-fuchsia-500/15 dark:text-fuchsia-200",
   },
   penalty: {
-    accentClass: "border-rose-500/40 bg-rose-500/10",
-    badgeClass: "bg-rose-500/15 text-rose-200",
+    accentClass: "border-rose-200 bg-rose-50 dark:border-rose-500/40 dark:bg-rose-500/10",
+    badgeClass: "border-rose-200 bg-rose-100 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/15 dark:text-rose-200",
   },
   timegate: {
-    accentClass: "border-cyan-500/40 bg-cyan-500/10",
-    badgeClass: "bg-cyan-500/15 text-cyan-200",
+    accentClass: "border-cyan-200 bg-cyan-50 dark:border-cyan-500/40 dark:bg-cyan-500/10",
+    badgeClass: "border-cyan-200 bg-cyan-100 text-cyan-700 dark:border-cyan-500/20 dark:bg-cyan-500/15 dark:text-cyan-200",
   },
   ending: {
-    accentClass: "border-orange-500/40 bg-orange-500/10",
-    badgeClass: "bg-orange-500/15 text-orange-200",
+    accentClass: "border-orange-200 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10",
+    badgeClass: "border-orange-200 bg-orange-100 text-orange-700 dark:border-orange-500/20 dark:bg-orange-500/15 dark:text-orange-200",
   },
 };
 
