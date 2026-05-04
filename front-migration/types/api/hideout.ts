@@ -5,8 +5,21 @@ export interface HideoutStationSummary extends LocalizedName {
   normalized_name: string;
 }
 
+export interface HideoutUserItem {
+  id: string;
+  count: number;
+  found_in_raid: boolean;
+}
+
+export interface HideoutUserState {
+  email: string | null;
+  complete_list: string[];
+  item_list: HideoutUserItem[];
+  update_time: string | null;
+}
+
 export interface HideoutStationListResponse {
-  user_hideout: unknown;
+  user_hideout: HideoutUserState | null;
   hideout_list: HideoutStationSummary[];
 }
 
@@ -15,6 +28,7 @@ export interface HideoutRequirementTrader extends LocalizedName {
   hideout_level_id: string;
   trader_id: string;
   trader_level: number;
+  image?: string | null;
 }
 
 export interface HideoutRequirementItem extends LocalizedName {

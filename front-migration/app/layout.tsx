@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { WebSocketProvider } from "@/components/providers/websocket-provider";
 import { getHomeMenu } from "@/features/home/api";
 import { defaultLocale } from "@/i18n/config";
 import { getUserLocale } from "@/i18n/locale";
@@ -14,6 +15,7 @@ import { getSiteUrl } from "@/lib/config/app-env";
 import { getUICopy } from "@/lib/constants/ui-copy";
 
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
 
 export const metadata: Metadata = {
   title: {
@@ -42,11 +44,13 @@ export default async function RootLayout({
       <body className="min-h-full bg-background text-foreground">
         <ThemeProvider>
           <AuthProvider>
-            <QueryProvider>
-              <Suspense fallback={<LayoutFallback />}>
-                <ResolvedLayout>{children}</ResolvedLayout>
-              </Suspense>
-            </QueryProvider>
+            <WebSocketProvider>
+              <QueryProvider>
+                <Suspense fallback={<LayoutFallback />}>
+                  <ResolvedLayout>{children}</ResolvedLayout>
+                </Suspense>
+              </QueryProvider>
+            </WebSocketProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

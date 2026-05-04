@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getStorySVG } from "../../../../assets/story/storySvg";
+import { getStorySVG } from "@/assets/story/storySvg";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 import { formatIsoDateTime } from "@/lib/utils/date-time";

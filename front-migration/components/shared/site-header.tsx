@@ -20,6 +20,7 @@ import {
   X,
 } from "lucide-react";
 
+import Logo from "@/assets/navi/logo";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
@@ -268,11 +269,10 @@ export function SiteHeader({
   loginLabel,
   logoutLabel,
   myPageLabel,
-  guestLabel,
   themeToggleLabel,
   locale,
 }: SiteHeaderProps) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -304,24 +304,21 @@ export function SiteHeader({
     return () => window.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const userLabel =
-    session?.userInfo?.nickname ||
-    session?.user?.name ||
-    session?.user?.email ||
-    guestLabel;
+  const visibleMenuGroups = useMemo(
+    () => menuGroups.filter((group) => group.id !== "USER"),
+    [menuGroups],
+  );
 
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-[#3a4048] dark:bg-[#292d35]/95">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-5 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center">
-          <span className="text-xl font-black uppercase text-gray-900 drop-shadow-sm dark:text-white dark:[text-shadow:0_0_8px_rgba(251,146,60,0.55)]">
-            EFT Library
-          </span>
+          <Logo width={172} height={32} />
         </Link>
 
         <div className="hidden min-w-0 flex-1 items-center gap-5 lg:flex">
           <nav className="flex min-w-0 flex-1 items-center justify-center gap-7">
-            {menuGroups.map((group) =>
+            {visibleMenuGroups.map((group) =>
                (
                 <div
                   key={group.id}
@@ -359,20 +356,20 @@ export function SiteHeader({
 
           <div className="flex shrink-0 items-center gap-3">
             {status === "authenticated" ? (
-              <div ref={userMenuRef} className="relative">
+              <div
+                ref={userMenuRef}
+                className="relative"
+                onMouseEnter={() => setIsUserMenuOpen(true)}
+                onMouseLeave={() => setIsUserMenuOpen(false)}
+              >
                 <button
                   type="button"
-                  onClick={() => setIsUserMenuOpen((value) => !value)}
-                  className="flex h-9 items-center gap-2 rounded-md px-2 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
+                  aria-label={myPageLabel}
+                  title={myPageLabel}
+                  onFocus={() => setIsUserMenuOpen(true)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:text-gray-100 dark:hover:bg-white/5 dark:hover:text-orange-300"
                 >
                   <User className="h-4 w-4" />
-                  <span className="max-w-24 truncate">{userLabel}</span>
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform",
-                      isUserMenuOpen && "rotate-180",
-                    )}
-                  />
                 </button>
 
                 {isUserMenuOpen ? (
@@ -447,7 +444,7 @@ export function SiteHeader({
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-orange-400" />
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {userLabel}
+                      {myPageLabel}
                     </span>
                   </div>
                 </div>
@@ -478,7 +475,7 @@ export function SiteHeader({
               </button>
             )}
 
-            {menuGroups.map((group) =>
+            {visibleMenuGroups.map((group) =>
               (
                 <details key={group.id} className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-[#1f2329]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">

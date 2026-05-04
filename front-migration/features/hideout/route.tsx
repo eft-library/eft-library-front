@@ -17,6 +17,7 @@ export async function HideoutRoute({
     <HideoutPage
       selectedStation={stationId}
       stations={stationResponse.hideout_list}
+      userHideout={stationResponse.user_hideout}
       hideout={hideout}
       locale={locale}
     />

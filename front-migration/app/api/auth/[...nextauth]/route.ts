@@ -5,6 +5,49 @@ import Google from "next-auth/providers/google";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 
+type UserInfo = {
+  email?: string;
+  attendance_count?: number;
+  nickname?: string;
+  is_admin?: boolean;
+  last_update_nickname?: string;
+  end_time?: string;
+  start_time?: string;
+  reason?: string;
+  user_blocks?: Array<{
+    reason: string;
+    create_time: string;
+    blocked_email: string;
+    blocker_email: string;
+  }>;
+} | null;
+
+async function fetchUserInfo(accessToken?: string): Promise<UserInfo> {
+  if (!accessToken) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = await response.json();
+    return payload.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function refreshAccessToken(token: JWT) {
   try {
     const body = new URLSearchParams({
@@ -93,23 +136,7 @@ const handler = NextAuth({
           ? account.expires_at * 1000
           : Date.now() + 3600 * 1000;
 
-        let userInfo = null;
-
-        try {
-          const response = await fetch(
-            `${getApiBaseUrl()}${apiEndpoints.userInfo}`,
-            {
-              headers: { Authorization: `Bearer ${account.access_token}` },
-            },
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            userInfo = data.data ?? null;
-          }
-        } catch {
-          userInfo = null;
-        }
+        const userInfo = await fetchUserInfo(account.access_token);
 
         return {
           ...token,
@@ -138,10 +165,12 @@ const handler = NextAuth({
 
     async session({ token, session }) {
       const nextSession = session;
+      const accessToken = (token.accessToken as string) ?? "";
+      const userInfo = await fetchUserInfo(accessToken);
 
-      nextSession.accessToken = (token.accessToken as string) ?? "";
+      nextSession.accessToken = accessToken;
       nextSession.refreshToken = (token.refreshToken as string) ?? "";
-      nextSession.userInfo = (token.userInfo as typeof session.userInfo) ?? null;
+      nextSession.userInfo = userInfo ?? (token.userInfo as typeof session.userInfo) ?? null;
 
       return nextSession;
     },

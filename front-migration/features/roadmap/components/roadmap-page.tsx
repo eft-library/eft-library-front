@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Background,
   BackgroundVariant,
@@ -32,6 +33,7 @@ import {
 } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
+import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type {
@@ -69,8 +71,10 @@ interface RoadmapStats {
   kappaCount: number;
   completeCount: number;
   kappaCompleteCount: number;
+  kappaQuestRate: number;
   completeRate: number;
   kappaCompleteRate: number;
+  overallProgressRate: number;
 }
 
 const STORAGE_KEY = "eft-library-roadmap-quest-list";
@@ -96,6 +100,8 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "진행 상황을 저장했습니다.",
+    saveLoginRequired: "로그인 후 서버에 저장할 수 있습니다. 현재 브라우저에 저장했습니다.",
+    loadFailed: "저장된 로드맵을 불러오지 못했습니다.",
     notFound: "검색 결과가 없습니다.",
     inputWord: "검색어를 입력해주세요.",
   },
@@ -119,6 +125,8 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "Progress saved.",
+    saveLoginRequired: "Sign in to save on the server. Saved in this browser.",
+    loadFailed: "Failed to load saved roadmap.",
     notFound: "No quest found.",
     inputWord: "Enter a search word.",
   },
@@ -142,6 +150,8 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "進行状況を保存しました。",
+    saveLoginRequired: "サーバー保存にはログインが必要です。このブラウザに保存しました。",
+    loadFailed: "保存済みロードマップを読み込めませんでした。",
     notFound: "検索結果がありません。",
     inputWord: "検索語を入力してください。",
   },
@@ -165,25 +175,21 @@ function getLocalizedName(
   return typeof localized === "string" && localized ? localized : value.name_en;
 }
 
-function getNodeColor(traderId: string) {
-  const colorMap = [
-    "from-sky-500 to-blue-600",
-    "from-orange-500 to-red-600",
-    "from-emerald-500 to-teal-600",
-    "from-violet-500 to-purple-600",
-    "from-yellow-500 to-amber-600",
-    "from-pink-500 to-rose-600",
-    "from-cyan-500 to-indigo-600",
-    "from-lime-500 to-green-600",
-    "from-fuchsia-500 to-pink-600",
-    "from-slate-500 to-gray-700",
-    "from-red-500 to-orange-600",
-  ];
-  const index = traderId
-    .split("")
-    .reduce((total, char) => total + char.charCodeAt(0), 0);
+const traderColorMap: Record<string, string> = {
+  "5935c25fb3acc3127c3d8cd9": "from-amber-400 to-orange-500 dark:from-yellow-800 dark:to-orange-900",
+  "579dc571d53a0658a154fbec": "from-green-400 to-emerald-500 dark:from-green-800 dark:to-emerald-900",
+  "638f541a29ffd1183d187f57": "from-blue-400 to-indigo-500 dark:from-blue-800 dark:to-indigo-900",
+  "6617beeaa9cfa777ca915b7c": "from-pink-400 to-rose-500 dark:from-pink-800 dark:to-rose-900",
+  "5ac3b934156ae10c4430e83c": "from-purple-400 to-violet-500 dark:from-purple-800 dark:to-violet-900",
+  "5c0647fdd443bc2504c2d371": "from-cyan-400 to-sky-500 dark:from-cyan-800 dark:to-sky-900",
+  "656f0f98d80a697f855d34b1": "from-teal-400 to-green-500 dark:from-teal-800 dark:to-green-900",
+  "54cb50c76803fa8b248b4571": "from-lime-400 to-green-500 dark:from-lime-800 dark:to-green-900",
+  "54cb57776803fa99248b456e": "from-red-400 to-orange-500 dark:from-red-800 dark:to-orange-900",
+  "5a7c2eca46aef81a7ca2145d": "from-fuchsia-400 to-pink-500 dark:from-fuchsia-800 dark:to-pink-900",
+};
 
-  return colorMap[index % colorMap.length];
+function getNodeColor(traderId: string) {
+  return traderColorMap[traderId] ?? "from-gray-300 to-gray-400 dark:from-slate-700 dark:to-slate-900";
 }
 
 function getQuestPosition(
@@ -208,14 +214,12 @@ function createNodes({
   roadmap,
   tabState,
   onlyKappa,
-  completedSet,
   locale,
   onToggle,
 }: {
   roadmap: RoadmapResponse;
   tabState: string;
   onlyKappa: boolean;
-  completedSet: Set<string>;
   locale: Locale;
   onToggle: (node: RoadmapNodeData, checked: boolean) => void;
 }) {
@@ -224,31 +228,35 @@ function createNodes({
       return [];
     }
 
-    return trader.quests.map<RoadmapFlowNode>((quest) => ({
-      id: quest.id,
-      type: "questNode",
-      position: getQuestPosition(quest, tabState, onlyKappa),
-      sourcePosition: Position.Right,
-      targetPosition: Position.Left,
-      draggable: false,
-      data: {
+    return trader.quests.map<RoadmapFlowNode>((quest) => {
+      const isTraderStartNode = quest.id === trader.id || quest.id === quest.trader_id;
+
+      return {
         id: quest.id,
-        normalizedName: quest.normalized_name,
-        name_en: quest.name_en,
-        name_ko: quest.name_ko,
-        name_ja: quest.name_ja,
-        image: trader.image,
-        traderId: trader.id,
-        kappaRequired: quest.kappa_required,
-        minPlayerLevel: quest.min_player_level,
-        requirements: quest.task_requirements,
-        next: quest.task_next,
-        completed: completedSet.has(quest.id),
-        hiddenByKappa: onlyKappa && !quest.kappa_required,
-        locale,
-        onToggle,
-      },
-    }));
+        type: isTraderStartNode ? "traderNode" : "questNode",
+        position: getQuestPosition(quest, tabState, onlyKappa),
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        draggable: false,
+        data: {
+          id: quest.id,
+          normalizedName: isTraderStartNode ? trader.normalized_name : quest.normalized_name,
+          name_en: isTraderStartNode ? trader.name_en : quest.name_en,
+          name_ko: isTraderStartNode ? trader.name_ko : quest.name_ko,
+          name_ja: isTraderStartNode ? trader.name_ja : quest.name_ja,
+          image: trader.image,
+          traderId: trader.id,
+          kappaRequired: isTraderStartNode ? false : quest.kappa_required,
+          minPlayerLevel: quest.min_player_level,
+          requirements: quest.task_requirements,
+          next: quest.task_next,
+          completed: false,
+          hiddenByKappa: onlyKappa && !quest.kappa_required && !isTraderStartNode,
+          locale,
+          onToggle,
+        },
+      };
+    });
   });
 }
 
@@ -265,13 +273,19 @@ function createEdges(edgeInfo: RoadmapEdge[], nodeIds: Set<string>) {
     }));
 }
 
-function getStats(nodes: RoadmapFlowNode[], completed: string[]) {
-  const visibleNodes = nodes.filter((node) => !node.data.hiddenByKappa);
+function getStats(nodes: RoadmapFlowNode[], completed: string[], traderIds: Set<string>) {
   const completedSet = new Set(completed);
-  const allCount = visibleNodes.length;
-  const kappaCount = visibleNodes.filter((node) => node.data.kappaRequired).length;
-  const completeCount = visibleNodes.filter((node) => completedSet.has(node.id)).length;
-  const kappaCompleteCount = visibleNodes.filter(
+  const getRate = (numerator: number, denominator: number) => {
+    if (denominator <= 0 || numerator <= 0) {
+      return 0;
+    }
+
+    return (numerator / denominator) * 100;
+  };
+  const allCount = nodes.filter((node) => !traderIds.has(node.id)).length;
+  const kappaCount = nodes.filter((node) => node.data.kappaRequired).length;
+  const completeCount = nodes.filter((node) => completedSet.has(node.id)).length;
+  const kappaCompleteCount = nodes.filter(
     (node) => node.data.kappaRequired && completedSet.has(node.id),
   ).length;
 
@@ -280,8 +294,10 @@ function getStats(nodes: RoadmapFlowNode[], completed: string[]) {
     kappaCount,
     completeCount,
     kappaCompleteCount,
-    completeRate: allCount > 0 ? (completeCount / allCount) * 100 : 0,
-    kappaCompleteRate: kappaCount > 0 ? (kappaCompleteCount / kappaCount) * 100 : 0,
+    kappaQuestRate: getRate(kappaCount, allCount),
+    completeRate: getRate(completeCount, allCount),
+    kappaCompleteRate: getRate(kappaCompleteCount, kappaCount),
+    overallProgressRate: getRate(completeCount, allCount),
   };
 }
 
@@ -307,6 +323,8 @@ function RoadmapCanvas({
   locale: Locale;
 }) {
   const copy = roadmapCopy[locale];
+  const { data: session } = useSession();
+  const accessToken = session?.accessToken;
   const { fitView, fitBounds } = useReactFlow();
   const [tabState, setTabState] = useState("all");
   const [onlyKappa, setOnlyKappa] = useState(false);
@@ -314,11 +332,34 @@ function RoadmapCanvas({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchIndex, setSearchIndex] = useState(0);
   const [notice, setNotice] = useState("");
+  const completedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
+    let cancelled = false;
+
+    if (accessToken) {
+      getUserRoadmap(accessToken)
+        .then((questList) => {
+          if (!cancelled) {
+            setCompleted(questList.filter((value): value is string => typeof value === "string"));
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            showNotice(copy.loadFailed);
+          }
+        });
+
+      return () => {
+        cancelled = true;
+      };
+    }
+
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return;
+      return () => {
+        cancelled = true;
+      };
     }
 
     try {
@@ -329,9 +370,17 @@ function RoadmapCanvas({
     } catch {
       setCompleted([]);
     }
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [accessToken, copy.loadFailed]);
 
   const completedSet = useMemo(() => new Set(completed), [completed]);
+  completedRef.current = completedSet;
+  const traderIds = useMemo(
+    () => new Set(roadmap.node_info.map((trader) => trader.id)),
+    [roadmap.node_info],
+  );
   const questById = useMemo(() => {
     const map = new Map<string, RoadmapQuestNode>();
     roadmap.node_info.forEach((trader) => {
@@ -370,11 +419,10 @@ function RoadmapCanvas({
         roadmap,
         tabState,
         onlyKappa,
-        completedSet,
         locale,
         onToggle: handleToggleNode,
       }),
-    [roadmap, tabState, onlyKappa, completedSet, locale, handleToggleNode],
+    [roadmap, tabState, onlyKappa, locale, handleToggleNode],
   );
   const visibleNodeIds = useMemo(
     () => new Set(nodes.filter((node) => !node.data.hiddenByKappa).map((node) => node.id)),
@@ -386,13 +434,34 @@ function RoadmapCanvas({
   );
   const [flowNodes, setFlowNodes, onNodesChange] = useNodesState<RoadmapFlowNode>(nodes);
   const [flowEdges, setFlowEdges, onEdgesChange] = useEdgesState<RoadmapFlowEdge>(edges);
-  const stats = useMemo(() => getStats(nodes, completed), [nodes, completed]);
+  const stats = useMemo(() => getStats(nodes, completed, traderIds), [nodes, completed, traderIds]);
 
   useEffect(() => {
-    setFlowNodes(nodes);
+    const currentCompleted = completedRef.current;
+    setFlowNodes(
+      nodes.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          completed: currentCompleted.has(node.id),
+        },
+      })),
+    );
     setFlowEdges(edges);
     requestAnimationFrame(() => fitView());
   }, [nodes, edges, fitView, setFlowEdges, setFlowNodes]);
+
+  useEffect(() => {
+    setFlowNodes((currentNodes) =>
+      currentNodes.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          completed: completedSet.has(node.id),
+        },
+      })),
+    );
+  }, [completedSet, setFlowNodes]);
 
   useEffect(() => {
     setSearchIndex(0);
@@ -403,9 +472,20 @@ function RoadmapCanvas({
     window.setTimeout(() => setNotice(""), 2200);
   }
 
-  function handleSave() {
+  async function handleSave() {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
-    showNotice(copy.saved);
+    if (!accessToken) {
+      showNotice(copy.saveLoginRequired);
+      return;
+    }
+
+    try {
+      const savedQuestList = await saveRoadmap(completed, accessToken);
+      setCompleted(savedQuestList.filter((value): value is string => typeof value === "string"));
+      showNotice(copy.saved);
+    } catch {
+      showNotice(copy.saveLoginRequired);
+    }
   }
 
   function handleSearch() {
@@ -435,14 +515,16 @@ function RoadmapCanvas({
 
   function handleSelectAll() {
     const questIds = nodes
-      .filter((node) => !node.data.hiddenByKappa)
+      .filter((node) => !node.data.hiddenByKappa && !traderIds.has(node.id))
       .map((node) => node.id);
-    setCompleted((current) => [...new Set([...current, ...questIds])]);
+    setCompleted(questIds);
   }
 
   function handleUnselectAll() {
     const questIds = new Set(
-      nodes.filter((node) => !node.data.hiddenByKappa).map((node) => node.id),
+      nodes
+        .filter((node) => !node.data.hiddenByKappa)
+        .map((node) => node.id),
     );
     setCompleted((current) => current.filter((id) => !questIds.has(id)));
   }
@@ -687,7 +769,7 @@ function StatsPanel({
   onlyKappa: boolean;
   stats: RoadmapStats;
 }) {
-  const progress = onlyKappa ? stats.kappaCompleteRate : stats.completeRate;
+  const progress = onlyKappa ? stats.kappaCompleteRate : stats.overallProgressRate;
 
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
@@ -696,11 +778,26 @@ function StatsPanel({
         <h2 className="text-sm font-black">{copy.dashboard}</h2>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard color="bg-blue-500" label={copy.allQuest} value={stats.allCount} />
-        <StatsCard color="bg-orange-500" label={copy.kappaQuest} value={stats.kappaCount} />
-        <StatsCard color="bg-emerald-500" label={copy.completedKappa} value={stats.kappaCompleteCount} />
+        <StatsCard color="bg-blue-500" label={copy.allQuest} rate={100} value={stats.allCount} />
+        <StatsCard
+          color="bg-orange-500"
+          label={copy.kappaQuest}
+          rate={stats.kappaQuestRate}
+          value={stats.kappaCount}
+        />
+        <StatsCard
+          color="bg-emerald-500"
+          label={copy.completedKappa}
+          rate={stats.kappaCompleteRate}
+          value={stats.kappaCompleteCount}
+        />
         {!onlyKappa ? (
-          <StatsCard color="bg-purple-500" label={copy.completedQuest} value={stats.completeCount} />
+          <StatsCard
+            color="bg-purple-500"
+            label={copy.completedQuest}
+            rate={stats.completeRate}
+            value={stats.completeCount}
+          />
         ) : null}
       </div>
       <div className="mt-5 border-t border-gray-200 pt-4 dark:border-[#2a3038]">
@@ -719,10 +816,12 @@ function StatsPanel({
 function StatsCard({
   color,
   label,
+  rate,
   value,
 }: {
   color: string;
   label: string;
+  rate: number;
   value: number;
 }) {
   return (
@@ -737,7 +836,7 @@ function StatsCard({
         </span>
       </div>
       <div className="h-1.5 rounded-full bg-gray-200 dark:bg-[#111418]">
-        <div className={cn("h-full rounded-full", color)} />
+        <div className={cn("h-full rounded-full transition-all duration-500", color)} style={{ width: `${rate}%` }} />
       </div>
     </div>
   );
@@ -849,9 +948,24 @@ function TraderFlowNode(props: NodeProps<RoadmapFlowNode>) {
     props.data.locale,
   );
 
+  function openTraderQuestList() {
+    window.open(`/quest/${props.data.normalizedName}`, "_blank", "noopener,noreferrer");
+  }
+
   return (
-    <div className="group relative min-h-56 min-w-52 rounded-2xl transition hover:scale-105 hover:shadow-2xl">
-      <div className={cn("h-full rounded-2xl bg-linear-to-br p-1 shadow-lg", getNodeColor(props.data.id))}>
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={openTraderQuestList}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openTraderQuestList();
+        }
+      }}
+      className="group relative min-h-56 min-w-52 cursor-pointer rounded-2xl text-left transition hover:scale-105 hover:shadow-2xl"
+    >
+      <div className={cn("h-full rounded-2xl bg-linear-to-br p-1 shadow-lg", getNodeColor(props.data.traderId))}>
         <div className="h-full overflow-hidden rounded-xl border-2 border-gray-200 bg-white dark:border-[#2a3038] dark:bg-[#181c21]">
           <div className="flex justify-center px-4 pb-4 pt-8">
             <div className="relative h-28 w-28 overflow-hidden rounded-full ring-4 ring-white dark:ring-[#20242b]">

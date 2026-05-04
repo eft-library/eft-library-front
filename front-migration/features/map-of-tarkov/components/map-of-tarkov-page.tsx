@@ -1,258 +1,391 @@
-import Link from "next/link";
+"use client";
 
-import { formatIsoDateTime } from "@/lib/utils/date-time";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Clipboard,
+  Clock,
+  ExternalLink,
+  Heart,
+  Lightbulb,
+  Map,
+  MapPin,
+  Navigation2,
+  Percent,
+  Repeat,
+  Shield,
+  Skull,
+  Tag,
+  Users,
+  X,
+} from "lucide-react";
+
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
-import type { MapOfTarkovDetailResponse, MapPointInfo } from "@/types/api/map-of-tarkov";
+import type {
+  MapBossInfo,
+  MapOfTarkovDetailResponse,
+  MapPointInfo,
+  MapSelectorEntry,
+} from "@/types/api/map-of-tarkov";
+import { FindLocation } from "./find-location";
 
 const copyByLocale = {
   ko: {
     title: "타르코프 지도",
-    description: "맵 이미지, 보스, 탈출구와 트랜짓 정보를 V3 응답 기준으로 정리했습니다.",
-    childMaps: "하위 지도",
-    bossInfo: "보스 정보",
+    map: "지도",
+    subMap: "하위 지도",
+    findLocation: "내 위치 찾기",
     extractionInfo: "탈출구",
-    transitInfo: "트랜짓",
-    findInfo: "위치 찾기 정보",
-    spawnChance: "스폰 확률",
-    requirements: "요구 사항",
-    tips: "팁",
-    bounds: "좌표 범위",
+    transitInfo: "Transits",
+    bossInfo: "보스",
+    photo: "사진",
+    name: "이름",
+    affiliation: "소속",
+    location: "위치",
+    spawnRate: "스폰확률",
+    hp: "체력",
+    followers: "추종자",
+    alwaysOpen: "항상 열림",
+    oneTimeUse: "일회용",
+    requirements: "필요 조건",
+    tips: "Tip",
+    mapBounds: "지도 좌표",
+    imageBounds: "이미지 좌표",
+    defaultZoom: "기본 줌",
+    none: "-",
   },
   en: {
-    title: "Map of Tarkov",
-    description: "Browse map images, bosses, extractions, and transit information from V3 data.",
-    childMaps: "Child maps",
-    bossInfo: "Boss info",
-    extractionInfo: "Extractions",
+    title: "Tarkov Map",
+    map: "Map",
+    subMap: "Sub Map",
+    findLocation: "Find My Location",
+    extractionInfo: "Extraction",
     transitInfo: "Transits",
-    findInfo: "Find-location info",
-    spawnChance: "Spawn chance",
+    bossInfo: "Boss",
+    photo: "Photo",
+    name: "Name",
+    affiliation: "Affiliation",
+    location: "Location",
+    spawnRate: "Spawn Rate",
+    hp: "HP",
+    followers: "Followers",
+    alwaysOpen: "Always Open",
+    oneTimeUse: "One-time Use",
     requirements: "Requirements",
-    tips: "Tips",
-    bounds: "Bounds",
+    tips: "Tip",
+    mapBounds: "Map Bounds",
+    imageBounds: "Image Bounds",
+    defaultZoom: "Default Zoom",
+    none: "-",
   },
   ja: {
-    title: "Map of Tarkov",
-    description: "マップ画像、ボス、脱出地点、トランジット情報を V3 データ基準で確認できます。",
-    childMaps: "サブマップ",
-    bossInfo: "ボス情報",
-    extractionInfo: "脱出地点",
-    transitInfo: "トランジット",
-    findInfo: "位置検索情報",
-    spawnChance: "出現率",
-    requirements: "条件",
+    title: "タルコフの地図",
+    map: "マップ",
+    subMap: "サブマップ",
+    findLocation: "私の位置を探す",
+    extractionInfo: "脱出ポイント",
+    transitInfo: "Transits",
+    bossInfo: "ボス",
+    photo: "写真",
+    name: "名前",
+    affiliation: "所属",
+    location: "位置",
+    spawnRate: "出現率",
+    hp: "体力",
+    followers: "フォロワー",
+    alwaysOpen: "常時開放",
+    oneTimeUse: "使い捨て",
+    requirements: "必要条件",
     tips: "ヒント",
-    bounds: "座標範囲",
+    mapBounds: "マップ座標",
+    imageBounds: "画像座標",
+    defaultZoom: "デフォルトズーム",
+    none: "-",
   },
 } as const;
 
+function localized(value: Record<string, unknown>, locale: Locale, prefix: string) {
+  return String(pickLocalizedField(value, locale, prefix) ?? value[`${prefix}_en`] ?? "");
+}
+
+function getLocalizedName(value: Record<string, unknown>, locale: Locale) {
+  return localized(value, locale, "name");
+}
+
+function formatBounds(bounds: [[number, number], [number, number]]) {
+  return `${bounds[0][0].toFixed(2)}, ${bounds[0][1].toFixed(2)} / ${bounds[1][0].toFixed(2)}, ${bounds[1][1].toFixed(2)}`;
+}
+
+function getFactionClass(faction: string) {
+  switch (faction) {
+    case "ALL":
+      return "bg-purple-600 text-white";
+    case "PMC":
+      return "bg-blue-600 text-white";
+    case "Scav":
+      return "bg-orange-600 text-white";
+    default:
+      return "bg-gray-600 text-white";
+  }
+}
+
+function BooleanIcon({ value }: { value: boolean }) {
+  return value ? (
+    <Check className="mx-auto h-5 w-5 text-green-500" />
+  ) : (
+    <X className="mx-auto h-5 w-5 text-red-500" />
+  );
+}
+
+interface ImagePopupState {
+  src: string;
+  alt: string;
+}
+
 export function MapOfTarkovPage({
-  mapData,
+  contentMapData,
   locale,
+  selectedMapData,
 }: {
-  mapData: MapOfTarkovDetailResponse;
+  contentMapData: MapOfTarkovDetailResponse;
   locale: Locale;
+  selectedMapData: MapOfTarkovDetailResponse;
 }) {
   const copy = copyByLocale[locale];
-  const localizedMapName = String(
-    pickLocalizedField(mapData.map_info as unknown as Record<string, unknown>, locale, "name") ??
-      mapData.map_info.name_en,
+  const [imagePopup, setImagePopup] = useState<ImagePopupState | null>(null);
+  const localizedMapName = getLocalizedName(
+    selectedMapData.map_info as unknown as Record<string, unknown>,
+    locale,
   );
   const localizedMapImage =
-    String(
-      pickLocalizedField(
-        mapData.map_info as unknown as Record<string, unknown>,
-        locale,
-        "mot_image",
-      ) ?? "",
-    ) || mapData.map_info.mot_image_en;
+    localized(selectedMapData.map_info as unknown as Record<string, unknown>, locale, "mot_image") ||
+    selectedMapData.map_info.mot_image_en;
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
-        <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
-            {copy.title}
-          </p>
-          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{localizedMapName}</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-300">
-            {copy.description}
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            {mapData.map_selector.map((entry) => {
-              const label = String(
-                pickLocalizedField(entry as unknown as Record<string, unknown>, locale, "name") ??
-                  entry.name_en,
-              );
-
-              return (
-                <Link
-                  key={entry.normalized_name}
-                  href={`/map-of-tarkov/${entry.normalized_name}`}
-                  className={`rounded-full border px-3 py-2 text-sm font-medium transition ${
-                    entry.normalized_name === mapData.map_info.normalized_name
-                      ? "border-orange-400 bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300"
-                      : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-[#2a2d35] dark:text-gray-200"
-                  }`}
-                >
-                  {label}
-                </Link>
-              );
-            })}
-          </div>
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+        <section className="text-center">
+          <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
         </section>
 
-        <section className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-          <img src={localizedMapImage} alt={localizedMapName} className="h-auto w-full object-contain" />
+        <MapSelector
+          contentMapData={contentMapData}
+          locale={locale}
+          selectedMapData={selectedMapData}
+        />
+
+        <section className="space-y-4">
+          <h2 className="flex items-center text-xl font-black">
+            <Map className="mr-2 h-6 w-6 text-orange-500" />
+            {localizedMapName}
+          </h2>
+          <button
+            type="button"
+            onClick={() => setImagePopup({ src: localizedMapImage, alt: localizedMapName })}
+            className="block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-[#252830]"
+          >
+            <img
+              src={localizedMapImage}
+              alt={localizedMapName}
+              className="h-auto w-full object-contain"
+            />
+          </button>
         </section>
 
-        {mapData.child_maps.length > 0 ? (
-          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-            <h2 className="text-lg font-semibold">{copy.childMaps}</h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {mapData.child_maps.map((entry) => (
-                <Link
-                  key={entry.normalized_name}
-                  href={`/map-of-tarkov/${entry.normalized_name}`}
-                  className="rounded-full border border-gray-200 px-3 py-2 text-sm dark:border-gray-700"
-                >
-                  {String(
-                    pickLocalizedField(entry as unknown as Record<string, unknown>, locale, "name") ??
-                      entry.name_en,
-                  )}
-                </Link>
-              ))}
-            </div>
-          </section>
+        {contentMapData.find_info ? (
+          <FindLocation findInfo={contentMapData.find_info} locale={locale} />
         ) : null}
 
-        {mapData.find_info ? (
-          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-            <h2 className="text-lg font-semibold">{copy.findInfo}</h2>
-            <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_320px]">
-              <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-                <img src={mapData.find_info.image} alt={`${localizedMapName} overlay`} className="h-auto w-full object-contain" />
-              </div>
-              <div className="space-y-3">
-                <InfoStat
-                  label={copy.bounds}
-                  value={`${mapData.find_info.map_bounds[0][0]}, ${mapData.find_info.map_bounds[0][1]} / ${mapData.find_info.map_bounds[1][0]}, ${mapData.find_info.map_bounds[1][1]}`}
-                />
-                <InfoStat
-                  label="Default Zoom"
-                  value={String(mapData.find_info.default_zoom_level)}
-                />
-              </div>
-            </div>
-          </section>
-        ) : null}
-
-        <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-          <h2 className="text-lg font-semibold">{copy.bossInfo}</h2>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {mapData.boss_info.map((boss) => (
-              <article key={boss.id} className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-                <div className="flex items-center gap-4">
-                  <img src={boss.image} alt={boss.name_en} className="h-16 w-16 rounded-lg object-cover" />
-                  <div>
-                    <h3 className="font-semibold">
-                      {String(
-                        pickLocalizedField(boss as unknown as Record<string, unknown>, locale, "name") ??
-                          boss.name_en,
-                      )}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                      {copy.spawnChance}: {Math.round(boss.spawn_chance * 100)}%
-                    </p>
-                  </div>
-                </div>
-                <Link
-                  href={`/boss/${boss.normalized_name}`}
-                  className="mt-4 inline-flex text-sm font-medium text-orange-500"
-                >
-                  {boss.normalized_name}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <MapPointSection title={copy.extractionInfo} items={mapData.extraction_info} locale={locale} copy={copy} />
-        <MapPointSection title={copy.transitInfo} items={mapData.transit_info} locale={locale} copy={copy} />
+        <BossSection bosses={contentMapData.boss_info} copy={copy} locale={locale} />
+        <PointSection
+          title={copy.extractionInfo}
+          items={contentMapData.extraction_info}
+          copy={copy}
+          locale={locale}
+          onOpenImage={setImagePopup}
+        />
+        <PointSection
+          title={copy.transitInfo}
+          items={contentMapData.transit_info}
+          copy={copy}
+          locale={locale}
+          onOpenImage={setImagePopup}
+        />
       </div>
+
+      <ImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
     </main>
   );
 }
 
+function MapSelector({
+  contentMapData,
+  locale,
+  selectedMapData,
+}: {
+  contentMapData: MapOfTarkovDetailResponse;
+  locale: Locale;
+  selectedMapData: MapOfTarkovDetailResponse;
+}) {
+  const router = useRouter();
+  const copy = copyByLocale[locale];
+  const selectedMap =
+    contentMapData.map_selector.find(
+      (entry) => entry.normalized_name === contentMapData.map_info.normalized_name,
+    ) ?? contentMapData.map_selector[0];
+  const subMaps = uniqueByNormalizedName([
+    contentMapData.map_info,
+    ...contentMapData.child_maps,
+  ]);
+
+  function moveToMap(normalizedName: string) {
+    router.push(`/map-of-tarkov/${normalizedName}`);
+  }
+
+  return (
+    <section className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#252830] lg:flex-row lg:items-center">
+      <SelectorField
+        icon={<Map className="h-4 w-4" />}
+        label={copy.map}
+        value={selectedMap?.normalized_name ?? contentMapData.map_info.normalized_name}
+        entries={contentMapData.map_selector}
+        locale={locale}
+        onChange={moveToMap}
+      />
+      {subMaps.length > 1 ? (
+        <>
+          <ChevronRight className="hidden h-4 w-4 text-gray-400 lg:block" />
+          <SelectorField
+            icon={<MapPin className="h-4 w-4" />}
+            label={copy.subMap}
+            value={selectedMapData.map_info.normalized_name}
+            entries={subMaps}
+            locale={locale}
+            onChange={moveToMap}
+          />
+        </>
+      ) : null}
+    </section>
+  );
+}
+
+function SelectorField({
+  icon,
+  label,
+  value,
+  entries,
+  locale,
+  onChange,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  entries: MapSelectorEntry[];
+  locale: Locale;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="grid w-full gap-2 sm:w-64">
+      <span className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-300">
+        {icon}
+        {label}
+      </span>
+      <span className="relative">
+        <select
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="h-11 w-full appearance-none rounded-md border border-gray-200 bg-white px-3 pr-9 text-sm font-semibold outline-none transition hover:border-orange-300 focus:border-orange-400 dark:border-gray-700 dark:bg-[#1e2124] dark:text-white"
+        >
+          {entries.map((entry) => (
+            <option key={entry.normalized_name} value={entry.normalized_name}>
+              {getLocalizedName(entry as unknown as Record<string, unknown>, locale)}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      </span>
+    </label>
+  );
+}
+
+function uniqueByNormalizedName(entries: MapSelectorEntry[]) {
+  const seen = new Set<string>();
+
+  return entries.filter((entry) => {
+    if (seen.has(entry.normalized_name)) {
+      return false;
+    }
+    seen.add(entry.normalized_name);
+    return true;
+  });
+}
+
 function InfoStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-[#252830]">
-      <div className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">{label}</div>
-      <div className="mt-2 text-sm">{value}</div>
+    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-[#1e2124]">
+      <div className="text-xs font-bold uppercase tracking-[0.16em] text-gray-400">{label}</div>
+      <div className="mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">{value}</div>
     </div>
   );
 }
 
-function MapPointSection({
-  title,
-  items,
-  locale,
+function BossSection({
+  bosses,
   copy,
+  locale,
 }: {
-  title: string;
-  items: MapPointInfo[];
-  locale: Locale;
+  bosses: MapBossInfo[];
   copy: (typeof copyByLocale)[Locale];
+  locale: Locale;
 }) {
   return (
-    <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="mt-5 grid gap-4">
-        {items.map((item) => {
-          const name = String(
-            pickLocalizedField(item as unknown as Record<string, unknown>, locale, "name") ??
-              item.name_en,
-          );
-          const requirements = String(
-            pickLocalizedField(
-              item as unknown as Record<string, unknown>,
-              locale,
-              "requirements",
-            ) ?? "",
-          );
-          const tips = String(
-            pickLocalizedField(item as unknown as Record<string, unknown>, locale, "tip") ?? "",
-          );
+    <section className="space-y-4">
+      <h2 className="flex items-center text-xl font-black">
+        <Skull className="mr-2 h-5 w-5 text-orange-500" />
+        {copy.bossInfo}
+      </h2>
+      <div className="hidden rounded-lg border border-gray-200 bg-white p-4 text-center text-sm font-bold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#252830] dark:text-gray-300 md:grid md:grid-cols-6">
+        <div>{copy.photo}</div>
+        <div>{copy.name}</div>
+        <div>{copy.affiliation}</div>
+        <div>{copy.spawnRate}</div>
+        <div>{copy.hp}</div>
+        <div>{copy.followers}</div>
+      </div>
+      <div className="space-y-3">
+        {bosses.map((boss) => {
+          const name = getLocalizedName(boss as unknown as Record<string, unknown>, locale);
 
           return (
-            <article key={item.id} className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
-                <img src={item.image} alt={name} className="h-32 w-full rounded-lg object-cover lg:w-72" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-lg font-semibold">{name}</h3>
-                  <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    {item.faction} · {item.is_one_time_use ? "One-time" : "Reusable"}
-                  </div>
-                  {requirements ? (
-                    <div className="mt-4">
-                      <h4 className="text-sm font-semibold">{copy.requirements}</h4>
-                      <div
-                        className="prose prose-sm mt-2 max-w-none dark:prose-invert [&_img]:max-w-24"
-                        dangerouslySetInnerHTML={{ __html: requirements }}
-                      />
-                    </div>
-                  ) : null}
-                  {tips ? (
-                    <div className="mt-4">
-                      <h4 className="text-sm font-semibold">{copy.tips}</h4>
-                      <div
-                        className="prose prose-sm mt-2 max-w-none dark:prose-invert"
-                        dangerouslySetInnerHTML={{ __html: tips }}
-                      />
-                    </div>
-                  ) : null}
+            <article
+              key={boss.id}
+              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#252830]"
+            >
+              <div className="grid gap-4 md:grid-cols-6 md:items-center md:text-center">
+                <div className="flex justify-center">
+                  <img src={boss.image} alt={name} className="h-20 w-20 rounded-xl object-cover md:h-24 md:w-24" />
+                </div>
+                <Link href={`/boss/${boss.normalized_name}`} className="font-bold text-gray-900 hover:text-orange-500 dark:text-white">
+                  {name}
+                </Link>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{boss.faction ?? copy.none}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">
+                  {Math.round(boss.spawn_chance * 100)} %
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{boss.health_total}</div>
+                <div className="flex flex-wrap justify-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+                  {boss.followers.length > 0
+                    ? boss.followers.map((follower) => (
+                        <span key={follower.id}>
+                          {getLocalizedName(follower as unknown as Record<string, unknown>, locale)}
+                        </span>
+                      ))
+                    : copy.none}
                 </div>
               </div>
             </article>
@@ -260,5 +393,149 @@ function MapPointSection({
         })}
       </div>
     </section>
+  );
+}
+
+function PointSection({
+  title,
+  items,
+  copy,
+  locale,
+  onOpenImage,
+}: {
+  title: string;
+  items: MapPointInfo[];
+  copy: (typeof copyByLocale)[Locale];
+  locale: Locale;
+  onOpenImage: (image: ImagePopupState) => void;
+}) {
+  return (
+    <section className="space-y-4">
+      <h2 className="flex items-center text-xl font-black">
+        <Navigation2 className="mr-2 h-5 w-5 text-orange-500" />
+        {title}
+      </h2>
+      <div className="hidden rounded-lg border border-gray-200 bg-white p-4 text-center text-sm font-bold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#252830] dark:text-gray-300 md:grid md:grid-cols-[minmax(220px,1.8fr)_minmax(120px,0.9fr)_90px_72px_72px_minmax(240px,1.7fr)_minmax(240px,1.7fr)] md:items-center">
+        <div>{copy.photo}</div>
+        <div>{copy.name}</div>
+        <div>{copy.affiliation}</div>
+        <div>{copy.alwaysOpen}</div>
+        <div>{copy.oneTimeUse}</div>
+        <div>{copy.requirements}</div>
+        <div>{copy.tips}</div>
+      </div>
+      <div className="space-y-3">
+        {items.map((item) => {
+          const name = getLocalizedName(item as unknown as Record<string, unknown>, locale);
+          const requirements = localized(
+            item as unknown as Record<string, unknown>,
+            locale,
+            "requirements",
+          );
+          const tips = localized(item as unknown as Record<string, unknown>, locale, "tip");
+
+          return (
+            <article
+              key={item.id}
+              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#252830]"
+            >
+              <div className="grid gap-4 md:grid-cols-[minmax(220px,1.8fr)_minmax(120px,0.9fr)_90px_72px_72px_minmax(240px,1.7fr)_minmax(240px,1.7fr)] md:items-center md:text-center">
+                <button
+                  type="button"
+                  onClick={() => onOpenImage({ src: item.image, alt: name })}
+                  className="group relative block overflow-hidden rounded-lg"
+                >
+                  <img src={item.image} alt={name} className="h-36 w-full object-cover md:h-32" />
+                  <ExternalLink className="absolute right-2 top-2 h-4 w-4 rounded bg-black/50 p-0.5 text-white opacity-0 transition group-hover:opacity-100" />
+                </button>
+                <div className="font-bold text-gray-900 dark:text-white">
+                  <span className="md:hidden">{copy.name}: </span>
+                  {name}
+                </div>
+                <div>
+                  <span className={`inline-flex rounded-full px-2 py-1 text-xs font-bold ${getFactionClass(item.faction)}`}>
+                    {item.faction}
+                  </span>
+                </div>
+                <BooleanIcon value={item.is_unlimited_use} />
+                <BooleanIcon value={item.is_one_time_use} />
+                <HtmlBlock value={requirements} fallback={copy.none} />
+                <HtmlBlock value={tips} fallback={copy.none} />
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function ImagePopup({
+  image,
+  onClose,
+}: {
+  image: ImagePopupState | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (!image) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [image, onClose]);
+
+  if (!image) {
+    return null;
+  }
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      onClick={onClose}
+    >
+      <div className="relative max-h-[92vh] w-full max-w-7xl" onClick={(event) => event.stopPropagation()}>
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={onClose}
+          className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-orange-500"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <img
+          src={image.src}
+          alt={image.alt}
+          className="max-h-[92vh] w-full rounded-lg object-contain shadow-2xl"
+        />
+      </div>
+    </div>
+  );
+}
+
+function HtmlBlock({ value, fallback }: { value: string; fallback: string }) {
+  if (!value) {
+    return <span className="text-sm text-gray-500 dark:text-gray-400">{fallback}</span>;
+  }
+
+  return (
+    <div
+      className="prose prose-sm max-w-none text-sm dark:prose-invert [&_img]:mx-auto [&_img]:max-h-16 [&_img]:max-w-16"
+      dangerouslySetInnerHTML={{ __html: value }}
+    />
   );
 }
