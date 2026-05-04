@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
     "@next/third-parties": "^16.2.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.0",

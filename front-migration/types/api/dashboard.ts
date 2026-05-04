@@ -5,25 +5,28 @@ export interface DashboardCountMetric {
 }
 
 export interface DashboardEndpointMetric {
-  endpoint?: string;
+  url?: string;
   request_count?: number;
-  method?: string;
+  request_type?: string;
 }
 
 export interface DashboardTimeDistributionMetric {
-  hour?: number;
-  request_count?: number;
+  time?: string;
+  requests?: number;
 }
 
 export interface DashboardHealthCheckMetric {
-  server_name?: string;
-  status?: string;
-  checked_time?: string;
+  service_name?: string;
+  total?: number;
+  ok_count?: number;
+  fail_count?: number;
+  ok_percentage?: number;
+  fail_percentage?: number;
 }
 
 export interface DashboardResponseTimeMetric {
-  endpoint?: string;
-  avg_response_time?: number;
+  service_name?: string;
+  avg_response_ms?: number;
 }
 
 export interface DashboardAnalysisResponse {

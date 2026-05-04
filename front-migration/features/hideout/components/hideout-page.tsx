@@ -462,7 +462,9 @@ function SimpleRequirementList({
       <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
         {title}
       </h3>
-      <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">{entries.map(renderEntry)}</div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {entries.map(renderEntry)}
+      </div>
     </section>
   );
 }
@@ -603,7 +605,7 @@ function LevelPanel({
             <Package className="h-5 w-5 text-yellow-500" />
             요구사항
           </h3>
-          <div className="space-y-5">
+          <div className="space-y-3">
             <SimpleRequirementList
               title="Trader"
               entries={level.trader_require}
@@ -612,7 +614,7 @@ function LevelPanel({
                 return (
                   <div
                     key={`${trader.id}-${index}`}
-                    className="rounded-lg bg-muted p-3 text-center"
+                    className="w-36 rounded-lg bg-muted p-3 text-center"
                   >
                     {trader.image ? (
                       <div className="relative mx-auto mb-2 h-14 w-14">
@@ -643,7 +645,7 @@ function LevelPanel({
                 return (
                   <div
                     key={`${station.id}-${index}`}
-                    className="rounded-lg bg-muted p-3 text-center"
+                    className="w-36 rounded-lg bg-muted p-3 text-center"
                   >
                     <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded">
                       <StationIcon
@@ -670,7 +672,7 @@ function LevelPanel({
                 return (
                   <div
                     key={`${skill.id}-${index}`}
-                    className="rounded-lg bg-muted p-3 text-center"
+                    className="w-36 rounded-lg bg-muted p-3 text-center"
                   >
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">
                       {getLocalizedName(skill, locale)}

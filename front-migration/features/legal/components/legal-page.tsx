@@ -2,11 +2,13 @@ export function LegalPage({
   eyebrow,
   title,
   description,
+  updatedAt,
   sections,
 }: {
   eyebrow: string;
   title: string;
   description: string;
+  updatedAt?: string;
   sections: Array<{ title: string; body: string[] }>;
 }) {
   return (
@@ -20,6 +22,11 @@ export function LegalPage({
           <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
             {description}
           </p>
+          {updatedAt ? (
+            <p className="mt-4 text-xs font-medium text-gray-500 dark:text-gray-400">
+              {updatedAt}
+            </p>
+          ) : null}
         </section>
 
         {sections.map((section) => (
@@ -30,7 +37,12 @@ export function LegalPage({
             <h2 className="text-xl font-semibold">{section.title}</h2>
             <div className="mt-4 space-y-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
               {section.body.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+                <p
+                  key={paragraph}
+                  className={paragraph.startsWith("- ") ? "pl-4" : undefined}
+                >
+                  {paragraph}
+                </p>
               ))}
             </div>
           </section>
