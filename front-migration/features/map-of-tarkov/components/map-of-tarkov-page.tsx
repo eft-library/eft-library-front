@@ -22,6 +22,8 @@ import {
   Tag,
   Users,
   X,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -370,7 +372,12 @@ function BossSection({
                 <div className="flex justify-center">
                   <img src={boss.image} alt={name} className="h-20 w-20 rounded-xl object-cover md:h-24 md:w-24" />
                 </div>
-                <Link href={`/boss/${boss.normalized_name}`} className="font-bold text-gray-900 hover:text-orange-500 dark:text-white">
+                <Link
+                  href={`/boss/${boss.normalized_name}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold text-gray-900 hover:text-orange-500 dark:text-white"
+                >
                   {name}
                 </Link>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{boss.faction ?? copy.none}</div>
@@ -477,6 +484,8 @@ function ImagePopup({
   image: ImagePopupState | null;
   onClose: () => void;
 }) {
+  const [zoom, setZoom] = useState(0.75);
+
   useEffect(() => {
     if (!image) {
       return;
@@ -497,18 +506,51 @@ function ImagePopup({
     };
   }, [image, onClose]);
 
+  useEffect(() => {
+    setZoom(0.75);
+  }, [image?.src]);
+
   if (!image) {
     return null;
   }
+
+  const zoomOut = () => setZoom((value) => Math.max(0.5, Number((value - 0.25).toFixed(2))));
+  const zoomIn = () => setZoom((value) => Math.min(3, Number((value + 0.25).toFixed(2))));
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-x-0 bottom-0 top-14 z-20 flex items-center justify-center bg-black/80 p-4"
       onClick={onClose}
     >
-      <div className="relative max-h-[92vh] w-full max-w-7xl" onClick={(event) => event.stopPropagation()}>
+      <div
+        className="relative flex h-full w-full max-w-[88vw] flex-col overflow-hidden rounded-lg bg-black/50 shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-full bg-black/70 p-1 text-white">
+          <button
+            type="button"
+            aria-label="Zoom out"
+            onClick={zoomOut}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/15 disabled:opacity-40"
+            disabled={zoom <= 0.5}
+          >
+            <ZoomOut className="h-5 w-5" />
+          </button>
+          <span className="min-w-12 text-center text-xs font-bold">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            aria-label="Zoom in"
+            onClick={zoomIn}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/15 disabled:opacity-40"
+            disabled={zoom >= 3}
+          >
+            <ZoomIn className="h-5 w-5" />
+          </button>
+        </div>
         <button
           type="button"
           aria-label="Close"
@@ -517,11 +559,18 @@ function ImagePopup({
         >
           <X className="h-5 w-5" />
         </button>
-        <img
-          src={image.src}
-          alt={image.alt}
-          className="max-h-[92vh] w-full rounded-lg object-contain shadow-2xl"
-        />
+        <div className="h-full w-full overflow-auto p-12">
+          <div className="flex min-h-full min-w-full items-center justify-center">
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="h-auto max-w-none object-contain"
+              style={{
+                width: `${zoom * 100}%`,
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

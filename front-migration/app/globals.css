@@ -70,3 +70,37 @@ summary {
   background: rgba(34, 211, 238, 0.25);
   color: #f8fafc;
 }
+
+.leaflet-container {
+  z-index: 0;
+}
+
+.leaflet-pane {
+  z-index: 1;
+}
+
+.leaflet-tile-pane {
+  z-index: 1;
+}
+
+.leaflet-overlay-pane {
+  z-index: 2;
+}
+
+.leaflet-shadow-pane {
+  z-index: 3;
+}
+
+.leaflet-marker-pane {
+  z-index: 4;
+}
+
+.leaflet-tooltip-pane,
+.leaflet-popup-pane {
+  z-index: 5;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 6;
+}

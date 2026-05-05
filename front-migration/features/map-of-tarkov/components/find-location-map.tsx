@@ -32,7 +32,7 @@ export function FindLocationMap({
       minZoom={-2}
       maxZoom={4}
       crs={CRS.Simple}
-      className="h-[520px] w-full rounded-lg md:h-[720px]"
+      className="relative z-0 h-[520px] w-full rounded-lg md:h-[720px]"
       maxBounds={findInfo.map_bounds}
       maxBoundsViscosity={1}
       doubleClickZoom={false}

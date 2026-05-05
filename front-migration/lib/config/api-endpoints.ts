@@ -17,10 +17,35 @@ export const apiEndpoints = {
   progressItem: "/api/progress/v3/progress-item",
   userAdd: "/api/user/v3/add",
   userInfo: "/api/user/v3/user-info",
+  userDelete: "/api/user/v3/delete",
   userCheckNicknameDuplicate: "/api/user/v3/check-nickname-duplicate",
   userUpdateNickname: "/api/user/v3/update-nickname",
   myPageDefault: "/api/user/v3/my-page/default",
   myPageInfo: "/api/user/v3/my-page/info",
+  communitySidePost: "/api/community/v3/side-post",
+  communityUploadImage: "/api/community/v3/upload-image",
+  communityDetail: "/api/community/v3/detail",
+  communityDetailMetaData: "/api/community/v3/detail-meta-data",
+  communityCreatePost: "/api/community/v3/create-posts",
+  communityUpdatePost: "/api/community/v3/update-post",
+  communityGetUpdatePostDetail: "/api/community/v3/get-update-post-detail",
+  communityDeletePostByUser: "/api/community/v3/delete-post-by-user",
+  communityDeletePostByAdmin: "/api/community/v3/delete-post-by-admin",
+  communityReportPost: "/api/community/v3/report-post",
+  communityLikePost: "/api/community/v3/like-post",
+  communityDislikePost: "/api/community/v3/dislike-post",
+  communityBookmarkPost: "/api/community/v3/bookmark-post",
+  communityFollowUser: "/api/community/v3/follow-user",
+  communityIncreaseViewCount: "/api/community/v3/increase-view-count",
+  commentGet: "/api/comment/v3/get-comments",
+  commentInsertParent: "/api/comment/v3/insert-parent-comment",
+  commentInsertChild: "/api/comment/v3/insert-child-comment",
+  commentLike: "/api/comment/v3/like-comment",
+  commentDislike: "/api/comment/v3/dislike-comment",
+  commentUpdate: "/api/comment/v3/update-comment",
+  commentDeleteByUser: "/api/comment/v3/delete-comment-by-user",
+  commentDeleteByAdmin: "/api/comment/v3/delete-comment-by-admin",
+  commentReport: "/api/comment/v3/report-comment",
 } as const;
 
 export function getItemListEndpoint(itemType: string) {
@@ -98,4 +123,18 @@ export function getMyPageFollowEndpoint(page: number) {
 
 export function getMyPageNotificationsEndpoint(page: number) {
   return `/api/user/v3/my-page/notification?page_num=${page}`;
+}
+
+export function getCommunityListEndpoint(category: string, page: number) {
+  return `/api/community/v3/get/${category}?page_num=${page}`;
+}
+
+export function getCommunitySearchEndpoint(page: number, word: string, searchType: string) {
+  const params = new URLSearchParams({
+    page_num: String(page),
+    word,
+    search_type: searchType,
+  });
+
+  return `/api/community/v3/search?${params.toString()}`;
 }
