@@ -51,12 +51,8 @@ function StoryRichSection({
       {html ? (
         <div
           className={cn(
-            "prose prose-sm mt-5 max-w-none text-gray-700 dark:prose-invert dark:text-gray-200",
-            "prose-headings:text-gray-900 dark:prose-headings:text-white",
-            "prose-a:text-orange-500 prose-a:underline-offset-2 hover:prose-a:text-orange-400",
-            "prose-strong:text-gray-900 dark:prose-strong:text-white",
-            "[&_img]:rounded-lg [&_img]:border [&_img]:border-gray-200 [&_img]:bg-black/20 [&_img]:p-1 dark:[&_img]:border-gray-700",
-            "[&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_td]:align-top [&_th]:text-left",
+            "rich-html-content mt-5",
+            "[&_td]:align-top [&_th]:text-left",
           )}
           dangerouslySetInnerHTML={{ __html: html }}
         />

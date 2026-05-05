@@ -80,7 +80,7 @@ export function InformationDetailPage({
           </header>
 
           <div
-            className="mx-auto min-h-80 max-w-3xl px-6 py-12 text-base leading-8 text-gray-700 dark:text-gray-300 sm:px-8 [&_a]:text-orange-500 [&_a]:underline-offset-2 hover:[&_a]:text-orange-400 [&_a:hover]:underline [&_b]:font-bold [&_br]:leading-10 [&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-black [&_h3]:mt-10 [&_h3]:text-xl [&_h3]:font-bold [&_li]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:mb-5 [&_strong]:font-black [&_ul]:list-disc [&_ul]:pl-5"
+            className="rich-html-content mx-auto min-h-80 max-w-3xl px-6 py-12 sm:px-8"
             dangerouslySetInnerHTML={{ __html: content }}
           />
         </article>

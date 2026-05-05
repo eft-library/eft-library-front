@@ -34,8 +34,6 @@ export function CommunityPostList({ posts, locale, emptyLabel = "게시글이 �
         <Link
           key={post.id}
           href={getCommunityPostUrl(post)}
-          target="_blank"
-          rel="noreferrer"
           className="grid gap-4 border-b border-gray-100 p-4 transition last:border-b-0 hover:bg-orange-50/70 dark:border-gray-700/60 dark:hover:bg-[#303540] sm:grid-cols-[1fr_auto]"
         >
           <div className="min-w-0">

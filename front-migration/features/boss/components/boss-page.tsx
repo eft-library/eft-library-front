@@ -158,8 +158,7 @@ function BossLocationGuide({
       {normalizedGuideHtml ? (
         <div
           className={cn(
-            "prose prose-sm mt-8 max-w-none text-gray-800 dark:prose-invert dark:text-white",
-            "prose-p:my-1 prose-strong:text-gray-900 dark:prose-strong:text-white",
+            "rich-html-content mt-8",
             "[&_img]:mt-4 [&_img]:h-auto [&_img]:w-full [&_img]:rounded-none",
           )}
           dangerouslySetInnerHTML={{ __html: normalizedGuideHtml }}

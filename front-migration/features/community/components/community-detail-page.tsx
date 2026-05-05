@@ -290,7 +290,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
 
           <div
             onClick={openContentImage}
-            className="prose prose-gray max-w-none p-5 text-gray-800 dark:prose-invert prose-img:cursor-zoom-in prose-img:rounded-lg dark:text-gray-100"
+            className="rich-html-content p-5 [&_img]:cursor-zoom-in"
             dangerouslySetInnerHTML={{ __html: post.contents }}
           />
 

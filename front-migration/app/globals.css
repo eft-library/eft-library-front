@@ -2,6 +2,7 @@
 
 @import "tailwindcss";
 @import "@xyflow/react/dist/style.css";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #f9fafb;
@@ -103,4 +104,106 @@ summary {
 .leaflet-top,
 .leaflet-bottom {
   z-index: 6;
+}
+
+@layer components {
+  .rich-html-content {
+    @apply prose prose-sm max-w-none text-gray-700 dark:prose-invert dark:text-gray-300;
+  }
+
+  .rich-html-content :where(p) {
+    @apply my-2 min-h-[1em] leading-7;
+  }
+
+  .rich-html-content :where(h1, h2, h3, h4) {
+    @apply mt-8 mb-3 font-black leading-tight text-gray-950 dark:text-white;
+  }
+
+  .rich-html-content :where(h1) {
+    @apply text-2xl;
+  }
+
+  .rich-html-content :where(h2) {
+    @apply text-xl;
+  }
+
+  .rich-html-content :where(h3) {
+    @apply text-lg;
+  }
+
+  .rich-html-content :where(a) {
+    @apply font-semibold text-orange-500 underline-offset-2 hover:text-orange-400 hover:underline dark:text-orange-300;
+  }
+
+  .rich-html-content :where(strong, b) {
+    @apply font-black text-gray-950 dark:text-white;
+  }
+
+  .rich-html-content :where(ul, ol) {
+    @apply my-4 pl-6;
+  }
+
+  .rich-html-content :where(ul) {
+    @apply list-disc;
+  }
+
+  .rich-html-content :where(ol) {
+    @apply list-decimal;
+  }
+
+  .rich-html-content :where(li) {
+    @apply my-1.5 leading-7;
+  }
+
+  .rich-html-content :where(img) {
+    @apply my-5 h-auto max-w-full rounded-lg border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-black/20;
+  }
+
+  .rich-html-content :where(.quest-image-wrapper) {
+    @apply my-5 grid w-full gap-3;
+  }
+
+  .rich-html-content :where(.quest-image-wrapper.count-1) {
+    @apply grid-cols-1;
+  }
+
+  .rich-html-content :where(.quest-image-wrapper.count-2) {
+    @apply grid-cols-2;
+  }
+
+  .rich-html-content :where(.quest-image-wrapper.count-3) {
+    @apply grid-cols-3;
+  }
+
+  .rich-html-content :where(.quest-image-wrapper img, .quest-image-wrapper .quest-image) {
+    @apply m-0 h-auto w-full max-w-none object-cover;
+  }
+
+  .rich-html-content :where(blockquote) {
+    @apply my-5 border-l-4 border-orange-400 bg-orange-50/70 py-2 pl-4 italic text-gray-700 dark:bg-orange-500/10 dark:text-gray-200;
+  }
+
+  .rich-html-content :where(table) {
+    @apply my-5 block w-full overflow-x-auto border-collapse text-sm;
+  }
+
+  .rich-html-content :where(th, td) {
+    @apply border border-gray-200 px-3 py-2 align-middle dark:border-[#2a3038];
+  }
+
+  .rich-html-content :where(th) {
+    @apply bg-gray-100 font-bold text-gray-900 dark:bg-[#20242b] dark:text-white;
+  }
+
+  .rich-html-content :where(pre) {
+    @apply my-5 overflow-x-auto rounded-lg bg-gray-950 p-4 text-sm text-white;
+  }
+
+  .rich-html-content :where(code) {
+    @apply rounded bg-orange-50 px-1 py-0.5 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300;
+  }
+
+  .rich-html-content :where(pre code) {
+    @apply bg-transparent p-0 text-inherit;
+  }
 }

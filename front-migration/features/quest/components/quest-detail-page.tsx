@@ -260,9 +260,8 @@ export function QuestDetailPage({
             <SectionTitle>{copy.guide}</SectionTitle>
             <div
               className={cn(
-                "prose prose-sm mt-5 max-w-none text-gray-700 dark:prose-invert dark:text-gray-300",
-                "[&_a]:text-orange-500 dark:[&_a]:text-orange-300",
-                "[&_img]:cursor-zoom-in [&_img]:rounded-lg [&_img]:border [&_img]:border-gray-200 dark:[&_img]:border-[#2a3038]",
+                "rich-html-content mt-5",
+                "[&_img]:cursor-zoom-in",
               )}
               onClick={(event) => {
                 const target = event.target;

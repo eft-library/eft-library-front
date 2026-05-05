@@ -466,8 +466,18 @@ function PointSection({
                 </div>
                 <BooleanIcon value={item.is_unlimited_use} />
                 <BooleanIcon value={item.is_one_time_use} />
-                <HtmlBlock value={requirements} fallback={copy.none} />
-                <HtmlBlock value={tips} fallback={copy.none} />
+                <HtmlBlock
+                  value={requirements}
+                  fallback={copy.none}
+                  alt={name}
+                  onOpenImage={onOpenImage}
+                />
+                <HtmlBlock
+                  value={tips}
+                  fallback={copy.none}
+                  alt={name}
+                  onOpenImage={onOpenImage}
+                />
               </div>
             </article>
           );
@@ -576,14 +586,37 @@ function ImagePopup({
   );
 }
 
-function HtmlBlock({ value, fallback }: { value: string; fallback: string }) {
+function HtmlBlock({
+  value,
+  fallback,
+  alt,
+  onOpenImage,
+}: {
+  value: string;
+  fallback: string;
+  alt: string;
+  onOpenImage: (image: ImagePopupState) => void;
+}) {
   if (!value) {
     return <span className="text-sm text-gray-500 dark:text-gray-400">{fallback}</span>;
   }
 
   return (
     <div
-      className="prose prose-sm max-w-none text-sm dark:prose-invert [&_img]:mx-auto [&_img]:max-h-16 [&_img]:max-w-16"
+      className="prose prose-sm max-w-none text-sm dark:prose-invert [&_img]:mx-auto [&_img]:max-h-16 [&_img]:max-w-16 [&_img]:cursor-zoom-in [&_img]:rounded-md"
+      onClick={(event) => {
+        const target = event.target;
+
+        if (!(target instanceof HTMLImageElement) || !target.src) {
+          return;
+        }
+
+        event.preventDefault();
+        onOpenImage({
+          src: target.currentSrc || target.src,
+          alt: target.alt || alt,
+        });
+      }}
       dangerouslySetInnerHTML={{ __html: value }}
     />
   );
