@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import {
   createCommunityPost,
@@ -25,6 +25,7 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
   const [contents, setContents] = useState("");
   const [slug, setSlug] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const isUpdate = Boolean(postParam);
@@ -45,10 +46,15 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
       .catch(() => setError("수정할 게시글을 불러오지 못했습니다."));
   }, [isUpdate, postId, session?.accessToken]);
 
+  function showNotice(message: string) {
+    setNotice(message);
+    window.setTimeout(() => setNotice(""), 2200);
+  }
+
   async function submitPost(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!session?.accessToken) {
-      await signIn("google");
+      showNotice("로그인이 필요한 기능입니다.");
       return;
     }
 
@@ -92,6 +98,11 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
   async function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) {
+      return;
+    }
+    if (!session?.accessToken) {
+      showNotice("로그인이 필요한 기능입니다.");
+      event.target.value = "";
       return;
     }
 
@@ -178,6 +189,11 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
           </div>
         </section>
       </form>
+      {notice ? (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-gray-950 px-4 py-2 text-sm font-semibold text-white shadow-lg dark:bg-white dark:text-gray-950">
+          {notice}
+        </div>
+      ) : null}
     </main>
   );
 }

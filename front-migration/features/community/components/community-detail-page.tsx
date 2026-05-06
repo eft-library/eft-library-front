@@ -4,10 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
+  AlertTriangle,
   Bookmark,
+  CornerDownRight,
   Edit3,
   Flag,
+  Link as LinkIcon,
   MessageCircle,
+  Pencil,
+  Reply,
+  Send,
   ThumbsDown,
   ThumbsUp,
   Trash2,
@@ -17,7 +23,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import {
   bookmarkCommunityPost,
@@ -47,6 +53,7 @@ import {
 import { useAppStore } from "@/components/providers/app-store-provider";
 import type {
   CommunityCommentsResponse,
+  CommunityComment,
   CommunityDetailResponse,
   CommunityMetaData,
 } from "@/types/api/community";
@@ -63,12 +70,14 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   const [detail, setDetail] = useState<CommunityDetailResponse | null>(null);
   const [meta, setMeta] = useState<CommunityMetaData | null>(null);
   const [comments, setComments] = useState<CommunityCommentsResponse | null>(null);
+  const [commentsError, setCommentsError] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");
   const [replyTarget, setReplyTarget] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [imagePopup, setImagePopup] = useState<{ src: string; alt: string } | null>(null);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editingCommentText, setEditingCommentText] = useState("");
+  const [notice, setNotice] = useState("");
   const [reportTarget, setReportTarget] = useState<
     | { type: "post"; id: string; reportedEmail: string }
     | { type: "comment"; id: string; reportedEmail: string }
@@ -76,7 +85,11 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   >(null);
 
   const postId = useMemo(() => getPostIdFromUrlParam(id), [id]);
-  const commentPage = Math.max(1, Number(searchParams.get("comment_page") ?? "1") || 1);
+  const issueCommentId = searchParams.get("comment_id") ?? "";
+  const commentPage = Math.max(
+    issueCommentId ? 0 : 1,
+    Number(searchParams.get("comment_page") ?? searchParams.get("page") ?? (issueCommentId ? "0" : "1")) || (issueCommentId ? 0 : 1),
+  );
   const userEmail = session?.userInfo?.email ?? session?.user?.email ?? "";
 
   useEffect(() => {
@@ -101,22 +114,33 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
 
   useEffect(() => {
     let ignore = false;
-    Promise.all([
-      getCommunityDetailMetaData(id, userEmail),
-      getCommunityComments(postId, commentPage, userEmail),
-    ])
-      .then(([nextMeta, nextComments]) => {
+
+    getCommunityDetailMetaData(id, userEmail)
+      .then((nextMeta) => {
         if (!ignore) {
           setMeta(nextMeta);
-          setComments(nextComments);
         }
       })
       .catch(() => undefined);
 
+    setCommentsError(null);
+    getCommunityComments(postId, commentPage, userEmail, issueCommentId)
+      .then((nextComments) => {
+        if (!ignore) {
+          setComments(nextComments);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setComments(null);
+          setCommentsError("댓글을 불러오지 못했습니다.");
+        }
+      });
+
     return () => {
       ignore = true;
     };
-  }, [commentPage, id, postId, userEmail]);
+  }, [commentPage, id, issueCommentId, postId, userEmail]);
 
   useEffect(() => {
     const storageKey = `community-view:${id}`;
@@ -128,22 +152,45 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   }, [id]);
 
   async function refreshMetaAndComments() {
-    const [nextMeta, nextComments] = await Promise.all([
-      getCommunityDetailMetaData(id, userEmail),
-      getCommunityComments(postId, commentPage, userEmail),
-    ]);
-    setMeta(nextMeta);
+    const nextMeta = await getCommunityDetailMetaData(id, userEmail).catch(() => null);
+    const nextComments = await getCommunityComments(postId, commentPage, userEmail, issueCommentId);
+    if (nextMeta) {
+      setMeta(nextMeta);
+    }
     setComments(nextComments);
+    setCommentsError(null);
   }
+
+  useEffect(() => {
+    if (!issueCommentId || !comments) {
+      return;
+    }
+
+    const element = document.getElementById(`community-comment-${issueCommentId}`);
+    if (!element) {
+      return;
+    }
+
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+    element.classList.add("ring-2", "ring-orange-400", "ring-offset-2", "dark:ring-offset-[#1f232b]");
+    window.setTimeout(() => {
+      element.classList.remove("ring-2", "ring-orange-400", "ring-offset-2", "dark:ring-offset-[#1f232b]");
+    }, 2200);
+  }, [comments, issueCommentId]);
 
   async function refreshDetail() {
     const nextDetail = await getCommunityDetail(id, "", userEmail);
     setDetail(nextDetail);
   }
 
+  function showNotice(message: string) {
+    setNotice(message);
+    window.setTimeout(() => setNotice(""), 2200);
+  }
+
   async function requireLogin() {
     if (!session?.accessToken) {
-      await signIn("google");
+      showNotice("로그인이 필요한 기능입니다.");
       return false;
     }
     return true;
@@ -233,6 +280,40 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
     setEditingCommentId(null);
     setEditingCommentText("");
     await refreshMetaAndComments();
+  }
+
+  async function submitReply(parentCommentId: string, contents: string) {
+    if (!(await requireLogin()) || !detail) {
+      return;
+    }
+    const trimmed = contents.trim();
+    if (!trimmed) {
+      return;
+    }
+    await createCommunityComment(
+      {
+        post_id: postId,
+        contents: trimmed,
+        nickname: session?.userInfo?.nickname ?? session?.user?.name ?? "User",
+        slug: detail.post_detail.slug,
+        title: detail.post_detail.title,
+        post_author_email: detail.post_detail.user_email,
+        parent_comment_id: parentCommentId,
+      },
+      session!.accessToken,
+    );
+    await refreshMetaAndComments();
+  }
+
+  async function openReportTarget(
+    target:
+      | { type: "post"; id: string; reportedEmail: string }
+      | { type: "comment"; id: string; reportedEmail: string },
+  ) {
+    if (!(await requireLogin())) {
+      return;
+    }
+    setReportTarget(target);
   }
 
   function openContentImage(event: React.MouseEvent<HTMLDivElement>) {
@@ -353,7 +434,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
             {!isAuthor ? (
               <button
                 type="button"
-                onClick={() => setReportTarget({ type: "post", id: postId, reportedEmail: post.user_email })}
+                onClick={() => openReportTarget({ type: "post", id: postId, reportedEmail: post.user_email })}
                 className="inline-flex h-10 items-center gap-2 rounded-md border border-gray-200 px-4 text-sm font-bold text-gray-700 transition hover:border-red-300 hover:text-red-600 dark:border-gray-700 dark:text-gray-200 dark:hover:border-red-500 dark:hover:text-red-300"
               >
                 <Flag className="h-4 w-4" />
@@ -400,134 +481,77 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
               </div>
             </form>
 
-            <div className="mt-5 space-y-3">
-              {(comments?.comments ?? []).map((comment) => (
-                <div
-                  key={comment.id}
-                  className="rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-700/70 dark:bg-[#1f232b]"
-                  style={{ marginLeft: `${Math.min(comment.depth, 3) * 18}px` }}
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                    <span className="font-bold text-gray-800 dark:text-gray-100">{comment.nickname || "익명"}</span>
-                    <span>{formatCommunityDate(comment.create_time)}</span>
-                    {comment.parent_nickname ? <span>@{comment.parent_nickname}</span> : null}
-                  </div>
-                  {editingCommentId === comment.id ? (
-                    <div className="mt-3 space-y-2">
-                      <textarea
-                        value={editingCommentText}
-                        onChange={(event) => setEditingCommentText(event.target.value)}
-                        rows={3}
-                        className="w-full rounded-md border border-gray-200 bg-white p-3 text-sm outline-none focus:border-orange-300 dark:border-gray-700 dark:bg-[#252932]"
-                      />
-                      <div className="flex justify-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingCommentId(null);
-                            setEditingCommentText("");
-                          }}
-                          className="h-8 rounded-md border border-gray-200 px-3 text-xs font-bold dark:border-gray-700"
-                        >
-                          취소
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => submitCommentUpdate(comment.id)}
-                          className="h-8 rounded-md bg-orange-500 px-3 text-xs font-bold text-white"
-                        >
-                          저장
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-700 dark:text-gray-200">
-                      {comment.delete_by_user || comment.delete_by_admin ? "삭제된 댓글입니다." : comment.contents}
-                    </p>
-                  )}
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        if (await requireLogin()) {
-                          await reactCommunityComment(comment.id, "like", session!.accessToken);
-                          await refreshMetaAndComments();
-                        }
-                      }}
-                      className="font-semibold text-gray-500 hover:text-orange-600 dark:text-gray-400"
-                    >
-                      추천 {comment.like_count}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        if (await requireLogin()) {
-                          await reactCommunityComment(comment.id, "dislike", session!.accessToken);
-                          await refreshMetaAndComments();
-                        }
-                      }}
-                      className="font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                    >
-                      비추천 {comment.dislike_count}
-                    </button>
-                    <button type="button" onClick={() => setReplyTarget(comment.id)} className="font-semibold text-gray-500 hover:text-orange-600 dark:text-gray-400">
-                      답글
-                    </button>
-                    {session?.accessToken && userEmail === comment.user_email ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingCommentId(comment.id);
-                          setEditingCommentText(comment.contents);
-                        }}
-                        className="font-semibold text-gray-500 hover:text-orange-600 dark:text-gray-400"
-                      >
-                        수정
-                      </button>
-                    ) : null}
-                    {session?.accessToken && userEmail === comment.user_email ? (
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          if (window.confirm("댓글을 삭제할까요?")) {
-                            await deleteCommunityComment(comment.id, session.accessToken);
-                            await refreshMetaAndComments();
-                          }
-                        }}
-                        className="font-semibold text-red-500 hover:text-red-600"
-                      >
-                        삭제
-                      </button>
-                    ) : null}
-                    {session?.accessToken && userEmail !== comment.user_email ? (
-                      <button
-                        type="button"
-                        onClick={() => setReportTarget({ type: "comment", id: comment.id, reportedEmail: comment.user_email })}
-                        className="font-semibold text-gray-500 hover:text-red-600 dark:text-gray-400"
-                      >
-                        신고
-                      </button>
-                    ) : null}
-                    {isAdmin && userEmail !== comment.user_email ? (
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          if (session?.accessToken && window.confirm("관리자 권한으로 댓글을 삭제할까요?")) {
-                            await deleteCommunityCommentByAdmin(comment.id, session.accessToken);
-                            await refreshMetaAndComments();
-                          }
-                        }}
-                        className="font-semibold text-red-500 hover:text-red-600"
-                      >
-                        관리자 삭제
-                      </button>
-                    ) : null}
-                  </div>
+            <div className="mt-5 space-y-4">
+              {commentsError ? (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+                  {commentsError}
                 </div>
+              ) : null}
+              {(comments?.issue_comments ?? []).length > 0 ? (
+                <div className="space-y-2 rounded-lg border border-yellow-200 bg-yellow-50/70 p-3 dark:border-yellow-500/30 dark:bg-yellow-500/10">
+                  <div className="text-xs font-black uppercase tracking-[0.18em] text-yellow-700 dark:text-yellow-300">
+                    Issue Comments
+                  </div>
+                  {(comments?.issue_comments ?? []).map((comment) => (
+                    <IssueCommentCard key={`issue-${comment.id}`} comment={comment} postId={id} />
+                  ))}
+                </div>
+              ) : null}
+
+              {(comments?.comments ?? []).map((comment) => (
+                <CommunityCommentCard
+                  key={comment.id}
+                  comment={comment}
+                  isAdmin={isAdmin}
+                  isEditing={editingCommentId === comment.id}
+                  editText={editingCommentText}
+                  currentUserEmail={userEmail}
+                  onEditTextChange={setEditingCommentText}
+                  onCancelEdit={() => {
+                    setEditingCommentId(null);
+                    setEditingCommentText("");
+                  }}
+                  onStartEdit={() => {
+                    setEditingCommentId(comment.id);
+                    setEditingCommentText(comment.contents);
+                  }}
+                  onSubmitEdit={() => submitCommentUpdate(comment.id)}
+                  onReply={submitReply}
+                  onReact={async (reaction) => {
+                    if (await requireLogin()) {
+                      await reactCommunityComment(comment.id, reaction, session!.accessToken);
+                      await refreshMetaAndComments();
+                    }
+                  }}
+                  onDeleteUser={async () => {
+                    if (session?.accessToken && window.confirm("댓글을 삭제할까요?")) {
+                      await deleteCommunityComment(comment.id, session.accessToken);
+                      await refreshMetaAndComments();
+                    }
+                  }}
+                  onDeleteAdmin={async () => {
+                    if (session?.accessToken && window.confirm("관리자 권한으로 댓글을 삭제할까요?")) {
+                      await deleteCommunityCommentByAdmin(comment.id, session.accessToken);
+                      await refreshMetaAndComments();
+                    }
+                  }}
+                  onReport={() => openReportTarget({ type: "comment", id: comment.id, reportedEmail: comment.user_email })}
+                  requireLogin={requireLogin}
+                />
               ))}
+              {!commentsError && comments && comments.total > 0 && comments.comments.length === 0 && comments.issue_comments.length === 0 ? (
+                <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm font-semibold text-yellow-800 dark:border-yellow-500/30 dark:bg-yellow-500/10 dark:text-yellow-200">
+                  댓글 수는 존재하지만 표시 가능한 댓글 데이터가 없습니다. 댓글 작성자 정보가 누락되었거나 삭제된 데이터일 수 있습니다.
+                </div>
+              ) : null}
+              {!commentsError && comments && comments.total === 0 ? (
+                <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-[#252932] dark:text-gray-400">
+                  아직 댓글이 없습니다.
+                </div>
+              ) : null}
             </div>
             <CommunityPagination
-              page={commentPage}
+              page={comments?.current_page_num || 1}
               maxPage={comments?.max_page_count ?? 1}
               onPageChange={(nextPage) => router.push(`/community/detail/${id}?comment_page=${nextPage}`)}
             />
@@ -579,6 +603,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
       <CommunityReportDialog
         target={reportTarget}
         accessToken={session?.accessToken}
+        onLoginRequired={() => showNotice("로그인이 필요한 기능입니다.")}
         onClose={() => setReportTarget(null)}
         onSubmit={async (reasonType, reason) => {
           if (!(await requireLogin()) || !reportTarget) {
@@ -608,7 +633,303 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
           setReportTarget(null);
         }}
       />
+      {notice ? (
+        <div className="fixed bottom-6 left-1/2 z-[100] -translate-x-1/2 rounded-lg bg-gray-950 px-4 py-2 text-sm font-semibold text-white shadow-lg dark:bg-white dark:text-gray-950">
+          {notice}
+        </div>
+      ) : null}
     </main>
+  );
+}
+
+function IssueCommentCard({
+  comment,
+  postId,
+}: {
+  comment: CommunityComment;
+  postId: string;
+}) {
+  const isDeleted = comment.delete_by_admin || comment.delete_by_user;
+
+  return (
+    <Link
+      href={`/community/detail/${postId}?comment_id=${comment.id}`}
+      className="block rounded-md border border-yellow-200 bg-white p-3 text-sm transition hover:border-yellow-300 hover:bg-yellow-100/60 dark:border-yellow-500/30 dark:bg-[#252932] dark:hover:bg-yellow-500/10"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-bold text-gray-900 dark:text-white">{comment.nickname || "익명"}</span>
+            <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[11px] font-black text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-200">
+              ISSUE
+            </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{formatCommunityDate(comment.create_time)}</span>
+          </div>
+          {comment.depth > 1 && comment.parent_nickname ? (
+            <div className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-sky-600 dark:text-sky-300">
+              <CornerDownRight className="h-3.5 w-3.5" />
+              @{comment.parent_nickname}
+            </div>
+          ) : null}
+          <p className="mt-2 line-clamp-2 whitespace-pre-wrap text-gray-700 dark:text-gray-200">
+            {isDeleted
+              ? comment.delete_by_admin
+                ? "관리자가 삭제한 댓글입니다."
+                : "사용자가 삭제한 댓글입니다."
+              : comment.contents}
+          </p>
+        </div>
+        <LinkIcon className="mt-1 h-4 w-4 shrink-0 text-yellow-700 dark:text-yellow-300" />
+      </div>
+    </Link>
+  );
+}
+
+function CommunityCommentCard({
+  comment,
+  isAdmin,
+  isEditing,
+  editText,
+  currentUserEmail,
+  onEditTextChange,
+  onCancelEdit,
+  onStartEdit,
+  onSubmitEdit,
+  onReply,
+  onReact,
+  onDeleteUser,
+  onDeleteAdmin,
+  onReport,
+  requireLogin,
+}: {
+  comment: CommunityComment;
+  isAdmin: boolean;
+  isEditing: boolean;
+  editText: string;
+  currentUserEmail: string;
+  onEditTextChange: (value: string) => void;
+  onCancelEdit: () => void;
+  onStartEdit: () => void;
+  onSubmitEdit: () => void;
+  onReply: (parentCommentId: string, contents: string) => Promise<void>;
+  onReact: (reaction: "like" | "dislike") => Promise<void>;
+  onDeleteUser: () => Promise<void>;
+  onDeleteAdmin: () => Promise<void>;
+  onReport: () => void;
+  requireLogin: () => Promise<boolean>;
+}) {
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const isOwner = Boolean(currentUserEmail && currentUserEmail === comment.user_email);
+  const isDeleted = comment.delete_by_admin || comment.delete_by_user;
+  const isUpdated = !isDeleted && comment.create_time !== comment.update_time;
+  const depth = Math.max(1, Math.min(comment.depth || 1, 5));
+  const indent = depth > 1 ? (depth - 1) * 24 : 0;
+
+  async function submitReply() {
+    if (!(await requireLogin())) {
+      return;
+    }
+    const contents = replyText.trim();
+    if (!contents) {
+      return;
+    }
+    await onReply(comment.id, contents);
+    setReplyText("");
+    setIsReplying(false);
+  }
+
+  return (
+    <div id={`community-comment-${comment.id}`} className="relative scroll-mt-28 transition" style={{ marginLeft: `${indent}px` }}>
+      {depth > 1 ? (
+        <>
+          <div
+            className="absolute top-0 w-px bg-gradient-to-b from-sky-200 via-sky-300 to-transparent dark:from-sky-900 dark:via-sky-700"
+            style={{ left: "-14px", height: "52px" }}
+          />
+          <div className="absolute top-6 h-px w-3 bg-sky-300 dark:bg-sky-700" style={{ left: "-14px" }} />
+        </>
+      ) : null}
+
+      <article className="relative rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:border-orange-200 hover:shadow-md dark:border-gray-700/70 dark:bg-[#1f232b] dark:hover:border-orange-500/40">
+        {depth > 1 ? (
+          <span className="absolute -left-2 top-5 flex h-4 w-4 items-center justify-center rounded-full border-2 border-sky-300 bg-white dark:border-sky-700 dark:bg-[#1f232b]">
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+          </span>
+        ) : null}
+
+        <header className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-bold text-gray-900 dark:text-white">{comment.nickname || "익명"}</span>
+              {depth > 1 ? (
+                <span className="rounded-full bg-sky-50 px-2 py-0.5 text-[11px] font-bold text-sky-600 dark:bg-sky-500/15 dark:text-sky-300">
+                  답글
+                </span>
+              ) : null}
+              {comment.parent_nickname ? (
+                <span className="text-xs font-semibold text-sky-600 dark:text-sky-300">@{comment.parent_nickname}</span>
+              ) : null}
+            </div>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <span>{formatCommunityDate(comment.create_time)}</span>
+              {isUpdated ? <span>수정됨 {formatCommunityDate(comment.update_time)}</span> : null}
+            </div>
+          </div>
+        </header>
+
+        <div className="mt-3">
+          {isEditing ? (
+            <div className="space-y-2">
+              <textarea
+                value={editText}
+                onChange={(event) => onEditTextChange(event.target.value)}
+                rows={3}
+                className="w-full rounded-md border border-gray-200 bg-gray-50 p-3 text-sm leading-6 outline-none focus:border-orange-300 dark:border-gray-700 dark:bg-[#252932]"
+              />
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={onCancelEdit}
+                  className="h-8 rounded-md border border-gray-200 px-3 text-xs font-bold text-gray-700 dark:border-gray-700 dark:text-gray-200"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  onClick={onSubmitEdit}
+                  className="h-8 rounded-md bg-orange-500 px-3 text-xs font-bold text-white hover:bg-orange-600"
+                >
+                  저장
+                </button>
+              </div>
+            </div>
+          ) : isDeleted ? (
+            <p className="inline-flex items-center gap-2 rounded-md bg-gray-50 px-3 py-2 text-sm italic text-gray-500 dark:bg-[#252932] dark:text-gray-400">
+              <AlertTriangle className="h-4 w-4" />
+              {comment.delete_by_admin ? "관리자가 삭제한 댓글입니다." : "사용자가 삭제한 댓글입니다."}
+            </p>
+          ) : (
+            <p className="whitespace-pre-wrap text-sm font-medium leading-7 text-gray-800 dark:text-gray-200">
+              {comment.contents}
+            </p>
+          )}
+        </div>
+
+        {!isDeleted ? (
+          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-gray-100 pt-3 text-xs dark:border-gray-700/70">
+            <button
+              type="button"
+              onClick={() => onReact("like")}
+              className={`inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold transition ${
+                comment.is_like === 1
+                  ? "bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-300"
+                  : "text-gray-500 hover:bg-green-50 hover:text-green-700 dark:text-gray-400 dark:hover:bg-green-500/15 dark:hover:text-green-300"
+              }`}
+            >
+              <ThumbsUp className="h-4 w-4" />
+              {comment.like_count}
+            </button>
+            <button
+              type="button"
+              onClick={() => onReact("dislike")}
+              className={`inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold transition ${
+                comment.is_like === 0
+                  ? "bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-300"
+                  : "text-gray-500 hover:bg-red-50 hover:text-red-700 dark:text-gray-400 dark:hover:bg-red-500/15 dark:hover:text-red-300"
+              }`}
+            >
+              <ThumbsDown className="h-4 w-4" />
+              {comment.dislike_count}
+            </button>
+            <button
+              type="button"
+              onClick={async () => {
+                if (await requireLogin()) {
+                  setIsReplying((value) => !value);
+                }
+              }}
+              className="inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold text-gray-500 transition hover:bg-sky-50 hover:text-sky-700 dark:text-gray-400 dark:hover:bg-sky-500/15 dark:hover:text-sky-300"
+            >
+              <Reply className="h-4 w-4" />
+              답글
+            </button>
+            {isOwner ? (
+              <button
+                type="button"
+                onClick={onStartEdit}
+                className="inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold text-gray-500 transition hover:bg-orange-50 hover:text-orange-700 dark:text-gray-400 dark:hover:bg-orange-500/15 dark:hover:text-orange-300"
+              >
+                <Pencil className="h-4 w-4" />
+                수정
+              </button>
+            ) : null}
+            {isOwner ? (
+              <button
+                type="button"
+                onClick={onDeleteUser}
+                className="inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold text-red-500 transition hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-500/15"
+              >
+                <Trash2 className="h-4 w-4" />
+                삭제
+              </button>
+            ) : null}
+            {!isOwner ? (
+              <button
+                type="button"
+                onClick={onReport}
+                className="inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold text-gray-500 transition hover:bg-red-50 hover:text-red-700 dark:text-gray-400 dark:hover:bg-red-500/15 dark:hover:text-red-300"
+              >
+                <Flag className="h-4 w-4" />
+                신고
+              </button>
+            ) : null}
+            {isAdmin && !isOwner ? (
+              <button
+                type="button"
+                onClick={onDeleteAdmin}
+                className="inline-flex h-8 items-center gap-1 rounded-full px-3 font-bold text-red-500 transition hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-500/15"
+              >
+                <Trash2 className="h-4 w-4" />
+                관리자 삭제
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
+        {isReplying ? (
+          <div className="mt-4 rounded-lg border border-sky-100 bg-sky-50/60 p-3 dark:border-sky-500/20 dark:bg-sky-500/10">
+            <textarea
+              value={replyText}
+              onChange={(event) => setReplyText(event.target.value)}
+              rows={3}
+              className="w-full rounded-md border border-sky-200 bg-white p-3 text-sm leading-6 outline-none focus:border-sky-400 dark:border-sky-500/30 dark:bg-[#252932]"
+              placeholder={`${comment.nickname || "댓글"} 님에게 답글을 작성하세요.`}
+            />
+            <div className="mt-2 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsReplying(false);
+                  setReplyText("");
+                }}
+                className="h-8 rounded-md border border-gray-200 px-3 text-xs font-bold text-gray-700 dark:border-gray-700 dark:text-gray-200"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={submitReply}
+                className="inline-flex h-8 items-center gap-1 rounded-md bg-sky-600 px-3 text-xs font-bold text-white hover:bg-sky-700"
+              >
+                <Send className="h-3.5 w-3.5" />
+                답글 작성
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </article>
+    </div>
   );
 }
 
@@ -658,11 +979,13 @@ function CommunityImagePopup({
 function CommunityReportDialog({
   target,
   accessToken,
+  onLoginRequired,
   onClose,
   onSubmit,
 }: {
   target: { type: "post" | "comment"; id: string; reportedEmail: string } | null;
   accessToken?: string;
+  onLoginRequired: () => void;
   onClose: () => void;
   onSubmit: (reasonType: string, reason: string) => Promise<void>;
 }) {
@@ -687,7 +1010,7 @@ function CommunityReportDialog({
         onSubmit={async (event) => {
           event.preventDefault();
           if (!accessToken) {
-            await signIn("google");
+            onLoginRequired();
             return;
           }
           setIsSubmitting(true);
