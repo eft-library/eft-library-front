@@ -200,7 +200,12 @@ export function MapOfTarkovPage({
         </section>
 
         {contentMapData.find_info ? (
-          <FindLocation findInfo={contentMapData.find_info} locale={locale} />
+          <FindLocation
+            key={contentMapData.map_info.normalized_name}
+            findInfo={contentMapData.find_info}
+            locale={locale}
+            mapKey={contentMapData.map_info.normalized_name}
+          />
         ) : null}
 
         <BossSection bosses={contentMapData.boss_info} copy={copy} locale={locale} />

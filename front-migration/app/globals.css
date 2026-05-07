@@ -73,7 +73,44 @@ summary {
 }
 
 .leaflet-container {
+  background: #f3f4f6;
   z-index: 0;
+}
+
+.dark .leaflet-container {
+  background: #111827;
+}
+
+.dark .eft-leaflet-map .leaflet-image-layer {
+  filter: brightness(0.72) contrast(0.95) saturate(0.9);
+}
+
+.leaflet-control-zoom a {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  color: #374151;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #f9fafb;
+  color: #f97316;
+}
+
+.dark .leaflet-control-zoom a {
+  background: #252830;
+  border-color: #374151;
+  color: #e5e7eb;
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background: #2f333d;
+  color: #fdba74;
+}
+
+.dark .leaflet-tooltip {
+  background: #252830;
+  border-color: #4b5563;
+  color: #f9fafb;
 }
 
 .leaflet-pane {

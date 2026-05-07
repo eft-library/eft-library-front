@@ -118,9 +118,11 @@ function parseWhereText(text: string) {
 export function FindLocation({
   findInfo,
   locale,
+  mapKey,
 }: {
   findInfo: FindInfo;
   locale: Locale;
+  mapKey: string;
 }) {
   const copy = copyByLocale[locale];
   const websocketLocation = useWsStore((state) => state.location);
@@ -134,7 +136,7 @@ export function FindLocation({
   function applyWhereText(text: string) {
     const result = parseWhereText(text);
     setImageCoord(result ?? { x: 0, y: 0, yaw: 0 });
-    setIsViewWhere(Boolean(result));
+    setIsViewWhere(true);
   }
 
   function handlePaste(event: React.ClipboardEvent<HTMLInputElement>) {
@@ -218,6 +220,7 @@ export function FindLocation({
             findInfo={findInfo}
             imageCoord={imageCoord}
             isViewWhere={isViewWhere}
+            mapKey={mapKey}
             onMousePositionChange={setMousePosition}
           />
         </div>
