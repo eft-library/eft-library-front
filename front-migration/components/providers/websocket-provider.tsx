@@ -3,16 +3,22 @@
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 
+import { normalizeNotificationMessage } from "@/lib/utils/notification";
 import { useWsStore } from "@/store/ws-store";
+import type { MyPageNotificationEntry } from "@/types/api/mypage";
 
 interface WebSocketMessage {
   type?: string;
-  payload?: string;
+  payload?: unknown;
+  data?: unknown;
+  notifications?: unknown;
 }
 
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const setLocation = useWsStore((state) => state.setLocation);
+  const setNotifications = useWsStore((state) => state.setNotifications);
+  const prependNotification = useWsStore((state) => state.prependNotification);
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -33,7 +39,32 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     ws.onmessage = (event) => {
       try {
         const parsed = JSON.parse(event.data) as WebSocketMessage;
-        if (parsed.type === "wpf_location" && typeof parsed.payload === "string") {
+
+        if (parsed.type === "init" && Array.isArray(parsed.notifications)) {
+          const notifications = parsed.notifications
+            .map(normalizeNotificationMessage)
+            .filter((entry): entry is MyPageNotificationEntry => Boolean(entry));
+
+          setNotifications(notifications);
+          return;
+        }
+
+        if (parsed.type === "message" || parsed.type === "notification") {
+          const notification = normalizeNotificationMessage(
+            parsed.data ?? parsed.payload,
+          );
+
+          if (notification) {
+            prependNotification(notification);
+          }
+
+          return;
+        }
+
+        if (
+          parsed.type === "wpf_location" &&
+          typeof parsed.payload === "string"
+        ) {
           setLocation(parsed.payload);
         }
       } catch {
@@ -57,7 +88,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       }
       wsRef.current = null;
     };
-  }, [session?.accessToken, setLocation]);
+  }, [prependNotification, session?.accessToken, setLocation, setNotifications]);
 
   return <>{children}</>;
 }

@@ -1,12 +1,19 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { getApiBaseUrl } from "@/lib/config/app-env";
+
 const protectedPathPrefixes = [
   "/community/create",
   "/community/update",
   "/onboarding",
   "/mypage",
 ];
+
+type TokenUserInfo = {
+  nickname?: unknown;
+} | null;
 
 function getClientIp(request: NextRequest) {
   return (
@@ -15,6 +22,55 @@ function getClientIp(request: NextRequest) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown"
   );
+}
+
+function getNicknameFromValue(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : null;
+}
+
+function getNicknameFromToken(token: Awaited<ReturnType<typeof getToken>>) {
+  if (!token || typeof token === "string") {
+    return null;
+  }
+
+  const directNickname = getNicknameFromValue(token.nickname);
+  if (directNickname) {
+    return directNickname;
+  }
+
+  const userInfo = token.userInfo as TokenUserInfo;
+  return getNicknameFromValue(userInfo?.nickname);
+}
+
+async function fetchNicknameFromUserInfo(accessToken: unknown) {
+  if (typeof accessToken !== "string" || accessToken.length === 0) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = (await response.json()) as {
+      data?: { nickname?: unknown } | null;
+    };
+
+    return getNicknameFromValue(payload.data?.nickname);
+  } catch {
+    return null;
+  }
 }
 
 export async function proxy(request: NextRequest) {
@@ -35,11 +91,17 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (token && !token.nickname && pathname !== "/onboarding") {
+  const nickname =
+    getNicknameFromToken(token) ??
+    (token && typeof token !== "string"
+      ? await fetchNicknameFromUserInfo(token.accessToken)
+      : null);
+
+  if (token && !nickname && pathname !== "/onboarding") {
     return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 
-  if (token && token.nickname && pathname === "/onboarding") {
+  if (token && nickname && pathname === "/onboarding") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

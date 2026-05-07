@@ -22,6 +22,7 @@ import {
 
 import Logo from "@/assets/navi/logo";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
+import { NotificationMenu } from "@/components/shared/notification-menu";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedText } from "@/lib/utils/localized-text";
@@ -356,40 +357,43 @@ export function SiteHeader({
 
           <div className="flex shrink-0 items-center gap-3">
             {status === "authenticated" ? (
-              <div
-                ref={userMenuRef}
-                className="relative flex h-9 items-center"
-                onMouseEnter={() => setIsUserMenuOpen(true)}
-                onMouseLeave={() => setIsUserMenuOpen(false)}
-              >
-                <button
-                  type="button"
-                  aria-label={myPageLabel}
-                  title={myPageLabel}
-                  onFocus={() => setIsUserMenuOpen(true)}
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:bg-white dark:text-orange-500 dark:hover:bg-orange-50"
+              <>
+                <NotificationMenu />
+                <div
+                  ref={userMenuRef}
+                  className="relative flex h-9 items-center"
+                  onMouseEnter={() => setIsUserMenuOpen(true)}
+                  onMouseLeave={() => setIsUserMenuOpen(false)}
                 >
-                  <User className="h-4 w-4" />
-                </button>
+                  <button
+                    type="button"
+                    aria-label={myPageLabel}
+                    title={myPageLabel}
+                    onFocus={() => setIsUserMenuOpen(true)}
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:bg-white dark:text-orange-500 dark:hover:bg-orange-50"
+                  >
+                    <User className="h-4 w-4" />
+                  </button>
 
-                {isUserMenuOpen ? (
-                  <div className="absolute left-1/2 top-full z-20 mt-2 w-40 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg before:absolute before:-top-2 before:left-0 before:h-2 before:w-full before:content-[''] dark:border-gray-600 dark:bg-[#25282e]">
-                    <Link
-                      href="/mypage/profile"
-                      className="block px-4 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
-                    >
-                      {myPageLabel}
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => signOut()}
-                      className="block w-full px-4 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
-                    >
-                      {logoutLabel}
-                    </button>
-                  </div>
-                ) : null}
-              </div>
+                  {isUserMenuOpen ? (
+                    <div className="absolute left-1/2 top-full z-20 mt-2 w-40 -translate-x-1/2 rounded-md border border-gray-200 bg-white py-2 shadow-lg before:absolute before:-top-2 before:left-0 before:h-2 before:w-full before:content-[''] dark:border-gray-600 dark:bg-[#25282e]">
+                      <Link
+                        href="/mypage/profile"
+                        className="block px-4 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
+                      >
+                        {myPageLabel}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => signOut()}
+                        className="block w-full px-4 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
+                      >
+                        {logoutLabel}
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              </>
             ) : (
               <button
                 type="button"
@@ -449,6 +453,10 @@ export function SiteHeader({
                   </div>
                 </div>
                 <div className="mt-3 grid gap-2">
+                  <NotificationMenu
+                    variant="mobile"
+                    onNavigate={() => setIsMobileOpen(false)}
+                  />
                   <Link
                     href="/mypage/profile"
                     onClick={() => setIsMobileOpen(false)}

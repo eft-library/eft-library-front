@@ -81,6 +81,10 @@ async function refreshAccessToken(token: JWT) {
   }
 }
 
+function hasNickname(userInfo: UserInfo) {
+  return Boolean(userInfo?.nickname?.trim());
+}
+
 const handler = NextAuth({
   providers: [
     Google({
@@ -157,6 +161,15 @@ const handler = NextAuth({
         token.accessTokenExpires &&
         Date.now() < (token.accessTokenExpires as number)
       ) {
+        if (!token.nickname && token.accessToken) {
+          const userInfo = await fetchUserInfo(token.accessToken as string);
+
+          if (userInfo) {
+            token.userInfo = userInfo;
+            token.nickname = hasNickname(userInfo) ? userInfo.nickname ?? null : null;
+          }
+        }
+
         return token;
       }
 
