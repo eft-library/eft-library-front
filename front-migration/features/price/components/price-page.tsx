@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import { getPriceSearchEndpoint } from "@/lib/config/api-endpoints";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
@@ -301,6 +302,8 @@ export function PricePage({ locale }: { locale: Locale }) {
             </form>
           </div>
         </section>
+
+        <HorizontalAdBanner />
 
         {isError ? (
           <section className="rounded-lg border border-amber-300 bg-amber-50 px-6 py-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100">

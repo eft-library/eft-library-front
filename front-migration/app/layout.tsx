@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
@@ -42,6 +44,15 @@ export default async function RootLayout({
   return (
     <html lang={defaultLocale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full bg-background text-foreground">
+        {process.env.NEXT_PUBLIC_ADSENSE ? (
+          <Script
+            id="google-adsense"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        ) : null}
         <ThemeProvider>
           <AuthProvider>
             <WebSocketProvider>
@@ -80,7 +91,9 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
           themeToggleLabel={copy.navigation.themeToggle}
           locale={locale}
         />
+        <HorizontalAdBanner className="hidden sm:block" />
         <div className="flex-1">{children}</div>
+        <HorizontalAdBanner className="hidden sm:block" />
         <SiteFooter
           title={copy.footer.title}
           description={copy.footer.description}
