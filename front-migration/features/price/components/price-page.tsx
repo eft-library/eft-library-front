@@ -97,6 +97,49 @@ const copyByLocale = {
   },
 } as const;
 
+type PriceMode = "pvp" | "pve";
+
+const priceModeTheme = {
+  pvp: {
+    activeButton: "bg-orange-500 text-white",
+    inactiveButton: "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300",
+    searchButton: "bg-orange-500 text-white hover:bg-orange-400",
+    inputFocus: "focus:border-orange-300 dark:focus:border-orange-500",
+    selectedCard:
+      "border-orange-300 bg-orange-50 text-orange-600 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300",
+    hoverCard:
+      "hover:border-orange-300 hover:text-orange-500 dark:hover:border-orange-500 dark:hover:text-orange-300",
+    softButton:
+      "hover:border-orange-300 hover:text-orange-500 dark:hover:border-orange-500 dark:hover:text-orange-300",
+    priceText: "text-orange-500 dark:text-orange-300",
+    subtlePill: "bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300",
+    miniBar: "bg-orange-400/80 dark:bg-orange-300/80",
+    highestTrader:
+      "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300",
+    chartStroke: "#f97316",
+    chartActive: "#fb923c",
+  },
+  pve: {
+    activeButton: "bg-emerald-600 text-white",
+    inactiveButton: "text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-300",
+    searchButton: "bg-emerald-600 text-white hover:bg-emerald-500",
+    inputFocus: "focus:border-emerald-300 dark:focus:border-emerald-500",
+    selectedCard:
+      "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-400/50 dark:bg-emerald-400/10 dark:text-emerald-300",
+    hoverCard:
+      "hover:border-emerald-300 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-300",
+    softButton:
+      "hover:border-emerald-300 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-300",
+    priceText: "text-emerald-600 dark:text-emerald-300",
+    subtlePill: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
+    miniBar: "bg-emerald-500/80 dark:bg-emerald-300/80",
+    highestTrader:
+      "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-400/50 dark:bg-emerald-400/10 dark:text-emerald-300",
+    chartStroke: "#059669",
+    chartActive: "#10b981",
+  },
+} as const;
+
 function formatPrice(value: number | null, locale: Locale) {
   if (value === null) {
     return "-";
@@ -145,9 +188,10 @@ export function PricePage({ locale }: { locale: Locale }) {
   const copy = copyByLocale[locale];
   const [query, setQuery] = useState("");
   const [searchWord, setSearchWord] = useState("");
-  const [priceType, setPriceType] = useState<"pvp" | "pve">("pvp");
+  const [priceType, setPriceType] = useState<PriceMode>("pvp");
   const [page, setPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState<PriceSearchItem | null>(null);
+  const theme = priceModeTheme[priceType];
 
   const {
     data,
@@ -213,8 +257,8 @@ export function PricePage({ locale }: { locale: Locale }) {
                 onClick={() => setPriceType("pvp")}
                 className={`px-5 py-2.5 text-sm font-bold transition ${
                   priceType === "pvp"
-                    ? "bg-orange-500 text-white"
-                    : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
+                    ? priceModeTheme.pvp.activeButton
+                    : priceModeTheme.pvp.inactiveButton
                 }`}
               >
                 {copy.pvp}
@@ -224,8 +268,8 @@ export function PricePage({ locale }: { locale: Locale }) {
                 onClick={() => setPriceType("pve")}
                 className={`px-5 py-2.5 text-sm font-bold transition ${
                   priceType === "pve"
-                    ? "bg-orange-500 text-white"
-                    : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
+                    ? priceModeTheme.pve.activeButton
+                    : priceModeTheme.pve.inactiveButton
                 }`}
               >
                 {copy.pve}
@@ -245,12 +289,12 @@ export function PricePage({ locale }: { locale: Locale }) {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder={copy.searchPlaceholder}
-                  className="h-11 w-full rounded-lg border border-gray-300 bg-white pl-10 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-300 dark:border-[#2f3742] dark:bg-[#181c21] dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-orange-500"
+                  className={`h-11 w-full rounded-lg border border-gray-300 bg-white pl-10 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 dark:border-[#2f3742] dark:bg-[#181c21] dark:text-gray-100 dark:placeholder:text-gray-500 ${theme.inputFocus}`}
                 />
               </label>
               <button
                 type="submit"
-                className="h-11 rounded-lg bg-orange-500 px-5 text-sm font-bold text-white transition hover:bg-orange-400"
+                className={`h-11 rounded-lg px-5 text-sm font-bold transition ${theme.searchButton}`}
               >
                 {copy.searchButton}
               </button>
@@ -292,8 +336,8 @@ export function PricePage({ locale }: { locale: Locale }) {
                       onClick={() => setSelectedItem(item)}
                       className={`flex min-w-0 w-full shrink-0 items-center gap-4 overflow-hidden rounded-lg border p-3 text-left transition ${
                         selectedItem?.id === item.id
-                          ? "border-orange-300 bg-orange-50 text-orange-600 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300"
-                          : "border-gray-200 bg-white text-gray-800 hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+                          ? theme.selectedCard
+                          : `border-gray-200 bg-white text-gray-800 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300 ${theme.hoverCard}`
                       }`}
                     >
                       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]">
@@ -319,7 +363,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                         </div>
                         <div className="mt-3 flex items-center justify-between gap-3">
                           {hasFleaPrice(summary) ? (
-                            <p className="flex min-w-0 items-center gap-1.5 truncate text-xs text-orange-500">
+                            <p className={`flex min-w-0 items-center gap-1.5 truncate text-xs ${theme.priceText}`}>
                               <Store className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                               <span className="min-w-0 truncate">
                                 {copy.fleaLabel}: {formatPrice(summary.flea_market_price, locale)}
@@ -329,7 +373,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                             <span />
                           )}
                           {item.history_by_type[priceType].length ? (
-                            <MiniTrend history={item.history_by_type[priceType]} />
+                            <MiniTrend history={item.history_by_type[priceType]} barClassName={theme.miniBar} />
                           ) : null}
                         </div>
                       </div>
@@ -349,7 +393,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={() => setPage((current) => Math.max(1, current - 1))}
                   disabled={data.current_page <= 1}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition hover:border-orange-300 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] dark:hover:border-orange-500 dark:hover:text-orange-300"
+                  className={`rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] ${theme.softButton}`}
                 >
                   {copy.previousLabel}
                 </button>
@@ -362,7 +406,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                     setPage((current) => Math.min(data.max_pages, current + 1))
                   }
                   disabled={data.current_page >= data.max_pages}
-                  className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition hover:border-orange-300 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] dark:hover:border-orange-500 dark:hover:text-orange-300"
+                  className={`rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#2a3038] ${theme.softButton}`}
                 >
                   {copy.nextLabel}
                 </button>
@@ -391,14 +435,14 @@ export function PricePage({ locale }: { locale: Locale }) {
                         {selectedItem.normalized_name}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-orange-700 dark:bg-orange-500/15 dark:text-orange-300">
+                        <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${theme.subtlePill}`}>
                           {selectedItem.category ?? "-"}
                         </span>
                         <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600 dark:bg-gray-700/60 dark:text-gray-200">
                           {copy.sizeLabel} {selectedItem.width}x{selectedItem.height}
                         </span>
                         {selectedPrice?.has_flea ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${theme.subtlePill}`}>
                             <Store className="h-3 w-3" aria-hidden="true" />
                             {copy.fleaLabel}
                           </span>
@@ -414,6 +458,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                           label={copy.fleaLabel}
                           value={formatPrice(selectedPrice.flea_market_price, locale)}
                           icon={<Store className="h-4 w-4" aria-hidden="true" />}
+                          iconClassName={theme.priceText}
                         />
                       ) : null}
                       <PriceMetric
@@ -437,6 +482,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                           highestTraderPrice={selectedPrice?.highest_trader_price ?? null}
                           locale={locale}
                           emptyLabel={copy.noTraderPrices}
+                          mode={priceType}
                         />
                       </div>
                     </div>
@@ -451,7 +497,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                         </span>
                       </div>
                       <div className="mt-4 min-h-64 min-w-0">
-                        <PriceLineChart history={selectedHistory} locale={locale} />
+                        <PriceLineChart history={selectedHistory} locale={locale} mode={priceType} />
                       </div>
                     </div>
                   ) : null}
@@ -472,15 +518,17 @@ function PriceMetric({
   label,
   value,
   icon,
+  iconClassName = "text-orange-500 dark:text-orange-300",
 }: {
   label: string;
   value: string;
   icon?: ReactNode;
+  iconClassName?: string;
 }) {
   return (
     <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-[#2a3038] dark:bg-[#20242b]">
       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
-        {icon ? <span className="text-orange-500 dark:text-orange-300">{icon}</span> : null}
+        {icon ? <span className={iconClassName}>{icon}</span> : null}
         <span>{label}</span>
       </div>
       <div className="mt-2 text-sm font-semibold">{value}</div>
@@ -490,8 +538,10 @@ function PriceMetric({
 
 function MiniTrend({
   history,
+  barClassName,
 }: {
   history: Array<{ price: number }>;
+  barClassName: string;
 }) {
   if (!history.length) {
     return <div className="h-6 w-16 rounded bg-gray-100 dark:bg-[#20242b]" />;
@@ -510,7 +560,7 @@ function MiniTrend({
         return (
           <span
             key={`${point.price}-${index}`}
-            className="w-1.5 rounded-sm bg-orange-400/80 dark:bg-orange-300/80"
+            className={`w-1.5 rounded-sm ${barClassName}`}
             style={{ height: `${height}px` }}
           />
         );
@@ -522,30 +572,60 @@ function MiniTrend({
 function PriceLineChart({
   history,
   locale,
+  mode,
 }: {
   history: Array<{ price: number; price_time: string }>;
   locale: Locale;
+  mode: PriceMode;
 }) {
   if (!history.length) {
     return <div className="text-sm text-gray-500 dark:text-gray-400">-</div>;
   }
 
-  const points = history.map((point) => ({
-    ...point,
-    timeLabel: new Date(point.price_time).toLocaleDateString(
-      locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US",
-      { month: "numeric", day: "numeric" },
-    ),
-    formattedTime: formatIsoDateTime(point.price_time, locale),
-  }));
+  const dateLocale = locale === "ko" ? "ko-KR" : locale === "ja" ? "ja-JP" : "en-US";
+  const theme = priceModeTheme[mode];
+  const points = history
+    .map((point) => {
+      const timestamp = new Date(point.price_time).getTime();
+
+      if (!Number.isFinite(timestamp) || !Number.isFinite(point.price)) {
+        return null;
+      }
+
+      return {
+        ...point,
+        timestamp,
+        formattedTime: formatIsoDateTime(point.price_time, locale),
+      };
+    })
+    .filter((point): point is {
+      price: number;
+      price_time: string;
+      timestamp: number;
+      formattedTime: string;
+    } => point !== null)
+    .sort((left, right) => left.timestamp - right.timestamp);
+
+  if (!points.length) {
+    return <div className="text-sm text-gray-500 dark:text-gray-400">-</div>;
+  }
 
   return (
     <ResponsiveContainer width="100%" height={256} minWidth={0}>
       <LineChart data={points} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.22)" />
         <XAxis
-          dataKey="timeLabel"
+          dataKey="timestamp"
+          type="number"
+          domain={["dataMin", "dataMax"]}
+          scale="time"
           tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tickFormatter={(value) =>
+            new Date(Number(value)).toLocaleDateString(dateLocale, {
+              month: "numeric",
+              day: "numeric",
+            })
+          }
           tickLine={false}
           axisLine={false}
           interval="preserveStartEnd"
@@ -558,7 +638,7 @@ function PriceLineChart({
           axisLine={false}
         />
         <Tooltip
-          cursor={{ stroke: "#fb923c", strokeWidth: 1 }}
+          cursor={{ stroke: theme.chartActive, strokeWidth: 1 }}
           content={({ active, payload }) => {
             const first = payload?.[0];
             const row = first?.payload as
@@ -574,7 +654,7 @@ function PriceLineChart({
                 <div className="font-semibold text-gray-900 dark:text-gray-100">
                   {row.formattedTime ?? "-"}
                 </div>
-                <div className="mt-1 text-orange-500 dark:text-orange-300">
+                <div className={`mt-1 ${theme.priceText}`}>
                   {formatPrice(row.price ?? null, locale)}
                 </div>
               </div>
@@ -582,13 +662,14 @@ function PriceLineChart({
           }}
         />
         <Line
-          type="monotone"
+          type="linear"
           dataKey="price"
           connectNulls
-          stroke="#f97316"
+          isAnimationActive={false}
+          stroke={theme.chartStroke}
           strokeWidth={2}
-          dot={{ r: 3, fill: "#f97316", strokeWidth: 0 }}
-          activeDot={{ r: 5, fill: "#fb923c", strokeWidth: 0 }}
+          dot={{ r: 3, fill: theme.chartStroke, strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: theme.chartActive, strokeWidth: 0 }}
         />
       </LineChart>
     </ResponsiveContainer>
@@ -600,11 +681,13 @@ function TraderPriceList({
   highestTraderPrice,
   locale,
   emptyLabel,
+  mode,
 }: {
   traders: PriceTraderRow[];
   highestTraderPrice: number | null;
   locale: Locale;
   emptyLabel: string;
+  mode: PriceMode;
 }) {
   if (!traders.length) {
     return (
@@ -613,6 +696,8 @@ function TraderPriceList({
       </div>
     );
   }
+
+  const theme = priceModeTheme[mode];
 
   return (
     <div className="grid gap-2">
@@ -628,7 +713,7 @@ function TraderPriceList({
             key={trader.id}
             className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${
               isHighest
-                ? "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-400/50 dark:bg-orange-400/10 dark:text-orange-300"
+                ? theme.highestTrader
                 : "border-gray-200 bg-white text-gray-700 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300"
             }`}
           >
