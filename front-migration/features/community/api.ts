@@ -277,3 +277,44 @@ export function reportCommunityComment(
     body: JSON.stringify(body),
   });
 }
+
+export function reportCommunityUser(
+  body: { reported_email: string; reason_type: string; reason: string },
+  accessToken: string,
+) {
+  return authenticatedApiRequest<CommunityMutationResult>(apiEndpoints.userReport, {
+    accessToken,
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export function blockCommunityUser(
+  body: { blocked_email: string; reason: string },
+  accessToken: string,
+) {
+  return authenticatedApiRequest<CommunityMutationResult>(apiEndpoints.userBlock, {
+    accessToken,
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export function unblockCommunityUser(blockedEmail: string, accessToken: string) {
+  return authenticatedApiRequest<CommunityMutationResult>(apiEndpoints.userUnblock, {
+    accessToken,
+    method: "POST",
+    body: JSON.stringify({ blocked_email: blockedEmail, reason: "" }),
+  });
+}
+
+export function penaltyCommunityUser(
+  body: { user_email: string; reason: string; penalty: string },
+  accessToken: string,
+) {
+  return authenticatedApiRequest<CommunityMutationResult>(apiEndpoints.userPenalty, {
+    accessToken,
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}

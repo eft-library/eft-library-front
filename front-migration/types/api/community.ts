@@ -102,6 +102,6 @@ export interface CommunityCommentsResponse {
 }
 
 export interface CommunityMutationResult {
-  result?: number;
+  result?: number | unknown[];
   url?: string;
 }

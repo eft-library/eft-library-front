@@ -10,11 +10,19 @@ import {
   updateCommunityPost,
   uploadCommunityImage,
 } from "@/features/community/api";
+import { CommunityTiptapEditor } from "@/features/community/components/community-tiptap-editor";
 import { communityCategories } from "@/lib/constants/community-categories";
 import { getPostIdFromUrlParam } from "@/features/community/utils";
 
 interface CommunityEditorPageProps {
   postParam?: string;
+}
+
+function isEmptyHtml(value: string) {
+  return value
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim().length === 0 && !/<img\b/i.test(value);
 }
 
 export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
@@ -59,7 +67,7 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
     }
 
     const nickname = session.userInfo?.nickname ?? session.user?.name ?? "User";
-    if (!title.trim() || !contents.trim()) {
+    if (!title.trim() || isEmptyHtml(contents)) {
       setError("제목과 내용을 입력해 주세요.");
       return;
     }
@@ -92,30 +100,6 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
       setError("게시글 저장에 실패했습니다.");
     } finally {
       setIsSaving(false);
-    }
-  }
-
-  async function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-    if (!session?.accessToken) {
-      showNotice("로그인이 필요한 기능입니다.");
-      event.target.value = "";
-      return;
-    }
-
-    setIsUploading(true);
-    setError(null);
-    try {
-      const imageUrl = await uploadCommunityImage(file);
-      setContents((current) => `${current}\n<img src="${imageUrl}" />\n`);
-    } catch {
-      setError("이미지 업로드에 실패했습니다.");
-    } finally {
-      setIsUploading(false);
-      event.target.value = "";
     }
   }
 
@@ -153,23 +137,22 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
             className="h-11 w-full rounded-md border border-gray-200 bg-gray-50 px-3 text-sm font-semibold outline-none focus:border-orange-300 dark:border-gray-700 dark:bg-[#1f232b]"
             placeholder="제목"
           />
-          <textarea
+          <CommunityTiptapEditor
             value={contents}
-            onChange={(event) => setContents(event.target.value)}
-            rows={16}
-            className="w-full rounded-md border border-gray-200 bg-gray-50 p-3 text-sm leading-7 outline-none focus:border-orange-300 dark:border-gray-700 dark:bg-[#1f232b]"
-            placeholder="내용을 입력해 주세요. 이미지 HTML도 그대로 저장할 수 있습니다."
+            onChange={setContents}
+            onUploadImage={async (file) => {
+              if (!session?.accessToken) {
+                showNotice("로그인이 필요한 기능입니다.");
+                throw new Error("login-required");
+              }
+              setError(null);
+              return uploadCommunityImage(file);
+            }}
+            disabled={status === "loading" || isSaving}
+            isUploading={isUploading}
+            onUploadStateChange={setIsUploading}
+            onError={setError}
           />
-          <label className="flex cursor-pointer items-center justify-between gap-3 rounded-md border border-dashed border-gray-300 bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-600 transition hover:border-orange-300 hover:text-orange-600 dark:border-gray-700 dark:bg-[#1f232b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300">
-            <span>{isUploading ? "이미지 업로드 중" : "이미지 첨부"}</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={uploadImage}
-              disabled={isUploading}
-              className="sr-only"
-            />
-          </label>
           {error ? <p className="text-sm font-semibold text-red-500">{error}</p> : null}
           <div className="flex justify-end gap-2">
             <button

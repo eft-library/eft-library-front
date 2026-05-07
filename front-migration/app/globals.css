@@ -206,4 +206,8 @@ summary {
   .rich-html-content :where(pre code) {
     @apply bg-transparent p-0 text-inherit;
   }
+
+  .rich-html-content :where(iframe) {
+    @apply my-5 aspect-video h-auto w-full max-w-[800px] rounded-lg border border-gray-200 bg-black dark:border-[#2a3038];
+  }
 }
