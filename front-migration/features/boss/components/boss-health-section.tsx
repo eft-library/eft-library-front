@@ -19,6 +19,14 @@ const healthParts = [
   { key: "left_leg_hp", label: { ko: "왼다리", en: "Left leg", ja: "左脚" } },
 ] as const;
 
+function getHealthBarWidth(value: number, maxPartHealth: number) {
+  if (maxPartHealth <= 0) {
+    return 0;
+  }
+
+  return Math.max(12, Math.min(100, (value / maxPartHealth) * 100));
+}
+
 export function BossHealthSection({
   boss,
   followers,
@@ -35,6 +43,9 @@ export function BossHealthSection({
   const selectedCharacter =
     characters.find((character) => character.id === selectedCharacterId) ?? boss;
   const selectedName = pickLocalizedText(selectedCharacter, locale);
+  const maxPartHealth = Math.max(
+    ...healthParts.map((part) => selectedCharacter[part.key]),
+  );
 
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-6 text-gray-900 shadow-sm dark:border-[#33404c] dark:bg-[#20252b] dark:text-white sm:p-7">
@@ -96,10 +107,7 @@ export function BossHealthSection({
                   <div
                     className="h-full rounded-full bg-orange-500"
                     style={{
-                      width: `${Math.max(
-                        8,
-                        Math.min(100, (value / selectedCharacter.health_total) * 100),
-                      )}%`,
+                      width: `${getHealthBarWidth(value, maxPartHealth)}%`,
                     }}
                   />
                 </div>

@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
-
 import { InformationBoardRoute } from "@/features/information-board/route";
-import { getSiteUrl } from "@/lib/config/app-env";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "공지",
+export const metadata = createPageMetadata({
+  title: "EFT Library 공지사항",
   description: "EFT Library 공지 목록입니다.",
-  alternates: {
-    canonical: `${getSiteUrl()}/notice`,
-  },
-};
+  path: "/notice",
+});
 
 export default async function Page({
   searchParams,

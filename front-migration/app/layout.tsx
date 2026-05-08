@@ -20,18 +20,28 @@ import "leaflet/dist/leaflet.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "EFT Library Front Migration",
+    default: "타르코프 도서관 - EFT Library",
     template: "%s | EFT Library",
   },
   description:
-    "FastAPI V3를 기준으로 EFT Library 프론트를 단계적으로 이전하기 위한 Next.js 마이그레이션 워크스페이스입니다.",
+    "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
   metadataBase: new URL(getSiteUrl()),
   openGraph: {
-    title: "EFT Library Front Migration",
+    title: "타르코프 도서관 - EFT Library",
     description:
-      "공통 레이아웃, 내비게이션, API 계층부터 정리하는 EFT Library V3 프론트 마이그레이션 베이스",
+      "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
     url: "/",
     siteName: "EFT Library",
+  },
+  twitter: {
+    card: "summary",
+    title: "타르코프 도서관 - EFT Library",
+    description:
+      "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { RichHtmlImageViewer } from "@/components/shared/rich-html-image-viewer";
 import type { Locale } from "@/i18n/config";
-import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField, pickLocalizedText } from "@/lib/utils/localized-text";
 import type { getBossPageCopy } from "@/features/boss/config";
 import type {
@@ -146,9 +146,11 @@ function BossProfileSummary({
 
 function BossLocationGuide({
   guideHtml,
+  bossName,
   labels,
 }: {
   guideHtml: unknown;
+  bossName: string;
   labels: ReturnType<typeof getBossPageCopy>;
 }) {
   const normalizedGuideHtml = normalizeGuideHtml(guideHtml);
@@ -157,12 +159,10 @@ function BossLocationGuide({
     <section className="rounded-lg border border-gray-200 bg-white p-6 text-gray-900 shadow-sm dark:border-[#33404c] dark:bg-[#20252b] dark:text-white sm:p-7">
       <h2 className="text-2xl font-bold">{labels.locationLabel}</h2>
       {normalizedGuideHtml ? (
-        <div
-          className={cn(
-            "rich-html-content mt-8",
-            "[&_img]:mt-4 [&_img]:h-auto [&_img]:w-full [&_img]:rounded-none",
-          )}
-          dangerouslySetInnerHTML={{ __html: normalizedGuideHtml }}
+        <RichHtmlImageViewer
+          html={normalizedGuideHtml}
+          imageAltFallback={bossName}
+          className="mt-8 [&_img]:mt-4 [&_img]:h-auto [&_img]:w-full [&_img]:rounded-none"
         />
       ) : (
         <p className="mt-6 text-sm text-gray-400">{labels.noGuideLabel}</p>
@@ -172,6 +172,7 @@ function BossLocationGuide({
 }
 
 export function BossPage({ bossId, bossData, locale, labels }: BossPageProps) {
+  const bossName = pickLocalizedText(bossData.boss, locale);
   const guideHtml = pickLocalizedField(
     bossData.boss as unknown as Record<string, unknown>,
     locale,
@@ -206,7 +207,11 @@ export function BossPage({ bossId, bossData, locale, labels }: BossPageProps) {
           labels={labels}
         />
 
-        <BossLocationGuide guideHtml={guideHtml} labels={labels} />
+        <BossLocationGuide
+          guideHtml={guideHtml}
+          bossName={bossName}
+          labels={labels}
+        />
 
         <BossHealthSection
           boss={bossData.boss}

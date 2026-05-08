@@ -1,6 +1,13 @@
 import { LegalPage } from "@/features/legal/components/legal-page";
 import { getUserLocale } from "@/i18n/locale";
 import type { Locale } from "@/i18n/config";
+import { createPageMetadata } from "@/lib/seo/metadata";
+
+export const metadata = createPageMetadata({
+  title: "개인정보처리방침",
+  description: "EFT Library 개인정보처리방침입니다.",
+  path: "/privacy-policy",
+});
 
 type PrivacyPolicyContent = {
   eyebrow: string;

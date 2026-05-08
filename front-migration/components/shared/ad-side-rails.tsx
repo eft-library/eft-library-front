@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { VerticalAdBanner } from "@/components/shared/ad-banner";
 
 const disabledPrefixes: string[] = [];
+const railPositionClass =
+  "pointer-events-none fixed top-1/2 z-10 hidden w-40 -translate-y-1/2 2xl:block";
 
 function isDisabledPath(pathname: string) {
   return disabledPrefixes.some(
@@ -23,17 +25,17 @@ export function AdSideRails() {
     <>
       <aside
         aria-label="Left advertisement"
-        className="pointer-events-none fixed left-4 top-24 z-10 hidden w-40 xl:block 2xl:left-[max(1rem,calc((100vw-1536px)/2))]"
+        className={`${railPositionClass} left-4 [@media(min-width:1664px)]:left-[max(1rem,calc((100vw-1280px)/2-12rem))]`}
       >
-        <div className="pointer-events-auto sticky top-24">
+        <div className="pointer-events-auto">
           <VerticalAdBanner className="my-0 px-0" />
         </div>
       </aside>
       <aside
         aria-label="Right advertisement"
-        className="pointer-events-none fixed right-4 top-24 z-10 hidden w-40 xl:block 2xl:right-[max(1rem,calc((100vw-1536px)/2))]"
+        className={`${railPositionClass} right-4 [@media(min-width:1664px)]:right-[max(1rem,calc((100vw-1280px)/2-12rem))]`}
       >
-        <div className="pointer-events-auto sticky top-24">
+        <div className="pointer-events-auto">
           <VerticalAdBanner className="my-0 px-0" />
         </div>
       </aside>

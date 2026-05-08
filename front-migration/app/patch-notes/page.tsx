@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
-
 import { InformationBoardRoute } from "@/features/information-board/route";
-import { getSiteUrl } from "@/lib/config/app-env";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "패치 노트",
-  description: "Escape from Tarkov 패치 노트 목록입니다.",
-  alternates: {
-    canonical: `${getSiteUrl()}/patch-notes`,
-  },
-};
+export const metadata = createPageMetadata({
+  title: "타르코프 패치노트",
+  description: "Escape from Tarkov 최신 패치 노트와 변경 사항을 확인할 수 있습니다.",
+  path: "/patch-notes",
+});
 
 export default async function Page({
   searchParams,
