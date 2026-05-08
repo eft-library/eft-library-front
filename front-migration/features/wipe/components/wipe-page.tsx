@@ -1,4 +1,5 @@
 import type { WipePageProps } from "@/features/wipe/types";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 
 function getDurationInDays(start: string, end: string) {
   const startDate = new Date(start);
@@ -30,6 +31,7 @@ export function WipePage({ seasons, labels }: WipePageProps) {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
             {labels.title}
           </h1>
+          <HorizontalAdBanner />
         </section>
 
         <section className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">

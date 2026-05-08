@@ -1,3 +1,5 @@
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+
 export function LegalPage({
   eyebrow,
   title,
@@ -19,6 +21,7 @@ export function LegalPage({
             {eyebrow}
           </p>
           <h1 className="mt-2 text-3xl font-bold">{title}</h1>
+          <HorizontalAdBanner />
           {updatedAt ? (
             <p className="mt-4 text-xs font-medium text-gray-500 dark:text-gray-400">
               {updatedAt}

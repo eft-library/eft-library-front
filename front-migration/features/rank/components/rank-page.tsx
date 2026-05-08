@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Search, Store } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import { priceTopEndpoint } from "@/lib/config/api-endpoints";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -349,6 +350,7 @@ export function RankPage({ locale }: { locale: Locale }) {
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
+              <HorizontalAdBanner />
             </div>
 
             <div className="inline-flex self-start overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#20242b] lg:self-end">

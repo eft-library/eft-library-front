@@ -21,6 +21,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import {
   getUserHideoutStations,
   saveHideoutStationItems,
@@ -977,6 +978,7 @@ export function HideoutPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold">은신처</h1>
+          <HorizontalAdBanner />
         </div>
 
         <section className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm dark:border-slate-700/40 dark:bg-gray-800/30">

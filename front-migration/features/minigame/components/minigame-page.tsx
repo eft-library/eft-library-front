@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import {
   getMinigameAllRank,
   getMinigameMyRank,
@@ -448,6 +449,7 @@ export function MinigamePage({
             Minigame
           </p>
           <h1 className="mt-2 text-3xl font-black">{copy.title}</h1>
+          <HorizontalAdBanner />
           <div className="mt-4 flex items-start gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-900 dark:border-orange-400/20 dark:bg-orange-400/10 dark:text-orange-100">
             <MousePointer2 className="mt-0.5 h-4 w-4 shrink-0" />
             <span>{copy.help}</span>

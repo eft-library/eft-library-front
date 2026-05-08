@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import {
   createCommunityPost,
   getCommunityUpdatePost,
@@ -109,6 +110,7 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
         <div>
           <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">Community</p>
           <h1 className="mt-1 text-2xl font-black">{isUpdate ? "게시글 수정" : "글쓰기"}</h1>
+          <HorizontalAdBanner />
         </div>
 
         {status !== "loading" && status !== "authenticated" ? (

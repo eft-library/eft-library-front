@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import {
   blockCommunityUser,
   bookmarkCommunityPost,
@@ -489,6 +490,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
               <span className="text-gray-400">{formatCommunityDate(post.create_time)}</span>
             </div>
             <h1 className="mt-3 text-2xl font-black leading-snug">{post.title}</h1>
+            <HorizontalAdBanner />
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
               <span>조회 {post.view_count ?? 0}</span>
               <span>댓글 {post.comment_count ?? comments?.total ?? 0}</span>

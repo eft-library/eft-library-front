@@ -26,6 +26,7 @@ import {
   ZoomOut,
 } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -173,6 +174,7 @@ export function MapOfTarkovPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <section className="text-center">
           <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
+          <HorizontalAdBanner />
         </section>
 
         <MapSelector

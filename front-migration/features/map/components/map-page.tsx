@@ -1,3 +1,4 @@
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedText } from "@/lib/utils/localized-text";
 import type { MapDetailResponse } from "@/types/api/map";
@@ -22,6 +23,7 @@ export function MapPage({
           <div>
             <p className="text-xs font-semibold uppercase text-orange-500">3D Map</p>
             <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{activeMapName}</h1>
+            <HorizontalAdBanner />
           </div>
         </section>
 

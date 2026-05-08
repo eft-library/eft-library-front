@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Check, ExternalLink, Skull, Star, X, ZoomIn, ZoomOut } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
@@ -161,6 +162,7 @@ export function QuestDetailPage({
               {traderName}
             </p>
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">{questName}</h1>
+            <HorizontalAdBanner />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <span className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 dark:border-yellow-400/60 dark:bg-yellow-400/10 dark:text-yellow-300">

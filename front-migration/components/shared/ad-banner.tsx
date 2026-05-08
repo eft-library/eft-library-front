@@ -89,9 +89,33 @@ export function HorizontalAdBanner({
     <AdBanner
       dataAdFormat="auto"
       dataFullWidthResponsive
-      dataAdSlot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ?? "2690838054"}
+      dataAdSlot={
+        process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
+        process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ??
+        "2690838054"
+      }
       maxWidth={maxWidth}
       className={className}
+    />
+  );
+}
+
+export function VerticalAdBanner({
+  className,
+  maxWidth = 160,
+}: {
+  className?: string;
+  maxWidth?: number;
+}) {
+  return (
+    <AdBanner
+      dataAdFormat="vertical"
+      dataFullWidthResponsive={false}
+      dataAdSlot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ?? "2690838054"}
+      maxWidth={maxWidth}
+      minHeight={600}
+      className={className}
+      style={{ minWidth: 120 }}
     />
   );
 }

@@ -31,6 +31,7 @@ import {
   Target,
 } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -1190,6 +1191,7 @@ export function ItemInfoPage({
           <div className="mb-4 flex items-center justify-center">
             <h1 className="text-3xl font-bold md:text-4xl">{itemName}</h1>
           </div>
+          <HorizontalAdBanner />
         </div>
 
         <DetailCard item={item} itemName={itemName}>

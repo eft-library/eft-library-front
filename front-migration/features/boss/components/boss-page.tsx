@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField, pickLocalizedText } from "@/lib/utils/localized-text";
@@ -186,6 +187,7 @@ export function BossPage({ bossId, bossData, locale, labels }: BossPageProps) {
         <h1 className="text-center text-3xl font-bold sm:text-4xl">
           {labels.pageTitle}
         </h1>
+        <HorizontalAdBanner />
 
         <div className="mt-4">
           <BossSelector

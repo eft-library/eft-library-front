@@ -32,6 +32,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
 import { cn } from "@/lib/utils/class-name";
@@ -542,6 +543,7 @@ function RoadmapCanvas({
             {copy.eyebrow}
           </p>
           <h1 className="mt-2 text-3xl font-black">{copy.title}</h1>
+          <HorizontalAdBanner />
         </section>
 
         <TraderTabs

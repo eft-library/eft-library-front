@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 
@@ -85,6 +86,7 @@ export function ItemListPage({
               <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
                 {labels.title}
               </h1>
+              <HorizontalAdBanner />
             </div>
           </div>
         </section>

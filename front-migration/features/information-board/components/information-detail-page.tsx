@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarDays, ChevronLeft } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
@@ -77,6 +78,7 @@ export function InformationDetailPage({
             <h1 className="mt-4 max-w-3xl text-2xl font-black leading-tight text-gray-900 dark:text-white sm:text-3xl">
               {title}
             </h1>
+            <HorizontalAdBanner />
           </header>
 
           <div

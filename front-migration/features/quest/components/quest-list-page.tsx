@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, Skull } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -261,6 +262,7 @@ export function QuestListPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <section className="flex flex-col items-center gap-3 pt-4 text-center">
           <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
+          <HorizontalAdBanner />
         </section>
 
         <section aria-label={copy.traderLabel}>

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { useAppStore } from "@/components/providers/app-store-provider";
 import { getCommunitySearch } from "@/features/community/api";
 import { CommunityPagination } from "@/features/community/components/community-pagination";
@@ -72,6 +73,7 @@ export function CommunitySearchPage() {
         <div>
           <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">Community Search</p>
           <h1 className="mt-1 text-2xl font-black">라운지 검색</h1>
+          <HorizontalAdBanner />
         </div>
         <form
           onSubmit={submitSearch}

@@ -247,6 +247,7 @@ export function PricePage({ locale }: { locale: Locale }) {
         <section className="flex flex-col items-center gap-6 pt-4 text-center">
           <div>
             <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
+            <HorizontalAdBanner />
           </div>
           <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <div className="inline-flex self-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
@@ -299,9 +300,6 @@ export function PricePage({ locale }: { locale: Locale }) {
             </form>
           </div>
         </section>
-
-        <HorizontalAdBanner />
-
         {isError ? (
           <section className="rounded-lg border border-amber-300 bg-amber-50 px-6 py-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100">
             {copy.backendIssue}

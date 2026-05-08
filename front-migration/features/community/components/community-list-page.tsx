@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PenLine, Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { useAppStore } from "@/components/providers/app-store-provider";
 import { getCommunityPosts, getCommunitySidePosts } from "@/features/community/api";
 import { CommunityCategoryTabs } from "@/features/community/components/community-category-tabs";
@@ -93,6 +94,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
             <div>
               <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">Community</p>
               <h1 className="mt-1 text-2xl font-black">라운지</h1>
+              <HorizontalAdBanner />
             </div>
             <Link
               href="/community/create"

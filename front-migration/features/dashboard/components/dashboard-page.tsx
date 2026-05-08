@@ -27,6 +27,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { getDashboardAnalysis } from "@/features/dashboard/api";
 import type {
   DashboardAnalysisResponse,
@@ -458,6 +459,7 @@ export function DashboardPage({
       <div className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold md:text-4xl">페이지 통계</h1>
+          <HorizontalAdBanner />
         </div>
 
         <div className="flex flex-col items-start justify-end gap-3 md:flex-row md:items-center">
