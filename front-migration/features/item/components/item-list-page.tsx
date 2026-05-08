@@ -85,9 +85,6 @@ export function ItemListPage({
               <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
                 {labels.title}
               </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-300">
-                {labels.description}
-              </p>
             </div>
           </div>
         </section>

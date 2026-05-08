@@ -87,9 +87,6 @@ export function StoryPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <section className="pt-4 text-center">
           <h1 className="text-4xl font-black sm:text-5xl">{labels.pageTitle}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
-            {labels.pageDescription}
-          </p>
         </section>
 
         <section aria-label={labels.selectorLabel}>

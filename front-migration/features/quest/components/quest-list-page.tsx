@@ -261,9 +261,6 @@ export function QuestListPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <section className="flex flex-col items-center gap-3 pt-4 text-center">
           <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
-          <p className="max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
-            {copy.description}
-          </p>
         </section>
 
         <section aria-label={copy.traderLabel}>

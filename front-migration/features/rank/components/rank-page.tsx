@@ -349,12 +349,6 @@ export function RankPage({ locale }: { locale: Locale }) {
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
-              <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                {copy.description}
-              </p>
-              <p className="mt-2 text-xs leading-5 text-gray-500 dark:text-gray-500">
-                {copy.notice}
-              </p>
             </div>
 
             <div className="inline-flex self-start overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#20242b] lg:self-end">

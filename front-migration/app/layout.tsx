@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { SiteFooter } from "@/components/shared/site-footer";
@@ -41,15 +40,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={defaultLocale} className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full bg-background text-foreground">
+    <html
+      lang={defaultLocale}
+      className="h-full antialiased"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <body
+        className="min-h-full bg-background text-foreground"
+        suppressHydrationWarning
+      >
         {process.env.NEXT_PUBLIC_ADSENSE ? (
-          <Script
-            id="google-adsense"
+          <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
           />
         ) : null}
         <ThemeProvider>

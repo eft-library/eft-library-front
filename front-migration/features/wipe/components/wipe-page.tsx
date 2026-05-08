@@ -30,9 +30,6 @@ export function WipePage({ seasons, labels }: WipePageProps) {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
             {labels.title}
           </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-300">
-            {labels.description}
-          </p>
         </section>
 
         <section className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">

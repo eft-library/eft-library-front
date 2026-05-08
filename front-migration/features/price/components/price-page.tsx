@@ -247,9 +247,6 @@ export function PricePage({ locale }: { locale: Locale }) {
         <section className="flex flex-col items-center gap-6 pt-4 text-center">
           <div>
             <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
-              {copy.description}
-            </p>
           </div>
           <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <div className="inline-flex self-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">

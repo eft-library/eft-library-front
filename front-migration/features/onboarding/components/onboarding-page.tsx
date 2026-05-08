@@ -225,10 +225,6 @@ export function OnboardingPage({ locale }: { locale: Locale }) {
       <div className="mx-auto flex min-h-screen w-full max-w-2xl items-center px-4 py-12 sm:px-6 lg:px-8">
         <section className="w-full rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
           <h1 className="text-2xl font-bold">{copy.title}</h1>
-          <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-            {copy.description}
-          </p>
-          <p className="mt-2 text-sm text-orange-500">{copy.subDescription}</p>
 
           <div className="mt-8">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
