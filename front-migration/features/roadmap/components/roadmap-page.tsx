@@ -83,8 +83,6 @@ interface RoadmapStats {
   overallProgressRate: number;
 }
 
-const STORAGE_KEY = "eft-library-roadmap-quest-list";
-
 const roadmapCopy = {
   ko: {
     title: "퀘스트 로드맵",
@@ -106,7 +104,7 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "진행 상황을 저장했습니다.",
-    saveLoginRequired: "로그인 후 서버에 저장할 수 있습니다. 현재 브라우저에 저장했습니다.",
+    saveLoginRequired: "로그인 사용자만 진행 상황을 저장할 수 있습니다.",
     loadFailed: "저장된 로드맵을 불러오지 못했습니다.",
     progressLoadFailed: "아이템 진행 목록을 불러오지 못했습니다.",
     progressLoginRequired: "로그인 사용자만 아이템 목록을 저장할 수 있습니다.",
@@ -138,7 +136,7 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "Progress saved.",
-    saveLoginRequired: "Sign in to save on the server. Saved in this browser.",
+    saveLoginRequired: "Sign in to save progress.",
     loadFailed: "Failed to load saved roadmap.",
     progressLoadFailed: "Failed to load item progress.",
     progressLoginRequired: "Sign in to save item progress.",
@@ -170,7 +168,7 @@ const roadmapCopy = {
     kappa: "Kappa",
     level: "Lv.",
     saved: "進行状況を保存しました。",
-    saveLoginRequired: "サーバー保存にはログインが必要です。このブラウザに保存しました。",
+    saveLoginRequired: "進行状況の保存にはログインが必要です。",
     loadFailed: "保存済みロードマップを読み込めませんでした。",
     progressLoadFailed: "アイテム進行リストを読み込めませんでした。",
     progressLoginRequired: "ログインユーザーのみアイテムリストを保存できます。",
@@ -367,39 +365,23 @@ function RoadmapCanvas({
   useEffect(() => {
     let cancelled = false;
 
-    if (accessToken) {
-      getUserRoadmap(accessToken)
-        .then((questList) => {
-          if (!cancelled) {
-            setCompleted(questList.filter((value): value is string => typeof value === "string"));
-          }
-        })
-        .catch(() => {
-          if (!cancelled) {
-            showNotice(copy.loadFailed);
-          }
-        });
-
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    try {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        setCompleted(parsed.filter((value): value is string => typeof value === "string"));
-      }
-    } catch {
+    if (!accessToken) {
       setCompleted([]);
+      return;
     }
+
+    getUserRoadmap(accessToken)
+      .then((questList) => {
+        if (!cancelled) {
+          setCompleted(questList.filter((value): value is string => typeof value === "string"));
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          showNotice(copy.loadFailed);
+        }
+      });
+
     return () => {
       cancelled = true;
     };
@@ -527,7 +509,6 @@ function RoadmapCanvas({
   }
 
   async function handleSave() {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
     if (!accessToken) {
       showNotice(copy.saveLoginRequired);
       return;
@@ -619,8 +600,9 @@ function RoadmapCanvas({
             {copy.eyebrow}
           </p>
           <h1 className="mt-2 text-3xl font-black">{copy.title}</h1>
-          <HorizontalAdBanner />
         </section>
+
+        <HorizontalAdBanner className="my-0" />
 
         <TraderTabs
           traders={roadmap.node_info}

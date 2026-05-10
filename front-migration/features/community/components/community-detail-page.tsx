@@ -490,13 +490,14 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
               <span className="text-gray-400">{formatCommunityDate(post.create_time)}</span>
             </div>
             <h1 className="mt-3 text-2xl font-black leading-snug">{post.title}</h1>
-            <HorizontalAdBanner />
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
               <span>조회 {post.view_count ?? 0}</span>
               <span>댓글 {post.comment_count ?? comments?.total ?? 0}</span>
               <span>추천 {meta?.like_count ?? post.reaction_score ?? 0}</span>
             </div>
           </header>
+
+          <HorizontalAdBanner className="my-0" />
 
           {isPostAuthorBlocked && !isAuthor ? (
             <div className="m-5 rounded-lg border border-gray-200 bg-gray-50 p-5 text-sm font-semibold text-gray-500 dark:border-gray-700 dark:bg-[#1f232b] dark:text-gray-400">

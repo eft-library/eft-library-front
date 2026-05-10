@@ -31,8 +31,9 @@ export function WipePage({ seasons, labels }: WipePageProps) {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
             {labels.title}
           </h1>
-          <HorizontalAdBanner />
         </section>
+
+        <HorizontalAdBanner className="my-0" />
 
         <section className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
           <div className="hidden border-b border-gray-200 px-6 py-4 text-sm font-semibold text-gray-600 dark:border-gray-700 dark:text-gray-300 lg:grid lg:grid-cols-[1.1fr_0.9fr_0.9fr_1.4fr] lg:gap-6">

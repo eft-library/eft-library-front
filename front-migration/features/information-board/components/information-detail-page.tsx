@@ -78,8 +78,9 @@ export function InformationDetailPage({
             <h1 className="mt-4 max-w-3xl text-2xl font-black leading-tight text-gray-900 dark:text-white sm:text-3xl">
               {title}
             </h1>
-            <HorizontalAdBanner />
           </header>
+
+          <HorizontalAdBanner className="my-0" />
 
           <div
             className="rich-html-content mx-auto min-h-80 max-w-3xl px-6 py-12 sm:px-8"

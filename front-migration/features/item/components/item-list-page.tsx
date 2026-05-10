@@ -86,10 +86,11 @@ export function ItemListPage({
               <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
                 {labels.title}
               </h1>
-              <HorizontalAdBanner />
             </div>
           </div>
         </section>
+
+        <HorizontalAdBanner className="my-0" />
 
         <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <nav className="flex gap-2 overflow-x-auto pb-1" aria-label={labels.title}>
