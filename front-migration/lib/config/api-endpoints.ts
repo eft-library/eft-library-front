@@ -15,6 +15,7 @@ export const apiEndpoints = {
   rngItemMyRank: "/api/minigame/v3/rng-item/my-rank",
   rngItemSaveScore: "/api/minigame/v3/rng-item/save",
   progressItem: "/api/progress/v3/progress-item",
+  progressSave: "/api/progress/v3/update-progress-item",
   userAdd: "/api/user/v3/add",
   userInfo: "/api/user/v3/user-info",
   userDelete: "/api/user/v3/delete",

@@ -10,8 +10,13 @@ export interface ProgressTrackedItem {
 export interface ProgressItemResponse {
   allKappaItemList: ProgressTrackedItem[];
   allRebirthList: ProgressTrackedItem[];
-  userKappaList: ProgressTrackedItem[];
-  userRebirthList: ProgressTrackedItem[];
+  userKappaList: string[];
+  userRebirthList: string[];
+}
+
+export interface ProgressItemSaveRequest {
+  userKappa: string[];
+  userRebirth: string[];
 }
 
 export interface RngScoreSaveRequest {

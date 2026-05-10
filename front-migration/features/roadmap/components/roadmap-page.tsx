@@ -24,19 +24,24 @@ import {
 import {
   Check,
   CheckSquare,
+  ChevronDown,
+  ChevronUp,
   ExternalLink,
   Eye,
+  RotateCcw,
+  Save,
   Search,
   Square,
-  Store,
   Zap,
 } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
+import { getProgressItems, saveProgressItems } from "@/features/progress/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
+import type { ProgressItemResponse, ProgressTrackedItem } from "@/types/api/minigame";
 import type {
   RoadmapEdge,
   RoadmapQuestNode,
@@ -103,8 +108,15 @@ const roadmapCopy = {
     saved: "진행 상황을 저장했습니다.",
     saveLoginRequired: "로그인 후 서버에 저장할 수 있습니다. 현재 브라우저에 저장했습니다.",
     loadFailed: "저장된 로드맵을 불러오지 못했습니다.",
+    progressLoadFailed: "아이템 진행 목록을 불러오지 못했습니다.",
+    progressLoginRequired: "로그인 사용자만 아이템 목록을 저장할 수 있습니다.",
     notFound: "검색 결과가 없습니다.",
     inputWord: "검색어를 입력해주세요.",
+    itemProgressTitle: "아이템 체크리스트",
+    itemProgressKappa: "수집가 (Collector)",
+    itemProgressRebirth: "환생 (New Beginning)",
+    reset: "초기화",
+    complete: "완료",
   },
   en: {
     title: "Quest Roadmap",
@@ -128,8 +140,15 @@ const roadmapCopy = {
     saved: "Progress saved.",
     saveLoginRequired: "Sign in to save on the server. Saved in this browser.",
     loadFailed: "Failed to load saved roadmap.",
+    progressLoadFailed: "Failed to load item progress.",
+    progressLoginRequired: "Sign in to save item progress.",
     notFound: "No quest found.",
     inputWord: "Enter a search word.",
+    itemProgressTitle: "Item Checklist",
+    itemProgressKappa: "Collector",
+    itemProgressRebirth: "New Beginning",
+    reset: "Reset",
+    complete: "Complete",
   },
   ja: {
     title: "Quest Roadmap",
@@ -153,8 +172,15 @@ const roadmapCopy = {
     saved: "進行状況を保存しました。",
     saveLoginRequired: "サーバー保存にはログインが必要です。このブラウザに保存しました。",
     loadFailed: "保存済みロードマップを読み込めませんでした。",
+    progressLoadFailed: "アイテム進行リストを読み込めませんでした。",
+    progressLoginRequired: "ログインユーザーのみアイテムリストを保存できます。",
     notFound: "検索結果がありません。",
     inputWord: "検索語を入力してください。",
+    itemProgressTitle: "アイテムチェックリスト",
+    itemProgressKappa: "Collector",
+    itemProgressRebirth: "New Beginning",
+    reset: "リセット",
+    complete: "完了",
   },
 } as const;
 
@@ -333,6 +359,9 @@ function RoadmapCanvas({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchIndex, setSearchIndex] = useState(0);
   const [notice, setNotice] = useState("");
+  const [progressData, setProgressData] = useState<ProgressItemResponse | null>(null);
+  const [selectedKappaItems, setSelectedKappaItems] = useState<string[]>([]);
+  const [selectedRebirthItems, setSelectedRebirthItems] = useState<string[]>([]);
   const completedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -375,6 +404,30 @@ function RoadmapCanvas({
       cancelled = true;
     };
   }, [accessToken, copy.loadFailed]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getProgressItems(accessToken)
+      .then((data) => {
+        if (cancelled) {
+          return;
+        }
+
+        setProgressData(data);
+        setSelectedKappaItems(data.userKappaList);
+        setSelectedRebirthItems(data.userRebirthList);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          showNotice(copy.progressLoadFailed);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [accessToken, copy.progressLoadFailed]);
 
   const completedSet = useMemo(() => new Set(completed), [completed]);
   completedRef.current = completedSet;
@@ -489,6 +542,29 @@ function RoadmapCanvas({
     }
   }
 
+  async function handleSaveProgressItems() {
+    if (!accessToken) {
+      showNotice(copy.progressLoginRequired);
+      return;
+    }
+
+    try {
+      const savedProgress = await saveProgressItems(
+        {
+          userKappa: selectedKappaItems,
+          userRebirth: selectedRebirthItems,
+        },
+        accessToken,
+      );
+      setProgressData(savedProgress);
+      setSelectedKappaItems(savedProgress.userKappaList);
+      setSelectedRebirthItems(savedProgress.userRebirthList);
+      showNotice(copy.saved);
+    } catch {
+      showNotice(copy.progressLoginRequired);
+    }
+  }
+
   function handleSearch() {
     const query = searchQuery.trim().toLowerCase();
     if (!query) {
@@ -593,6 +669,36 @@ function RoadmapCanvas({
             />
           </ReactFlow>
         </section>
+
+        <ProgressTrackerPanel
+          copy={copy}
+          locale={locale}
+          progress={progressData}
+          selectedKappaItems={selectedKappaItems}
+          selectedRebirthItems={selectedRebirthItems}
+          onReset={(type) => {
+            if (type === "Kappa") {
+              setSelectedKappaItems([]);
+              return;
+            }
+
+            setSelectedRebirthItems([]);
+          }}
+          onSave={handleSaveProgressItems}
+          onToggleItem={(type, itemId) => {
+            const update = (current: string[]) =>
+              current.includes(itemId)
+                ? current.filter((id) => id !== itemId)
+                : [...current, itemId];
+
+            if (type === "Kappa") {
+              setSelectedKappaItems(update);
+              return;
+            }
+
+            setSelectedRebirthItems(update);
+          }}
+        />
 
         {notice ? (
           <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-gray-950 px-4 py-2 text-sm font-semibold text-white shadow-lg dark:bg-white dark:text-gray-950">
@@ -758,6 +864,229 @@ function ActionButton({
     >
       {icon}
       <span>{label}</span>
+    </button>
+  );
+}
+
+type ProgressTab = "Kappa" | "Rebirth";
+
+function ProgressTrackerPanel({
+  copy,
+  locale,
+  progress,
+  selectedKappaItems,
+  selectedRebirthItems,
+  onReset,
+  onSave,
+  onToggleItem,
+}: {
+  copy: (typeof roadmapCopy)[Locale];
+  locale: Locale;
+  progress: ProgressItemResponse | null;
+  selectedKappaItems: string[];
+  selectedRebirthItems: string[];
+  onReset: (type: ProgressTab) => void;
+  onSave: () => void;
+  onToggleItem: (type: ProgressTab, itemId: string) => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<ProgressTab>("Kappa");
+  const currentItems =
+    activeTab === "Kappa"
+      ? progress?.allKappaItemList ?? []
+      : progress?.allRebirthList ?? [];
+  const currentSelected =
+    activeTab === "Kappa" ? selectedKappaItems : selectedRebirthItems;
+  const currentTitle =
+    activeTab === "Kappa" ? copy.itemProgressKappa : copy.itemProgressRebirth;
+  const currentIcon =
+    activeTab === "Kappa"
+      ? "https://assets.tarkov.dev/5c093ca986f7740a1867ab12-8x.webp"
+      : "https://assets.tarkov.dev/prestige-1-image.webp";
+  const currentCompleteRate =
+    currentItems.length > 0 ? (currentSelected.length / currentItems.length) * 100 : 0;
+
+  return (
+    <section className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+      <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <button
+          type="button"
+          onClick={() => setIsExpanded((current) => !current)}
+          className="flex min-w-0 flex-1 items-center gap-4 text-left"
+        >
+          <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50 p-2 dark:border-[#2a3038] dark:bg-[#20242b]">
+            <Image
+              src={currentIcon}
+              alt={currentTitle}
+              width={48}
+              height={48}
+              className="h-full w-full object-contain"
+            />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-orange-500">
+              {copy.itemProgressTitle}
+            </span>
+            <span className="mt-1 block truncate text-xl font-black">
+              {currentTitle}
+            </span>
+          </span>
+        </button>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-lg bg-gray-50 px-3 py-2 text-sm font-black text-gray-700 dark:bg-[#20242b] dark:text-gray-200">
+            {currentSelected.length}/{currentItems.length}
+          </span>
+          <ActionButton
+            icon={<RotateCcw className="h-4 w-4" />}
+            label={copy.reset}
+            onClick={() => onReset(activeTab)}
+          />
+          <ActionButton
+            icon={<Save className="h-4 w-4" />}
+            label={copy.save}
+            onClick={onSave}
+          />
+          <button
+            type="button"
+            onClick={() => setIsExpanded((current) => !current)}
+            aria-label={isExpanded ? "Collapse item checklist" : "Expand item checklist"}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+          >
+            {isExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-200 px-5 py-4 dark:border-[#2a3038]">
+        <div className="mb-2 flex items-center justify-between text-sm">
+          <span className="font-bold text-gray-600 dark:text-gray-300">
+            {copy.complete}
+          </span>
+          <span className="font-black text-orange-500">
+            {Math.round(currentCompleteRate)}%
+          </span>
+        </div>
+        <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-[#20242b]">
+          <div
+            className="h-full rounded-full bg-orange-500 transition-all duration-500"
+            style={{ width: `${currentCompleteRate}%` }}
+          />
+        </div>
+      </div>
+
+      {isExpanded ? (
+        <div className="border-t border-gray-200 dark:border-[#2a3038]">
+          <div className="flex flex-wrap gap-2 px-5 pt-4">
+            <ProgressTabButton
+              active={activeTab === "Kappa"}
+              image="https://assets.tarkov.dev/5c093ca986f7740a1867ab12-8x.webp"
+              label={copy.itemProgressKappa}
+              onClick={() => setActiveTab("Kappa")}
+            />
+            <ProgressTabButton
+              active={activeTab === "Rebirth"}
+              image="https://assets.tarkov.dev/prestige-1-image.webp"
+              label={copy.itemProgressRebirth}
+              onClick={() => setActiveTab("Rebirth")}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8">
+            {currentItems.map((item) => (
+              <ProgressItemCard
+                key={item.id}
+                item={item}
+                locale={locale}
+                selected={currentSelected.includes(item.id)}
+                onToggle={() => onToggleItem(activeTab, item.id)}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function ProgressTabButton({
+  active,
+  image,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  image: string;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-bold transition",
+        active
+          ? "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-300"
+          : "border-gray-200 bg-white text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300",
+      )}
+    >
+      <Image src={image} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+      <span>{label}</span>
+    </button>
+  );
+}
+
+function ProgressItemCard({
+  item,
+  locale,
+  selected,
+  onToggle,
+}: {
+  item: ProgressTrackedItem;
+  locale: Locale;
+  selected: boolean;
+  onToggle: () => void;
+}) {
+  const itemName = getLocalizedName(item.item, locale);
+
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className={cn(
+        "group relative flex min-h-40 flex-col overflow-hidden rounded-lg border p-3 text-left transition hover:-translate-y-0.5 hover:shadow-md",
+        selected
+          ? "border-emerald-400 bg-emerald-50 dark:border-emerald-500/60 dark:bg-emerald-500/10"
+          : "border-gray-200 bg-gray-50 hover:border-orange-300 dark:border-[#2a3038] dark:bg-[#20242b] dark:hover:border-orange-500",
+      )}
+    >
+      <span className="relative flex aspect-square w-full items-center justify-center rounded-md bg-white p-2 dark:bg-[#181c21]">
+        <Image
+          src={item.item.image}
+          alt={itemName}
+          width={128}
+          height={128}
+          className={cn(
+            "h-full w-full object-contain transition duration-200 group-hover:scale-105",
+            selected ? "brightness-75" : "",
+          )}
+        />
+        {selected ? (
+          <span className="absolute inset-0 flex items-center justify-center rounded-md bg-black/15">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg">
+              <Check className="h-6 w-6" />
+            </span>
+          </span>
+        ) : null}
+      </span>
+      <span className="mt-3 line-clamp-2 text-center text-xs font-bold text-gray-800 dark:text-gray-100">
+        {itemName}
+      </span>
     </button>
   );
 }
