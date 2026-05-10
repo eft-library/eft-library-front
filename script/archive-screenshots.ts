@@ -1,45 +1,73 @@
 import { chromium } from "@playwright/test";
 import fs from "node:fs/promises";
 
+// npx tsx script/archive-screenshots.ts
+
 const baseUrl = "https://eftlibrary.com";
 
 const pages = [
-  { path: "/", name: "home" },
-  { path: "/roadmap", name: "roadmap" },
-  { path: "/price", name: "price" },
-  { path: "/rank", name: "rank" },
-  { path: "/story/tour", name: "story" },
-  { path: "/quest/54cb50c76803fa8b248b4571", name: "quest" },
-  { path: "/quest/detail/shooting-cans", name: "quest-detail" },
-  { path: "/item/info/adrenaline-injector", name: "item-detail" },
-  { path: "/hideout", name: "hideout" },
-  { path: "/boss", name: "boss" },
-  { path: "/event?id=1", name: "event" },
-  { path: "/event/detail/event27", name: "event-detail" },
-  { path: "/map-of-tarkov/CUSTOMS", name: "map-of-tarkov" },
-  { path: "/community", name: "community" },
-  { path: "/wipe", name: "wipe" },
-  { path: "/minigame", name: "minigame" },
+//   { path: "/", name: "home" },
+//   { path: "/roadmap", name: "roadmap" },
+//   { path: "/price", name: "price" },
+//   { path: "/rank", name: "rank" },
+//   { path: "/story/tour", name: "story" },
+//   { path: "/quest/54cb50c76803fa8b248b4571", name: "quest" },
+//   { path: "/quest/detail/shooting-cans", name: "quest-detail" },
+//   { path: "/item/info/adrenaline-injector", name: "item-detail" },
+//   { path: "/hideout", name: "hideout" },
+  { path: "/boss/reshala", name: "boss-detail" },
+//   { path: "/event?id=1", name: "event" },
+//   { path: "/event/detail/event27", name: "event-detail" },
+//   { path: "/map-of-tarkov/CUSTOMS", name: "map-of-tarkov" },
+  { path: "/community/detail/809203066355191808-saiteu-seongneung-mic-nae-wici-cajgi-gineung-gaeseon-annae", name: "community-detail" },
+//   { path: "/wipe", name: "wipe" },
+//   { path: "/minigame", name: "minigame" },
 ];
 
-await fs.mkdir("archive/screenshots/legacy", { recursive: true });
+const themes = ["dark", "light"] as const;
 
-const browser = await chromium.launch();
-const page = await browser.newPage({
-  viewport: { width: 1440, height: 1200 },
-});
+async function main() {
+  const browser = await chromium.launch();
 
-for (const item of pages) {
-  await page.goto(`${baseUrl}${item.path}`, {
-    waitUntil: "networkidle",
-  });
+  try {
+    for (const theme of themes) {
+      const outputDir = `archive/screenshots/legacy/${theme}`;
+      await fs.mkdir(outputDir, { recursive: true });
 
-  await page.screenshot({
-    path: `archive/screenshots/legacy/${item.name}.png`,
-    fullPage: true,
-  });
+      const context = await browser.newContext({
+        viewport: { width: 1440, height: 1200 },
+        colorScheme: theme,
+      });
 
-  console.log(`saved: ${item.name}`);
+      await context.addInitScript((selectedTheme) => {
+        window.localStorage.setItem("theme", selectedTheme);
+      }, theme);
+
+      const page = await context.newPage();
+
+      try {
+        for (const item of pages) {
+          await page.goto(`${baseUrl}${item.path}`, {
+            waitUntil: "networkidle",
+          });
+
+          await page.screenshot({
+            path: `${outputDir}/${item.name}.png`,
+            fullPage: true,
+          });
+
+          console.log(`saved: ${theme}/${item.name}`);
+        }
+      } finally {
+        await context.close();
+      }
+    }
+  } finally {
+    await browser.close();
+  }
 }
 
-await browser.close();
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
