@@ -68,8 +68,7 @@ export function ItemListPage({
 
       return (
         localizedName.includes(keyword) ||
-        item.name_en.toLowerCase().includes(keyword) ||
-        item.normalized_name.toLowerCase().includes(keyword)
+        item.name_en.toLowerCase().includes(keyword)
       );
     });
   }, [deferredQuery, items, labels.locale]);
@@ -181,9 +180,6 @@ export function ItemListPage({
                     <h2 className="line-clamp-2 text-sm font-semibold text-gray-900 dark:text-white">
                       {localizedName}
                     </h2>
-                    <p className="mt-2 truncate font-mono text-xs text-gray-500 dark:text-gray-400">
-                      {item.normalized_name}
-                    </p>
                     <div className="mt-3 flex flex-wrap items-center gap-2">
                       <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-orange-700 dark:bg-orange-500/15 dark:text-orange-300">
                         {itemType}

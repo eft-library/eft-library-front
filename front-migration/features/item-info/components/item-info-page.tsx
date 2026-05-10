@@ -37,6 +37,7 @@ import type { Locale } from "@/i18n/config";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type {
   ItemInfoResponse,
+  ConsumableStimEffect,
   ItemHideoutCraft,
   ItemTraderBarter,
   ProtectionZones,
@@ -96,6 +97,7 @@ const itemInfoCopy: Record<
       usedInTraderBarters: "상인 교환 재료로 사용",
       hideoutCrafts: "은신처 제작",
       questRewards: "퀘스트 보상",
+      questOfferUnlockRewards: "구매 잠금 해제",
       hideoutConstructions: "은신처 건설 필요",
       questCraftUnlockRewards: "퀘스트 제작 해금 보상",
       bossDrops: "보스 드랍/보유",
@@ -110,8 +112,6 @@ const itemInfoCopy: Record<
       nameKo: "한국어 이름",
       nameEn: "영어 이름",
       nameJa: "일본어 이름",
-      normalizedName: "정규화 이름",
-      itemId: "아이템 ID",
       ergonomics: "인체공학",
       horizontalRecoil: "수평 반동",
       verticalRecoil: "수직 반동",
@@ -170,6 +170,9 @@ const itemInfoCopy: Record<
       foundInRaid: "인레이드",
       inRaid: "인레이드 필요",
       objective: "목표",
+      delay: "지연",
+      duration: "지속",
+      skill: "스킬",
       yes: "예",
       no: "아니오",
     },
@@ -194,6 +197,7 @@ const itemInfoCopy: Record<
       usedInTraderBarters: "Used in Trader Barters",
       hideoutCrafts: "Hideout Crafts",
       questRewards: "Quest Rewards",
+      questOfferUnlockRewards: "Purchase Unlocks",
       hideoutConstructions: "Hideout Construction",
       questCraftUnlockRewards: "Quest Craft Unlock Rewards",
       bossDrops: "Boss Drops / Inventory",
@@ -208,8 +212,6 @@ const itemInfoCopy: Record<
       nameKo: "Korean Name",
       nameEn: "English Name",
       nameJa: "Japanese Name",
-      normalizedName: "Normalized Name",
-      itemId: "Item ID",
       ergonomics: "Ergonomics",
       horizontalRecoil: "Horizontal Recoil",
       verticalRecoil: "Vertical Recoil",
@@ -268,6 +270,9 @@ const itemInfoCopy: Record<
       foundInRaid: "In Raid",
       inRaid: "In Raid Required",
       objective: "Objective",
+      delay: "Delay",
+      duration: "Duration",
+      skill: "Skill",
       yes: "Yes",
       no: "No",
     },
@@ -292,6 +297,7 @@ const itemInfoCopy: Record<
       usedInTraderBarters: "トレーダー交換素材",
       hideoutCrafts: "隠れ家クラフト",
       questRewards: "クエスト報酬",
+      questOfferUnlockRewards: "購入アンロック",
       hideoutConstructions: "隠れ家建設必要",
       questCraftUnlockRewards: "クエスト制作アンロック報酬",
       bossDrops: "ボスドロップ/所持",
@@ -306,8 +312,6 @@ const itemInfoCopy: Record<
       nameKo: "韓国語名",
       nameEn: "英語名",
       nameJa: "日本語名",
-      normalizedName: "正規化名",
-      itemId: "アイテムID",
       ergonomics: "エルゴノミクス",
       horizontalRecoil: "水平反動",
       verticalRecoil: "垂直反動",
@@ -366,6 +370,9 @@ const itemInfoCopy: Record<
       foundInRaid: "レイド内",
       inRaid: "レイド内必要",
       objective: "目標",
+      delay: "遅延",
+      duration: "持続",
+      skill: "スキル",
       yes: "はい",
       no: "いいえ",
     },
@@ -625,22 +632,40 @@ function DetailCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700/70 dark:bg-[#252830]">
-      <div className="px-4 pb-2 pt-6 text-center sm:px-6">
-        <div className="mx-auto mb-2 flex h-40 w-40 items-center justify-center rounded-xl bg-slate-100 p-2 dark:bg-slate-800/70">
-          <div className="relative h-36 w-36">
-            <Image
-              src={item.image}
-              alt={itemName}
-              fill
-              sizes="144px"
-              className="object-contain"
-              priority
-            />
+    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700/70 dark:bg-[#252830]">
+      <div className="grid gap-0 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <aside className="border-b border-slate-200 bg-slate-50/80 p-6 dark:border-slate-700/70 dark:bg-[#1f232b] lg:border-b-0 lg:border-r">
+          <div className="lg:sticky lg:top-24">
+            <div className="mx-auto flex h-56 w-full max-w-64 items-center justify-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <div className="relative h-full w-full">
+                <Image
+                  src={item.image}
+                  alt={itemName}
+                  fill
+                  sizes="256px"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-3 text-center lg:text-left">
+              <h2 className="text-lg font-black leading-snug text-slate-950 dark:text-white">
+                {itemName}
+              </h2>
+              <div className="flex flex-wrap justify-center gap-1.5 lg:justify-start">
+                {item.parent_category ? <Badge>{item.parent_category}</Badge> : null}
+                {item.category ? <Badge>{item.category}</Badge> : null}
+                <Badge>
+                  {item.width}x{item.height}
+                </Badge>
+              </div>
+            </div>
           </div>
-        </div>
+        </aside>
+
+        <div className="space-y-5 p-4 sm:p-6">{children}</div>
       </div>
-      <div className="space-y-5 px-4 pb-6 sm:px-6">{children}</div>
     </section>
   );
 }
@@ -662,13 +687,13 @@ function DetailGroup({ title, icon, rows = [], children }: DetailGroupProps) {
       </div>
 
       {visibleRows.length > 0 ? (
-        <div className="space-y-2">
+        <div className="grid gap-2 md:grid-cols-2">
           {visibleRows.map((row) => (
             <div
               key={row.label}
               className={`rounded-lg bg-slate-100/80 px-3 py-2 transition-colors hover:bg-slate-200/80 dark:bg-slate-800/55 dark:hover:bg-slate-800 ${
                 row.wide
-                  ? "space-y-2"
+                  ? "space-y-2 md:col-span-2"
                   : "flex items-center justify-between gap-3"
               }`}
             >
@@ -1152,6 +1177,121 @@ function AmmoEfficiencyPanel({
   );
 }
 
+type HighlightStat = {
+  label: string;
+  value: DetailValue | React.ReactNode;
+  suffix?: string;
+  icon: React.ReactNode;
+  tone?: "orange" | "blue" | "green" | "red" | "purple" | "slate";
+  show?: boolean;
+};
+
+const highlightToneClass = {
+  orange:
+    "border-orange-200 bg-orange-50 text-orange-950 dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-100",
+  blue:
+    "border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-100",
+  green:
+    "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100",
+  red:
+    "border-red-200 bg-red-50 text-red-950 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100",
+  purple:
+    "border-purple-200 bg-purple-50 text-purple-950 dark:border-purple-400/30 dark:bg-purple-400/10 dark:text-purple-100",
+  slate:
+    "border-slate-200 bg-slate-50 text-slate-950 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100",
+} satisfies Record<NonNullable<HighlightStat["tone"]>, string>;
+
+function StatHighlightGrid({ stats }: { stats: HighlightStat[] }) {
+  const visibleStats = stats.filter((stat) => stat.show !== false && hasValue(stat.value));
+
+  if (visibleStats.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+      {visibleStats.map((stat) => (
+        <div
+          key={stat.label}
+          className={`rounded-lg border px-3 py-3 shadow-sm ${
+            highlightToneClass[stat.tone ?? "slate"]
+          }`}
+        >
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold opacity-75">
+            {stat.icon}
+            <span>{stat.label}</span>
+          </div>
+          <div className="break-words text-xl font-black leading-tight [overflow-wrap:anywhere]">
+            {typeof stat.value === "string" || typeof stat.value === "number"
+              ? formatValue(stat.value, stat.suffix)
+              : stat.value}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StimEffectPanel({
+  effects,
+  copy,
+}: {
+  effects: ConsumableStimEffect[];
+  copy: (typeof itemInfoCopy)[Locale];
+}) {
+  if (effects.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="grid gap-2 md:grid-cols-2">
+      {effects.map((effect) => {
+        const value = effect.value;
+        const isPositive = typeof value === "number" && value > 0;
+        const isNegative = typeof value === "number" && value < 0;
+
+        return (
+          <div
+            key={effect.effect_index}
+            className={`rounded-lg border px-3 py-3 shadow-sm ${
+              isPositive
+                ? "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100"
+                : isNegative
+                  ? "border-red-200 bg-red-50 text-red-950 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100"
+                  : "border-slate-200 bg-white text-slate-950 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+            }`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="break-words text-sm font-black leading-snug [overflow-wrap:anywhere]">
+                  {effect.effect_type ?? `Effect ${effect.effect_index + 1}`}
+                </p>
+                {effect.skill_name ? (
+                  <p className="mt-1 text-xs font-semibold opacity-70">
+                    {copy.labels.skill}: {effect.skill_name}
+                  </p>
+                ) : null}
+              </div>
+              <span className="shrink-0 rounded-md bg-white px-2 py-1 text-sm font-black shadow-sm dark:bg-slate-950/80">
+                {typeof value === "number" && value > 0 ? "+" : ""}
+                {formatValue(value)}
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              <span className="rounded-full bg-white/70 px-2.5 py-1 text-xs font-bold dark:bg-slate-950/50">
+                {copy.labels.delay}: {formatValue(effect.delay, copy.units.seconds)}
+              </span>
+              <span className="rounded-full bg-white/70 px-2.5 py-1 text-xs font-bold dark:bg-slate-950/50">
+                {copy.labels.duration}: {formatValue(effect.duration, copy.units.seconds)}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function ItemInfoPage({
   item,
   locale,
@@ -1178,6 +1318,12 @@ export function ItemInfoPage({
   const usedInTraderBarters = item.used_in_trader_barters ?? [];
   const hideoutCrafts = item.hideout_crafts ?? [];
   const questRewards = item.quest_rewards ?? [];
+  const questItemRewards = questRewards.filter(
+    (reward) => reward.reward_type !== "offer_unlock",
+  );
+  const questOfferUnlockRewards = questRewards.filter(
+    (reward) => reward.reward_type === "offer_unlock",
+  );
   const hideoutConstructions = item.hideout_constructions ?? [];
   const questCraftUnlockRewards = item.quest_craft_unlock_rewards ?? [];
   const bossDrops = item.boss_drops ?? [];
@@ -1220,35 +1366,46 @@ export function ItemInfoPage({
           />
 
           {item.weapon_info ? (
+            <StatHighlightGrid
+              stats={[
+                {
+                  label: copy.labels.ergonomics,
+                  value: item.weapon_info.ergonomics,
+                  icon: <Hand className="h-5 w-5" />,
+                  tone: "green",
+                },
+                {
+                  label: copy.labels.verticalRecoil,
+                  value: item.weapon_info.recoil_vertical,
+                  icon: <ArrowUpDown className="h-5 w-5" />,
+                  tone: "red",
+                },
+                {
+                  label: copy.labels.horizontalRecoil,
+                  value: item.weapon_info.recoil_horizontal,
+                  icon: <ArrowLeftRight className="h-5 w-5" />,
+                  tone: "blue",
+                },
+                {
+                  label: copy.labels.fireRate,
+                  value: item.weapon_info.fire_rate,
+                  icon: <Gauge className="h-5 w-5" />,
+                  tone: "orange",
+                },
+              ]}
+            />
+          ) : null}
+
+          {item.weapon_info ? (
             <DetailGroup
               title={copy.groups.info}
               icon={<Info className="h-4 w-4" />}
               rows={[
                 {
-                  label: copy.labels.ergonomics,
-                  value: item.weapon_info.ergonomics,
-                  icon: <Hand className="h-4 w-4 text-green-500" />,
-                },
-                {
-                  label: copy.labels.horizontalRecoil,
-                  value: item.weapon_info.recoil_horizontal,
-                  icon: <ArrowLeftRight className="h-4 w-4 text-blue-500" />,
-                },
-                {
-                  label: copy.labels.verticalRecoil,
-                  value: item.weapon_info.recoil_vertical,
-                  icon: <ArrowUpDown className="h-4 w-4 text-red-500" />,
-                },
-                {
                   label: copy.labels.fireMode,
                   value: <ChipList values={activeFireModes} />,
                   icon: <Settings className="h-4 w-4 text-purple-500" />,
                   show: activeFireModes.length > 0,
-                },
-                {
-                  label: copy.labels.fireRate,
-                  value: item.weapon_info.fire_rate,
-                  icon: <Gauge className="h-4 w-4 text-orange-500" />,
                 },
                 {
                   label: copy.labels.caliber,
@@ -1284,35 +1441,46 @@ export function ItemInfoPage({
           ) : null}
 
           {item.ammo_info ? (
-            <DetailGroup
-              title={copy.groups.info}
-              icon={<Info className="h-4 w-4" />}
-              rows={[
+            <StatHighlightGrid
+              stats={[
                 {
                   label: copy.labels.damage,
                   value: item.ammo_info.damage,
-                  icon: <Crosshair className="h-4 w-4 text-red-500" />,
+                  icon: <Crosshair className="h-5 w-5" />,
+                  tone: "red",
                 },
                 {
                   label: copy.labels.penetration,
                   value: item.ammo_info.penetration_power,
-                  icon: <Target className="h-4 w-4 text-blue-500" />,
+                  icon: <Target className="h-5 w-5" />,
+                  tone: "blue",
                 },
                 {
                   label: copy.labels.armorDamage,
                   value: item.ammo_info.armor_damage,
                   suffix: "%",
-                  icon: <ShieldMinus className="h-4 w-4 text-orange-500" />,
-                },
-                {
-                  label: copy.labels.accuracy,
-                  value: item.ammo_info.accuracy_modifier,
-                  icon: <Target className="h-4 w-4 text-purple-500" />,
+                  icon: <ShieldMinus className="h-5 w-5" />,
+                  tone: "orange",
                 },
                 {
                   label: copy.labels.recoil,
                   value: item.ammo_info.recoil_modifier,
-                  icon: <Gauge className="h-4 w-4 text-green-500" />,
+                  icon: <Gauge className="h-5 w-5" />,
+                  tone: "green",
+                },
+              ]}
+            />
+          ) : null}
+
+          {item.ammo_info ? (
+            <DetailGroup
+              title={copy.groups.info}
+              icon={<Info className="h-4 w-4" />}
+              rows={[
+                {
+                  label: copy.labels.accuracy,
+                  value: item.ammo_info.accuracy_modifier,
+                  icon: <Target className="h-4 w-4 text-purple-500" />,
                 },
                 {
                   label: copy.labels.lightBleed,
@@ -1349,30 +1517,47 @@ export function ItemInfoPage({
           ) : null}
 
           {item.protection_info ? (
+            <StatHighlightGrid
+              stats={[
+                {
+                  label: copy.labels.armorClass,
+                  value: item.protection_info.armor_class,
+                  icon: <Shield className="h-5 w-5" />,
+                  tone: "green",
+                },
+                {
+                  label: copy.labels.durability,
+                  value: item.protection_info.durability,
+                  icon: <HeartPulse className="h-5 w-5" />,
+                  tone: "purple",
+                },
+                {
+                  label: copy.labels.material,
+                  value: item.protection_info.material,
+                  icon: <Package className="h-5 w-5" />,
+                  tone: "slate",
+                },
+                {
+                  label: copy.labels.blindnessProtection,
+                  value: item.protection_info.blindness_protection,
+                  suffix: "%",
+                  icon: <ShieldCheck className="h-5 w-5" />,
+                  tone: "blue",
+                },
+              ]}
+            />
+          ) : null}
+
+          {item.protection_info ? (
             <DetailGroup
               title={copy.groups.info}
               icon={<Info className="h-4 w-4" />}
               rows={[
                 {
-                  label: copy.labels.armorClass,
-                  value: item.protection_info.armor_class,
-                  icon: <Shield className="h-4 w-4 text-green-500" />,
-                },
-                {
                   label: copy.labels.armorZones,
                   value: <ChipList values={activeZones} />,
                   icon: <Shield className="h-4 w-4 text-blue-500" />,
                   show: activeZones.length > 0,
-                },
-                {
-                  label: copy.labels.material,
-                  value: item.protection_info.material,
-                  icon: <Package className="h-4 w-4 text-red-500" />,
-                },
-                {
-                  label: copy.labels.durability,
-                  value: item.protection_info.durability,
-                  icon: <HeartPulse className="h-4 w-4 text-purple-500" />,
                 },
                 {
                   label: copy.labels.ricochet,
@@ -1384,11 +1569,34 @@ export function ItemInfoPage({
                   value: item.protection_info.deafening,
                   icon: <Shield className="h-4 w-4 text-slate-500" />,
                 },
+              ]}
+            />
+          ) : null}
+
+          {item.storage_info ? (
+            <StatHighlightGrid
+              stats={[
                 {
-                  label: copy.labels.blindnessProtection,
-                  value: item.protection_info.blindness_protection,
-                  suffix: "%",
-                  icon: <Shield className="h-4 w-4 text-cyan-500" />,
+                  label: copy.labels.slots,
+                  value: item.storage_info.capacity,
+                  icon: <Boxes className="h-5 w-5" />,
+                  tone: "blue",
+                },
+                {
+                  label: copy.labels.type,
+                  value: item.storage_info.storage_type,
+                  icon: <Package className="h-5 w-5" />,
+                  tone: "orange",
+                },
+                {
+                  label: copy.labels.internalSize,
+                  value: item.storage_info.grids.length
+                    ? item.storage_info.grids
+                        .map((grid) => `${grid.width}x${grid.height}`)
+                        .join(", ")
+                    : null,
+                  icon: <LayoutGrid className="h-5 w-5" />,
+                  tone: "purple",
                 },
               ]}
             />
@@ -1400,26 +1608,42 @@ export function ItemInfoPage({
               icon={<Info className="h-4 w-4" />}
               rows={[
                 {
-                  label: copy.labels.slots,
-                  value: item.storage_info.capacity,
-                  icon: <Boxes className="h-4 w-4 text-blue-500" />,
-                },
-                {
-                  label: copy.labels.internalSize,
-                  value: (
-                    <ChipList
-                      values={item.storage_info.grids.map(
-                        (grid) => `${grid.width} X ${grid.height}`,
-                      )}
-                    />
-                  ),
-                  icon: <LayoutGrid className="h-4 w-4 text-purple-500" />,
-                  show: item.storage_info.grids.length > 0,
-                },
-                {
                   label: copy.labels.type,
                   value: item.storage_info.storage_type,
                   icon: <Package className="h-4 w-4 text-orange-500" />,
+                  show: false,
+                },
+              ]}
+            />
+          ) : null}
+
+          {item.consumable_info ? (
+            <StatHighlightGrid
+              stats={[
+                {
+                  label: copy.labels.useTime,
+                  value: item.consumable_info.use_time,
+                  suffix: copy.units.seconds,
+                  icon: <Clock className="h-5 w-5" />,
+                  tone: "blue",
+                },
+                {
+                  label: copy.labels.healing,
+                  value: item.consumable_info.hitpoints,
+                  icon: <Heart className="h-5 w-5" />,
+                  tone: "red",
+                },
+                {
+                  label: copy.labels.energy,
+                  value: item.consumable_info.energy,
+                  icon: <Gauge className="h-5 w-5" />,
+                  tone: "orange",
+                },
+                {
+                  label: copy.labels.hydration,
+                  value: item.consumable_info.hydration,
+                  icon: <Droplet className="h-5 w-5" />,
+                  tone: "blue",
                 },
               ]}
             />
@@ -1430,27 +1654,6 @@ export function ItemInfoPage({
               title={copy.groups.info}
               icon={<Heart className="h-4 w-4" />}
               rows={[
-                {
-                  label: copy.labels.healing,
-                  value: item.consumable_info.hitpoints,
-                  icon: <Heart className="h-4 w-4 text-red-500" />,
-                },
-                {
-                  label: copy.labels.useTime,
-                  value: item.consumable_info.use_time,
-                  suffix: copy.units.seconds,
-                  icon: <Clock className="h-4 w-4 text-blue-500" />,
-                },
-                {
-                  label: copy.labels.energy,
-                  value: item.consumable_info.energy,
-                  icon: <Gauge className="h-4 w-4 text-orange-500" />,
-                },
-                {
-                  label: copy.labels.hydration,
-                  value: item.consumable_info.hydration,
-                  icon: <Droplet className="h-4 w-4 text-sky-500" />,
-                },
                 {
                   label: copy.labels.uses,
                   value: item.consumable_info.units,
@@ -1475,30 +1678,43 @@ export function ItemInfoPage({
               ]}
             >
               {item.consumable_info.stim_effects.length > 0 ? (
-                <div className="space-y-2">
-                  {item.consumable_info.stim_effects.map((effect) => (
-                    <div
-                      key={effect.effect_index}
-                      className="rounded-lg bg-slate-100/80 px-3 py-2 dark:bg-slate-800/55"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                          {effect.effect_type ?? `Effect ${effect.effect_index + 1}`}
-                        </span>
-                        <Badge>{formatValue(effect.value)}</Badge>
-                      </div>
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        <Badge>Delay {formatValue(effect.delay, copy.units.seconds)}</Badge>
-                        <Badge>
-                          Duration {formatValue(effect.duration, copy.units.seconds)}
-                        </Badge>
-                        {effect.skill_name ? <Badge>{effect.skill_name}</Badge> : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <StimEffectPanel effects={item.consumable_info.stim_effects} copy={copy} />
               ) : null}
             </DetailGroup>
+          ) : null}
+
+          {item.throwable_info ? (
+            <StatHighlightGrid
+              stats={[
+                {
+                  label: copy.labels.fuse,
+                  value: item.throwable_info.fuse,
+                  suffix: copy.units.seconds,
+                  icon: <Clock className="h-5 w-5" />,
+                  tone: "blue",
+                },
+                {
+                  label: copy.labels.fragments,
+                  value: item.throwable_info.fragments,
+                  icon: <Bomb className="h-5 w-5" />,
+                  tone: "red",
+                },
+                {
+                  label: copy.labels.contusionRadius,
+                  value: item.throwable_info.contusion_radius,
+                  suffix: "m",
+                  icon: <Gauge className="h-5 w-5" />,
+                  tone: "purple",
+                },
+                {
+                  label: copy.labels.maxExplosionDistance,
+                  value: item.throwable_info.max_explosion_distance,
+                  suffix: "m",
+                  icon: <Target className="h-5 w-5" />,
+                  tone: "orange",
+                },
+              ]}
+            />
           ) : null}
 
           {item.throwable_info ? (
@@ -1512,23 +1728,6 @@ export function ItemInfoPage({
                   icon: <Bomb className="h-4 w-4 text-orange-500" />,
                 },
                 {
-                  label: copy.labels.fuse,
-                  value: item.throwable_info.fuse,
-                  suffix: copy.units.seconds,
-                  icon: <Clock className="h-4 w-4 text-blue-500" />,
-                },
-                {
-                  label: copy.labels.fragments,
-                  value: item.throwable_info.fragments,
-                  icon: <Bomb className="h-4 w-4 text-red-500" />,
-                },
-                {
-                  label: copy.labels.contusionRadius,
-                  value: item.throwable_info.contusion_radius,
-                  suffix: "m",
-                  icon: <Gauge className="h-4 w-4 text-purple-500" />,
-                },
-                {
                   label: copy.labels.minExplosionDistance,
                   value: item.throwable_info.min_explosion_distance,
                   suffix: "m",
@@ -1539,6 +1738,32 @@ export function ItemInfoPage({
                   value: item.throwable_info.max_explosion_distance,
                   suffix: "m",
                   icon: <Target className="h-4 w-4 text-red-500" />,
+                  show: false,
+                },
+              ]}
+            />
+          ) : null}
+
+          {item.melee_info ? (
+            <StatHighlightGrid
+              stats={[
+                {
+                  label: copy.labels.hitRadius,
+                  value: item.melee_info.hit_radius,
+                  icon: <Swords className="h-5 w-5" />,
+                  tone: "blue",
+                },
+                {
+                  label: copy.labels.slashDamage,
+                  value: item.melee_info.slash_damage,
+                  icon: <Swords className="h-5 w-5" />,
+                  tone: "red",
+                },
+                {
+                  label: copy.labels.stabDamage,
+                  value: item.melee_info.stab_damage,
+                  icon: <Swords className="h-5 w-5" />,
+                  tone: "orange",
                 },
               ]}
             />
@@ -1553,16 +1778,7 @@ export function ItemInfoPage({
                   label: copy.labels.hitRadius,
                   value: item.melee_info.hit_radius,
                   icon: <Swords className="h-4 w-4 text-blue-500" />,
-                },
-                {
-                  label: copy.labels.slashDamage,
-                  value: item.melee_info.slash_damage,
-                  icon: <Swords className="h-4 w-4 text-red-500" />,
-                },
-                {
-                  label: copy.labels.stabDamage,
-                  value: item.melee_info.stab_damage,
-                  icon: <Swords className="h-4 w-4 text-orange-500" />,
+                  show: false,
                 },
               ]}
             />
@@ -1695,8 +1911,8 @@ export function ItemInfoPage({
           ))}
         </RelationSection>
 
-        <RelationSection title={copy.groups.questRewards} count={questRewards.length}>
-          {questRewards.map((reward) => (
+        <RelationSection title={copy.groups.questRewards} count={questItemRewards.length}>
+          {questItemRewards.map((reward) => (
             <CompactRelationRow
               key={`${reward.quest.id}-${reward.reward_type}-${reward.offer_id ?? reward.quantity ?? "reward"}`}
             >
@@ -1717,6 +1933,39 @@ export function ItemInfoPage({
                 ) : null}
                 {reward.level ? <Badge>LL{formatValue(reward.level)}</Badge> : null}
               </div>
+            </CompactRelationRow>
+          ))}
+        </RelationSection>
+
+        <RelationSection
+          title={copy.groups.questOfferUnlockRewards}
+          count={questOfferUnlockRewards.length}
+        >
+          {questOfferUnlockRewards.map((reward) => (
+            <CompactRelationRow
+              key={`${reward.quest.id}-${reward.reward_type}-${reward.offer_id ?? reward.level ?? "unlock"}`}
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <QuestLink quest={reward.quest} locale={locale} />
+                {reward.trader ? (
+                  <EntityPill
+                    image={reward.trader.image}
+                    name={getEntityName(reward.trader, locale)}
+                    meta={
+                      reward.level
+                        ? `${copy.labels.traderLevel} ${formatValue(reward.level)}`
+                        : undefined
+                    }
+                  />
+                ) : null}
+              </div>
+              {reward.level ? (
+                <div className="flex flex-wrap gap-1">
+                  <Badge>
+                    {copy.labels.traderLevel}: {formatValue(reward.level)}
+                  </Badge>
+                </div>
+              ) : null}
             </CompactRelationRow>
           ))}
         </RelationSection>

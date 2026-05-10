@@ -37,7 +37,7 @@ const copyByLocale = {
     keys: "필요 열쇠",
     maps: "맵",
     standing: "호감도",
-    offers: "해금 오퍼",
+    offers: "구매 잠금 해제",
     crafts: "제작 해금",
     skill: "스킬",
     wiki: "위키",

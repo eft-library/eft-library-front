@@ -153,9 +153,9 @@ const itemSectionConfig: Record<ItemTypeSlug, ItemSectionConfig> = {
 
 const itemListUiCopy = {
   searchPlaceholder: {
-    ko: "아이템 이름 또는 내부 이름으로 검색",
-    en: "Search by item name or normalized name",
-    ja: "アイテム名または内部名で検索",
+    ko: "아이템 이름으로 검색",
+    en: "Search by item name",
+    ja: "アイテム名で検索",
   },
   totalLabel: {
     ko: "전체 아이템",

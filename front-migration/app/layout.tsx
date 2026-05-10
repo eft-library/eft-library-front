@@ -108,18 +108,13 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
         />
         <AdSideRails />
         <div className="flex-1">{children}</div>
-        <SiteFooter
-          title={copy.footer.title}
-          description={copy.footer.description}
-        />
+        <SiteFooter />
       </AppStoreProvider>
     </div>
   );
 }
 
 function LayoutFallback() {
-  const copy = getUICopy(defaultLocale);
-
   return (
     <div className="flex min-h-screen flex-col">
       <div className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-[#2a2d35]">
@@ -128,10 +123,7 @@ function LayoutFallback() {
         </div>
       </div>
       <div className="flex-1" />
-      <SiteFooter
-        title={copy.footer.title}
-        description={copy.footer.description}
-      />
+      <SiteFooter />
     </div>
   );
 }

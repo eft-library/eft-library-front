@@ -14,11 +14,6 @@ export interface NavigationCopy {
   themeToggle: string;
 }
 
-export interface FooterCopy {
-  title: string;
-  description: string;
-}
-
 export interface HomeCopy {
   recommendationFeature: string;
   event: string;
@@ -45,7 +40,6 @@ export interface WipeCopy {
 
 interface UICopy {
   navigation: NavigationCopy;
-  footer: FooterCopy;
   home: HomeCopy;
   wipe: WipeCopy;
 }
@@ -64,11 +58,6 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       myPage: "내 정보",
       guestLabel: "게스트",
       themeToggle: "테마 전환",
-    },
-    footer: {
-      title: "EFT Library Front Migration",
-      description:
-        "공통 셸과 V3 API 레이어를 먼저 정리한 뒤, 화면 단위로 안전하게 이전합니다.",
     },
     home: {
       recommendationFeature: "추천 기능",
@@ -107,11 +96,6 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       guestLabel: "Guest",
       themeToggle: "Toggle theme",
     },
-    footer: {
-      title: "EFT Library Front Migration",
-      description:
-        "We are stabilizing the shared shell and V3 API layer before migrating each screen.",
-    },
     home: {
       recommendationFeature: "Recommended",
       event: "Events",
@@ -148,11 +132,6 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       myPage: "マイページ",
       guestLabel: "ゲスト",
       themeToggle: "テーマ切替",
-    },
-    footer: {
-      title: "EFT Library Front Migration",
-      description:
-        "共通シェルとV3 APIレイヤーを先に整えてから、画面単位で安全に移行しています。",
     },
     home: {
       recommendationFeature: "おすすめ機能",
