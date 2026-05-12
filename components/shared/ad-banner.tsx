@@ -81,9 +81,11 @@ export function AdBanner({
 export function HorizontalAdBanner({
   className,
   maxWidth = 1220,
+  minHeight = 250,
 }: {
   className?: string;
   maxWidth?: number;
+  minHeight?: number;
 }) {
   return (
     <AdBanner
@@ -95,7 +97,7 @@ export function HorizontalAdBanner({
         "8601640289"
       }
       maxWidth={maxWidth}
-      minHeight={90}
+      minHeight={minHeight}
       className={className}
     />
   );

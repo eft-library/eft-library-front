@@ -168,9 +168,6 @@ export function QuestDetailPage({
             <span className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 dark:border-yellow-400/60 dark:bg-yellow-400/10 dark:text-yellow-300">
               {copy.minLevel} {data.quest.min_player_level ?? copy.empty}
             </span>
-            <span className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-300">
-              {copy.experience} {data.quest.experience?.toLocaleString() ?? copy.empty}
-            </span>
             {data.quest.kappa_required ? (
               <span className="inline-flex items-center gap-2 rounded-lg bg-lime-500 px-3 py-1.5 text-xs font-black text-gray-950">
                 {copy.kappa}
@@ -206,6 +203,8 @@ export function QuestDetailPage({
           />
         </section>
 
+        <HorizontalAdBanner />
+
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <SectionTitle>{copy.objectives}</SectionTitle>
           <div className="mt-5 space-y-4">
@@ -223,6 +222,9 @@ export function QuestDetailPage({
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <SectionTitle>{copy.rewards}</SectionTitle>
           <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-2">
+            {data.quest.experience !== null && data.quest.experience !== undefined ? (
+              <ExperienceReward title={copy.experience} value={data.quest.experience} />
+            ) : null}
             {data.finish_rewards.items.length > 0 ? (
               <RewardItemSection
                 title={copy.items}
@@ -256,6 +258,8 @@ export function QuestDetailPage({
             ) : null}
           </div>
         </section>
+
+        <HorizontalAdBanner />
 
         {guideHtml ? (
           <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
@@ -440,6 +444,21 @@ function QuestItemSection({
         ))}
       </div>
     </div>
+  );
+}
+
+function ExperienceReward({ title, value }: { title: string; value: number }) {
+  return (
+    <RewardGroup title={title}>
+      <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm dark:border-[#2a3038] dark:bg-[#20242b]">
+        <span className="font-black text-orange-600 dark:text-orange-300">
+          {value.toLocaleString()}
+        </span>
+        <span className="ml-1 font-semibold text-gray-600 dark:text-gray-300">
+          EXP
+        </span>
+      </div>
+    </RewardGroup>
   );
 }
 

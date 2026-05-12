@@ -1,6 +1,6 @@
 "use client";
 
-import { Bounds, Center, Html, MapControls, useGLTF, useProgress } from "@react-three/drei";
+import { Html, MapControls, useGLTF, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 
@@ -26,28 +26,24 @@ function Scene({ map }: { map: MapDetailModel }) {
   const { materials, meshes } = useGLTF(map.three_image, true);
 
   return (
-    <Bounds fit clip observe margin={1.15}>
-      <Center>
-        <group>
-          {map.three_json.map((layer) => {
-            const mesh = meshes[layer.geometry];
-            const material = materials[layer.material] ?? mesh?.material;
+    <group>
+      {map.three_json.map((layer) => {
+        const mesh = meshes[layer.geometry];
+        const material = materials[layer.material] ?? mesh?.material;
 
-            if (!mesh || !material) {
-              return null;
-            }
+        if (!mesh || !material) {
+          return null;
+        }
 
-            return (
-              <mesh
-                key={`${layer.geometry}-${layer.material}`}
-                geometry={mesh.geometry}
-                material={material}
-              />
-            );
-          })}
-        </group>
-      </Center>
-    </Bounds>
+        return (
+          <mesh
+            key={`${layer.geometry}-${layer.material}`}
+            geometry={mesh.geometry}
+            material={material}
+          />
+        );
+      })}
+    </group>
   );
 }
 
@@ -63,19 +59,27 @@ export function Map3DViewer({ map }: { map: MapDetailModel }) {
   return (
     <div className="h-[calc(100vh-220px)] min-h-[520px] w-full overflow-hidden bg-[#15171d] sm:h-[calc(100vh-180px)]">
       <Canvas
-        camera={{ position: [0, 60, 0], fov: 45 }}
+        key={`3d-map-${map.id}`}
+        camera={{ position: [0, 60, 0], near: 0.001, far: 1000000 }}
         dpr={[1, 2]}
-        gl={{ antialias: true }}
+        gl={{ antialias: true, logarithmicDepthBuffer: true }}
         onCreated={({ gl }) => {
           gl.setClearColor("#15171d");
         }}
       >
         <Suspense fallback={<Loader />}>
+          <MapControls
+            makeDefault
+            enableDamping
+            enableZoom
+            maxDistance={100000}
+            minDistance={0.001}
+            zoomSpeed={2}
+          />
           <ambientLight intensity={1.2} />
           <directionalLight position={[10, 20, 10]} intensity={2} />
           <pointLight position={[0, 10, 0]} intensity={1.4} />
           <Scene map={map} />
-          <MapControls makeDefault enableDamping enableZoom zoomSpeed={2} />
         </Suspense>
       </Canvas>
     </div>

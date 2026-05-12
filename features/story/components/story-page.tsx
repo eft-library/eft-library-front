@@ -56,7 +56,7 @@ function StoryRichSection({
           imageAltFallback={title}
           className={cn(
             "mt-5",
-            "[&_td]:align-top [&_th]:text-left",
+            "[&_td]:text-center [&_td]:align-middle [&_th]:text-center [&_th]:align-middle",
           )}
         />
       ) : (
@@ -155,12 +155,6 @@ export function StoryPage({
           </section>
         ) : (
           <>
-            <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
-              <h2 className="text-lg font-semibold">{labels.chapterSummaryLabel}</h2>
-              <p className="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-300">
-                {labels.pageDescription}
-              </p>
-            </section>
             <StoryRichSection
               title={labels.requirementsLabel}
               html={requirementsHtml}

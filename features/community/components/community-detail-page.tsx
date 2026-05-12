@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
+  ArrowLeft,
   Ban,
   Bookmark,
   CornerDownRight,
@@ -479,7 +480,16 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   return (
     <main className="bg-gray-50 py-8 text-gray-950 dark:bg-[#1f232b] dark:text-gray-50">
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-8">
-        <article className="min-w-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/70 dark:bg-[#252932]">
+        <div className="min-w-0 space-y-4">
+          <Link
+            href={`/community/${post.category}`}
+            className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 transition hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-300"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            목록으로
+          </Link>
+
+          <article className="min-w-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700/70 dark:bg-[#252932]">
           <header className="border-b border-gray-100 p-5 dark:border-gray-700/60">
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <Link href={`/community/${post.category}`} className="rounded bg-orange-100 px-2 py-1 font-bold text-orange-700 dark:bg-orange-500/15 dark:text-orange-300">
@@ -709,7 +719,8 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
               onPageChange={(nextPage) => router.push(`/community/detail/${id}?comment_page=${nextPage}`)}
             />
           </section>
-        </article>
+          </article>
+        </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700/70 dark:bg-[#252932]">

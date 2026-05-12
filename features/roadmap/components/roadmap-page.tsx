@@ -1217,9 +1217,9 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
           >
             {name}
           </button>
-          <div className="mt-2 flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+          <div className="relative mt-2 flex items-center justify-center text-xs text-gray-500 dark:text-gray-400">
             <span>Lv.{props.data.minPlayerLevel}</span>
-            <ExternalLink className="h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" />
+            <ExternalLink className="absolute left-1/2 h-3.5 w-3.5 translate-x-8 opacity-0 transition group-hover:opacity-100" />
           </div>
 
           {props.data.kappaRequired ? (

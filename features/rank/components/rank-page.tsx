@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Search, Store } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { getApiBaseUrl } from "@/lib/config/app-env";
@@ -503,11 +503,10 @@ function TierSection({
       </div>
 
       <div className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {tier.list.map((item, index) => (
+        {tier.list.map((item) => (
           <RankItemCard
             key={item.id}
             item={item}
-            index={index}
             tier={tier.tier}
             locale={locale}
             labels={labels}
@@ -520,13 +519,11 @@ function TierSection({
 
 function RankItemCard({
   item,
-  index,
   tier,
   locale,
   labels,
 }: {
   item: PriceTopItem;
-  index: number;
   tier: PriceTopTier["tier"];
   locale: Locale;
   labels: (typeof copyByLocale)[Locale];
@@ -540,9 +537,6 @@ function RankItemCard({
       rel="noopener noreferrer"
       className={`flex min-w-0 gap-3 rounded-lg border bg-white p-3 transition focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 dark:bg-[#181c21] dark:focus:ring-offset-[#111418] ${tierStyles[tier].card}`}
     >
-      <div className="flex w-7 shrink-0 justify-center pt-1 text-xs font-black text-gray-400">
-        #{index + 1}
-      </div>
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]">
         <Image
           src={item.image}
@@ -569,11 +563,10 @@ function RankItemCard({
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
-              <Store className="h-3.5 w-3.5" aria-hidden="true" />
+            <span className="shrink-0 whitespace-nowrap text-gray-500 dark:text-gray-400">
               {labels.fleaMarket}
             </span>
-            <span className="font-semibold text-gray-700 dark:text-gray-200">
+            <span className="whitespace-nowrap font-semibold text-gray-700 dark:text-gray-200">
               {formatPrice(item.flea_market_price, locale)}
             </span>
           </div>
