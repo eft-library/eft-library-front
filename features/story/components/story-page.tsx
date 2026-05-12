@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { RichHtmlImageViewer } from "@/components/shared/rich-html-image-viewer";
 import { getStorySVG } from "@/assets/story/storySvg";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
@@ -50,12 +51,13 @@ function StoryRichSection({
     <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
       <h2 className="text-lg font-semibold">{title}</h2>
       {html ? (
-        <div
+        <RichHtmlImageViewer
+          html={html}
+          imageAltFallback={title}
           className={cn(
-            "rich-html-content mt-5",
+            "mt-5",
             "[&_td]:align-top [&_th]:text-left",
           )}
-          dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (
         <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">{emptyLabel}</p>

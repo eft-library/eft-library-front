@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
-import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import {
   blockCommunityUser,
   bookmarkCommunityPost,
@@ -496,8 +495,6 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
               <span>추천 {meta?.like_count ?? post.reaction_score ?? 0}</span>
             </div>
           </header>
-
-          <HorizontalAdBanner className="my-0" />
 
           {isPostAuthorBlocked && !isAuthor ? (
             <div className="m-5 rounded-lg border border-gray-200 bg-gray-50 p-5 text-sm font-semibold text-gray-500 dark:border-gray-700 dark:bg-[#1f232b] dark:text-gray-400">

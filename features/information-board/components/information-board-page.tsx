@@ -111,23 +111,6 @@ export function InformationBoardPage({
           </nav>
         </section>
 
-        <section className="rounded-md border border-gray-200 bg-white text-gray-900 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-100">
-          <div className="bg-gray-50 px-5 py-4 text-lg font-bold dark:bg-[#20242b]">
-            자세히 알아보기
-          </div>
-          <div className="divide-y divide-gray-100 dark:divide-[#2a3038]">
-            {["게임", "비디오 게임", "도서관 및 박물관"].map((item) => (
-              <div
-                key={item}
-                className="flex items-center justify-between px-5 py-4 text-base"
-              >
-                <span>{item}</span>
-                <span className="text-3xl font-light text-gray-400 dark:text-gray-500">›</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <InformationBoardList
           boardPath={boardPath}
           displayTitle={displayTitle}
@@ -166,7 +149,9 @@ export function InformationBoardPage({
                 <Link
                   key={item}
                   href={buildPageHref(boardPath, item)}
-                  aria-current={item === board.current_page ? "page" : undefined}
+                  aria-current={
+                    item === board.current_page ? "page" : undefined
+                  }
                   className={`inline-flex h-9 min-w-9 items-center justify-center rounded-md px-3 text-sm font-bold transition ${
                     item === board.current_page
                       ? "bg-orange-500 text-white shadow-sm"
