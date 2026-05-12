@@ -245,7 +245,7 @@ export function PricePage({ locale }: { locale: Locale }) {
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
       <div className="mx-auto flex min-w-0 w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <section className="flex flex-col items-center gap-6 pt-4 text-center">
-          <div>
+          <div className="w-full">
             <h1 className="text-3xl font-black sm:text-4xl">{copy.title}</h1>
             <HorizontalAdBanner minHeight={280} />
           </div>

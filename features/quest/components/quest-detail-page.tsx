@@ -162,7 +162,6 @@ export function QuestDetailPage({
               {traderName}
             </p>
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">{questName}</h1>
-            <HorizontalAdBanner />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <span className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 dark:border-yellow-400/60 dark:bg-yellow-400/10 dark:text-yellow-300">
@@ -222,40 +221,44 @@ export function QuestDetailPage({
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <SectionTitle>{copy.rewards}</SectionTitle>
           <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-2">
-            {data.quest.experience !== null && data.quest.experience !== undefined ? (
-              <ExperienceReward title={copy.experience} value={data.quest.experience} />
-            ) : null}
-            {data.finish_rewards.items.length > 0 ? (
-              <RewardItemSection
-                title={copy.items}
-                rewards={data.finish_rewards.items}
-                locale={locale}
-              />
-            ) : null}
-            {data.finish_rewards.trader_standing.length > 0 ? (
-              <StandingSection
-                title={copy.standing}
-                items={data.finish_rewards.trader_standing}
-                locale={locale}
-              />
-            ) : null}
-            {data.finish_rewards.offer_unlock.length > 0 ? (
-              <OfferSection
-                title={copy.offers}
-                items={data.finish_rewards.offer_unlock}
-                locale={locale}
-              />
-            ) : null}
-            {data.finish_rewards.craft_unlock.length > 0 ? (
-              <CraftSection
-                title={copy.crafts}
-                items={data.finish_rewards.craft_unlock}
-                locale={locale}
-              />
-            ) : null}
-            {data.finish_rewards.skill_level_reward.length > 0 ? (
-              <SkillSection title={copy.skill} items={data.finish_rewards.skill_level_reward} />
-            ) : null}
+            <div className="grid min-w-0 content-start gap-6">
+              {data.quest.experience !== null && data.quest.experience !== undefined ? (
+                <ExperienceReward title={copy.experience} value={data.quest.experience} />
+              ) : null}
+              {data.finish_rewards.trader_standing.length > 0 ? (
+                <StandingSection
+                  title={copy.standing}
+                  items={data.finish_rewards.trader_standing}
+                  locale={locale}
+                />
+              ) : null}
+              {data.finish_rewards.skill_level_reward.length > 0 ? (
+                <SkillSection title={copy.skill} items={data.finish_rewards.skill_level_reward} />
+              ) : null}
+            </div>
+            <div className="grid min-w-0 content-start gap-6">
+              {data.finish_rewards.items.length > 0 ? (
+                <RewardItemSection
+                  title={copy.items}
+                  rewards={data.finish_rewards.items}
+                  locale={locale}
+                />
+              ) : null}
+              {data.finish_rewards.offer_unlock.length > 0 ? (
+                <OfferSection
+                  title={copy.offers}
+                  items={data.finish_rewards.offer_unlock}
+                  locale={locale}
+                />
+              ) : null}
+              {data.finish_rewards.craft_unlock.length > 0 ? (
+                <CraftSection
+                  title={copy.crafts}
+                  items={data.finish_rewards.craft_unlock}
+                  locale={locale}
+                />
+              ) : null}
+            </div>
           </div>
         </section>
 
