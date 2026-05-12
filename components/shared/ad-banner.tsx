@@ -87,14 +87,15 @@ export function HorizontalAdBanner({
 }) {
   return (
     <AdBanner
-      dataAdFormat="auto"
+      dataAdFormat="horizontal"
       dataFullWidthResponsive
       dataAdSlot={
         process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
-        process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ??
-        "2690838054"
+        process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ??
+        "8601640289"
       }
       maxWidth={maxWidth}
+      minHeight={90}
       className={className}
     />
   );
@@ -111,7 +112,11 @@ export function VerticalAdBanner({
     <AdBanner
       dataAdFormat="vertical"
       dataFullWidthResponsive={false}
-      dataAdSlot={process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ?? "2690838054"}
+      dataAdSlot={
+        process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ??
+        process.env.NEXT_PUBLIC_ADSENSE_VERTICAL_SLOT ??
+        "2690838054"
+      }
       maxWidth={maxWidth}
       minHeight={600}
       className={className}
