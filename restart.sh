@@ -2,7 +2,7 @@
 
 # 설정
 APP_DIR="/home/frontend_a/eft-library-front"
-NODE="/usr/bin/npm"
+PNPM="${PNPM:-$(command -v pnpm)}"
 KILL="/bin/kill"
 NETSTAT="/usr/bin/netstat"
 GREP="/usr/bin/grep"
@@ -33,17 +33,22 @@ start_server() {
   echo "앱 디렉토리로 이동: $APP_DIR"
   cd "$APP_DIR" || { echo "디렉토리 이동 실패"; exit 1; }
 
+  if [ -z "$PNPM" ]; then
+    echo "pnpm을 찾을 수 없습니다. PNPM=/path/to/pnpm 환경변수를 지정하거나 pnpm을 PATH에 추가하세요."
+    exit 1
+  fi
+
   echo ".next 디렉토리 제거 중..."
   rm -rf .next/
 
   echo "Next.js 빌드 시작..."
-  $NODE run build --prefix "$APP_DIR"
+  "$PNPM" --dir "$APP_DIR" build
 
   # 빌드 후 버전 파일 생성
   echo "$(date +%s)" > "$APP_DIR/public/version.txt"
 
   echo "Next.js 서버를 포트 $PORT에서 시작합니다."
-  $NOHUP bash -c "PORT=$PORT $NODE run start --prefix $APP_DIR" > "$APP_DIR/log.out" 2>&1 &
+  $NOHUP bash -c "PORT=$PORT \"$PNPM\" --dir \"$APP_DIR\" start" > "$APP_DIR/log.out" 2>&1 &
 }
 
 # 실행 분기

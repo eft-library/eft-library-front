@@ -1,41 +1,36 @@
-import MapData from "./_components/map-data";
-import { Metadata } from "next";
-import { cacheRequestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { connection } from "next/server";
 
-type paramsType = Promise<{ id: string }>;
-type MetaProps = { params: paramsType };
+import { getMapDetail } from "@/features/map/api";
+import { MapRoute } from "@/features/map/route";
+import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { id } = await params;
-
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
-    const res = await cacheRequestData(`${API_ENDPOINTS.GET_MAP}/${id}`);
-    const data = res.data;
-    return {
-      title: `타르코프 ${data.map.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 3D 지도. ${data.map.name.ko} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
-      openGraph: {
-        title: `타르코프 ${data.map.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 3D 지도. ${data.map.name.ko} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
-        images: [data.map.mot_image.ko],
-        url: `https://eftlibrary.com/map/${id}`,
-        siteName: "EFT Library",
-      },
-      twitter: {
-        title: `타르코프 ${data.map.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 3D 지도. ${data.map.name.ko} 2D Map과 3D Map을 지원하고 아이템 스폰 위치에 대한 정보를 자세하게 제공합니다.`,
-        images: [data.map.mot_image.ko],
-      },
-    };
+    const { id } = await params;
+    const data = await getMapDetail(id);
+    const name = data.map.name_ko || data.map.name_en;
+
+    return createPageMetadata({
+      title: `타르코프 ${name} 3D 지도`,
+      description: `Escape from Tarkov ${name} 3D 지도와 아이템 스폰 위치 정보를 제공합니다.`,
+      path: `/map/${id}`,
+    });
   } catch {
-    return { title: "EFT Library" }; // fallback
+    return fallbackMetadata();
   }
 }
 
-export default async function Map({ params }: MetaProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  await connection();
   const { id } = await params;
-  return <MapData id={id} />;
+
+  return <MapRoute mapId={id} />;
 }

@@ -1,30 +1,12 @@
-import RoadmapData from "./_components/roadmap-data";
+import { RoadmapRoute } from "@/features/roadmap/route";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "타르코프 퀘스트 로드맵 - EFT Library",
-  description:
-    "Escape from Tarkov (타르코프) 전체 퀘스트를 플로우 차트 형식으로 정보를 제공합니다.",
-  openGraph: {
-    siteName: "EFT Library",
-    title: "타르코프 퀘스트 로드맵 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프) 전체 퀘스트를 플로우 차트 형식으로 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/roadmap",
-  },
-  twitter: {
-    siteName: "EFT Library",
-    title: "타르코프 퀘스트 로드맵 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프) 전체 퀘스트를 플로우 차트 형식으로 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/roadmap",
-  },
-  alternates: {
-    canonical: "https://eftlibrary.com/roadmap",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "타르코프 퀘스트 로드맵",
+  description: "Escape from Tarkov 트레이더별 퀘스트 흐름과 진행 상태를 로드맵으로 확인할 수 있습니다.",
+  path: "/roadmap",
+});
 
-export default function Roadmap() {
-  return <RoadmapData />;
+export default function Page() {
+  return <RoadmapRoute />;
 }

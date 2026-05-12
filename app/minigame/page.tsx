@@ -1,30 +1,12 @@
-import MinigameView from "./_components/minigame-view";
+import { MinigameRoute } from "@/features/minigame/route";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "타르코프 미니게임 - EFT Library",
-  description:
-    "Escape from Tarkov (타르코프) 미니게임으로 게임 매칭 대기시간에 가볍게 할 수 있는 미니게임을 제공합니다.",
-  openGraph: {
-    siteName: "EFT Library",
-    title: "타르코프 미니게임 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프) 미니게임으로 게임 매칭 대기시간에 가볍게 할 수 있는 미니게임을 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/minigame",
-  },
-  twitter: {
-    siteName: "EFT Library",
-    title: "타르코프 미니게임 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프) 미니게임으로 게임 매칭 대기시간에 가볍게 할 수 있는 미니게임을 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/minigame",
-  },
-  alternates: {
-    canonical: "https://eftlibrary.com/minigame",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "타르코프 미니게임",
+  description: "Escape from Tarkov 아이템을 활용한 EFT Library 미니게임과 랭킹을 플레이할 수 있습니다.",
+  path: "/minigame",
+});
 
-export default function Minigame() {
-  return <MinigameView />;
+export default function Page() {
+  return <MinigameRoute />;
 }

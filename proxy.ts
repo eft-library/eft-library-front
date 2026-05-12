@@ -1,53 +1,123 @@
-// proxy.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function proxy(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { pathname } = req.nextUrl;
-  const clientIp =
-    req.headers.get("cf-connecting-ip") ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
-  const headers = new Headers(req.headers);
-  headers.set("x-client-real-ip", clientIp);
+import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { getApiBaseUrl } from "@/lib/config/app-env";
 
-  // 보호 경로 (로그인 필요)
-  const protectedPaths = [
-    "/community/create",
-    "/community/update",
-    "/onboarding",
-    "/mypage",
-  ];
+const protectedPathPrefixes = [
+  "/community/create",
+  "/community/update",
+  "/onboarding",
+  "/mypage",
+];
 
-  // 로그인 안한 경우 → 커뮤니티 이슈 페이지로 이동
-  if (protectedPaths.some((path) => pathname.startsWith(path))) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-  }
+type TokenUserInfo = {
+  nickname?: unknown;
+} | null;
 
-  // 로그인했는데 닉네임이 없는 경우 → 무조건 /onboarding으로 이동
-  if (token && !token.nickname && pathname !== "/onboarding") {
-    return NextResponse.redirect(new URL("/onboarding", req.url));
-  }
-
-  // 닉네임이 이미 있는데 /onboarding으로 가려는 경우 → 메인으로 리다이렉트
-  if (token && token.nickname && pathname === "/onboarding") {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  return NextResponse.next({ request: { headers } });
+function getClientIp(request: NextRequest) {
+  return (
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-real-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown"
+  );
 }
 
-// matcher 확장
+function getNicknameFromValue(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : null;
+}
+
+function getNicknameFromToken(token: Awaited<ReturnType<typeof getToken>>) {
+  if (!token || typeof token === "string") {
+    return null;
+  }
+
+  const directNickname = getNicknameFromValue(token.nickname);
+  if (directNickname) {
+    return directNickname;
+  }
+
+  const userInfo = token.userInfo as TokenUserInfo;
+  return getNicknameFromValue(userInfo?.nickname);
+}
+
+async function fetchNicknameFromUserInfo(accessToken: unknown) {
+  if (typeof accessToken !== "string" || accessToken.length === 0) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = (await response.json()) as {
+      data?: { nickname?: unknown } | null;
+    };
+
+    return getNicknameFromValue(payload.data?.nickname);
+  } catch {
+    return null;
+  }
+}
+
+export async function proxy(request: NextRequest) {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  const { pathname } = request.nextUrl;
+  const headers = new Headers(request.headers);
+
+  headers.set("x-client-real-ip", getClientIp(request));
+
+  const isProtectedPath = protectedPathPrefixes.some((path) =>
+    pathname === path || pathname.startsWith(`${path}/`),
+  );
+
+  if (isProtectedPath && !token) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  const nickname =
+    getNicknameFromToken(token) ??
+    (token && typeof token !== "string"
+      ? await fetchNicknameFromUserInfo(token.accessToken)
+      : null);
+
+  if (token && !nickname && pathname !== "/onboarding") {
+    return NextResponse.redirect(new URL("/onboarding", request.url));
+  }
+
+  if (token && nickname && pathname === "/onboarding") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  return NextResponse.next({
+    request: {
+      headers,
+    },
+  });
+}
+
 export const config = {
   matcher: [
     "/community/create/:path*",
     "/community/update/:path*",
     "/onboarding",
     "/mypage/:path*",
-    "/((?!_next|api|static|favicon.ico).*)", // 다른 경로 전역 확인 원하면 추가
+    "/((?!_next|api|static|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)",
   ],
 };

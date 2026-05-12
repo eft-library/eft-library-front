@@ -1,13 +1,55 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth from "next-auth";
-import { JWT } from "next-auth/jwt";
+import type { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
-import { USER_API_ENDPOINTS } from "@/lib/config/endpoint";
 
-// Google Access Token 갱신 함수
+import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { getApiBaseUrl } from "@/lib/config/app-env";
+
+type UserInfo = {
+  email?: string;
+  attendance_count?: number;
+  nickname?: string;
+  is_admin?: boolean;
+  last_update_nickname?: string;
+  end_time?: string;
+  start_time?: string;
+  reason?: string;
+  user_blocks?: Array<{
+    reason: string;
+    create_time: string;
+    blocked_email: string;
+    blocker_email: string;
+  }>;
+} | null;
+
+async function fetchUserInfo(accessToken?: string): Promise<UserInfo> {
+  if (!accessToken) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = await response.json();
+    return payload.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function refreshAccessToken(token: JWT) {
   try {
-    const url = "https://oauth2.googleapis.com/token";
     const body = new URLSearchParams({
       client_id: process.env.NEXT_PUBLIC_GOOGLE_ID ?? "",
       client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? "",
@@ -15,7 +57,7 @@ async function refreshAccessToken(token: JWT) {
       refresh_token: token.refreshToken ?? "",
     });
 
-    const response = await fetch(url, {
+    const response = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: body.toString(),
@@ -24,7 +66,6 @@ async function refreshAccessToken(token: JWT) {
     const refreshedTokens = await response.json();
 
     if (!response.ok) {
-      console.error("Error refreshing access token:", refreshedTokens);
       throw refreshedTokens;
     }
 
@@ -38,6 +79,10 @@ async function refreshAccessToken(token: JWT) {
     console.error("Failed to refresh access token:", error);
     return { ...token, error: "RefreshAccessTokenError" };
   }
+}
+
+function hasNickname(userInfo: UserInfo) {
+  return Boolean(userInfo?.nickname?.trim());
 }
 
 const handler = NextAuth({
@@ -56,149 +101,91 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60, // 2시간
+    maxAge: 2 * 60 * 60,
     updateAge: 2 * 60 * 60,
   },
   jwt: {
-    maxAge: 2 * 60 * 60, // 2시간
+    maxAge: 2 * 60 * 60,
   },
-  // 추가: 쿠키 설정
-  cookies: {
-    pkceCodeVerifier: {
-      name: "next-auth.pkce.code_verifier",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-    state: {
-      name: "next-auth.state",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-    callbackUrl: {
-      name: "next-auth.callback-url",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-    sessionToken: {
-      name: "__Secure-next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-  },
-  useSecureCookies: true,
   callbacks: {
-    // 로그인 시 사용자 추가
     async signIn({ user }) {
-      if (!user) return false;
+      if (!user) {
+        return false;
+      }
 
       try {
-        const res = await fetch(USER_API_ENDPOINTS.ADD_USER, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: user.name,
-            email: user.email,
-            image: user.image ?? "",
-          }),
-        });
-        if (!res.ok) throw new Error("Failed to add user");
-        return true;
-      } catch (err) {
-        console.error(err);
+        const response = await fetch(
+          `${getApiBaseUrl()}${apiEndpoints.userAdd}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: user.name,
+              email: user.email,
+              image: user.image ?? "",
+            }),
+          },
+        );
+
+        return response.ok;
+      } catch (error) {
+        console.error("Failed to add user on sign-in:", error);
         return false;
       }
     },
 
-    // JWT 콜백
     async jwt({ token, account, user, trigger, session }) {
-      // 최초 로그인 시 항상 새 토큰 세팅
       if (account && user) {
         const accessTokenExpires = account.expires_at
           ? account.expires_at * 1000
           : Date.now() + 3600 * 1000;
 
-        let nickname: string | null = null;
-        try {
-          const res = await fetch(USER_API_ENDPOINTS.GET_USER, {
-            headers: { Authorization: `Bearer ${account.access_token}` },
-          });
-          if (res.ok) {
-            const data = await res.json();
-            nickname = data.data?.nickname ?? null;
-          }
-        } catch {
-          nickname = null;
-        }
+        const userInfo = await fetchUserInfo(account.access_token);
 
         return {
           ...token,
           accessToken: account.access_token ?? "",
           refreshToken: account.refresh_token ?? "",
           accessTokenExpires,
-          nickname,
+          userInfo,
+          nickname: userInfo?.nickname ?? null,
         };
       }
 
-      // 세션 업데이트 시 nickname 반영
-      if (trigger === "update" && session?.userInfo?.nickname) {
-        token.nickname = session.userInfo.nickname;
+      if (trigger === "update" && session?.userInfo) {
+        token.userInfo = session.userInfo;
+        token.nickname = session.userInfo.nickname ?? token.nickname;
       }
 
-      // 토큰 만료 체크
       if (
         token.accessTokenExpires &&
         Date.now() < (token.accessTokenExpires as number)
       ) {
+        if (!token.nickname && token.accessToken) {
+          const userInfo = await fetchUserInfo(token.accessToken as string);
+
+          if (userInfo) {
+            token.userInfo = userInfo;
+            token.nickname = hasNickname(userInfo) ? userInfo.nickname ?? null : null;
+          }
+        }
+
         return token;
       }
 
-      // 만료 시 refresh
       return refreshAccessToken(token);
     },
 
-    // Session 콜백
-    async session({ token }) {
-      const safeToken = token ?? {};
-      const sessionUser = { ...safeToken } as any;
+    async session({ token, session }) {
+      const nextSession = session;
+      const accessToken = (token.accessToken as string) ?? "";
+      const userInfo = await fetchUserInfo(accessToken);
 
-      delete sessionUser.refreshToken;
+      nextSession.accessToken = accessToken;
+      nextSession.refreshToken = (token.refreshToken as string) ?? "";
+      nextSession.userInfo = userInfo ?? (token.userInfo as typeof session.userInfo) ?? null;
 
-      try {
-        const res = await fetch(USER_API_ENDPOINTS.GET_USER, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token.accessToken}`,
-          },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          sessionUser.userInfo = data.data ?? null;
-        } else {
-          sessionUser.userInfo = null;
-        }
-      } catch {
-        sessionUser.userInfo = null;
-      }
-
-      return sessionUser;
+      return nextSession;
     },
   },
 });

@@ -1,46 +1,43 @@
-import QuestData from "./_components/quest-data";
-import { Metadata } from "next";
-import { cacheRequestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { QuestJson } from "./_components/quest.types";
+import { connection } from "next/server";
 
-type paramsType = Promise<{ id: string }>;
-type MetaProps = { params: paramsType };
+import { QuestListPage } from "@/features/quest/components/quest-list-page";
+import { getQuestListWithTrader } from "@/features/quest/api";
+import { getUserLocale } from "@/i18n/locale";
+import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { id } = await params;
-
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
-    const res = await cacheRequestData(
-      `${API_ENDPOINTS.GET_QUEST_BY_NPC}/${id}`,
-    );
-    const data = res.data;
-    const trader = data.trader_list.find((info: QuestJson) => info.id === id);
+    const { id } = await params;
+    const data = await getQuestListWithTrader(id);
+    const trader =
+      data.trader_list.find((entry) => entry.normalized_name === id) ??
+      data.quest_list.find((entry) => entry.trader)?.trader;
+    const name = trader?.name_ko || trader?.name_en || id;
 
-    return {
-      title: `타르코프 퀘스트 ${trader?.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 전체 퀘스트. ${trader?.name.ko} 퀘스트와 목표, 보상, 카파 정보를 제공합니다.`,
-      openGraph: {
-        images: [trader?.image || ""],
-        title: `타르코프 퀘스트 ${trader?.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 전체 퀘스트. ${trader?.name.ko} 퀘스트와 목표, 보상, 카파 정보를 제공합니다.`,
-        url: `https://eftlibrary.com/quest/${trader?.id}`,
-        siteName: "EFT Library",
-      },
-      twitter: {
-        images: [trader?.image || ""],
-        title: `타르코프 퀘스트 ${trader?.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 전체 퀘스트. ${trader?.name.ko} 퀘스트와 목표, 보상, 카파 정보를 제공합니다.`,
-      },
-    };
+    return createPageMetadata({
+      title: `타르코프 퀘스트 ${name}`,
+      description: `Escape from Tarkov 전체 퀘스트 중 ${name} 퀘스트와 목표, 보상, 카파 정보를 제공합니다.`,
+      path: `/quest/${id}`,
+      image: trader?.image,
+    });
   } catch {
-    return { title: "EFT Library" }; // fallback
+    return fallbackMetadata();
   }
 }
 
-export default async function Quest({ params }: MetaProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  await connection();
   const { id } = await params;
-  return <QuestData id={id} />;
+  const locale = await getUserLocale();
+  const data = await getQuestListWithTrader(id);
+
+  return <QuestListPage traderId={id} data={data} locale={locale} />;
 }

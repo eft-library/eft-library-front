@@ -1,5 +1,12 @@
-import SearchResultData from "@/components/custom/Community/SearchResult/search-result-data";
+import { CommunitySearchPage } from "@/features/community/components/community-search-page";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export default function CommunitySearch() {
-  return <SearchResultData />;
+export const metadata = createPageMetadata({
+  title: "라운지 검색",
+  description: "EFT Library 라운지의 게시글과 댓글을 검색할 수 있습니다.",
+  path: "/community/search",
+});
+
+export default function Page() {
+  return <CommunitySearchPage />;
 }

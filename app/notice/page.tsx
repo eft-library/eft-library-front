@@ -1,32 +1,24 @@
-import NoticeData from "./_components/notice-data";
+import { InformationBoardRoute } from "@/features/information-board/route";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "EFT Library 공지사항 - EFT Library",
-  description: "EFT Library 사이트 관련 공지사항.",
-  openGraph: {
-    siteName: "EFT Library",
-    title: "EFT Library 공지사항 - EFT Library",
-    description: "EFT Library 사이트 관련 공지사항.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/notice?id=1",
-  },
-  twitter: {
-    siteName: "EFT Library",
-    title: "EFT Library 공지사항 - EFT Library",
-    description: "EFT Library 사이트 관련 공지사항.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/notice?id=1",
-  },
-  alternates: {
-    canonical: "https://eftlibrary.com/notice?id=1",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "EFT Library 공지사항",
+  description: "EFT Library 공지 목록입니다.",
+  path: "/notice",
+});
 
-export default async function Notice({
+export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const { id } = await searchParams;
-  return <NoticeData id={id} />;
+  const { page } = await searchParams;
+  const currentPage = Number(page ?? "1");
+
+  return (
+    <InformationBoardRoute
+      slug="notice"
+      page={Number.isFinite(currentPage) && currentPage > 0 ? currentPage : 1}
+    />
+  );
 }

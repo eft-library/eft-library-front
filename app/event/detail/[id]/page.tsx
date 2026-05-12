@@ -1,43 +1,44 @@
-import { cacheRequestData } from "@/lib/config/api";
-import EventDetailData from "./_component/event-detail-data";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
-import { Metadata } from "next";
+import { connection } from "next/server";
 
-type paramsType = Promise<{ id: string }>;
-type MetaProps = { params: paramsType };
+import { getInformationDetail } from "@/features/information-board/api";
+import { InformationDetailRoute } from "@/features/information-board/route";
+import {
+  createPageMetadata,
+  fallbackMetadata,
+  stripHtml,
+  truncateDescription,
+} from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { id } = await params;
-
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
-    const res = await cacheRequestData(
-      `${API_ENDPOINTS.GET_INFORMATION_BY_ID_TYPE}/EVENT/detail/${id}`,
-    );
-    const data = res.data;
-    return {
-      title: `${data.information.name.ko} - EFT Library`,
-      description: `${data.information.name.ko}`,
-      openGraph: {
-        title: "타르코프 이벤트 상세 정보 - EFT Library",
-        description:
-          "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 상세 정보를 제공합니다.",
-        url: `https://eftlibrary.com/event/detail/${id}`,
-        siteName: "EFT Library",
-      },
-      twitter: {
-        title: "타르코프 이벤트 상세 정보 - EFT Library",
-        description:
-          "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 상세 정보를 제공합니다.",
-      },
-    };
+    const { id } = await params;
+    const data = await getInformationDetail("EVENT", id);
+    const title = data.information.title_ko || data.information.title_en;
+    const content = stripHtml(data.information.content_ko || data.information.content_en);
+
+    return createPageMetadata({
+      title: `타르코프 이벤트 ${title}`,
+      description: truncateDescription(
+        content || `Escape from Tarkov 이벤트 ${title} 상세 정보를 제공합니다.`,
+      ),
+      path: `/event/detail/${id}`,
+    });
   } catch {
-    return { title: "EFT Library" };
+    return fallbackMetadata();
   }
 }
 
-export default async function EventDetail({ params }: MetaProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  await connection();
   const { id } = await params;
-  return <EventDetailData id={id} />;
+
+  return <InformationDetailRoute slug="event" informationId={id} />;
 }

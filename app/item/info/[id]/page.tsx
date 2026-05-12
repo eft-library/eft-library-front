@@ -1,47 +1,38 @@
-import ItemData from "./_components/item-data";
-import { Metadata } from "next";
-import { cacheRequestData } from "@/lib/config/api";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { connection } from "next/server";
 
-type paramsType = Promise<{ id: string }>;
-type MetaProps = { params: paramsType };
+import { getItemInfo } from "@/features/item-info/api";
+import { ItemInfoRoute } from "@/features/item-info/route";
+import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { id } = await params;
-
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
-    const res = await cacheRequestData(
-      `${API_ENDPOINTS.GET_ITEM_DETAIL}/${id}`,
-    );
-    const data = res.data;
-    return {
-      title: `타르코프 ${data.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) ${data.name.ko}. Escape from Tarkov(타르코프) 아이템별로 무기, 방어구, 의료품, 탄약, 모딩 부품, 퀘스트 아이템 등 다양한 장비에 대한 정보를 제공하며, 상인 교환, 은신처 건설 및 제작, 퀘스트 재료와 보상까지 폭넓은 정보를 제공합니다.`,
-      openGraph: {
-        title: `타르코프 ${data.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) ${data.name.ko}. Escape from Tarkov(타르코프) 아이템별로 무기, 방어구, 의료품, 탄약, 모딩 부품, 퀘스트 아이템 등 다양한 장비에 대한 정보를 제공하며, 상인 교환, 은신처 건설 및 제작, 퀘스트 재료와 보상까지 폭넓은 정보를 제공합니다.`,
-        images: [data.image],
-        url: `https://eftlibrary.com/item/info/${id}`,
-        siteName: "EFT Library",
-      },
-      twitter: {
-        title: `타르코프 ${data.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) ${data.name.ko}. Escape from Tarkov(타르코프) 아이템별로 무기, 방어구, 의료품, 탄약, 모딩 부품, 퀘스트 아이템 등 다양한 장비에 대한 정보를 제공하며, 상인 교환, 은신처 건설 및 제작, 퀘스트 재료와 보상까지 폭넓은 정보를 제공합니다.`,
-        images: [data.image],
-      },
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
+    const { id } = await params;
+    const item = await getItemInfo(id);
+    const name = item.name_ko || item.name_en;
+
+    return createPageMetadata({
+      title: `타르코프 ${name}`,
+      description: `Escape from Tarkov ${name}. 무기, 방어구, 의료품, 탄약, 모딩 부품, 퀘스트 아이템 등 아이템 정보와 상인 교환, 은신처 제작, 퀘스트 재료 및 보상 정보를 제공합니다.`,
+      path: `/item/info/${id}`,
+      image: item.image,
+      noIndex: true,
+    });
   } catch {
-    return { title: "EFT Library" }; // fallback
+    return fallbackMetadata();
   }
 }
 
-export default async function Item({ params }: MetaProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  await connection();
   const { id } = await params;
-  return <ItemData id={id} />;
+
+  return <ItemInfoRoute itemId={id} />;
 }

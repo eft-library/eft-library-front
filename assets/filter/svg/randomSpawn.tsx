@@ -1,5 +1,5 @@
-import { ALL_COLOR } from "@/lib/consts/colorConsts";
-import type { SVG } from "@/assets/assetTypes";
+import { ALL_COLOR } from "../../assetColors";
+import type { SVG } from "../../assetTypes";
 
 export default function RandomSpawn({ width, height, opacity, x, y }: SVG) {
   return (

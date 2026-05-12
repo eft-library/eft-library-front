@@ -1,83 +1,96 @@
-import { MetadataRoute } from "next";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import type { MetadataRoute } from "next";
 
-interface Data {
-  data: SitemapItemAPI[];
-}
+import { getApiBaseUrl } from "@/lib/config/app-env";
 
-interface SitemapItemAPI {
+interface SitemapApiItem {
   id: number;
-  link: string;
-  update_time: string;
-  change_freq: string;
+  url: string;
   priority: number;
-  value: string;
-  create_date: string;
+  change_freq: string;
+  sitemap_value: string;
+  create_time: string;
+  update_time: string;
 }
 
-// 1달 = 30일 = 2,592,000초
+interface SitemapApiResponse {
+  status: number;
+  msg: string;
+  data: SitemapApiItem[];
+}
+
+const sitemapEndpoint = "/api/search/v3/sitemap";
+const revalidateSeconds = 60 * 60 * 24 * 30;
+
 export const revalidate = 2592000;
+
+function toChangeFrequency(
+  value: string,
+): MetadataRoute.Sitemap[number]["changeFrequency"] {
+  switch (value) {
+    case "always":
+    case "hourly":
+    case "daily":
+    case "weekly":
+    case "monthly":
+    case "yearly":
+    case "never":
+      return value;
+    default:
+      return "monthly";
+  }
+}
+
+async function getSitemapItems() {
+  const response = await fetch(`${getApiBaseUrl()}${sitemapEndpoint}`, {
+    next: { revalidate: revalidateSeconds },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch sitemap data: ${response.status}`);
+  }
+
+  const payload = (await response.json()) as SitemapApiResponse;
+
+  if (payload.msg !== "OK" || !Array.isArray(payload.data)) {
+    throw new Error("Invalid sitemap API response");
+  }
+
+  return payload.data;
+}
 
 export async function generateSitemaps() {
   try {
-    const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP, {
-      next: { revalidate: 2592000 },
-    });
-
-    if (!res.ok) {
-      console.error("Failed to fetch sitemap data");
-      return [];
-    }
-
-    const data: Data = await res.json();
-    const uniqueValues = Array.from(
-      new Set(data.data.map((item) => item.value)),
+    const items = await getSitemapItems();
+    const sitemapValues = Array.from(
+      new Set(items.map((item) => item.sitemap_value).filter(Boolean)),
     );
 
-    return uniqueValues.map((value) => ({ id: value }));
+    return sitemapValues.map((value) => ({ id: value }));
   } catch (error) {
     console.error("Error in generateSitemaps:", error);
     return [];
   }
 }
 
-// id를 Promise로 받아서 await 처리
 export default async function sitemap({
   id,
 }: {
-  id: Promise<string>; // Promise 타입으로 변경
+  id: string | Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
   try {
-    // id를 await으로 풀기
     const resolvedId = await id;
+    const items = await getSitemapItems();
 
-    const res = await fetch(API_ENDPOINTS.GET_ALL_SITEMAP, {
-      next: { revalidate: 2592000 },
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch sitemap data");
-    }
-
-    const data: Data = await res.json();
-
-    const items = data.data.filter((item) => item.value === resolvedId);
-
-    return items.map((item) => ({
-      url: item.link,
-      lastModified: new Date(item.update_time),
-      changeFrequency: item.change_freq as
-        | "always"
-        | "hourly"
-        | "daily"
-        | "weekly"
-        | "monthly"
-        | "yearly"
-        | "never",
-      priority: item.priority,
-    }));
+    return items
+      .filter((item) => item.sitemap_value === resolvedId)
+      .map((item) => ({
+        url: item.url,
+        lastModified: new Date(item.update_time),
+        changeFrequency: toChangeFrequency(item.change_freq),
+        priority: item.priority,
+      }));
   } catch (error) {
-    console.error(`Error generating sitemap:`, error);
+    console.error("Error generating sitemap:", error);
     return [];
   }
 }

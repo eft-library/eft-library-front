@@ -1,67 +1,47 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
-import NavData from "@/components/custom/NavBar/nav-data";
-import { AuthProvider } from "@/components/provider/auth-provider";
-import { AppStoreProvider } from "@/components/provider/app-store-provider";
-import { ThemeProvider } from "@/components/provider/theme-provider";
-import { NextIntlClientProvider } from "next-intl";
-import { WebSocketProvider } from "@/components/provider/websocket-provider";
-import { QueryProvider } from "@/components/provider/query-provider";
-import { getLocale } from "next-intl/server";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import Footer from "@/components/custom/Footer/footer";
-import ChatData from "@/components/custom/Chat/chat-data";
+import type { Metadata } from "next";
+
+import { AuthProvider } from "@/components/providers/auth-provider";
+import { AdSideRails } from "@/components/shared/ad-side-rails";
+import { SiteFooter } from "@/components/shared/site-footer";
+import { SiteHeader } from "@/components/shared/site-header";
+import { AppStoreProvider } from "@/components/providers/app-store-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { WebSocketProvider } from "@/components/providers/websocket-provider";
+import { getHomeMenu } from "@/features/home/api";
+import { defaultLocale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/locale";
+import { getSiteUrl } from "@/lib/config/app-env";
+import { getUICopy } from "@/lib/constants/ui-copy";
+
 import "./globals.css";
-import "../assets/editor.css";
-import "../assets/xyflow.css";
-import "@xyflow/react/dist/style.css";
-import "photoswipe/dist/photoswipe.css";
 import "leaflet/dist/leaflet.css";
-import "react-datepicker/dist/react-datepicker.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
-  title: "타르코프 도서관 - EFT LIBRARY",
-  description:
-    "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
-  metadataBase: new URL("https://eftlibrary.com/"),
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-    other: {
-      "naver-site-verification":
-        process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION || "",
-    },
+  title: {
+    default: "타르코프 도서관 - EFT Library",
+    template: "%s | EFT Library",
   },
+  description:
+    "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
+  metadataBase: new URL(getSiteUrl()),
   openGraph: {
-    siteName: "EFT LIBRARY",
-    title: "타르코프 도서관 - EFT LIBRARY",
+    title: "타르코프 도서관 - EFT Library",
     description:
-      "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/",
+      "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
+    url: "/",
+    siteName: "EFT Library",
   },
   twitter: {
-    title: "타르코프 도서관 - EFT LIBRARY",
+    card: "summary",
+    title: "타르코프 도서관 - EFT Library",
     description:
-      "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다.",
-    images: "/og.png",
+      "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
   },
   robots: {
     index: true,
     follow: true,
-  },
-  alternates: {
-    canonical: "./",
   },
 };
 
@@ -71,51 +51,79 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
-      <head>
-        <script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
-          crossOrigin="anonymous"
-        />
-      </head>
+    <html
+      lang={defaultLocale}
+      className="h-full antialiased"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="min-h-full bg-background text-foreground"
+        suppressHydrationWarning
       >
-        <Suspense fallback={null}>
-          <RootLayoutContent>{children}</RootLayoutContent>
-        </Suspense>
+        {process.env.NEXT_PUBLIC_ADSENSE ? (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE}`}
+            crossOrigin="anonymous"
+          />
+        ) : null}
+        <ThemeProvider>
+          <AuthProvider>
+            <WebSocketProvider>
+              <QueryProvider>
+                <Suspense fallback={<LayoutFallback />}>
+                  <ResolvedLayout>{children}</ResolvedLayout>
+                </Suspense>
+              </QueryProvider>
+            </WebSocketProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
     </html>
   );
 }
 
-// next-intl의 locale.ts에서 use cahce 활성화시 Suspense 에러로 인해 분리
-async function RootLayoutContent({ children }: { children: React.ReactNode }) {
-  const locale = await getLocale();
+async function ResolvedLayout({ children }: { children: React.ReactNode }) {
+  const [navigation, locale] = await Promise.all([getHomeMenu(), getUserLocale()]);
+  const copy = getUICopy(locale);
 
   return (
-    <NextIntlClientProvider locale={locale}>
-      <AuthProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AppStoreProvider>
-            <QueryProvider>
-              <WebSocketProvider>
-                <NavData />
-                <ChatData />
-                {children}
-                <Footer />
-              </WebSocketProvider>
-            </QueryProvider>
-          </AppStoreProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </NextIntlClientProvider>
+    <div className="flex min-h-screen flex-col">
+      <AppStoreProvider
+        initialState={{ activeCommunityCategory: "free", uiLocale: locale }}
+      >
+        <SiteHeader
+          menuGroups={navigation.nav_list}
+          autocompleteItems={navigation.autocomplete_items}
+          localeLabel={copy.navigation.languageLabel}
+          searchPlaceholder={copy.navigation.searchPlaceholder}
+          noSearchResultsLabel={copy.navigation.noSearchResults}
+          loginLabel={copy.navigation.login}
+          logoutLabel={copy.navigation.logout}
+          myPageLabel={copy.navigation.myPage}
+          guestLabel={copy.navigation.guestLabel}
+          themeToggleLabel={copy.navigation.themeToggle}
+          locale={locale}
+        />
+        <AdSideRails />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+      </AppStoreProvider>
+    </div>
+  );
+}
+
+function LayoutFallback() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <div className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-[#2a2d35]">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+          <div className="h-4 w-40 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+        </div>
+      </div>
+      <div className="flex-1" />
+      <SiteFooter />
+    </div>
   );
 }

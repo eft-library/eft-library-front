@@ -1,9 +1,30 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
-
-const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+import path from "path";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: "/ammo", destination: "/item/ammo", permanent: true },
+      { source: "/arm-band", destination: "/item/arm-band", permanent: true },
+      { source: "/armor-vest", destination: "/item/armor-vest", permanent: true },
+      { source: "/backpack", destination: "/item/backpack", permanent: true },
+      { source: "/container", destination: "/item/container", permanent: true },
+      { source: "/face-cover", destination: "/item/face-cover", permanent: true },
+      { source: "/glasses", destination: "/item/glasses", permanent: true },
+      { source: "/head-wear", destination: "/item/headwear", permanent: true },
+      { source: "/headwear", destination: "/item/headwear", permanent: true },
+      { source: "/headset", destination: "/item/headset", permanent: true },
+      { source: "/key", destination: "/item/key", permanent: true },
+      { source: "/loot", destination: "/item/loot", permanent: true },
+      { source: "/medical", destination: "/item/medical", permanent: true },
+      { source: "/provisions", destination: "/item/provisions", permanent: true },
+      { source: "/rig", destination: "/item/rig", permanent: true },
+      { source: "/weapon", destination: "/item/weapon", permanent: true },
+    ];
+  },
+  turbopack: {
+    root: path.join(__dirname, ".."),
+  },
   cacheComponents: true,
   productionBrowserSourceMaps: false,
   experimental: {
@@ -22,4 +43,4 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

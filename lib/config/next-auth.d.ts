@@ -1,42 +1,50 @@
-import { DefaultSession } from "next-auth";
-import { DefaultJWT } from "next-auth/jwt";
+import type { DefaultSession } from "next-auth";
+import type { DefaultJWT } from "next-auth/jwt";
 
-// 세션에 토큰 정보 추가
 declare module "next-auth" {
   interface Session extends DefaultSession {
     accessToken: string;
-    provider: string;
     refreshToken: string;
-    email: string;
-    name: string;
-    userInfo: UserInfo;
-  }
-
-  interface UserInfo {
-    email: string;
-    attendance_count: number;
-    nickname: string;
-    is_admin: boolean;
-    last_update_nickname: string;
-    end_time: string;
-    start_time: string;
-    reason: string;
-    user_blocks: UserBlock[];
-  }
-
-  interface UserBlock {
-    reason: string;
-    create_time: string;
-    blocked_email: string;
-    blocker_email: string;
+    userInfo: {
+      email?: string;
+      attendance_count?: number;
+      nickname?: string;
+      is_admin?: boolean;
+      last_update_nickname?: string;
+      end_time?: string;
+      start_time?: string;
+      reason?: string;
+      user_blocks?: Array<{
+        reason: string;
+        create_time: string;
+        blocked_email: string;
+        blocker_email: string;
+      }>;
+    } | null;
   }
 }
 
-// jwt에 토큰 정보 추가
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
-    accessToken: string;
-    provider: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
+    accessTokenExpires?: number;
+    nickname?: string | null;
+    userInfo?: {
+      email?: string;
+      attendance_count?: number;
+      nickname?: string;
+      is_admin?: boolean;
+      last_update_nickname?: string;
+      end_time?: string;
+      start_time?: string;
+      reason?: string;
+      user_blocks?: Array<{
+        reason: string;
+        create_time: string;
+        blocked_email: string;
+        blocker_email: string;
+      }>;
+    } | null;
   }
 }

@@ -1,5 +1,18 @@
-import PostDetailData from "./_components/post-detail-data";
+import { CommunityEditorPage } from "@/features/community/components/community-editor-page";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export default function CommunityUpdate() {
-  return <PostDetailData />;
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export const metadata = createPageMetadata({
+  title: "라운지 글 수정",
+  description: "EFT Library 라운지 게시글을 수정합니다.",
+  path: "/community/update",
+  noIndex: true,
+});
+
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+  return <CommunityEditorPage postParam={id} />;
 }

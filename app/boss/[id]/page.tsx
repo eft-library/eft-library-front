@@ -1,41 +1,37 @@
-import { cacheRequestData } from "@/lib/config/api";
-import BossData from "./_components/boss-data";
-import { Metadata } from "next";
-import { API_ENDPOINTS } from "@/lib/config/endpoint";
+import { connection } from "next/server";
 
-type paramsType = Promise<{ id: string }>;
-type MetaProps = { params: paramsType };
+import { getBossDetail } from "@/features/boss/api";
+import { BossRoute } from "@/features/boss/route";
+import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { id } = await params;
-
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
-    const res = await cacheRequestData(`${API_ENDPOINTS.GET_BOSS}/${id}`);
-    const data = res.data;
-    return {
-      title: `타르코프 ${data.boss.name.ko} - EFT Library`,
-      description: `Escape from Tarkov (타르코프) 보스 ${data.boss.name.ko} 스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
-      openGraph: {
-        images: [data.boss.image],
-        title: `타르코프 ${data.boss.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 보스 ${data.boss.name.ko} 스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
-        url: `https://eftlibrary.com/boss/${data.boss.id}`,
-        siteName: "EFT Library",
-      },
-      twitter: {
-        images: [data.boss.image],
-        title: `타르코프 ${data.boss.name.ko} - EFT Library`,
-        description: `Escape from Tarkov (타르코프) 보스 ${data.boss.name.ko} 스폰 위치, 스폰 확률, 피통, 추종자, 전리품에 대한 정보를 제공합니다.`,
-      },
-    };
+    const { id } = await params;
+    const data = await getBossDetail(id);
+    const name = data.boss.name_ko || data.boss.name_en;
+
+    return createPageMetadata({
+      title: `타르코프 ${name}`,
+      description: `Escape from Tarkov 보스 ${name}의 스폰 위치, 스폰 확률, 체력, 추종자, 전리품 정보를 제공합니다.`,
+      path: `/boss/${id}`,
+      image: data.boss.image,
+    });
   } catch {
-    return { title: "EFT Library" };
+    return fallbackMetadata();
   }
 }
 
-export default async function Boss({ params }: MetaProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  await connection();
   const { id } = await params;
-  return <BossData id={id} />;
+
+  return <BossRoute bossId={id} />;
 }

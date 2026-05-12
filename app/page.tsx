@@ -1,18 +1,38 @@
-import MainData from "./_components/main-data";
+import { HomePage } from "@/features/home/components/home-page";
+import { getHomeMain } from "@/features/home/api";
+import { getUserLocale } from "@/i18n/locale";
+import { getUICopy } from "@/lib/constants/ui-copy";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "타르코프 도서관 - EFT LIBRARY",
+export const metadata = createPageMetadata({
+  title: "타르코프 도서관",
   description:
-    "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
-  openGraph: {
-    siteName: "EFT LIBRARY",
-    title: "타르코프 도서관 - EFT LIBRARY",
-    description:
-      "타르코프 도서관 EFT LIBRARY는 Escape from Tarkov 한국어 공략 정보의 허브입니다. 한글 지도, 2D & 3D 지도, 퀘스트 가이드, 퀘스트 플래너 & 로드맵, 아이템, 보스, 이벤트, 모딩, 시세 등 게임 플레이에 필요한 모든 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/",
-  },
-};
-export default function Main() {
-  return <MainData />;
+    "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
+  path: "/",
+});
+
+export default async function Page() {
+  const [home, locale] = await Promise.all([
+    getHomeMain(),
+    getUserLocale(),
+  ]);
+  const copy = getUICopy(locale);
+
+  return (
+    <HomePage
+      home={home}
+      labels={{
+        recommendationFeature: copy.home.recommendationFeature,
+        event: copy.home.event,
+        comingSoon: copy.home.comingSoon,
+        patchNotes: copy.home.patchNotes,
+        tarkovInfo: copy.home.tarkovInfo,
+        notice: copy.home.notice,
+        recentPosts: copy.home.recentPosts,
+        noNotice: copy.home.noNotice,
+        noPosts: copy.home.noPosts,
+      }}
+      locale={locale}
+    />
+  );
 }

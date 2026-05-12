@@ -1,35 +1,24 @@
-import EventData from "./_components/event-data";
+import { InformationBoardRoute } from "@/features/information-board/route";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "타르코프 이벤트 - EFT Library",
-  description:
-    "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 정보를 제공합니다.",
-  openGraph: {
-    siteName: "EFT Library",
-    title: "타르코프 이벤트 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/event?id=1",
-  },
-  twitter: {
-    siteName: "EFT Library",
-    title: "타르코프 이벤트 - EFT Library",
-    description:
-      "Escape from Tarkov (타르코프)에서 진행하는 이벤트에 관한 정보를 제공합니다.",
-    images: "/og.png",
-    url: "https://eftlibrary.com/event?id=1",
-  },
-  alternates: {
-    canonical: "https://eftlibrary.com/event?id=1",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "타르코프 이벤트",
+  description: "Escape from Tarkov 이벤트 정보와 변경 사항을 확인할 수 있습니다.",
+  path: "/event",
+});
 
-export default async function Event({
+export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const { id } = await searchParams;
-  return <EventData id={id} />;
+  const { page } = await searchParams;
+  const currentPage = Number(page ?? "1");
+
+  return (
+    <InformationBoardRoute
+      slug="event"
+      page={Number.isFinite(currentPage) && currentPage > 0 ? currentPage : 1}
+    />
+  );
 }
