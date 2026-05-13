@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
@@ -119,6 +120,7 @@ function getValidationMessage(code: string, locale: Locale) {
 
 export function OnboardingPage({ locale }: { locale: Locale }) {
   const copy = copyByLocale[locale];
+  const router = useRouter();
   const { data: session, status, update } = useSession();
 
   const [nickname, setNickname] = useState("");
@@ -190,6 +192,8 @@ export function OnboardingPage({ locale }: { locale: Locale }) {
             nickname,
           },
         });
+        router.replace("/");
+        router.refresh();
       }
     } catch {
       setErrorMessage(copy.duplicateError);

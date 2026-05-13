@@ -254,7 +254,7 @@ function ThemeToggle({ label }: { label: string }) {
       aria-label={label}
       title={label}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:bg-white dark:text-orange-500 dark:hover:bg-orange-50"
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:border dark:border-[#464b55] dark:bg-[#242830] dark:text-orange-300 dark:hover:border-orange-500/40 dark:hover:bg-[#2c313a] dark:hover:text-orange-200"
     >
       {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
@@ -370,7 +370,7 @@ export function SiteHeader({
                     aria-label={myPageLabel}
                     title={myPageLabel}
                     onFocus={() => setIsUserMenuOpen(true)}
-                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:bg-white dark:text-orange-500 dark:hover:bg-orange-50"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-orange-50 hover:text-orange-500 dark:border dark:border-[#464b55] dark:bg-[#242830] dark:text-orange-300 dark:hover:border-orange-500/40 dark:hover:bg-[#2c313a] dark:hover:text-orange-200"
                   >
                     <User className="h-4 w-4" />
                   </button>
