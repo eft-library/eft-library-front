@@ -2,8 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Check, ExternalLink, Skull, Star, X, ZoomIn, ZoomOut } from "lucide-react";
+import { Children, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  Skull,
+  Star,
+  X,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { cn } from "@/lib/utils/class-name";
@@ -20,6 +31,8 @@ import type {
   QuestRewardSkill,
   QuestRewardStanding,
 } from "@/types/api/quest";
+
+const COLLAPSED_ITEM_COUNT = 20;
 
 const copyByLocale = {
   ko: {
@@ -44,6 +57,8 @@ const copyByLocale = {
     kappa: "Kappa",
     foundInRaid: "인레이드",
     empty: "-",
+    showMore: "더보기",
+    showLess: "접기",
   },
   en: {
     objectives: "Objectives",
@@ -67,6 +82,8 @@ const copyByLocale = {
     kappa: "Kappa",
     foundInRaid: "Found in raid",
     empty: "-",
+    showMore: "Show more",
+    showLess: "Show less",
   },
   ja: {
     objectives: "目標",
@@ -90,6 +107,8 @@ const copyByLocale = {
     kappa: "Kappa",
     foundInRaid: "レイド内発見",
     empty: "-",
+    showMore: "もっと見る",
+    showLess: "閉じる",
   },
 } as const;
 
@@ -206,16 +225,15 @@ export function QuestDetailPage({
 
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <SectionTitle>{copy.objectives}</SectionTitle>
-          <div className="mt-5 space-y-4">
-            {data.objectives.map((objective) => (
-              <ObjectiveCard
-                key={objective.objective_id}
-                objective={objective}
-                locale={locale}
-                copy={copy}
-              />
-            ))}
-          </div>
+          <ExpandableList
+            items={data.objectives}
+            className="mt-5 space-y-4"
+            copy={copy}
+            getKey={(objective) => objective.objective_id}
+            renderItem={(objective) => (
+              <ObjectiveCard objective={objective} locale={locale} copy={copy} />
+            )}
+          />
         </section>
 
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
@@ -223,7 +241,11 @@ export function QuestDetailPage({
           <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-2">
             <div className="grid min-w-0 content-start gap-6">
               {data.quest.experience !== null && data.quest.experience !== undefined ? (
-                <ExperienceReward title={copy.experience} value={data.quest.experience} />
+                <ExperienceReward
+                  title={copy.experience}
+                  value={data.quest.experience}
+                  locale={locale}
+                />
               ) : null}
               {data.finish_rewards.trader_standing.length > 0 ? (
                 <StandingSection
@@ -233,7 +255,11 @@ export function QuestDetailPage({
                 />
               ) : null}
               {data.finish_rewards.skill_level_reward.length > 0 ? (
-                <SkillSection title={copy.skill} items={data.finish_rewards.skill_level_reward} />
+                <SkillSection
+                  title={copy.skill}
+                  items={data.finish_rewards.skill_level_reward}
+                  locale={locale}
+                />
               ) : null}
             </div>
             <div className="grid min-w-0 content-start gap-6">
@@ -296,6 +322,99 @@ export function QuestDetailPage({
   );
 }
 
+function ExpandableList<T>({
+  items,
+  className,
+  copy,
+  getKey,
+  renderItem,
+}: {
+  items: T[];
+  className: string;
+  copy: (typeof copyByLocale)[Locale];
+  getKey: (item: T, index: number) => string | number;
+  renderItem: (item: T, index: number) => ReactNode;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const shouldCollapse = items.length > COLLAPSED_ITEM_COUNT;
+  const visibleItems =
+    expanded || !shouldCollapse ? items : items.slice(0, COLLAPSED_ITEM_COUNT);
+  const hiddenCount = Math.max(items.length - COLLAPSED_ITEM_COUNT, 0);
+
+  return (
+    <div className={className}>
+      {visibleItems.map((item, index) => (
+        <div key={getKey(item, index)}>{renderItem(item, index)}</div>
+      ))}
+      {shouldCollapse ? (
+        <ShowMoreButton
+          expanded={expanded}
+          hiddenCount={hiddenCount}
+          copy={copy}
+          onClick={() => setExpanded((value) => !value)}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function ExpandableChildren({
+  children,
+  copy,
+}: {
+  children: ReactNode;
+  copy: (typeof copyByLocale)[Locale];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const childrenArray = Children.toArray(children);
+  const shouldCollapse = childrenArray.length > COLLAPSED_ITEM_COUNT;
+  const visibleChildren =
+    expanded || !shouldCollapse
+      ? childrenArray
+      : childrenArray.slice(0, COLLAPSED_ITEM_COUNT);
+  const hiddenCount = Math.max(childrenArray.length - COLLAPSED_ITEM_COUNT, 0);
+
+  return (
+    <div className="mt-3 grid min-w-0 gap-2">
+      {visibleChildren}
+      {shouldCollapse ? (
+        <ShowMoreButton
+          expanded={expanded}
+          hiddenCount={hiddenCount}
+          copy={copy}
+          onClick={() => setExpanded((value) => !value)}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function ShowMoreButton({
+  expanded,
+  hiddenCount,
+  copy,
+  onClick,
+}: {
+  expanded: boolean;
+  hiddenCount: number;
+  copy: (typeof copyByLocale)[Locale];
+  onClick: () => void;
+}) {
+  const Icon = expanded ? ChevronUp : ChevronDown;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={expanded}
+      className="col-span-full inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-gray-200 bg-white px-3 text-sm font-bold text-gray-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 dark:hover:border-orange-500 dark:hover:bg-orange-500/10 dark:hover:text-orange-300 dark:focus:ring-orange-500 dark:focus:ring-offset-[#181c21]"
+    >
+      {expanded ? copy.showLess : `${copy.showMore} (${hiddenCount})`}
+      <Icon className="h-4 w-4" />
+    </button>
+  );
+}
+
 function SectionTitle({ children }: { children: string }) {
   return (
     <h2 className="border-b border-gray-200 pb-4 text-xl font-black dark:border-[#2a3038]">
@@ -329,13 +448,16 @@ function ObjectiveCard({
         <div className="min-w-0 flex-1">
           <p className="text-sm leading-6 text-gray-800 dark:text-gray-200">
             {description}
-            {objective.count ? (
-              <span className="ml-1 font-bold text-gray-900 dark:text-white">
-                x{objective.count.toLocaleString()}
-              </span>
-            ) : null}
             {objective.type === "shoot" ? (
-              <Skull className="ml-2 inline h-4 w-4 text-red-500 dark:text-red-400" />
+              <Skull
+                aria-hidden="true"
+                className="mx-1 inline h-4 w-4 align-[-2px] text-red-500 dark:text-red-400"
+              />
+            ) : objective.count ? (
+              " "
+            ) : null}
+            {objective.count ? (
+              <span>x{objective.count.toLocaleString()}</span>
             ) : null}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -403,13 +525,16 @@ function QuestRelationSection({
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
       <h2 className="text-xs font-black text-gray-700 dark:text-gray-200">{title}</h2>
-      <div className="mt-2 grid gap-1.5">
-        {items.length > 0 ? (
-          items.map((item) => (
+      {items.length > 0 ? (
+        <ExpandableList
+          items={items}
+          className="mt-2 grid gap-1.5"
+          copy={copyByLocale[locale]}
+          getKey={(item) => item.id}
+          renderItem={(item) => (
             <Link
-              key={item.id}
               href={`/quest/detail/${item.normalized_name}`}
-              className="rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+              className="block rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
             >
               {getLocalizedValue(
                 item as unknown as Record<string, unknown>,
@@ -418,13 +543,13 @@ function QuestRelationSection({
                 item.name_en,
               )}
             </Link>
-          ))
-        ) : (
-          <p className="rounded-md border border-dashed border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-500 dark:border-[#2a3038] dark:bg-[#20242b]/60 dark:text-gray-400">
-            {emptyLabel}
-          </p>
-        )}
-      </div>
+          )}
+        />
+      ) : (
+        <p className="mt-2 rounded-md border border-dashed border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-500 dark:border-[#2a3038] dark:bg-[#20242b]/60 dark:text-gray-400">
+          {emptyLabel}
+        </p>
+      )}
     </section>
   );
 }
@@ -441,18 +566,28 @@ function QuestItemSection({
   return (
     <div className="mt-4">
       <h3 className="text-sm font-bold">{title}</h3>
-      <div className="mt-2 grid gap-2 sm:grid-cols-2">
-        {items.map((item) => (
-          <ItemCard key={item.id} item={item} locale={locale} />
-        ))}
-      </div>
+      <ExpandableList
+        items={items}
+        className="mt-2 grid gap-2 sm:grid-cols-2"
+        copy={copyByLocale[locale]}
+        getKey={(item) => item.id}
+        renderItem={(item) => <ItemCard item={item} locale={locale} />}
+      />
     </div>
   );
 }
 
-function ExperienceReward({ title, value }: { title: string; value: number }) {
+function ExperienceReward({
+  title,
+  value,
+  locale,
+}: {
+  title: string;
+  value: number;
+  locale: Locale;
+}) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm dark:border-[#2a3038] dark:bg-[#20242b]">
         <span className="font-black text-orange-600 dark:text-orange-300">
           {value.toLocaleString()}
@@ -475,7 +610,7 @@ function RewardItemSection({
   locale: Locale;
 }) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       {rewards.map((reward) => (
         <ItemCard
           key={`${reward.item.id}-${reward.quantity}`}
@@ -498,7 +633,7 @@ function StandingSection({
   locale: Locale;
 }) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       {items.map((item) => {
         const traderName = getLocalizedValue(
           item.trader as unknown as Record<string, unknown>,
@@ -533,7 +668,7 @@ function OfferSection({
   locale: Locale;
 }) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       {items.map((item) => (
         <div key={item.offer_id} className="min-w-0">
           {item.item ? (
@@ -559,7 +694,7 @@ function CraftSection({
   locale: Locale;
 }) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       {items.map((item) => (
         <div key={item.craft_id} className="min-w-0">
           {item.reward_item ? (
@@ -582,12 +717,14 @@ function CraftSection({
 function SkillSection({
   title,
   items,
+  locale,
 }: {
   title: string;
   items: QuestRewardSkill[];
+  locale: Locale;
 }) {
   return (
-    <RewardGroup title={title}>
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
       {items.map((item) => (
         <div
           key={`${item.name_en}-${item.skill_level}`}
@@ -606,14 +743,16 @@ function SkillSection({
 function RewardGroup({
   title,
   children,
+  copy,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
+  copy: (typeof copyByLocale)[Locale];
 }) {
   return (
     <div className="min-w-0">
       <h3 className="text-sm font-black text-gray-900 dark:text-gray-100">{title}</h3>
-      <div className="mt-3 grid min-w-0 gap-2">{children}</div>
+      <ExpandableChildren copy={copy}>{children}</ExpandableChildren>
     </div>
   );
 }

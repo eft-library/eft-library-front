@@ -69,6 +69,37 @@ function getNodeWidthClass(nodeType: StoryRoadmapNode["node_type"], width: numbe
       : "min-w-52 max-w-64";
 }
 
+function getEndingColorClasses(dataId: string) {
+  switch (dataId) {
+    case "survivor-ending":
+      return {
+        node:
+          "border-yellow-500 bg-yellow-50/80 shadow-[0_0_20px_rgba(234,179,8,0.45)] dark:bg-yellow-950/30 dark:shadow-[0_0_20px_rgba(234,179,8,0.65)]",
+        title: "text-yellow-700 dark:text-yellow-400",
+      };
+    case "debtor-ending":
+      return {
+        node:
+          "border-purple-500 bg-purple-50/80 shadow-[0_0_15px_rgba(168,85,247,0.45)] dark:bg-purple-950/30 dark:shadow-[0_0_15px_rgba(168,85,247,0.55)]",
+        title: "text-purple-700 dark:text-purple-400",
+      };
+    case "savior-ending":
+      return {
+        node:
+          "border-emerald-500 bg-emerald-50/80 shadow-[0_0_15px_rgba(16,185,129,0.45)] dark:bg-emerald-950/30 dark:shadow-[0_0_15px_rgba(16,185,129,0.55)]",
+        title: "text-emerald-700 dark:text-emerald-400",
+      };
+    case "fallen-ending":
+      return {
+        node:
+          "border-red-800 bg-red-100/80 shadow-[0_0_20px_rgba(153,27,27,0.45)] dark:border-red-900 dark:bg-red-950/50 dark:shadow-[0_0_20px_rgba(127,29,29,0.85)]",
+        title: "text-red-800 dark:text-red-600",
+      };
+    default:
+      return null;
+  }
+}
+
 function StoryFlowNode({ data }: NodeProps<Node<StoryFlowNodeData>>) {
   const title = getLocalizedNodeText(data, data.locale, "title") || data.title_en;
   const contents = getLocalizedNodeText(data, data.locale, "contents");
@@ -76,19 +107,21 @@ function StoryFlowNode({ data }: NodeProps<Node<StoryFlowNodeData>>) {
   const meta = storyNodeTypeMeta[data.node_type];
   const isEnding = data.node_type === "ending";
   const nodeWidth = getNodeWidth(data, data.locale);
+  const endingColorClasses = isEnding ? getEndingColorClasses(data.id) : null;
 
   return (
     <>
       <Handle
         type="target"
         position={Position.Top}
-        className="h-3 w-3 border-2 border-slate-500 bg-slate-100 dark:border-gray-500 dark:bg-gray-200"
+        className="h-3 w-3 border-2 border-slate-500 bg-slate-100 dark:border-slate-200 dark:bg-slate-50"
       />
       <article
         className={cn(
-          "rounded-xl border-2 px-5 py-4 text-center shadow-xl backdrop-blur transition hover:scale-[1.02]",
+          "rounded-xl border-2 px-5 py-4 text-center shadow-xl backdrop-blur transition hover:scale-[1.02] dark:shadow-black/35",
           "px-3.5 py-3",
           meta.accentClass,
+          endingColorClasses?.node,
           getNodeWidthClass(data.node_type, nodeWidth),
         )}
       >
@@ -116,11 +149,17 @@ function StoryFlowNode({ data }: NodeProps<Node<StoryFlowNodeData>>) {
           </div>
         ) : null}
 
-        <h3 className={cn("mt-2 font-black leading-tight text-gray-950 dark:text-white", isEnding ? "text-lg" : "text-sm")}>
+        <h3
+          className={cn(
+            "mt-2 font-black leading-tight text-gray-950 dark:text-slate-50",
+            isEnding ? "text-lg" : "text-sm",
+            endingColorClasses?.title,
+          )}
+        >
           {title}
         </h3>
         {contents ? (
-          <p className="mt-1.5 line-clamp-3 text-[11px] leading-4 text-gray-600 dark:text-slate-300">
+          <p className="mt-1.5 line-clamp-3 text-[11px] leading-4 text-gray-600 dark:text-slate-200">
             {contents}
           </p>
         ) : null}
@@ -128,7 +167,7 @@ function StoryFlowNode({ data }: NodeProps<Node<StoryFlowNodeData>>) {
       <Handle
         type="source"
         position={Position.Bottom}
-        className="h-3 w-3 border-2 border-slate-500 bg-slate-100 dark:border-gray-500 dark:bg-gray-200"
+        className="h-3 w-3 border-2 border-slate-500 bg-slate-100 dark:border-slate-200 dark:bg-slate-50"
       />
     </>
   );
@@ -188,7 +227,7 @@ export function StoryRoadmapFlow({
   );
 
   return (
-    <div className="h-[720px] w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl dark:border-[#2a3038] dark:bg-slate-950">
+    <div className="h-[720px] w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl dark:border-slate-600/70 dark:bg-slate-900">
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}
@@ -199,7 +238,7 @@ export function StoryRoadmapFlow({
         fitViewOptions={{ padding: 0.18 }}
         nodesDraggable={false}
         zoomOnDoubleClick={false}
-        className="bg-white dark:bg-[#111318] [--story-roadmap-grid:rgba(100,116,139,0.32)] dark:[--story-roadmap-grid:rgba(148,163,184,0.42)]"
+        className="bg-white dark:bg-slate-900 [--story-roadmap-grid:rgba(100,116,139,0.32)] dark:[--story-roadmap-grid:rgba(203,213,225,0.34)] dark:[&_.react-flow__edge-path]:stroke-slate-300"
       >
         <Background
           variant={BackgroundVariant.Dots}
@@ -207,10 +246,10 @@ export function StoryRoadmapFlow({
           size={1}
           color="var(--story-roadmap-grid)"
         />
-        <Controls className="border border-gray-200 bg-white text-gray-900 shadow-lg dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-[#2a3038] dark:[&_.react-flow__controls-button]:bg-[#181c21] dark:[&_.react-flow__controls-button]:text-gray-300 dark:[&_.react-flow__controls-button:hover]:bg-[#242a32]" />
+        <Controls className="border border-gray-200 bg-white text-gray-900 shadow-lg dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-slate-600 dark:[&_.react-flow__controls-button]:bg-slate-800 dark:[&_.react-flow__controls-button]:text-slate-100 dark:[&_.react-flow__controls-button:hover]:bg-slate-700" />
         <MiniMap
-          className="border border-gray-200 bg-white dark:border-[#2a3038] dark:bg-[#181c21] dark:[&_.react-flow__minimap-mask]:fill-[#0f1318]/70 dark:[&_.react-flow__minimap-node]:stroke-[#475569]"
-          maskColor="rgba(15, 19, 24, 0.68)"
+          className="border border-gray-200 bg-white dark:border-slate-600 dark:bg-slate-800 dark:[&_.react-flow__minimap-mask]:fill-slate-900/60 dark:[&_.react-flow__minimap-node]:stroke-slate-300"
+          maskColor="rgba(15, 23, 42, 0.58)"
           nodeColor="#334155"
           pannable
           zoomable

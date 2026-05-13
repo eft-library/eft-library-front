@@ -6,8 +6,8 @@ interface PageProps {
 }
 
 export const metadata = createPageMetadata({
-  title: "라운지 글 수정",
-  description: "EFT Library 라운지 게시글을 수정합니다.",
+  title: "PMC 라운지 글 수정",
+  description: "EFT Library PMC 라운지 게시글을 수정합니다.",
   path: "/community/update",
   noIndex: true,
 });

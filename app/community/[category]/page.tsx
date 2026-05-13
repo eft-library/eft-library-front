@@ -11,14 +11,14 @@ export async function generateMetadata({ params }: PageProps) {
   const match = communityCategories.find((entry) => entry.id === category);
 
   if (!match) {
-    return fallbackMetadata("EFT Library 라운지");
+    return fallbackMetadata("EFT Library PMC 라운지");
   }
 
   const label = match.labels.ko;
 
   return createPageMetadata({
-    title: `라운지 ${label}`,
-    description: `EFT Library 라운지 ${label} 게시판입니다. Escape from Tarkov 이야기를 나눌 수 있습니다.`,
+    title: `EFT Library PMC 라운지 ${label}`,
+    description: `EFT Library PMC 라운지 ${label} 게시판입니다. Escape from Tarkov 이야기를 나눌 수 있습니다.`,
     path: `/community/${category}`,
   });
 }

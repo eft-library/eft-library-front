@@ -57,6 +57,7 @@ const fallbackDash = "-";
 
 interface ObjectiveRow {
   text: string;
+  count: number | null;
   type: string | null;
 }
 
@@ -107,9 +108,9 @@ function getRewardsFromEntry(entry: QuestListRow) {
   return emptyRewards;
 }
 
-function getObjectiveRows(objectives: QuestObjective[], locale: Locale) {
+function getObjectiveRows(objectives: QuestObjective[], locale: Locale): ObjectiveRow[] {
   if (objectives.length === 0) {
-    return [{ text: fallbackDash, type: null }];
+    return [{ text: fallbackDash, count: null, type: null }];
   }
 
   return objectives.map((objective) => {
@@ -123,12 +124,14 @@ function getObjectiveRows(objectives: QuestObjective[], locale: Locale) {
     if (!objective.count || objective.count <= 1) {
       return {
         text: description,
+        count: null,
         type: objective.type,
       };
     }
 
     return {
-      text: `${description} x${objective.count.toLocaleString()}`,
+      text: description,
+      count: objective.count,
       type: objective.type,
     };
   });
@@ -315,10 +318,10 @@ export function QuestListPage({
 
         <section className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <div className="hidden grid-cols-[minmax(180px,0.7fr)_minmax(300px,1.45fr)_minmax(300px,1.45fr)_80px] gap-5 border-b border-gray-100 bg-gray-50 px-5 py-4 text-sm font-black text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-orange-300 md:grid">
-            <div>{copy.title}</div>
-            <div>{copy.objective}</div>
-            <div>{copy.reward}</div>
-            <div className="text-right">{copy.kappa}</div>
+            <div className="text-center">{copy.title}</div>
+            <div className="text-center">{copy.objective}</div>
+            <div className="text-center">{copy.reward}</div>
+            <div className="text-center">{copy.kappa}</div>
           </div>
 
           {filteredQuests.length > 0 ? (
@@ -361,17 +364,19 @@ export function QuestListPage({
                     </span>
                     <ul className="space-y-1">
                       {objectiveRows.map((objective, index) => (
-                        <li
-                          key={`${quest.id}-objective-${index}`}
-                          className="flex items-start gap-2 break-words"
-                        >
+                        <li key={`${quest.id}-objective-${index}`} className="break-words">
+                          <span>{objective.text}</span>
                           {objective.type === "shoot" ? (
                             <Skull
                               aria-hidden="true"
-                              className="mt-1 h-3.5 w-3.5 shrink-0 text-red-500 dark:text-red-400"
+                              className="mx-1 inline h-3.5 w-3.5 align-[-2px] text-red-500 dark:text-red-400"
                             />
+                          ) : objective.count ? (
+                            " "
                           ) : null}
-                          <span>{objective.text}</span>
+                          {objective.count ? (
+                            <span>x{objective.count.toLocaleString()}</span>
+                          ) : null}
                         </li>
                       ))}
                     </ul>

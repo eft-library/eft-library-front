@@ -33,11 +33,6 @@ const storyUiCopy = {
     en: "Roadmap",
     ja: "ロードマップ",
   },
-  roadmapDescription: {
-    ko: "노드 좌표와 타입을 기반으로 스토리 진행 흐름을 한눈에 볼 수 있게 정리했습니다.",
-    en: "The roadmap is arranged from the node coordinates and types returned by the API.",
-    ja: "API が 반환한ノード座標とタイプを元に、進行の流れを見やすく整理しています。",
-  },
   nodeCountLabel: {
     ko: "전체 노드",
     en: "Total nodes",
@@ -85,36 +80,36 @@ export const storyNodeTypeMeta: Record<
   { accentClass: string; badgeClass: string }
 > = {
   base: {
-    accentClass: "border-sky-200 bg-sky-50 dark:border-sky-500/40 dark:bg-sky-500/10",
-    badgeClass: "border-sky-200 bg-sky-100 text-sky-700 dark:border-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200",
+    accentClass: "border-sky-200 bg-sky-50 dark:border-sky-400/70 dark:bg-sky-400/20",
+    badgeClass: "border-sky-200 bg-sky-100 text-sky-700 dark:border-sky-300/40 dark:bg-sky-300/20 dark:text-sky-100",
   },
   branch: {
-    accentClass: "border-indigo-200 bg-indigo-50 dark:border-indigo-500/40 dark:bg-indigo-500/10",
-    badgeClass: "border-indigo-200 bg-indigo-100 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200",
+    accentClass: "border-indigo-200 bg-indigo-50 dark:border-indigo-400/70 dark:bg-indigo-400/20",
+    badgeClass: "border-indigo-200 bg-indigo-100 text-indigo-700 dark:border-indigo-300/40 dark:bg-indigo-300/20 dark:text-indigo-100",
   },
   craft: {
-    accentClass: "border-emerald-200 bg-emerald-50 dark:border-emerald-500/40 dark:bg-emerald-500/10",
-    badgeClass: "border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200",
+    accentClass: "border-purple-200 bg-purple-50 dark:border-purple-400/70 dark:bg-purple-400/20",
+    badgeClass: "border-purple-200 bg-purple-100 text-purple-700 dark:border-purple-300/40 dark:bg-purple-300/20 dark:text-purple-100",
   },
   payment: {
-    accentClass: "border-amber-200 bg-amber-50 dark:border-amber-500/40 dark:bg-amber-500/10",
-    badgeClass: "border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/15 dark:text-amber-200",
+    accentClass: "border-amber-200 bg-amber-50 dark:border-amber-400/70 dark:bg-amber-400/20",
+    badgeClass: "border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-300/40 dark:bg-amber-300/20 dark:text-amber-100",
   },
   achievement: {
-    accentClass: "border-fuchsia-200 bg-fuchsia-50 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10",
-    badgeClass: "border-fuchsia-200 bg-fuchsia-100 text-fuchsia-700 dark:border-fuchsia-500/20 dark:bg-fuchsia-500/15 dark:text-fuchsia-200",
+    accentClass: "border-lime-200 bg-lime-50 dark:border-lime-400/70 dark:bg-lime-400/20",
+    badgeClass: "border-lime-200 bg-lime-100 text-lime-700 dark:border-lime-300/40 dark:bg-lime-300/20 dark:text-lime-100",
   },
   penalty: {
-    accentClass: "border-rose-200 bg-rose-50 dark:border-rose-500/40 dark:bg-rose-500/10",
-    badgeClass: "border-rose-200 bg-rose-100 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/15 dark:text-rose-200",
+    accentClass: "border-red-200 bg-red-50 dark:border-red-400/70 dark:bg-red-400/20",
+    badgeClass: "border-red-200 bg-red-100 text-red-700 dark:border-red-300/40 dark:bg-red-300/20 dark:text-red-100",
   },
   timegate: {
-    accentClass: "border-cyan-200 bg-cyan-50 dark:border-cyan-500/40 dark:bg-cyan-500/10",
-    badgeClass: "border-cyan-200 bg-cyan-100 text-cyan-700 dark:border-cyan-500/20 dark:bg-cyan-500/15 dark:text-cyan-200",
+    accentClass: "border-cyan-200 bg-cyan-50 dark:border-cyan-400/70 dark:bg-cyan-400/20",
+    badgeClass: "border-cyan-200 bg-cyan-100 text-cyan-700 dark:border-cyan-300/40 dark:bg-cyan-300/20 dark:text-cyan-100",
   },
   ending: {
-    accentClass: "border-orange-200 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10",
-    badgeClass: "border-orange-200 bg-orange-100 text-orange-700 dark:border-orange-500/20 dark:bg-orange-500/15 dark:text-orange-200",
+    accentClass: "border-orange-200 bg-orange-50 dark:border-orange-400/70 dark:bg-orange-400/20",
+    badgeClass: "border-orange-200 bg-orange-100 text-orange-700 dark:border-orange-300/40 dark:bg-orange-300/20 dark:text-orange-100",
   },
 };
 
@@ -125,7 +120,6 @@ export function getStoryPageCopy(locale: Locale) {
     selectorLabel: storyUiCopy.selectorLabel[locale],
     updatedAtLabel: storyUiCopy.updatedAtLabel[locale],
     roadmapLabel: storyUiCopy.roadmapLabel[locale],
-    roadmapDescription: storyUiCopy.roadmapDescription[locale],
     nodeCountLabel: storyUiCopy.nodeCountLabel[locale],
     chapterCountLabel: storyUiCopy.chapterCountLabel[locale],
     coordinateRangeLabel: storyUiCopy.coordinateRangeLabel[locale],

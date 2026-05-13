@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { AdSideRails } from "@/components/shared/ad-side-rails";
@@ -68,6 +69,9 @@ export default async function RootLayout({
             crossOrigin="anonymous"
           />
         ) : null}
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        ) : null}
         <ThemeProvider>
           <AuthProvider>
             <WebSocketProvider>
@@ -85,7 +89,10 @@ export default async function RootLayout({
 }
 
 async function ResolvedLayout({ children }: { children: React.ReactNode }) {
-  const [navigation, locale] = await Promise.all([getHomeMenu(), getUserLocale()]);
+  const [navigation, locale] = await Promise.all([
+    getHomeMenu(),
+    getUserLocale(),
+  ]);
   const copy = getUICopy(locale);
 
   return (

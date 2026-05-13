@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CalendarDays, ChevronLeft } from "lucide-react";
 
-import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { RichHtmlImageViewer } from "@/components/shared/rich-html-image-viewer";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
@@ -80,11 +80,10 @@ export function InformationDetailPage({
             </h1>
           </header>
 
-          <HorizontalAdBanner className="my-0" />
-
-          <div
-            className="rich-html-content mx-auto min-h-80 max-w-3xl px-6 py-12 sm:px-8"
-            dangerouslySetInnerHTML={{ __html: content }}
+          <RichHtmlImageViewer
+            html={content}
+            imageAltFallback={title}
+            className="mx-auto min-h-80 max-w-3xl px-6 py-12 sm:px-8"
           />
         </article>
 

@@ -97,8 +97,8 @@ export function InformationBoardList({
               href={`/${boardPath}/detail/${post.id}`}
               className="group grid gap-4 border-b border-gray-100 px-5 py-5 transition last:border-b-0 hover:bg-orange-50/40 dark:border-[#2a3038] dark:hover:bg-[#20242b] md:grid-cols-[92px_1fr_180px]"
             >
-              <div className="flex items-start">
-                <span className="inline-flex rounded-md border border-yellow-500/40 bg-yellow-500/10 px-2 py-1 text-xs font-bold text-yellow-600 dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-300">
+              <div className="flex items-start md:items-center md:justify-center">
+                <span className="inline-flex min-w-16 justify-center rounded-md border border-yellow-500/40 bg-yellow-500/10 px-2 py-1 text-center text-xs font-bold text-yellow-600 dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-300">
                   {displayTitle}
                 </span>
               </div>

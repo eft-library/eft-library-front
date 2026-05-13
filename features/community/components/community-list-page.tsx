@@ -7,13 +7,19 @@ import { PenLine, Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
-import { getCommunityPosts, getCommunitySidePosts } from "@/features/community/api";
+import {
+  getCommunityPosts,
+  getCommunitySidePosts,
+} from "@/features/community/api";
 import { CommunityCategoryTabs } from "@/features/community/components/community-category-tabs";
 import { CommunityPagination } from "@/features/community/components/community-pagination";
 import { CommunityPostList } from "@/features/community/components/community-post-list";
 import { CommunitySidebar } from "@/features/community/components/community-sidebar";
 import { communityCategories } from "@/lib/constants/community-categories";
-import type { CommunityListResponse, CommunitySideResponse } from "@/types/api/community";
+import type {
+  CommunityListResponse,
+  CommunitySideResponse,
+} from "@/types/api/community";
 
 interface CommunityListPageProps {
   category: string;
@@ -24,7 +30,9 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const locale = useAppStore((state) => state.uiLocale);
-  const setActiveCategory = useAppStore((state) => state.setActiveCommunityCategory);
+  const setActiveCategory = useAppStore(
+    (state) => state.setActiveCommunityCategory,
+  );
   const [list, setList] = useState<CommunityListResponse | null>(null);
   const [side, setSide] = useState<CommunitySideResponse | null>(null);
   const [keyword, setKeyword] = useState("");
@@ -33,7 +41,8 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
 
   const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
   const currentCategory = useMemo(
-    () => communityCategories.find((item) => item.id === category)?.id ?? "free",
+    () =>
+      communityCategories.find((item) => item.id === category)?.id ?? "free",
     [category],
   );
 
@@ -58,7 +67,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
       })
       .catch(() => {
         if (!ignore) {
-          setError("라운지 데이터를 불러오지 못했습니다.");
+          setError("PMC 라운지 데이터를 불러오지 못했습니다.");
         }
       })
       .finally(() => {
@@ -82,7 +91,9 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
     if (!word) {
       return;
     }
-    router.push(`/community/search?search_type=all&word=${encodeURIComponent(word)}&page=1`);
+    router.push(
+      `/community/search?search_type=all&word=${encodeURIComponent(word)}&page=1`,
+    );
   }
 
   return (
@@ -91,8 +102,10 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
         <section className="min-w-0 space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">Community</p>
-              <h1 className="mt-1 text-2xl font-black">라운지</h1>
+              <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">
+                Community
+              </p>
+              <h1 className="mt-1 text-2xl font-black">PMC 라운지</h1>
             </div>
             <Link
               href="/community/create"
@@ -114,7 +127,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
               <input
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
-                placeholder="라운지 검색"
+                placeholder="PMC 라운지 검색"
                 className="h-10 w-full rounded-md border border-transparent bg-gray-50 pl-9 pr-3 text-sm outline-none transition focus:border-orange-300 dark:bg-[#1f232b] dark:text-gray-100 dark:placeholder:text-gray-500"
               />
             </div>
@@ -137,7 +150,11 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
           ) : (
             <>
               <CommunityPostList posts={list?.posts ?? []} locale={locale} />
-              <CommunityPagination page={page} maxPage={list?.max_page_count ?? 1} onPageChange={changePage} />
+              <CommunityPagination
+                page={page}
+                maxPage={list?.max_page_count ?? 1}
+                onPageChange={changePage}
+              />
             </>
           )}
         </section>

@@ -39,6 +39,7 @@ The following are the only valid sources of truth:
 The legacy frontend is **reference-only** for UI behavior and layout.
 
 Do NOT use legacy frontend code as a source of truth for:
+
 - field names
 - response structure
 - nested JSON format
@@ -50,14 +51,11 @@ Do NOT use legacy frontend code as a source of truth for:
 
 All migration work must be done inside:
 
-- `front-migration`
-
 Rules:
 
 - Do NOT modify the legacy frontend as the primary migration approach
 - Do NOT delete legacy code
 - Keep legacy code for reference
-- Build new implementation inside `front-migration`
 - Replace legacy usage only after verification
 
 ---
@@ -108,7 +106,6 @@ The following libraries must NOT be used in the migrated frontend:
 Rules:
 
 - remove these dependencies during migration
-- do NOT copy their usage into `front-migration`
 - reimplement required behavior using current stack (React + Next.js + local components)
 
 When replacing behavior:
@@ -232,7 +229,6 @@ A migrated module is complete only when:
 ## Migration Policy
 
 - keep legacy code
-- build new code in `front-migration`
 - verify behavior
 - replace gradually
 

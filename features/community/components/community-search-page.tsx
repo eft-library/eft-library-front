@@ -19,7 +19,9 @@ export function CommunitySearchPage() {
   const locale = useAppStore((state) => state.uiLocale);
   const [result, setResult] = useState<CommunitySearchResponse | null>(null);
   const [word, setWord] = useState(searchParams.get("word") ?? "");
-  const [searchType, setSearchType] = useState(searchParams.get("search_type") ?? "all");
+  const [searchType, setSearchType] = useState(
+    searchParams.get("search_type") ?? "all",
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
@@ -59,19 +61,25 @@ export function CommunitySearchPage() {
     if (!nextWord) {
       return;
     }
-    router.push(`/community/search?search_type=${searchType}&word=${encodeURIComponent(nextWord)}&page=1`);
+    router.push(
+      `/community/search?search_type=${searchType}&word=${encodeURIComponent(nextWord)}&page=1`,
+    );
   }
 
   function changePage(nextPage: number) {
-    router.push(`/community/search?search_type=${queryType}&word=${encodeURIComponent(queryWord)}&page=${nextPage}`);
+    router.push(
+      `/community/search?search_type=${queryType}&word=${encodeURIComponent(queryWord)}&page=${nextPage}`,
+    );
   }
 
   return (
     <main className="bg-gray-50 py-8 text-gray-950 dark:bg-[#1f232b] dark:text-gray-50">
       <div className="mx-auto w-full max-w-5xl space-y-5 px-4 sm:px-6 lg:px-8">
         <div>
-          <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">Community Search</p>
-          <h1 className="mt-1 text-2xl font-black">라운지 검색</h1>
+          <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">
+            Community Search
+          </p>
+          <h1 className="mt-1 text-2xl font-black">PMC 라운지 검색</h1>
         </div>
         <form
           onSubmit={submitSearch}
@@ -97,7 +105,10 @@ export function CommunitySearchPage() {
               placeholder="검색어"
             />
           </div>
-          <button type="submit" className="h-10 rounded-md bg-orange-500 px-5 text-sm font-bold text-white hover:bg-orange-600">
+          <button
+            type="submit"
+            className="h-10 rounded-md bg-orange-500 px-5 text-sm font-bold text-white hover:bg-orange-600"
+          >
             검색
           </button>
         </form>
@@ -111,9 +122,15 @@ export function CommunitySearchPage() {
             <CommunityPostList
               posts={result?.search_result ?? []}
               locale={locale}
-              emptyLabel={queryWord ? "검색 결과가 없습니다." : "검색어를 입력해 주세요."}
+              emptyLabel={
+                queryWord ? "검색 결과가 없습니다." : "검색어를 입력해 주세요."
+              }
             />
-            <CommunityPagination page={page} maxPage={result?.max_page_count ?? 1} onPageChange={changePage} />
+            <CommunityPagination
+              page={page}
+              maxPage={result?.max_page_count ?? 1}
+              onPageChange={changePage}
+            />
           </>
         )}
       </div>

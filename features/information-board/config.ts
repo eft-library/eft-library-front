@@ -16,50 +16,51 @@ interface BoardConfig {
   description: LocalizedValue;
 }
 
-export const informationBoardConfig: Record<InformationBoardSlug, BoardConfig> = {
-  notice: {
-    informationType: "NOTICE",
-    path: "notice",
-    title: {
-      ko: "공지",
-      en: "Notice",
-      ja: "お知らせ",
+export const informationBoardConfig: Record<InformationBoardSlug, BoardConfig> =
+  {
+    notice: {
+      informationType: "NOTICE",
+      path: "notice",
+      title: {
+        ko: "공지",
+        en: "Notice",
+        ja: "お知らせ",
+      },
+      description: {
+        ko: "EFT Library 운영 소식과 서비스 공지를 확인할 수 있습니다.",
+        en: "Read EFT Library service updates and official notices.",
+        ja: "EFT Library の運営情報と公式のお知らせを確認できます。",
+      },
     },
-    description: {
-      ko: "EFT Library 운영 소식과 서비스 공지를 확인할 수 있습니다.",
-      en: "Read EFT Library service updates and official notices.",
-      ja: "EFT Library の運営情報と公式のお知らせを確認できます。",
+    event: {
+      informationType: "EVENT",
+      path: "event",
+      title: {
+        ko: "이벤트",
+        en: "Events",
+        ja: "イベント",
+      },
+      description: {
+        ko: "Escape from Tarkov 이벤트 정보와 변경 사항을 모아볼 수 있습니다.",
+        en: "Browse Escape from Tarkov event updates and gameplay changes.",
+        ja: "Escape from Tarkov のイベント情報と変更点を確認できます。",
+      },
     },
-  },
-  event: {
-    informationType: "EVENT",
-    path: "event",
-    title: {
-      ko: "이벤트",
-      en: "Events",
-      ja: "イベント",
+    "patch-notes": {
+      informationType: "PATCH-NOTES",
+      path: "patch-notes",
+      title: {
+        ko: "패치 노트",
+        en: "Patch Notes",
+        ja: "パッチノート",
+      },
+      description: {
+        ko: "Escape from Tarkov 최신 패치 노트를 빠르게 확인할 수 있습니다.",
+        en: "Keep up with the latest Escape from Tarkov patch notes.",
+        ja: "Escape from Tarkov の最新パッチノートをすばやく確認できます。",
+      },
     },
-    description: {
-      ko: "Escape from Tarkov 이벤트 정보와 변경 사항을 모아볼 수 있습니다.",
-      en: "Browse Escape from Tarkov event updates and gameplay changes.",
-      ja: "Escape from Tarkov のイベント情報と変更点を確認できます。",
-    },
-  },
-  "patch-notes": {
-    informationType: "PATCH-NOTES",
-    path: "patch-notes",
-    title: {
-      ko: "패치 노트",
-      en: "Patch Notes",
-      ja: "パッチノート",
-    },
-    description: {
-      ko: "Escape from Tarkov 최신 패치 노트를 빠르게 확인할 수 있습니다.",
-      en: "Keep up with the latest Escape from Tarkov patch notes.",
-      ja: "Escape from Tarkov の最新パッチノートをすばやく確認できます。",
-    },
-  },
-};
+  };
 
 const informationBoardUiCopy = {
   totalLabel: {
@@ -98,7 +99,7 @@ const informationBoardUiCopy = {
     ja: "次へ",
   },
   latestPostsLabel: {
-    ko: "같이 보기",
+    ko: "이전 게시글",
     en: "Related posts",
     ja: "あわせて見る",
   },

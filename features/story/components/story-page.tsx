@@ -135,9 +135,6 @@ export function StoryPage({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-xl font-black">{chapterTitle}</h2>
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  {labels.roadmapDescription}
-                </p>
               </div>
               <div className="text-xs uppercase tracking-[0.18em] text-gray-400">
                 {labels.updatedAtLabel}: {formatIsoDateTime(detail.update_time, locale)}

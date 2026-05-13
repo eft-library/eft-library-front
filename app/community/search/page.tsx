@@ -2,8 +2,8 @@ import { CommunitySearchPage } from "@/features/community/components/community-s
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "라운지 검색",
-  description: "EFT Library 라운지의 게시글과 댓글을 검색할 수 있습니다.",
+  title: "PMC 라운지 검색",
+  description: "EFT Library PMC 라운지의 게시글과 댓글을 검색할 수 있습니다.",
   path: "/community/search",
 });
 
