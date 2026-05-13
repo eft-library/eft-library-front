@@ -642,7 +642,7 @@ function RoadmapCanvas({
             zoomOnDoubleClick={false}
             className="bg-white dark:bg-[#111418] [--roadmap-grid:rgba(100,116,139,0.28)] dark:[--roadmap-grid:rgba(148,163,184,0.32)]"
           >
-            <Controls className="border border-gray-200 bg-white text-gray-900 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-white" />
+            <Controls className="border border-gray-200 bg-white text-gray-900 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-[#2a3038] dark:[&_.react-flow__controls-button]:bg-[#181c21] dark:[&_.react-flow__controls-button]:text-gray-300 dark:[&_.react-flow__controls-button:hover]:bg-[#242a32]" />
             <Background
               variant={BackgroundVariant.Dots}
               gap={20}

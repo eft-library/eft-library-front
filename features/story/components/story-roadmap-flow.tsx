@@ -207,11 +207,11 @@ export function StoryRoadmapFlow({
           size={1}
           color="var(--story-roadmap-grid)"
         />
-        <Controls className="border border-gray-200 bg-white text-gray-900 shadow-lg dark:border-white/10 dark:bg-white/10 dark:text-white" />
+        <Controls className="border border-gray-200 bg-white text-gray-900 shadow-lg dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-[#2a3038] dark:[&_.react-flow__controls-button]:bg-[#181c21] dark:[&_.react-flow__controls-button]:text-gray-300 dark:[&_.react-flow__controls-button:hover]:bg-[#242a32]" />
         <MiniMap
-          className="border border-gray-200 bg-white dark:border-white/10 dark:bg-slate-900/90"
-          maskColor="rgba(148, 163, 184, 0.26)"
-          nodeColor="#f97316"
+          className="border border-gray-200 bg-white dark:border-[#2a3038] dark:bg-[#181c21] dark:[&_.react-flow__minimap-mask]:fill-[#0f1318]/70 dark:[&_.react-flow__minimap-node]:stroke-[#475569]"
+          maskColor="rgba(15, 19, 24, 0.68)"
+          nodeColor="#334155"
           pannable
           zoomable
         />

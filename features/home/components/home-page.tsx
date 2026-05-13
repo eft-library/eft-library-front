@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Flame, Pin, Star } from "lucide-react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedText } from "@/lib/utils/localized-text";
 import type { HomeMainResponse } from "@/types/api/home";
@@ -112,6 +113,8 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                 </article>
               ))}
             </div>
+
+            <HorizontalAdBanner className="my-0" />
 
             <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
