@@ -130,7 +130,7 @@ export function VerticalAdBanner({
       maxWidth={maxWidth}
       minHeight={600}
       className={className}
-      style={{ minWidth: 120 }}
+      style={{ minWidth: 160, width: 160, height: 600 }}
     />
   );
 }
