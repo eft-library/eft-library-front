@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState, type CSSProperties } from "react";
 
 type AdBannerProps = {
   dataAdSlot?: string;
-  dataAdFormat?: "auto" | "horizontal" | "vertical" | "rectangle" | string;
-  dataFullWidthResponsive?: boolean;
+  dataAdFormat?: "auto" | "horizontal" | "vertical" | "rectangle" | string | null;
+  dataFullWidthResponsive?: boolean | null;
   maxWidth?: number;
   minHeight?: number;
   className?: string;
@@ -61,6 +61,13 @@ export function AdBanner({
     return null;
   }
 
+  const fullWidthResponsive =
+    dataFullWidthResponsive === null
+      ? undefined
+      : dataFullWidthResponsive
+        ? "true"
+        : "false";
+
   return (
     <div
       className={`mx-auto my-4 w-full px-2 text-center ${className}`}
@@ -71,8 +78,8 @@ export function AdBanner({
         style={mergedStyle}
         data-ad-client={clientId}
         data-ad-slot={dataAdSlot}
-        data-ad-format={dataAdFormat}
-        data-full-width-responsive={dataFullWidthResponsive ? "true" : "false"}
+        data-ad-format={dataAdFormat ?? undefined}
+        data-full-width-responsive={fullWidthResponsive}
       />
     </div>
   );
@@ -80,7 +87,7 @@ export function AdBanner({
 
 export function HorizontalAdBanner({
   className,
-  maxWidth = 1220,
+  maxWidth = 970,
   minHeight = 250,
 }: {
   className?: string;
@@ -89,8 +96,8 @@ export function HorizontalAdBanner({
 }) {
   return (
     <AdBanner
-      dataAdFormat="horizontal"
-      dataFullWidthResponsive
+      dataAdFormat={null}
+      dataFullWidthResponsive={null}
       dataAdSlot={
         process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
         process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ??
@@ -98,7 +105,8 @@ export function HorizontalAdBanner({
       }
       maxWidth={maxWidth}
       minHeight={minHeight}
-      className={className}
+      className={`my-0 ${className ?? ""}`}
+      style={{ display: "inline-block", height: minHeight, minWidth: 320 }}
     />
   );
 }
