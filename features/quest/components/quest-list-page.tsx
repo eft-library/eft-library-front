@@ -375,7 +375,9 @@ export function QuestListPage({
                             " "
                           ) : null}
                           {objective.count ? (
-                            <span>x{objective.count.toLocaleString()}</span>
+                            <span className="font-normal">
+                              x{objective.count.toLocaleString()}
+                            </span>
                           ) : null}
                         </li>
                       ))}

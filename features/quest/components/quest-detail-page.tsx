@@ -457,7 +457,9 @@ function ObjectiveCard({
               " "
             ) : null}
             {objective.count ? (
-              <span>x{objective.count.toLocaleString()}</span>
+              <span className="font-normal">
+                x{objective.count.toLocaleString()}
+              </span>
             ) : null}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
