@@ -50,6 +50,7 @@
     "react-markdown": "^10.1.0",
     "recharts": "^3.8.1",
     "remark-gfm": "^4.0.1",
+    "rss": "^1.2.2",
     "tailwind-merge": "^3.5.0",
     "tiptap-extension-resize-image": "^1.4.0",
     "zustand": "^5.0.12"
@@ -59,6 +60,7 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/rss": "^0.0.32",
     "eslint": "^10",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
