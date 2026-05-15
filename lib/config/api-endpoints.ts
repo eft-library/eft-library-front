@@ -51,6 +51,8 @@ export const apiEndpoints = {
   commentDeleteByUser: "/api/comment/v3/delete-comment-by-user",
   commentDeleteByAdmin: "/api/comment/v3/delete-comment-by-admin",
   commentReport: "/api/comment/v3/report-comment",
+  chatSearch: "/api/chat/search",
+  chatStream: "/api/chat/stream",
 } as const;
 
 export function getItemListEndpoint(itemType: string) {
