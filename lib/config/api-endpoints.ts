@@ -83,6 +83,10 @@ export function getMapOfTarkovDetailEndpoint(normalizedName: string) {
   return `/api/map-of-tarkov/v3/detail/${normalizedName}`;
 }
 
+export function getLiveMapDetailEndpoint(normalizedName: string) {
+  return `/api/live-map/v3/detail/${normalizedName}`;
+}
+
 export function getMapDetailEndpoint(normalizedName: string) {
   return `/api/map/v3/detail/${normalizedName}`;
 }

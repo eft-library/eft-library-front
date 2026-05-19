@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { VerticalAdBanner } from "@/components/shared/ad-banner";
 
-const disabledPrefixes: string[] = [];
+const disabledPrefixes = ["/live-map"];
 const railPositionClass =
   "pointer-events-none fixed top-1/2 z-10 hidden w-40 -translate-y-1/2 2xl:block";
 

@@ -85,6 +85,25 @@ summary {
   filter: brightness(0.72) contrast(0.95) saturate(0.9);
 }
 
+.live-map-floor-layer {
+  transition:
+    opacity 160ms ease,
+    filter 160ms ease;
+}
+
+.live-map-floor-layer-inactive {
+  filter: grayscale(0.3) blur(0.6px);
+}
+
+.dark .eft-leaflet-map .live-map-floor-layer-active {
+  filter: brightness(0.78) contrast(0.98) saturate(0.95);
+}
+
+.dark .eft-leaflet-map .live-map-floor-layer-inactive {
+  filter: brightness(0.45) contrast(0.82) saturate(0.55) grayscale(0.45)
+    blur(0.6px);
+}
+
 .leaflet-control-zoom a {
   background: #ffffff;
   border-color: #e5e7eb;
