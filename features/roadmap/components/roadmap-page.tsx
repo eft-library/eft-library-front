@@ -39,6 +39,10 @@ import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import { getProgressItems, saveProgressItems } from "@/features/progress/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
+import {
+  createQuestCompletionMap,
+  toggleQuestCompletion,
+} from "@/lib/quest/quest-completion";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { ProgressItemResponse, ProgressTrackedItem } from "@/types/api/minigame";
@@ -418,33 +422,21 @@ function RoadmapCanvas({
     [roadmap.node_info],
   );
   const questById = useMemo(() => {
-    const map = new Map<string, RoadmapQuestNode>();
-    roadmap.node_info.forEach((trader) => {
-      trader.quests.forEach((quest) => {
-        map.set(quest.id, quest);
-      });
-    });
-    return map;
+    return createQuestCompletionMap(
+      roadmap.node_info.flatMap((trader) => trader.quests),
+    );
   }, [roadmap.node_info]);
 
   const handleToggleNode = useCallback(
     (node: RoadmapNodeData, checked: boolean) => {
-      setCompleted((current) => {
-        const nextSet = new Set(current);
-        const apply = (targetId: string, isChecked: boolean) => {
-          if (isChecked) {
-            nextSet.add(targetId);
-            questById.get(targetId)?.task_requirements.forEach((id) => apply(id, true));
-            return;
-          }
-
-          nextSet.delete(targetId);
-          questById.get(targetId)?.task_next.forEach((id) => apply(id, false));
-        };
-
-        apply(node.id, checked);
-        return [...nextSet];
-      });
+      setCompleted((current) =>
+        toggleQuestCompletion({
+          checked,
+          completed: current,
+          questById,
+          questId: node.id,
+        }),
+      );
     },
     [questById],
   );
