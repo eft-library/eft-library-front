@@ -78,7 +78,7 @@ summary {
 }
 
 .dark .leaflet-container {
-  background: #111827;
+  background: #20242a;
 }
 
 .dark .eft-leaflet-map .leaflet-image-layer {
@@ -96,11 +96,12 @@ summary {
 }
 
 .dark .eft-leaflet-map .live-map-floor-layer-active {
-  filter: brightness(0.78) contrast(0.98) saturate(0.95);
+  filter: brightness(0.94) contrast(1.04) saturate(0.98);
 }
 
 .dark .eft-leaflet-map .live-map-floor-layer-inactive {
-  filter: brightness(0.45) contrast(0.82) saturate(0.55) grayscale(0.45)
+  opacity: 0.34 !important;
+  filter: brightness(0.7) contrast(0.9) saturate(0.72) grayscale(0.35)
     blur(0.6px);
 }
 

@@ -101,6 +101,7 @@ export function getItemInfoEndpoint(normalizedName: string) {
 
 export const questEndpoints = {
   all: "/api/quest/v3/all",
+  completionGraph: "/api/quest/v3/completion-graph",
   feed: "/api/quest/v3/feed",
 };
 

@@ -156,3 +156,8 @@ export interface QuestDetailResponse {
   objectives: QuestObjective[];
   finish_rewards: QuestRewardGroup;
 }
+export interface QuestCompletionGraphNode {
+  id: string;
+  task_requirements: string[];
+  task_next: string[];
+}

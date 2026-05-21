@@ -5,6 +5,7 @@ import {
   questEndpoints,
 } from "@/lib/config/api-endpoints";
 import type {
+  QuestCompletionGraphNode,
   QuestDetailResponse,
   QuestFeedEntry,
   QuestListEntry,
@@ -17,6 +18,12 @@ export function getAllQuests() {
 
 export function getQuestFeed() {
   return apiGet<QuestFeedEntry[]>(questEndpoints.feed, { revalidate: 60 * 10 });
+}
+
+export function getQuestCompletionGraph() {
+  return apiGet<QuestCompletionGraphNode[]>(questEndpoints.completionGraph, {
+    revalidate: 60 * 30,
+  });
 }
 
 export function getQuestListWithTrader(traderNormalizedName: string) {
