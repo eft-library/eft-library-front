@@ -60,6 +60,10 @@ function getPointMarkerPosition(
   return getPlayerMarkerPosition(mapId, { x: point.x, y: point.y, yaw: 0 });
 }
 
+function getRelaxedMapBounds(bounds: FindInfo["map_bounds"]) {
+  return L.latLngBounds(bounds).pad(0.7);
+}
+
 function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean) {
   const color = markerColorByKind[kind];
 
@@ -112,6 +116,7 @@ export function LiveMapCanvas({
   const mapRef = useRef<LeafletMap | null>(null);
   const pointMarkerRefs = useRef<LeafletMarker[]>([]);
   const pointMarkerByIdRef = useRef<Map<string, LeafletMarker>>(new Map());
+  const lastFocusedMarkerRef = useRef<string | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
 
   useEffect(() => {
@@ -135,8 +140,8 @@ export function LiveMapCanvas({
       doubleClickZoom: false,
       fadeAnimation: false,
       markerZoomAnimation: false,
-      maxBounds: coordinateInfo.map_bounds,
-      maxBoundsViscosity: 1,
+      maxBounds: getRelaxedMapBounds(coordinateInfo.map_bounds),
+      maxBoundsViscosity: 0.35,
       maxZoom: 4,
       minZoom: -2,
       zoom: coordinateInfo.default_zoom_level,
@@ -148,10 +153,41 @@ export function LiveMapCanvas({
       onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
     });
 
-    const handlePopupImageClick = (event: MouseEvent) => {
+    const handlePopupClick = (event: MouseEvent) => {
       const target = event.target;
 
       if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const thumb = target.closest<HTMLButtonElement>(".live-map-popup-thumb");
+
+      if (thumb) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const card = thumb.closest<HTMLElement>(".live-map-popup-card");
+        const mainImage = card?.querySelector<HTMLImageElement>(".live-map-popup-image");
+        const count = card?.querySelector<HTMLElement>(".live-map-popup-count");
+        const src = thumb.dataset.src;
+        const alt = thumb.dataset.alt ?? "";
+
+        if (mainImage && src) {
+          mainImage.src = src;
+          mainImage.dataset.fullSrc = src;
+          mainImage.alt = alt;
+        }
+
+        card?.querySelectorAll(".live-map-popup-thumb").forEach((entry) => {
+          entry.classList.toggle("live-map-popup-thumb-active", entry === thumb);
+        });
+
+        if (count) {
+          const total = card?.querySelectorAll(".live-map-popup-thumb").length ?? 0;
+          const index = Number(thumb.dataset.index ?? 0) + 1;
+          count.textContent = `${index} / ${total}`;
+        }
+
         return;
       }
 
@@ -169,7 +205,7 @@ export function LiveMapCanvas({
       });
     };
 
-    container.addEventListener("click", handlePopupImageClick);
+    container.addEventListener("click", handlePopupClick);
 
     mapRef.current = map;
 
@@ -191,7 +227,7 @@ export function LiveMapCanvas({
         delete container._leaflet_id;
       }
 
-      container.removeEventListener("click", handlePopupImageClick);
+      container.removeEventListener("click", handlePopupClick);
     };
   }, [
     coordinateInfo.default_zoom_level,
@@ -263,8 +299,8 @@ export function LiveMapCanvas({
         marker.bindPopup(point.popupHtml, {
           className: "live-map-point-popup",
           closeButton: true,
-          maxWidth: 360,
-          minWidth: 360,
+          maxWidth: 460,
+          minWidth: 460,
           offset: [0, -30],
         });
       }
@@ -296,9 +332,32 @@ export function LiveMapCanvas({
       return;
     }
 
-    const position = marker.getLatLng();
-    map.setView(position, map.getZoom(), { animate: false });
-    marker.openPopup();
+    if (lastFocusedMarkerRef.current === focusedMarkerId && marker.isPopupOpen()) {
+      return;
+    }
+
+    lastFocusedMarkerRef.current = focusedMarkerId;
+    const frameId = window.requestAnimationFrame(() => {
+      if (!map.getContainer().isConnected || !pointMarkerByIdRef.current.has(focusedMarkerId)) {
+        return;
+      }
+
+      const currentMarker = pointMarkerByIdRef.current.get(focusedMarkerId);
+
+      if (!currentMarker) {
+        return;
+      }
+
+      map.panTo(currentMarker.getLatLng(), { animate: false });
+
+      try {
+        currentMarker.openPopup();
+      } catch {
+        // Leaflet can throw when a marker is recreated during a fast repeated focus.
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
   }, [activeFloorId, focusedMarkerId, markers]);
 
   useEffect(() => {

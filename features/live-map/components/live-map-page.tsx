@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Children, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LatLng } from "leaflet";
 import {
   BookOpen,
@@ -57,6 +57,8 @@ const LiveMapCanvas = dynamic(
   { ssr: false },
 );
 
+const KAPPA_IMAGE = "https://assets.tarkov.dev/5c093ca986f7740a1867ab12-8x.webp";
+
 type PanelState =
   | { type: "quest"; id: string; info: LiveMapQuestInfo; pointId?: string }
   | { type: "story"; id: string; info: StoryInfo; objectiveId?: string | null; pointId?: string }
@@ -93,6 +95,8 @@ const copyByLocale = {
     saved: "저장되었습니다.",
     loginRequired: "로그인이 필요합니다.",
     noItems: "표시할 항목이 없습니다.",
+    showMore: "더 보기",
+    showLess: "접기",
     progress: "진행 중",
     completed: "완료",
     requirements: "선행 조건",
@@ -131,6 +135,8 @@ const copyByLocale = {
     saved: "Saved.",
     loginRequired: "Sign in required.",
     noItems: "No items to show.",
+    showMore: "Show more",
+    showLess: "Show less",
     progress: "Progress",
     completed: "Completed",
     requirements: "Requirements",
@@ -169,6 +175,8 @@ const copyByLocale = {
     saved: "保存しました。",
     loginRequired: "ログインが必要です。",
     noItems: "表示する項目がありません。",
+    showMore: "もっと見る",
+    showLess: "閉じる",
     progress: "進行中",
     completed: "完了",
     requirements: "前提条件",
@@ -412,9 +420,15 @@ function createMarkerPopupHtml({
   const thumbnails = images
     .map(
       (image, index) => `
-        <div class="live-map-popup-thumb ${index === 0 ? "live-map-popup-thumb-active" : ""}">
+        <button
+          class="live-map-popup-thumb ${index === 0 ? "live-map-popup-thumb-active" : ""}"
+          type="button"
+          data-index="${index}"
+          data-src="${escapeHtml(image.src)}"
+          data-alt="${escapeHtml(image.alt)}"
+        >
           <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" />
-        </div>
+        </button>
       `,
     )
     .join("");
@@ -549,7 +563,8 @@ export function LiveMapPage({
     () => [...data.floors].sort((left, right) => left.floor_no - right.floor_no),
     [data.floors],
   );
-  const [selectedFloorId, setSelectedFloorId] = useState(sortedFloors[0]?.id ?? "");
+  const defaultFloorId = sortedFloors.find((floor) => floor.floor_no === 1)?.id ?? sortedFloors[0]?.id ?? "";
+  const [selectedFloorId, setSelectedFloorId] = useState(defaultFloorId);
   const selectedMap =
     data.map_selector.find((entry) => entry.normalized_name === normalizedName) ??
     data.map_selector[0];
@@ -589,6 +604,16 @@ export function LiveMapPage({
   useEffect(() => {
     setEnabledQuestIds(new Set(questEntries.map((entry) => entry.id)));
   }, [questEntries]);
+
+  useEffect(() => {
+    setEnabledQuestIds((current) => {
+      const next = new Set(current);
+
+      completedQuestIds.forEach((questId) => next.delete(questId));
+
+      return next;
+    });
+  }, [completedQuestIds]);
 
   useEffect(() => {
     setEnabledStoryIds(new Set(storyEntries.map((entry) => entry.id)));
@@ -649,7 +674,15 @@ export function LiveMapPage({
 
   const visibleMarkers = useMemo<LiveMapCanvasMarker[]>(() => {
     const questMarkers = data.quest_points
-      .filter((point) => point.quest_info && enabledQuestIds.has(getQuestId(point)))
+      .filter((point) => {
+        const questId = getQuestId(point);
+
+        return (
+          point.quest_info &&
+          enabledQuestIds.has(questId) &&
+          !completedQuestIds.includes(questId)
+        );
+      })
       .map<LiveMapCanvasMarker>((point) => ({
         floorId: point.floor_id,
         id: `quest:${point.id}`,
@@ -698,6 +731,7 @@ export function LiveMapPage({
     data.quest_points,
     data.static_points,
     data.story_points,
+    completedQuestIds,
     enabledEventIds,
     enabledQuestIds,
     enabledStaticIds,
@@ -742,7 +776,11 @@ export function LiveMapPage({
         return;
       }
 
-      const targetMap = objective.maps[0]?.normalized_name ?? normalizedName;
+      const targetMap =
+        objective.maps.find((map) => map.id === objective.live_map_point?.map_id)
+          ?.normalized_name ??
+        objective.maps[0]?.normalized_name ??
+        normalizedName;
       const focus = `quest:${objective.live_map_point.id}`;
 
       setEnabledQuestIds((current) => new Set([...current, questId]));
@@ -752,9 +790,11 @@ export function LiveMapPage({
       }
 
       if (targetMap === normalizedName) {
-        router.replace(`/live-map/${normalizedName}?focus=${encodeURIComponent(focus)}`, {
-          scroll: false,
-        });
+        if (focusedMarkerId !== focus) {
+          router.replace(`/live-map/${normalizedName}?focus=${encodeURIComponent(focus)}`, {
+            scroll: false,
+          });
+        }
         return;
       }
 
@@ -762,7 +802,7 @@ export function LiveMapPage({
         scroll: false,
       });
     },
-    [normalizedName, router],
+    [focusedMarkerId, normalizedName, router],
   );
 
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
@@ -853,6 +893,17 @@ export function LiveMapPage({
     });
 
     setCompletedQuestIds(nextCompleted);
+    setEnabledQuestIds((current) => {
+      const next = new Set(current);
+
+      if (nextCompleted.includes(questId)) {
+        next.delete(questId);
+      } else {
+        next.add(questId);
+      }
+
+      return next;
+    });
     setSavingQuestId(questId);
     try {
       const savedQuestList = await saveRoadmap(nextCompleted, accessToken);
@@ -860,6 +911,17 @@ export function LiveMapPage({
       showNotice(copy.saved);
     } catch {
       setCompletedQuestIds(previousCompleted);
+      setEnabledQuestIds((current) => {
+        const next = new Set(current);
+
+        if (previousCompleted.includes(questId)) {
+          next.delete(questId);
+        } else {
+          next.add(questId);
+        }
+
+        return next;
+      });
       showNotice(copy.loginRequired);
     } finally {
       setSavingQuestId((current) => (current === questId ? null : current));
@@ -886,8 +948,8 @@ export function LiveMapPage({
   }
 
   useEffect(() => {
-    setSelectedFloorId(sortedFloors[0]?.id ?? "");
-  }, [normalizedName, sortedFloors]);
+    setSelectedFloorId(defaultFloorId);
+  }, [defaultFloorId, normalizedName]);
 
   useEffect(() => {
     if (!websocketLocation || websocketLocation === previousLocationRef.current) {
@@ -959,7 +1021,7 @@ export function LiveMapPage({
         <div className="flex min-h-0 flex-1">
           <aside className="hidden w-72 shrink-0 flex-col border-r border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex">
             <div className="min-h-0 flex-1 overflow-y-auto">
-              <PanelBlock title={copy.map}>
+              <PanelBlock>
                 <div className="relative">
                   <button
                     type="button"
@@ -1009,7 +1071,7 @@ export function LiveMapPage({
                 </div>
               </PanelBlock>
 
-              <PanelBlock title={copy.floor}>
+              <PanelBlock>
                 <div className="space-y-1">
                   {sortedFloors.map((floor) => {
                     const isSelected = floor.id === selectedFloor?.id;
@@ -1253,6 +1315,8 @@ function RightSection<TEntry extends RightEntry>({
             const enabled = enabledIds.has(entry.id);
             const label = getEntryLabel(entry, locale);
             const completed = kind === "quest" && completedQuestIds.includes(entry.id);
+            const isKappaQuest =
+              "quest_info" in entry.point && !!entry.point.quest_info?.quest.kappa_required;
 
             return (
               <div
@@ -1290,16 +1354,17 @@ function RightSection<TEntry extends RightEntry>({
                 <button
                   type="button"
                   onClick={() => onOpen(entry)}
-                  className="flex h-8 min-w-0 items-center rounded px-1 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                  className="flex h-8 min-w-0 items-center gap-1 rounded px-1 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
                 >
                   <span
                     className={cn(
-                      "truncate text-gray-700 dark:text-gray-300",
+                      "min-w-0 truncate text-gray-700 dark:text-gray-300",
                       isSelected ? "font-black text-orange-500" : "",
                     )}
                   >
                     {label}
                   </span>
+                  {isKappaQuest ? <KappaBadge /> : null}
                 </button>
                 <button
                   type="button"
@@ -1309,7 +1374,7 @@ function RightSection<TEntry extends RightEntry>({
                 >
                   <span
                     className={cn(
-                      "h-4 w-8 rounded-full border p-0.5",
+                      "relative inline-flex h-4 w-8 shrink-0 items-center rounded-full border align-middle",
                       enabled
                         ? "border-orange-500 bg-orange-500"
                         : "border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-[#15171a]",
@@ -1317,7 +1382,7 @@ function RightSection<TEntry extends RightEntry>({
                   >
                     <span
                       className={cn(
-                        "block h-3 w-3 rounded-full bg-white transition",
+                        "absolute left-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-transform",
                         enabled ? "translate-x-4" : "translate-x-0",
                       )}
                     />
@@ -1346,6 +1411,17 @@ function EntryIcon({ kind }: { kind: "story" | "event" | "static" }) {
   }
 
   return <Flag className={cn(className, "text-emerald-500")} />;
+}
+
+function KappaBadge() {
+  return (
+    <img
+      alt="Kappa"
+      className="h-4 w-4 shrink-0 rounded object-contain"
+      src={KAPPA_IMAGE}
+      title="Kappa"
+    />
+  );
 }
 
 function getEntryLabel(entry: RightEntry, locale: Locale) {
@@ -1397,7 +1473,7 @@ function DetailPanel({
   savingQuestId: string | null;
 }) {
   return (
-    <aside className="hidden w-72 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] xl:flex">
+    <aside className="hidden w-96 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] xl:flex">
       <div className="flex h-10 items-center justify-between border-b border-gray-200 px-3 dark:border-[#3a3d41]">
         <span className="text-xs font-black text-orange-500">
           {panel.type === "quest"
@@ -1494,9 +1570,12 @@ function QuestPanel({
           />
         ) : null}
         <div className="min-w-0 flex-1">
-          <h3 className="text-sm font-black leading-tight text-gray-950 dark:text-white">
-            {localizedName(info.quest as unknown as Record<string, unknown>, locale)}
-          </h3>
+          <div className="flex min-w-0 items-center gap-1.5">
+            <h3 className="min-w-0 text-sm font-black leading-tight text-gray-950 dark:text-white">
+              {localizedName(info.quest as unknown as Record<string, unknown>, locale)}
+            </h3>
+            {info.quest.kappa_required ? <KappaBadge /> : null}
+          </div>
           {info.trader ? (
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {localizedName(info.trader as unknown as Record<string, unknown>, locale)}
@@ -1670,12 +1749,12 @@ function ObjectiveList({
       <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
         {copy.objectives}
       </h4>
-      <ul className="space-y-2">
+      <ExpandableRows className="space-y-0.5" copy={copy}>
         {objectives.map((objective) => (
           <li
             key={objective.objective_id}
             className={cn(
-              "space-y-2 rounded-md border border-transparent p-2 text-xs text-gray-700 dark:text-gray-300",
+              "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs text-gray-700 dark:text-gray-300",
               selectedPointId && objective.live_map_point?.id === selectedPointId
                 ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
                 : "",
@@ -1690,7 +1769,7 @@ function ObjectiveList({
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
           </li>
         ))}
-      </ul>
+      </ExpandableRows>
     </section>
   );
 }
@@ -1763,7 +1842,7 @@ function NestedStoryObjectives({
   selectedPointId?: string;
 }) {
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1">
       {objectives.map((objective) => {
         const isSelected =
           objective.objective_id === selectedObjectiveId ||
@@ -1774,7 +1853,7 @@ function NestedStoryObjectives({
           <li
             key={objective.objective_id}
             className={cn(
-              "space-y-2 rounded-md border border-transparent p-2",
+              "space-y-1 rounded-md border border-transparent px-1.5 py-1",
               isSelected
                 ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
                 : "",
@@ -1815,7 +1894,7 @@ function NestedEventObjectives({
   selectedPointId?: string;
 }) {
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1">
       {objectives.map((objective) => {
         const isSelected =
           objective.objective_id === selectedObjectiveId ||
@@ -1826,7 +1905,7 @@ function NestedEventObjectives({
           <li
             key={objective.objective_id}
             className={cn(
-              "space-y-2 rounded-md border border-transparent p-2",
+              "space-y-1 rounded-md border border-transparent px-1.5 py-1",
               isSelected
                 ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
                 : "",
@@ -1866,35 +1945,43 @@ function ObjectiveLine({
   onFocus?: () => void;
   optional: boolean;
 }) {
+  const badges = (
+    <>
+      {optional ? (
+        <span className="ml-1 inline-flex whitespace-nowrap rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-blue-600 align-[1px] dark:bg-blue-500/10 dark:text-blue-300">
+          Optional
+        </span>
+      ) : null}
+      {count !== null ? (
+        <span className="ml-1 inline-flex whitespace-nowrap rounded bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-orange-600 align-[1px] dark:bg-orange-500/10 dark:text-orange-300">
+          x{count}
+        </span>
+      ) : null}
+    </>
+  );
+
   return (
-    <div className="flex gap-2 text-xs leading-5 text-gray-700 dark:text-gray-300">
+    <div className="flex gap-2 text-xs leading-4 text-gray-700 dark:text-gray-300">
       <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-orange-500" />
       <div className="min-w-0 flex-1">
-        <p>{description || "-"}</p>
-        <div className="mt-1 flex gap-1">
-          {optional ? (
-            <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-bold text-blue-600 dark:bg-blue-500/10 dark:text-blue-300">
-              Optional
+        <p className="min-w-0">
+          {onFocus ? (
+            <button
+              type="button"
+              onClick={onFocus}
+              className="inline text-left font-semibold text-orange-600 hover:underline dark:text-orange-300"
+            >
+              {description || "-"}
+              {badges}
+            </button>
+          ) : (
+            <span>
+              {description || "-"}
+              {badges}
             </span>
-          ) : null}
-          {count !== null ? (
-            <span className="rounded bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-500/10 dark:text-orange-300">
-              x{count}
-            </span>
-          ) : null}
-        </div>
+          )}
+        </p>
       </div>
-      {onFocus ? (
-        <button
-          type="button"
-          onClick={onFocus}
-          className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-gray-400 hover:bg-orange-50 hover:text-orange-500 dark:hover:bg-orange-500/10"
-          aria-label="Focus marker"
-          title="Focus marker"
-        >
-          <LocateFixed className="h-3.5 w-3.5" />
-        </button>
-      ) : null}
     </div>
   );
 }
@@ -1907,7 +1994,7 @@ function ItemRow({
   locale: Locale;
 }) {
   return (
-    <div className="grid gap-1.5 pl-5">
+    <ExpandableRows className="grid gap-1.5 pl-5" copy={copyByLocale[locale]}>
       {items.map((entry) => (
         <a
           key={`${entry.item.id}-${entry.item_role ?? entry.item_type ?? "item"}`}
@@ -1930,6 +2017,38 @@ function ItemRow({
           </span>
         </a>
       ))}
+    </ExpandableRows>
+  );
+}
+
+function ExpandableRows({
+  children,
+  className,
+  copy,
+  limit = 4,
+}: {
+  children: React.ReactNode;
+  className: string;
+  copy: (typeof copyByLocale)[Locale];
+  limit?: number;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const items = Children.toArray(children);
+  const shouldCollapse = items.length > limit;
+  const visibleItems = shouldCollapse && !isOpen ? items.slice(0, limit) : items;
+
+  return (
+    <div className={className}>
+      {visibleItems}
+      {shouldCollapse ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen((value) => !value)}
+          className="rounded px-2 py-1 text-left text-xs font-bold text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+        >
+          {isOpen ? copy.showLess : `${copy.showMore} (${items.length - limit})`}
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -2047,12 +2166,12 @@ function QuestRewardList({
       </h4>
       <div className="space-y-3">
         {info.quest.experience ? (
-          <RewardBlock title={copy.experience}>
+          <RewardBlock copy={copy} title={copy.experience}>
             <RewardPill>{info.quest.experience.toLocaleString()} EXP</RewardPill>
           </RewardBlock>
         ) : null}
         {rewards.trader_standing.length > 0 ? (
-          <RewardBlock title={copy.traderStanding}>
+          <RewardBlock copy={copy} title={copy.traderStanding}>
             {rewards.trader_standing.map((reward) => (
               <RewardPill key={`${reward.trader.id}-${reward.standing}`}>
                 {localizedName(reward.trader as unknown as Record<string, unknown>, locale)}{" "}
@@ -2062,7 +2181,7 @@ function QuestRewardList({
           </RewardBlock>
         ) : null}
         {rewards.skill_level_reward.length > 0 ? (
-          <RewardBlock title={copy.skills}>
+          <RewardBlock copy={copy} title={copy.skills}>
             {rewards.skill_level_reward.map((reward) => (
               <RewardPill key={`${reward.name_en}-${reward.skill_level}`}>
                 {reward.name_en} +{reward.skill_level}
@@ -2071,7 +2190,7 @@ function QuestRewardList({
           </RewardBlock>
         ) : null}
         {rewards.items.length > 0 ? (
-          <RewardBlock title={copy.rewardItems}>
+          <RewardBlock copy={copy} title={copy.rewardItems}>
             {rewards.items.map((reward) => (
               <RewardItemLink
                 key={`${reward.item.id}-${reward.quantity}`}
@@ -2084,7 +2203,7 @@ function QuestRewardList({
           </RewardBlock>
         ) : null}
         {rewards.offer_unlock.length > 0 ? (
-          <RewardBlock title={copy.unlocks}>
+          <RewardBlock copy={copy} title={copy.unlocks}>
             {rewards.offer_unlock.map((reward) =>
               reward.item ? (
                 <RewardItemLink
@@ -2103,7 +2222,7 @@ function QuestRewardList({
           </RewardBlock>
         ) : null}
         {rewards.craft_unlock.length > 0 ? (
-          <RewardBlock title={copy.crafts}>
+          <RewardBlock copy={copy} title={copy.crafts}>
             {rewards.craft_unlock.map((reward) =>
               reward.reward_item ? (
                 <RewardItemLink
@@ -2128,15 +2247,19 @@ function QuestRewardList({
 
 function RewardBlock({
   children,
+  copy,
   title,
 }: {
   children: React.ReactNode;
+  copy: (typeof copyByLocale)[Locale];
   title: string;
 }) {
   return (
     <div>
       <h5 className="mb-1 text-[11px] font-bold text-gray-500 dark:text-gray-400">{title}</h5>
-      <div className="grid gap-1.5">{children}</div>
+      <ExpandableRows className="grid gap-1.5" copy={copy}>
+        {children}
+      </ExpandableRows>
     </div>
   );
 }
@@ -2286,13 +2409,15 @@ function PanelBlock({
   title,
 }: {
   children: React.ReactNode;
-  title: string;
+  title?: string;
 }) {
   return (
     <section className="border-b border-gray-200 p-3 dark:border-[#3a3d41]">
-      <h2 className="mb-2 text-xs font-black uppercase tracking-wide text-gray-500 dark:text-gray-400">
-        {title}
-      </h2>
+      {title ? (
+        <h2 className="mb-2 text-xs font-black uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          {title}
+        </h2>
+      ) : null}
       {children}
     </section>
   );

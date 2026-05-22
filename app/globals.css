@@ -150,7 +150,7 @@ summary {
 }
 
 .live-map-point-popup .leaflet-popup-content {
-  width: 360px !important;
+  width: 460px !important;
   margin: 0;
 }
 
@@ -313,14 +313,22 @@ summary {
 }
 
 .live-map-popup-thumb {
-  width: 58px;
-  height: 44px;
+  width: 104px;
+  height: 72px;
   flex: 0 0 auto;
   overflow: hidden;
   border: 2px solid transparent;
   border-radius: 6px;
   background: #e5e7eb;
+  padding: 0;
   opacity: 0.76;
+  cursor: pointer;
+  transition: border-color 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.live-map-popup-thumb:hover {
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .live-map-popup-thumb-active {

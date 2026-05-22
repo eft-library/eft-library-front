@@ -5,6 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { AdSideRails } from "@/components/shared/ad-side-rails";
 import { SiteFooter } from "@/components/shared/site-footer";
+import { SiteFooterGuard } from "@/components/shared/site-footer-guard";
 import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -117,7 +118,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
         <AdSideRails />
         {/* <ChatData /> */}
         <div className="flex-1">{children}</div>
-        <SiteFooter />
+        <SiteFooterGuard />
       </AppStoreProvider>
     </div>
   );
