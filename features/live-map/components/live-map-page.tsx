@@ -77,6 +77,13 @@ type NestedLiveObjective = {
   children: NestedLiveObjective[];
 };
 
+type StaticEntry = { id: string; point: LiveMapStaticPoint };
+
+type StaticCategoryGroup = {
+  category: string;
+  entries: StaticEntry[];
+};
+
 const copyByLocale = {
   ko: {
     title: "Live Map",
@@ -90,6 +97,13 @@ const copyByLocale = {
     stories: "스토리",
     events: "이벤트",
     staticPoints: "위치",
+    staticCategoryAll: "전체",
+    staticCategories: {
+      extract: "탈출구",
+      stationary_weapon: "고정 무기",
+      transit: "이동 경로",
+      transit_switch: "이동 스위치",
+    },
     allOnOff: "ALL ON/OFF",
     save: "저장",
     saved: "저장되었습니다.",
@@ -130,6 +144,13 @@ const copyByLocale = {
     stories: "Stories",
     events: "Events",
     staticPoints: "Locations",
+    staticCategoryAll: "All",
+    staticCategories: {
+      extract: "Extracts",
+      stationary_weapon: "Stationary Weapons",
+      transit: "Transits",
+      transit_switch: "Transit Switches",
+    },
     allOnOff: "ALL ON/OFF",
     save: "Save",
     saved: "Saved.",
@@ -170,6 +191,13 @@ const copyByLocale = {
     stories: "ストーリー",
     events: "イベント",
     staticPoints: "位置",
+    staticCategoryAll: "全体",
+    staticCategories: {
+      extract: "脱出口",
+      stationary_weapon: "固定武器",
+      transit: "移動ルート",
+      transit_switch: "移動スイッチ",
+    },
     allOnOff: "ALL ON/OFF",
     save: "保存",
     saved: "保存しました。",
@@ -218,8 +246,53 @@ function getFloorLabel(floor: LiveMapFloor, locale: Locale) {
   return localizedName(floor as unknown as Record<string, unknown>, locale);
 }
 
+function getStaticCategoryLabel(
+  category: string,
+  copy: (typeof copyByLocale)[Locale],
+) {
+  return (
+    copy.staticCategories[category as keyof typeof copy.staticCategories] ??
+    category
+      .split("_")
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ")
+  );
+}
+
 function uniqueById<TItem extends { id: string }>(items: TItem[]) {
   return Array.from(new Map(items.map((item) => [item.id, item])).values());
+}
+
+function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[] {
+  const groups = new Map<string, StaticEntry[]>();
+
+  entries.forEach((entry) => {
+    const category = entry.point.category || "other";
+    groups.set(category, [...(groups.get(category) ?? []), entry]);
+  });
+
+  return Array.from(groups.entries())
+    .map(([category, groupEntries]) => ({
+      category,
+      entries: groupEntries.sort((left, right) =>
+        localizedName(left.point as unknown as Record<string, unknown>, "en").localeCompare(
+          localizedName(right.point as unknown as Record<string, unknown>, "en"),
+        ),
+      ),
+    }))
+    .sort((left, right) => {
+      const categoryOrder = ["extract", "transit", "transit_switch", "stationary_weapon"];
+      const leftIndex = categoryOrder.indexOf(left.category);
+      const rightIndex = categoryOrder.indexOf(right.category);
+
+      if (leftIndex !== -1 || rightIndex !== -1) {
+        return (leftIndex === -1 ? categoryOrder.length : leftIndex) -
+          (rightIndex === -1 ? categoryOrder.length : rightIndex);
+      }
+
+      return left.category.localeCompare(right.category);
+    });
 }
 
 function getQuestId(point: LiveMapQuestPoint) {
@@ -592,14 +665,18 @@ export function LiveMapPage({
     }))),
     [data.event_points],
   );
-  const staticEntries = useMemo(
+  const staticEntries = useMemo<StaticEntry[]>(
     () => uniqueById(data.static_points.map((point) => ({ id: point.id, point }))),
     [data.static_points],
   );
+  const staticGroups = useMemo(() => groupStaticEntries(staticEntries), [staticEntries]);
   const [enabledQuestIds, setEnabledQuestIds] = useState<Set<string>>(new Set());
   const [enabledStoryIds, setEnabledStoryIds] = useState<Set<string>>(new Set());
   const [enabledEventIds, setEnabledEventIds] = useState<Set<string>>(new Set());
   const [enabledStaticIds, setEnabledStaticIds] = useState<Set<string>>(new Set());
+  const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     setEnabledQuestIds(new Set(questEntries.map((entry) => entry.id)));
@@ -626,6 +703,10 @@ export function LiveMapPage({
   useEffect(() => {
     setEnabledStaticIds(new Set(staticEntries.map((entry) => entry.id)));
   }, [staticEntries]);
+
+  useEffect(() => {
+    setExpandedStaticCategories(new Set(staticGroups.map((group) => group.category)));
+  }, [staticGroups]);
 
   useEffect(() => {
     let cancelled = false;
@@ -690,7 +771,7 @@ export function LiveMapPage({
         label: getQuestPointLabel(point, locale),
         popupHtml: getQuestPointPopupHtml(point, locale),
         x: point.x,
-        y: point.y,
+        y: point.z,
       }));
     const storyMarkers = data.story_points
       .filter((point) => point.story_info && enabledStoryIds.has(getStoryId(point)))
@@ -701,7 +782,7 @@ export function LiveMapPage({
         label: getStoryPointLabel(point, locale),
         popupHtml: getStoryPointPopupHtml(point, locale),
         x: point.x,
-        y: point.y,
+        y: point.z,
       }));
     const eventMarkers = data.event_points
       .filter((point) => point.event_info && enabledEventIds.has(getEventId(point)))
@@ -712,7 +793,7 @@ export function LiveMapPage({
         label: getEventPointLabel(point, locale),
         popupHtml: getEventPointPopupHtml(point, locale),
         x: point.x,
-        y: point.y,
+        y: point.z,
       }));
     const staticMarkers = data.static_points
       .filter((point) => enabledStaticIds.has(point.id))
@@ -722,7 +803,7 @@ export function LiveMapPage({
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
         x: point.x,
-        y: point.y,
+        y: point.z,
       }));
 
     return [...questMarkers, ...storyMarkers, ...eventMarkers, ...staticMarkers];
@@ -1140,19 +1221,36 @@ export function LiveMapPage({
                 </div>
               </PanelBlock>
 
-              <RightSection
+              <StaticPointSection
                 allLabel={copy.allOnOff}
-                completedQuestIds={completedQuestIds}
                 enabledIds={enabledStaticIds}
                 emptyLabel={copy.noItems}
-                items={staticEntries}
-                kind="static"
+                expandedCategories={expandedStaticCategories}
+                groups={staticGroups}
+                locale={locale}
                 onOpen={(entry) => setPanel({ id: entry.id, point: entry.point, type: "static" })}
                 onToggle={(id) => toggleSet(setEnabledStaticIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStaticIds, staticEntries.map((entry) => entry.id))}
+                onToggleCategory={(category, ids) => {
+                  setEnabledStaticIds((current) => {
+                    const next = new Set(current);
+                    const isCategoryEnabled = ids.every((id) => next.has(id));
+
+                    ids.forEach((id) => {
+                      if (isCategoryEnabled) {
+                        next.delete(id);
+                      } else {
+                        next.add(id);
+                      }
+                    });
+
+                    return next;
+                  });
+                }}
+                onToggleCategoryOpen={(category) => toggleSet(setExpandedStaticCategories, category)}
                 selectedId={panel?.type === "static" ? panel.id : null}
                 title={copy.staticPoints}
-                locale={locale}
+                copy={copy}
               />
             </div>
 
@@ -1433,6 +1531,171 @@ function RightSection<TEntry extends RightEntry>({
         <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
       )}
     </section>
+  );
+}
+
+function StaticPointSection({
+  allLabel,
+  copy,
+  emptyLabel,
+  enabledIds,
+  expandedCategories,
+  groups,
+  locale,
+  onOpen,
+  onToggle,
+  onToggleAll,
+  onToggleCategory,
+  onToggleCategoryOpen,
+  selectedId,
+  title,
+}: {
+  allLabel: string;
+  copy: (typeof copyByLocale)[Locale];
+  emptyLabel: string;
+  enabledIds: Set<string>;
+  expandedCategories: Set<string>;
+  groups: StaticCategoryGroup[];
+  locale: Locale;
+  onOpen: (entry: StaticEntry) => void;
+  onToggle: (id: string) => void;
+  onToggleAll: () => void;
+  onToggleCategory: (category: string, ids: string[]) => void;
+  onToggleCategoryOpen: (category: string) => void;
+  selectedId: string | null;
+  title: string;
+}) {
+  const totalCount = groups.reduce((sum, group) => sum + group.entries.length, 0);
+
+  return (
+    <section className="border-b border-gray-200 p-3 last:border-b-0 dark:border-[#3a3d41]">
+      <div className="mb-2 flex h-9 items-center justify-between gap-2 rounded-md bg-gray-100 px-2 dark:bg-[#2a2d31]">
+        <h2 className="text-sm font-black text-gray-900 dark:text-white">
+          {title}
+          <span className="ml-1 text-xs font-bold text-gray-500 dark:text-gray-400">
+            {totalCount}
+          </span>
+        </h2>
+        <button
+          type="button"
+          onClick={onToggleAll}
+          className="h-6 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
+        >
+          {allLabel}
+        </button>
+      </div>
+      {groups.length > 0 ? (
+        <div className="space-y-1.5">
+          {groups.map((group) => {
+            const ids = group.entries.map((entry) => entry.id);
+            const isOpen = expandedCategories.has(group.category);
+            const enabledCount = ids.filter((id) => enabledIds.has(id)).length;
+            const isCategoryEnabled = enabledCount === ids.length;
+
+            return (
+              <div
+                key={group.category}
+                className="rounded-md border border-gray-200 bg-gray-50/80 dark:border-[#3a3d41] dark:bg-[#15171a]"
+              >
+                <div className="grid h-8 grid-cols-[1fr_42px] items-center">
+                  <button
+                    type="button"
+                    onClick={() => onToggleCategoryOpen(group.category)}
+                    className="flex h-8 min-w-0 items-center gap-2 rounded-l px-2 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "h-3.5 w-3.5 shrink-0 text-orange-500 transition-transform",
+                        isOpen ? "rotate-180" : "-rotate-90",
+                      )}
+                    />
+                    <EntryIcon kind="static" />
+                    <span className="min-w-0 flex-1 truncate text-xs font-black text-gray-800 dark:text-gray-100">
+                      {getStaticCategoryLabel(group.category, copy)}
+                    </span>
+                    <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400">
+                      {enabledCount}/{ids.length}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onToggleCategory(group.category, ids)}
+                    className="flex h-8 items-center justify-center rounded-r hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                    aria-label={`${getStaticCategoryLabel(group.category, copy)} ${copy.staticCategoryAll}`}
+                  >
+                    <TogglePill enabled={isCategoryEnabled} />
+                  </button>
+                </div>
+                {isOpen ? (
+                  <div className="border-t border-gray-200 p-1 dark:border-[#3a3d41]">
+                    {group.entries.map((entry) => {
+                      const isSelected = selectedId === entry.id;
+                      const enabled = enabledIds.has(entry.id);
+                      const label = getEntryLabel(entry, locale);
+
+                      return (
+                        <div
+                          key={entry.id}
+                          className={cn(
+                            "grid h-8 grid-cols-[1fr_42px] items-center rounded text-xs",
+                            isSelected ? "bg-white dark:bg-[#2a2d31]" : "",
+                          )}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => onOpen(entry)}
+                            className="flex h-8 min-w-0 items-center gap-1.5 rounded-l px-2 text-left hover:bg-white dark:hover:bg-[#2a2d31]"
+                          >
+                            <span
+                              className={cn(
+                                "min-w-0 truncate text-gray-700 dark:text-gray-300",
+                                isSelected ? "font-black text-orange-500" : "",
+                              )}
+                            >
+                              {label}
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => onToggle(entry.id)}
+                            className="flex h-8 items-center justify-center rounded-r hover:bg-white dark:hover:bg-[#2a2d31]"
+                            aria-label={label}
+                          >
+                            <TogglePill enabled={enabled} />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
+      )}
+    </section>
+  );
+}
+
+function TogglePill({ enabled }: { enabled: boolean }) {
+  return (
+    <span
+      className={cn(
+        "relative inline-flex h-4 w-8 shrink-0 items-center rounded-full border align-middle",
+        enabled
+          ? "border-orange-500 bg-orange-500"
+          : "border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-[#15171a]",
+      )}
+    >
+      <span
+        className={cn(
+          "absolute left-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-transform",
+          enabled ? "translate-x-4" : "translate-x-0",
+        )}
+      />
+    </span>
   );
 }
 
