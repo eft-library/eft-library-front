@@ -191,6 +191,7 @@ export interface LiveMapStaticPoint {
   description_en: string | null;
   description_ko: string | null;
   description_ja: string | null;
+  image: string | null;
   x: number;
   z: number;
   y: number;

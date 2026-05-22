@@ -61,7 +61,7 @@ function getPointMarkerPosition(
 }
 
 function getRelaxedMapBounds(bounds: FindInfo["map_bounds"]) {
-  return L.latLngBounds(bounds).pad(0.7);
+  return L.latLngBounds(bounds).pad(1.4);
 }
 
 function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean) {
@@ -141,7 +141,7 @@ export function LiveMapCanvas({
       fadeAnimation: false,
       markerZoomAnimation: false,
       maxBounds: getRelaxedMapBounds(coordinateInfo.map_bounds),
-      maxBoundsViscosity: 0.35,
+      maxBoundsViscosity: 0.1,
       maxZoom: 4,
       minZoom: -2,
       zoom: coordinateInfo.default_zoom_level,

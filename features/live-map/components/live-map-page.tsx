@@ -295,6 +295,19 @@ function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[] {
     });
 }
 
+function parseCanvasMarkerId(markerId: string) {
+  const separatorIndex = markerId.indexOf(":");
+
+  if (separatorIndex === -1) {
+    return { id: markerId, kind: markerId };
+  }
+
+  return {
+    id: markerId.slice(separatorIndex + 1),
+    kind: markerId.slice(0, separatorIndex),
+  };
+}
+
 function getQuestId(point: LiveMapQuestPoint) {
   return point.quest_info?.quest.id ?? point.id;
 }
@@ -599,6 +612,28 @@ function getEventPointPopupHtml(point: LiveMapEventPoint, locale: Locale) {
   });
 }
 
+function getStaticPointPopupHtml(
+  point: LiveMapStaticPoint,
+  locale: Locale,
+  copy: (typeof copyByLocale)[Locale],
+) {
+  const title = localizedName(point as unknown as Record<string, unknown>, locale);
+  const description = localizedDescription(point as unknown as Record<string, unknown>, locale);
+  const image = point.image
+    ? [{
+        alt: title,
+        src: point.image,
+      }]
+    : [];
+
+  return createMarkerPopupHtml({
+    description,
+    images: image,
+    location: getStaticCategoryLabel(point.category, copy),
+    title,
+  });
+}
+
 export function LiveMapPage({
   data,
   locale,
@@ -628,6 +663,7 @@ export function LiveMapPage({
   const [savingQuestId, setSavingQuestId] = useState<string | null>(null);
   const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([]);
   const [completionGraph, setCompletionGraph] = useState<QuestCompletionGraphNode[]>([]);
+  const [selectedStaticId, setSelectedStaticId] = useState<string | null>(null);
   const questById = useMemo(
     () => createQuestCompletionMap(completionGraph),
     [completionGraph],
@@ -802,6 +838,7 @@ export function LiveMapPage({
         id: `static:${point.id}`,
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
+        popupHtml: getStaticPointPopupHtml(point, locale, copy),
         x: point.x,
         y: point.z,
       }));
@@ -817,6 +854,7 @@ export function LiveMapPage({
     enabledQuestIds,
     enabledStaticIds,
     enabledStoryIds,
+    copy,
     locale,
   ]);
 
@@ -922,6 +960,28 @@ export function LiveMapPage({
     [focusedMarkerId, normalizedName, router],
   );
 
+  const focusStaticPoint = useCallback(
+    (entry: StaticEntry) => {
+      const focus = `static:${entry.point.id}`;
+
+      setSelectedStaticId(entry.id);
+      setPanel((current) => (current?.type === "static" ? null : current));
+      setEnabledStaticIds((current) => new Set([...current, entry.id]));
+      setExpandedStaticCategories((current) => new Set([...current, entry.point.category || "other"]));
+
+      if (entry.point.floor_id) {
+        setSelectedFloorId(entry.point.floor_id);
+      }
+
+      if (focusedMarkerId !== focus) {
+        router.replace(`/live-map/${normalizedName}?focus=${encodeURIComponent(focus)}`, {
+          scroll: false,
+        });
+      }
+    },
+    [focusedMarkerId, normalizedName, router],
+  );
+
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
     setter((current) => {
       const next = new Set(current);
@@ -945,7 +1005,7 @@ export function LiveMapPage({
 
   const openPanelForMarker = useCallback(
     (marker: LiveMapCanvasMarker) => {
-      const [kind, id] = marker.id.split(":");
+      const { id, kind } = parseCanvasMarkerId(marker.id);
 
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
@@ -988,7 +1048,9 @@ export function LiveMapPage({
       if (kind === "static") {
         const point = data.static_points.find((entry) => entry.id === id);
         if (point) {
-          setPanel({ id: point.id, point, type: "static" });
+          setSelectedStaticId(point.id);
+          setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
+          setPanel((current) => (current?.type === "static" ? null : current));
         }
       }
     },
@@ -1088,7 +1150,18 @@ export function LiveMapPage({
     if (marker?.floorId) {
       setSelectedFloorId(marker.floorId);
     }
-  }, [focusedMarkerId, visibleMarkers]);
+
+    const { id, kind } = parseCanvasMarkerId(focusedMarkerId);
+
+    if (kind === "static") {
+      const point = data.static_points.find((entry) => entry.id === id);
+
+      if (point) {
+        setSelectedStaticId(point.id);
+        setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
+      }
+    }
+  }, [data.static_points, focusedMarkerId, visibleMarkers]);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
@@ -1228,7 +1301,7 @@ export function LiveMapPage({
                 expandedCategories={expandedStaticCategories}
                 groups={staticGroups}
                 locale={locale}
-                onOpen={(entry) => setPanel({ id: entry.id, point: entry.point, type: "static" })}
+                onOpen={focusStaticPoint}
                 onToggle={(id) => toggleSet(setEnabledStaticIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStaticIds, staticEntries.map((entry) => entry.id))}
                 onToggleCategory={(category, ids) => {
@@ -1248,7 +1321,7 @@ export function LiveMapPage({
                   });
                 }}
                 onToggleCategoryOpen={(category) => toggleSet(setExpandedStaticCategories, category)}
-                selectedId={panel?.type === "static" ? panel.id : null}
+                selectedId={selectedStaticId}
                 title={copy.staticPoints}
                 copy={copy}
               />
@@ -1566,6 +1639,14 @@ function StaticPointSection({
   title: string;
 }) {
   const totalCount = groups.reduce((sum, group) => sum + group.entries.length, 0);
+  const selectedItemRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    selectedItemRef.current?.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+    });
+  }, [selectedId]);
 
   return (
     <section className="border-b border-gray-200 p-3 last:border-b-0 dark:border-[#3a3d41]">
@@ -1635,16 +1716,24 @@ function StaticPointSection({
 
                       return (
                         <div
+                          ref={isSelected ? selectedItemRef : null}
                           key={entry.id}
                           className={cn(
-                            "grid h-8 grid-cols-[1fr_42px] items-center rounded text-xs",
-                            isSelected ? "bg-white dark:bg-[#2a2d31]" : "",
+                            "grid h-8 grid-cols-[1fr_42px] items-center overflow-hidden rounded border border-transparent text-xs",
+                            isSelected
+                              ? "border-orange-300 bg-orange-50 hover:bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10 dark:hover:bg-orange-500/10"
+                              : "",
                           )}
                         >
                           <button
                             type="button"
                             onClick={() => onOpen(entry)}
-                            className="flex h-8 min-w-0 items-center gap-1.5 rounded-l px-2 text-left hover:bg-white dark:hover:bg-[#2a2d31]"
+                            className={cn(
+                              "flex h-full min-w-0 items-center gap-1.5 rounded-l px-2 text-left",
+                              isSelected
+                                ? "hover:bg-transparent"
+                                : "hover:bg-white dark:hover:bg-[#2a2d31]",
+                            )}
                           >
                             <span
                               className={cn(
@@ -1658,7 +1747,12 @@ function StaticPointSection({
                           <button
                             type="button"
                             onClick={() => onToggle(entry.id)}
-                            className="flex h-8 items-center justify-center rounded-r hover:bg-white dark:hover:bg-[#2a2d31]"
+                            className={cn(
+                              "flex h-full items-center justify-center rounded-r",
+                              isSelected
+                                ? "hover:bg-transparent"
+                                : "hover:bg-white dark:hover:bg-[#2a2d31]",
+                            )}
                             aria-label={label}
                           >
                             <TogglePill enabled={enabled} />
