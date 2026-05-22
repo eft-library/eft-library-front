@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -207,13 +207,7 @@ function localizedDescription(value: Record<string, unknown>, locale: Locale) {
 }
 
 function getFloorLabel(floor: LiveMapFloor, locale: Locale) {
-  const name = localizedName(floor as unknown as Record<string, unknown>, locale);
-
-  if (floor.min_z === null || floor.max_z === null) {
-    return name;
-  }
-
-  return `${name} (${floor.min_z}~${floor.max_z})`;
+  return localizedName(floor as unknown as Record<string, unknown>, locale);
 }
 
 function uniqueById<TItem extends { id: string }>(items: TItem[]) {
@@ -528,6 +522,8 @@ export function LiveMapPage({
   normalizedName: string;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const focusedMarkerId = searchParams.get("focus");
   const copy = copyByLocale[locale];
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
@@ -740,6 +736,35 @@ export function LiveMapPage({
     setImagePopup(image);
   }, []);
 
+  const focusQuestObjective = useCallback(
+    (objective: LiveMapQuestInfo["objectives"][number], questId: string) => {
+      if (!objective.live_map_point) {
+        return;
+      }
+
+      const targetMap = objective.maps[0]?.normalized_name ?? normalizedName;
+      const focus = `quest:${objective.live_map_point.id}`;
+
+      setEnabledQuestIds((current) => new Set([...current, questId]));
+
+      if (objective.live_map_point.floor_id) {
+        setSelectedFloorId(objective.live_map_point.floor_id);
+      }
+
+      if (targetMap === normalizedName) {
+        router.replace(`/live-map/${normalizedName}?focus=${encodeURIComponent(focus)}`, {
+          scroll: false,
+        });
+        return;
+      }
+
+      router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
+        scroll: false,
+      });
+    },
+    [normalizedName, router],
+  );
+
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
     setter((current) => {
       const next = new Set(current);
@@ -873,6 +898,18 @@ export function LiveMapPage({
     setWhere(websocketLocation);
     applyWhereText(websocketLocation);
   }, [websocketLocation]);
+
+  useEffect(() => {
+    if (!focusedMarkerId) {
+      return;
+    }
+
+    const marker = visibleMarkers.find((entry) => entry.id === focusedMarkerId);
+
+    if (marker?.floorId) {
+      setSelectedFloorId(marker.floorId);
+    }
+  }, [focusedMarkerId, visibleMarkers]);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
@@ -1048,6 +1085,7 @@ export function LiveMapPage({
               <LiveMapCanvas
                 activeFloorId={selectedFloor.id}
                 coordinateInfo={data.coordinate_info}
+                focusedMarkerId={focusedMarkerId}
                 floors={sortedFloors}
                 location={location}
                 mapKey={normalizedName}
@@ -1082,6 +1120,7 @@ export function LiveMapPage({
             <DetailPanel
               completedQuestIds={completedQuestIds}
               copy={copy}
+              focusQuestObjective={focusQuestObjective}
               loadingQuestNormalizedName={loadingQuestNormalizedName}
               locale={locale}
               onClose={() => setPanel(null)}
@@ -1334,6 +1373,7 @@ function getEntryLabel(entry: RightEntry, locale: Locale) {
 function DetailPanel({
   completedQuestIds,
   copy,
+  focusQuestObjective,
   loadingQuestNormalizedName,
   locale,
   onClose,
@@ -1344,6 +1384,10 @@ function DetailPanel({
 }: {
   completedQuestIds: string[];
   copy: (typeof copyByLocale)[Locale];
+  focusQuestObjective: (
+    objective: LiveMapQuestInfo["objectives"][number],
+    questId: string,
+  ) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
   onClose: () => void;
@@ -1377,6 +1421,7 @@ function DetailPanel({
           <QuestPanel
             completed={completedQuestIds.includes(panel.info.quest.id)}
             copy={copy}
+            focusQuestObjective={focusQuestObjective}
             info={panel.info}
             loadingQuestNormalizedName={loadingQuestNormalizedName}
             locale={locale}
@@ -1416,6 +1461,7 @@ function QuestPanel({
   completed,
   copy,
   info,
+  focusQuestObjective,
   loadingQuestNormalizedName,
   locale,
   onOpenQuest,
@@ -1426,6 +1472,10 @@ function QuestPanel({
   completed: boolean;
   copy: (typeof copyByLocale)[Locale];
   info: LiveMapQuestInfo;
+  focusQuestObjective: (
+    objective: LiveMapQuestInfo["objectives"][number],
+    questId: string,
+  ) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
   onOpenQuest: (normalizedQuestName: string) => void;
@@ -1476,6 +1526,7 @@ function QuestPanel({
         copy={copy}
         locale={locale}
         objectives={info.objectives}
+        onFocusObjective={(objective) => focusQuestObjective(objective, info.quest.id)}
         selectedPointId={selectedPointId}
       />
       <QuestRewardList copy={copy} info={info} locale={locale} />
@@ -1605,11 +1656,13 @@ function ObjectiveList({
   copy,
   locale,
   objectives,
+  onFocusObjective,
   selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
   objectives: LiveMapQuestInfo["objectives"];
+  onFocusObjective?: (objective: LiveMapQuestInfo["objectives"][number]) => void;
   selectedPointId?: string;
 }) {
   return (
@@ -1631,6 +1684,7 @@ function ObjectiveList({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              onFocus={objective.live_map_point ? () => onFocusObjective?.(objective) : undefined}
               optional={false}
             />
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
@@ -1804,16 +1858,18 @@ function NestedEventObjectives({
 function ObjectiveLine({
   count,
   description,
+  onFocus,
   optional,
 }: {
   count: number | null;
   description: string;
+  onFocus?: () => void;
   optional: boolean;
 }) {
   return (
     <div className="flex gap-2 text-xs leading-5 text-gray-700 dark:text-gray-300">
       <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-orange-500" />
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p>{description || "-"}</p>
         <div className="mt-1 flex gap-1">
           {optional ? (
@@ -1828,6 +1884,17 @@ function ObjectiveLine({
           ) : null}
         </div>
       </div>
+      {onFocus ? (
+        <button
+          type="button"
+          onClick={onFocus}
+          className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-gray-400 hover:bg-orange-50 hover:text-orange-500 dark:hover:bg-orange-500/10"
+          aria-label="Focus marker"
+          title="Focus marker"
+        >
+          <LocateFixed className="h-3.5 w-3.5" />
+        </button>
+      ) : null}
     </div>
   );
 }

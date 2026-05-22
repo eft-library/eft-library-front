@@ -88,6 +88,7 @@ export function LiveMapCanvas({
   activeFloorId,
   coordinateInfo,
   floors,
+  focusedMarkerId,
   location,
   mapKey,
   markers,
@@ -97,6 +98,7 @@ export function LiveMapCanvas({
 }: {
   activeFloorId: string;
   coordinateInfo: FindInfo;
+  focusedMarkerId?: string | null;
   floors: LiveMapFloor[];
   location: LiveMapLocation | null;
   mapKey: string;
@@ -109,6 +111,7 @@ export function LiveMapCanvas({
   const imageOverlayRefs = useRef<LeafletImageOverlay[]>([]);
   const mapRef = useRef<LeafletMap | null>(null);
   const pointMarkerRefs = useRef<LeafletMarker[]>([]);
+  const pointMarkerByIdRef = useRef<Map<string, LeafletMarker>>(new Map());
   const markerRef = useRef<LeafletMarker | null>(null);
 
   useEffect(() => {
@@ -175,6 +178,7 @@ export function LiveMapCanvas({
       markerRef.current = null;
       pointMarkerRefs.current.forEach((marker) => marker.remove());
       pointMarkerRefs.current = [];
+      pointMarkerByIdRef.current.clear();
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
       map.off();
@@ -245,6 +249,7 @@ export function LiveMapCanvas({
 
     pointMarkerRefs.current.forEach((marker) => marker.remove());
     pointMarkerRefs.current = [];
+    pointMarkerByIdRef.current.clear();
 
     pointMarkerRefs.current = markers.map((point) => {
       const isDimmed = point.floorId !== null && point.floorId !== activeFloorId;
@@ -266,6 +271,7 @@ export function LiveMapCanvas({
 
       marker.on("click", () => onMarkerClick(point));
       marker.addTo(map);
+      pointMarkerByIdRef.current.set(point.id, marker);
 
       return marker;
     });
@@ -273,8 +279,27 @@ export function LiveMapCanvas({
     return () => {
       pointMarkerRefs.current.forEach((marker) => marker.remove());
       pointMarkerRefs.current = [];
+      pointMarkerByIdRef.current.clear();
     };
   }, [activeFloorId, mapKey, markers, onMarkerClick]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map || !focusedMarkerId) {
+      return;
+    }
+
+    const marker = pointMarkerByIdRef.current.get(focusedMarkerId);
+
+    if (!marker) {
+      return;
+    }
+
+    const position = marker.getLatLng();
+    map.setView(position, map.getZoom(), { animate: false });
+    marker.openPopup();
+  }, [activeFloorId, focusedMarkerId, markers]);
 
   useEffect(() => {
     const map = mapRef.current;
