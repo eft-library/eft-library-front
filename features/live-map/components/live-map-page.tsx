@@ -805,6 +805,42 @@ export function LiveMapPage({
     [focusedMarkerId, normalizedName, router],
   );
 
+  const focusStoryObjective = useCallback(
+    (objective: StoryObjective, storyId: string) => {
+      const point = objective.live_map_points[0];
+
+      if (!point) {
+        return;
+      }
+
+      const targetMap =
+        objective.maps.find((map) => map.id === point.map_id)?.normalized_name ??
+        objective.maps[0]?.normalized_name ??
+        normalizedName;
+      const focus = `story:${point.id}`;
+
+      setEnabledStoryIds((current) => new Set([...current, storyId]));
+
+      if (point.floor_id) {
+        setSelectedFloorId(point.floor_id);
+      }
+
+      if (targetMap === normalizedName) {
+        if (focusedMarkerId !== focus) {
+          router.replace(`/live-map/${normalizedName}?focus=${encodeURIComponent(focus)}`, {
+            scroll: false,
+          });
+        }
+        return;
+      }
+
+      router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
+        scroll: false,
+      });
+    },
+    [focusedMarkerId, normalizedName, router],
+  );
+
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
     setter((current) => {
       const next = new Set(current);
@@ -1179,13 +1215,14 @@ export function LiveMapPage({
           </section>
 
           {panel ? (
-            <DetailPanel
-              completedQuestIds={completedQuestIds}
-              copy={copy}
-              focusQuestObjective={focusQuestObjective}
-              loadingQuestNormalizedName={loadingQuestNormalizedName}
-              locale={locale}
-              onClose={() => setPanel(null)}
+          <DetailPanel
+            completedQuestIds={completedQuestIds}
+            copy={copy}
+            focusQuestObjective={focusQuestObjective}
+            focusStoryObjective={focusStoryObjective}
+            loadingQuestNormalizedName={loadingQuestNormalizedName}
+            locale={locale}
+            onClose={() => setPanel(null)}
               onOpenQuest={openQuestDetail}
               onToggleQuest={toggleQuestCompletionState}
               panel={panel}
@@ -1450,6 +1487,7 @@ function DetailPanel({
   completedQuestIds,
   copy,
   focusQuestObjective,
+  focusStoryObjective,
   loadingQuestNormalizedName,
   locale,
   onClose,
@@ -1464,6 +1502,7 @@ function DetailPanel({
     objective: LiveMapQuestInfo["objectives"][number],
     questId: string,
   ) => void;
+  focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
   onClose: () => void;
@@ -1510,6 +1549,7 @@ function DetailPanel({
         {panel.type === "story" ? (
           <StoryPanel
             copy={copy}
+            focusStoryObjective={focusStoryObjective}
             info={panel.info}
             locale={locale}
             selectedObjectiveId={panel.objectiveId}
@@ -1623,12 +1663,14 @@ function QuestPanel({
 
 function StoryPanel({
   copy,
+  focusStoryObjective,
   info,
   locale,
   selectedObjectiveId,
   selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
+  focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
   info: StoryInfo;
   locale: Locale;
   selectedObjectiveId?: string | null;
@@ -1659,6 +1701,7 @@ function StoryPanel({
       ) : null}
       <StoryObjectiveList
         copy={copy}
+        onFocusObjective={(objective) => focusStoryObjective(objective, info.story.id)}
         locale={locale}
         objectives={info.objectives}
         selectedObjectiveId={selectedObjective?.objective_id ?? null}
@@ -1749,7 +1792,7 @@ function ObjectiveList({
       <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
         {copy.objectives}
       </h4>
-      <ExpandableRows className="space-y-0.5" copy={copy}>
+      <ul className="space-y-0.5">
         {objectives.map((objective) => (
           <li
             key={objective.objective_id}
@@ -1769,7 +1812,7 @@ function ObjectiveList({
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
           </li>
         ))}
-      </ExpandableRows>
+      </ul>
     </section>
   );
 }
@@ -1777,12 +1820,14 @@ function ObjectiveList({
 function StoryObjectiveList({
   copy,
   locale,
+  onFocusObjective,
   objectives,
   selectedObjectiveId,
   selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
+  onFocusObjective?: (objective: StoryObjective) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -1794,6 +1839,7 @@ function StoryObjectiveList({
       </h4>
       <NestedStoryObjectives
         locale={locale}
+        onFocusObjective={onFocusObjective}
         objectives={objectives}
         selectedObjectiveId={selectedObjectiveId}
         selectedPointId={selectedPointId}
@@ -1832,11 +1878,13 @@ function EventObjectiveList({
 
 function NestedStoryObjectives({
   locale,
+  onFocusObjective,
   objectives,
   selectedObjectiveId,
   selectedPointId,
 }: {
   locale: Locale;
+  onFocusObjective?: (objective: StoryObjective) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -1862,6 +1910,11 @@ function NestedStoryObjectives({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              onFocus={
+                objective.live_map_points.length > 0
+                  ? () => onFocusObjective?.(objective)
+                  : undefined
+              }
               optional={objective.is_optional}
             />
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
@@ -1869,6 +1922,7 @@ function NestedStoryObjectives({
               <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
                 <NestedStoryObjectives
                   locale={locale}
+                  onFocusObjective={onFocusObjective}
                   objectives={objective.children}
                   selectedObjectiveId={selectedObjectiveId}
                   selectedPointId={selectedPointId}

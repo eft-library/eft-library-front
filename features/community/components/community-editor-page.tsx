@@ -40,6 +40,19 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
   const postId = useMemo(() => (postParam ? getPostIdFromUrlParam(postParam) : ""), [postParam]);
 
   useEffect(() => {
+    if (isUpdate) {
+      return;
+    }
+
+    setTitle("");
+    setCategory("free");
+    setContents("");
+    setSlug("");
+    setError(null);
+    setNotice("");
+  }, [isUpdate]);
+
+  useEffect(() => {
     if (!isUpdate || !session?.accessToken || !postId) {
       return;
     }
@@ -95,6 +108,12 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
             },
             session.accessToken,
           );
+      if (!isUpdate) {
+        setTitle("");
+        setCategory("free");
+        setContents("");
+        setSlug("");
+      }
       router.push(`/community/detail/${result.url}`);
     } catch {
       setError("게시글 저장에 실패했습니다.");
