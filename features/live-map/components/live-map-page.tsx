@@ -17,12 +17,13 @@ import {
   LocateFixed,
   MapPinned,
   Route,
-  Save,
   Search,
   X,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 
-import { getQuestCompletionGraph } from "@/features/quest/api";
+import { getQuestCompletionGraph, getQuestDetail } from "@/features/quest/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
 import type { Locale } from "@/i18n/config";
 import {
@@ -37,7 +38,9 @@ import type {
   EventObjective,
   LiveMapEventPoint,
   LiveMapFloor,
+  LiveMapObjectivePoint,
   LiveMapPageData,
+  LiveMapPointDetail,
   LiveMapQuestInfo,
   LiveMapQuestPoint,
   LiveMapStaticPoint,
@@ -45,8 +48,8 @@ import type {
   StoryInfo,
   StoryObjective,
 } from "@/types/api/live-map";
-import type { QuestCompletionGraphNode } from "@/types/api/quest";
-import type { LiveMapCanvasMarker } from "./live-map-canvas";
+import type { QuestCompletionGraphNode, QuestDetailResponse } from "@/types/api/quest";
+import type { LiveMapCanvasMarker, LiveMapPopupImage } from "./live-map-canvas";
 import { findFloorForHeight, parseWhereText, type LiveMapLocation } from "./live-map-utils";
 
 const LiveMapCanvas = dynamic(
@@ -55,10 +58,22 @@ const LiveMapCanvas = dynamic(
 );
 
 type PanelState =
-  | { type: "quest"; id: string; info: LiveMapQuestInfo }
-  | { type: "story"; id: string; info: StoryInfo }
-  | { type: "event"; id: string; info: EventInfo }
+  | { type: "quest"; id: string; info: LiveMapQuestInfo; pointId?: string }
+  | { type: "story"; id: string; info: StoryInfo; objectiveId?: string | null; pointId?: string }
+  | { type: "event"; id: string; info: EventInfo; objectiveId?: string | null; pointId?: string }
   | { type: "static"; id: string; point: LiveMapStaticPoint };
+
+type NestedLiveObjective = {
+  objective_id: string;
+  description_en: string | null;
+  description_ko: string | null;
+  description_ja: string | null;
+  count: number | null;
+  is_optional: boolean;
+  items: LiveMapQuestInfo["objectives"][number]["items"];
+  live_map_points: LiveMapObjectivePoint[];
+  children: NestedLiveObjective[];
+};
 
 const copyByLocale = {
   ko: {
@@ -78,10 +93,19 @@ const copyByLocale = {
     saved: "저장되었습니다.",
     loginRequired: "로그인이 필요합니다.",
     noItems: "표시할 항목이 없습니다.",
+    progress: "진행 중",
+    completed: "완료",
     requirements: "선행 조건",
     objectives: "목표",
     requiredItems: "필요 아이템",
     rewards: "보상",
+    minPlayerLevel: "최소 레벨",
+    experience: "경험치",
+    traderStanding: "상인 평판",
+    rewardItems: "보상 아이템",
+    unlocks: "해금",
+    skills: "스킬",
+    crafts: "제작",
     previous: "이전",
     next: "다음",
     noCoordinateInfo: "이 지도는 아직 위치 좌표 메타데이터가 없습니다.",
@@ -107,10 +131,19 @@ const copyByLocale = {
     saved: "Saved.",
     loginRequired: "Sign in required.",
     noItems: "No items to show.",
+    progress: "Progress",
+    completed: "Completed",
     requirements: "Requirements",
     objectives: "Objectives",
     requiredItems: "Required Items",
     rewards: "Rewards",
+    minPlayerLevel: "Minimum Level",
+    experience: "Experience",
+    traderStanding: "Trader Standing",
+    rewardItems: "Reward Items",
+    unlocks: "Unlocks",
+    skills: "Skills",
+    crafts: "Crafts",
     previous: "Previous",
     next: "Next",
     noCoordinateInfo: "This map does not have coordinate metadata yet.",
@@ -136,10 +169,19 @@ const copyByLocale = {
     saved: "保存しました。",
     loginRequired: "ログインが必要です。",
     noItems: "表示する項目がありません。",
+    progress: "進行中",
+    completed: "完了",
     requirements: "前提条件",
     objectives: "目標",
     requiredItems: "必要アイテム",
     rewards: "報酬",
+    minPlayerLevel: "必要レベル",
+    experience: "経験値",
+    traderStanding: "トレーダー評価",
+    rewardItems: "報酬アイテム",
+    unlocks: "アンロック",
+    skills: "スキル",
+    crafts: "制作",
     previous: "前",
     next: "次",
     noCoordinateInfo: "このマップにはまだ座標メタデータがありません。",
@@ -190,15 +232,290 @@ function getEventId(point: LiveMapEventPoint) {
   return point.event_info?.event.id ?? point.event_id;
 }
 
-function getObjectiveImages(info: LiveMapQuestInfo) {
-  return info.objectives.flatMap((objective) =>
-    objective.live_map_point?.details
-      .filter((detail) => detail.image)
-      .map((detail) => ({
-        description: detail,
-        image: detail.image ?? "",
-      })) ?? [],
+function toLiveMapQuestInfo(response: QuestDetailResponse): LiveMapQuestInfo {
+  return {
+    finish_rewards: response.finish_rewards,
+    next_quests: response.next_quests,
+    objectives: response.objectives.map((objective) => ({
+      ...objective,
+      live_map_point: null,
+      type: objective.type,
+    })),
+    quest: response.quest,
+    require_quests: response.require_quests,
+    trader: response.trader,
+  };
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function getLocalizedDetailText(detail: LiveMapPointDetail, locale: Locale) {
+  return localizedDescription(detail as unknown as Record<string, unknown>, locale).trim();
+}
+
+function getPointDetailText(
+  point: LiveMapObjectivePoint | null | undefined,
+  locale: Locale,
+) {
+  return point?.details.map((detail) => getLocalizedDetailText(detail, locale)).find(Boolean) ?? "";
+}
+
+function getQuestObjectiveText(
+  objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
+  locale: Locale,
+) {
+  if (!objective) {
+    return "";
+  }
+
+  return (
+    getPointDetailText(objective.live_map_point, locale) ||
+    localizedDescription(objective as unknown as Record<string, unknown>, locale)
   );
+}
+
+function getQuestObjectiveDescription(
+  objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
+  locale: Locale,
+) {
+  return objective
+    ? localizedDescription(objective as unknown as Record<string, unknown>, locale)
+    : "";
+}
+
+function findQuestObjectiveByPointId(info: LiveMapQuestInfo, pointId: string) {
+  return info.objectives.find((objective) => objective.live_map_point?.id === pointId) ?? null;
+}
+
+function findNestedObjectiveByPoint(
+  objectives: NestedLiveObjective[],
+  pointId: string,
+  objectiveId: string | null,
+): NestedLiveObjective | null {
+  for (const objective of objectives) {
+    const isTargetObjective = objectiveId !== null && objective.objective_id === objectiveId;
+    const hasTargetPoint = objective.live_map_points.some((point) => point.id === pointId);
+
+    if (isTargetObjective || hasTargetPoint) {
+      return objective;
+    }
+
+    const childObjective = findNestedObjectiveByPoint(objective.children, pointId, objectiveId);
+
+    if (childObjective) {
+      return childObjective;
+    }
+  }
+
+  return null;
+}
+
+function getNestedObjectiveText(
+  objective: NestedLiveObjective | null | undefined,
+  pointId: string | undefined,
+  locale: Locale,
+) {
+  if (!objective) {
+    return "";
+  }
+
+  const selectedPoint = pointId
+    ? objective.live_map_points.find((point) => point.id === pointId)
+    : objective.live_map_points[0];
+
+  return (
+    getPointDetailText(selectedPoint, locale) ||
+    localizedDescription(objective as unknown as Record<string, unknown>, locale)
+  );
+}
+
+function getNestedObjectiveDescription(
+  objective: NestedLiveObjective | null | undefined,
+  locale: Locale,
+) {
+  return objective
+    ? localizedDescription(objective as unknown as Record<string, unknown>, locale)
+    : "";
+}
+
+function getQuestPointLabel(point: LiveMapQuestPoint, locale: Locale) {
+  if (!point.quest_info) {
+    return point.id;
+  }
+
+  const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
+
+  return (
+    getQuestObjectiveText(objective, locale) ||
+    localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
+  );
+}
+
+function getStoryPointLabel(point: LiveMapStoryPoint, locale: Locale) {
+  if (!point.story_info) {
+    return point.id;
+  }
+
+  const objective = findNestedObjectiveByPoint(
+    point.story_info.objectives,
+    point.id,
+    point.objective_id,
+  );
+
+  return (
+    getNestedObjectiveText(objective, point.id, locale) ||
+    localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
+  );
+}
+
+function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
+  if (!point.event_info) {
+    return point.id;
+  }
+
+  const objective = findNestedObjectiveByPoint(
+    point.event_info.objectives,
+    point.id,
+    point.objective_id,
+  );
+
+  return (
+    getNestedObjectiveText(objective, point.id, locale) ||
+    localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale)
+  );
+}
+
+function getPopupImages(details: LiveMapPointDetail[]) {
+  return details
+    .filter((detail) => detail.image)
+    .map((detail) => ({
+      alt: detail.description_en ?? detail.description_ko ?? detail.description_ja ?? "",
+      src: detail.image ?? "",
+    }));
+}
+
+function createMarkerPopupHtml({
+  description,
+  images,
+  location,
+  title,
+  titleImage,
+}: {
+  description: string;
+  images: Array<{ alt: string; src: string }>;
+  location: string;
+  title: string;
+  titleImage?: string | null;
+}) {
+  const firstImage = images[0];
+  const thumbnails = images
+    .map(
+      (image, index) => `
+        <div class="live-map-popup-thumb ${index === 0 ? "live-map-popup-thumb-active" : ""}">
+          <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" />
+        </div>
+      `,
+    )
+    .join("");
+
+  return `
+    <div class="live-map-popup-card">
+      <div class="live-map-popup-header">
+        ${
+          titleImage
+            ? `<img class="live-map-popup-avatar" src="${escapeHtml(titleImage)}" alt="" />`
+            : ""
+        }
+        <strong>${escapeHtml(title)}</strong>
+      </div>
+      <div class="live-map-popup-body">
+        ${
+          description
+            ? `<p class="live-map-popup-description">${escapeHtml(description)}</p>`
+            : ""
+        }
+      </div>
+      ${
+        firstImage
+          ? `<div class="live-map-popup-media">
+              <img class="live-map-popup-image" src="${escapeHtml(firstImage.src)}" data-full-src="${escapeHtml(firstImage.src)}" alt="${escapeHtml(firstImage.alt)}" />
+              ${images.length > 1 ? `<span class="live-map-popup-count">1 / ${images.length}</span>` : ""}
+            </div>`
+          : ""
+      }
+      <div class="live-map-popup-body live-map-popup-body-compact">
+        ${location ? `<p class="live-map-popup-location">${escapeHtml(location)}</p>` : ""}
+      </div>
+      ${thumbnails ? `<div class="live-map-popup-thumbs">${thumbnails}</div>` : ""}
+    </div>
+  `;
+}
+
+function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale) {
+  if (!point.quest_info) {
+    return undefined;
+  }
+
+  const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
+  const details = objective?.live_map_point?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getQuestObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(objective?.live_map_point, locale),
+    title: localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale),
+    titleImage: point.quest_info.trader?.image,
+  });
+}
+
+function getStoryPointPopupHtml(point: LiveMapStoryPoint, locale: Locale) {
+  if (!point.story_info) {
+    return undefined;
+  }
+
+  const objective = findNestedObjectiveByPoint(
+    point.story_info.objectives,
+    point.id,
+    point.objective_id,
+  );
+  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
+  const details = selectedPoint?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getNestedObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(selectedPoint, locale),
+    title: localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale),
+  });
+}
+
+function getEventPointPopupHtml(point: LiveMapEventPoint, locale: Locale) {
+  if (!point.event_info) {
+    return undefined;
+  }
+
+  const objective = findNestedObjectiveByPoint(
+    point.event_info.objectives,
+    point.id,
+    point.objective_id,
+  );
+  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
+  const details = selectedPoint?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getNestedObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(selectedPoint, locale),
+    title: localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale),
+    titleImage: point.event_info.trader?.image,
+  });
 }
 
 export function LiveMapPage({
@@ -220,8 +537,12 @@ export function LiveMapPage({
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
   const [mousePosition, setMousePosition] = useState<LatLng | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isMapSelectorOpen, setIsMapSelectorOpen] = useState(false);
   const [panel, setPanel] = useState<PanelState | null>(null);
+  const [imagePopup, setImagePopup] = useState<LiveMapPopupImage | null>(null);
   const [notice, setNotice] = useState("");
+  const [loadingQuestNormalizedName, setLoadingQuestNormalizedName] = useState<string | null>(null);
+  const [savingQuestId, setSavingQuestId] = useState<string | null>(null);
   const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([]);
   const [completionGraph, setCompletionGraph] = useState<QuestCompletionGraphNode[]>([]);
   const questById = useMemo(
@@ -337,7 +658,8 @@ export function LiveMapPage({
         floorId: point.floor_id,
         id: `quest:${point.id}`,
         kind: "quest",
-        label: localizedName(point.quest_info?.quest as unknown as Record<string, unknown>, locale),
+        label: getQuestPointLabel(point, locale),
+        popupHtml: getQuestPointPopupHtml(point, locale),
         x: point.x,
         y: point.y,
       }));
@@ -347,7 +669,8 @@ export function LiveMapPage({
         floorId: point.floor_id,
         id: `story:${point.id}`,
         kind: "story",
-        label: localizedTitle(point.story_info?.story as unknown as Record<string, unknown>, locale),
+        label: getStoryPointLabel(point, locale),
+        popupHtml: getStoryPointPopupHtml(point, locale),
         x: point.x,
         y: point.y,
       }));
@@ -357,7 +680,8 @@ export function LiveMapPage({
         floorId: point.floor_id,
         id: `event:${point.id}`,
         kind: "event",
-        label: localizedTitle(point.event_info?.event as unknown as Record<string, unknown>, locale),
+        label: getEventPointLabel(point, locale),
+        popupHtml: getEventPointPopupHtml(point, locale),
         x: point.x,
         y: point.y,
       }));
@@ -412,6 +736,10 @@ export function LiveMapPage({
     window.setTimeout(() => applyWhereText(pastedText), 0);
   }
 
+  const openImagePopup = useCallback((image: LiveMapPopupImage) => {
+    setImagePopup(image);
+  }, []);
+
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
     setter((current) => {
       const next = new Set(current);
@@ -440,21 +768,38 @@ export function LiveMapPage({
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
         if (point?.quest_info) {
-          setPanel({ id: getQuestId(point), info: point.quest_info, type: "quest" });
+          setPanel({
+            id: getQuestId(point),
+            info: point.quest_info,
+            pointId: point.id,
+            type: "quest",
+          });
         }
       }
 
       if (kind === "story") {
         const point = data.story_points.find((entry) => entry.id === id);
         if (point?.story_info) {
-          setPanel({ id: getStoryId(point), info: point.story_info, type: "story" });
+          setPanel({
+            id: getStoryId(point),
+            info: point.story_info,
+            objectiveId: point.objective_id,
+            pointId: point.id,
+            type: "story",
+          });
         }
       }
 
       if (kind === "event") {
         const point = data.event_points.find((entry) => entry.id === id);
         if (point?.event_info) {
-          setPanel({ id: getEventId(point), info: point.event_info, type: "event" });
+          setPanel({
+            id: getEventId(point),
+            info: point.event_info,
+            objectiveId: point.objective_id,
+            pointId: point.id,
+            type: "event",
+          });
         }
       }
 
@@ -468,29 +813,50 @@ export function LiveMapPage({
     [data.event_points, data.quest_points, data.static_points, data.story_points],
   );
 
-  function toggleQuestCompletionState(questId: string) {
-    setCompletedQuestIds((current) =>
-      toggleQuestCompletion({
-        checked: !current.includes(questId),
-        completed: current,
-        questById,
-        questId,
-      }),
-    );
-  }
-
-  async function handleSaveQuestProgress() {
+  async function toggleQuestCompletionState(questId: string) {
     if (!accessToken) {
       showNotice(copy.loginRequired);
       return;
     }
 
+    const previousCompleted = completedQuestIds;
+    const nextCompleted = toggleQuestCompletion({
+      checked: !completedQuestIds.includes(questId),
+      completed: completedQuestIds,
+      questById,
+      questId,
+    });
+
+    setCompletedQuestIds(nextCompleted);
+    setSavingQuestId(questId);
     try {
-      const savedQuestList = await saveRoadmap(completedQuestIds, accessToken);
+      const savedQuestList = await saveRoadmap(nextCompleted, accessToken);
       setCompletedQuestIds(savedQuestList.filter((value): value is string => typeof value === "string"));
       showNotice(copy.saved);
     } catch {
+      setCompletedQuestIds(previousCompleted);
       showNotice(copy.loginRequired);
+    } finally {
+      setSavingQuestId((current) => (current === questId ? null : current));
+    }
+  }
+
+  async function openQuestDetail(normalizedQuestName: string) {
+    setLoadingQuestNormalizedName(normalizedQuestName);
+
+    try {
+      const questDetail = await getQuestDetail(normalizedQuestName);
+      setPanel({
+        id: questDetail.quest.id,
+        info: toLiveMapQuestInfo(questDetail),
+        type: "quest",
+      });
+    } catch {
+      showNotice(copy.noItems);
+    } finally {
+      setLoadingQuestNormalizedName((current) =>
+        current === normalizedQuestName ? null : current,
+      );
     }
   }
 
@@ -554,66 +920,108 @@ export function LiveMapPage({
         </header>
 
         <div className="flex min-h-0 flex-1">
-          <aside className="hidden w-60 shrink-0 flex-col border-r border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex">
-            <PanelBlock title={copy.map}>
-              <div className="space-y-1">
-                {data.map_selector.map((entry) => {
-                  const isSelected = entry.normalized_name === normalizedName;
-
-                  return (
-                    <button
-                      key={entry.normalized_name}
-                      type="button"
-                      onClick={() => router.push(`/live-map/${entry.normalized_name}`)}
+          <aside className="hidden w-72 shrink-0 flex-col border-r border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex">
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <PanelBlock title={copy.map}>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsMapSelectorOpen((value) => !value)}
+                    className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-gray-200 bg-gray-50 px-2 text-left text-sm font-bold text-gray-800 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-200"
+                  >
+                    <span className="truncate">
+                      {selectedMap
+                        ? localizedName(selectedMap as unknown as Record<string, unknown>, locale)
+                        : copy.map}
+                    </span>
+                    <ChevronDown
                       className={cn(
-                        "flex h-8 w-full items-center justify-between rounded-md px-2 text-left text-sm",
-                        isSelected
-                          ? "bg-orange-500 text-white dark:text-[#1e2124]"
-                          : "text-gray-700 hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-[#2a2d31]",
+                        "h-4 w-4 shrink-0 text-orange-500",
+                        isMapSelectorOpen ? "rotate-180" : "",
                       )}
-                    >
-                      <span>{localizedName(entry as unknown as Record<string, unknown>, locale)}</span>
-                      {isSelected ? <ChevronDown className="h-4 w-4" /> : null}
-                    </button>
-                  );
-                })}
-              </div>
-            </PanelBlock>
+                    />
+                  </button>
+                  {isMapSelectorOpen ? (
+                    <div className="absolute left-0 right-0 top-10 z-[500] max-h-72 overflow-y-auto rounded-md border border-gray-200 bg-white p-1 shadow-xl dark:border-[#3a3d41] dark:bg-[#1f2124]">
+                      {data.map_selector.map((entry) => {
+                        const isSelected = entry.normalized_name === normalizedName;
 
-            <PanelBlock title={copy.floor}>
-              <div className="space-y-1">
-                {sortedFloors.map((floor) => {
-                  const isSelected = floor.id === selectedFloor?.id;
+                        return (
+                          <button
+                            key={entry.normalized_name}
+                            type="button"
+                            onClick={() => {
+                              setIsMapSelectorOpen(false);
+                              router.push(`/live-map/${entry.normalized_name}`);
+                            }}
+                            className={cn(
+                              "flex h-8 w-full items-center rounded px-2 text-left text-sm",
+                              isSelected
+                                ? "bg-orange-500 font-black text-white dark:text-[#1e2124]"
+                                : "text-gray-700 hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-[#2a2d31]",
+                            )}
+                          >
+                            <span className="truncate">
+                              {localizedName(entry as unknown as Record<string, unknown>, locale)}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </div>
+              </PanelBlock>
 
-                  return (
-                    <button
-                      key={floor.id}
-                      type="button"
-                      onClick={() => setSelectedFloorId(floor.id)}
-                      className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
-                    >
-                      <span
-                        className={cn(
-                          "h-2.5 w-2.5 rounded-full",
-                          isSelected ? "bg-orange-500" : "bg-gray-300 dark:bg-gray-600",
-                        )}
-                      />
-                      <span
-                        className={
-                          isSelected
-                            ? "font-bold text-orange-500"
-                            : "text-gray-600 dark:text-gray-300"
-                        }
+              <PanelBlock title={copy.floor}>
+                <div className="space-y-1">
+                  {sortedFloors.map((floor) => {
+                    const isSelected = floor.id === selectedFloor?.id;
+
+                    return (
+                      <button
+                        key={floor.id}
+                        type="button"
+                        onClick={() => setSelectedFloorId(floor.id)}
+                        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
                       >
-                        {getFloorLabel(floor, locale)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </PanelBlock>
+                        <span
+                          className={cn(
+                            "h-2.5 w-2.5 rounded-full",
+                            isSelected ? "bg-orange-500" : "bg-gray-300 dark:bg-gray-600",
+                          )}
+                        />
+                        <span
+                          className={
+                            isSelected
+                              ? "font-bold text-orange-500"
+                              : "text-gray-600 dark:text-gray-300"
+                          }
+                        >
+                          {getFloorLabel(floor, locale)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </PanelBlock>
 
-            <div className="mt-auto border-t border-gray-200 p-3 text-xs text-gray-500 dark:border-[#3a3d41] dark:text-gray-400">
+              <RightSection
+                allLabel={copy.allOnOff}
+                completedQuestIds={completedQuestIds}
+                enabledIds={enabledStaticIds}
+                emptyLabel={copy.noItems}
+                items={staticEntries}
+                kind="static"
+                onOpen={(entry) => setPanel({ id: entry.id, point: entry.point, type: "static" })}
+                onToggle={(id) => toggleSet(setEnabledStaticIds, id)}
+                onToggleAll={() => toggleAll(setEnabledStaticIds, staticEntries.map((entry) => entry.id))}
+                selectedId={panel?.type === "static" ? panel.id : null}
+                title={copy.staticPoints}
+                locale={locale}
+              />
+            </div>
+
+            <div className="border-t border-gray-200 p-3 text-xs text-gray-500 dark:border-[#3a3d41] dark:text-gray-400">
               <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-gray-200">
                 <Layers className="h-3.5 w-3.5 text-orange-500" />
                 {selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : copy.title}
@@ -627,6 +1035,11 @@ export function LiveMapPage({
                   {copy.height}: {location?.z.toFixed(2) ?? "0.00"}
                 </p>
               </div>
+              {notice ? (
+                <div className="mt-2 border-t border-gray-200 pt-2 font-bold text-orange-500 dark:border-[#3a3d41]">
+                  {notice}
+                </div>
+              ) : null}
             </div>
           </aside>
 
@@ -641,6 +1054,7 @@ export function LiveMapPage({
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
                 onMousePositionChange={setMousePosition}
+                onPopupImageClick={openImagePopup}
               />
             ) : (
               <div className="flex h-full items-center justify-center p-6 text-center text-sm text-gray-500 dark:text-gray-400">
@@ -668,15 +1082,18 @@ export function LiveMapPage({
             <DetailPanel
               completedQuestIds={completedQuestIds}
               copy={copy}
+              loadingQuestNormalizedName={loadingQuestNormalizedName}
               locale={locale}
               onClose={() => setPanel(null)}
+              onOpenQuest={openQuestDetail}
               onToggleQuest={toggleQuestCompletionState}
               panel={panel}
+              savingQuestId={savingQuestId}
             />
           ) : null}
 
           <aside className="hidden w-72 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] lg:flex">
-            <div className="min-h-0 flex-1 overflow-y-auto p-3">
+            <div className="min-h-0 flex-1 overflow-y-auto">
               <RightSection
                 allLabel={copy.allOnOff}
                 completedQuestIds={completedQuestIds}
@@ -692,10 +1109,8 @@ export function LiveMapPage({
                 onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
                 onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
                 onToggleComplete={toggleQuestCompletionState}
-                saveLabel={copy.save}
                 selectedId={panel?.type === "quest" ? panel.id : null}
                 title={copy.quests}
-                onSave={handleSaveQuestProgress}
                 locale={locale}
               />
               <RightSection
@@ -734,29 +1149,11 @@ export function LiveMapPage({
                 title={copy.events}
                 locale={locale}
               />
-              <RightSection
-                allLabel={copy.allOnOff}
-                completedQuestIds={completedQuestIds}
-                enabledIds={enabledStaticIds}
-                emptyLabel={copy.noItems}
-                items={staticEntries}
-                kind="static"
-                onOpen={(entry) => setPanel({ id: entry.id, point: entry.point, type: "static" })}
-                onToggle={(id) => toggleSet(setEnabledStaticIds, id)}
-                onToggleAll={() => toggleAll(setEnabledStaticIds, staticEntries.map((entry) => entry.id))}
-                selectedId={panel?.type === "static" ? panel.id : null}
-                title={copy.staticPoints}
-                locale={locale}
-              />
             </div>
-            {notice ? (
-              <div className="border-t border-gray-200 px-3 py-2 text-xs font-bold text-orange-500 dark:border-[#3a3d41]">
-                {notice}
-              </div>
-            ) : null}
           </aside>
         </div>
       </div>
+      <LiveMapImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
     </main>
   );
 }
@@ -776,11 +1173,9 @@ function RightSection<TEntry extends RightEntry>({
   kind,
   locale,
   onOpen,
-  onSave,
   onToggle,
   onToggleAll,
   onToggleComplete,
-  saveLabel,
   selectedId,
   title,
 }: {
@@ -792,29 +1187,17 @@ function RightSection<TEntry extends RightEntry>({
   kind: "quest" | "story" | "event" | "static";
   locale: Locale;
   onOpen: (entry: TEntry) => void;
-  onSave?: () => void;
   onToggle: (id: string) => void;
   onToggleAll: () => void;
   onToggleComplete?: (id: string) => void;
-  saveLabel?: string;
   selectedId: string | null;
   title: string;
 }) {
   return (
-    <section className="border-b border-gray-200 py-3 first:pt-0 last:border-b-0 dark:border-[#3a3d41]">
+    <section className="border-b border-gray-200 p-3 last:border-b-0 dark:border-[#3a3d41]">
       <div className="mb-2 flex h-9 items-center justify-between gap-2 rounded-md bg-gray-100 px-2 dark:bg-[#2a2d31]">
         <h2 className="text-sm font-black text-gray-900 dark:text-white">{title}</h2>
         <div className="flex items-center gap-1">
-          {onSave ? (
-            <button
-              type="button"
-              onClick={onSave}
-              className="inline-flex h-6 items-center gap-1 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
-            >
-              <Save className="h-3 w-3" />
-              {saveLabel}
-            </button>
-          ) : null}
           <button
             type="button"
             onClick={onToggleAll}
@@ -951,17 +1334,23 @@ function getEntryLabel(entry: RightEntry, locale: Locale) {
 function DetailPanel({
   completedQuestIds,
   copy,
+  loadingQuestNormalizedName,
   locale,
   onClose,
+  onOpenQuest,
   onToggleQuest,
   panel,
+  savingQuestId,
 }: {
   completedQuestIds: string[];
   copy: (typeof copyByLocale)[Locale];
+  loadingQuestNormalizedName: string | null;
   locale: Locale;
   onClose: () => void;
+  onOpenQuest: (normalizedQuestName: string) => void;
   onToggleQuest: (questId: string) => void;
   panel: PanelState;
+  savingQuestId: string | null;
 }) {
   return (
     <aside className="hidden w-72 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] xl:flex">
@@ -989,15 +1378,31 @@ function DetailPanel({
             completed={completedQuestIds.includes(panel.info.quest.id)}
             copy={copy}
             info={panel.info}
+            loadingQuestNormalizedName={loadingQuestNormalizedName}
             locale={locale}
+            onOpenQuest={onOpenQuest}
             onToggle={() => onToggleQuest(panel.info.quest.id)}
+            saving={savingQuestId === panel.info.quest.id}
+            selectedPointId={panel.pointId}
           />
         ) : null}
         {panel.type === "story" ? (
-          <StoryPanel copy={copy} info={panel.info} locale={locale} />
+          <StoryPanel
+            copy={copy}
+            info={panel.info}
+            locale={locale}
+            selectedObjectiveId={panel.objectiveId}
+            selectedPointId={panel.pointId}
+          />
         ) : null}
         {panel.type === "event" ? (
-          <EventPanel copy={copy} info={panel.info} locale={locale} />
+          <EventPanel
+            copy={copy}
+            info={panel.info}
+            locale={locale}
+            selectedObjectiveId={panel.objectiveId}
+            selectedPointId={panel.pointId}
+          />
         ) : null}
         {panel.type === "static" ? (
           <StaticPanel point={panel.point} locale={locale} />
@@ -1011,17 +1416,23 @@ function QuestPanel({
   completed,
   copy,
   info,
+  loadingQuestNormalizedName,
   locale,
+  onOpenQuest,
   onToggle,
+  saving,
+  selectedPointId,
 }: {
   completed: boolean;
   copy: (typeof copyByLocale)[Locale];
   info: LiveMapQuestInfo;
+  loadingQuestNormalizedName: string | null;
   locale: Locale;
+  onOpenQuest: (normalizedQuestName: string) => void;
   onToggle: () => void;
+  saving: boolean;
+  selectedPointId?: string;
 }) {
-  const images = getObjectiveImages(info);
-
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-2">
@@ -1045,25 +1456,37 @@ function QuestPanel({
       </div>
       <button
         type="button"
+        disabled={saving}
         onClick={onToggle}
         className={cn(
-          "inline-flex h-7 items-center gap-1 rounded px-2 text-xs font-black",
+          "inline-flex h-7 items-center gap-1 rounded px-2 text-xs font-black disabled:cursor-wait disabled:opacity-70",
           completed
             ? "bg-emerald-500 text-white"
             : "bg-orange-500 text-white dark:text-[#1e2124]",
         )}
       >
         {completed ? <Check className="h-3.5 w-3.5" /> : null}
-        {completed ? "Completed" : "Progress"}
+        {completed ? copy.completed : copy.progress}
       </button>
-      <ObjectiveList copy={copy} locale={locale} objectives={info.objectives} />
-      <RelatedList
+      <QuestRequirementList
+        copy={copy}
+        minPlayerLevel={info.quest.min_player_level}
+      />
+      <ObjectiveList
         copy={copy}
         locale={locale}
+        objectives={info.objectives}
+        selectedPointId={selectedPointId}
+      />
+      <QuestRewardList copy={copy} info={info} locale={locale} />
+      <RelatedList
+        copy={copy}
+        loadingQuestNormalizedName={loadingQuestNormalizedName}
+        locale={locale}
         next={info.next_quests}
+        onOpenQuest={onOpenQuest}
         previous={info.require_quests}
       />
-      {images.length > 0 ? <ImageStrip images={images} locale={locale} /> : null}
     </div>
   );
 }
@@ -1072,11 +1495,19 @@ function StoryPanel({
   copy,
   info,
   locale,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   info: StoryInfo;
   locale: Locale;
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
+  const selectedObjective = selectedPointId
+    ? findNestedObjectiveByPoint(info.objectives, selectedPointId, selectedObjectiveId ?? null)
+    : null;
+
   return (
     <div className="space-y-4">
       <h3 className="text-sm font-black text-gray-950 dark:text-white">
@@ -1096,7 +1527,13 @@ function StoryPanel({
           </ul>
         </section>
       ) : null}
-      <StoryObjectiveList copy={copy} locale={locale} objectives={info.objectives} />
+      <StoryObjectiveList
+        copy={copy}
+        locale={locale}
+        objectives={info.objectives}
+        selectedObjectiveId={selectedObjective?.objective_id ?? null}
+        selectedPointId={selectedPointId}
+      />
     </div>
   );
 }
@@ -1105,11 +1542,19 @@ function EventPanel({
   copy,
   info,
   locale,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   info: EventInfo;
   locale: Locale;
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
+  const selectedObjective = selectedPointId
+    ? findNestedObjectiveByPoint(info.objectives, selectedPointId, selectedObjectiveId ?? null)
+    : null;
+
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-2">
@@ -1131,7 +1576,13 @@ function EventPanel({
           ) : null}
         </div>
       </div>
-      <EventObjectiveList copy={copy} locale={locale} objectives={info.objectives} />
+      <EventObjectiveList
+        copy={copy}
+        locale={locale}
+        objectives={info.objectives}
+        selectedObjectiveId={selectedObjective?.objective_id ?? null}
+        selectedPointId={selectedPointId}
+      />
     </div>
   );
 }
@@ -1154,10 +1605,12 @@ function ObjectiveList({
   copy,
   locale,
   objectives,
+  selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
   objectives: LiveMapQuestInfo["objectives"];
+  selectedPointId?: string;
 }) {
   return (
     <section>
@@ -1166,7 +1619,15 @@ function ObjectiveList({
       </h4>
       <ul className="space-y-2">
         {objectives.map((objective) => (
-          <li key={objective.objective_id} className="space-y-2 text-xs text-gray-700 dark:text-gray-300">
+          <li
+            key={objective.objective_id}
+            className={cn(
+              "space-y-2 rounded-md border border-transparent p-2 text-xs text-gray-700 dark:text-gray-300",
+              selectedPointId && objective.live_map_point?.id === selectedPointId
+                ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                : "",
+            )}
+          >
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
@@ -1184,17 +1645,26 @@ function StoryObjectiveList({
   copy,
   locale,
   objectives,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
   objectives: StoryObjective[];
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
   return (
     <section>
       <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
         {copy.objectives}
       </h4>
-      <NestedStoryObjectives locale={locale} objectives={objectives} />
+      <NestedStoryObjectives
+        locale={locale}
+        objectives={objectives}
+        selectedObjectiveId={selectedObjectiveId}
+        selectedPointId={selectedPointId}
+      />
     </section>
   );
 }
@@ -1203,17 +1673,26 @@ function EventObjectiveList({
   copy,
   locale,
   objectives,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
   objectives: EventObjective[];
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
   return (
     <section>
       <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
         {copy.objectives}
       </h4>
-      <NestedEventObjectives locale={locale} objectives={objectives} />
+      <NestedEventObjectives
+        locale={locale}
+        objectives={objectives}
+        selectedObjectiveId={selectedObjectiveId}
+        selectedPointId={selectedPointId}
+      />
     </section>
   );
 }
@@ -1221,27 +1700,51 @@ function EventObjectiveList({
 function NestedStoryObjectives({
   locale,
   objectives,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   locale: Locale;
   objectives: StoryObjective[];
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
   return (
     <ul className="space-y-2">
-      {objectives.map((objective) => (
-        <li key={objective.objective_id} className="space-y-2">
-          <ObjectiveLine
-            count={objective.count}
-            description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
-            optional={objective.is_optional}
-          />
-          {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
-          {objective.children.length > 0 ? (
-            <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
-              <NestedStoryObjectives locale={locale} objectives={objective.children} />
-            </div>
-          ) : null}
-        </li>
-      ))}
+      {objectives.map((objective) => {
+        const isSelected =
+          objective.objective_id === selectedObjectiveId ||
+          (!!selectedPointId &&
+            objective.live_map_points.some((point) => point.id === selectedPointId));
+
+        return (
+          <li
+            key={objective.objective_id}
+            className={cn(
+              "space-y-2 rounded-md border border-transparent p-2",
+              isSelected
+                ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                : "",
+            )}
+          >
+            <ObjectiveLine
+              count={objective.count}
+              description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              optional={objective.is_optional}
+            />
+            {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
+            {objective.children.length > 0 ? (
+              <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
+                <NestedStoryObjectives
+                  locale={locale}
+                  objectives={objective.children}
+                  selectedObjectiveId={selectedObjectiveId}
+                  selectedPointId={selectedPointId}
+                />
+              </div>
+            ) : null}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -1249,27 +1752,51 @@ function NestedStoryObjectives({
 function NestedEventObjectives({
   locale,
   objectives,
+  selectedObjectiveId,
+  selectedPointId,
 }: {
   locale: Locale;
   objectives: EventObjective[];
+  selectedObjectiveId?: string | null;
+  selectedPointId?: string;
 }) {
   return (
     <ul className="space-y-2">
-      {objectives.map((objective) => (
-        <li key={objective.objective_id} className="space-y-2">
-          <ObjectiveLine
-            count={objective.count}
-            description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
-            optional={objective.is_optional}
-          />
-          {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
-          {objective.children.length > 0 ? (
-            <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
-              <NestedEventObjectives locale={locale} objectives={objective.children} />
-            </div>
-          ) : null}
-        </li>
-      ))}
+      {objectives.map((objective) => {
+        const isSelected =
+          objective.objective_id === selectedObjectiveId ||
+          (!!selectedPointId &&
+            objective.live_map_points.some((point) => point.id === selectedPointId));
+
+        return (
+          <li
+            key={objective.objective_id}
+            className={cn(
+              "space-y-2 rounded-md border border-transparent p-2",
+              isSelected
+                ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                : "",
+            )}
+          >
+            <ObjectiveLine
+              count={objective.count}
+              description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              optional={objective.is_optional}
+            />
+            {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
+            {objective.children.length > 0 ? (
+              <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
+                <NestedEventObjectives
+                  locale={locale}
+                  objectives={objective.children}
+                  selectedObjectiveId={selectedObjectiveId}
+                  selectedPointId={selectedPointId}
+                />
+              </div>
+            ) : null}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -1313,36 +1840,69 @@ function ItemRow({
   locale: Locale;
 }) {
   return (
-    <div className="flex flex-wrap gap-2 pl-5">
+    <div className="grid gap-1.5 pl-5">
       {items.map((entry) => (
-        <div key={`${entry.item.id}-${entry.item_role ?? entry.item_type ?? "item"}`} className="w-12">
-          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded border border-gray-200 bg-gray-50 dark:border-[#3a3d41] dark:bg-[#15171a]">
+        <a
+          key={`${entry.item.id}-${entry.item_role ?? entry.item_type ?? "item"}`}
+          href={`/item/info/${entry.item.normalized_name}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-gray-50 dark:bg-[#20242b]">
             {entry.item.image ? (
               <img
                 alt={localizedName(entry.item as unknown as Record<string, unknown>, locale)}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
                 src={entry.item.image}
               />
             ) : null}
-          </div>
-          <p className="mt-0.5 truncate text-center text-[10px] text-gray-500 dark:text-gray-400">
-            x{entry.quantity ?? entry.count ?? 1}
-          </p>
-        </div>
+          </span>
+          <span className="min-w-0 flex-1 truncate">
+            {localizedName(entry.item as unknown as Record<string, unknown>, locale)}
+          </span>
+        </a>
       ))}
     </div>
   );
 }
 
+function QuestRequirementList({
+  copy,
+  minPlayerLevel,
+}: {
+  copy: (typeof copyByLocale)[Locale];
+  minPlayerLevel: number | null;
+}) {
+  if (minPlayerLevel === null) {
+    return null;
+  }
+
+  return (
+    <section>
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+        {copy.requirements}
+      </h4>
+      <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300">
+        {copy.minPlayerLevel} {minPlayerLevel}
+      </div>
+    </section>
+  );
+}
+
 function RelatedList({
   copy,
+  loadingQuestNormalizedName,
   locale,
   next,
+  onOpenQuest,
   previous,
 }: {
   copy: (typeof copyByLocale)[Locale];
+  loadingQuestNormalizedName: string | null;
   locale: Locale;
   next: LiveMapQuestInfo["next_quests"];
+  onOpenQuest: (normalizedQuestName: string) => void;
   previous: LiveMapQuestInfo["require_quests"];
 }) {
   if (!next.length && !previous.length) {
@@ -1357,69 +1917,300 @@ function RelatedList({
             {copy.previous}
           </h4>
           {previous.map((quest) => (
-            <p key={quest.id} className="text-xs text-gray-600 dark:text-gray-300">
+            <button
+              key={quest.id}
+              type="button"
+              disabled={loadingQuestNormalizedName === quest.normalized_name}
+              onClick={() => onOpenQuest(quest.normalized_name)}
+              className="block w-full rounded px-1 py-0.5 text-left text-xs text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-300 dark:hover:bg-[#2a2d31]"
+            >
               ← {localizedName(quest as unknown as Record<string, unknown>, locale)}
-            </p>
+            </button>
           ))}
         </div>
       ) : null}
       {next.length > 0 ? (
-        <div>
-          <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-400">
-            {copy.next}
-          </h4>
-          {next.map((quest) => (
-            <p key={quest.id} className="text-xs text-gray-600 dark:text-gray-300">
-              → {localizedName(quest as unknown as Record<string, unknown>, locale)}
-            </p>
-          ))}
-        </div>
+      <div>
+        <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-400">
+          {copy.next}
+        </h4>
+        {next.map((quest) => (
+          <button
+            key={quest.id}
+            type="button"
+            disabled={loadingQuestNormalizedName === quest.normalized_name}
+            onClick={() => onOpenQuest(quest.normalized_name)}
+            className="block w-full rounded px-1 py-0.5 text-left text-xs text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-300 dark:hover:bg-[#2a2d31]"
+          >
+            → {localizedName(quest as unknown as Record<string, unknown>, locale)}
+          </button>
+        ))}
+      </div>
       ) : null}
     </section>
   );
 }
 
-function ImageStrip({
-  images,
+function QuestRewardList({
+  copy,
+  info,
   locale,
 }: {
-  images: Array<{ description: { description_en: string | null; description_ko: string | null; description_ja: string | null }; image: string }>;
+  copy: (typeof copyByLocale)[Locale];
+  info: LiveMapQuestInfo;
   locale: Locale;
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = images[activeIndex] ?? images[0];
+  const rewards = info.finish_rewards;
+  const hasRewards =
+    !!info.quest.experience ||
+    rewards.trader_standing.length > 0 ||
+    rewards.skill_level_reward.length > 0 ||
+    rewards.items.length > 0 ||
+    rewards.offer_unlock.length > 0 ||
+    rewards.craft_unlock.length > 0;
 
-  if (!active) {
+  if (!hasRewards) {
     return null;
   }
 
   return (
-    <section className="overflow-hidden rounded border border-gray-200 dark:border-[#3a3d41]">
-      <img
-        alt={localizedDescription(active.description as unknown as Record<string, unknown>, locale)}
-        className="h-40 w-full object-cover"
-        src={active.image}
-      />
-      <div className="flex gap-1 overflow-x-auto bg-gray-50 p-2 dark:bg-[#15171a]">
-        {images.map((image, index) => (
-          <button
-            key={`${image.image}-${index}`}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            className={cn(
-              "h-12 w-16 shrink-0 overflow-hidden rounded border",
-              index === activeIndex ? "border-orange-500" : "border-transparent opacity-60",
+    <section>
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+        {copy.rewards}
+      </h4>
+      <div className="space-y-3">
+        {info.quest.experience ? (
+          <RewardBlock title={copy.experience}>
+            <RewardPill>{info.quest.experience.toLocaleString()} EXP</RewardPill>
+          </RewardBlock>
+        ) : null}
+        {rewards.trader_standing.length > 0 ? (
+          <RewardBlock title={copy.traderStanding}>
+            {rewards.trader_standing.map((reward) => (
+              <RewardPill key={`${reward.trader.id}-${reward.standing}`}>
+                {localizedName(reward.trader as unknown as Record<string, unknown>, locale)}{" "}
+                {formatSignedNumber(reward.standing)}
+              </RewardPill>
+            ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.skill_level_reward.length > 0 ? (
+          <RewardBlock title={copy.skills}>
+            {rewards.skill_level_reward.map((reward) => (
+              <RewardPill key={`${reward.name_en}-${reward.skill_level}`}>
+                {reward.name_en} +{reward.skill_level}
+              </RewardPill>
+            ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.items.length > 0 ? (
+          <RewardBlock title={copy.rewardItems}>
+            {rewards.items.map((reward) => (
+              <RewardItemLink
+                key={`${reward.item.id}-${reward.quantity}`}
+                image={reward.item.image}
+                meta={`x${reward.quantity.toLocaleString()}`}
+                name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
+                normalizedName={reward.item.normalized_name}
+              />
+            ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.offer_unlock.length > 0 ? (
+          <RewardBlock title={copy.unlocks}>
+            {rewards.offer_unlock.map((reward) =>
+              reward.item ? (
+                <RewardItemLink
+                  key={reward.offer_id}
+                  image={reward.item.image}
+                  meta={`LL${reward.level}`}
+                  name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
+                  normalizedName={reward.item.normalized_name}
+                />
+              ) : (
+                <RewardPill key={reward.offer_id}>
+                  {reward.offer_id} · LL{reward.level}
+                </RewardPill>
+              ),
             )}
-          >
-            <img
-              alt={localizedDescription(image.description as unknown as Record<string, unknown>, locale)}
-              className="h-full w-full object-cover"
-              src={image.image}
-            />
-          </button>
-        ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.craft_unlock.length > 0 ? (
+          <RewardBlock title={copy.crafts}>
+            {rewards.craft_unlock.map((reward) =>
+              reward.reward_item ? (
+                <RewardItemLink
+                  key={reward.craft_id}
+                  image={reward.reward_item.image}
+                  meta={`Lv.${reward.station_level}`}
+                  name={localizedName(reward.reward_item as unknown as Record<string, unknown>, locale)}
+                  normalizedName={reward.reward_item.normalized_name}
+                />
+              ) : (
+                <RewardPill key={reward.craft_id}>
+                  {reward.craft_id} · Lv.{reward.station_level}
+                </RewardPill>
+              ),
+            )}
+          </RewardBlock>
+        ) : null}
       </div>
     </section>
+  );
+}
+
+function RewardBlock({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <div>
+      <h5 className="mb-1 text-[11px] font-bold text-gray-500 dark:text-gray-400">{title}</h5>
+      <div className="grid gap-1.5">{children}</div>
+    </div>
+  );
+}
+
+function RewardPill({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300">
+      {children}
+    </div>
+  );
+}
+
+function RewardItemLink({
+  image,
+  meta,
+  name,
+  normalizedName,
+}: {
+  image: string | null;
+  meta: string;
+  name: string;
+  normalizedName: string;
+}) {
+  return (
+    <a
+      href={`/item/info/${normalizedName}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+    >
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white dark:bg-[#20242b]">
+        {image ? <img alt={name} className="h-full w-full object-contain" src={image} /> : null}
+      </span>
+      <span className="min-w-0 flex-1 truncate">{name}</span>
+      <span className="shrink-0 rounded bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-500/10 dark:text-orange-300">
+        {meta}
+      </span>
+    </a>
+  );
+}
+
+function formatSignedNumber(value: number) {
+  return value > 0 ? `+${value}` : String(value);
+}
+
+function LiveMapImagePopup({
+  image,
+  onClose,
+}: {
+  image: LiveMapPopupImage | null;
+  onClose: () => void;
+}) {
+  const [zoom, setZoom] = useState(0.75);
+
+  useEffect(() => {
+    if (!image) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [image, onClose]);
+
+  useEffect(() => {
+    setZoom(0.75);
+  }, [image?.src]);
+
+  if (!image) {
+    return null;
+  }
+
+  const zoomOut = () =>
+    setZoom((value) => Math.max(0.5, Number((value - 0.25).toFixed(2))));
+  const zoomIn = () =>
+    setZoom((value) => Math.min(3, Number((value + 0.25).toFixed(2))));
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-x-0 bottom-0 top-14 z-[80] flex items-center justify-center bg-black/80 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative flex h-full w-full max-w-[88vw] flex-col overflow-hidden rounded-lg bg-black/50 shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-full bg-black/70 p-1 text-white">
+          <button
+            type="button"
+            aria-label="Zoom out"
+            onClick={zoomOut}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/15 disabled:opacity-40"
+            disabled={zoom <= 0.5}
+          >
+            <ZoomOut className="h-5 w-5" />
+          </button>
+          <span className="min-w-12 text-center text-xs font-bold">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            aria-label="Zoom in"
+            onClick={zoomIn}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/15 disabled:opacity-40"
+            disabled={zoom >= 3}
+          >
+            <ZoomIn className="h-5 w-5" />
+          </button>
+        </div>
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={onClose}
+          className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-orange-500"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <div className="h-full w-full overflow-auto p-12">
+          <div className="flex min-h-full min-w-full items-center justify-center">
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="h-auto max-w-none object-contain"
+              style={{ width: `${zoom * 100}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

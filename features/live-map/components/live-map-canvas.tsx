@@ -26,9 +26,15 @@ export interface LiveMapCanvasMarker {
   id: string;
   kind: LiveMapMarkerKind;
   label: string;
+  popupHtml?: string;
   x: number;
   y: number;
   floorId: string | null;
+}
+
+export interface LiveMapPopupImage {
+  alt: string;
+  src: string;
 }
 
 type LeafletContainerElement = HTMLDivElement & {
@@ -86,6 +92,7 @@ export function LiveMapCanvas({
   mapKey,
   markers,
   onMarkerClick,
+  onPopupImageClick,
   onMousePositionChange,
 }: {
   activeFloorId: string;
@@ -95,6 +102,7 @@ export function LiveMapCanvas({
   mapKey: string;
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
+  onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
 }) {
   const containerRef = useRef<LeafletContainerElement | null>(null);
@@ -137,6 +145,29 @@ export function LiveMapCanvas({
       onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
     });
 
+    const handlePopupImageClick = (event: MouseEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const image = target.closest<HTMLImageElement>(".live-map-popup-image");
+
+      if (!image) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      onPopupImageClick({
+        alt: image.alt,
+        src: image.dataset.fullSrc ?? image.src,
+      });
+    };
+
+    container.addEventListener("click", handlePopupImageClick);
+
     mapRef.current = map;
 
     return () => {
@@ -155,6 +186,8 @@ export function LiveMapCanvas({
       } else {
         delete container._leaflet_id;
       }
+
+      container.removeEventListener("click", handlePopupImageClick);
     };
   }, [
     coordinateInfo.default_zoom_level,
@@ -162,6 +195,7 @@ export function LiveMapCanvas({
     coordinateInfo.map_bounds,
     mapKey,
     onMousePositionChange,
+    onPopupImageClick,
   ]);
 
   useEffect(() => {
@@ -218,11 +252,17 @@ export function LiveMapCanvas({
         icon: PointIcon(point.kind, isDimmed),
         keyboard: true,
         title: point.label,
-      }).bindTooltip(point.label, {
-        direction: "top",
-        offset: [0, -28],
-        opacity: 1,
       });
+
+      if (point.popupHtml) {
+        marker.bindPopup(point.popupHtml, {
+          className: "live-map-point-popup",
+          closeButton: true,
+          maxWidth: 360,
+          minWidth: 360,
+          offset: [0, -30],
+        });
+      }
 
       marker.on("click", () => onMarkerClick(point));
       marker.addTo(map);
