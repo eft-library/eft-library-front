@@ -285,17 +285,19 @@ summary {
 
 .live-map-popup-location {
   margin: 0;
-  border-left: 3px solid #f59e0b;
-  background: #fff7ed;
-  padding: 7px 9px;
-  color: #c2410c;
-  font-weight: 800;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #f9fafb;
+  padding: 8px 10px;
+  color: #4b5563;
+  font-weight: 650;
   overflow-wrap: anywhere;
 }
 
 .dark .live-map-popup-location {
-  background: rgba(249, 115, 22, 0.12);
-  color: #fdba74;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d1d5db;
 }
 
 .live-map-popup-thumbs {
