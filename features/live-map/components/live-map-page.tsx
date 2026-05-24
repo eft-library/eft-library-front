@@ -672,13 +672,15 @@ export function LiveMapPage({
     () => [...data.floors].sort((left, right) => left.floor_no - right.floor_no),
     [data.floors],
   );
-  const defaultFloorId = sortedFloors.find((floor) => floor.floor_no === 1)?.id ?? sortedFloors[0]?.id ?? "";
-  const [selectedFloorId, setSelectedFloorId] = useState(defaultFloorId);
+  const defaultFloor =
+    sortedFloors.find((floor) => floor.floor_no === 1) ?? sortedFloors[0] ?? null;
+  const defaultFloorId = defaultFloor?.id ?? "";
+  const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
   const selectedMap =
     data.map_selector.find((entry) => entry.normalized_name === normalizedName) ??
     data.map_selector[0];
   const selectedFloor =
-    sortedFloors.find((floor) => floor.id === selectedFloorId) ?? sortedFloors[0] ?? null;
+    sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
 
   const questEntries = useMemo(
     () => uniqueById(data.quest_points.filter((point) => point.quest_info).map((point) => ({
