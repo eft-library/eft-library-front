@@ -377,6 +377,7 @@ export function LiveMapCanvas({
     const position = getPlayerMarkerPosition(mapKey, location);
     const marker = L.marker(position, {
       icon: PlayerIcon(getPlayerMarkerYaw(mapKey, location.yaw)),
+      zIndexOffset: 10000,
     }).bindTooltip("Player", {
       direction: "top",
       offset: [0, -10],
@@ -384,6 +385,13 @@ export function LiveMapCanvas({
     });
 
     marker.addTo(map);
+    marker.setZIndexOffset(10000);
+    const markerElement = marker.getElement();
+    markerElement?.classList.add("live-map-player-marker");
+    markerElement?.style.setProperty("z-index", "10000");
+    markerElement?.style.setProperty("pointer-events", "none");
+    markerElement?.parentElement?.append(markerElement);
+    marker.setOpacity(1);
     markerRef.current = marker;
 
     const frameId = window.requestAnimationFrame(() => {

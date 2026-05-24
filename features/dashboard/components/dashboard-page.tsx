@@ -42,6 +42,22 @@ const methodColors: Record<string, string> = {
   DELETE: "#f87171",
 };
 
+const chartTooltipStyle = {
+  backgroundColor: "rgb(31 41 55)",
+  border: "1px solid rgb(55 65 81)",
+  borderRadius: "8px",
+  color: "#ffffff",
+} as const;
+
+const chartTooltipLabelStyle = {
+  color: "#f9fafb",
+  fontWeight: 700,
+} as const;
+
+const chartTooltipItemStyle = {
+  color: "#f3f4f6",
+} as const;
+
 function getMethodColor(method?: string) {
   return methodColors[(method ?? "GET").toUpperCase()] ?? "#94a3b8";
 }
@@ -227,12 +243,9 @@ function TopEndpointsChart({
                     "요청 수",
                   ]}
                   labelFormatter={(label) => `엔드포인트: ${label}`}
-                  contentStyle={{
-                    backgroundColor: "rgb(31 41 55)",
-                    border: "1px solid rgb(55 65 81)",
-                    borderRadius: "8px",
-                    color: "#ffffff",
-                  }}
+                  contentStyle={chartTooltipStyle}
+                  itemStyle={chartTooltipItemStyle}
+                  labelStyle={chartTooltipLabelStyle}
                 />
                 <Bar dataKey="request_count" radius={[0, 4, 4, 0]}>
                   {data.map((entry, index) => (

@@ -61,18 +61,20 @@ export function PlayerIcon(rotation: number) {
     className: "player-icon",
     html: `
       <div style="
-        width: 38px;
-        height: 38px;
+        width: 46px;
+        height: 46px;
         position: relative;
         transform: rotate(${rotation}deg);
         transform-origin: center;
         filter: drop-shadow(0 3px 6px rgba(0,0,0,0.55));
       ">
 
+        <div class="player-icon-pulse"></div>
+
         <!-- 방향 화살표 -->
         <div style="
           position: absolute;
-          top: -4px;
+          top: 0;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
@@ -83,13 +85,13 @@ export function PlayerIcon(rotation: number) {
           z-index: 5;
           filter:
             drop-shadow(0 1px 2px rgba(0,0,0,0.7))
-            drop-shadow(0 0 6px rgba(249,115,22,0.45));
+            drop-shadow(0 0 8px rgba(249,115,22,0.62));
         "></div>
 
         <!-- 화살표 하이라이트 -->
         <div style="
           position: absolute;
-          top: 2px;
+          top: 6px;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
@@ -104,31 +106,34 @@ export function PlayerIcon(rotation: number) {
         <!-- 외곽 링 -->
         <div style="
           position: absolute;
-          inset: 5px;
+          inset: 9px;
           border-radius: 50%;
-          background: rgba(15,23,42,0.96);
-          border: 2px solid rgba(255,255,255,0.9);
+          background: rgba(8,13,24,0.98);
+          border: 2px solid rgba(255,255,255,0.95);
           box-sizing: border-box;
           z-index: 1;
+          box-shadow:
+            0 0 0 3px rgba(14,165,233,0.52),
+            0 0 18px rgba(14,165,233,0.7);
         "></div>
 
         <!-- 몸통 -->
         <div style="
           position: absolute;
-          inset: 10px;
+          inset: 14px;
           border-radius: 50%;
           background:
             radial-gradient(circle at 35% 30%,
-              #dcfce7 0%,
-              #4ade80 40%,
-              #16a34a 100%);
+              #f0f9ff 0%,
+              #38bdf8 38%,
+              #2563eb 100%);
           border: 1px solid rgba(0,0,0,0.45);
           box-sizing: border-box;
           z-index: 3;
           box-shadow:
             inset 0 1px 2px rgba(255,255,255,0.7),
             inset 0 -2px 3px rgba(0,0,0,0.3),
-            0 0 8px rgba(74,222,128,0.45);
+            0 0 10px rgba(56,189,248,0.68);
         "></div>
 
         <!-- 중심점 -->
@@ -147,7 +152,7 @@ export function PlayerIcon(rotation: number) {
 
       </div>
     `,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
+    iconSize: [46, 46],
+    iconAnchor: [23, 23],
   });
 }
