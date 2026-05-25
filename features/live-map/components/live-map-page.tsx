@@ -955,6 +955,8 @@ export function LiveMapPage({
         return;
       }
 
+      setPanel(null);
+      setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
@@ -991,6 +993,8 @@ export function LiveMapPage({
         return;
       }
 
+      setPanel(null);
+      setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
@@ -1204,7 +1208,11 @@ export function LiveMapPage({
 
     const marker = visibleMarkers.find((entry) => entry.id === focusedMarkerId);
 
-    if (marker?.floorId) {
+    if (!marker) {
+      return;
+    }
+
+    if (marker.floorId) {
       setSelectedFloorId(marker.floorId);
     }
 
