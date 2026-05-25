@@ -383,6 +383,27 @@ function getQuestObjectivePoint(
   return objective?.live_map_point ?? points[0] ?? null;
 }
 
+function getObjectivePointMap(
+  point: LiveMapObjectivePoint | null | undefined,
+  maps: Array<{ id: string; normalized_name: string; name_en: string; name_ko: string; name_ja: string }>,
+) {
+  if (!point) {
+    return null;
+  }
+
+  return point.map ?? maps.find((map) => map.id === point.map_id) ?? null;
+}
+
+function isRemoteObjectivePoint(
+  point: LiveMapObjectivePoint | null | undefined,
+  maps: Array<{ id: string; normalized_name: string; name_en: string; name_ko: string; name_ja: string }>,
+  normalizedName: string,
+) {
+  const map = getObjectivePointMap(point, maps);
+
+  return Boolean(map?.normalized_name && map.normalized_name !== normalizedName);
+}
+
 function getQuestObjectiveText(
   objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
   locale: Locale,
@@ -979,6 +1000,7 @@ export function LiveMapPage({
       }
 
       const targetMap =
+        point.map?.normalized_name ??
         objective.maps.find((map) => map.id === point.map_id)?.normalized_name ??
         objective.maps[0]?.normalized_name ??
         normalizedName;
@@ -1483,14 +1505,15 @@ export function LiveMapPage({
           </section>
 
           {panel ? (
-          <DetailPanel
-            completedQuestIds={completedQuestIds}
-            copy={copy}
-            focusQuestObjective={focusQuestObjective}
-            focusStoryObjective={focusStoryObjective}
-            loadingQuestNormalizedName={loadingQuestNormalizedName}
-            locale={locale}
-            onClose={() => setPanel(null)}
+            <DetailPanel
+              completedQuestIds={completedQuestIds}
+              copy={copy}
+              focusQuestObjective={focusQuestObjective}
+              focusStoryObjective={focusStoryObjective}
+              loadingQuestNormalizedName={loadingQuestNormalizedName}
+              locale={locale}
+              normalizedName={normalizedName}
+              onClose={() => setPanel(null)}
               onOpenQuest={openQuestDetail}
               onToggleQuest={toggleQuestCompletionState}
               panel={panel}
@@ -1944,6 +1967,7 @@ function DetailPanel({
   focusStoryObjective,
   loadingQuestNormalizedName,
   locale,
+  normalizedName,
   onClose,
   onOpenQuest,
   onToggleQuest,
@@ -1959,6 +1983,7 @@ function DetailPanel({
   focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
+  normalizedName: string;
   onClose: () => void;
   onOpenQuest: (normalizedQuestName: string) => void;
   onToggleQuest: (questId: string) => void;
@@ -1994,6 +2019,7 @@ function DetailPanel({
             info={panel.info}
             loadingQuestNormalizedName={loadingQuestNormalizedName}
             locale={locale}
+            normalizedName={normalizedName}
             onOpenQuest={onOpenQuest}
             onToggle={() => onToggleQuest(panel.info.quest.id)}
             saving={savingQuestId === panel.info.quest.id}
@@ -2006,6 +2032,7 @@ function DetailPanel({
             focusStoryObjective={focusStoryObjective}
             info={panel.info}
             locale={locale}
+            normalizedName={normalizedName}
             selectedObjectiveId={panel.objectiveId}
             selectedPointId={panel.pointId}
           />
@@ -2034,6 +2061,7 @@ function QuestPanel({
   focusQuestObjective,
   loadingQuestNormalizedName,
   locale,
+  normalizedName,
   onOpenQuest,
   onToggle,
   saving,
@@ -2048,6 +2076,7 @@ function QuestPanel({
   ) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
+  normalizedName: string;
   onOpenQuest: (normalizedQuestName: string) => void;
   onToggle: () => void;
   saving: boolean;
@@ -2098,6 +2127,7 @@ function QuestPanel({
       <ObjectiveList
         copy={copy}
         locale={locale}
+        normalizedName={normalizedName}
         objectives={info.objectives}
         onFocusObjective={(objective) => focusQuestObjective(objective, info.quest.id)}
         selectedPointId={selectedPointId}
@@ -2120,6 +2150,7 @@ function StoryPanel({
   focusStoryObjective,
   info,
   locale,
+  normalizedName,
   selectedObjectiveId,
   selectedPointId,
 }: {
@@ -2127,6 +2158,7 @@ function StoryPanel({
   focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
   info: StoryInfo;
   locale: Locale;
+  normalizedName: string;
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
 }) {
@@ -2157,6 +2189,7 @@ function StoryPanel({
         copy={copy}
         onFocusObjective={(objective) => focusStoryObjective(objective, info.story.id)}
         locale={locale}
+        normalizedName={normalizedName}
         objectives={info.objectives}
         selectedObjectiveId={selectedObjective?.objective_id ?? null}
         selectedPointId={selectedPointId}
@@ -2231,12 +2264,14 @@ function StaticPanel({ point, locale }: { point: LiveMapStaticPoint; locale: Loc
 function ObjectiveList({
   copy,
   locale,
+  normalizedName,
   objectives,
   onFocusObjective,
   selectedPointId,
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
+  normalizedName: string;
   objectives: LiveMapQuestInfo["objectives"];
   onFocusObjective?: (objective: LiveMapQuestInfo["objectives"][number]) => void;
   selectedPointId?: string;
@@ -2247,30 +2282,36 @@ function ObjectiveList({
         {copy.objectives}
       </h4>
       <ul className="space-y-0.5">
-        {objectives.map((objective) => (
-          <li
-            key={objective.objective_id}
-            className={cn(
-              "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs text-gray-700 dark:text-gray-300",
-              selectedPointId &&
-                getQuestObjectivePoints(objective).some((point) => point.id === selectedPointId)
-                ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
-                : "",
-            )}
-          >
-            <ObjectiveLine
-              count={objective.count}
-              description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
-              onFocus={
-                getQuestObjectivePoints(objective).length > 0
-                  ? () => onFocusObjective?.(objective)
-                  : undefined
-              }
-              optional={false}
-            />
-            {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
-          </li>
-        ))}
+        {objectives.map((objective) => {
+          const point = getQuestObjectivePoint(objective);
+          const isRemote = isRemoteObjectivePoint(point, objective.maps, normalizedName);
+
+          return (
+            <li
+              key={objective.objective_id}
+              className={cn(
+                "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs text-gray-700 dark:text-gray-300",
+                selectedPointId &&
+                  getQuestObjectivePoints(objective).some((entry) => entry.id === selectedPointId)
+                  ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                  : "",
+              )}
+            >
+              <ObjectiveLine
+                count={objective.count}
+                description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+                onFocus={
+                  getQuestObjectivePoints(objective).length > 0
+                    ? () => onFocusObjective?.(objective)
+                    : undefined
+                }
+                optional={false}
+                remote={isRemote}
+              />
+              {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
@@ -2279,6 +2320,7 @@ function ObjectiveList({
 function StoryObjectiveList({
   copy,
   locale,
+  normalizedName,
   onFocusObjective,
   objectives,
   selectedObjectiveId,
@@ -2286,6 +2328,7 @@ function StoryObjectiveList({
 }: {
   copy: (typeof copyByLocale)[Locale];
   locale: Locale;
+  normalizedName: string;
   onFocusObjective?: (objective: StoryObjective) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
@@ -2298,6 +2341,7 @@ function StoryObjectiveList({
       </h4>
       <NestedStoryObjectives
         locale={locale}
+        normalizedName={normalizedName}
         onFocusObjective={onFocusObjective}
         objectives={objectives}
         selectedObjectiveId={selectedObjectiveId}
@@ -2337,12 +2381,14 @@ function EventObjectiveList({
 
 function NestedStoryObjectives({
   locale,
+  normalizedName,
   onFocusObjective,
   objectives,
   selectedObjectiveId,
   selectedPointId,
 }: {
   locale: Locale;
+  normalizedName: string;
   onFocusObjective?: (objective: StoryObjective) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
@@ -2355,6 +2401,8 @@ function NestedStoryObjectives({
           objective.objective_id === selectedObjectiveId ||
           (!!selectedPointId &&
             objective.live_map_points.some((point) => point.id === selectedPointId));
+        const point = objective.live_map_points[0];
+        const isRemote = isRemoteObjectivePoint(point, objective.maps, normalizedName);
 
         return (
           <li
@@ -2375,12 +2423,14 @@ function NestedStoryObjectives({
                   : undefined
               }
               optional={objective.is_optional}
+              remote={isRemote}
             />
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
             {objective.children.length > 0 ? (
               <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
                 <NestedStoryObjectives
                   locale={locale}
+                  normalizedName={normalizedName}
                   onFocusObjective={onFocusObjective}
                   objectives={objective.children}
                   selectedObjectiveId={selectedObjectiveId}
@@ -2452,11 +2502,13 @@ function ObjectiveLine({
   description,
   onFocus,
   optional,
+  remote = false,
 }: {
   count: number | null;
   description: string;
   onFocus?: () => void;
   optional: boolean;
+  remote?: boolean;
 }) {
   const badges = (
     <>
@@ -2475,14 +2527,19 @@ function ObjectiveLine({
 
   return (
     <div className="flex gap-2 text-xs leading-4 text-gray-700 dark:text-gray-300">
-      <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-orange-500" />
+      <Route className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", remote ? "text-sky-500" : "text-orange-500")} />
       <div className="min-w-0 flex-1">
         <p className="min-w-0">
           {onFocus ? (
             <button
               type="button"
               onClick={onFocus}
-              className="inline text-left font-semibold text-orange-600 hover:underline dark:text-orange-300"
+              className={cn(
+                "inline text-left font-semibold hover:underline",
+                remote
+                  ? "text-sky-700 dark:text-sky-300"
+                  : "text-orange-600 dark:text-orange-300",
+              )}
             >
               {description || "-"}
               {badges}
