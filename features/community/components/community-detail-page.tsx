@@ -1233,6 +1233,26 @@ function CommunityImagePopup({
   const [zoom, setZoom] = useState(0.75);
 
   useEffect(() => {
+    if (!image) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [image, onClose]);
+
+  useEffect(() => {
     setZoom(0.75);
   }, [image?.src]);
 
@@ -1241,8 +1261,16 @@ function CommunityImagePopup({
   }
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-4" role="dialog" aria-modal="true">
-      <div className="flex max-h-[88vh] w-[84vw] flex-col overflow-hidden rounded-lg border border-white/10 bg-white shadow-2xl dark:bg-[#1f232b]">
+    <div
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-4"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[88vh] w-[84vw] flex-col overflow-hidden rounded-lg border border-white/10 bg-white shadow-2xl dark:bg-[#1f232b]"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-3 py-2 dark:border-gray-700">
           <div className="min-w-0 truncate text-sm font-bold text-gray-800 dark:text-gray-100">{image.alt}</div>
           <div className="flex items-center gap-2">
