@@ -1052,18 +1052,31 @@ export function LiveMapPage({
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
         if (point?.quest_info) {
+          setEnabledQuestIds((current) =>
+            current.has(getQuestId(point)) ? current : new Set([...current, getQuestId(point)]),
+          );
+          if (point.floor_id) {
+            setSelectedFloorId(point.floor_id);
+          }
           setPanel({
             id: getQuestId(point),
             info: point.quest_info,
             pointId: point.id,
             type: "quest",
           });
+          return true;
         }
       }
 
       if (kind === "story") {
         const point = data.story_points.find((entry) => entry.id === id);
         if (point?.story_info) {
+          setEnabledStoryIds((current) =>
+            current.has(getStoryId(point)) ? current : new Set([...current, getStoryId(point)]),
+          );
+          if (point.floor_id) {
+            setSelectedFloorId(point.floor_id);
+          }
           setPanel({
             id: getStoryId(point),
             info: point.story_info,
@@ -1071,12 +1084,19 @@ export function LiveMapPage({
             pointId: point.id,
             type: "story",
           });
+          return true;
         }
       }
 
       if (kind === "event") {
         const point = data.event_points.find((entry) => entry.id === id);
         if (point?.event_info) {
+          setEnabledEventIds((current) =>
+            current.has(getEventId(point)) ? current : new Set([...current, getEventId(point)]),
+          );
+          if (point.floor_id) {
+            setSelectedFloorId(point.floor_id);
+          }
           setPanel({
             id: getEventId(point),
             info: point.event_info,
@@ -1084,6 +1104,7 @@ export function LiveMapPage({
             pointId: point.id,
             type: "event",
           });
+          return true;
         }
       }
 
@@ -1091,6 +1112,9 @@ export function LiveMapPage({
         const point = data.static_points.find((entry) => entry.id === id);
         if (point) {
           setSelectedStaticId(point.id);
+          if (point.floor_id) {
+            setSelectedFloorId(point.floor_id);
+          }
           setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
           setPanel((current) =>
             openStaticPanel
@@ -1099,8 +1123,11 @@ export function LiveMapPage({
                 ? null
                 : current,
           );
+          return true;
         }
       }
+
+      return false;
     },
     [data.event_points, data.quest_points, data.static_points, data.story_points],
   );
@@ -1206,18 +1233,8 @@ export function LiveMapPage({
       return;
     }
 
-    const marker = visibleMarkers.find((entry) => entry.id === focusedMarkerId);
-
-    if (!marker) {
-      return;
-    }
-
-    if (marker.floorId) {
-      setSelectedFloorId(marker.floorId);
-    }
-
     openPanelForMarkerId(focusedMarkerId);
-  }, [focusedMarkerId, openPanelForMarkerId, visibleMarkers]);
+  }, [focusedMarkerId, openPanelForMarkerId]);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
