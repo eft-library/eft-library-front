@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
 
 import { LiveMapPage } from "@/features/live-map/components/live-map-page";
 import { getLiveMapDetail } from "@/features/live-map/api";
-import { getUserLocale } from "@/i18n/locale";
+import { getQuestCompletionGraph } from "@/features/quest/api";
 import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
@@ -35,16 +34,21 @@ export default async function Page({
 }: {
   params: Promise<{ normalized_name: string }>;
 }) {
-  await connection();
   const { normalized_name: normalizedName } = await params;
-  const [data, locale] = await Promise.all([
+  const [data, completionGraph] = await Promise.all([
     getLiveMapDetail(normalizedName),
-    getUserLocale(),
+    getQuestCompletionGraph(),
   ]);
 
   if (!data.floors.length) {
     notFound();
   }
 
-  return <LiveMapPage data={data} locale={locale} normalizedName={normalizedName} />;
+  return (
+    <LiveMapPage
+      data={data}
+      initialCompletionGraph={completionGraph}
+      normalizedName={normalizedName}
+    />
+  );
 }
