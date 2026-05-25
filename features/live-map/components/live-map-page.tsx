@@ -13,6 +13,7 @@ export function LiveMapPage({
 }) {
   return (
     <LiveMapClientPage
+      key={normalizedName}
       data={data}
       initialCompletionGraph={initialCompletionGraph}
       normalizedName={normalizedName}

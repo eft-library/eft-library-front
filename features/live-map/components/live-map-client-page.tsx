@@ -247,6 +247,10 @@ function getFloorLabel(floor: LiveMapFloor, locale: Locale) {
   return localizedName(floor as unknown as Record<string, unknown>, locale);
 }
 
+function getDefaultFloor(floors: LiveMapFloor[]) {
+  return floors.find((floor) => Number(floor.floor_no) === 1) ?? floors[0] ?? null;
+}
+
 function getStaticCategoryLabel(
   category: string,
   copy: (typeof copyByLocale)[Locale],
@@ -729,8 +733,7 @@ export function LiveMapClientPage({
     () => [...data.floors].sort((left, right) => left.floor_no - right.floor_no),
     [data.floors],
   );
-  const defaultFloor =
-    sortedFloors.find((floor) => floor.floor_no === 1) ?? sortedFloors[0] ?? null;
+  const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
   const selectedMap =
