@@ -97,6 +97,7 @@ export function LiveMapCanvas({
   mapKey,
   markers,
   onMarkerClick,
+  onFocusedMarkerClose,
   onPopupImageClick,
   onMousePositionChange,
 }: {
@@ -108,6 +109,7 @@ export function LiveMapCanvas({
   mapKey: string;
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
+  onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
 }) {
@@ -118,6 +120,13 @@ export function LiveMapCanvas({
   const pointMarkerByIdRef = useRef<Map<string, LeafletMarker>>(new Map());
   const lastFocusedMarkerRef = useRef<string | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
+  const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
+  const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
+
+  useEffect(() => {
+    focusedMarkerIdRef.current = focusedMarkerId;
+    onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
+  }, [focusedMarkerId, onFocusedMarkerClose]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -157,6 +166,16 @@ export function LiveMapCanvas({
       const target = event.target;
 
       if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      if (target.closest(".leaflet-popup-close-button")) {
+        const currentFocusedMarkerId = focusedMarkerIdRef.current;
+
+        if (currentFocusedMarkerId) {
+          onFocusedMarkerCloseRef.current?.(currentFocusedMarkerId);
+        }
+
         return;
       }
 
@@ -305,7 +324,13 @@ export function LiveMapCanvas({
         });
       }
 
-      marker.on("click", () => onMarkerClick(point));
+      marker.on("click", () => {
+        onMarkerClick(point);
+
+        if (point.popupHtml && (!point.floorId || point.floorId === activeFloorId)) {
+          marker.openPopup();
+        }
+      });
       marker.addTo(map);
       pointMarkerByIdRef.current.set(point.id, marker);
 

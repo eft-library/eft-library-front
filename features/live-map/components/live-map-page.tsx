@@ -685,6 +685,7 @@ export function LiveMapPage({
   const accessToken = session?.accessToken;
   const websocketLocation = useWsStore((state) => state.location);
   const previousLocationRef = useRef<string | null>(null);
+  const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
   const [mousePosition, setMousePosition] = useState<LatLng | null>(null);
@@ -751,8 +752,24 @@ export function LiveMapPage({
   );
 
   useEffect(() => {
+    if (initializedFilterMapRef.current === normalizedName) {
+      return;
+    }
+
+    initializedFilterMapRef.current = normalizedName;
     setEnabledQuestIds(new Set(questEntries.map((entry) => entry.id)));
-  }, [questEntries]);
+    setEnabledStoryIds(new Set(storyEntries.map((entry) => entry.id)));
+    setEnabledEventIds(new Set(eventEntries.map((entry) => entry.id)));
+    setEnabledStaticIds(new Set(staticEntries.map((entry) => entry.id)));
+    setExpandedStaticCategories(new Set(staticGroups.map((group) => group.category)));
+  }, [
+    eventEntries,
+    normalizedName,
+    questEntries,
+    staticEntries,
+    staticGroups,
+    storyEntries,
+  ]);
 
   useEffect(() => {
     setEnabledQuestIds((current) => {
@@ -763,22 +780,6 @@ export function LiveMapPage({
       return next;
     });
   }, [completedQuestIds]);
-
-  useEffect(() => {
-    setEnabledStoryIds(new Set(storyEntries.map((entry) => entry.id)));
-  }, [storyEntries]);
-
-  useEffect(() => {
-    setEnabledEventIds(new Set(eventEntries.map((entry) => entry.id)));
-  }, [eventEntries]);
-
-  useEffect(() => {
-    setEnabledStaticIds(new Set(staticEntries.map((entry) => entry.id)));
-  }, [staticEntries]);
-
-  useEffect(() => {
-    setExpandedStaticCategories(new Set(staticGroups.map((group) => group.category)));
-  }, [staticGroups]);
 
   useEffect(() => {
     let cancelled = false;
@@ -829,11 +830,11 @@ export function LiveMapPage({
     const questMarkers = data.quest_points
       .filter((point) => {
         const questId = getQuestId(point);
+        const isFocused = focusedMarkerId === `quest:${point.id}`;
 
         return (
           point.quest_info &&
-          enabledQuestIds.has(questId) &&
-          !completedQuestIds.includes(questId)
+          (isFocused || (enabledQuestIds.has(questId) && !completedQuestIds.includes(questId)))
         );
       })
       .map<LiveMapCanvasMarker>((point) => ({
@@ -846,7 +847,10 @@ export function LiveMapPage({
         y: point.z,
       }));
     const storyMarkers = data.story_points
-      .filter((point) => point.story_info && enabledStoryIds.has(getStoryId(point)))
+      .filter((point) => (
+        point.story_info &&
+        (focusedMarkerId === `story:${point.id}` || enabledStoryIds.has(getStoryId(point)))
+      ))
       .map<LiveMapCanvasMarker>((point) => ({
         floorId: point.floor_id,
         id: `story:${point.id}`,
@@ -857,7 +861,10 @@ export function LiveMapPage({
         y: point.z,
       }));
     const eventMarkers = data.event_points
-      .filter((point) => point.event_info && enabledEventIds.has(getEventId(point)))
+      .filter((point) => (
+        point.event_info &&
+        (focusedMarkerId === `event:${point.id}` || enabledEventIds.has(getEventId(point)))
+      ))
       .map<LiveMapCanvasMarker>((point) => ({
         floorId: point.floor_id,
         id: `event:${point.id}`,
@@ -868,7 +875,7 @@ export function LiveMapPage({
         y: point.z,
       }));
     const staticMarkers = data.static_points
-      .filter((point) => enabledStaticIds.has(point.id))
+      .filter((point) => focusedMarkerId === `static:${point.id}` || enabledStaticIds.has(point.id))
       .map<LiveMapCanvasMarker>((point) => ({
         floorId: point.floor_id,
         id: `static:${point.id}`,
@@ -890,6 +897,7 @@ export function LiveMapPage({
     enabledQuestIds,
     enabledStaticIds,
     enabledStoryIds,
+    focusedMarkerId,
     copy,
     locale,
   ]);
@@ -940,8 +948,6 @@ export function LiveMapPage({
         normalizedName;
       const focus = `quest:${point.id}`;
 
-      setEnabledQuestIds((current) => new Set([...current, questId]));
-
       if (point.floor_id) {
         setSelectedFloorId(point.floor_id);
       }
@@ -978,8 +984,6 @@ export function LiveMapPage({
         normalizedName;
       const focus = `story:${point.id}`;
 
-      setEnabledStoryIds((current) => new Set([...current, storyId]));
-
       if (point.floor_id) {
         setSelectedFloorId(point.floor_id);
       }
@@ -1008,7 +1012,6 @@ export function LiveMapPage({
 
       setSelectedStaticId(entry.id);
       setPanel((current) => (current?.type === "static" ? null : current));
-      setEnabledStaticIds((current) => new Set([...current, entry.id]));
       setExpandedStaticCategories((current) => new Set([...current, entry.point.category || "other"]));
 
       if (entry.point.floor_id) {
@@ -1052,9 +1055,6 @@ export function LiveMapPage({
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
         if (point?.quest_info) {
-          setEnabledQuestIds((current) =>
-            current.has(getQuestId(point)) ? current : new Set([...current, getQuestId(point)]),
-          );
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
@@ -1071,9 +1071,6 @@ export function LiveMapPage({
       if (kind === "story") {
         const point = data.story_points.find((entry) => entry.id === id);
         if (point?.story_info) {
-          setEnabledStoryIds((current) =>
-            current.has(getStoryId(point)) ? current : new Set([...current, getStoryId(point)]),
-          );
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
@@ -1091,9 +1088,6 @@ export function LiveMapPage({
       if (kind === "event") {
         const point = data.event_points.find((entry) => entry.id === id);
         if (point?.event_info) {
-          setEnabledEventIds((current) =>
-            current.has(getEventId(point)) ? current : new Set([...current, getEventId(point)]),
-          );
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
@@ -1134,9 +1128,37 @@ export function LiveMapPage({
 
   const openPanelForMarker = useCallback(
     (marker: LiveMapCanvasMarker) => {
-      openPanelForMarkerId(marker.id);
+      const opened = openPanelForMarkerId(marker.id);
+
+      if (!opened || focusedMarkerId === marker.id) {
+        return;
+      }
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("focus", marker.id);
+      router.replace(`/live-map/${normalizedName}?${params.toString()}`, {
+        scroll: false,
+      });
     },
-    [openPanelForMarkerId],
+    [focusedMarkerId, normalizedName, openPanelForMarkerId, router, searchParams],
+  );
+
+  const clearFocusedMarker = useCallback(
+    (markerId: string) => {
+      if (focusedMarkerId !== markerId) {
+        return;
+      }
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("focus");
+      const queryString = params.toString();
+
+      router.replace(
+        queryString ? `/live-map/${normalizedName}?${queryString}` : `/live-map/${normalizedName}`,
+        { scroll: false },
+      );
+    },
+    [focusedMarkerId, normalizedName, router, searchParams],
   );
 
   function clearLiveMapSelection() {
@@ -1435,6 +1457,7 @@ export function LiveMapPage({
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
                 onMousePositionChange={setMousePosition}
+                onFocusedMarkerClose={clearFocusedMarker}
                 onPopupImageClick={openImagePopup}
               />
             ) : (
