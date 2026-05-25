@@ -1319,7 +1319,7 @@ export function LiveMapPage({
             aria-label={copy.guideTitle}
             title={copy.guideTitle}
             onClick={() => setIsGuideOpen((value) => !value)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-300"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-200"
           >
             <CircleHelp className="h-4 w-4" />
           </button>
@@ -1365,7 +1365,7 @@ export function LiveMapPage({
                               "flex h-8 w-full items-center rounded px-2 text-left text-sm",
                               isSelected
                                 ? "bg-orange-500 font-black text-white dark:text-[#1e2124]"
-                                : "text-gray-700 hover:bg-gray-100 hover:text-orange-500 dark:text-gray-300 dark:hover:bg-[#2a2d31]",
+                                : "text-gray-700 hover:bg-gray-100 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-[#2a2d31]",
                             )}
                           >
                             <span className="truncate">
@@ -1401,7 +1401,7 @@ export function LiveMapPage({
                           className={
                             isSelected
                               ? "font-bold text-orange-500"
-                              : "text-gray-600 dark:text-gray-300"
+                              : "text-gray-600 dark:text-gray-200"
                           }
                         >
                           {getFloorLabel(floor, locale)}
@@ -1499,7 +1499,7 @@ export function LiveMapPage({
                 </span>
               </div>
               {isGuideOpen ? (
-                <p className="leading-5 text-gray-600 dark:text-gray-300">{copy.guide}</p>
+                <p className="leading-5 text-gray-600 dark:text-gray-200">{copy.guide}</p>
               ) : null}
             </div>
           </section>
@@ -1686,7 +1686,7 @@ function RightSection<TEntry extends RightEntry>({
                 >
                   <span
                     className={cn(
-                      "min-w-0 truncate text-gray-700 dark:text-gray-300",
+                      "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
                       isSelected ? "font-black text-orange-500" : "",
                     )}
                   >
@@ -1773,7 +1773,7 @@ function StaticPointSection({
       <div className="mb-2 flex h-9 items-center justify-between gap-2 rounded-md bg-gray-100 px-2 dark:bg-[#2a2d31]">
         <h2 className="text-sm font-black text-gray-900 dark:text-white">
           {title}
-          <span className="ml-1 text-xs font-bold text-gray-500 dark:text-gray-400">
+          <span className="ml-1 text-xs font-bold text-gray-500 dark:text-gray-300">
             {totalCount}
           </span>
         </h2>
@@ -1814,7 +1814,7 @@ function StaticPointSection({
                     <span className="min-w-0 flex-1 truncate text-xs font-black text-gray-800 dark:text-gray-100">
                       {getStaticCategoryLabel(group.category, copy)}
                     </span>
-                    <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400">
+                    <span className="text-[11px] font-bold text-gray-500 dark:text-gray-300">
                       {enabledCount}/{ids.length}
                     </span>
                   </button>
@@ -1857,7 +1857,7 @@ function StaticPointSection({
                           >
                             <span
                               className={cn(
-                                "min-w-0 truncate text-gray-700 dark:text-gray-300",
+                                "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
                                 isSelected ? "font-black text-orange-500" : "",
                               )}
                             >
@@ -2173,12 +2173,12 @@ function StoryPanel({
       </h3>
       {info.requirements.length > 0 ? (
         <section>
-          <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+          <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
             {copy.requirements}
           </h4>
           <ul className="space-y-1">
             {info.requirements.map((requirement) => (
-              <li key={requirement.id} className="text-xs leading-5 text-gray-700 dark:text-gray-300">
+              <li key={requirement.id} className="text-xs font-medium leading-5 text-gray-700 dark:text-gray-100">
                 {localizedDescription(requirement as unknown as Record<string, unknown>, locale)}
               </li>
             ))}
@@ -2254,7 +2254,7 @@ function StaticPanel({ point, locale }: { point: LiveMapStaticPoint; locale: Loc
         {localizedName(point as unknown as Record<string, unknown>, locale)}
       </h3>
       <p className="text-xs font-bold text-orange-500">{point.category}</p>
-      <p className="text-xs leading-5 text-gray-700 dark:text-gray-300">
+      <p className="text-xs font-medium leading-5 text-gray-700 dark:text-gray-100">
         {localizedDescription(point as unknown as Record<string, unknown>, locale)}
       </p>
     </div>
@@ -2278,7 +2278,7 @@ function ObjectiveList({
 }) {
   return (
     <section>
-      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
         {copy.objectives}
       </h4>
       <ul className="space-y-0.5">
@@ -2290,7 +2290,7 @@ function ObjectiveList({
             <li
               key={objective.objective_id}
               className={cn(
-                "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs text-gray-700 dark:text-gray-300",
+                "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-100",
                 selectedPointId &&
                   getQuestObjectivePoints(objective).some((entry) => entry.id === selectedPointId)
                   ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
@@ -2336,7 +2336,7 @@ function StoryObjectiveList({
 }) {
   return (
     <section>
-      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
         {copy.objectives}
       </h4>
       <NestedStoryObjectives
@@ -2366,7 +2366,7 @@ function EventObjectiveList({
 }) {
   return (
     <section>
-      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
         {copy.objectives}
       </h4>
       <NestedEventObjectives
@@ -2526,7 +2526,7 @@ function ObjectiveLine({
   );
 
   return (
-    <div className="flex gap-2 text-xs leading-4 text-gray-700 dark:text-gray-300">
+    <div className="flex gap-2 text-xs font-medium leading-4 text-gray-700 dark:text-gray-100">
       <Route className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", remote ? "text-sky-500" : "text-orange-500")} />
       <div className="min-w-0 flex-1">
         <p className="min-w-0">
@@ -2571,7 +2571,7 @@ function ItemRow({
           href={`/item/info/${entry.item.normalized_name}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+          className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300"
         >
           <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-gray-50 dark:bg-[#20242b]">
             {entry.item.image ? (
@@ -2636,10 +2636,10 @@ function QuestRequirementList({
 
   return (
     <section>
-      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
         {copy.requirements}
       </h4>
-      <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300">
+      <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100">
         {copy.minPlayerLevel} {minPlayerLevel}
       </div>
     </section>
@@ -2669,7 +2669,7 @@ function RelatedList({
     <section className="space-y-2">
       {previous.length > 0 ? (
         <div>
-          <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-400">
+          <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-300">
             {copy.previous}
           </h4>
           {previous.map((quest) => (
@@ -2678,7 +2678,7 @@ function RelatedList({
               type="button"
               disabled={loadingQuestNormalizedName === quest.normalized_name}
               onClick={() => onOpenQuest(quest.normalized_name)}
-              className="block w-full rounded px-1 py-0.5 text-left text-xs text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-300 dark:hover:bg-[#2a2d31]"
+              className="block w-full rounded px-1 py-0.5 text-left text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-100 dark:hover:bg-[#2a2d31]"
             >
               ← {localizedName(quest as unknown as Record<string, unknown>, locale)}
             </button>
@@ -2687,7 +2687,7 @@ function RelatedList({
       ) : null}
       {next.length > 0 ? (
       <div>
-        <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-400">
+        <h4 className="mb-1 text-xs font-bold text-gray-500 dark:text-gray-300">
           {copy.next}
         </h4>
         {next.map((quest) => (
@@ -2696,7 +2696,7 @@ function RelatedList({
             type="button"
             disabled={loadingQuestNormalizedName === quest.normalized_name}
             onClick={() => onOpenQuest(quest.normalized_name)}
-            className="block w-full rounded px-1 py-0.5 text-left text-xs text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-300 dark:hover:bg-[#2a2d31]"
+            className="block w-full rounded px-1 py-0.5 text-left text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-orange-500 disabled:cursor-wait disabled:opacity-60 dark:text-gray-100 dark:hover:bg-[#2a2d31]"
           >
             → {localizedName(quest as unknown as Record<string, unknown>, locale)}
           </button>
@@ -2731,7 +2731,7 @@ function QuestRewardList({
 
   return (
     <section>
-      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
         {copy.rewards}
       </h4>
       <div className="space-y-3">
@@ -2826,7 +2826,7 @@ function RewardBlock({
 }) {
   return (
     <div>
-      <h5 className="mb-1 text-[11px] font-bold text-gray-500 dark:text-gray-400">{title}</h5>
+      <h5 className="mb-1 text-[11px] font-bold text-gray-500 dark:text-gray-300">{title}</h5>
       <ExpandableRows className="grid gap-1.5" copy={copy}>
         {children}
       </ExpandableRows>
@@ -2836,7 +2836,7 @@ function RewardBlock({
 
 function RewardPill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300">
+    <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100">
       {children}
     </div>
   );
@@ -2858,7 +2858,7 @@ function RewardItemLink({
       href={`/item/info/${normalizedName}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+      className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300"
     >
       <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white dark:bg-[#20242b]">
         {image ? <img alt={name} className="h-full w-full object-contain" src={image} /> : null}

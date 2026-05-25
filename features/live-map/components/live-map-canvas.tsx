@@ -119,6 +119,7 @@ export function LiveMapCanvas({
   const pointMarkerRefs = useRef<LeafletMarker[]>([]);
   const pointMarkerByIdRef = useRef<Map<string, LeafletMarker>>(new Map());
   const lastFocusedMarkerRef = useRef<string | null>(null);
+  const lastFocusedFloorRef = useRef<string | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
@@ -364,11 +365,16 @@ export function LiveMapCanvas({
       return;
     }
 
-    if (lastFocusedMarkerRef.current === focusedMarkerId && marker.isPopupOpen()) {
+    const shouldMoveView =
+      lastFocusedMarkerRef.current !== focusedMarkerId ||
+      lastFocusedFloorRef.current !== activeFloorId;
+
+    if (!shouldMoveView && marker.isPopupOpen()) {
       return;
     }
 
     lastFocusedMarkerRef.current = focusedMarkerId;
+    lastFocusedFloorRef.current = activeFloorId;
     const frameId = window.requestAnimationFrame(() => {
       if (!map.getContainer().isConnected || !pointMarkerByIdRef.current.has(focusedMarkerId)) {
         return;
@@ -380,7 +386,9 @@ export function LiveMapCanvas({
         return;
       }
 
-      map.panTo(currentMarker.getLatLng(), { animate: false });
+      if (shouldMoveView) {
+        map.panTo(currentMarker.getLatLng(), { animate: false });
+      }
 
       try {
         currentMarker.openPopup();

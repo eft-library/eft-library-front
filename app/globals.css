@@ -304,10 +304,11 @@ summary {
 .live-map-popup-description {
   margin: 0;
   color: #374151;
+  font-weight: 500;
 }
 
 .dark .live-map-popup-description {
-  color: #d1d5db;
+  color: #f3f4f6;
 }
 
 .live-map-popup-location {
@@ -324,7 +325,7 @@ summary {
 .dark .live-map-popup-location {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
-  color: #d1d5db;
+  color: #f3f4f6;
 }
 
 .live-map-popup-thumbs {
