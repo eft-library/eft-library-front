@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import L, {
   CRS,
   type ImageOverlay as LeafletImageOverlay,
@@ -122,6 +122,14 @@ export function LiveMapCanvas({
   const markerRef = useRef<LeafletMarker | null>(null);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
+  const imageBoundsKey = useMemo(
+    () => JSON.stringify(coordinateInfo.image_bounds),
+    [coordinateInfo.image_bounds],
+  );
+  const mapBoundsKey = useMemo(
+    () => JSON.stringify(coordinateInfo.map_bounds),
+    [coordinateInfo.map_bounds],
+  );
 
   useEffect(() => {
     focusedMarkerIdRef.current = focusedMarkerId;
@@ -250,9 +258,8 @@ export function LiveMapCanvas({
     };
   }, [
     coordinateInfo.default_zoom_level,
-    coordinateInfo.image_bounds,
-    coordinateInfo.map_bounds,
     mapKey,
+    mapBoundsKey,
     onMousePositionChange,
     onPopupImageClick,
   ]);
@@ -293,7 +300,7 @@ export function LiveMapCanvas({
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
     };
-  }, [activeFloorId, coordinateInfo.image_bounds, floors]);
+  }, [activeFloorId, imageBoundsKey, floors]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -421,7 +428,7 @@ export function LiveMapCanvas({
 
     const frameId = window.requestAnimationFrame(() => {
       if (map.getContainer().isConnected) {
-        map.setView(position, coordinateInfo.default_zoom_level, { animate: false });
+        map.setView(position, map.getZoom(), { animate: false });
       }
     });
 
@@ -433,7 +440,7 @@ export function LiveMapCanvas({
         markerRef.current = null;
       }
     };
-  }, [coordinateInfo.default_zoom_level, location, mapKey]);
+  }, [location, mapKey]);
 
   return <div ref={containerRef} className="eft-leaflet-map live-map-canvas h-full w-full" />;
 }
