@@ -327,6 +327,7 @@ function toLiveMapQuestInfo(response: QuestDetailResponse): LiveMapQuestInfo {
     objectives: response.objectives.map((objective) => ({
       ...objective,
       live_map_point: null,
+      live_map_points: [],
       type: objective.type,
     })),
     quest: response.quest,
@@ -355,16 +356,44 @@ function getPointDetailText(
   return point?.details.map((detail) => getLocalizedDetailText(detail, locale)).find(Boolean) ?? "";
 }
 
+function getQuestObjectivePoints(
+  objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
+) {
+  if (!objective) {
+    return [];
+  }
+
+  if ((objective.live_map_points?.length ?? 0) > 0) {
+    return objective.live_map_points ?? [];
+  }
+
+  return objective.live_map_point ? [objective.live_map_point] : [];
+}
+
+function getQuestObjectivePoint(
+  objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
+  pointId?: string,
+) {
+  const points = getQuestObjectivePoints(objective);
+
+  if (pointId) {
+    return points.find((point) => point.id === pointId) ?? null;
+  }
+
+  return objective?.live_map_point ?? points[0] ?? null;
+}
+
 function getQuestObjectiveText(
   objective: LiveMapQuestInfo["objectives"][number] | null | undefined,
   locale: Locale,
+  pointId?: string,
 ) {
   if (!objective) {
     return "";
   }
 
   return (
-    getPointDetailText(objective.live_map_point, locale) ||
+    getPointDetailText(getQuestObjectivePoint(objective, pointId), locale) ||
     localizedDescription(objective as unknown as Record<string, unknown>, locale)
   );
 }
@@ -379,7 +408,11 @@ function getQuestObjectiveDescription(
 }
 
 function findQuestObjectiveByPointId(info: LiveMapQuestInfo, pointId: string) {
-  return info.objectives.find((objective) => objective.live_map_point?.id === pointId) ?? null;
+  return (
+    info.objectives.find((objective) =>
+      getQuestObjectivePoints(objective).some((point) => point.id === pointId),
+    ) ?? null
+  );
 }
 
 function findNestedObjectiveByPoint(
@@ -441,7 +474,7 @@ function getQuestPointLabel(point: LiveMapQuestPoint, locale: Locale) {
   const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
 
   return (
-    getQuestObjectiveText(objective, locale) ||
+    getQuestObjectiveText(objective, locale, point.id) ||
     localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
   );
 }
@@ -558,12 +591,13 @@ function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale) {
   }
 
   const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
-  const details = objective?.live_map_point?.details ?? [];
+  const selectedPoint = getQuestObjectivePoint(objective, point.id);
+  const details = selectedPoint?.details ?? [];
 
   return createMarkerPopupHtml({
     description: getQuestObjectiveDescription(objective, locale),
     images: getPopupImages(details),
-    location: getPointDetailText(objective?.live_map_point, locale),
+    location: getPointDetailText(selectedPoint, locale),
     title: localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale),
     titleImage: point.quest_info.trader?.image,
   });
@@ -893,21 +927,23 @@ export function LiveMapPage({
 
   const focusQuestObjective = useCallback(
     (objective: LiveMapQuestInfo["objectives"][number], questId: string) => {
-      if (!objective.live_map_point) {
+      const point = getQuestObjectivePoint(objective);
+
+      if (!point) {
         return;
       }
 
       const targetMap =
-        objective.maps.find((map) => map.id === objective.live_map_point?.map_id)
-          ?.normalized_name ??
+        point.map?.normalized_name ??
+        objective.maps.find((map) => map.id === point.map_id)?.normalized_name ??
         objective.maps[0]?.normalized_name ??
         normalizedName;
-      const focus = `quest:${objective.live_map_point.id}`;
+      const focus = `quest:${point.id}`;
 
       setEnabledQuestIds((current) => new Set([...current, questId]));
 
-      if (objective.live_map_point.floor_id) {
-        setSelectedFloorId(objective.live_map_point.floor_id);
+      if (point.floor_id) {
+        setSelectedFloorId(point.floor_id);
       }
 
       if (targetMap === normalizedName) {
@@ -1005,9 +1041,9 @@ export function LiveMapPage({
     setter((current) => (current.size === ids.length ? new Set() : new Set(ids)));
   }
 
-  const openPanelForMarker = useCallback(
-    (marker: LiveMapCanvasMarker) => {
-      const { id, kind } = parseCanvasMarkerId(marker.id);
+  const openPanelForMarkerId = useCallback(
+    (markerId: string, { openStaticPanel = false }: { openStaticPanel?: boolean } = {}) => {
+      const { id, kind } = parseCanvasMarkerId(markerId);
 
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
@@ -1052,12 +1088,31 @@ export function LiveMapPage({
         if (point) {
           setSelectedStaticId(point.id);
           setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
-          setPanel((current) => (current?.type === "static" ? null : current));
+          setPanel((current) =>
+            openStaticPanel
+              ? { id: point.id, point, type: "static" }
+              : current?.type === "static"
+                ? null
+                : current,
+          );
         }
       }
     },
     [data.event_points, data.quest_points, data.static_points, data.story_points],
   );
+
+  const openPanelForMarker = useCallback(
+    (marker: LiveMapCanvasMarker) => {
+      openPanelForMarkerId(marker.id);
+    },
+    [openPanelForMarkerId],
+  );
+
+  function clearLiveMapSelection() {
+    setPanel(null);
+    setSelectedStaticId(null);
+    setExpandedStaticCategories(new Set());
+  }
 
   async function toggleQuestCompletionState(questId: string) {
     if (!accessToken) {
@@ -1153,17 +1208,8 @@ export function LiveMapPage({
       setSelectedFloorId(marker.floorId);
     }
 
-    const { id, kind } = parseCanvasMarkerId(focusedMarkerId);
-
-    if (kind === "static") {
-      const point = data.static_points.find((entry) => entry.id === id);
-
-      if (point) {
-        setSelectedStaticId(point.id);
-        setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
-      }
-    }
-  }, [data.static_points, focusedMarkerId, visibleMarkers]);
+    openPanelForMarkerId(focusedMarkerId);
+  }, [focusedMarkerId, openPanelForMarkerId, visibleMarkers]);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
@@ -1243,6 +1289,7 @@ export function LiveMapPage({
                             type="button"
                             onClick={() => {
                               setIsMapSelectorOpen(false);
+                              clearLiveMapSelection();
                               router.push(`/live-map/${entry.normalized_name}`);
                             }}
                             className={cn(
@@ -2157,7 +2204,8 @@ function ObjectiveList({
             key={objective.objective_id}
             className={cn(
               "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs text-gray-700 dark:text-gray-300",
-              selectedPointId && objective.live_map_point?.id === selectedPointId
+              selectedPointId &&
+                getQuestObjectivePoints(objective).some((point) => point.id === selectedPointId)
                 ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
                 : "",
             )}
@@ -2165,7 +2213,11 @@ function ObjectiveList({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
-              onFocus={objective.live_map_point ? () => onFocusObjective?.(objective) : undefined}
+              onFocus={
+                getQuestObjectivePoints(objective).length > 0
+                  ? () => onFocusObjective?.(objective)
+                  : undefined
+              }
               optional={false}
             />
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}

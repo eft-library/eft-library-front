@@ -36,6 +36,7 @@ export interface LiveMapObjectivePoint {
   z: number;
   y: number;
   details: LiveMapPointDetail[];
+  map?: MapSelectorEntry | null;
 }
 
 export interface LiveMapObjectiveItem {
@@ -58,6 +59,7 @@ export interface LiveMapQuestObjective {
   items: LiveMapObjectiveItem[];
   required_keys: QuestDetailItem[];
   maps: QuestObjectiveMap[];
+  live_map_points?: LiveMapObjectivePoint[];
   live_map_point?: LiveMapObjectivePoint | null;
 }
 
