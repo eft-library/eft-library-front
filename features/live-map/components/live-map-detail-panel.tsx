@@ -1,6 +1,6 @@
 import type React from "react";
 import { Children, useState } from "react";
-import { Check, Route, X } from "lucide-react";
+import { Check, ExternalLink, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
@@ -172,20 +172,31 @@ function QuestPanel({
           ) : null}
         </div>
       </div>
-      <button
-        type="button"
-        disabled={saving}
-        onClick={onToggle}
-        className={cn(
-          "inline-flex h-7 items-center gap-1 rounded px-2 text-xs font-black disabled:cursor-wait disabled:opacity-70",
-          completed
-            ? "bg-emerald-500 text-white"
-            : "bg-orange-500 text-white dark:text-[#1e2124]",
-        )}
-      >
-        {completed ? <Check className="h-3.5 w-3.5" /> : null}
-        {completed ? copy.completed : copy.progress}
-      </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          disabled={saving}
+          onClick={onToggle}
+          className={cn(
+            "inline-flex h-7 items-center gap-1 rounded px-2 text-xs font-black disabled:cursor-wait disabled:opacity-70",
+            completed
+              ? "bg-emerald-500 text-white"
+              : "bg-orange-500 text-white dark:text-[#1e2124]",
+          )}
+        >
+          {completed ? <Check className="h-3.5 w-3.5" /> : null}
+          {completed ? copy.completed : copy.progress}
+        </button>
+        <a
+          href={`/quest/detail/${info.quest.normalized_name}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-7 items-center gap-1 rounded border border-gray-200 px-2 text-xs font-bold text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300"
+        >
+          <ExternalLink className="h-3.5 w-3.5" />
+          {copy.questDetailPage}
+        </a>
+      </div>
       <QuestRequirementList
         copy={copy}
         minPlayerLevel={info.quest.min_player_level}

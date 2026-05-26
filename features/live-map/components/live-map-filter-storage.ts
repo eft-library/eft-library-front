@@ -1,7 +1,6 @@
 const LIVE_MAP_FILTER_STORAGE_PREFIX = "eft-library-live-map-filters-v1:";
 
 export interface LiveMapFilterStorageState {
-  collapsedStaticCategories?: string[];
   disabledEventIds?: string[];
   disabledQuestIds?: string[];
   disabledStaticIds?: string[];
@@ -27,7 +26,6 @@ export function readLiveMapFilterStorage(normalizedName: string): LiveMapFilterS
     const parsedValue = JSON.parse(rawValue) as Partial<LiveMapFilterStorageState>;
 
     return {
-      collapsedStaticCategories: getStringArray(parsedValue.collapsedStaticCategories),
       disabledEventIds: getStringArray(parsedValue.disabledEventIds),
       disabledQuestIds: getStringArray(parsedValue.disabledQuestIds),
       disabledStaticIds: getStringArray(parsedValue.disabledStaticIds),
@@ -64,15 +62,6 @@ export function getEnabledIdsFromDisabled(allIds: string[], disabledIds: string[
   const disabledSet = new Set(disabledIds);
 
   return new Set(allIds.filter((id) => !disabledSet.has(id)));
-}
-
-export function getExpandedCategoriesFromCollapsed(
-  categories: string[],
-  collapsedCategories: string[] = [],
-) {
-  const collapsedSet = new Set(collapsedCategories);
-
-  return new Set(categories.filter((category) => !collapsedSet.has(category)));
 }
 
 export function getDisabledIds(allIds: string[], enabledIds: Set<string>) {

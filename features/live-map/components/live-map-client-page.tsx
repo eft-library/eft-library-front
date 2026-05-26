@@ -59,7 +59,6 @@ import {
 import {
   getDisabledIds,
   getEnabledIdsFromDisabled,
-  getExpandedCategoriesFromCollapsed,
   readLiveMapFilterStorage,
   writeLiveMapFilterStorage,
 } from "./live-map-filter-storage";
@@ -194,12 +193,7 @@ export function LiveMapClientPage({
     setEnabledStoryIds(getEnabledIdsFromDisabled(storyIds, savedFilters?.disabledStoryIds));
     setEnabledEventIds(getEnabledIdsFromDisabled(eventIds, savedFilters?.disabledEventIds));
     setEnabledStaticIds(getEnabledIdsFromDisabled(staticIds, savedFilters?.disabledStaticIds));
-    setExpandedStaticCategories(
-      getExpandedCategoriesFromCollapsed(
-        staticCategories,
-        savedFilters?.collapsedStaticCategories,
-      ),
-    );
+    setExpandedStaticCategories(new Set(staticCategories));
     setHydratedFilterMap(normalizedName);
   }, [
     eventEntries,
@@ -219,10 +213,8 @@ export function LiveMapClientPage({
     const storyIds = storyEntries.map((entry) => entry.id);
     const eventIds = eventEntries.map((entry) => entry.id);
     const staticIds = staticEntries.map((entry) => entry.id);
-    const staticCategories = staticGroups.map((group) => group.category);
 
     writeLiveMapFilterStorage(normalizedName, {
-      collapsedStaticCategories: getDisabledIds(staticCategories, expandedStaticCategories),
       disabledEventIds: getDisabledIds(eventIds, enabledEventIds),
       disabledQuestIds: getDisabledIds(questIds, enabledQuestIds),
       disabledStaticIds: getDisabledIds(staticIds, enabledStaticIds),
@@ -233,13 +225,11 @@ export function LiveMapClientPage({
     enabledQuestIds,
     enabledStaticIds,
     enabledStoryIds,
-    expandedStaticCategories,
     eventEntries,
     hydratedFilterMap,
     normalizedName,
     questEntries,
     staticEntries,
-    staticGroups,
     storyEntries,
   ]);
 
