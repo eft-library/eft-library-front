@@ -1,6 +1,7 @@
 import AccidentalWitness from "./accidental-witness";
 import Batya from "./batya";
 import BlueFire from "./blue-fire";
+import Boreas from "./boreas";
 import FallingSkies from "./falling-skies";
 import Roadmap from "./roadmap";
 import TheLabyrinth from "./the-labyrinth";
@@ -13,6 +14,7 @@ export const StorySvg = {
   AccidentalWitness,
   Batya,
   BlueFire,
+  Boreas,
   FallingSkies,
   Roadmap,
   TheLabyrinth,
@@ -26,6 +28,7 @@ export const StorySvgComponents = {
   "accidental-witness": StorySvg.AccidentalWitness,
   batya: StorySvg.Batya,
   "blue-fire": StorySvg.BlueFire,
+  boreas: StorySvg.Boreas,
   "falling-skies": StorySvg.FallingSkies,
   roadmap: StorySvg.Roadmap,
   "the-labyrinth": StorySvg.TheLabyrinth,
