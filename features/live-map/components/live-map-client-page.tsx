@@ -68,6 +68,7 @@ import {
   getStaticPointPopupHtml,
   getStoryPointPopupHtml,
 } from "./live-map-marker-popup";
+import { LiveMapLocationGuide } from "./live-map-location-guide";
 import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
 import { findFloorForHeight, parseWhereText, type LiveMapLocation } from "./live-map-utils";
 
@@ -770,7 +771,7 @@ export function LiveMapClientPage({
             type="button"
             aria-label={copy.guideTitle}
             title={copy.guideTitle}
-            onClick={() => setIsGuideOpen((value) => !value)}
+            onClick={() => setIsGuideOpen(true)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-200"
           >
             <CircleHelp className="h-4 w-4" />
@@ -952,9 +953,6 @@ export function LiveMapClientPage({
                   {mousePosition?.lat.toFixed(2) ?? "0.00"}
                 </span>
               </div>
-              {isGuideOpen ? (
-                <p className="leading-5 text-gray-600 dark:text-gray-200">{copy.guide}</p>
-              ) : null}
             </div>
           </section>
 
@@ -1042,6 +1040,11 @@ export function LiveMapClientPage({
           </aside>
         </div>
       </div>
+      <LiveMapLocationGuide
+        copy={copy}
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+      />
       <LiveMapImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
     </main>
   );

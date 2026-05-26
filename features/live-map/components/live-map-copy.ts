@@ -47,8 +47,22 @@ export const copyByLocale = {
     noCoordinateInfo: "이 지도는 아직 위치 좌표 메타데이터가 없습니다.",
     noFloors: "표시할 지도 층 데이터가 없습니다.",
     guideTitle: "내 위치 찾기",
-    guide:
-      "where-am-i 프로그램에서 전달된 위치가 자동으로 반영됩니다. 직접 사용할 때는 스크린샷 파일명을 붙여넣고 Locate를 누르세요.",
+    guideModalTitle: "내 위치 찾기 가이드",
+    guideAutoTitle: "프로그램 사용 시",
+    guideAutoSteps: [
+      "where-am-i.exe 파일을 실행합니다.",
+      "이메일을 입력합니다.",
+      "홈페이지에 로그인합니다.",
+      "알맞은 지도를 선택한 뒤 스크린샷을 찍습니다.",
+      "위치가 자동으로 지도에 표시됩니다.",
+    ],
+    guideManualTitle: "프로그램 미사용 시",
+    guideManualSteps: [
+      "PrintScreen 키로 스크린샷을 촬영합니다.",
+      "스크린샷 파일명을 복사합니다.",
+      "위치 확인 입력창에 붙여넣고 Locate를 누릅니다.",
+    ],
+    guideDownload: "프로그램 다운로드",
   },
   en: {
     title: "Live Map",
@@ -96,8 +110,22 @@ export const copyByLocale = {
     noCoordinateInfo: "This map does not have coordinate metadata yet.",
     noFloors: "No map floor data is available.",
     guideTitle: "Find My Location",
-    guide:
-      "Locations sent by the where-am-i program appear automatically. To use it manually, paste the screenshot filename and press Locate.",
+    guideModalTitle: "Location Guide",
+    guideAutoTitle: "With Program",
+    guideAutoSteps: [
+      "Run where-am-i.exe.",
+      "Enter your email.",
+      "Sign in to the website.",
+      "Select the correct map and take a screenshot.",
+      "Your location appears automatically.",
+    ],
+    guideManualTitle: "Without Program",
+    guideManualSteps: [
+      "Take a screenshot with PrintScreen.",
+      "Copy the screenshot filename.",
+      "Paste it into the location input and press Locate.",
+    ],
+    guideDownload: "Download Program",
   },
   ja: {
     title: "Live Map",
@@ -145,8 +173,22 @@ export const copyByLocale = {
     noCoordinateInfo: "このマップにはまだ座標メタデータがありません。",
     noFloors: "表示できるフロアデータがありません。",
     guideTitle: "位置確認",
-    guide:
-      "where-am-iプログラムから送信された位置は自動で反映されます。手動ではスクリーンショット名を貼り付けてLocateを押してください。",
+    guideModalTitle: "位置確認ガイド",
+    guideAutoTitle: "プログラム使用時",
+    guideAutoSteps: [
+      "where-am-i.exeを実行します。",
+      "メールアドレスを入力します。",
+      "サイトにログインします。",
+      "正しいマップを選び、スクリーンショットを撮ります。",
+      "位置が自動的に表示されます。",
+    ],
+    guideManualTitle: "プログラム未使用時",
+    guideManualSteps: [
+      "PrintScreenでスクリーンショットを撮影します。",
+      "スクリーンショットのファイル名をコピーします。",
+      "入力欄に貼り付けてLocateを押します。",
+    ],
+    guideDownload: "プログラムダウンロード",
   },
 } as const;
 
