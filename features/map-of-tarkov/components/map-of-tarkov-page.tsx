@@ -429,7 +429,7 @@ function PointSection({
         <Navigation2 className="mr-2 h-5 w-5 text-orange-500" />
         {title}
       </h2>
-      <div className="hidden rounded-lg border border-gray-200 bg-white p-4 text-center text-sm font-bold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#252830] dark:text-gray-300 md:grid md:grid-cols-[minmax(220px,1.8fr)_minmax(120px,0.9fr)_90px_72px_72px_minmax(240px,1.7fr)_minmax(240px,1.7fr)] md:items-center">
+      <div className="hidden gap-4 rounded-lg border border-gray-200 bg-white p-4 text-center text-sm font-bold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#252830] dark:text-gray-300 md:grid md:grid-cols-[minmax(220px,1.8fr)_minmax(120px,0.9fr)_90px_72px_72px_minmax(240px,1.7fr)_minmax(240px,1.7fr)] md:items-center">
         <div>{copy.photo}</div>
         <div>{copy.name}</div>
         <div>{copy.affiliation}</div>
