@@ -158,7 +158,13 @@ export function toLiveMapQuestInfo(response: QuestDetailResponse): LiveMapQuestI
 }
 
 export function getLocalizedDetailText(detail: LiveMapPointDetail, locale: Locale) {
-  return localizedDescription(detail as unknown as Record<string, unknown>, locale).trim();
+  const localizedValue = pickLocalizedField(
+    detail as unknown as Record<string, unknown>,
+    locale,
+    "description",
+  );
+
+  return typeof localizedValue === "string" ? localizedValue.trim() : "";
 }
 
 export function getPointDetailText(

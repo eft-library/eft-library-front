@@ -133,6 +133,39 @@ summary {
   color: #f9fafb;
 }
 
+.live-map-marker-tooltip.leaflet-tooltip {
+  overflow: hidden;
+  width: max-content;
+  max-width: min(440px, calc(100vw - 32px));
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111827;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.35;
+  padding: 8px 11px;
+  white-space: normal;
+  backdrop-filter: blur(8px);
+}
+
+.live-map-marker-tooltip.leaflet-tooltip::before {
+  border-top-color: rgba(255, 255, 255, 0.96);
+}
+
+.dark .live-map-marker-tooltip.leaflet-tooltip {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(21, 25, 29, 0.96);
+  color: #f9fafb;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+}
+
+.dark .live-map-marker-tooltip.leaflet-tooltip::before {
+  border-top-color: rgba(21, 25, 29, 0.96);
+}
+
 .live-map-point-popup .leaflet-popup-content-wrapper {
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.14);

@@ -71,27 +71,30 @@ function getRelaxedMapBounds(bounds: FindInfo["map_bounds"]) {
 
 function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean, isFocused: boolean) {
   const color = markerColorByKind[kind];
+  const width = isFocused ? 30 : 24;
+  const height = isFocused ? 36 : 30;
+  const circleRadius = isFocused ? 4.6 : 4.3;
 
   return L.divIcon({
     className: "live-map-marker-icon",
     html: `
       <div style="
-        width: ${isFocused ? "34px" : "28px"};
-        height: ${isFocused ? "40px" : "34px"};
+        width: ${width}px;
+        height: ${height}px;
         position: relative;
         opacity: ${isDimmed ? "0.32" : "1"};
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) ${isFocused ? "drop-shadow(0 0 10px rgba(255,180,0,0.82))" : ""};
+        filter: drop-shadow(0 3px 6px rgba(0,0,0,0.48)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.82))" : ""};
         transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
-        transform: ${isFocused ? "translateY(-3px) scale(1.08)" : "none"};
+        transform: ${isFocused ? "translateY(-3px) scale(1.06)" : "none"};
       ">
-        <svg width="${isFocused ? "34" : "28"}" height="${isFocused ? "40" : "34"}" viewBox="0 0 24 28" fill="none" aria-hidden="true">
+        <svg width="${width}" height="${height}" viewBox="0 0 24 28" fill="none" aria-hidden="true">
           <path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 16 12 16S24 21 24 12C24 5.373 18.627 0 12 0z" fill="${color}" />
-          <circle cx="12" cy="12" r="5" fill="#1A1C1F" />
+          <circle cx="12" cy="12" r="${circleRadius}" fill="#1A1C1F" />
         </svg>
       </div>
     `,
-    iconAnchor: isFocused ? [17, 40] : [14, 34],
-    iconSize: isFocused ? [34, 40] : [28, 34],
+    iconAnchor: [width / 2, height],
+    iconSize: [width, height],
   });
 }
 
@@ -131,6 +134,27 @@ function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker)
     maxWidth: 460,
     minWidth: 460,
     offset: [0, -30],
+  });
+}
+
+function syncPointMarkerTooltip(marker: LeafletMarker, point: LiveMapCanvasMarker) {
+  if (!point.label) {
+    marker.unbindTooltip();
+    return;
+  }
+
+  const tooltip = marker.getTooltip();
+
+  if (tooltip) {
+    tooltip.setContent(point.label);
+    return;
+  }
+
+  marker.bindTooltip(point.label, {
+    className: "live-map-marker-tooltip",
+    direction: "top",
+    offset: [0, -28],
+    opacity: 0.95,
   });
 }
 
@@ -400,6 +424,7 @@ export function LiveMapCanvas({
         existing.point = point;
         existing.marker.options.title = point.label;
         syncPointMarkerPopup(existing.marker, point);
+        syncPointMarkerTooltip(existing.marker, point);
         syncPointMarkerPresentation({
           activeFloorId,
           focusedMarkerId,
@@ -419,6 +444,7 @@ export function LiveMapCanvas({
       });
 
       syncPointMarkerPopup(marker, point);
+      syncPointMarkerTooltip(marker, point);
 
       marker.on("click", () => {
         const current = pointMarkerByIdRef.current.get(point.id)?.point ?? point;
