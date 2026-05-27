@@ -92,7 +92,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
       return;
     }
     router.push(
-      `/community/search?search_type=all&word=${encodeURIComponent(word)}&page=1`,
+      `/community/search?search_type=all&word=${encodeURIComponent(word)}&page=1&from=${currentCategory}`,
     );
   }
 

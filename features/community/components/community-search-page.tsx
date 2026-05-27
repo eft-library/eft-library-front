@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
 import { getCommunitySearch } from "@/features/community/api";
 import { CommunityPagination } from "@/features/community/components/community-pagination";
 import { CommunityPostList } from "@/features/community/components/community-post-list";
-import { communitySearchCategories } from "@/lib/constants/community-categories";
+import {
+  communityCategories,
+  communitySearchCategories,
+} from "@/lib/constants/community-categories";
 import type { CommunitySearchResponse } from "@/types/api/community";
 
 export function CommunitySearchPage() {
@@ -27,6 +31,8 @@ export function CommunitySearchPage() {
   const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
   const queryWord = searchParams.get("word") ?? "";
   const queryType = searchParams.get("search_type") ?? "all";
+  const fromCategory = getValidCommunityCategory(searchParams.get("from"));
+  const fromQuery = `&from=${fromCategory}`;
 
   useEffect(() => {
     setWord(queryWord);
@@ -62,24 +68,33 @@ export function CommunitySearchPage() {
       return;
     }
     router.push(
-      `/community/search?search_type=${searchType}&word=${encodeURIComponent(nextWord)}&page=1`,
+      `/community/search?search_type=${searchType}&word=${encodeURIComponent(nextWord)}&page=1${fromQuery}`,
     );
   }
 
   function changePage(nextPage: number) {
     router.push(
-      `/community/search?search_type=${queryType}&word=${encodeURIComponent(queryWord)}&page=${nextPage}`,
+      `/community/search?search_type=${queryType}&word=${encodeURIComponent(queryWord)}&page=${nextPage}${fromQuery}`,
     );
   }
 
   return (
     <main className="bg-gray-50 py-8 text-gray-950 dark:bg-[#1f232b] dark:text-gray-50">
       <div className="mx-auto w-full max-w-5xl space-y-5 px-4 sm:px-6 lg:px-8">
-        <div>
-          <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">
-            Community Search
-          </p>
-          <h1 className="mt-1 text-2xl font-black">PMC 라운지 검색</h1>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">
+              Community Search
+            </p>
+            <h1 className="mt-1 text-2xl font-black">PMC 라운지 검색</h1>
+          </div>
+          <Link
+            href={`/community/${fromCategory}`}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-gray-200 bg-white px-4 text-sm font-bold text-gray-700 transition hover:border-orange-300 hover:text-orange-600 dark:border-gray-700 dark:bg-[#252932] dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-300"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            목록으로
+          </Link>
         </div>
         <form
           onSubmit={submitSearch}
@@ -136,4 +151,8 @@ export function CommunitySearchPage() {
       </div>
     </main>
   );
+}
+
+function getValidCommunityCategory(value: string | null) {
+  return communityCategories.some((category) => category.id === value) ? value ?? "all" : "all";
 }
