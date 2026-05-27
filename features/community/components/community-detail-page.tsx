@@ -24,8 +24,6 @@ import {
   UserPlus,
   UserX,
   X,
-  ZoomIn,
-  ZoomOut,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
@@ -52,6 +50,7 @@ import {
   updateCommunityComment,
 } from "@/features/community/api";
 import { CommunityPagination } from "@/features/community/components/community-pagination";
+import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
 import {
   formatCommunityDate,
   getCategoryLabel,
@@ -804,7 +803,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
           </section>
         </aside>
       </div>
-      <CommunityImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <ZoomableImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
       <CommunityReportDialog
         target={reportTarget}
         accessToken={session?.accessToken}
@@ -1219,77 +1218,6 @@ function CommunityCommentCard({
           </div>
         ) : null}
       </article>
-    </div>
-  );
-}
-
-function CommunityImagePopup({
-  image,
-  onClose,
-}: {
-  image: { src: string; alt: string } | null;
-  onClose: () => void;
-}) {
-  const [zoom, setZoom] = useState(0.75);
-
-  useEffect(() => {
-    if (!image) {
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [image, onClose]);
-
-  useEffect(() => {
-    setZoom(0.75);
-  }, [image?.src]);
-
-  if (!image) {
-    return null;
-  }
-
-  return (
-    <div
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-4"
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-    >
-      <div
-        className="flex max-h-[88vh] w-[84vw] flex-col overflow-hidden rounded-lg border border-white/10 bg-white shadow-2xl dark:bg-[#1f232b]"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-3 py-2 dark:border-gray-700">
-          <div className="min-w-0 truncate text-sm font-bold text-gray-800 dark:text-gray-100">{image.alt}</div>
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => setZoom((value) => Math.max(0.5, Number((value - 0.25).toFixed(2))))} className="h-8 w-8 rounded-md border border-gray-200 text-gray-700 dark:border-gray-700 dark:text-gray-200" aria-label="축소">
-              <ZoomOut className="mx-auto h-4 w-4" />
-            </button>
-            <span className="w-12 text-center text-xs font-bold text-gray-500 dark:text-gray-300">{Math.round(zoom * 100)}%</span>
-            <button type="button" onClick={() => setZoom((value) => Math.min(3, Number((value + 0.25).toFixed(2))))} className="h-8 w-8 rounded-md border border-gray-200 text-gray-700 dark:border-gray-700 dark:text-gray-200" aria-label="확대">
-              <ZoomIn className="mx-auto h-4 w-4" />
-            </button>
-            <button type="button" onClick={onClose} className="h-8 w-8 rounded-md border border-gray-200 text-gray-700 dark:border-gray-700 dark:text-gray-200" aria-label="닫기">
-              <X className="mx-auto h-4 w-4" />
-            </button>
-          </div>
-        </div>
-        <div className="min-h-0 flex-1 overflow-auto bg-gray-100 p-4 dark:bg-[#15181f]">
-          <img src={image.src} alt={image.alt} className="mx-auto h-auto max-w-none rounded-md" style={{ width: `${zoom * 100}%` }} />
-        </div>
-      </div>
     </div>
   );
 }
