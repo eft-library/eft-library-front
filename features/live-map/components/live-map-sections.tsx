@@ -21,6 +21,7 @@ export function RightSection<TEntry extends RightEntry>({
   emptyLabel,
   enabledIds,
   items,
+  isOpen,
   kind,
   locale,
   onOpen,
@@ -28,6 +29,7 @@ export function RightSection<TEntry extends RightEntry>({
   onToggle,
   onToggleAll,
   onToggleComplete,
+  onToggleOpen,
   searchQuery,
   selectedId,
   title,
@@ -37,6 +39,7 @@ export function RightSection<TEntry extends RightEntry>({
   emptyLabel: string;
   enabledIds: Set<string>;
   items: TEntry[];
+  isOpen: boolean;
   kind: "quest" | "story" | "event" | "static";
   locale: Locale;
   onOpen: (entry: TEntry) => void;
@@ -44,6 +47,7 @@ export function RightSection<TEntry extends RightEntry>({
   onToggle: (id: string) => void;
   onToggleAll: () => void;
   onToggleComplete?: (id: string) => void;
+  onToggleOpen: () => void;
   searchQuery: string;
   selectedId: string | null;
   title: string;
@@ -52,105 +56,127 @@ export function RightSection<TEntry extends RightEntry>({
     () => items.filter((entry) => matchesFilterText(getEntryLabel(entry, locale), searchQuery)),
     [items, locale, searchQuery],
   );
+  const enabledCount = items.filter((entry) => enabledIds.has(entry.id)).length;
 
   return (
     <section className="border-b border-gray-200 p-3 last:border-b-0 dark:border-[#3a3d41]">
-      <div className="mb-2 flex h-9 items-center justify-between gap-2 rounded-md bg-gray-100 px-2 dark:bg-[#2a2d31]">
-        <h2 className="text-sm font-black text-gray-900 dark:text-white">{title}</h2>
+      <div className="mb-2 grid h-9 grid-cols-[1fr_auto] items-center rounded-md bg-gray-100 dark:bg-[#2a2d31]">
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          className="flex h-9 min-w-0 items-center gap-2 rounded-l px-2 text-left hover:bg-gray-200 dark:hover:bg-[#3a3d41]"
+        >
+          <ChevronDown
+            className={cn(
+              "h-3.5 w-3.5 shrink-0 text-orange-500 transition-transform",
+              isOpen ? "rotate-180" : "-rotate-90",
+            )}
+          />
+          <h2 className="min-w-0 flex-1 truncate text-sm font-black text-gray-900 dark:text-white">
+            {title}
+          </h2>
+          <span className="text-[11px] font-bold text-gray-500 dark:text-gray-300">
+            {enabledCount}/{items.length}
+          </span>
+        </button>
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={onToggleAll}
-            className="h-6 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
+            className="mr-1 h-6 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
           >
             {allLabel}
           </button>
         </div>
       </div>
-      {items.length > 0 ? (
-        <div className="relative mb-2">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-          <input
-            value={searchQuery}
-            onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
-            placeholder={`${title} ${copyByLocale[locale].searchFilter}`}
-            className="h-8 w-full rounded-md border border-gray-200 bg-gray-50 pl-8 pr-2 text-xs font-medium text-gray-700 outline-none transition placeholder:text-gray-400 hover:bg-white focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:bg-[#20242b]"
-          />
-        </div>
-      ) : null}
-      {filteredItems.length > 0 ? (
-        <div className="space-y-0.5">
-          {filteredItems.map((entry) => {
-            const isSelected = selectedId === entry.id;
-            const enabled = enabledIds.has(entry.id);
-            const label = getEntryLabel(entry, locale);
-            const completed = kind === "quest" && completedQuestIds.includes(entry.id);
-            const isKappaQuest =
-              "quest_info" in entry.point && !!entry.point.quest_info?.quest.kappa_required;
+      {isOpen ? (
+        <>
+          {items.length > 0 ? (
+            <div className="relative mb-2">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
+              <input
+                value={searchQuery}
+                onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
+                placeholder={`${title} ${copyByLocale[locale].searchFilter}`}
+                className="h-8 w-full rounded-md border border-gray-200 bg-gray-50 pl-8 pr-2 text-xs font-medium text-gray-700 outline-none transition placeholder:text-gray-400 hover:bg-white focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:bg-[#20242b]"
+              />
+            </div>
+          ) : null}
+          {filteredItems.length > 0 ? (
+            <div className="space-y-0.5">
+              {filteredItems.map((entry) => {
+                const isSelected = selectedId === entry.id;
+                const enabled = enabledIds.has(entry.id);
+                const label = getEntryLabel(entry, locale);
+                const completed = kind === "quest" && completedQuestIds.includes(entry.id);
+                const isKappaQuest =
+                  "quest_info" in entry.point && !!entry.point.quest_info?.quest.kappa_required;
 
-            return (
-              <div
-                key={entry.id}
-                className={cn(
-                  "grid h-8 grid-cols-[32px_1fr_48px] items-center rounded-md text-xs",
-                  isSelected ? "bg-gray-100 dark:bg-[#2a2d31]" : "",
-                )}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (kind === "quest") {
-                      onToggleComplete?.(entry.id);
-                    } else {
-                      onOpen(entry);
-                    }
-                  }}
-                  className="flex h-8 items-center justify-center rounded-l hover:bg-gray-200 dark:hover:bg-[#3a3d41]"
-                  aria-label={label}
-                >
-                  {kind === "quest" ? (
-                    <span
-                      className={cn(
-                        "flex h-4 w-4 items-center justify-center rounded-full",
-                        completed ? "bg-emerald-500 text-white" : "bg-orange-500",
-                      )}
-                    >
-                      {completed ? <Check className="h-3 w-3" /> : null}
-                    </span>
-                  ) : (
-                    <EntryIcon kind={kind} />
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onOpen(entry)}
-                  className="flex h-8 min-w-0 items-center gap-1 rounded px-1 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
-                >
-                  <span
+                return (
+                  <div
+                    key={entry.id}
                     className={cn(
-                      "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
-                      isSelected ? "font-black text-orange-500" : "",
+                      "grid h-8 grid-cols-[32px_1fr_48px] items-center rounded-md text-xs",
+                      isSelected ? "bg-gray-100 dark:bg-[#2a2d31]" : "",
                     )}
                   >
-                    {label}
-                  </span>
-                  {isKappaQuest ? <KappaBadge /> : null}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onToggle(entry.id)}
-                  className="flex h-8 items-center justify-center rounded-r hover:bg-gray-200 dark:hover:bg-[#3a3d41]"
-                  aria-label={label}
-                >
-                  <TogglePill enabled={enabled} />
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
-      )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (kind === "quest") {
+                          onToggleComplete?.(entry.id);
+                        } else {
+                          onOpen(entry);
+                        }
+                      }}
+                      className="flex h-8 items-center justify-center rounded-l hover:bg-gray-200 dark:hover:bg-[#3a3d41]"
+                      aria-label={label}
+                    >
+                      {kind === "quest" ? (
+                        <span
+                          className={cn(
+                            "flex h-4 w-4 items-center justify-center rounded-full",
+                            completed ? "bg-emerald-500 text-white" : "bg-orange-500",
+                          )}
+                        >
+                          {completed ? <Check className="h-3 w-3" /> : null}
+                        </span>
+                      ) : (
+                        <EntryIcon kind={kind} />
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onOpen(entry)}
+                      className="flex h-8 min-w-0 items-center gap-1 rounded px-1 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                    >
+                      <span
+                        className={cn(
+                          "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
+                          isSelected ? "font-black text-orange-500" : "",
+                        )}
+                      >
+                        {label}
+                      </span>
+                      {isKappaQuest ? <KappaBadge /> : null}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onToggle(entry.id)}
+                      className="flex h-8 items-center justify-center rounded-r hover:bg-gray-200 dark:hover:bg-[#3a3d41]"
+                      aria-label={label}
+                    >
+                      <TogglePill enabled={enabled} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
+          )}
+        </>
+      ) : null}
     </section>
   );
 }

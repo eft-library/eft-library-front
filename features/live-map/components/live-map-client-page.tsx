@@ -170,6 +170,9 @@ export function LiveMapClientPage({
   const [storyFilterQuery, setStoryFilterQuery] = useState("");
   const [eventFilterQuery, setEventFilterQuery] = useState("");
   const [staticFilterQuery, setStaticFilterQuery] = useState("");
+  const [expandedRightSections, setExpandedRightSections] = useState<Set<string>>(
+    () => new Set(["quest", "story", "event"]),
+  );
   const [hydratedFilterMap, setHydratedFilterMap] = useState<string | null>(null);
   const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
     new Set(),
@@ -514,6 +517,10 @@ export function LiveMapClientPage({
 
       return next;
     });
+  }
+
+  function toggleRightSection(section: "quest" | "story" | "event") {
+    toggleSet(setExpandedRightSections, section);
   }
 
   function toggleAll(
@@ -981,6 +988,7 @@ export function LiveMapClientPage({
                 enabledIds={enabledQuestIds}
                 emptyLabel={copy.noItems}
                 items={questEntries}
+                isOpen={expandedRightSections.has("quest")}
                 kind="quest"
                 onOpen={(entry) =>
                   entry.point.quest_info
@@ -990,6 +998,7 @@ export function LiveMapClientPage({
                 onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
                 onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
                 onToggleComplete={toggleQuestCompletionState}
+                onToggleOpen={() => toggleRightSection("quest")}
                 onSearchQueryChange={setQuestFilterQuery}
                 searchQuery={questFilterQuery}
                 selectedId={panel?.type === "quest" ? panel.id : null}
@@ -1002,6 +1011,7 @@ export function LiveMapClientPage({
                 enabledIds={enabledStoryIds}
                 emptyLabel={copy.noItems}
                 items={storyEntries}
+                isOpen={expandedRightSections.has("story")}
                 kind="story"
                 onOpen={(entry) =>
                   entry.point.story_info
@@ -1010,6 +1020,7 @@ export function LiveMapClientPage({
                 }
                 onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStoryIds, storyEntries.map((entry) => entry.id))}
+                onToggleOpen={() => toggleRightSection("story")}
                 onSearchQueryChange={setStoryFilterQuery}
                 searchQuery={storyFilterQuery}
                 selectedId={panel?.type === "story" ? panel.id : null}
@@ -1022,6 +1033,7 @@ export function LiveMapClientPage({
                 enabledIds={enabledEventIds}
                 emptyLabel={copy.noItems}
                 items={eventEntries}
+                isOpen={expandedRightSections.has("event")}
                 kind="event"
                 onOpen={(entry) =>
                   entry.point.event_info
@@ -1030,6 +1042,7 @@ export function LiveMapClientPage({
                 }
                 onToggle={(id) => toggleSet(setEnabledEventIds, id)}
                 onToggleAll={() => toggleAll(setEnabledEventIds, eventEntries.map((entry) => entry.id))}
+                onToggleOpen={() => toggleRightSection("event")}
                 onSearchQueryChange={setEventFilterQuery}
                 searchQuery={eventFilterQuery}
                 selectedId={panel?.type === "event" ? panel.id : null}
