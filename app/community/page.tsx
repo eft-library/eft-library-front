@@ -9,5 +9,5 @@ export const metadata = createPageMetadata({
 });
 
 export default function Page() {
-  redirect("/community/free");
+  redirect("/community/all");
 }

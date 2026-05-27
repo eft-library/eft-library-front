@@ -17,7 +17,7 @@ export interface NavigationActions {
 export type AppStoreState = NavigationState & NavigationActions;
 
 export const defaultNavigationState: NavigationState = {
-  activeCommunityCategory: "free",
+  activeCommunityCategory: "all",
   uiLocale: "ko",
 };
 

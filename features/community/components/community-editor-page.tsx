@@ -143,7 +143,7 @@ export function CommunityEditorPage({ postParam }: CommunityEditorPageProps) {
             className="h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-sm font-semibold outline-none dark:border-gray-700 dark:bg-[#1f232b]"
           >
             {communityCategories
-              .filter((item) => item.id !== "issue")
+              .filter((item) => item.id !== "issue" && item.id !== "all")
               .map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.labels.ko}

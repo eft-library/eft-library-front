@@ -42,7 +42,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
   const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
   const currentCategory = useMemo(
     () =>
-      communityCategories.find((item) => item.id === category)?.id ?? "free",
+      communityCategories.find((item) => item.id === category)?.id ?? "all",
     [category],
   );
 

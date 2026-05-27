@@ -13,6 +13,11 @@ export interface CommunitySearchCategory {
 
 export const communityCategories: CommunityCategory[] = [
   {
+    id: "all",
+    colorClassName: "bg-slate-600",
+    labels: { ko: "전체", en: "All", ja: "すべて" },
+  },
+  {
     id: "issue",
     colorClassName: "bg-rose-600",
     labels: { ko: "이슈", en: "Issue", ja: "イシュー" },
