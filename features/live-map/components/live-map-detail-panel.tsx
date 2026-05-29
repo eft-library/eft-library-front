@@ -1,12 +1,13 @@
 import type React from "react";
 import { Children, useState } from "react";
-import { Check, ExternalLink, Route, X } from "lucide-react";
+import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 import type {
   EventInfo,
   EventObjective,
+  LiveMapObjectivePoint,
   LiveMapQuestInfo,
   LiveMapStaticPoint,
   StoryInfo,
@@ -18,6 +19,7 @@ import {
   findNestedObjectiveByPoint,
   getQuestObjectivePoint,
   getQuestObjectivePoints,
+  getPointDetailText,
   isRemoteObjectivePoint,
   localizedDescription,
   localizedName,
@@ -29,6 +31,7 @@ import { KappaBadge } from "./live-map-sections";
 export function DetailPanel({
   completedQuestIds,
   copy,
+  focusEventObjective,
   focusQuestObjective,
   focusStoryObjective,
   loadingQuestNormalizedName,
@@ -45,8 +48,10 @@ export function DetailPanel({
   focusQuestObjective: (
     objective: LiveMapQuestInfo["objectives"][number],
     questId: string,
+    pointId?: string,
   ) => void;
-  focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
+  focusStoryObjective: (objective: StoryObjective, storyId: string, pointId?: string) => void;
+  focusEventObjective: (objective: EventObjective, eventId: string, pointId?: string) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
   normalizedName: string;
@@ -106,8 +111,10 @@ export function DetailPanel({
         {panel.type === "event" ? (
           <EventPanel
             copy={copy}
+            focusEventObjective={focusEventObjective}
             info={panel.info}
             locale={locale}
+            normalizedName={normalizedName}
             selectedObjectiveId={panel.objectiveId}
             selectedPointId={panel.pointId}
           />
@@ -139,6 +146,7 @@ function QuestPanel({
   focusQuestObjective: (
     objective: LiveMapQuestInfo["objectives"][number],
     questId: string,
+    pointId?: string,
   ) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
@@ -206,7 +214,7 @@ function QuestPanel({
         locale={locale}
         normalizedName={normalizedName}
         objectives={info.objectives}
-        onFocusObjective={(objective) => focusQuestObjective(objective, info.quest.id)}
+        onFocusObjective={(objective, pointId) => focusQuestObjective(objective, info.quest.id, pointId)}
         selectedPointId={selectedPointId}
       />
       <QuestRewardList copy={copy} info={info} locale={locale} />
@@ -232,7 +240,7 @@ function StoryPanel({
   selectedPointId,
 }: {
   copy: LiveMapCopy;
-  focusStoryObjective: (objective: StoryObjective, storyId: string) => void;
+  focusStoryObjective: (objective: StoryObjective, storyId: string, pointId?: string) => void;
   info: StoryInfo;
   locale: Locale;
   normalizedName: string;
@@ -264,7 +272,7 @@ function StoryPanel({
       ) : null}
       <StoryObjectiveList
         copy={copy}
-        onFocusObjective={(objective) => focusStoryObjective(objective, info.story.id)}
+        onFocusObjective={(objective, pointId) => focusStoryObjective(objective, info.story.id, pointId)}
         locale={locale}
         normalizedName={normalizedName}
         objectives={info.objectives}
@@ -277,14 +285,18 @@ function StoryPanel({
 
 function EventPanel({
   copy,
+  focusEventObjective,
   info,
   locale,
+  normalizedName,
   selectedObjectiveId,
   selectedPointId,
 }: {
   copy: LiveMapCopy;
+  focusEventObjective: (objective: EventObjective, eventId: string, pointId?: string) => void;
   info: EventInfo;
   locale: Locale;
+  normalizedName: string;
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
 }) {
@@ -315,7 +327,9 @@ function EventPanel({
       </div>
       <EventObjectiveList
         copy={copy}
+        onFocusObjective={(objective, pointId) => focusEventObjective(objective, info.event.id, pointId)}
         locale={locale}
+        normalizedName={normalizedName}
         objectives={info.objectives}
         selectedObjectiveId={selectedObjective?.objective_id ?? null}
         selectedPointId={selectedPointId}
@@ -350,7 +364,7 @@ function ObjectiveList({
   locale: Locale;
   normalizedName: string;
   objectives: LiveMapQuestInfo["objectives"];
-  onFocusObjective?: (objective: LiveMapQuestInfo["objectives"][number]) => void;
+  onFocusObjective?: (objective: LiveMapQuestInfo["objectives"][number], pointId?: string) => void;
   selectedPointId?: string;
 }) {
   return (
@@ -361,6 +375,7 @@ function ObjectiveList({
       <ul className="space-y-0.5">
         {objectives.map((objective) => {
           const point = getQuestObjectivePoint(objective);
+          const points = getQuestObjectivePoints(objective);
           const isRemote = isRemoteObjectivePoint(point, objective.maps, normalizedName);
 
           return (
@@ -378,13 +393,24 @@ function ObjectiveList({
                 count={objective.count}
                 description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
                 onFocus={
-                  getQuestObjectivePoints(objective).length > 0
+                  points.length > 0
                     ? () => onFocusObjective?.(objective)
                     : undefined
                 }
                 optional={false}
                 remote={isRemote}
               />
+              {points.length > 1 ? (
+                <ObjectivePointList
+                  copy={copy}
+                  locale={locale}
+                  normalizedName={normalizedName}
+                  onFocusPoint={(pointId) => onFocusObjective?.(objective, pointId)}
+                  points={points}
+                  selectedPointId={selectedPointId}
+                  maps={objective.maps}
+                />
+              ) : null}
               {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
             </li>
           );
@@ -406,7 +432,7 @@ function StoryObjectiveList({
   copy: LiveMapCopy;
   locale: Locale;
   normalizedName: string;
-  onFocusObjective?: (objective: StoryObjective) => void;
+  onFocusObjective?: (objective: StoryObjective, pointId?: string) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -417,6 +443,7 @@ function StoryObjectiveList({
         {copy.objectives}
       </h4>
       <NestedStoryObjectives
+        copy={copy}
         locale={locale}
         normalizedName={normalizedName}
         onFocusObjective={onFocusObjective}
@@ -431,12 +458,16 @@ function StoryObjectiveList({
 function EventObjectiveList({
   copy,
   locale,
+  normalizedName,
+  onFocusObjective,
   objectives,
   selectedObjectiveId,
   selectedPointId,
 }: {
   copy: LiveMapCopy;
   locale: Locale;
+  normalizedName: string;
+  onFocusObjective?: (objective: EventObjective, pointId?: string) => void;
   objectives: EventObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -447,7 +478,10 @@ function EventObjectiveList({
         {copy.objectives}
       </h4>
       <NestedEventObjectives
+        copy={copy}
         locale={locale}
+        normalizedName={normalizedName}
+        onFocusObjective={onFocusObjective}
         objectives={objectives}
         selectedObjectiveId={selectedObjectiveId}
         selectedPointId={selectedPointId}
@@ -457,6 +491,7 @@ function EventObjectiveList({
 }
 
 function NestedStoryObjectives({
+  copy,
   locale,
   normalizedName,
   onFocusObjective,
@@ -464,9 +499,10 @@ function NestedStoryObjectives({
   selectedObjectiveId,
   selectedPointId,
 }: {
+  copy: LiveMapCopy;
   locale: Locale;
   normalizedName: string;
-  onFocusObjective?: (objective: StoryObjective) => void;
+  onFocusObjective?: (objective: StoryObjective, pointId?: string) => void;
   objectives: StoryObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -501,11 +537,23 @@ function NestedStoryObjectives({
               }
               optional={objective.is_optional}
               remote={isRemote}
-            />
+              />
+            {objective.live_map_points.length > 1 ? (
+              <ObjectivePointList
+                copy={copy}
+                locale={locale}
+                normalizedName={normalizedName}
+                onFocusPoint={(pointId) => onFocusObjective?.(objective, pointId)}
+                points={objective.live_map_points}
+                selectedPointId={selectedPointId}
+                maps={objective.maps}
+              />
+            ) : null}
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
             {objective.children.length > 0 ? (
               <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
                 <NestedStoryObjectives
+                  copy={copy}
                   locale={locale}
                   normalizedName={normalizedName}
                   onFocusObjective={onFocusObjective}
@@ -523,12 +571,18 @@ function NestedStoryObjectives({
 }
 
 function NestedEventObjectives({
+  copy,
   locale,
+  normalizedName,
+  onFocusObjective,
   objectives,
   selectedObjectiveId,
   selectedPointId,
 }: {
+  copy: LiveMapCopy;
   locale: Locale;
+  normalizedName: string;
+  onFocusObjective?: (objective: EventObjective, pointId?: string) => void;
   objectives: EventObjective[];
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
@@ -540,6 +594,8 @@ function NestedEventObjectives({
           objective.objective_id === selectedObjectiveId ||
           (!!selectedPointId &&
             objective.live_map_points.some((point) => point.id === selectedPointId));
+        const point = objective.live_map_points[0];
+        const isRemote = isRemoteObjectivePoint(point, [], normalizedName);
 
         return (
           <li
@@ -554,13 +610,33 @@ function NestedEventObjectives({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              onFocus={
+                objective.live_map_points.length > 0
+                  ? () => onFocusObjective?.(objective)
+                  : undefined
+              }
               optional={objective.is_optional}
+              remote={isRemote}
             />
+            {objective.live_map_points.length > 1 ? (
+              <ObjectivePointList
+                copy={copy}
+                locale={locale}
+                normalizedName={normalizedName}
+                onFocusPoint={(pointId) => onFocusObjective?.(objective, pointId)}
+                points={objective.live_map_points}
+                selectedPointId={selectedPointId}
+                maps={[]}
+              />
+            ) : null}
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
             {objective.children.length > 0 ? (
               <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
                 <NestedEventObjectives
+                  copy={copy}
                   locale={locale}
+                  normalizedName={normalizedName}
+                  onFocusObjective={onFocusObjective}
                   objectives={objective.children}
                   selectedObjectiveId={selectedObjectiveId}
                   selectedPointId={selectedPointId}
@@ -571,6 +647,75 @@ function NestedEventObjectives({
         );
       })}
     </ul>
+  );
+}
+
+function ObjectivePointList({
+  copy,
+  locale,
+  maps,
+  normalizedName,
+  onFocusPoint,
+  points,
+  selectedPointId,
+}: {
+  copy: LiveMapCopy;
+  locale: Locale;
+  maps: Array<{ id: string; normalized_name: string; name_en: string; name_ko: string; name_ja: string }>;
+  normalizedName: string;
+  onFocusPoint?: (pointId: string) => void;
+  points: LiveMapObjectivePoint[];
+  selectedPointId?: string;
+}) {
+  return (
+    <div className="ml-5 grid gap-1 border-l border-gray-200 pl-2 dark:border-[#3a3d41]">
+      {points.map((point, index) => {
+        const isSelected = point.id === selectedPointId;
+        const isRemote = isRemoteObjectivePoint(point, maps, normalizedName);
+        const detailText = getPointDetailText(point, locale);
+        const mapName = point.map
+          ? localizedName(point.map as unknown as Record<string, unknown>, locale)
+          : maps.find((map) => map.id === point.map_id)
+            ? localizedName(maps.find((map) => map.id === point.map_id) as unknown as Record<string, unknown>, locale)
+            : "";
+
+        return (
+          <button
+            key={point.id}
+            type="button"
+            onClick={() => onFocusPoint?.(point.id)}
+            className={cn(
+              "group flex min-w-0 items-start gap-1.5 rounded border px-2 py-1 text-left transition",
+              isSelected
+                ? "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-500/50 dark:bg-orange-500/15 dark:text-orange-200"
+                : "border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 hover:text-orange-600 dark:text-gray-100 dark:hover:border-[#3a3d41] dark:hover:bg-[#2a2d31] dark:hover:text-orange-300",
+            )}
+          >
+            <MapPin
+              className={cn(
+                "mt-0.5 h-3.5 w-3.5 shrink-0",
+                isRemote ? "text-sky-500" : "text-orange-500",
+              )}
+            />
+            <span className="min-w-0 flex-1">
+              <span className="block text-[11px] font-black leading-4">
+                {copy.objectiveLocation} {index + 1}
+                {mapName ? (
+                  <span className="ml-1 font-semibold text-gray-500 dark:text-gray-300">
+                    {mapName}
+                  </span>
+                ) : null}
+              </span>
+              {detailText ? (
+                <span className="block truncate text-[11px] font-medium leading-4 text-gray-500 group-hover:text-current dark:text-gray-300">
+                  {detailText}
+                </span>
+              ) : null}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

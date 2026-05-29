@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils/class-name";
 import { useWsStore } from "@/store/ws-store";
 import type {
+  EventObjective,
   LiveMapPageData,
   LiveMapQuestInfo,
   StoryObjective,
@@ -412,8 +413,12 @@ export function LiveMapClientPage({
   }, []);
 
   const focusQuestObjective = useCallback(
-    (objective: LiveMapQuestInfo["objectives"][number], questId: string) => {
-      const point = getQuestObjectivePoint(objective);
+    (
+      objective: LiveMapQuestInfo["objectives"][number],
+      questId: string,
+      pointId?: string,
+    ) => {
+      const point = getQuestObjectivePoint(objective, pointId);
 
       if (!point) {
         return;
@@ -449,8 +454,10 @@ export function LiveMapClientPage({
   );
 
   const focusStoryObjective = useCallback(
-    (objective: StoryObjective, storyId: string) => {
-      const point = objective.live_map_points[0];
+    (objective: StoryObjective, storyId: string, pointId?: string) => {
+      const point = pointId
+        ? objective.live_map_points.find((entry) => entry.id === pointId)
+        : objective.live_map_points[0];
 
       if (!point) {
         return;
@@ -462,6 +469,41 @@ export function LiveMapClientPage({
         objective.maps[0]?.normalized_name ??
         normalizedName;
       const focus = `story:${point.id}`;
+      setLocalFocusedMarkerId(focus);
+
+      if (point.floor_id) {
+        setSelectedFloorId(point.floor_id);
+      }
+
+      if (targetMap === normalizedName) {
+        if (focusedMarkerId !== focus) {
+          replaceFocusParam(focus);
+        }
+        return;
+      }
+
+      setLocalFocusedMarkerId(null);
+      setPanel(null);
+      setSelectedStaticId(null);
+      router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
+        scroll: false,
+      });
+    },
+    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+  );
+
+  const focusEventObjective = useCallback(
+    (objective: EventObjective, eventId: string, pointId?: string) => {
+      const point = pointId
+        ? objective.live_map_points.find((entry) => entry.id === pointId)
+        : objective.live_map_points[0];
+
+      if (!point) {
+        return;
+      }
+
+      const targetMap = point.map?.normalized_name ?? normalizedName;
+      const focus = `event:${point.id}`;
       setLocalFocusedMarkerId(focus);
 
       if (point.floor_id) {
@@ -967,6 +1009,7 @@ export function LiveMapClientPage({
             <DetailPanel
               completedQuestIds={completedQuestIds}
               copy={copy}
+              focusEventObjective={focusEventObjective}
               focusQuestObjective={focusQuestObjective}
               focusStoryObjective={focusStoryObjective}
               loadingQuestNormalizedName={loadingQuestNormalizedName}
