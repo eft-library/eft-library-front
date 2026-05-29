@@ -74,19 +74,51 @@ function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean, isFocused: boolea
   const width = isFocused ? 30 : 24;
   const height = isFocused ? 36 : 30;
   const circleRadius = isFocused ? 4.6 : 4.3;
+  const wrapperStyle = `
+    width: ${width}px;
+    height: ${height}px;
+    position: relative;
+    opacity: ${isDimmed ? "0.32" : "1"};
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.48)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.82))" : ""};
+    transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
+    transform: ${isFocused ? "translateY(-3px) scale(1.06)" : "none"};
+  `;
+
+  if (kind === "quest") {
+    const size = isFocused ? 28 : 22;
+    const questWrapperStyle = `
+      width: ${size}px;
+      height: ${size}px;
+      position: relative;
+      opacity: ${isDimmed ? "0.32" : "1"};
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.86))" : ""};
+      transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
+      transform: ${isFocused ? "scale(1.12)" : "none"};
+    `;
+
+    return L.divIcon({
+      className: "live-map-marker-icon live-map-marker-icon-quest",
+      html: `
+        <div style="${questWrapperStyle}">
+          <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10.2" fill="#1a1c1f" stroke="#0b0d10" stroke-width="2.1" />
+            <circle cx="12" cy="12" r="8.1" fill="#1a1c1f" stroke="#ffb400" stroke-width="2.2" />
+            <path d="M8.2 14.1h1.95c.82 0 1.18-.4 1.18-1.06v-2.08c0-.66.36-1.06 1.18-1.06h3.29" stroke="#fff7ed" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="8" cy="14.1" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
+            <circle cx="12" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
+            <circle cx="16" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
+          </svg>
+        </div>
+      `,
+      iconAnchor: [size / 2, size / 2],
+      iconSize: [size, size],
+    });
+  }
 
   return L.divIcon({
     className: "live-map-marker-icon",
     html: `
-      <div style="
-        width: ${width}px;
-        height: ${height}px;
-        position: relative;
-        opacity: ${isDimmed ? "0.32" : "1"};
-        filter: drop-shadow(0 3px 6px rgba(0,0,0,0.48)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.82))" : ""};
-        transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
-        transform: ${isFocused ? "translateY(-3px) scale(1.06)" : "none"};
-      ">
+      <div style="${wrapperStyle}">
         <svg width="${width}" height="${height}" viewBox="0 0 24 28" fill="none" aria-hidden="true">
           <path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 16 12 16S24 21 24 12C24 5.373 18.627 0 12 0z" fill="${color}" />
           <circle cx="12" cy="12" r="${circleRadius}" fill="#1A1C1F" />
