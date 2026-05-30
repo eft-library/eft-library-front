@@ -105,8 +105,10 @@ export function LiveMapClientPage({
   const copy = copyByLocale[locale];
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
-  const websocketLocation = useWsStore((state) => state.location);
-  const previousLocationRef = useRef<string | null>(null);
+  const latestWebsocketLocation = useWsStore((state) => state.latestLocation);
+  const storedMapLocation = useWsStore((state) => state.locationByMap[normalizedName] ?? "");
+  const setLocationForMap = useWsStore((state) => state.setLocationForMap);
+  const previousLocationEventRef = useRef<number | null>(null);
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -371,12 +373,16 @@ export function LiveMapClientPage({
     window.setTimeout(() => setNotice(""), 2200);
   }
 
-  function applyWhereText(text: string) {
+  function applyWhereText(text: string, { save = true }: { save?: boolean } = {}) {
     const parsed = parseWhereText(text);
     setLocation(parsed);
 
     if (!parsed) {
       return;
+    }
+
+    if (save) {
+      setLocationForMap(normalizedName, text);
     }
 
     const matchedFloor = findFloorForHeight(sortedFloors, parsed.z);
@@ -765,14 +771,26 @@ export function LiveMapClientPage({
   }, [defaultFloorId, normalizedName]);
 
   useEffect(() => {
-    if (!websocketLocation || websocketLocation === previousLocationRef.current) {
+    setWhere(storedMapLocation);
+    if (storedMapLocation) {
+      applyWhereText(storedMapLocation, { save: false });
+    } else {
+      setLocation(null);
+    }
+  }, [normalizedName, storedMapLocation]);
+
+  useEffect(() => {
+    if (
+      !latestWebsocketLocation ||
+      latestWebsocketLocation.receivedAt === previousLocationEventRef.current
+    ) {
       return;
     }
 
-    previousLocationRef.current = websocketLocation;
-    setWhere(websocketLocation);
-    applyWhereText(websocketLocation);
-  }, [websocketLocation]);
+    previousLocationEventRef.current = latestWebsocketLocation.receivedAt;
+    setWhere(latestWebsocketLocation.value);
+    applyWhereText(latestWebsocketLocation.value);
+  }, [latestWebsocketLocation]);
 
   useEffect(() => {
     if (!focusedMarkerId) {

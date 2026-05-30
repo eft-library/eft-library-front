@@ -6,9 +6,11 @@ import { persist } from "zustand/middleware";
 import type { MyPageNotificationEntry } from "@/types/api/mypage";
 
 interface WsState {
-  location: string;
+  latestLocation: { value: string; receivedAt: number } | null;
+  locationByMap: Record<string, string>;
   notifications: MyPageNotificationEntry[];
   setLocation: (location: string) => void;
+  setLocationForMap: (mapKey: string, location: string) => void;
   setNotifications: (
     updater:
       | MyPageNotificationEntry[]
@@ -20,9 +22,18 @@ interface WsState {
 export const useWsStore = create<WsState>()(
   persist(
     (set) => ({
-      location: "",
+      latestLocation: null,
+      locationByMap: {},
       notifications: [],
-      setLocation: (location) => set({ location }),
+      setLocation: (location) =>
+        set({ latestLocation: { value: location, receivedAt: Date.now() } }),
+      setLocationForMap: (mapKey, location) =>
+        set((state) => ({
+          locationByMap: {
+            ...state.locationByMap,
+            [mapKey]: location,
+          },
+        })),
       setNotifications: (updater) =>
         set((state) => ({
           notifications:
@@ -45,7 +56,7 @@ export const useWsStore = create<WsState>()(
     }),
     {
       name: "ws-store",
-      partialize: (state) => ({ location: state.location }),
+      partialize: (state) => ({ locationByMap: state.locationByMap }),
     },
   ),
 );

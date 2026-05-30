@@ -125,18 +125,24 @@ export function FindLocation({
   mapKey: string;
 }) {
   const copy = copyByLocale[locale];
-  const websocketLocation = useWsStore((state) => state.location);
-  const previousLocationRef = useRef<string | null>(null);
+  const latestWebsocketLocation = useWsStore((state) => state.latestLocation);
+  const storedMapLocation = useWsStore((state) => state.locationByMap[mapKey] ?? "");
+  const setLocationForMap = useWsStore((state) => state.setLocationForMap);
+  const previousLocationEventRef = useRef<number | null>(null);
   const [where, setWhere] = useState("");
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isViewWhere, setIsViewWhere] = useState(false);
   const [imageCoord, setImageCoord] = useState({ x: 0, y: 0, yaw: 0 });
   const [mousePosition, setMousePosition] = useState<LatLng | null>(null);
 
-  function applyWhereText(text: string) {
+  function applyWhereText(text: string, { save = true }: { save?: boolean } = {}) {
     const result = parseWhereText(text);
     setImageCoord(result ?? { x: 0, y: 0, yaw: 0 });
-    setIsViewWhere(true);
+    setIsViewWhere(Boolean(result));
+
+    if (result && save) {
+      setLocationForMap(mapKey, text);
+    }
   }
 
   function handlePaste(event: React.ClipboardEvent<HTMLInputElement>) {
@@ -147,14 +153,27 @@ export function FindLocation({
   }
 
   useEffect(() => {
-    if (!websocketLocation || websocketLocation === previousLocationRef.current) {
+    setWhere(storedMapLocation);
+    if (storedMapLocation) {
+      applyWhereText(storedMapLocation, { save: false });
+    } else {
+      setImageCoord({ x: 0, y: 0, yaw: 0 });
+      setIsViewWhere(false);
+    }
+  }, [mapKey, storedMapLocation]);
+
+  useEffect(() => {
+    if (
+      !latestWebsocketLocation ||
+      latestWebsocketLocation.receivedAt === previousLocationEventRef.current
+    ) {
       return;
     }
 
-    previousLocationRef.current = websocketLocation;
-    setWhere(websocketLocation);
-    applyWhereText(websocketLocation);
-  }, [websocketLocation]);
+    previousLocationEventRef.current = latestWebsocketLocation.receivedAt;
+    setWhere(latestWebsocketLocation.value);
+    applyWhereText(latestWebsocketLocation.value);
+  }, [latestWebsocketLocation]);
 
   return (
     <section className="space-y-4">
