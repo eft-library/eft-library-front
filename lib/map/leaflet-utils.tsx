@@ -8,7 +8,8 @@ export function transformMousePosition(
   latlng: { lat: number; lng: number },
 ) {
   switch (mapId.toLowerCase()) {
-    case "the_lab":
+    case "terminal":
+    case "the-lab":
       return { lat: latlng.lng, lng: -latlng.lat };
     case "factory":
       return { lat: -latlng.lng, lng: latlng.lat };
@@ -24,6 +25,7 @@ export function getPlayerMarkerPosition(
   switch (mapId.toLowerCase()) {
     case "factory":
       return [coord.x, -coord.y];
+    case "terminal":
     case "the-lab":
       return [-coord.x, coord.y];
     default:
@@ -33,10 +35,11 @@ export function getPlayerMarkerPosition(
 
 export function getPlayerMarkerYaw(mapId: string, yaw: number) {
   switch (mapId.toLowerCase()) {
-    case "factory":
-      return (yaw + 270) % 360;
+    case "terminal":
     case "the-lab":
       return (yaw + 90) % 360;
+    case "factory":
+      return (yaw + 270) % 360;
     default:
       return (yaw + 180) % 360;
   }
