@@ -99,95 +99,90 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
   switch (point.staticCategory) {
     case "extract":
       return {
-        iconSize: isFocused ? 39 : 34,
-        size: isFocused ? 48 : 42,
+        iconSize: isFocused ? 30 : 25,
+        size: isFocused ? 36 : 30,
       };
     case "transit":
       return {
-        iconSize: isFocused ? 37 : 32,
-        size: isFocused ? 46 : 40,
+        iconSize: isFocused ? 30 : 25,
+        size: isFocused ? 36 : 30,
       };
     case "stationary_weapon":
       return {
-        iconSize: isFocused ? 35 : 30,
-        size: isFocused ? 42 : 38,
+        iconSize: isFocused ? 28 : 23,
+        size: isFocused ? 34 : 28,
       };
     case "transit_switch":
       return {
-        iconSize: isFocused ? 33 : 28,
-        size: isFocused ? 40 : 36,
+        iconSize: isFocused ? 28 : 23,
+        size: isFocused ? 34 : 28,
       };
     default:
       return {
-        iconSize: isFocused ? 35 : 31,
-        size: isFocused ? 42 : 36,
+        iconSize: isFocused ? 28 : 23,
+        size: isFocused ? 34 : 28,
       };
   }
 }
 
-function PersonIconSvg(color: string, size: number) {
+function PersonIconSvg(size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="12" cy="5" r="2.6" fill="${color}" />
-      <path d="M9.2 10.1c0-1.7 5.6-1.7 5.6 0l-.45 5.5h-4.9z" fill="${color}" />
-      <path d="M9.8 10.7 7 14.2M14.2 10.7l2.8 3.5M10.2 15.6 8.8 21M13.8 15.6 15.2 21" stroke="${color}" stroke-width="2.3" stroke-linecap="round" />
+      <circle cx="12" cy="5.2" r="2.45" fill="#f8fafc" />
+      <path d="M9 10.4c0-1.7 6-1.7 6 0v5.4H9z" fill="#f8fafc" />
+      <path d="M9.8 11.1 7.1 14.5M14.2 11.1l2.7 3.4M10.2 15.8 8.9 21M13.8 15.8l1.3 5.2" stroke="#f8fafc" stroke-width="2.35" stroke-linecap="round" />
     </svg>
   `;
 }
 
-function RunningIconSvg(color: string, size: number) {
+function TransitIconSvg(size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="13.8" cy="4.2" r="2.35" fill="${color}" />
-      <path d="M9.7 8.7c1-1.75 4.7-1.85 6.1-.15l1.45 3.25-3.25 1-.95 4h-3.15l1.05-4-2.35-2z" fill="${color}" />
-      <path d="M8.6 10.8 5.9 14M17.2 11.8l2.5-2.3M9.9 16.7 7.5 21M12.9 16.7l3.2 4.1" stroke="${color}" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M5 12h12" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" />
+      <path d="m13 7 5 5-5 5" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M5.5 7.2h5.2M5.5 16.8h5.2" stroke="#f8fafc" stroke-width="2" stroke-linecap="round" opacity=".72" />
     </svg>
   `;
 }
 
-function SwitchIconSvg(color: string, size: number) {
+function SwitchIconSvg(size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <rect x="17" y="9" width="4.5" height="8" rx="1.5" fill="${color}" opacity="0.5" />
-      <circle cx="19.2" cy="15" r="2.35" fill="${color}" />
-      <path d="M19.2 15 8 5.6" stroke="${color}" stroke-width="3" stroke-linecap="round" />
-      <rect x="5.2" y="2.2" width="5.6" height="5" rx="1.5" fill="${color}" transform="rotate(-45 8 4.7)" />
+      <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="#f8fafc" stroke="#f8fafc" stroke-width="1.1" stroke-linejoin="round" />
     </svg>
   `;
 }
 
-function GunIconSvg(color: string, size: number) {
+function WeaponIconSvg(size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="M6.3 9.1h6.2v4.1H6.3z" fill="${color}" />
-      <path d="M12 10.1h10" stroke="${color}" stroke-width="2.7" stroke-linecap="round" />
-      <path d="M6.4 10.2 3.2 9.5l-.9 3.4 4.1.2z" fill="${color}" opacity="0.9" />
-      <path d="M9 13.3 5.6 21M10.6 13.3l4 7.7M9.7 13.3v7.2" stroke="${color}" stroke-width="2.2" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="6.8" stroke="#f8fafc" stroke-width="2.4" />
+      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="#f8fafc" stroke-width="2.4" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="1.8" fill="#f8fafc" />
     </svg>
   `;
 }
 
 function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
-  const color = getStaticMarkerColor(point);
   const type = getStaticMarkerType(point);
 
   if (type.startsWith("extract:")) {
-    return PersonIconSvg(color, size);
+    return PersonIconSvg(size);
   }
 
   if (type === "transit") {
-    return RunningIconSvg(color, size);
+    return TransitIconSvg(size);
   }
 
   if (type === "transit_switch") {
-    return SwitchIconSvg(color, size);
+    return SwitchIconSvg(size);
   }
 
   if (type === "stationary_weapon") {
-    return GunIconSvg(color, size);
+    return WeaponIconSvg(size);
   }
 
-  return PersonIconSvg(color, size);
+  return PersonIconSvg(size);
 }
 
 function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
@@ -249,8 +244,8 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       justify-content: center;
       opacity: ${isDimmed ? "0.32" : "1"};
       border-radius: 999px;
-      background: rgba(15, 17, 20, 0.88);
-      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.82), inset 0 0 0 3.5px ${color}66;
+      background: linear-gradient(180deg, rgba(30,33,38,0.98), rgba(8,10,13,0.98));
+      box-shadow: inset 0 0 0 2px ${color}, inset 0 0 0 4px rgba(255,255,255,0.18);
       filter: drop-shadow(0 3px 7px rgba(0,0,0,0.62)) ${isFocused ? `drop-shadow(0 0 11px ${color})` : ""};
       transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
       transform: ${isFocused ? "scale(1.12)" : "none"};
