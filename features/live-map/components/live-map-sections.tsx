@@ -9,6 +9,8 @@ import { copyByLocale, KAPPA_IMAGE, type LiveMapCopy } from "./live-map-copy";
 import {
   getEntryLabel,
   getStaticCategoryLabel,
+  getStaticFaction,
+  getStaticFactionLabel,
   matchesFilterText,
   type RightEntry,
   type StaticCategoryGroup,
@@ -313,57 +315,34 @@ export function StaticPointSection({
                 </div>
                 {isOpen ? (
                   <div className="border-t border-gray-200 p-1 dark:border-[#3a3d41]">
-                    {group.entries.map((entry) => {
-                      const isSelected = selectedId === entry.id;
-                      const enabled = enabledIds.has(entry.id);
-                      const label = getEntryLabel(entry, locale);
-
-                      return (
-                        <div
-                          ref={isSelected ? selectedItemRef : null}
+                    {group.category === "extract" ? (
+                      <ExtractFactionGroups
+                        copy={copy}
+                        enabledIds={enabledIds}
+                        entries={group.entries}
+                        locale={locale}
+                        onOpen={onOpen}
+                        onToggle={onToggle}
+                        onToggleFaction={(faction, factionIds) =>
+                          onToggleCategory(`${group.category}:${faction}`, factionIds)
+                        }
+                        selectedId={selectedId}
+                        selectedItemRef={selectedItemRef}
+                      />
+                    ) : (
+                      group.entries.map((entry) => (
+                        <StaticEntryRow
+                          enabled={enabledIds.has(entry.id)}
+                          entry={entry}
+                          isSelected={selectedId === entry.id}
                           key={entry.id}
-                          className={cn(
-                            "grid h-8 grid-cols-[1fr_42px] items-center overflow-hidden rounded border border-transparent text-xs",
-                            isSelected
-                              ? "border-orange-300 bg-orange-50 hover:bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10 dark:hover:bg-orange-500/10"
-                              : "",
-                          )}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => onOpen(entry)}
-                            className={cn(
-                              "flex h-full min-w-0 items-center gap-1.5 rounded-l px-2 text-left",
-                              isSelected
-                                ? "hover:bg-transparent"
-                                : "hover:bg-white dark:hover:bg-[#2a2d31]",
-                            )}
-                          >
-                            <span
-                              className={cn(
-                                "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
-                                isSelected ? "font-black text-orange-500" : "",
-                              )}
-                            >
-                              {label}
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => onToggle(entry.id)}
-                            className={cn(
-                              "flex h-full items-center justify-center rounded-r",
-                              isSelected
-                                ? "hover:bg-transparent"
-                                : "hover:bg-white dark:hover:bg-[#2a2d31]",
-                            )}
-                            aria-label={label}
-                          >
-                            <TogglePill enabled={enabled} />
-                          </button>
-                        </div>
-                      );
-                    })}
+                          locale={locale}
+                          onOpen={onOpen}
+                          onToggle={onToggle}
+                          selectedItemRef={selectedItemRef}
+                        />
+                      ))
+                    )}
                   </div>
                 ) : null}
               </div>
@@ -374,6 +353,172 @@ export function StaticPointSection({
         <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
       )}
     </section>
+  );
+}
+
+function ExtractFactionGroups({
+  copy,
+  enabledIds,
+  entries,
+  locale,
+  onOpen,
+  onToggle,
+  onToggleFaction,
+  selectedId,
+  selectedItemRef,
+}: {
+  copy: LiveMapCopy;
+  enabledIds: Set<string>;
+  entries: StaticEntry[];
+  locale: Locale;
+  onOpen: (entry: StaticEntry) => void;
+  onToggle: (id: string) => void;
+  onToggleFaction: (faction: string, ids: string[]) => void;
+  selectedId: string | null;
+  selectedItemRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const groups = useMemo(() => {
+    const groupMap = new Map<string, StaticEntry[]>();
+
+    entries.forEach((entry) => {
+      const faction = getStaticFaction(entry.point);
+      groupMap.set(faction, [...(groupMap.get(faction) ?? []), entry]);
+    });
+
+    const order = ["pmc", "scav", "shared", "unknown"];
+
+    return Array.from(groupMap.entries())
+      .map(([faction, factionEntries]) => ({
+        entries: factionEntries,
+        faction,
+      }))
+      .sort((left, right) => {
+        const leftIndex = order.indexOf(left.faction);
+        const rightIndex = order.indexOf(right.faction);
+
+        if (leftIndex !== -1 || rightIndex !== -1) {
+          return (leftIndex === -1 ? order.length : leftIndex) -
+            (rightIndex === -1 ? order.length : rightIndex);
+        }
+
+        return left.faction.localeCompare(right.faction);
+      });
+  }, [entries]);
+
+  return (
+    <div className="space-y-1">
+      {groups.map((group) => {
+        const ids = group.entries.map((entry) => entry.id);
+        const enabledCount = ids.filter((id) => enabledIds.has(id)).length;
+        const isEnabled = enabledCount === ids.length;
+
+        return (
+          <div
+            key={group.faction}
+            className="rounded border border-gray-200 bg-white/70 dark:border-[#2f343a] dark:bg-[#1b1e22]"
+          >
+            <div className="grid h-7 grid-cols-[1fr_42px] items-center">
+              <div className="flex min-w-0 items-center gap-1.5 px-2">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
+                <span className="min-w-0 flex-1 truncate text-[11px] font-black text-gray-700 dark:text-gray-100">
+                  {getStaticFactionLabel(group.faction, copy)}
+                </span>
+                <span className="text-[10px] font-bold text-gray-500 dark:text-gray-300">
+                  {enabledCount}/{ids.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onToggleFaction(group.faction, ids)}
+                className="flex h-7 items-center justify-center rounded-r hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                aria-label={getStaticFactionLabel(group.faction, copy)}
+              >
+                <TogglePill enabled={isEnabled} />
+              </button>
+            </div>
+            <div className="border-t border-gray-200 p-1 dark:border-[#2f343a]">
+              {group.entries.map((entry) => (
+                <StaticEntryRow
+                  enabled={enabledIds.has(entry.id)}
+                  entry={entry}
+                  isSelected={selectedId === entry.id}
+                  key={entry.id}
+                  locale={locale}
+                  onOpen={onOpen}
+                  onToggle={onToggle}
+                  selectedItemRef={selectedItemRef}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function StaticEntryRow({
+  enabled,
+  entry,
+  isSelected,
+  locale,
+  onOpen,
+  onToggle,
+  selectedItemRef,
+}: {
+  enabled: boolean;
+  entry: StaticEntry;
+  isSelected: boolean;
+  locale: Locale;
+  onOpen: (entry: StaticEntry) => void;
+  onToggle: (id: string) => void;
+  selectedItemRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const label = getEntryLabel(entry, locale);
+
+  return (
+    <div
+      ref={isSelected ? selectedItemRef : null}
+      className={cn(
+        "grid h-8 grid-cols-[1fr_42px] items-center overflow-hidden rounded border border-transparent text-xs",
+        isSelected
+          ? "border-orange-300 bg-orange-50 hover:bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10 dark:hover:bg-orange-500/10"
+          : "",
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => onOpen(entry)}
+        className={cn(
+          "flex h-full min-w-0 items-center gap-1.5 rounded-l px-2 text-left",
+          isSelected
+            ? "hover:bg-transparent"
+            : "hover:bg-white dark:hover:bg-[#2a2d31]",
+        )}
+      >
+        <span
+          className={cn(
+            "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
+            isSelected ? "font-black text-orange-500" : "",
+          )}
+        >
+          {label}
+        </span>
+      </button>
+      <button
+        type="button"
+        onClick={() => onToggle(entry.id)}
+        className={cn(
+          "flex h-full items-center justify-center rounded-r",
+          isSelected
+            ? "hover:bg-transparent"
+            : "hover:bg-white dark:hover:bg-[#2a2d31]",
+        )}
+        aria-label={label}
+      >
+        <TogglePill enabled={enabled} />
+      </button>
+    </div>
   );
 }
 

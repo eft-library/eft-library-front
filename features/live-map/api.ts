@@ -1,23 +1,23 @@
 import { apiGet } from "@/lib/api/api-client";
-import {
-  getLiveMapDetailEndpoint,
-  getMapOfTarkovDetailEndpoint,
-} from "@/lib/config/api-endpoints";
+import { getLiveMapDetailEndpoint } from "@/lib/config/api-endpoints";
 import type { LiveMapDetailResponse, LiveMapPageData } from "@/types/api/live-map";
-import type { MapOfTarkovDetailResponse } from "@/types/api/map-of-tarkov";
 
 export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapPageData> {
-  const [liveMap, mapOfTarkov] = await Promise.all([
-    apiGet<LiveMapDetailResponse>(getLiveMapDetailEndpoint(normalizedName), {
-      revalidate: 60 * 5,
-    }),
-    apiGet<MapOfTarkovDetailResponse>(getMapOfTarkovDetailEndpoint(normalizedName), {
-      revalidate: 60 * 10,
-    }).catch(() => null),
-  ]);
+  const liveMap = await apiGet<LiveMapDetailResponse>(getLiveMapDetailEndpoint(normalizedName), {
+    revalidate: 60 * 5,
+  });
+  const coordinateFloor = liveMap.floors.find((floor) => floor.map_bounds);
+  const coordinateInfo = coordinateFloor?.map_bounds
+    ? {
+        default_zoom_level: coordinateFloor.default_zoom_level ?? 0,
+        id: coordinateFloor.map_id,
+        image_bounds: coordinateFloor.map_bounds,
+        map_bounds: coordinateFloor.map_bounds,
+      }
+    : null;
 
   return {
     ...liveMap,
-    coordinate_info: mapOfTarkov?.find_info ?? null,
+    coordinate_info: coordinateInfo,
   };
 }

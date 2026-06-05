@@ -81,6 +81,29 @@ export function getStaticCategoryLabel(category: string, copy: LiveMapCopy) {
   );
 }
 
+export function getStaticFaction(point: LiveMapStaticPoint) {
+  const rawValue = point.metadata?.raw;
+
+  if (
+    rawValue &&
+    typeof rawValue === "object" &&
+    "faction" in rawValue &&
+    typeof rawValue.faction === "string" &&
+    rawValue.faction.trim()
+  ) {
+    return rawValue.faction.trim().toLowerCase();
+  }
+
+  return "unknown";
+}
+
+export function getStaticFactionLabel(faction: string, copy: LiveMapCopy) {
+  return (
+    copy.staticFactions[faction as keyof typeof copy.staticFactions] ??
+    faction.charAt(0).toUpperCase() + faction.slice(1)
+  );
+}
+
 export function uniqueById<TItem extends { id: string }>(items: TItem[]) {
   return Array.from(new Map(items.map((item) => [item.id, item])).values());
 }

@@ -16,8 +16,7 @@ import {
   getPlayerMarkerYaw,
   transformMousePosition,
 } from "@/lib/map/leaflet-utils";
-import type { LiveMapFloor } from "@/types/api/live-map";
-import type { FindInfo } from "@/types/api/map-of-tarkov";
+import type { LiveMapCoordinateInfo, LiveMapFloor } from "@/types/api/live-map";
 import type { LiveMapLocation } from "./live-map-utils";
 
 export type LiveMapMarkerKind = "quest" | "story" | "event" | "static";
@@ -65,8 +64,12 @@ function getPointMarkerPosition(
   return getPlayerMarkerPosition(mapId, { x: point.x, y: point.y, yaw: 0 });
 }
 
-function getRelaxedMapBounds(bounds: FindInfo["map_bounds"]) {
+function getRelaxedMapBounds(bounds: LiveMapCoordinateInfo["map_bounds"]) {
   return L.latLngBounds(bounds).pad(1.4);
+}
+
+function getMapCenter(bounds: LiveMapCoordinateInfo["image_bounds"]) {
+  return L.latLngBounds(bounds).getCenter();
 }
 
 function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean, isFocused: boolean) {
@@ -227,7 +230,7 @@ export function LiveMapCanvas({
   onMousePositionChange,
 }: {
   activeFloorId: string;
-  coordinateInfo: FindInfo;
+  coordinateInfo: LiveMapCoordinateInfo;
   focusedMarkerId?: string | null;
   floors: LiveMapFloor[];
   location: LiveMapLocation | null;
@@ -284,7 +287,7 @@ export function LiveMapCanvas({
     clearLeafletContainer(container);
 
     const map = L.map(container, {
-      center: [0, 0],
+      center: getMapCenter(coordinateInfo.image_bounds),
       crs: CRS.Simple,
       doubleClickZoom: false,
       fadeAnimation: false,

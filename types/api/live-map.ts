@@ -1,4 +1,4 @@
-import type { MapSelectorEntry, FindInfo } from "@/types/api/map-of-tarkov";
+import type { MapSelectorEntry } from "@/types/api/map-of-tarkov";
 import type {
   QuestDetailItem,
   QuestObjectiveMap,
@@ -17,6 +17,15 @@ export interface LiveMapFloor {
   image: string;
   min_z: number | null;
   max_z: number | null;
+  map_bounds: [[number, number], [number, number]] | null;
+  default_zoom_level: number | null;
+}
+
+export interface LiveMapCoordinateInfo {
+  id: string;
+  map_bounds: [[number, number], [number, number]];
+  image_bounds: [[number, number], [number, number]];
+  default_zoom_level: number;
 }
 
 export interface LiveMapPointDetail {
@@ -210,5 +219,5 @@ export interface LiveMapDetailResponse {
 }
 
 export interface LiveMapPageData extends LiveMapDetailResponse {
-  coordinate_info: FindInfo | null;
+  coordinate_info: LiveMapCoordinateInfo | null;
 }
