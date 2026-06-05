@@ -45,6 +45,7 @@ import {
   getQuestObjectivePoint,
   getQuestPointLabel,
   getStaticMarkerSearchText,
+  getStaticFaction,
   getStoryId,
   getStoryMarkerSearchText,
   getStoryPointLabel,
@@ -344,6 +345,8 @@ export function LiveMapClientPage({
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
         popupHtml: getStaticPointPopupHtml(point, locale, copy),
+        staticCategory: point.category,
+        staticFaction: getStaticFaction(point),
         x: point.x,
         y: point.z,
       }));

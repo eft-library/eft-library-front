@@ -26,6 +26,8 @@ export interface LiveMapCanvasMarker {
   kind: LiveMapMarkerKind;
   label: string;
   popupHtml?: string;
+  staticCategory?: string;
+  staticFaction?: string;
   x: number;
   y: number;
   floorId: string | null;
@@ -57,6 +59,15 @@ const markerColorByKind: Record<LiveMapMarkerKind, string> = {
   story: "#a78bfa",
 };
 
+const staticMarkerColorByType: Record<string, string> = {
+  "extract:pmc": "#38bdf8",
+  "extract:scav": "#fb923c",
+  "extract:shared": "#c084fc",
+  stationary_weapon: "#94a3b8",
+  transit: "#f87171",
+  transit_switch: "#facc15",
+};
+
 function getPointMarkerPosition(
   mapId: string,
   point: Pick<LiveMapCanvasMarker, "x" | "y">,
@@ -72,7 +83,85 @@ function getMapCenter(bounds: LiveMapCoordinateInfo["image_bounds"]) {
   return L.latLngBounds(bounds).getCenter();
 }
 
-function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean, isFocused: boolean) {
+function getStaticMarkerType(point: LiveMapCanvasMarker) {
+  if (point.staticCategory === "extract") {
+    return `extract:${point.staticFaction ?? "unknown"}`;
+  }
+
+  return point.staticCategory ?? "static";
+}
+
+function getStaticMarkerColor(point: LiveMapCanvasMarker) {
+  return staticMarkerColorByType[getStaticMarkerType(point)] ?? markerColorByKind.static;
+}
+
+function PersonIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <circle cx="12" cy="5" r="2.6" fill="${color}" />
+      <path d="M9.2 10.1c0-1.7 5.6-1.7 5.6 0l-.45 5.5h-4.9z" fill="${color}" />
+      <path d="M9.8 10.7 7 14.2M14.2 10.7l2.8 3.5M10.2 15.6 8.8 21M13.8 15.6 15.2 21" stroke="${color}" stroke-width="2.3" stroke-linecap="round" />
+    </svg>
+  `;
+}
+
+function RunningIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <circle cx="13.8" cy="4.2" r="2.35" fill="${color}" />
+      <path d="M9.7 8.7c1-1.75 4.7-1.85 6.1-.15l1.45 3.25-3.25 1-.95 4h-3.15l1.05-4-2.35-2z" fill="${color}" />
+      <path d="M8.6 10.8 5.9 14M17.2 11.8l2.5-2.3M9.9 16.7 7.5 21M12.9 16.7l3.2 4.1" stroke="${color}" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+}
+
+function SwitchIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <rect x="17" y="9" width="4.5" height="8" rx="1.5" fill="${color}" opacity="0.5" />
+      <circle cx="19.2" cy="15" r="2.35" fill="${color}" />
+      <path d="M19.2 15 8 5.6" stroke="${color}" stroke-width="3" stroke-linecap="round" />
+      <rect x="5.2" y="2.2" width="5.6" height="5" rx="1.5" fill="${color}" transform="rotate(-45 8 4.7)" />
+    </svg>
+  `;
+}
+
+function GunIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M6.3 9.1h6.2v4.1H6.3z" fill="${color}" />
+      <path d="M12 10.1h10" stroke="${color}" stroke-width="2.7" stroke-linecap="round" />
+      <path d="M6.4 10.2 3.2 9.5l-.9 3.4 4.1.2z" fill="${color}" opacity="0.9" />
+      <path d="M9 13.3 5.6 21M10.6 13.3l4 7.7M9.7 13.3v7.2" stroke="${color}" stroke-width="2.2" stroke-linecap="round" />
+    </svg>
+  `;
+}
+
+function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
+  const color = getStaticMarkerColor(point);
+  const type = getStaticMarkerType(point);
+
+  if (type.startsWith("extract:")) {
+    return PersonIconSvg(color, size);
+  }
+
+  if (type === "transit") {
+    return RunningIconSvg(color, size);
+  }
+
+  if (type === "transit_switch") {
+    return SwitchIconSvg(color, size);
+  }
+
+  if (type === "stationary_weapon") {
+    return GunIconSvg(color, size);
+  }
+
+  return PersonIconSvg(color, size);
+}
+
+function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
+  const { kind } = point;
   const color = markerColorByKind[kind];
   const width = isFocused ? 30 : 24;
   const height = isFocused ? 36 : 30;
@@ -111,6 +200,38 @@ function PointIcon(kind: LiveMapMarkerKind, isDimmed: boolean, isFocused: boolea
             <circle cx="12" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
             <circle cx="16" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
           </svg>
+        </div>
+      `,
+      iconAnchor: [size / 2, size / 2],
+      iconSize: [size, size],
+    });
+  }
+
+  if (kind === "static") {
+    const size = isFocused ? 42 : 36;
+    const iconSize = isFocused ? 35 : 31;
+    const color = getStaticMarkerColor(point);
+    const staticWrapperStyle = `
+      width: ${size}px;
+      height: ${size}px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: ${isDimmed ? "0.32" : "1"};
+      border-radius: 999px;
+      background: rgba(15, 17, 20, 0.88);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.82), inset 0 0 0 3.5px ${color}66;
+      filter: drop-shadow(0 3px 7px rgba(0,0,0,0.62)) ${isFocused ? `drop-shadow(0 0 11px ${color})` : ""};
+      transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
+      transform: ${isFocused ? "scale(1.12)" : "none"};
+    `;
+
+    return L.divIcon({
+      className: "live-map-marker-icon live-map-marker-icon-static",
+      html: `
+        <div style="${staticWrapperStyle}">
+          ${getStaticIconSvg(point, iconSize)}
         </div>
       `,
       iconAnchor: [size / 2, size / 2],
@@ -212,7 +333,7 @@ function syncPointMarkerPresentation({
   const isFocused = point.id === focusedMarkerId;
 
   marker.setLatLng(getPointMarkerPosition(mapKey, point));
-  marker.setIcon(PointIcon(point.kind, isDimmed, isFocused));
+  marker.setIcon(PointIcon(point, isDimmed, isFocused));
   marker.setZIndexOffset(getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerId));
 }
 
@@ -472,7 +593,7 @@ export function LiveMapCanvas({
       }
 
       const marker = L.marker(getPointMarkerPosition(mapKey, point), {
-        icon: PointIcon(point.kind, point.floorId !== null && point.floorId !== activeFloorId, point.id === focusedMarkerId),
+        icon: PointIcon(point, point.floorId !== null && point.floorId !== activeFloorId, point.id === focusedMarkerId),
         keyboard: true,
         title: point.label,
         zIndexOffset: getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerIdRef.current),
