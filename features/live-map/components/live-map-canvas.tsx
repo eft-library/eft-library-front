@@ -95,6 +95,36 @@ function getStaticMarkerColor(point: LiveMapCanvasMarker) {
   return staticMarkerColorByType[getStaticMarkerType(point)] ?? markerColorByKind.static;
 }
 
+function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
+  switch (point.staticCategory) {
+    case "extract":
+      return {
+        iconSize: isFocused ? 39 : 34,
+        size: isFocused ? 48 : 42,
+      };
+    case "transit":
+      return {
+        iconSize: isFocused ? 37 : 32,
+        size: isFocused ? 46 : 40,
+      };
+    case "stationary_weapon":
+      return {
+        iconSize: isFocused ? 35 : 30,
+        size: isFocused ? 42 : 38,
+      };
+    case "transit_switch":
+      return {
+        iconSize: isFocused ? 33 : 28,
+        size: isFocused ? 40 : 36,
+      };
+    default:
+      return {
+        iconSize: isFocused ? 35 : 31,
+        size: isFocused ? 42 : 36,
+      };
+  }
+}
+
 function PersonIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
@@ -208,8 +238,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
   }
 
   if (kind === "static") {
-    const size = isFocused ? 42 : 36;
-    const iconSize = isFocused ? 35 : 31;
+    const { iconSize, size } = getStaticMarkerSizes(point, isFocused);
     const color = getStaticMarkerColor(point);
     const staticWrapperStyle = `
       width: ${size}px;
