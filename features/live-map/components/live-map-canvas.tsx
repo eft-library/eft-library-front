@@ -125,64 +125,69 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
   }
 }
 
-function PersonIconSvg(size: number) {
+function PersonIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="12" cy="5.2" r="2.45" fill="#f8fafc" />
-      <path d="M9 10.4c0-1.7 6-1.7 6 0v5.4H9z" fill="#f8fafc" />
-      <path d="M9.8 11.1 7.1 14.5M14.2 11.1l2.7 3.4M10.2 15.8 8.9 21M13.8 15.8l1.3 5.2" stroke="#f8fafc" stroke-width="2.35" stroke-linecap="round" />
+      <g transform="translate(0 -0.6)">
+        <circle cx="12" cy="5.2" r="2.45" fill="${color}" />
+        <path d="M9 10.4c0-1.7 6-1.7 6 0v5.4H9z" fill="${color}" />
+        <path d="M9.8 11.1 7.1 14.5M14.2 11.1l2.7 3.4M10.2 15.8 8.9 21M13.8 15.8l1.3 5.2" stroke="${color}" stroke-width="2.35" stroke-linecap="round" />
+      </g>
     </svg>
   `;
 }
 
-function TransitIconSvg(size: number) {
+function TransitIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="M5 12h12" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" />
-      <path d="m13 7 5 5-5 5" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M5.5 7.2h5.2M5.5 16.8h5.2" stroke="#f8fafc" stroke-width="2" stroke-linecap="round" opacity=".72" />
+      <g transform="translate(-0.2 0)">
+        <path d="M5 12h12" stroke="${color}" stroke-width="3" stroke-linecap="round" />
+        <path d="m13 7 5 5-5 5" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M5.5 7.2h5.2M5.5 16.8h5.2" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity=".72" />
+      </g>
     </svg>
   `;
 }
 
-function SwitchIconSvg(size: number) {
+function SwitchIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="#f8fafc" stroke="#f8fafc" stroke-width="1.1" stroke-linejoin="round" />
+      <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="${color}" stroke="${color}" stroke-width="1.1" stroke-linejoin="round" transform="translate(0.3 0)" />
     </svg>
   `;
 }
 
-function WeaponIconSvg(size: number) {
+function WeaponIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="12" cy="12" r="6.8" stroke="#f8fafc" stroke-width="2.4" />
-      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="#f8fafc" stroke-width="2.4" stroke-linecap="round" />
-      <circle cx="12" cy="12" r="1.8" fill="#f8fafc" />
+      <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
+      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="1.8" fill="${color}" />
     </svg>
   `;
 }
 
 function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
+  const color = getStaticMarkerColor(point);
   const type = getStaticMarkerType(point);
 
   if (type.startsWith("extract:")) {
-    return PersonIconSvg(size);
+    return PersonIconSvg(color, size);
   }
 
   if (type === "transit") {
-    return TransitIconSvg(size);
+    return TransitIconSvg(color, size);
   }
 
   if (type === "transit_switch") {
-    return SwitchIconSvg(size);
+    return SwitchIconSvg(color, size);
   }
 
   if (type === "stationary_weapon") {
-    return WeaponIconSvg(size);
+    return WeaponIconSvg(color, size);
   }
 
-  return PersonIconSvg(size);
+  return PersonIconSvg(color, size);
 }
 
 function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
@@ -255,7 +260,9 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       className: "live-map-marker-icon live-map-marker-icon-static",
       html: `
         <div style="${staticWrapperStyle}">
-          ${getStaticIconSvg(point, iconSize)}
+          <span style="display:flex; align-items:center; justify-content:center; transform: translateX(0.8px);">
+            ${getStaticIconSvg(point, iconSize)}
+          </span>
         </div>
       `,
       iconAnchor: [size / 2, size / 2],
