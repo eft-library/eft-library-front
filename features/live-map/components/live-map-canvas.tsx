@@ -63,6 +63,7 @@ const staticMarkerColorByType: Record<string, string> = {
   "extract:pmc": "#38bdf8",
   "extract:scav": "#fb923c",
   "extract:shared": "#c084fc",
+  btr_stop: "#f59e0b",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
   transit_switch: "#facc15",
@@ -111,6 +112,11 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
       return {
         iconSize: isFocused ? 28 : 23,
         size: isFocused ? 34 : 28,
+      };
+    case "btr_stop":
+      return {
+        iconSize: isFocused ? 31 : 26,
+        size: isFocused ? 38 : 32,
       };
     case "transit_switch":
       return {
@@ -167,6 +173,18 @@ function WeaponIconSvg(color: string, size: number) {
   `;
 }
 
+function VehicleIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M4.2 14.2 6 9.2h11.2l2.6 5v3.2H4.2z" fill="${color}" />
+      <path d="M7.2 9.2 8.6 6.6h7.1l2 2.6" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="7.4" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
+      <circle cx="16.8" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
+      <path d="M11.1 7.2h3.6M17.4 11.1h3.2" stroke="#111827" stroke-width="1.2" stroke-linecap="round" opacity=".6" />
+    </svg>
+  `;
+}
+
 function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
   const color = getStaticMarkerColor(point);
   const type = getStaticMarkerType(point);
@@ -185,6 +203,10 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 
   if (type === "stationary_weapon") {
     return WeaponIconSvg(color, size);
+  }
+
+  if (type === "btr_stop") {
+    return VehicleIconSvg(color, size);
   }
 
   return PersonIconSvg(color, size);
@@ -260,7 +282,14 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       className: "live-map-marker-icon live-map-marker-icon-static",
       html: `
         <div style="${staticWrapperStyle}">
-          <span style="display:flex; align-items:center; justify-content:center; transform: translateX(0.8px);">
+          <span style="
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+          ">
             ${getStaticIconSvg(point, iconSize)}
           </span>
         </div>

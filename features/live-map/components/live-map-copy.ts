@@ -16,6 +16,7 @@ export const copyByLocale = {
     staticPoints: "위치",
     staticCategoryAll: "전체",
     staticCategories: {
+      btr_stop: "BTR 스탑",
       extract: "탈출구",
       stationary_weapon: "고정 무기",
       transit: "이동 경로",
@@ -86,6 +87,7 @@ export const copyByLocale = {
     staticPoints: "Locations",
     staticCategoryAll: "All",
     staticCategories: {
+      btr_stop: "BTR Stops",
       extract: "Extracts",
       stationary_weapon: "Stationary Weapons",
       transit: "Transits",
@@ -156,6 +158,7 @@ export const copyByLocale = {
     staticPoints: "位置",
     staticCategoryAll: "全体",
     staticCategories: {
+      btr_stop: "BTR停止地点",
       extract: "脱出口",
       stationary_weapon: "固定武器",
       transit: "移動ルート",
