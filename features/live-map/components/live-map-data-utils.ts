@@ -136,6 +136,11 @@ export function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[
         "pmc_spawn",
         "scav_spawn",
         "cultist_spawn",
+        "rogue_spawn",
+        "raider_spawn",
+        "black_div_spawn",
+        "bloodhounds_spawn",
+        "goons_spawn",
       ];
       const leftIndex = categoryOrder.indexOf(left.category);
       const rightIndex = categoryOrder.indexOf(right.category);

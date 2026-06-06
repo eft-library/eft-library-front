@@ -63,10 +63,15 @@ const staticMarkerColorByType: Record<string, string> = {
   "extract:pmc": "#38bdf8",
   "extract:scav": "#fb923c",
   "extract:shared": "#c084fc",
+  black_div_spawn: "#4ade80",
+  bloodhounds_spawn: "#4ade80",
   boss_spawn: "#f43f5e",
   btr_stop: "#fde047",
   cultist_spawn: "#a3e635",
+  goons_spawn: "#ef4444",
   pmc_spawn: "#60a5fa",
+  raider_spawn: "#22d3ee",
+  rogue_spawn: "#64748b",
   scav_spawn: "#fb923c",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
@@ -123,8 +128,13 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
         size: isFocused ? 38 : 32,
       };
     case "boss_spawn":
+    case "black_div_spawn":
+    case "bloodhounds_spawn":
     case "cultist_spawn":
+    case "goons_spawn":
     case "pmc_spawn":
+    case "raider_spawn":
+    case "rogue_spawn":
     case "scav_spawn":
       return {
         iconSize: isFocused ? 29 : 24,
@@ -157,11 +167,21 @@ function PersonIconSvg(color: string, size: number) {
 
 function TransitIconSvg(color: string, size: number) {
   return `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <g transform="translate(-0.2 0)">
-        <path d="M5 12h12" stroke="${color}" stroke-width="3" stroke-linecap="round" />
-        <path d="m13 7 5 5-5 5" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M5.5 7.2h5.2M5.5 16.8h5.2" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity=".72" />
+    <svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <g opacity=".18" transform="translate(-6.2 1)">
+        <circle cx="15" cy="4" r="2.2" fill="${color}" />
+        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
+        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
+      </g>
+      <g opacity=".36" transform="translate(-3.4 .5)">
+        <circle cx="15" cy="4" r="2.2" fill="${color}" />
+        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
+        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
+      </g>
+      <g transform="translate(-.2 0)">
+        <circle cx="15" cy="4" r="2.2" fill="${color}" />
+        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
+        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
       </g>
     </svg>
   `;
@@ -170,29 +190,56 @@ function TransitIconSvg(color: string, size: number) {
 function SwitchIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="${color}" stroke="${color}" stroke-width="1.1" stroke-linejoin="round" transform="translate(0.3 0)" />
+      <rect x="17.5" y="9" width="4" height="7" rx="1.5" fill="${color}" opacity=".35" stroke="${color}" stroke-width="1" />
+      <circle cx="19.5" cy="14" r="2" fill="${color}" />
+      <circle cx="19.5" cy="14" r=".8" fill="#111827" opacity=".5" />
+      <line x1="19.5" y1="14" x2="8.5" y2="5.5" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
+      <rect x="5.5" y="2.5" width="5" height="4.5" rx="1.5" fill="${color}" transform="rotate(-45 8 4.75)" />
+      <rect x="6.5" y="3.3" width="3" height="2.8" rx=".7" fill="#111827" opacity=".45" transform="rotate(-45 8 4.75)" />
     </svg>
   `;
 }
 
 function WeaponIconSvg(color: string, size: number) {
   return `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
-      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
-      <circle cx="12" cy="12" r="1.8" fill="${color}" />
+    <svg width="${size}" height="${size}" viewBox="0 0 40 32" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <rect x="12" y="9" width="26" height="4" rx="1" fill="${color}" />
+      <rect x="35" y="8" width="3" height="6" rx=".8" fill="${color}" opacity=".7" />
+      <rect x="7" y="8" width="10" height="7" rx="1.5" fill="${color}" opacity=".9" stroke="${color}" stroke-width=".6" />
+      <rect x="8" y="7" width="7" height="3" rx="1" fill="${color}" opacity=".6" />
+      <path d="m7 9-4-1-1 4 5 1Z" fill="${color}" opacity=".75" />
+      <line x1="11" y1="15" x2="5" y2="28" stroke="${color}" stroke-width="2" stroke-linecap="round" />
+      <line x1="13" y1="15" x2="20" y2="28" stroke="${color}" stroke-width="2" stroke-linecap="round" />
+      <line x1="10" y1="15" x2="10" y2="27" stroke="${color}" stroke-width="1.5" stroke-linecap="round" opacity=".7" />
+      <line x1="3" y1="28" x2="7" y2="28" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
+      <line x1="18" y1="28" x2="22" y2="28" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
+      <line x1="7" y1="23" x2="17" y2="23" stroke="${color}" stroke-width="1" stroke-linecap="round" opacity=".5" />
     </svg>
   `;
 }
 
 function VehicleIconSvg(color: string, size: number) {
   return `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="M4.2 14.2 6 9.2h11.2l2.6 5v3.2H4.2z" fill="${color}" />
-      <path d="M7.2 9.2 8.6 6.6h7.1l2 2.6" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <circle cx="7.4" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
-      <circle cx="16.8" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
-      <path d="M11.1 7.2h3.6M17.4 11.1h3.2" stroke="#111827" stroke-width="1.2" stroke-linecap="round" opacity=".6" />
+    <svg width="${size}" height="${size * 0.72}" viewBox="0 0 64 42" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M3 30 8 18h48l4 5v7Z" fill="${color}" />
+      <path d="M3 30 8 18h2L5 30ZM56 18l4 5v7h-2v-6l-4-6Z" fill="#111827" opacity=".24" />
+      <rect x="6" y="28" width="52" height="3" rx=".6" fill="${color}" opacity=".5" />
+      <rect x="8" y="20" width="4" height="6" rx=".4" fill="#111827" opacity=".32" />
+      <rect x="48" y="20" width="8" height="5" rx=".6" fill="#111827" opacity=".22" />
+      <path d="M22 18 24 9h18l3 9Z" fill="${color}" />
+      <path d="M42 9 45 18h2L44 9Z" fill="#111827" opacity=".25" />
+      <ellipse cx="31" cy="9" rx="4" ry="1.8" fill="${color}" opacity=".75" />
+      <ellipse cx="31" cy="9" rx="2.2" ry="1.1" fill="#111827" opacity=".32" />
+      <rect x="43" y="12.8" width="19" height="1.8" rx=".6" fill="${color}" />
+      <rect x="60" y="12.2" width="3" height="3" rx=".5" fill="${color}" opacity=".75" />
+      <circle cx="12" cy="35" r="5" fill="#111827" />
+      <circle cx="12" cy="35" r="5" fill="none" stroke="${color}" stroke-width="1" />
+      <circle cx="26" cy="35" r="5" fill="#111827" />
+      <circle cx="26" cy="35" r="5" fill="none" stroke="${color}" stroke-width="1" />
+      <circle cx="40" cy="35" r="5" fill="#111827" />
+      <circle cx="40" cy="35" r="5" fill="none" stroke="${color}" stroke-width="1" />
+      <circle cx="54" cy="35" r="5" fill="#111827" />
+      <circle cx="54" cy="35" r="5" fill="none" stroke="${color}" stroke-width="1" />
     </svg>
   `;
 }
@@ -230,10 +277,70 @@ function MaskIconSvg(color: string, size: number) {
 
 function KnifeIconSvg(color: string, size: number) {
   return `
+    <svg width="${size}" height="${size}" viewBox="0 0 275.411 259.024" aria-hidden="true" style="color:${color};transform:rotate(-90deg) scaleX(-1)" shape-rendering="geometricPrecision">
+      <path d="m0 259.024c9.779-1.009 21.603-3.007 34.657-6.928 13.775-4.138 25.257-9.318 34.262-14.121 11.356-7.548 23.254-16.038 35.472-25.572 10.89-8.498 20.905-16.943 30.076-25.163 14.112-13.9 28.224-27.799 42.336-41.699l10.037 10.19c.753.764 1.798 1.19 2.867 1.107.471-.037.977-.101 1.509-.203.88-.169 1.66-.41 2.329-.668.836-.323 1.585-.823 2.223-1.452l5.612-5.527c.738-.727 1.31-1.609 1.632-2.594.222-.678.424-1.446.573-2.294.206-1.178.26-2.241.244-3.133-.007-.395-.176-.77-.454-1.052l-.825-.837c-.453-.46-1.141-.598-1.737-.348l-8.481 3.559-15.832-16.074-.878-2.703 84.445-83.174 3.345 3.396 11.999-11.818-4.07-26.321-26.473-5.594-11.999 11.818 2.453 2.49-83.992 82.728-5.605-1.615-18.132-18.409c-1.077-1.093-2.613-1.603-4.129-1.37l-1.712.263c-1.851.284-3.565 1.144-4.899 2.458l-3.976 3.916c-1.094 1.078-1.891 2.42-2.313 3.897l-1.314 4.596c-.216.756-.012 1.571.536 2.135l.462.476c.59.607 1.473.823 2.275.552 2.35-.794 7.3-2.465 10.095-3.409l3.791 3.849-54.335 53.517c-4.095 4.984-8.405 10.738-12.67 17.289-4.296 6.599-7.834 12.913-10.747 18.711-1.372 3.296-2.721 6.898-3.974 10.794-1.954 6.078-4.253 16.775-4.253 16.775l.942 5.435s9.025-12.905 12.335-17.461c4.61-6.346 9.332-11.514 13.601-15.626 10.788-10.18 21.576-20.359 32.364-30.539l44.166-33.207 2.427 2.464s-12.498 14.572-16.169 19.065c-5.337 6.532-11.182 13.93-18.825 23.002-4.612 5.475-9.519 11.068-14.733 16.741-4.517 4.915-10.025 10.907-16.534 17.177-10.341 9.961-19.229 16.785-26.421 22.274-5.705 4.353-9.498 6.995-16.306 11.782-8.704 6.12-21.372 15.07-37.277 26.457Z" fill="currentColor" />
+    </svg>
+  `;
+}
+
+function RogueIconSvg(color: string, size: number) {
+  return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="M17.7 3.6 7.4 13.9l3.1 3.1L20.8 6.7c.8-.8.8-2.1 0-2.9s-2.1-.8-2.9 0Z" fill="${color}" />
-      <path d="m6.5 14.7 3.8 3.8-2.1 2.1a1.8 1.8 0 0 1-2.6 0l-1.2-1.2a1.8 1.8 0 0 1 0-2.6z" fill="${color}" opacity=".82" />
-      <path d="M14.4 6.8 18 10.4" stroke="#111827" stroke-width="1.3" stroke-linecap="round" opacity=".55" />
+      <path d="M4 14c0-7 4-11 8-11s8 4 8 11v4H4Z" fill="${color}" />
+      <ellipse cx="12" cy="13" rx="4.5" ry="5" fill="#111827" />
+      <ellipse cx="10" cy="12.5" rx="1.1" ry=".7" fill="${color}" opacity=".9" />
+      <ellipse cx="14" cy="12.5" rx="1.1" ry=".7" fill="${color}" opacity=".9" />
+      <path d="M10.5 15h3" stroke="${color}" stroke-width=".7" opacity=".35" stroke-linecap="round" />
+      <path d="M7 18 6 23h12l-1-5Z" fill="${color}" opacity=".82" />
+      <rect x="10.5" y="17" width="3" height="2" rx=".5" fill="${color}" opacity=".62" />
+    </svg>
+  `;
+}
+
+function RaiderIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M5 11c0-4.5 3-7 7-7s7 2.5 7 7Z" fill="${color}" />
+      <rect x="4" y="10.5" width="16" height="1.5" rx=".5" fill="${color}" opacity=".62" />
+      <path d="M7 12c0 4 2 7 5 7s5-3 5-7Z" fill="${color}" opacity=".45" />
+      <rect x="6.5" y="11.5" width="11" height="3.5" rx="1.5" fill="#111827" stroke="${color}" stroke-width=".8" />
+      <rect x="11" y="12" width="2" height="2.5" rx=".4" fill="#111827" stroke="${color}" stroke-width=".5" />
+      <ellipse cx="9" cy="13.2" rx="1.8" ry="1.1" fill="${color}" opacity=".22" />
+      <ellipse cx="15" cy="13.2" rx="1.8" ry="1.1" fill="${color}" opacity=".22" />
+      <path d="M9.5 16.5q2.5 1 5 0" stroke="${color}" stroke-width="1" opacity=".55" stroke-linecap="round" />
+      <path d="m8 19-1 5h10l-1-5Z" fill="${color}" opacity=".75" />
+    </svg>
+  `;
+}
+
+function BloodhoundsIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M4 12c0-5.5 3.5-9 8-9s8 3.5 8 9Z" fill="#475569" />
+      <rect x="3.5" y="11.2" width="17" height="1.8" rx=".6" fill="#64748b" />
+      <path d="M7 13c0 4.5 2.2 7.5 5 7.5s5-3 5-7.5Z" fill="#d6b884" />
+      <path d="M6 13.5v2c0 .7.3 1 1 1h3.5c.7 0 1-.3 1-1v-2c0-.7-.3-1-1-1H7c-.7 0-1 .3-1 1ZM12.5 13.5v2c0 .7.3 1 1 1H17c.7 0 1-.3 1-1v-2c0-.7-.3-1-1-1h-3.5c-.7 0-1 .3-1 1Z" fill="#111827" />
+      <path d="M11.5 14.5h1M10 18.5q2 .7 4 0" stroke="#475569" stroke-width=".8" stroke-linecap="round" />
+      <path d="m8 20.5-1 4.5h10l-1-4.5Z" fill="#3f6212" />
+      <circle cx="19" cy="6" r="2" fill="${color}" opacity=".92" />
+    </svg>
+  `;
+}
+
+function GoonIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M4 8V4l4 2.5L12 3l4 3.5L20 4v4Z" fill="${color}" />
+      <circle cx="12" cy="4" r="1" fill="#111827" />
+      <circle cx="7.5" cy="6" r=".7" fill="#111827" opacity=".75" />
+      <circle cx="16.5" cy="6" r=".7" fill="#111827" opacity=".75" />
+      <rect x="4" y="8" width="16" height="1.5" rx=".4" fill="${color}" opacity=".82" />
+      <path d="M6 10c0-1.5 2.5-2 6-2s6 .5 6 2v7c0 2.5-2.5 4-6 4s-6-1.5-6-4Z" fill="${color}" opacity=".88" />
+      <ellipse cx="9.5" cy="13.5" rx="2" ry="1.5" fill="#111827" />
+      <ellipse cx="14.5" cy="13.5" rx="2" ry="1.5" fill="#111827" />
+      <ellipse cx="9.5" cy="13.5" rx="1.1" ry=".85" fill="${color}" opacity=".95" />
+      <ellipse cx="14.5" cy="13.5" rx="1.1" ry=".85" fill="${color}" opacity=".95" />
+      <path d="m8.5 15.5 1.5 1M9.5 18l1-1 1.5 1.5 1.5-1.5 1 1" stroke="#111827" stroke-width=".75" stroke-linecap="round" stroke-linejoin="round" opacity=".62" />
     </svg>
   `;
 }
@@ -276,6 +383,22 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 
   if (type === "cultist_spawn") {
     return KnifeIconSvg(color, size);
+  }
+
+  if (type === "rogue_spawn") {
+    return RogueIconSvg(color, size);
+  }
+
+  if (type === "raider_spawn") {
+    return RaiderIconSvg(color, size);
+  }
+
+  if (type === "black_div_spawn" || type === "bloodhounds_spawn") {
+    return BloodhoundsIconSvg(color, size);
+  }
+
+  if (type === "goons_spawn") {
+    return GoonIconSvg(color, size);
   }
 
   return PersonIconSvg(color, size);

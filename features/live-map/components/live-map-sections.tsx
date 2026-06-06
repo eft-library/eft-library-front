@@ -594,6 +594,10 @@ function getStaticIconColor(category: string, faction?: string) {
     return "#fde047";
   }
 
+  if (category === "black_div_spawn" || category === "bloodhounds_spawn") {
+    return "#4ade80";
+  }
+
   if (category === "boss_spawn") {
     return "#f43f5e";
   }
@@ -608,6 +612,18 @@ function getStaticIconColor(category: string, faction?: string) {
 
   if (category === "cultist_spawn") {
     return "#a3e635";
+  }
+
+  if (category === "goons_spawn") {
+    return "#ef4444";
+  }
+
+  if (category === "raider_spawn") {
+    return "#22d3ee";
+  }
+
+  if (category === "rogue_spawn") {
+    return "#64748b";
   }
 
   return "#34d399";
@@ -677,11 +693,14 @@ function getStaticPanelIconSvg(category: string, color: string, size: number) {
 
   if (category === "btr_stop") {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4.2 14.2 6 9.2h11.2l2.6 5v3.2H4.2z" fill="${color}" />
-        <path d="M7.2 9.2 8.6 6.6h7.1l2 2.6" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <circle cx="7.4" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
-        <circle cx="16.8" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
+      <svg width="${size}" height="${size}" viewBox="0 0 64 42" fill="none" aria-hidden="true">
+        <path d="M3 30 8 18h48l4 5v7Z" fill="${color}" />
+        <path d="M22 18 24 9h18l3 9Z" fill="${color}" />
+        <rect x="43" y="12.8" width="19" height="1.8" rx=".6" fill="${color}" />
+        <circle cx="12" cy="35" r="5" fill="#111827" stroke="${color}" stroke-width="1" />
+        <circle cx="26" cy="35" r="5" fill="#111827" stroke="${color}" stroke-width="1" />
+        <circle cx="40" cy="35" r="5" fill="#111827" stroke="${color}" stroke-width="1" />
+        <circle cx="54" cy="35" r="5" fill="#111827" stroke="${color}" stroke-width="1" />
       </svg>
     `;
   }
@@ -719,10 +738,57 @@ function getStaticPanelIconSvg(category: string, color: string, size: number) {
 
   if (category === "cultist_spawn") {
     return `
+      <svg width="${size}" height="${size}" viewBox="0 0 275.411 259.024" aria-hidden="true" style="color:${color};transform:rotate(-90deg) scaleX(-1)">
+        <path d="m0 259.024c9.779-1.009 21.603-3.007 34.657-6.928 13.775-4.138 25.257-9.318 34.262-14.121 11.356-7.548 23.254-16.038 35.472-25.572 10.89-8.498 20.905-16.943 30.076-25.163 14.112-13.9 28.224-27.799 42.336-41.699l10.037 10.19c.753.764 1.798 1.19 2.867 1.107.471-.037.977-.101 1.509-.203.88-.169 1.66-.41 2.329-.668.836-.323 1.585-.823 2.223-1.452l5.612-5.527c.738-.727 1.31-1.609 1.632-2.594.222-.678.424-1.446.573-2.294.206-1.178.26-2.241.244-3.133-.007-.395-.176-.77-.454-1.052l-.825-.837c-.453-.46-1.141-.598-1.737-.348l-8.481 3.559-15.832-16.074-.878-2.703 84.445-83.174 3.345 3.396 11.999-11.818-4.07-26.321-26.473-5.594-11.999 11.818 2.453 2.49-83.992 82.728-5.605-1.615-18.132-18.409c-1.077-1.093-2.613-1.603-4.129-1.37l-1.712.263c-1.851.284-3.565 1.144-4.899 2.458l-3.976 3.916c-1.094 1.078-1.891 2.42-2.313 3.897l-1.314 4.596c-.216.756-.012 1.571.536 2.135l.462.476c.59.607 1.473.823 2.275.552 2.35-.794 7.3-2.465 10.095-3.409l3.791 3.849-54.335 53.517c-4.095 4.984-8.405 10.738-12.67 17.289-4.296 6.599-7.834 12.913-10.747 18.711-1.372 3.296-2.721 6.898-3.974 10.794-1.954 6.078-4.253 16.775-4.253 16.775l.942 5.435s9.025-12.905 12.335-17.461c4.61-6.346 9.332-11.514 13.601-15.626 10.788-10.18 21.576-20.359 32.364-30.539l44.166-33.207 2.427 2.464s-12.498 14.572-16.169 19.065c-5.337 6.532-11.182 13.93-18.825 23.002-4.612 5.475-9.519 11.068-14.733 16.741-4.517 4.915-10.025 10.907-16.534 17.177-10.341 9.961-19.229 16.785-26.421 22.274-5.705 4.353-9.498 6.995-16.306 11.782-8.704 6.12-21.372 15.07-37.277 26.457Z" fill="currentColor" />
+      </svg>
+    `;
+  }
+
+  if (category === "rogue_spawn") {
+    return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M17.7 3.6 7.4 13.9l3.1 3.1L20.8 6.7c.8-.8.8-2.1 0-2.9s-2.1-.8-2.9 0Z" fill="${color}" />
-        <path d="m6.5 14.7 3.8 3.8-2.1 2.1a1.8 1.8 0 0 1-2.6 0l-1.2-1.2a1.8 1.8 0 0 1 0-2.6z" fill="${color}" opacity=".82" />
-        <path d="M14.4 6.8 18 10.4" stroke="#111827" stroke-width="1.3" stroke-linecap="round" opacity=".55" />
+        <path d="M4 14c0-7 4-11 8-11s8 4 8 11v4H4Z" fill="${color}" />
+        <ellipse cx="12" cy="13" rx="4.5" ry="5" fill="#111827" />
+        <ellipse cx="10" cy="12.5" rx="1.1" ry=".7" fill="${color}" opacity=".9" />
+        <ellipse cx="14" cy="12.5" rx="1.1" ry=".7" fill="${color}" opacity=".9" />
+        <path d="M7 18 6 23h12l-1-5Z" fill="${color}" opacity=".82" />
+      </svg>
+    `;
+  }
+
+  if (category === "raider_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 11c0-4.5 3-7 7-7s7 2.5 7 7Z" fill="${color}" />
+        <rect x="4" y="10.5" width="16" height="1.5" rx=".5" fill="${color}" opacity=".62" />
+        <rect x="6.5" y="11.5" width="11" height="3.5" rx="1.5" fill="#111827" stroke="${color}" stroke-width=".8" />
+        <ellipse cx="9" cy="13.2" rx="1.8" ry="1.1" fill="${color}" opacity=".22" />
+        <ellipse cx="15" cy="13.2" rx="1.8" ry="1.1" fill="${color}" opacity=".22" />
+        <path d="m8 19-1 5h10l-1-5Z" fill="${color}" opacity=".75" />
+      </svg>
+    `;
+  }
+
+  if (category === "black_div_spawn" || category === "bloodhounds_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 12c0-5.5 3.5-9 8-9s8 3.5 8 9Z" fill="#475569" />
+        <rect x="3.5" y="11.2" width="17" height="1.8" rx=".6" fill="#64748b" />
+        <path d="M7 13c0 4.5 2.2 7.5 5 7.5s5-3 5-7.5Z" fill="#d6b884" />
+        <path d="M6 13.5v2c0 .7.3 1 1 1h3.5c.7 0 1-.3 1-1v-2c0-.7-.3-1-1-1H7c-.7 0-1 .3-1 1ZM12.5 13.5v2c0 .7.3 1 1 1H17c.7 0 1-.3 1-1v-2c0-.7-.3-1-1-1h-3.5c-.7 0-1 .3-1 1Z" fill="#111827" />
+        <circle cx="19" cy="6" r="2" fill="${color}" />
+      </svg>
+    `;
+  }
+
+  if (category === "goons_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 8V4l4 2.5L12 3l4 3.5L20 4v4Z" fill="${color}" />
+        <rect x="4" y="8" width="16" height="1.5" rx=".4" fill="${color}" opacity=".82" />
+        <path d="M6 10c0-1.5 2.5-2 6-2s6 .5 6 2v7c0 2.5-2.5 4-6 4s-6-1.5-6-4Z" fill="${color}" opacity=".88" />
+        <ellipse cx="9.5" cy="13.5" rx="2" ry="1.5" fill="#111827" />
+        <ellipse cx="14.5" cy="13.5" rx="2" ry="1.5" fill="#111827" />
       </svg>
     `;
   }
