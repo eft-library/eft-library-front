@@ -446,6 +446,15 @@ export function LiveMapClientPage({
       }
 
       if (targetMap === normalizedName) {
+        setPanel((current) =>
+          current?.type === "quest" && current.id === questId
+            ? {
+                ...current,
+                pointId: point.id,
+              }
+            : current,
+        );
+
         if (focusedMarkerId !== focus) {
           replaceFocusParam(focus);
         }
@@ -485,6 +494,16 @@ export function LiveMapClientPage({
       }
 
       if (targetMap === normalizedName) {
+        setPanel((current) =>
+          current?.type === "story" && current.id === storyId
+            ? {
+                ...current,
+                objectiveId: objective.objective_id,
+                pointId: point.id,
+              }
+            : current,
+        );
+
         if (focusedMarkerId !== focus) {
           replaceFocusParam(focus);
         }
@@ -520,6 +539,16 @@ export function LiveMapClientPage({
       }
 
       if (targetMap === normalizedName) {
+        setPanel((current) =>
+          current?.type === "event" && current.id === eventId
+            ? {
+                ...current,
+                objectiveId: objective.objective_id,
+                pointId: point.id,
+              }
+            : current,
+        );
+
         if (focusedMarkerId !== focus) {
           replaceFocusParam(focus);
         }
@@ -1053,12 +1082,17 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={questEntries}
                 isOpen={expandedRightSections.has("quest")}
-                kind="quest"
-                onOpen={(entry) =>
-                  entry.point.quest_info
-                    ? setPanel({ id: entry.id, info: entry.point.quest_info, type: "quest" })
-                    : undefined
-                }
+	                kind="quest"
+	                onOpen={(entry) =>
+	                  entry.point.quest_info
+	                    ? setPanel({
+	                        id: entry.id,
+	                        info: entry.point.quest_info,
+	                        pointId: entry.point.id,
+	                        type: "quest",
+	                      })
+	                    : undefined
+	                }
                 onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
                 onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
                 onToggleComplete={toggleQuestCompletionState}
@@ -1076,12 +1110,18 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={storyEntries}
                 isOpen={expandedRightSections.has("story")}
-                kind="story"
-                onOpen={(entry) =>
-                  entry.point.story_info
-                    ? setPanel({ id: entry.id, info: entry.point.story_info, type: "story" })
-                    : undefined
-                }
+	                kind="story"
+	                onOpen={(entry) =>
+	                  entry.point.story_info
+	                    ? setPanel({
+	                        id: entry.id,
+	                        info: entry.point.story_info,
+	                        objectiveId: entry.point.objective_id,
+	                        pointId: entry.point.id,
+	                        type: "story",
+	                      })
+	                    : undefined
+	                }
                 onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStoryIds, storyEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("story")}
@@ -1098,12 +1138,18 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={eventEntries}
                 isOpen={expandedRightSections.has("event")}
-                kind="event"
-                onOpen={(entry) =>
-                  entry.point.event_info
-                    ? setPanel({ id: entry.id, info: entry.point.event_info, type: "event" })
-                    : undefined
-                }
+	                kind="event"
+	                onOpen={(entry) =>
+	                  entry.point.event_info
+	                    ? setPanel({
+	                        id: entry.id,
+	                        info: entry.point.event_info,
+	                        objectiveId: entry.point.objective_id,
+	                        pointId: entry.point.id,
+	                        type: "event",
+	                      })
+	                    : undefined
+	                }
                 onToggle={(id) => toggleSet(setEnabledEventIds, id)}
                 onToggleAll={() => toggleAll(setEnabledEventIds, eventEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("event")}

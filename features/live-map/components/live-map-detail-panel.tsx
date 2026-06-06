@@ -374,9 +374,8 @@ function ObjectiveList({
       </h4>
       <ul className="space-y-0.5">
         {objectives.map((objective) => {
-          const point = getQuestObjectivePoint(objective);
           const points = getQuestObjectivePoints(objective);
-          const isRemote = isRemoteObjectivePoint(point, objective.maps, normalizedName);
+          const isRemote = hasRemoteObjectivePoint(points, objective.maps, normalizedName);
 
           return (
             <li
@@ -514,8 +513,7 @@ function NestedStoryObjectives({
           objective.objective_id === selectedObjectiveId ||
           (!!selectedPointId &&
             objective.live_map_points.some((point) => point.id === selectedPointId));
-        const point = objective.live_map_points[0];
-        const isRemote = isRemoteObjectivePoint(point, objective.maps, normalizedName);
+        const isRemote = hasRemoteObjectivePoint(objective.live_map_points, objective.maps, normalizedName);
 
         return (
           <li
@@ -594,8 +592,7 @@ function NestedEventObjectives({
           objective.objective_id === selectedObjectiveId ||
           (!!selectedPointId &&
             objective.live_map_points.some((point) => point.id === selectedPointId));
-        const point = objective.live_map_points[0];
-        const isRemote = isRemoteObjectivePoint(point, [], normalizedName);
+        const isRemote = hasRemoteObjectivePoint(objective.live_map_points, [], normalizedName);
 
         return (
           <li
@@ -648,6 +645,14 @@ function NestedEventObjectives({
       })}
     </ul>
   );
+}
+
+function hasRemoteObjectivePoint(
+  points: LiveMapObjectivePoint[],
+  maps: Array<{ id: string; normalized_name: string; name_en: string; name_ko: string; name_ja: string }>,
+  normalizedName: string,
+) {
+  return points.some((point) => isRemoteObjectivePoint(point, maps, normalizedName));
 }
 
 function ObjectivePointList({
