@@ -590,6 +590,10 @@ function getStaticIconColor(category: string, faction?: string) {
     return "#94a3b8";
   }
 
+  if (category === "sniper_spawn") {
+    return "#94a3b8";
+  }
+
   if (category === "btr_stop") {
     return "#fde047";
   }
@@ -682,6 +686,21 @@ function getStaticPanelIconSvg(category: string, color: string, size: number) {
   }
 
   if (category === "stationary_weapon") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+        <rect x="12" y="9" width="26" height="4" rx="1" fill="${color}" />
+        <rect x="35" y="8" width="3" height="6" rx=".8" fill="${color}" opacity=".7" />
+        <rect x="7" y="8" width="10" height="7" rx="1.5" fill="${color}" opacity=".9" stroke="${color}" stroke-width=".6" />
+        <rect x="8" y="7" width="7" height="3" rx="1" fill="${color}" opacity=".6" />
+        <path d="m7 9-4-1-1 4 5 1Z" fill="${color}" opacity=".75" />
+        <line x1="11" y1="15" x2="5" y2="28" stroke="${color}" stroke-width="2" stroke-linecap="round" />
+        <line x1="13" y1="15" x2="20" y2="28" stroke="${color}" stroke-width="2" stroke-linecap="round" />
+        <line x1="10" y1="15" x2="10" y2="27" stroke="${color}" stroke-width="1.5" stroke-linecap="round" opacity=".7" />
+      </svg>
+    `;
+  }
+
+  if (category === "sniper_spawn") {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />

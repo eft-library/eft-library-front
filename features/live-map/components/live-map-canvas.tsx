@@ -73,6 +73,7 @@ const staticMarkerColorByType: Record<string, string> = {
   raider_spawn: "#22d3ee",
   rogue_spawn: "#64748b",
   scav_spawn: "#fb923c",
+  sniper_spawn: "#94a3b8",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
   transit_switch: "#facc15",
@@ -118,6 +119,11 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
         size: isFocused ? 36 : 30,
       };
     case "stationary_weapon":
+      return {
+        iconSize: isFocused ? 28 : 23,
+        size: isFocused ? 34 : 28,
+      };
+    case "sniper_spawn":
       return {
         iconSize: isFocused ? 28 : 23,
         size: isFocused ? 34 : 28,
@@ -214,6 +220,16 @@ function WeaponIconSvg(color: string, size: number) {
       <line x1="3" y1="28" x2="7" y2="28" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
       <line x1="18" y1="28" x2="22" y2="28" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
       <line x1="7" y1="23" x2="17" y2="23" stroke="${color}" stroke-width="1" stroke-linecap="round" opacity=".5" />
+    </svg>
+  `;
+}
+
+function SniperIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
+      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="1.8" fill="${color}" />
     </svg>
   `;
 }
@@ -363,6 +379,10 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 
   if (type === "stationary_weapon") {
     return WeaponIconSvg(color, size);
+  }
+
+  if (type === "sniper_spawn") {
+    return SniperIconSvg(color, size);
   }
 
   if (type === "btr_stop") {

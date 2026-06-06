@@ -131,6 +131,7 @@ export function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[
         "transit",
         "transit_switch",
         "stationary_weapon",
+        "sniper_spawn",
         "btr_stop",
         "boss_spawn",
         "pmc_spawn",
