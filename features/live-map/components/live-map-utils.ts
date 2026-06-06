@@ -59,3 +59,30 @@ export function findFloorForHeight(
     null
   );
 }
+
+export function findFloorForLocation(
+  floors: LiveMapFloor[],
+  location: Pick<LiveMapLocation, "x" | "y" | "z">,
+): LiveMapFloor | null {
+  return (
+    floors.find((floor) => {
+      const matchedZone = (floor.zones ?? []).find((zone) =>
+        location.x >= zone.area_x_min &&
+        location.x <= zone.area_x_max &&
+        location.y >= zone.area_z_min &&
+        location.y <= zone.area_z_max,
+      );
+      const minZ = matchedZone?.override_min_z ?? floor.min_z;
+      const maxZ = matchedZone?.override_max_z ?? floor.max_z;
+
+      if (minZ === null || maxZ === null) {
+        return false;
+      }
+
+      return location.z >= minZ && location.z < maxZ;
+    }) ??
+    floors.find((floor) => floor.min_z === null && floor.max_z === null) ??
+    floors[0] ??
+    null
+  );
+}

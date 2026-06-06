@@ -658,13 +658,14 @@ export function LiveMapCanvas({
     imageOverlayRefs.current.forEach((overlay) => overlay.remove());
     imageOverlayRefs.current = [];
 
-    const inactiveFloors = floors.filter((floor) => floor.id !== activeFloorId);
-    const activeFloor = floors.find((floor) => floor.id === activeFloorId);
-    const orderedFloors = activeFloor ? [...inactiveFloors, activeFloor] : floors;
+    const drawableFloors = floors.filter((floor) => floor.image);
+    const inactiveFloors = drawableFloors.filter((floor) => floor.id !== activeFloorId);
+    const activeFloor = drawableFloors.find((floor) => floor.id === activeFloorId);
+    const orderedFloors = activeFloor ? [...inactiveFloors, activeFloor] : drawableFloors;
 
     imageOverlayRefs.current = orderedFloors.map((floor) => {
       const isActive = floor.id === activeFloorId;
-      const overlay = L.imageOverlay(floor.image, coordinateInfo.image_bounds, {
+      const overlay = L.imageOverlay(floor.image ?? "", coordinateInfo.image_bounds, {
         className: isActive
           ? "live-map-floor-layer live-map-floor-layer-active"
           : "live-map-floor-layer live-map-floor-layer-inactive",

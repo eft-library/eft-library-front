@@ -72,7 +72,7 @@ import {
 } from "./live-map-marker-popup";
 import { LiveMapLocationGuide } from "./live-map-location-guide";
 import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
-import { findFloorForHeight, parseWhereText, type LiveMapLocation } from "./live-map-utils";
+import { findFloorForLocation, parseWhereText, type LiveMapLocation } from "./live-map-utils";
 
 const LiveMapCanvas = dynamic(
   () => import("./live-map-canvas").then((mod) => mod.LiveMapCanvas),
@@ -388,7 +388,7 @@ export function LiveMapClientPage({
       setLocationForMap(normalizedName, text);
     }
 
-    const matchedFloor = findFloorForHeight(sortedFloors, parsed.z);
+    const matchedFloor = findFloorForLocation(sortedFloors, parsed);
 
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);

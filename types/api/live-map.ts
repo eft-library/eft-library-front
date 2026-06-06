@@ -11,14 +11,27 @@ export interface LiveMapFloor {
   id: string;
   map_id: string;
   floor_no: number;
-  name_en: string;
-  name_ko: string;
-  name_ja: string;
-  image: string;
+  name_en: string | null;
+  name_ko: string | null;
+  name_ja: string | null;
+  image: string | null;
   min_z: number | null;
   max_z: number | null;
   map_bounds: [[number, number], [number, number]] | null;
   default_zoom_level: number | null;
+  zones: LiveMapFloorZone[];
+}
+
+export interface LiveMapFloorZone {
+  id: string;
+  floor_id: string;
+  map_id: string;
+  area_x_min: number;
+  area_x_max: number;
+  area_z_min: number;
+  area_z_max: number;
+  override_min_z: number;
+  override_max_z: number;
 }
 
 export interface LiveMapCoordinateInfo {
