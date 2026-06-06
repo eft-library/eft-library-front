@@ -43,8 +43,12 @@ type LeafletContainerElement = HTMLDivElement & {
 };
 
 interface PointMarkerEntry {
+  label: string;
   marker: LeafletMarker;
+  popupHtml?: string;
   point: LiveMapCanvasMarker;
+  positionKey: string;
+  presentationKey: string;
 }
 
 function clearLeafletContainer(container: LeafletContainerElement) {
@@ -558,6 +562,27 @@ function getPointMarkerZIndex(
   return point.floorId === null || point.floorId === activeFloorId ? 700 : 0;
 }
 
+function getPointMarkerPositionKey(mapKey: string, point: LiveMapCanvasMarker) {
+  return `${mapKey}:${point.x}:${point.y}`;
+}
+
+function getPointMarkerPresentationKey(
+  point: LiveMapCanvasMarker,
+  activeFloorId: string,
+  focusedMarkerId?: string | null,
+  hoveredMarkerId?: string | null,
+) {
+  return [
+    point.kind,
+    point.staticCategory ?? "",
+    point.staticFaction ?? "",
+    point.floorId ?? "",
+    activeFloorId,
+    point.id === focusedMarkerId ? "focused" : "",
+    point.id === hoveredMarkerId ? "hovered" : "",
+  ].join("|");
+}
+
 function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker) {
   if (!point.popupHtml) {
     marker.unbindPopup();
@@ -619,7 +644,6 @@ function syncPointMarkerPresentation({
   const isDimmed = point.floorId !== null && point.floorId !== activeFloorId;
   const isFocused = point.id === focusedMarkerId;
 
-  marker.setLatLng(getPointMarkerPosition(mapKey, point));
   marker.setIcon(PointIcon(point, isDimmed, isFocused));
   marker.setZIndexOffset(getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerId));
 }
@@ -863,20 +887,46 @@ export function LiveMapCanvas({
 
     markers.forEach((point) => {
       const existing = pointMarkerByIdRef.current.get(point.id);
+      const hoveredMarkerId = hoveredMarkerIdRef.current;
+      const nextPositionKey = getPointMarkerPositionKey(mapKey, point);
+      const nextPresentationKey = getPointMarkerPresentationKey(
+        point,
+        activeFloorId,
+        focusedMarkerId,
+        hoveredMarkerId,
+      );
 
       if (existing) {
         existing.point = point;
-        existing.marker.options.title = point.label;
-        syncPointMarkerPopup(existing.marker, point);
-        syncPointMarkerTooltip(existing.marker, point);
-        syncPointMarkerPresentation({
-          activeFloorId,
-          focusedMarkerId,
-          hoveredMarkerId: hoveredMarkerIdRef.current,
-          mapKey,
-          marker: existing.marker,
-          point,
-        });
+
+        if (existing.positionKey !== nextPositionKey) {
+          existing.marker.setLatLng(getPointMarkerPosition(mapKey, point));
+          existing.positionKey = nextPositionKey;
+        }
+
+        if (existing.label !== point.label) {
+          existing.marker.options.title = point.label;
+          syncPointMarkerTooltip(existing.marker, point);
+          existing.label = point.label;
+        }
+
+        if (existing.popupHtml !== point.popupHtml) {
+          syncPointMarkerPopup(existing.marker, point);
+          existing.popupHtml = point.popupHtml;
+        }
+
+        if (existing.presentationKey !== nextPresentationKey) {
+          syncPointMarkerPresentation({
+            activeFloorId,
+            focusedMarkerId,
+            hoveredMarkerId,
+            mapKey,
+            marker: existing.marker,
+            point,
+          });
+          existing.presentationKey = nextPresentationKey;
+        }
+
         return;
       }
 
@@ -904,6 +954,13 @@ export function LiveMapCanvas({
         const current = pointMarkerByIdRef.current.get(point.id);
 
         if (current) {
+          const nextPresentationKey = getPointMarkerPresentationKey(
+            current.point,
+            activeFloorIdRef.current,
+            focusedMarkerIdRef.current,
+            point.id,
+          );
+
           syncPointMarkerPresentation({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
@@ -912,6 +969,7 @@ export function LiveMapCanvas({
             marker: current.marker,
             point: current.point,
           });
+          current.presentationKey = nextPresentationKey;
         }
       });
 
@@ -923,6 +981,13 @@ export function LiveMapCanvas({
         const current = pointMarkerByIdRef.current.get(point.id);
 
         if (current) {
+          const nextPresentationKey = getPointMarkerPresentationKey(
+            current.point,
+            activeFloorIdRef.current,
+            focusedMarkerIdRef.current,
+            hoveredMarkerIdRef.current,
+          );
+
           syncPointMarkerPresentation({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
@@ -931,11 +996,19 @@ export function LiveMapCanvas({
             marker: current.marker,
             point: current.point,
           });
+          current.presentationKey = nextPresentationKey;
         }
       });
 
       marker.addTo(map);
-      pointMarkerByIdRef.current.set(point.id, { marker, point });
+      pointMarkerByIdRef.current.set(point.id, {
+        label: point.label,
+        marker,
+        point,
+        popupHtml: point.popupHtml,
+        positionKey: nextPositionKey,
+        presentationKey: nextPresentationKey,
+      });
     });
   }, [activeFloorId, focusedMarkerId, mapKey, markers]);
 

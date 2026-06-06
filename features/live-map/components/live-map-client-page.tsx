@@ -87,6 +87,72 @@ const LiveMapImagePopup = dynamic(
   { ssr: false },
 );
 
+function addPointMapNames(
+  names: Set<string>,
+  points: Array<{ map?: { normalized_name?: string | null } | null }>,
+) {
+  points.forEach((point) => {
+    if (point.map?.normalized_name) {
+      names.add(point.map.normalized_name);
+    }
+  });
+}
+
+function addMapListNames(
+  names: Set<string>,
+  maps: Array<{ normalized_name?: string | null }>,
+) {
+  maps.forEach((map) => {
+    if (map.normalized_name) {
+      names.add(map.normalized_name);
+    }
+  });
+}
+
+function addStoryObjectiveMapNames(names: Set<string>, objectives: StoryObjective[]) {
+  objectives.forEach((objective) => {
+    addMapListNames(names, objective.maps);
+    addPointMapNames(names, objective.live_map_points);
+    addStoryObjectiveMapNames(names, objective.children);
+  });
+}
+
+function addEventObjectiveMapNames(names: Set<string>, objectives: EventObjective[]) {
+  objectives.forEach((objective) => {
+    addPointMapNames(names, objective.live_map_points);
+    addEventObjectiveMapNames(names, objective.children);
+  });
+}
+
+function getPanelObjectiveMapNames(panel: PanelState | null) {
+  const names = new Set<string>();
+
+  if (!panel) {
+    return names;
+  }
+
+  if (panel.type === "quest") {
+    panel.info.objectives.forEach((objective) => {
+      addMapListNames(names, objective.maps);
+      addPointMapNames(names, objective.live_map_points ?? []);
+
+      if (objective.live_map_point) {
+        addPointMapNames(names, [objective.live_map_point]);
+      }
+    });
+  }
+
+  if (panel.type === "story") {
+    addStoryObjectiveMapNames(names, panel.info.objectives);
+  }
+
+  if (panel.type === "event") {
+    addEventObjectiveMapNames(names, panel.info.objectives);
+  }
+
+  return names;
+}
+
 export function LiveMapClientPage({
   data,
   initialCompletionGraph,
@@ -110,6 +176,7 @@ export function LiveMapClientPage({
   const storedMapLocation = useWsStore((state) => state.locationByMap[normalizedName] ?? "");
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
+  const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -246,6 +313,17 @@ export function LiveMapClientPage({
       setLocalFocusedMarkerId(null);
     }
   }, [localFocusedMarkerId, urlFocusedMarkerId]);
+
+  useEffect(() => {
+    getPanelObjectiveMapNames(panel).forEach((mapName) => {
+      if (mapName === normalizedName || prefetchedMapNamesRef.current.has(mapName)) {
+        return;
+      }
+
+      prefetchedMapNamesRef.current.add(mapName);
+      router.prefetch(`/live-map/${mapName}`);
+    });
+  }, [normalizedName, panel, router]);
 
   useEffect(() => {
     setEnabledQuestIds((current) => {
