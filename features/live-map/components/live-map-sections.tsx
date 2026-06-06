@@ -12,6 +12,11 @@ import {
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 
+import {
+  getStaticCategoryMarkerType,
+  getStaticIconSvgForType,
+  getStaticMarkerColorByType,
+} from "./live-map-canvas";
 import { copyByLocale, KAPPA_IMAGE, type LiveMapCopy } from "./live-map-copy";
 import {
   getEntryLabel,
@@ -564,73 +569,7 @@ function EntryIcon({ kind }: { kind: "story" | "event" | "static" }) {
 }
 
 function getStaticIconColor(category: string, faction?: string) {
-  if (category === "extract") {
-    if (faction === "pmc") {
-      return "#38bdf8";
-    }
-
-    if (faction === "scav") {
-      return "#fb923c";
-    }
-
-    if (faction === "shared") {
-      return "#c084fc";
-    }
-  }
-
-  if (category === "transit") {
-    return "#f87171";
-  }
-
-  if (category === "transit_switch") {
-    return "#facc15";
-  }
-
-  if (category === "stationary_weapon") {
-    return "#94a3b8";
-  }
-
-  if (category === "sniper_spawn") {
-    return "#fb923c";
-  }
-
-  if (category === "btr_stop") {
-    return "#fde047";
-  }
-
-  if (category === "black_div_spawn" || category === "bloodhounds_spawn") {
-    return "#4ade80";
-  }
-
-  if (category === "boss_spawn") {
-    return "#f43f5e";
-  }
-
-  if (category === "pmc_spawn") {
-    return "#60a5fa";
-  }
-
-  if (category === "scav_spawn") {
-    return "#fb923c";
-  }
-
-  if (category === "cultist_spawn") {
-    return "#a3e635";
-  }
-
-  if (category === "goons_spawn") {
-    return "#ef4444";
-  }
-
-  if (category === "raider_spawn") {
-    return "#22d3ee";
-  }
-
-  if (category === "rogue_spawn") {
-    return "#64748b";
-  }
-
-  return "#34d399";
+  return getStaticMarkerColorByType(getStaticCategoryMarkerType(category, faction));
 }
 
 function StaticPanelMarkerIcon({
@@ -660,14 +599,16 @@ function StaticPanelMarkerIcon({
         aria-hidden="true"
         className="block"
         dangerouslySetInnerHTML={{
-          __html: getStaticPanelIconSvg(category, getStaticIconColor(category, faction), iconSize),
+          __html: getStaticPanelIconSvg(category, getStaticIconColor(category, faction), iconSize, faction),
         }}
       />
     </span>
   );
 }
 
-function getStaticPanelIconSvg(category: string, color: string, size: number) {
+function getStaticPanelIconSvg(category: string, color: string, size: number, faction?: string) {
+  return getStaticIconSvgForType(getStaticCategoryMarkerType(category, faction), size);
+
   if (category === "transit") {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">

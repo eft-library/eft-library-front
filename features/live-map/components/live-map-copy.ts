@@ -29,8 +29,8 @@ export const copyByLocale = {
       scav_spawn: "SCAV 스폰",
       sniper_spawn: "저격수 스폰",
       stationary_weapon: "고정 무기",
-      transit: "이동 경로",
-      transit_switch: "이동 스위치",
+      transit: "Transits",
+      transit_switch: "스위치",
     },
     staticFactions: {
       pmc: "PMC",

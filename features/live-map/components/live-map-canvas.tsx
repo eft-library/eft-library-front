@@ -96,14 +96,26 @@ function getMapCenter(bounds: LiveMapCoordinateInfo["image_bounds"]) {
 
 function getStaticMarkerType(point: LiveMapCanvasMarker) {
   if (point.staticCategory === "extract") {
-    return `extract:${point.staticFaction ?? "unknown"}`;
+    return getStaticCategoryMarkerType(point.staticCategory, point.staticFaction);
   }
 
   return point.staticCategory ?? "static";
 }
 
+export function getStaticCategoryMarkerType(category: string, faction?: string) {
+  if (category === "extract") {
+    return `extract:${faction ?? "unknown"}`;
+  }
+
+  return category || "static";
+}
+
 function getStaticMarkerColor(point: LiveMapCanvasMarker) {
-  return staticMarkerColorByType[getStaticMarkerType(point)] ?? markerColorByKind.static;
+  return getStaticMarkerColorByType(getStaticMarkerType(point));
+}
+
+export function getStaticMarkerColorByType(type: string) {
+  return staticMarkerColorByType[type] ?? markerColorByKind.static;
 }
 
 function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
@@ -361,9 +373,8 @@ function GoonIconSvg(color: string, size: number) {
   `;
 }
 
-function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
-  const color = getStaticMarkerColor(point);
-  const type = getStaticMarkerType(point);
+export function getStaticIconSvgForType(type: string, size: number) {
+  const color = getStaticMarkerColorByType(type);
 
   if (type.startsWith("extract:")) {
     return PersonIconSvg(color, size);
@@ -422,6 +433,10 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
   }
 
   return PersonIconSvg(color, size);
+}
+
+function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
+  return getStaticIconSvgForType(getStaticMarkerType(point), size);
 }
 
 function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
