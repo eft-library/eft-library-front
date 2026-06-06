@@ -591,7 +591,7 @@ function getStaticIconColor(category: string, faction?: string) {
   }
 
   if (category === "sniper_spawn") {
-    return "#94a3b8";
+    return "#fb923c";
   }
 
   if (category === "btr_stop") {

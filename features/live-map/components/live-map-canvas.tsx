@@ -73,7 +73,7 @@ const staticMarkerColorByType: Record<string, string> = {
   raider_spawn: "#22d3ee",
   rogue_spawn: "#64748b",
   scav_spawn: "#fb923c",
-  sniper_spawn: "#94a3b8",
+  sniper_spawn: "#fb923c",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
   transit_switch: "#facc15",
