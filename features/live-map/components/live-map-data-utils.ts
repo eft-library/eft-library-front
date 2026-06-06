@@ -126,7 +126,17 @@ export function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[
       ),
     }))
     .sort((left, right) => {
-      const categoryOrder = ["extract", "transit", "transit_switch", "stationary_weapon", "btr_stop"];
+      const categoryOrder = [
+        "extract",
+        "transit",
+        "transit_switch",
+        "stationary_weapon",
+        "btr_stop",
+        "boss_spawn",
+        "pmc_spawn",
+        "scav_spawn",
+        "cultist_spawn",
+      ];
       const leftIndex = categoryOrder.indexOf(left.category);
       const rightIndex = categoryOrder.indexOf(right.category);
 

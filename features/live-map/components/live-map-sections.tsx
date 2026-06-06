@@ -1,6 +1,13 @@
 import type React from "react";
 import { useEffect, useMemo, useRef } from "react";
-import { BookOpen, CalendarDays, Check, ChevronDown, Flag, Search } from "lucide-react";
+import {
+  BookOpen,
+  CalendarDays,
+  Check,
+  ChevronDown,
+  Flag,
+  Search,
+} from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
@@ -296,7 +303,7 @@ export function StaticPointSection({
                         isOpen ? "rotate-180" : "-rotate-90",
                       )}
                     />
-                    <EntryIcon kind="static" />
+                    <StaticPanelMarkerIcon category={group.category} />
                     <span className="min-w-0 flex-1 truncate text-xs font-black text-gray-800 dark:text-gray-100">
                       {getStaticCategoryLabel(group.category, copy)}
                     </span>
@@ -419,7 +426,7 @@ function ExtractFactionGroups({
           >
             <div className="grid h-7 grid-cols-[1fr_42px] items-center">
               <div className="flex min-w-0 items-center gap-1.5 px-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
+                <StaticPanelMarkerIcon category="extract" faction={group.faction} size="sm" />
                 <span className="min-w-0 flex-1 truncate text-[11px] font-black text-gray-700 dark:text-gray-100">
                   {getStaticFactionLabel(group.faction, copy)}
                 </span>
@@ -554,6 +561,179 @@ function EntryIcon({ kind }: { kind: "story" | "event" | "static" }) {
   }
 
   return <Flag className={cn(className, "text-emerald-500")} />;
+}
+
+function getStaticIconColor(category: string, faction?: string) {
+  if (category === "extract") {
+    if (faction === "pmc") {
+      return "#38bdf8";
+    }
+
+    if (faction === "scav") {
+      return "#fb923c";
+    }
+
+    if (faction === "shared") {
+      return "#c084fc";
+    }
+  }
+
+  if (category === "transit") {
+    return "#f87171";
+  }
+
+  if (category === "transit_switch") {
+    return "#facc15";
+  }
+
+  if (category === "stationary_weapon") {
+    return "#94a3b8";
+  }
+
+  if (category === "btr_stop") {
+    return "#fde047";
+  }
+
+  if (category === "boss_spawn") {
+    return "#f43f5e";
+  }
+
+  if (category === "pmc_spawn") {
+    return "#60a5fa";
+  }
+
+  if (category === "scav_spawn") {
+    return "#fb923c";
+  }
+
+  if (category === "cultist_spawn") {
+    return "#a3e635";
+  }
+
+  return "#34d399";
+}
+
+function StaticPanelMarkerIcon({
+  category,
+  faction,
+  size = "md",
+}: {
+  category: string;
+  faction?: string;
+  size?: "sm" | "md";
+}) {
+  const color = getStaticIconColor(category);
+  const markerSize = size === "sm" ? 18 : 20;
+  const iconSize = size === "sm" ? 13 : 14;
+
+  return (
+    <span
+      className="inline-flex shrink-0 items-center justify-center rounded-full"
+      style={{
+        background: "linear-gradient(180deg, rgba(30,33,38,0.98), rgba(8,10,13,0.98))",
+        boxShadow: `inset 0 0 0 1.5px ${getStaticIconColor(category, faction)}, inset 0 0 0 3px rgba(255,255,255,0.16)`,
+        height: markerSize,
+        width: markerSize,
+      }}
+    >
+      <span
+        aria-hidden="true"
+        className="block"
+        dangerouslySetInnerHTML={{
+          __html: getStaticPanelIconSvg(category, getStaticIconColor(category, faction), iconSize),
+        }}
+      />
+    </span>
+  );
+}
+
+function getStaticPanelIconSvg(category: string, color: string, size: number) {
+  if (category === "transit") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 12h12" stroke="${color}" stroke-width="3" stroke-linecap="round" />
+        <path d="m13 7 5 5-5 5" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "transit_switch") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="${color}" stroke="${color}" stroke-width="1.1" stroke-linejoin="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "stationary_weapon") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
+        <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
+        <circle cx="12" cy="12" r="1.8" fill="${color}" />
+      </svg>
+    `;
+  }
+
+  if (category === "btr_stop") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4.2 14.2 6 9.2h11.2l2.6 5v3.2H4.2z" fill="${color}" />
+        <path d="M7.2 9.2 8.6 6.6h7.1l2 2.6" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="7.4" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
+        <circle cx="16.8" cy="18" r="2" fill="#111827" stroke="${color}" stroke-width="1.5" />
+      </svg>
+    `;
+  }
+
+  if (category === "boss_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3.2c-4.2 0-7.2 2.8-7.2 6.9 0 2.5 1.2 4.6 3.2 5.8v2.3c0 .6.4 1 1 1h6c.6 0 1-.4 1-1v-2.3c2-1.2 3.2-3.3 3.2-5.8 0-4.1-3-6.9-7.2-6.9Z" fill="${color}" />
+        <circle cx="9.3" cy="10.7" r="1.7" fill="#111827" />
+        <circle cx="14.7" cy="10.7" r="1.7" fill="#111827" />
+        <path d="M10 16.2h4M9.7 19.2v1.7M12 19.2v1.7M14.3 19.2v1.7" stroke="${color}" stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "pmc_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 3.5v18" stroke="${color}" stroke-width="2.6" stroke-linecap="round" />
+        <path d="M7 4.5 19 8.7 7 13.4Z" fill="${color}" />
+      </svg>
+    `;
+  }
+
+  if (category === "scav_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3.1c-4.2 0-6.7 3.2-6.7 7.3 0 2.8 1.1 5.1 2.8 6.5v2.2c0 .6.4 1 1 1h5.8c.6 0 1-.4 1-1v-2.2c1.7-1.4 2.8-3.7 2.8-6.5 0-4.1-2.5-7.3-6.7-7.3Z" fill="${color}" />
+        <ellipse cx="9.5" cy="11" rx="1.8" ry="1.35" fill="#111827" />
+        <ellipse cx="14.5" cy="11" rx="1.8" ry="1.35" fill="#111827" />
+        <path d="M10 15.4q2 1.1 4 0" stroke="#111827" stroke-width="1.4" stroke-linecap="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "cultist_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M17.7 3.6 7.4 13.9l3.1 3.1L20.8 6.7c.8-.8.8-2.1 0-2.9s-2.1-.8-2.9 0Z" fill="${color}" />
+        <path d="m6.5 14.7 3.8 3.8-2.1 2.1a1.8 1.8 0 0 1-2.6 0l-1.2-1.2a1.8 1.8 0 0 1 0-2.6z" fill="${color}" opacity=".82" />
+        <path d="M14.4 6.8 18 10.4" stroke="#111827" stroke-width="1.3" stroke-linecap="round" opacity=".55" />
+      </svg>
+    `;
+  }
+
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="5.2" r="2.45" fill="${color}" />
+      <path d="M9 10.4c0-1.7 6-1.7 6 0v5.4H9z" fill="${color}" />
+      <path d="M9.8 11.1 7.1 14.5M14.2 11.1l2.7 3.4M10.2 15.8 8.9 21M13.8 15.8l1.3 5.2" stroke="${color}" stroke-width="2.35" stroke-linecap="round" />
+    </svg>
+  `;
 }
 
 export function KappaBadge() {

@@ -63,7 +63,11 @@ const staticMarkerColorByType: Record<string, string> = {
   "extract:pmc": "#38bdf8",
   "extract:scav": "#fb923c",
   "extract:shared": "#c084fc",
-  btr_stop: "#f59e0b",
+  boss_spawn: "#f43f5e",
+  btr_stop: "#fde047",
+  cultist_spawn: "#a3e635",
+  pmc_spawn: "#60a5fa",
+  scav_spawn: "#fb923c",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
   transit_switch: "#facc15",
@@ -117,6 +121,14 @@ function getStaticMarkerSizes(point: LiveMapCanvasMarker, isFocused: boolean) {
       return {
         iconSize: isFocused ? 31 : 26,
         size: isFocused ? 38 : 32,
+      };
+    case "boss_spawn":
+    case "cultist_spawn":
+    case "pmc_spawn":
+    case "scav_spawn":
+      return {
+        iconSize: isFocused ? 29 : 24,
+        size: isFocused ? 36 : 30,
       };
     case "transit_switch":
       return {
@@ -185,6 +197,47 @@ function VehicleIconSvg(color: string, size: number) {
   `;
 }
 
+function SkullIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M12 3.2c-4.2 0-7.2 2.8-7.2 6.9 0 2.5 1.2 4.6 3.2 5.8v2.3c0 .6.4 1 1 1h6c.6 0 1-.4 1-1v-2.3c2-1.2 3.2-3.3 3.2-5.8 0-4.1-3-6.9-7.2-6.9Z" fill="${color}" />
+      <circle cx="9.3" cy="10.7" r="1.7" fill="#111827" />
+      <circle cx="14.7" cy="10.7" r="1.7" fill="#111827" />
+      <path d="M10 16.2h4M9.7 19.2v1.7M12 19.2v1.7M14.3 19.2v1.7" stroke="${color}" stroke-width="1.7" stroke-linecap="round" />
+    </svg>
+  `;
+}
+
+function FlagIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M6 3.5v18" stroke="${color}" stroke-width="2.6" stroke-linecap="round" />
+      <path d="M7 4.5 19 8.7 7 13.4Z" fill="${color}" />
+    </svg>
+  `;
+}
+
+function MaskIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M12 3.1c-4.2 0-6.7 3.2-6.7 7.3 0 2.8 1.1 5.1 2.8 6.5v2.2c0 .6.4 1 1 1h5.8c.6 0 1-.4 1-1v-2.2c1.7-1.4 2.8-3.7 2.8-6.5 0-4.1-2.5-7.3-6.7-7.3Z" fill="${color}" />
+      <ellipse cx="9.5" cy="11" rx="1.8" ry="1.35" fill="#111827" />
+      <ellipse cx="14.5" cy="11" rx="1.8" ry="1.35" fill="#111827" />
+      <path d="M10 15.4q2 1.1 4 0" stroke="#111827" stroke-width="1.4" stroke-linecap="round" />
+    </svg>
+  `;
+}
+
+function KnifeIconSvg(color: string, size: number) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M17.7 3.6 7.4 13.9l3.1 3.1L20.8 6.7c.8-.8.8-2.1 0-2.9s-2.1-.8-2.9 0Z" fill="${color}" />
+      <path d="m6.5 14.7 3.8 3.8-2.1 2.1a1.8 1.8 0 0 1-2.6 0l-1.2-1.2a1.8 1.8 0 0 1 0-2.6z" fill="${color}" opacity=".82" />
+      <path d="M14.4 6.8 18 10.4" stroke="#111827" stroke-width="1.3" stroke-linecap="round" opacity=".55" />
+    </svg>
+  `;
+}
+
 function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
   const color = getStaticMarkerColor(point);
   const type = getStaticMarkerType(point);
@@ -207,6 +260,22 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 
   if (type === "btr_stop") {
     return VehicleIconSvg(color, size);
+  }
+
+  if (type === "boss_spawn") {
+    return SkullIconSvg(color, size);
+  }
+
+  if (type === "pmc_spawn") {
+    return FlagIconSvg(color, size);
+  }
+
+  if (type === "scav_spawn") {
+    return MaskIconSvg(color, size);
+  }
+
+  if (type === "cultist_spawn") {
+    return KnifeIconSvg(color, size);
   }
 
   return PersonIconSvg(color, size);
