@@ -19,7 +19,7 @@ export const copyByLocale = {
       black_div_spawn: "블랙 디비전",
       bloodhounds_spawn: "블랙 디비전",
       boss_spawn: "보스 스폰",
-      btr_stop: "BTR 스탑",
+      btr_stop: "BTR 정류장",
       cultist_spawn: "컬티스트 스폰",
       extract: "탈출구",
       goons_spawn: "군즈 스폰",

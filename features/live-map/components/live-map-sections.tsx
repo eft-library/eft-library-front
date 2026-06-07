@@ -303,7 +303,9 @@ export function StaticPointSection({
                         isOpen ? "rotate-180" : "-rotate-90",
                       )}
                     />
-                    <StaticPanelMarkerIcon category={group.category} />
+                    {group.category !== "extract" ? (
+                      <StaticPanelMarkerIcon category={group.category} />
+                    ) : null}
                     <span className="min-w-0 flex-1 truncate text-xs font-black text-gray-800 dark:text-gray-100">
                       {getStaticCategoryLabel(group.category, copy)}
                     </span>

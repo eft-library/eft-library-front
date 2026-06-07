@@ -189,22 +189,9 @@ function PersonIconSvg(color: string, size: number) {
 
 function TransitIconSvg(color: string, size: number) {
   return `
-    <svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <g opacity=".18" transform="translate(-6.2 1)">
-        <circle cx="15" cy="4" r="2.2" fill="${color}" />
-        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
-        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
-      </g>
-      <g opacity=".36" transform="translate(-3.4 .5)">
-        <circle cx="15" cy="4" r="2.2" fill="${color}" />
-        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
-        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
-      </g>
-      <g transform="translate(-.2 0)">
-        <circle cx="15" cy="4" r="2.2" fill="${color}" />
-        <path d="M11 8.5c1-1.7 5-1.7 6.5 0L19 12l-3.5 1-1 4h-3l1-4-2.5-2Z" fill="${color}" />
-        <path d="M10 11 7.5 14M19 12l2-2M11.5 17l-2 5M14.5 17l2.5 5" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
-      </g>
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
+      <path d="M5 12h12" stroke="${color}" stroke-width="3" stroke-linecap="round" />
+      <path d="m13 7 5 5-5 5" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   `;
 }
@@ -212,12 +199,7 @@ function TransitIconSvg(color: string, size: number) {
 function SwitchIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <rect x="17.5" y="9" width="4" height="7" rx="1.5" fill="${color}" opacity=".35" stroke="${color}" stroke-width="1" />
-      <circle cx="19.5" cy="14" r="2" fill="${color}" />
-      <circle cx="19.5" cy="14" r=".8" fill="#111827" opacity=".5" />
-      <line x1="19.5" y1="14" x2="8.5" y2="5.5" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
-      <rect x="5.5" y="2.5" width="5" height="4.5" rx="1.5" fill="${color}" transform="rotate(-45 8 4.75)" />
-      <rect x="6.5" y="3.3" width="3" height="2.8" rx=".7" fill="#111827" opacity=".45" transform="rotate(-45 8 4.75)" />
+      <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="${color}" stroke="${color}" stroke-width="1.1" stroke-linejoin="round" />
     </svg>
   `;
 }
