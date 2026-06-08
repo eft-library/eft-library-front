@@ -153,6 +153,20 @@ function getPanelObjectiveMapNames(panel: PanelState | null) {
   return names;
 }
 
+function getCachedPopupHtml(
+  cache: Map<string, string | undefined>,
+  key: string,
+  create: () => string | undefined,
+) {
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+
+  const html = create();
+  cache.set(key, html);
+  return html;
+}
+
 export function LiveMapClientPage({
   data,
   initialCompletionGraph,
@@ -176,6 +190,7 @@ export function LiveMapClientPage({
   const storedMapLocation = useWsStore((state) => state.locationByMap[normalizedName] ?? "");
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
+  const popupHtmlCacheRef = useRef<Map<string, string | undefined>>(new Map());
   const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
@@ -248,6 +263,10 @@ export function LiveMapClientPage({
   const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
     new Set(),
   );
+
+  useEffect(() => {
+    popupHtmlCacheRef.current.clear();
+  }, [data, locale]);
 
   useEffect(() => {
     if (initializedFilterMapRef.current === normalizedName) {
@@ -361,6 +380,7 @@ export function LiveMapClientPage({
   }, [accessToken, copy.loginRequired]);
 
   const visibleMarkers = useMemo<LiveMapCanvasMarker[]>(() => {
+    const popupHtmlCache = popupHtmlCacheRef.current;
     const questMarkers = data.quest_points
       .filter((point) => {
         const questId = getQuestId(point);
@@ -378,7 +398,11 @@ export function LiveMapClientPage({
         id: `quest:${point.id}`,
         kind: "quest",
         label: getQuestPointLabel(point, locale),
-        popupHtml: getQuestPointPopupHtml(point, locale),
+        popupHtml: getCachedPopupHtml(
+          popupHtmlCache,
+          `${locale}:quest:${point.id}`,
+          () => getQuestPointPopupHtml(point, locale),
+        ),
         x: point.x,
         y: point.z,
       }));
@@ -393,7 +417,11 @@ export function LiveMapClientPage({
         id: `story:${point.id}`,
         kind: "story",
         label: getStoryPointLabel(point, locale),
-        popupHtml: getStoryPointPopupHtml(point, locale),
+        popupHtml: getCachedPopupHtml(
+          popupHtmlCache,
+          `${locale}:story:${point.id}`,
+          () => getStoryPointPopupHtml(point, locale),
+        ),
         x: point.x,
         y: point.z,
       }));
@@ -408,7 +436,11 @@ export function LiveMapClientPage({
         id: `event:${point.id}`,
         kind: "event",
         label: getEventPointLabel(point, locale),
-        popupHtml: getEventPointPopupHtml(point, locale),
+        popupHtml: getCachedPopupHtml(
+          popupHtmlCache,
+          `${locale}:event:${point.id}`,
+          () => getEventPointPopupHtml(point, locale),
+        ),
         x: point.x,
         y: point.z,
       }));
@@ -422,7 +454,11 @@ export function LiveMapClientPage({
         id: `static:${point.id}`,
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
-        popupHtml: getStaticPointPopupHtml(point, locale, copy),
+        popupHtml: getCachedPopupHtml(
+          popupHtmlCache,
+          `${locale}:static:${point.id}`,
+          () => getStaticPointPopupHtml(point, locale, copy),
+        ),
         staticCategory: point.category,
         staticFaction: getStaticFaction(point),
         x: point.x,
@@ -1160,17 +1196,16 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={questEntries}
                 isOpen={expandedRightSections.has("quest")}
-	                kind="quest"
-	                onOpen={(entry) =>
-	                  entry.point.quest_info
-	                    ? setPanel({
-	                        id: entry.id,
-	                        info: entry.point.quest_info,
-	                        pointId: entry.point.id,
-	                        type: "quest",
-	                      })
-	                    : undefined
-	                }
+                kind="quest"
+                onOpen={(entry) =>
+                  entry.point.quest_info
+                    ? setPanel({
+                        id: entry.id,
+                        info: entry.point.quest_info,
+                        type: "quest",
+                      })
+                    : undefined
+                }
                 onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
                 onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
                 onToggleComplete={toggleQuestCompletionState}
@@ -1188,18 +1223,16 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={storyEntries}
                 isOpen={expandedRightSections.has("story")}
-	                kind="story"
-	                onOpen={(entry) =>
-	                  entry.point.story_info
-	                    ? setPanel({
-	                        id: entry.id,
-	                        info: entry.point.story_info,
-	                        objectiveId: entry.point.objective_id,
-	                        pointId: entry.point.id,
-	                        type: "story",
-	                      })
-	                    : undefined
-	                }
+                kind="story"
+                onOpen={(entry) =>
+                  entry.point.story_info
+                    ? setPanel({
+                        id: entry.id,
+                        info: entry.point.story_info,
+                        type: "story",
+                      })
+                    : undefined
+                }
                 onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStoryIds, storyEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("story")}
@@ -1216,18 +1249,16 @@ export function LiveMapClientPage({
                 emptyLabel={copy.noItems}
                 items={eventEntries}
                 isOpen={expandedRightSections.has("event")}
-	                kind="event"
-	                onOpen={(entry) =>
-	                  entry.point.event_info
-	                    ? setPanel({
-	                        id: entry.id,
-	                        info: entry.point.event_info,
-	                        objectiveId: entry.point.objective_id,
-	                        pointId: entry.point.id,
-	                        type: "event",
-	                      })
-	                    : undefined
-	                }
+                kind="event"
+                onOpen={(entry) =>
+                  entry.point.event_info
+                    ? setPanel({
+                        id: entry.id,
+                        info: entry.point.event_info,
+                        type: "event",
+                      })
+                    : undefined
+                }
                 onToggle={(id) => toggleSet(setEnabledEventIds, id)}
                 onToggleAll={() => toggleAll(setEnabledEventIds, eventEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("event")}
