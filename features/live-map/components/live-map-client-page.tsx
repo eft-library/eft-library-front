@@ -816,25 +816,40 @@ export function LiveMapClientPage({
     [focusedMarkerId, openPanelForMarkerId, replaceFocusParam],
   );
 
+  const clearFocusParam = useCallback(() => {
+    setLocalFocusedMarkerId(null);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("focus");
+    const queryString = params.toString();
+
+    startFocusRouteTransition(() => {
+      router.replace(
+        queryString ? `/live-map/${normalizedName}?${queryString}` : `/live-map/${normalizedName}`,
+        { scroll: false },
+      );
+    });
+  }, [normalizedName, router, searchParams, startFocusRouteTransition]);
+
   const clearFocusedMarker = useCallback(
     (markerId: string) => {
       if (focusedMarkerId !== markerId) {
         return;
       }
 
-      setLocalFocusedMarkerId(null);
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete("focus");
-      const queryString = params.toString();
-
-      startFocusRouteTransition(() => {
-        router.replace(
-          queryString ? `/live-map/${normalizedName}?${queryString}` : `/live-map/${normalizedName}`,
-          { scroll: false },
-        );
-      });
+      clearFocusParam();
     },
-    [focusedMarkerId, normalizedName, router, searchParams, startFocusRouteTransition],
+    [clearFocusParam, focusedMarkerId],
+  );
+
+  const selectFloor = useCallback(
+    (floorId: string) => {
+      if (focusedMarkerId) {
+        clearFocusParam();
+      }
+
+      setSelectedFloorId(floorId);
+    },
+    [clearFocusParam, focusedMarkerId],
   );
 
   function clearLiveMapSelection() {
@@ -1054,7 +1069,7 @@ export function LiveMapClientPage({
                       <button
                         key={floor.id}
                         type="button"
-                        onClick={() => setSelectedFloorId(floor.id)}
+                        onClick={() => selectFloor(floor.id)}
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
                       >
                         <span
