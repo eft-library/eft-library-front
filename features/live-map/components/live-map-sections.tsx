@@ -24,6 +24,14 @@ import {
   type StaticEntry,
 } from "./live-map-data-utils";
 
+const compactStaticCategories = new Set([
+  "cultist_spawn",
+  "goons_spawn",
+  "pmc_spawn",
+  "scav_spawn",
+  "sniper_spawn",
+]);
+
 export function RightSection<TEntry extends RightEntry>({
   allLabel,
   completedQuestIds,
@@ -282,27 +290,47 @@ export function StaticPointSection({
         <div className="space-y-1.5">
           {filteredGroups.map((group) => {
             const ids = group.entries.map((entry) => entry.id);
-            const isOpen = hasQuery || expandedCategories.has(group.category);
+            const isCompactCategory = compactStaticCategories.has(group.category);
+            const isOpen = !isCompactCategory && (hasQuery || expandedCategories.has(group.category));
             const enabledCount = ids.filter((id) => enabledIds.has(id)).length;
             const isCategoryEnabled = enabledCount === ids.length;
+            const hasSelectedEntry = group.entries.some((entry) => entry.id === selectedId);
 
             return (
               <div
                 key={group.category}
-                className="rounded-md border border-gray-200 bg-gray-50/80 dark:border-[#3a3d41] dark:bg-[#15171a]"
+                className={cn(
+                  "rounded-md border border-gray-200 bg-gray-50/80 dark:border-[#3a3d41] dark:bg-[#15171a]",
+                  isCompactCategory && hasSelectedEntry
+                    ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                    : "",
+                )}
               >
                 <div className="grid h-8 grid-cols-[1fr_42px] items-center">
                   <button
                     type="button"
-                    onClick={() => onToggleCategoryOpen(group.category)}
-                    className="flex h-8 min-w-0 items-center gap-2 rounded-l px-2 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                    onClick={() => {
+                      if (!isCompactCategory) {
+                        onToggleCategoryOpen(group.category);
+                      }
+                    }}
+                    className={cn(
+                      "flex h-8 min-w-0 items-center gap-2 rounded-l px-2 text-left",
+                      isCompactCategory
+                        ? "cursor-default"
+                        : "hover:bg-gray-100 dark:hover:bg-[#2a2d31]",
+                    )}
                   >
-                    <ChevronDown
-                      className={cn(
-                        "h-3.5 w-3.5 shrink-0 text-orange-500 transition-transform",
-                        isOpen ? "rotate-180" : "-rotate-90",
-                      )}
-                    />
+                    {isCompactCategory ? (
+                      <span className="h-3.5 w-3.5 shrink-0" />
+                    ) : (
+                      <ChevronDown
+                        className={cn(
+                          "h-3.5 w-3.5 shrink-0 text-orange-500 transition-transform",
+                          isOpen ? "rotate-180" : "-rotate-90",
+                        )}
+                      />
+                    )}
                     {group.category !== "extract" ? (
                       <StaticPanelMarkerIcon category={group.category} />
                     ) : null}

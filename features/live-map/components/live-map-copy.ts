@@ -27,7 +27,7 @@ export const copyByLocale = {
       raider_spawn: "레이더 스폰",
       rogue_spawn: "로그 스폰",
       scav_spawn: "SCAV 스폰",
-      sniper_spawn: "저격수 스폰",
+      sniper_spawn: "저격 스캐브 스폰",
       stationary_weapon: "고정 무기",
       transit: "Transits",
       transit_switch: "스위치",
