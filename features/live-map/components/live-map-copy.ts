@@ -16,8 +16,8 @@ export const copyByLocale = {
     staticPoints: "위치",
     staticCategoryAll: "전체",
     staticCategories: {
-      black_div_spawn: "블랙 디비전",
-      bloodhounds_spawn: "블랙 디비전",
+      black_div_spawn: "블랙 디비전 스폰",
+      bloodhounds_spawn: "블랙 디비전 스폰",
       boss_spawn: "보스 스폰",
       btr_stop: "BTR 정류장",
       cultist_spawn: "컬티스트 스폰",

@@ -25,9 +25,13 @@ import {
 } from "./live-map-data-utils";
 
 const compactStaticCategories = new Set([
+  "black_div_spawn",
+  "bloodhounds_spawn",
   "cultist_spawn",
   "goons_spawn",
   "pmc_spawn",
+  "raider_spawn",
+  "rogue_spawn",
   "scav_spawn",
   "sniper_spawn",
 ]);
