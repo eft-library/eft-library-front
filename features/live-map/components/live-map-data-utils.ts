@@ -169,7 +169,7 @@ export function parseCanvasMarkerId(markerId: string) {
 }
 
 export function getQuestId(point: LiveMapQuestPoint) {
-  return point.quest_info?.quest.id ?? point.id;
+  return point.quest_info?.quest?.id ?? point.id;
 }
 
 export function getStoryId(point: LiveMapStoryPoint) {
@@ -349,11 +349,15 @@ export function getQuestPointLabel(point: LiveMapQuestPoint, locale: Locale) {
     return point.id;
   }
 
-  const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
+  const objectiveText = point.quest_info.objective
+    ? localizedDescription(point.quest_info.objective as unknown as Record<string, unknown>, locale)
+    : "";
 
   return (
-    getQuestObjectiveText(objective, locale, point.id) ||
-    localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
+    objectiveText ||
+    (point.quest_info.quest
+      ? localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
+      : point.id)
   );
 }
 
@@ -362,16 +366,7 @@ export function getStoryPointLabel(point: LiveMapStoryPoint, locale: Locale) {
     return point.id;
   }
 
-  const objective = findNestedObjectiveByPoint(
-    point.story_info.objectives,
-    point.id,
-    point.objective_id,
-  );
-
-  return (
-    getNestedObjectiveText(objective, point.id, locale) ||
-    localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
-  );
+  return localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale);
 }
 
 export function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
@@ -379,22 +374,15 @@ export function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
     return point.id;
   }
 
-  const objective = findNestedObjectiveByPoint(
-    point.event_info.objectives,
-    point.id,
-    point.objective_id,
-  );
-
-  return (
-    getNestedObjectiveText(objective, point.id, locale) ||
-    localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale)
-  );
+  return localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale);
 }
 
 export function getEntryLabel(entry: RightEntry, locale: Locale) {
   if ("quest_info" in entry.point) {
     return entry.point.quest_info
-      ? localizedName(entry.point.quest_info.quest as unknown as Record<string, unknown>, locale)
+      ? entry.point.quest_info.quest
+        ? localizedName(entry.point.quest_info.quest as unknown as Record<string, unknown>, locale)
+        : entry.id
       : entry.id;
   }
 
@@ -419,7 +407,9 @@ export function getQuestMarkerSearchText(point: LiveMapQuestPoint, locale: Local
   }
 
   return [
-    localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale),
+    point.quest_info.quest
+      ? localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
+      : "",
     getQuestPointLabel(point, locale),
   ].join(" ");
 }

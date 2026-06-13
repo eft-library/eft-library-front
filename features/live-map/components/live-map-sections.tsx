@@ -131,7 +131,7 @@ export function RightSection<TEntry extends RightEntry>({
                 const label = getEntryLabel(entry, locale);
                 const completed = kind === "quest" && completedQuestIds.includes(entry.id);
                 const isKappaQuest =
-                  "quest_info" in entry.point && !!entry.point.quest_info?.quest.kappa_required;
+                  "quest_info" in entry.point && !!entry.point.quest_info?.quest?.kappa_required;
 
                 return (
                   <div

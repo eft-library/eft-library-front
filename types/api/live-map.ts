@@ -106,6 +106,28 @@ export interface LiveMapQuestInfo {
   finish_rewards: QuestRewardGroup;
 }
 
+export interface LiveMapQuestSummaryInfo {
+  quest: {
+    id: string;
+    normalized_name: string;
+    name_en: string;
+    name_ko: string;
+    name_ja: string;
+    min_player_level: number | null;
+    kappa_required?: boolean | null;
+  } | null;
+  trader: QuestTraderEntry | null;
+  objective: {
+    objective_id: string;
+    type: string | null;
+    description_en: string | null;
+    description_ko: string | null;
+    description_ja: string | null;
+    count: number | null;
+    found_in_raid: boolean | null;
+  } | null;
+}
+
 export interface LiveMapQuestPoint {
   id: string;
   map_id: string;
@@ -114,7 +136,7 @@ export interface LiveMapQuestPoint {
   x: number;
   z: number;
   y: number;
-  quest_info: LiveMapQuestInfo | null;
+  quest_info: LiveMapQuestSummaryInfo | null;
 }
 
 export interface StoryRequirement {
@@ -151,6 +173,10 @@ export interface StoryInfo {
   objectives: StoryObjective[];
 }
 
+export interface StorySummaryInfo {
+  story: StoryInfo["story"];
+}
+
 export interface LiveMapStoryPoint {
   id: string;
   story_id: string;
@@ -161,7 +187,7 @@ export interface LiveMapStoryPoint {
   x: number;
   z: number;
   y: number;
-  story_info: StoryInfo | null;
+  story_info: StorySummaryInfo | null;
 }
 
 export interface EventObjective {
@@ -190,6 +216,11 @@ export interface EventInfo {
   objectives: EventObjective[];
 }
 
+export interface EventSummaryInfo {
+  event: EventInfo["event"];
+  trader: QuestTraderEntry | null;
+}
+
 export interface LiveMapEventPoint {
   id: string;
   event_id: string;
@@ -200,7 +231,7 @@ export interface LiveMapEventPoint {
   x: number;
   z: number;
   y: number;
-  event_info: EventInfo | null;
+  event_info: EventSummaryInfo | null;
 }
 
 export interface LiveMapStaticPoint {

@@ -87,6 +87,18 @@ export function getLiveMapDetailEndpoint(normalizedName: string) {
   return `/api/live-map/v3/detail/${normalizedName}`;
 }
 
+export function getLiveMapQuestDetailEndpoint(questIdOrNormalizedName: string) {
+  return `/api/live-map/v3/quest/${questIdOrNormalizedName}`;
+}
+
+export function getLiveMapStoryDetailEndpoint(storyId: string) {
+  return `/api/live-map/v3/story/${storyId}`;
+}
+
+export function getLiveMapEventDetailEndpoint(eventId: string) {
+  return `/api/live-map/v3/event/${eventId}`;
+}
+
 export function getMapDetailEndpoint(normalizedName: string) {
   return `/api/map/v3/detail/${normalizedName}`;
 }

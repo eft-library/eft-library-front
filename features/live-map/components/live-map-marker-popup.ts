@@ -107,15 +107,15 @@ export function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale)
     return undefined;
   }
 
-  const objective = findQuestObjectiveByPointId(point.quest_info, point.id);
-  const selectedPoint = getQuestObjectivePoint(objective, point.id);
-  const details = selectedPoint?.details ?? [];
-
   return createMarkerPopupHtml({
-    description: getQuestObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
-    location: getPointDetailText(selectedPoint, locale),
-    title: localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale),
+    description: point.quest_info.objective
+      ? localizedDescription(point.quest_info.objective as unknown as Record<string, unknown>, locale)
+      : "",
+    images: [],
+    location: "",
+    title: point.quest_info.quest
+      ? localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
+      : point.id,
     titleImage: point.quest_info.trader?.image,
   });
 }
@@ -125,18 +125,10 @@ export function getStoryPointPopupHtml(point: LiveMapStoryPoint, locale: Locale)
     return undefined;
   }
 
-  const objective = findNestedObjectiveByPoint(
-    point.story_info.objectives,
-    point.id,
-    point.objective_id,
-  );
-  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
-  const details = selectedPoint?.details ?? [];
-
   return createMarkerPopupHtml({
-    description: getNestedObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
-    location: getPointDetailText(selectedPoint, locale),
+    description: "",
+    images: [],
+    location: "",
     title: localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale),
   });
 }
@@ -146,18 +138,10 @@ export function getEventPointPopupHtml(point: LiveMapEventPoint, locale: Locale)
     return undefined;
   }
 
-  const objective = findNestedObjectiveByPoint(
-    point.event_info.objectives,
-    point.id,
-    point.objective_id,
-  );
-  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
-  const details = selectedPoint?.details ?? [];
-
   return createMarkerPopupHtml({
-    description: getNestedObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
-    location: getPointDetailText(selectedPoint, locale),
+    description: "",
+    images: [],
+    location: "",
     title: localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale),
     titleImage: point.event_info.trader?.image,
   });

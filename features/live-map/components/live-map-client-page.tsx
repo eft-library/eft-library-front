@@ -16,7 +16,11 @@ import {
 } from "lucide-react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
-import { getQuestDetail } from "@/features/quest/api";
+import {
+  getLiveMapEventDetail,
+  getLiveMapQuestDetail,
+  getLiveMapStoryDetail,
+} from "@/features/live-map/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
 import type { Locale } from "@/i18n/config";
 import {
@@ -27,11 +31,13 @@ import { cn } from "@/lib/utils/class-name";
 import { useWsStore } from "@/store/ws-store";
 import type {
   EventObjective,
+  EventInfo,
   LiveMapPageData,
   LiveMapQuestInfo,
+  StoryInfo,
   StoryObjective,
 } from "@/types/api/live-map";
-import type { QuestCompletionGraphNode, QuestDetailResponse } from "@/types/api/quest";
+import type { QuestCompletionGraphNode } from "@/types/api/quest";
 import type { LiveMapCanvasMarker, LiveMapPopupImage } from "./live-map-canvas";
 import { copyByLocale } from "./live-map-copy";
 import {
@@ -53,7 +59,6 @@ import {
   localizedName,
   matchesFilterText,
   parseCanvasMarkerId,
-  toLiveMapQuestInfo,
   uniqueById,
   type PanelState,
   type StaticEntry,
@@ -190,8 +195,11 @@ export function LiveMapClientPage({
   const storedMapLocation = useWsStore((state) => state.locationByMap[normalizedName] ?? "");
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
+  const eventDetailCacheRef = useRef<Map<string, EventInfo>>(new Map());
   const popupHtmlCacheRef = useRef<Map<string, string | undefined>>(new Map());
   const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
+  const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
+  const storyDetailCacheRef = useRef<Map<string, StoryInfo>>(new Map());
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -535,6 +543,46 @@ export function LiveMapClientPage({
     setImagePopup(image);
   }, []);
 
+  const loadQuestDetail = useCallback(async (questIdOrNormalizedName: string) => {
+    const cached = questDetailCacheRef.current.get(questIdOrNormalizedName);
+
+    if (cached) {
+      return cached;
+    }
+
+    const detail = await getLiveMapQuestDetail(questIdOrNormalizedName);
+    questDetailCacheRef.current.set(detail.quest.id, detail);
+    questDetailCacheRef.current.set(detail.quest.normalized_name, detail);
+    questDetailCacheRef.current.set(questIdOrNormalizedName, detail);
+    return detail;
+  }, []);
+
+  const loadStoryDetail = useCallback(async (storyId: string) => {
+    const cached = storyDetailCacheRef.current.get(storyId);
+
+    if (cached) {
+      return cached;
+    }
+
+    const detail = await getLiveMapStoryDetail(storyId);
+    storyDetailCacheRef.current.set(detail.story.id, detail);
+    storyDetailCacheRef.current.set(storyId, detail);
+    return detail;
+  }, []);
+
+  const loadEventDetail = useCallback(async (eventId: string) => {
+    const cached = eventDetailCacheRef.current.get(eventId);
+
+    if (cached) {
+      return cached;
+    }
+
+    const detail = await getLiveMapEventDetail(eventId);
+    eventDetailCacheRef.current.set(detail.event.id, detail);
+    eventDetailCacheRef.current.set(eventId, detail);
+    return detail;
+  }, []);
+
   const focusQuestObjective = useCallback(
     (
       objective: LiveMapQuestInfo["objectives"][number],
@@ -725,7 +773,7 @@ export function LiveMapClientPage({
   }
 
   const openPanelForMarkerId = useCallback(
-    (markerId: string, { openStaticPanel = false }: { openStaticPanel?: boolean } = {}) => {
+    async (markerId: string, { openStaticPanel = false }: { openStaticPanel?: boolean } = {}) => {
       const { id, kind } = parseCanvasMarkerId(markerId);
 
       if (kind === "quest") {
@@ -734,13 +782,19 @@ export function LiveMapClientPage({
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
-          setPanel({
-            id: getQuestId(point),
-            info: point.quest_info,
-            pointId: point.id,
-            type: "quest",
-          });
-          return true;
+          try {
+            const info = await loadQuestDetail(point.quest_info.quest?.normalized_name ?? getQuestId(point));
+            setPanel({
+              id: info.quest.id,
+              info,
+              pointId: point.id,
+              type: "quest",
+            });
+            return true;
+          } catch {
+            showNotice(copy.noItems);
+            return false;
+          }
         }
       }
 
@@ -750,14 +804,20 @@ export function LiveMapClientPage({
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
-          setPanel({
-            id: getStoryId(point),
-            info: point.story_info,
-            objectiveId: point.objective_id,
-            pointId: point.id,
-            type: "story",
-          });
-          return true;
+          try {
+            const info = await loadStoryDetail(getStoryId(point));
+            setPanel({
+              id: info.story.id,
+              info,
+              objectiveId: point.objective_id,
+              pointId: point.id,
+              type: "story",
+            });
+            return true;
+          } catch {
+            showNotice(copy.noItems);
+            return false;
+          }
         }
       }
 
@@ -767,14 +827,20 @@ export function LiveMapClientPage({
           if (point.floor_id) {
             setSelectedFloorId(point.floor_id);
           }
-          setPanel({
-            id: getEventId(point),
-            info: point.event_info,
-            objectiveId: point.objective_id,
-            pointId: point.id,
-            type: "event",
-          });
-          return true;
+          try {
+            const info = await loadEventDetail(getEventId(point));
+            setPanel({
+              id: info.event.id,
+              info,
+              objectiveId: point.objective_id,
+              pointId: point.id,
+              type: "event",
+            });
+            return true;
+          } catch {
+            showNotice(copy.noItems);
+            return false;
+          }
         }
       }
 
@@ -799,13 +865,22 @@ export function LiveMapClientPage({
 
       return false;
     },
-    [data.event_points, data.quest_points, data.static_points, data.story_points],
+    [
+      copy.noItems,
+      data.event_points,
+      data.quest_points,
+      data.static_points,
+      data.story_points,
+      loadEventDetail,
+      loadQuestDetail,
+      loadStoryDetail,
+    ],
   );
 
   const openPanelForMarker = useCallback(
-    (marker: LiveMapCanvasMarker) => {
+    async (marker: LiveMapCanvasMarker) => {
       setLocalFocusedMarkerId(marker.id);
-      const opened = openPanelForMarkerId(marker.id);
+      const opened = await openPanelForMarkerId(marker.id);
 
       if (!opened || focusedMarkerId === marker.id) {
         return;
@@ -912,10 +987,10 @@ export function LiveMapClientPage({
     setLoadingQuestNormalizedName(normalizedQuestName);
 
     try {
-      const questDetail = await getQuestDetail(normalizedQuestName);
+      const questDetail = await loadQuestDetail(normalizedQuestName);
       setPanel({
         id: questDetail.quest.id,
-        info: toLiveMapQuestInfo(questDetail),
+        info: questDetail,
         type: "quest",
       });
     } catch {
@@ -924,6 +999,63 @@ export function LiveMapClientPage({
       setLoadingQuestNormalizedName((current) =>
         current === normalizedQuestName ? null : current,
       );
+    }
+  }
+
+  async function openQuestSummaryPanel(entry: (typeof questEntries)[number]) {
+    if (!entry.point.quest_info?.quest) {
+      return;
+    }
+
+    setLoadingQuestNormalizedName(entry.point.quest_info.quest.normalized_name);
+
+    try {
+      const info = await loadQuestDetail(entry.point.quest_info.quest.normalized_name);
+      setPanel({
+        id: info.quest.id,
+        info,
+        type: "quest",
+      });
+    } catch {
+      showNotice(copy.noItems);
+    } finally {
+      setLoadingQuestNormalizedName((current) =>
+        current === entry.point.quest_info?.quest?.normalized_name ? null : current,
+      );
+    }
+  }
+
+  async function openStorySummaryPanel(entry: (typeof storyEntries)[number]) {
+    if (!entry.point.story_info) {
+      return;
+    }
+
+    try {
+      const info = await loadStoryDetail(getStoryId(entry.point));
+      setPanel({
+        id: info.story.id,
+        info,
+        type: "story",
+      });
+    } catch {
+      showNotice(copy.noItems);
+    }
+  }
+
+  async function openEventSummaryPanel(entry: (typeof eventEntries)[number]) {
+    if (!entry.point.event_info) {
+      return;
+    }
+
+    try {
+      const info = await loadEventDetail(getEventId(entry.point));
+      setPanel({
+        id: info.event.id,
+        info,
+        type: "event",
+      });
+    } catch {
+      showNotice(copy.noItems);
     }
   }
 
@@ -958,7 +1090,7 @@ export function LiveMapClientPage({
       return;
     }
 
-    openPanelForMarkerId(focusedMarkerId);
+    void openPanelForMarkerId(focusedMarkerId);
   }, [focusedMarkerId, openPanelForMarkerId]);
 
   return (
@@ -1212,15 +1344,9 @@ export function LiveMapClientPage({
                 items={questEntries}
                 isOpen={expandedRightSections.has("quest")}
                 kind="quest"
-                onOpen={(entry) =>
-                  entry.point.quest_info
-                    ? setPanel({
-                        id: entry.id,
-                        info: entry.point.quest_info,
-                        type: "quest",
-                      })
-                    : undefined
-                }
+                onOpen={(entry) => {
+                  void openQuestSummaryPanel(entry);
+                }}
                 onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
                 onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
                 onToggleComplete={toggleQuestCompletionState}
@@ -1239,15 +1365,9 @@ export function LiveMapClientPage({
                 items={storyEntries}
                 isOpen={expandedRightSections.has("story")}
                 kind="story"
-                onOpen={(entry) =>
-                  entry.point.story_info
-                    ? setPanel({
-                        id: entry.id,
-                        info: entry.point.story_info,
-                        type: "story",
-                      })
-                    : undefined
-                }
+                onOpen={(entry) => {
+                  void openStorySummaryPanel(entry);
+                }}
                 onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
                 onToggleAll={() => toggleAll(setEnabledStoryIds, storyEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("story")}
@@ -1265,15 +1385,9 @@ export function LiveMapClientPage({
                 items={eventEntries}
                 isOpen={expandedRightSections.has("event")}
                 kind="event"
-                onOpen={(entry) =>
-                  entry.point.event_info
-                    ? setPanel({
-                        id: entry.id,
-                        info: entry.point.event_info,
-                        type: "event",
-                      })
-                    : undefined
-                }
+                onOpen={(entry) => {
+                  void openEventSummaryPanel(entry);
+                }}
                 onToggle={(id) => toggleSet(setEnabledEventIds, id)}
                 onToggleAll={() => toggleAll(setEnabledEventIds, eventEntries.map((entry) => entry.id))}
                 onToggleOpen={() => toggleRightSection("event")}
