@@ -3,6 +3,8 @@ import type {
   QuestDetailItem,
   QuestObjectiveMap,
   QuestRelatedEntry,
+  QuestRewardItem,
+  QuestRewardStanding,
   QuestRewardGroup,
   QuestTraderEntry,
 } from "@/types/api/quest";
@@ -159,6 +161,16 @@ export interface StoryObjective {
   items: LiveMapObjectiveItem[];
   maps: QuestObjectiveMap[];
   live_map_points: LiveMapObjectivePoint[];
+  rewards: {
+    items: QuestRewardItem[];
+    texts: Array<{
+      id: string;
+      reward_type: string | null;
+      description_en: string | null;
+      description_ko: string | null;
+      description_ja: string | null;
+    }>;
+  };
   children: StoryObjective[];
 }
 
@@ -171,6 +183,10 @@ export interface StoryInfo {
   };
   requirements: StoryRequirement[];
   objectives: StoryObjective[];
+  finish_rewards?: {
+    trader_standing: QuestRewardStanding[];
+    items: QuestRewardItem[];
+  };
 }
 
 export interface StorySummaryInfo {

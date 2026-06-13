@@ -70,9 +70,12 @@ import {
   writeLiveMapFilterStorage,
 } from "./live-map-filter-storage";
 import {
+  getEventDetailPointPopupHtml,
   getEventPointPopupHtml,
+  getQuestDetailPointPopupHtml,
   getQuestPointPopupHtml,
   getStaticPointPopupHtml,
+  getStoryDetailPointPopupHtml,
   getStoryPointPopupHtml,
 } from "./live-map-marker-popup";
 import { LiveMapLocationGuide } from "./live-map-location-guide";
@@ -401,57 +404,90 @@ export function LiveMapClientPage({
           (isFocused || (enabledQuestIds.has(questId) && !completedQuestIds.includes(questId)))
         );
       })
-      .map<LiveMapCanvasMarker>((point) => ({
-        floorId: point.floor_id,
-        id: `quest:${point.id}`,
-        kind: "quest",
-        label: getQuestPointLabel(point, locale),
-        popupHtml: getCachedPopupHtml(
-          popupHtmlCache,
-          `${locale}:quest:${point.id}`,
-          () => getQuestPointPopupHtml(point, locale),
-        ),
-        x: point.x,
-        y: point.z,
-      }));
+      .map<LiveMapCanvasMarker>((point) => {
+        const questId = getQuestId(point);
+        const questDetail =
+          panel?.type === "quest" && panel.id === questId
+            ? panel.info
+            : questDetailCacheRef.current.get(questId) ??
+              (point.quest_info?.quest?.normalized_name
+                ? questDetailCacheRef.current.get(point.quest_info.quest.normalized_name)
+                : undefined);
+
+        return {
+          floorId: point.floor_id,
+          id: `quest:${point.id}`,
+          kind: "quest",
+          label: getQuestPointLabel(point, locale),
+          popupHtml: getCachedPopupHtml(
+            popupHtmlCache,
+            `${locale}:quest:${point.id}:${questDetail ? `detail:${questDetail.quest.id}` : "summary"}`,
+            () => questDetail
+              ? getQuestDetailPointPopupHtml(point, questDetail, locale)
+              : getQuestPointPopupHtml(point, locale),
+          ),
+          x: point.x,
+          y: point.z,
+        };
+      });
     const storyMarkers = data.story_points
       .filter((point) => (
         point.story_info &&
         matchesFilterText(getStoryMarkerSearchText(point, locale), storyFilterQuery) &&
         (focusedMarkerId === `story:${point.id}` || enabledStoryIds.has(getStoryId(point)))
       ))
-      .map<LiveMapCanvasMarker>((point) => ({
-        floorId: point.floor_id,
-        id: `story:${point.id}`,
-        kind: "story",
-        label: getStoryPointLabel(point, locale),
-        popupHtml: getCachedPopupHtml(
-          popupHtmlCache,
-          `${locale}:story:${point.id}`,
-          () => getStoryPointPopupHtml(point, locale),
-        ),
-        x: point.x,
-        y: point.z,
-      }));
+      .map<LiveMapCanvasMarker>((point) => {
+        const storyId = getStoryId(point);
+        const storyDetail =
+          panel?.type === "story" && panel.id === storyId
+            ? panel.info
+            : storyDetailCacheRef.current.get(storyId);
+
+        return {
+          floorId: point.floor_id,
+          id: `story:${point.id}`,
+          kind: "story",
+          label: getStoryPointLabel(point, locale),
+          popupHtml: getCachedPopupHtml(
+            popupHtmlCache,
+            `${locale}:story:${point.id}:${storyDetail ? `detail:${storyDetail.story.id}` : "summary"}`,
+            () => storyDetail
+              ? getStoryDetailPointPopupHtml(point, storyDetail, locale)
+              : getStoryPointPopupHtml(point, locale),
+          ),
+          x: point.x,
+          y: point.z,
+        };
+      });
     const eventMarkers = data.event_points
       .filter((point) => (
         point.event_info &&
         matchesFilterText(getEventMarkerSearchText(point, locale), eventFilterQuery) &&
         (focusedMarkerId === `event:${point.id}` || enabledEventIds.has(getEventId(point)))
       ))
-      .map<LiveMapCanvasMarker>((point) => ({
-        floorId: point.floor_id,
-        id: `event:${point.id}`,
-        kind: "event",
-        label: getEventPointLabel(point, locale),
-        popupHtml: getCachedPopupHtml(
-          popupHtmlCache,
-          `${locale}:event:${point.id}`,
-          () => getEventPointPopupHtml(point, locale),
-        ),
-        x: point.x,
-        y: point.z,
-      }));
+      .map<LiveMapCanvasMarker>((point) => {
+        const eventId = getEventId(point);
+        const eventDetail =
+          panel?.type === "event" && panel.id === eventId
+            ? panel.info
+            : eventDetailCacheRef.current.get(eventId);
+
+        return {
+          floorId: point.floor_id,
+          id: `event:${point.id}`,
+          kind: "event",
+          label: getEventPointLabel(point, locale),
+          popupHtml: getCachedPopupHtml(
+            popupHtmlCache,
+            `${locale}:event:${point.id}:${eventDetail ? `detail:${eventDetail.event.id}` : "summary"}`,
+            () => eventDetail
+              ? getEventDetailPointPopupHtml(point, eventDetail, locale)
+              : getEventPointPopupHtml(point, locale),
+          ),
+          x: point.x,
+          y: point.z,
+        };
+      });
     const staticMarkers = data.static_points
       .filter((point) => (
         matchesFilterText(getStaticMarkerSearchText(point, locale, copy), staticFilterQuery) &&
@@ -486,6 +522,7 @@ export function LiveMapClientPage({
     enabledStoryIds,
     eventFilterQuery,
     focusedMarkerId,
+    panel,
     questFilterQuery,
     staticFilterQuery,
     storyFilterQuery,

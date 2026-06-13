@@ -1,10 +1,13 @@
 import type { Locale } from "@/i18n/config";
 import type {
+  EventInfo,
   LiveMapEventPoint,
   LiveMapPointDetail,
+  LiveMapQuestInfo,
   LiveMapQuestPoint,
   LiveMapStaticPoint,
   LiveMapStoryPoint,
+  StoryInfo,
 } from "@/types/api/live-map";
 
 import type { LiveMapCopy } from "./live-map-copy";
@@ -120,6 +123,24 @@ export function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale)
   });
 }
 
+export function getQuestDetailPointPopupHtml(
+  point: LiveMapQuestPoint,
+  info: LiveMapQuestInfo,
+  locale: Locale,
+) {
+  const objective = findQuestObjectiveByPointId(info, point.id);
+  const selectedPoint = getQuestObjectivePoint(objective, point.id);
+  const details = selectedPoint?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getQuestObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(selectedPoint, locale),
+    title: localizedName(info.quest as unknown as Record<string, unknown>, locale),
+    titleImage: info.trader?.image,
+  });
+}
+
 export function getStoryPointPopupHtml(point: LiveMapStoryPoint, locale: Locale) {
   if (!point.story_info) {
     return undefined;
@@ -130,6 +151,27 @@ export function getStoryPointPopupHtml(point: LiveMapStoryPoint, locale: Locale)
     images: [],
     location: "",
     title: localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale),
+  });
+}
+
+export function getStoryDetailPointPopupHtml(
+  point: LiveMapStoryPoint,
+  info: StoryInfo,
+  locale: Locale,
+) {
+  const objective = findNestedObjectiveByPoint(
+    info.objectives,
+    point.id,
+    point.objective_id,
+  );
+  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
+  const details = selectedPoint?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getNestedObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(selectedPoint, locale),
+    title: localizedTitle(info.story as unknown as Record<string, unknown>, locale),
   });
 }
 
@@ -144,6 +186,28 @@ export function getEventPointPopupHtml(point: LiveMapEventPoint, locale: Locale)
     location: "",
     title: localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale),
     titleImage: point.event_info.trader?.image,
+  });
+}
+
+export function getEventDetailPointPopupHtml(
+  point: LiveMapEventPoint,
+  info: EventInfo,
+  locale: Locale,
+) {
+  const objective = findNestedObjectiveByPoint(
+    info.objectives,
+    point.id,
+    point.objective_id,
+  );
+  const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
+  const details = selectedPoint?.details ?? [];
+
+  return createMarkerPopupHtml({
+    description: getNestedObjectiveDescription(objective, locale),
+    images: getPopupImages(details),
+    location: getPointDetailText(selectedPoint, locale),
+    title: localizedTitle(info.event as unknown as Record<string, unknown>, locale),
+    titleImage: info.trader?.image,
   });
 }
 

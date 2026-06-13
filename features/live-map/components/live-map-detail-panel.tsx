@@ -279,6 +279,7 @@ function StoryPanel({
         selectedObjectiveId={selectedObjective?.objective_id ?? null}
         selectedPointId={selectedPointId}
       />
+      <StoryRewardList copy={copy} info={info} locale={locale} />
     </div>
   );
 }
@@ -548,6 +549,7 @@ function NestedStoryObjectives({
               />
             ) : null}
             {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
+            <StoryObjectiveRewardList copy={copy} locale={locale} rewards={objective.rewards} />
             {objective.children.length > 0 ? (
               <div className="border-l border-gray-200 pl-3 dark:border-[#3a3d41]">
                 <NestedStoryObjectives
@@ -565,6 +567,46 @@ function NestedStoryObjectives({
         );
       })}
     </ul>
+  );
+}
+
+function StoryObjectiveRewardList({
+  copy,
+  locale,
+  rewards,
+}: {
+  copy: LiveMapCopy;
+  locale: Locale;
+  rewards: StoryObjective["rewards"];
+}) {
+  if (!rewards || (!rewards.items.length && !rewards.texts.length)) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-1.5 pl-5">
+      {rewards.texts.map((reward) => (
+        <div
+          key={reward.id}
+          className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1.5 text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200"
+        >
+          {localizedDescription(reward as unknown as Record<string, unknown>, locale)}
+        </div>
+      ))}
+      {rewards.items.length > 0 ? (
+        <ExpandableRows className="grid gap-1.5" copy={copy}>
+          {rewards.items.map((reward) => (
+            <RewardItemLink
+              key={`${reward.item.id}-${reward.quantity}`}
+              image={reward.item.image}
+              meta={`x${reward.quantity.toLocaleString()}`}
+              name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
+              normalizedName={reward.item.normalized_name}
+            />
+          ))}
+        </ExpandableRows>
+      ) : null}
+    </div>
   );
 }
 
@@ -1035,6 +1077,55 @@ function QuestRewardList({
                 </RewardPill>
               ),
             )}
+          </RewardBlock>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function StoryRewardList({
+  copy,
+  info,
+  locale,
+}: {
+  copy: LiveMapCopy;
+  info: StoryInfo;
+  locale: Locale;
+}) {
+  const rewards = info.finish_rewards;
+
+  if (!rewards || (!rewards.trader_standing.length && !rewards.items.length)) {
+    return null;
+  }
+
+  return (
+    <section>
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
+        {copy.rewards}
+      </h4>
+      <div className="space-y-3">
+        {rewards.trader_standing.length > 0 ? (
+          <RewardBlock copy={copy} title={copy.traderStanding}>
+            {rewards.trader_standing.map((reward) => (
+              <RewardPill key={`${reward.trader.id}-${reward.standing}`}>
+                {localizedName(reward.trader as unknown as Record<string, unknown>, locale)}{" "}
+                {formatSignedNumber(reward.standing)}
+              </RewardPill>
+            ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.items.length > 0 ? (
+          <RewardBlock copy={copy} title={copy.rewardItems}>
+            {rewards.items.map((reward) => (
+              <RewardItemLink
+                key={`${reward.item.id}-${reward.quantity}`}
+                image={reward.item.image}
+                meta={`x${reward.quantity.toLocaleString()}`}
+                name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
+                normalizedName={reward.item.normalized_name}
+              />
+            ))}
           </RewardBlock>
         ) : null}
       </div>
