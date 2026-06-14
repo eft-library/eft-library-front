@@ -147,6 +147,15 @@ export interface StoryRequirement {
   description_en: string | null;
   description_ko: string | null;
   description_ja: string | null;
+  details: LiveMapPointDetail[];
+  items: Array<{
+    quantity: number | null;
+    found_in_raid: boolean | null;
+    item_role: string | null;
+    item: QuestDetailItem | null;
+  }>;
+  maps: QuestObjectiveMap[];
+  live_map_points: LiveMapObjectivePoint[];
 }
 
 export interface StoryObjective {

@@ -4,6 +4,7 @@ import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
+import type { QuestDetailItem } from "@/types/api/quest";
 import type {
   EventInfo,
   EventObjective,
@@ -12,6 +13,7 @@ import type {
   LiveMapStaticPoint,
   StoryInfo,
   StoryObjective,
+  StoryRequirement,
 } from "@/types/api/live-map";
 
 import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
@@ -28,12 +30,28 @@ import {
 } from "./live-map-data-utils";
 import { KappaBadge } from "./live-map-sections";
 
+type ItemRowEntry = {
+  quantity?: number | null;
+  count?: number | null;
+  found_in_raid?: boolean | null;
+  item_role?: string | null;
+  item_type?: string;
+  item: QuestDetailItem;
+};
+
+function hasRequirementItem(
+  entry: StoryRequirement["items"][number],
+): entry is StoryRequirement["items"][number] & { item: QuestDetailItem } {
+  return Boolean(entry.item);
+}
+
 export function DetailPanel({
   completedQuestIds,
   copy,
   focusEventObjective,
   focusQuestObjective,
   focusStoryObjective,
+  focusStoryRequirement,
   loadingQuestNormalizedName,
   locale,
   normalizedName,
@@ -51,6 +69,7 @@ export function DetailPanel({
     pointId?: string,
   ) => void;
   focusStoryObjective: (objective: StoryObjective, storyId: string, pointId?: string) => void;
+  focusStoryRequirement: (requirement: StoryRequirement, storyId: string, pointId?: string) => void;
   focusEventObjective: (objective: EventObjective, eventId: string, pointId?: string) => void;
   loadingQuestNormalizedName: string | null;
   locale: Locale;
@@ -66,7 +85,7 @@ export function DetailPanel({
     panel.type === "quest"
       ? `${panel.type}:${panel.id}:${panel.pointId ?? ""}`
       : panel.type === "story" || panel.type === "event"
-        ? `${panel.type}:${panel.id}:${panel.objectiveId ?? ""}:${panel.pointId ?? ""}`
+        ? `${panel.type}:${panel.id}:${panel.objectiveId ?? ""}:${panel.type === "story" ? panel.requirementId ?? "" : ""}:${panel.pointId ?? ""}`
         : null;
 
   useEffect(() => {
@@ -125,11 +144,13 @@ export function DetailPanel({
           <StoryPanel
             copy={copy}
             focusStoryObjective={focusStoryObjective}
+            focusStoryRequirement={focusStoryRequirement}
             info={panel.info}
             locale={locale}
             normalizedName={normalizedName}
             selectedObjectiveId={panel.objectiveId}
             selectedPointId={panel.pointId}
+            selectedRequirementId={panel.requirementId}
           />
         ) : null}
         {panel.type === "event" ? (
@@ -257,19 +278,23 @@ function QuestPanel({
 function StoryPanel({
   copy,
   focusStoryObjective,
+  focusStoryRequirement,
   info,
   locale,
   normalizedName,
   selectedObjectiveId,
   selectedPointId,
+  selectedRequirementId,
 }: {
   copy: LiveMapCopy;
   focusStoryObjective: (objective: StoryObjective, storyId: string, pointId?: string) => void;
+  focusStoryRequirement: (requirement: StoryRequirement, storyId: string, pointId?: string) => void;
   info: StoryInfo;
   locale: Locale;
   normalizedName: string;
   selectedObjectiveId?: string | null;
   selectedPointId?: string;
+  selectedRequirementId?: string | null;
 }) {
   const selectedObjective = selectedPointId
     ? findNestedObjectiveByPoint(info.objectives, selectedPointId, selectedObjectiveId ?? null)
@@ -291,20 +316,15 @@ function StoryPanel({
           {copy.questDetailPage}
         </a>
       </div>
-      {info.requirements.length > 0 ? (
-        <section>
-          <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
-            {copy.requirements}
-          </h4>
-          <ul className="space-y-1">
-            {info.requirements.map((requirement) => (
-              <li key={requirement.id} className="text-xs font-medium leading-5 text-gray-700 dark:text-gray-100">
-                {localizedDescription(requirement as unknown as Record<string, unknown>, locale)}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <StoryRequirementList
+        copy={copy}
+        locale={locale}
+        normalizedName={normalizedName}
+        onFocusRequirement={(requirement, pointId) => focusStoryRequirement(requirement, info.story.id, pointId)}
+        requirements={info.requirements}
+        selectedPointId={selectedPointId}
+        selectedRequirementId={selectedRequirementId}
+      />
       <StoryObjectiveList
         copy={copy}
         onFocusObjective={(objective, pointId) => focusStoryObjective(objective, info.story.id, pointId)}
@@ -490,6 +510,121 @@ function StoryObjectiveList({
         selectedObjectiveId={selectedObjectiveId}
         selectedPointId={selectedPointId}
       />
+    </section>
+  );
+}
+
+function StoryRequirementList({
+  copy,
+  locale,
+  normalizedName,
+  onFocusRequirement,
+  requirements,
+  selectedPointId,
+  selectedRequirementId,
+}: {
+  copy: LiveMapCopy;
+  locale: Locale;
+  normalizedName: string;
+  onFocusRequirement?: (requirement: StoryRequirement, pointId?: string) => void;
+  requirements: StoryRequirement[];
+  selectedPointId?: string;
+  selectedRequirementId?: string | null;
+}) {
+  if (requirements.length === 0) {
+    return null;
+  }
+
+  return (
+    <section>
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
+        {copy.requirements}
+      </h4>
+      <ul className="space-y-1">
+        {requirements.map((requirement) => {
+          const isSelected =
+            requirement.id === selectedRequirementId ||
+            (!!selectedPointId &&
+              requirement.live_map_points.some((point) => point.id === selectedPointId));
+          const isRemote = hasRemoteObjectivePoint(requirement.live_map_points, requirement.maps, normalizedName);
+          const description = localizedDescription(requirement as unknown as Record<string, unknown>, locale);
+          const visibleDetails = requirement.details.filter((detail) => {
+            const detailText = localizedDescription(detail as unknown as Record<string, unknown>, locale);
+
+            return Boolean(detail.image) || (!!detailText && detailText !== description);
+          });
+
+          return (
+            <li
+              key={requirement.id}
+              data-live-map-objective-id={requirement.id}
+              data-live-map-selected-objective={isSelected ? "true" : undefined}
+              className={cn(
+                "space-y-1 rounded-md border border-transparent px-1.5 py-1 text-xs text-gray-700 dark:text-gray-100",
+                isSelected
+                  ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
+                  : "",
+              )}
+            >
+              <ObjectiveLine
+                count={null}
+                description={description}
+                onFocus={
+                  requirement.live_map_points.length > 0
+                    ? () => onFocusRequirement?.(requirement)
+                    : undefined
+                }
+                optional={false}
+                remote={isRemote}
+              />
+              {visibleDetails.length > 0 ? (
+                <div className="grid gap-1.5 pl-5">
+                  {visibleDetails.map((detail) => {
+                    const detailText = localizedDescription(detail as unknown as Record<string, unknown>, locale);
+
+                    return detailText || detail.image ? (
+                      <div
+                        key={detail.id}
+                        className="rounded-md border border-gray-200 bg-white p-2 dark:border-[#3a3d41] dark:bg-[#15171a]"
+                      >
+                        {detailText ? (
+                          <p className="text-xs font-medium leading-5 text-gray-700 dark:text-gray-100">
+                            {detailText}
+                          </p>
+                        ) : null}
+                        {detail.image ? (
+                          <img
+                            alt={detailText || description}
+                            className="mt-2 max-h-36 w-full rounded object-cover"
+                            src={detail.image}
+                          />
+                        ) : null}
+                      </div>
+                    ) : null;
+                  })}
+                </div>
+              ) : null}
+              {requirement.live_map_points.length > 0 ? (
+                <ObjectivePointList
+                  copy={copy}
+                  locale={locale}
+                  normalizedName={normalizedName}
+                  onFocusPoint={(pointId) => onFocusRequirement?.(requirement, pointId)}
+                  points={requirement.live_map_points}
+                  selectedPointId={selectedPointId}
+                  maps={requirement.maps}
+                />
+              ) : null}
+              {requirement.items.length > 0 ? (
+                <ItemRow
+                  items={requirement.items.filter(hasRequirementItem)}
+                  locale={locale}
+                />
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
@@ -873,7 +1008,7 @@ function ItemRow({
   items,
   locale,
 }: {
-  items: LiveMapQuestInfo["objectives"][number]["items"];
+  items: ItemRowEntry[];
   locale: Locale;
 }) {
   return (

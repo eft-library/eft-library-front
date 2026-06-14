@@ -18,7 +18,14 @@ import type { LiveMapCopy } from "./live-map-copy";
 
 export type PanelState =
   | { type: "quest"; id: string; info: LiveMapQuestInfo; pointId?: string }
-  | { type: "story"; id: string; info: StoryInfo; objectiveId?: string | null; pointId?: string }
+  | {
+      type: "story";
+      id: string;
+      info: StoryInfo;
+      objectiveId?: string | null;
+      requirementId?: string | null;
+      pointId?: string;
+    }
   | { type: "event"; id: string; info: EventInfo; objectiveId?: string | null; pointId?: string }
   | { type: "static"; id: string; point: LiveMapStaticPoint };
 

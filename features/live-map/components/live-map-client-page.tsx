@@ -36,6 +36,7 @@ import type {
   LiveMapQuestInfo,
   StoryInfo,
   StoryObjective,
+  StoryRequirement,
 } from "@/types/api/live-map";
 import type { QuestCompletionGraphNode } from "@/types/api/quest";
 import type { LiveMapCanvasMarker, LiveMapPopupImage } from "./live-map-canvas";
@@ -749,6 +750,56 @@ export function LiveMapClientPage({
     [focusedMarkerId, normalizedName, replaceFocusParam, router],
   );
 
+  const focusStoryRequirement = useCallback(
+    (requirement: StoryRequirement, storyId: string, pointId?: string) => {
+      const point = pointId
+        ? requirement.live_map_points.find((entry) => entry.id === pointId)
+        : requirement.live_map_points[0];
+
+      if (!point) {
+        return;
+      }
+
+      const targetMap =
+        point.map?.normalized_name ??
+        requirement.maps.find((map) => map.id === point.map_id)?.normalized_name ??
+        requirement.maps[0]?.normalized_name ??
+        normalizedName;
+      const focus = `story:${point.id}`;
+      setLocalFocusedMarkerId(focus);
+
+      if (point.floor_id) {
+        setSelectedFloorId(point.floor_id);
+      }
+
+      if (targetMap === normalizedName) {
+        setPanel((current) =>
+          current?.type === "story" && current.id === storyId
+            ? {
+                ...current,
+                objectiveId: null,
+                requirementId: requirement.id,
+                pointId: point.id,
+              }
+            : current,
+        );
+
+        if (focusedMarkerId !== focus) {
+          replaceFocusParam(focus);
+        }
+        return;
+      }
+
+      setLocalFocusedMarkerId(null);
+      setPanel(null);
+      setSelectedStaticId(null);
+      router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
+        scroll: false,
+      });
+    },
+    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+  );
+
   const focusEventObjective = useCallback(
     (objective: EventObjective, eventId: string, pointId?: string) => {
       const point = pointId
@@ -1390,6 +1441,7 @@ export function LiveMapClientPage({
               focusEventObjective={focusEventObjective}
               focusQuestObjective={focusQuestObjective}
               focusStoryObjective={focusStoryObjective}
+              focusStoryRequirement={focusStoryRequirement}
               loadingQuestNormalizedName={loadingQuestNormalizedName}
               locale={locale}
               normalizedName={normalizedName}
