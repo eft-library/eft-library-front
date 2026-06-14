@@ -1,5 +1,5 @@
 import type React from "react";
-import { Children, useState } from "react";
+import { Children, useEffect, useRef, useState } from "react";
 import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
@@ -61,6 +61,30 @@ export function DetailPanel({
   panel: PanelState;
   savingQuestId: string | null;
 }) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const selectedScrollKey =
+    panel.type === "quest"
+      ? `${panel.type}:${panel.id}:${panel.pointId ?? ""}`
+      : panel.type === "story" || panel.type === "event"
+        ? `${panel.type}:${panel.id}:${panel.objectiveId ?? ""}:${panel.pointId ?? ""}`
+        : null;
+
+  useEffect(() => {
+    if (!selectedScrollKey) {
+      return;
+    }
+
+    const container = scrollContainerRef.current;
+    const selectedObjective = container?.querySelector<HTMLElement>(
+      '[data-live-map-selected-objective="true"]',
+    );
+
+    selectedObjective?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [selectedScrollKey]);
+
   return (
     <aside className="hidden w-96 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] xl:flex">
       <div className="flex h-10 items-center justify-between border-b border-gray-200 px-3 dark:border-[#3a3d41]">
@@ -81,7 +105,7 @@ export function DetailPanel({
           <X className="h-4 w-4" />
         </button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto p-3">
+      <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto p-3">
         {panel.type === "quest" ? (
           <QuestPanel
             completed={completedQuestIds.includes(panel.info.quest.id)}
@@ -253,9 +277,20 @@ function StoryPanel({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-black text-gray-950 dark:text-white">
-        {localizedTitle(info.story as unknown as Record<string, unknown>, locale)}
-      </h3>
+      <div className="space-y-2">
+        <h3 className="text-sm font-black text-gray-950 dark:text-white">
+          {localizedTitle(info.story as unknown as Record<string, unknown>, locale)}
+        </h3>
+        <a
+          href={`/story/${info.story.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-7 items-center gap-1 rounded border border-gray-200 px-2 text-xs font-bold text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300"
+        >
+          <ExternalLink className="h-3.5 w-3.5" />
+          {copy.questDetailPage}
+        </a>
+      </div>
       {info.requirements.length > 0 ? (
         <section>
           <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
@@ -377,14 +412,18 @@ function ObjectiveList({
         {objectives.map((objective) => {
           const points = getQuestObjectivePoints(objective);
           const isRemote = hasRemoteObjectivePoint(points, objective.maps, normalizedName);
+          const isSelected =
+            !!selectedPointId &&
+            getQuestObjectivePoints(objective).some((entry) => entry.id === selectedPointId);
 
           return (
             <li
               key={objective.objective_id}
+              data-live-map-objective-id={objective.objective_id}
+              data-live-map-selected-objective={isSelected ? "true" : undefined}
               className={cn(
                 "space-y-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-100",
-                selectedPointId &&
-                  getQuestObjectivePoints(objective).some((entry) => entry.id === selectedPointId)
+                isSelected
                   ? "border-orange-300 bg-orange-50 dark:border-orange-500/40 dark:bg-orange-500/10"
                   : "",
               )}
@@ -519,6 +558,8 @@ function NestedStoryObjectives({
         return (
           <li
             key={objective.objective_id}
+            data-live-map-objective-id={objective.objective_id}
+            data-live-map-selected-objective={isSelected ? "true" : undefined}
             className={cn(
               "space-y-1 rounded-md border border-transparent px-1.5 py-1",
               isSelected
@@ -602,6 +643,7 @@ function StoryObjectiveRewardList({
               meta={`x${reward.quantity.toLocaleString()}`}
               name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
               normalizedName={reward.item.normalized_name}
+              tone="success"
             />
           ))}
         </ExpandableRows>
@@ -639,6 +681,8 @@ function NestedEventObjectives({
         return (
           <li
             key={objective.objective_id}
+            data-live-map-objective-id={objective.objective_id}
+            data-live-map-selected-objective={isSelected ? "true" : undefined}
             className={cn(
               "space-y-1 rounded-md border border-transparent px-1.5 py-1",
               isSelected
@@ -1165,24 +1209,38 @@ function RewardItemLink({
   meta,
   name,
   normalizedName,
+  tone = "default",
 }: {
   image: string | null;
   meta: string;
   name: string;
   normalizedName: string;
+  tone?: "default" | "success";
 }) {
   return (
     <a
       href={`/item/info/${normalizedName}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300"
+      className={cn(
+        "flex min-w-0 items-center gap-2 rounded-md border px-2 py-1.5 text-xs font-medium",
+        tone === "success"
+          ? "border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-300 hover:text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200 dark:hover:border-emerald-400/60 dark:hover:text-emerald-100"
+          : "border-gray-200 bg-gray-50 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a] dark:text-gray-100 dark:hover:border-orange-500 dark:hover:text-orange-300",
+      )}
     >
       <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white dark:bg-[#20242b]">
         {image ? <img alt={name} className="h-full w-full object-contain" src={image} /> : null}
       </span>
       <span className="min-w-0 flex-1 truncate">{name}</span>
-      <span className="shrink-0 rounded bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-500/10 dark:text-orange-300">
+      <span
+        className={cn(
+          "shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold",
+          tone === "success"
+            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
+            : "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300",
+        )}
+      >
         {meta}
       </span>
     </a>

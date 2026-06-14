@@ -130,7 +130,12 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   const [commentText, setCommentText] = useState("");
   const [replyTarget, setReplyTarget] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [imagePopup, setImagePopup] = useState<{ src: string; alt: string } | null>(null);
+  const [imagePopup, setImagePopup] = useState<{
+    src: string;
+    alt: string;
+    images?: Array<{ src: string; alt: string }>;
+    index?: number;
+  } | null>(null);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editingCommentText, setEditingCommentText] = useState("");
   const [notice, setNotice] = useState("");
@@ -442,7 +447,30 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
     if (!(target instanceof HTMLImageElement) || !target.src) {
       return;
     }
-    setImagePopup({ src: target.src, alt: target.alt || post.title });
+
+    const images = Array.from(event.currentTarget.querySelectorAll("img"))
+      .map((image) => ({
+        src: image.currentSrc || image.src,
+        alt: image.alt || post.title,
+      }))
+      .filter((image) => image.src);
+    const src = target.currentSrc || target.src;
+    const index = images.findIndex((image) => image.src === src);
+
+    setImagePopup({
+      src,
+      alt: target.alt || post.title,
+      images: images.length > 0 ? images : undefined,
+      index: index >= 0 ? index : undefined,
+    });
+  }
+
+  function navigateImagePopup(index: number) {
+    setImagePopup((current) => {
+      const image = current?.images?.[index];
+
+      return image ? { ...image, images: current?.images, index } : current;
+    });
   }
 
   if (isLoading) {
@@ -803,7 +831,13 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
           </section>
         </aside>
       </div>
-      <ZoomableImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <ZoomableImagePopup
+        currentIndex={imagePopup?.index}
+        image={imagePopup}
+        images={imagePopup?.images}
+        onClose={() => setImagePopup(null)}
+        onNavigate={navigateImagePopup}
+      />
       <CommunityReportDialog
         target={reportTarget}
         accessToken={session?.accessToken}

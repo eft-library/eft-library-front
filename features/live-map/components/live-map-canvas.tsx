@@ -35,6 +35,8 @@ export interface LiveMapCanvasMarker {
 
 export interface LiveMapPopupImage {
   alt: string;
+  images?: Array<{ alt: string; src: string }>;
+  index?: number;
   src: string;
 }
 
@@ -428,42 +430,29 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
   const { kind } = point;
   const color = markerColorByKind[kind];
-  const width = isFocused ? 30 : 24;
-  const height = isFocused ? 36 : 30;
-  const circleRadius = isFocused ? 4.6 : 4.3;
-  const wrapperStyle = `
-    width: ${width}px;
-    height: ${height}px;
-    position: relative;
-    opacity: ${isDimmed ? "0.32" : "1"};
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.48)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.82))" : ""};
-    transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
-    transform: ${isFocused ? "translateY(-3px) scale(1.06)" : "none"};
-  `;
-
-  if (kind === "quest") {
+  if (kind !== "static") {
     const size = isFocused ? 28 : 22;
-    const questWrapperStyle = `
+    const taskWrapperStyle = `
       width: ${size}px;
       height: ${size}px;
       position: relative;
       opacity: ${isDimmed ? "0.32" : "1"};
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) ${isFocused ? "drop-shadow(0 0 9px rgba(255,180,0,0.86))" : ""};
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) ${isFocused ? `drop-shadow(0 0 9px ${color})` : ""};
       transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
       transform: ${isFocused ? "scale(1.12)" : "none"};
     `;
 
     return L.divIcon({
-      className: "live-map-marker-icon live-map-marker-icon-quest",
+      className: `live-map-marker-icon live-map-marker-icon-${kind}`,
       html: `
-        <div style="${questWrapperStyle}">
+        <div style="${taskWrapperStyle}">
           <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="10.2" fill="#1a1c1f" stroke="#0b0d10" stroke-width="2.1" />
-            <circle cx="12" cy="12" r="8.1" fill="#1a1c1f" stroke="#ffb400" stroke-width="2.2" />
+            <circle cx="12" cy="12" r="8.1" fill="#1a1c1f" stroke="${color}" stroke-width="2.2" />
             <path d="M8.2 14.1h1.95c.82 0 1.18-.4 1.18-1.06v-2.08c0-.66.36-1.06 1.18-1.06h3.29" stroke="#fff7ed" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" />
-            <circle cx="8" cy="14.1" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
-            <circle cx="12" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
-            <circle cx="16" cy="9.9" r="1.12" fill="#ffb400" stroke="#fff7ed" stroke-width=".55" />
+            <circle cx="8" cy="14.1" r="1.12" fill="${color}" stroke="#fff7ed" stroke-width=".55" />
+            <circle cx="12" cy="9.9" r="1.12" fill="${color}" stroke="#fff7ed" stroke-width=".55" />
+            <circle cx="16" cy="9.9" r="1.12" fill="${color}" stroke="#fff7ed" stroke-width=".55" />
           </svg>
         </div>
       `,
@@ -512,19 +501,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
     });
   }
 
-  return L.divIcon({
-    className: "live-map-marker-icon",
-    html: `
-      <div style="${wrapperStyle}">
-        <svg width="${width}" height="${height}" viewBox="0 0 24 28" fill="none" aria-hidden="true">
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 16 12 16S24 21 24 12C24 5.373 18.627 0 12 0z" fill="${color}" />
-          <circle cx="12" cy="12" r="${circleRadius}" fill="#1A1C1F" />
-        </svg>
-      </div>
-    `,
-    iconAnchor: [width / 2, height],
-    iconSize: [width, height],
-  });
+  return L.divIcon();
 }
 
 function getPointMarkerZIndex(
@@ -775,8 +752,19 @@ export function LiveMapCanvas({
 
       event.preventDefault();
       event.stopPropagation();
+      const card = image.closest<HTMLElement>(".live-map-popup-card");
+      const thumbs = Array.from(card?.querySelectorAll<HTMLButtonElement>(".live-map-popup-thumb") ?? []);
+      const images = thumbs.map((thumb) => ({
+        alt: thumb.dataset.alt ?? "",
+        src: thumb.dataset.src ?? "",
+      })).filter((entry) => entry.src);
+      const currentSrc = image.dataset.fullSrc ?? image.src;
+      const index = images.findIndex((entry) => entry.src === currentSrc);
+
       onPopupImageClick({
         alt: image.alt,
+        images: images.length > 0 ? images : undefined,
+        index: index >= 0 ? index : undefined,
         src: image.dataset.fullSrc ?? image.src,
       });
     };

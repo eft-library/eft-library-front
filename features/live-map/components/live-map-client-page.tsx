@@ -45,7 +45,9 @@ import {
   getEventId,
   getEventMarkerSearchText,
   getEventPointLabel,
+  findNestedObjectiveByPoint,
   getFloorLabel,
+  getNestedObjectiveText,
   getQuestId,
   getQuestMarkerSearchText,
   getQuestObjectivePoint,
@@ -442,12 +444,18 @@ export function LiveMapClientPage({
           panel?.type === "story" && panel.id === storyId
             ? panel.info
             : storyDetailCacheRef.current.get(storyId);
+        const storyObjective = storyDetail
+          ? findNestedObjectiveByPoint(storyDetail.objectives, point.id, point.objective_id)
+          : null;
+        const storyLabel =
+          getNestedObjectiveText(storyObjective, point.id, locale) ||
+          getStoryPointLabel(point, locale);
 
         return {
           floorId: point.floor_id,
           id: `story:${point.id}`,
           kind: "story",
-          label: getStoryPointLabel(point, locale),
+          label: storyLabel,
           popupHtml: getCachedPopupHtml(
             popupHtmlCache,
             `${locale}:story:${point.id}:${storyDetail ? `detail:${storyDetail.story.id}` : "summary"}`,
@@ -471,12 +479,18 @@ export function LiveMapClientPage({
           panel?.type === "event" && panel.id === eventId
             ? panel.info
             : eventDetailCacheRef.current.get(eventId);
+        const eventObjective = eventDetail
+          ? findNestedObjectiveByPoint(eventDetail.objectives, point.id, point.objective_id)
+          : null;
+        const eventLabel =
+          getNestedObjectiveText(eventObjective, point.id, locale) ||
+          getEventPointLabel(point, locale);
 
         return {
           floorId: point.floor_id,
           id: `event:${point.id}`,
           kind: "event",
-          label: getEventPointLabel(point, locale),
+          label: eventLabel,
           popupHtml: getCachedPopupHtml(
             popupHtmlCache,
             `${locale}:event:${point.id}:${eventDetail ? `detail:${eventDetail.event.id}` : "summary"}`,
@@ -578,6 +592,22 @@ export function LiveMapClientPage({
 
   const openImagePopup = useCallback((image: LiveMapPopupImage) => {
     setImagePopup(image);
+  }, []);
+
+  const navigateImagePopup = useCallback((index: number) => {
+    setImagePopup((current) => {
+      const nextImage = current?.images?.[index];
+
+      if (!current || !nextImage) {
+        return current;
+      }
+
+      return {
+        ...nextImage,
+        images: current.images,
+        index,
+      };
+    });
   }, []);
 
   const loadQuestDetail = useCallback(async (questIdOrNormalizedName: string) => {
@@ -1443,7 +1473,11 @@ export function LiveMapClientPage({
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
       />
-      <LiveMapImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <LiveMapImagePopup
+        image={imagePopup}
+        onClose={() => setImagePopup(null)}
+        onNavigate={navigateImagePopup}
+      />
     </main>
   );
 }

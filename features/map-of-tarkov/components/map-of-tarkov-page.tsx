@@ -147,6 +147,8 @@ function BooleanIcon({ value }: { value: boolean }) {
 interface ImagePopupState {
   src: string;
   alt: string;
+  images?: Array<{ src: string; alt: string }>;
+  index?: number;
 }
 
 export function MapOfTarkovPage({
@@ -160,6 +162,13 @@ export function MapOfTarkovPage({
 }) {
   const copy = copyByLocale[locale];
   const [imagePopup, setImagePopup] = useState<ImagePopupState | null>(null);
+  const navigateImagePopup = (index: number) => {
+    setImagePopup((current) => {
+      const image = current?.images?.[index];
+
+      return image ? { ...image, images: current?.images, index } : current;
+    });
+  };
   const localizedMapName = getLocalizedName(
     selectedMapData.map_info as unknown as Record<string, unknown>,
     locale,
@@ -226,7 +235,13 @@ export function MapOfTarkovPage({
         />
       </div>
 
-      <ZoomableImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <ZoomableImagePopup
+        currentIndex={imagePopup?.index}
+        image={imagePopup}
+        images={imagePopup?.images}
+        onClose={() => setImagePopup(null)}
+        onNavigate={navigateImagePopup}
+      />
     </main>
   );
 }
@@ -422,6 +437,13 @@ function PointSection({
   locale: Locale;
   onOpenImage: (image: ImagePopupState) => void;
 }) {
+  const sectionImages = items
+    .map((item) => ({
+      src: item.image,
+      alt: getLocalizedName(item as unknown as Record<string, unknown>, locale),
+    }))
+    .filter((image) => image.src);
+
   return (
     <section className="space-y-4">
       <h2 className="flex items-center text-xl font-black">
@@ -440,6 +462,7 @@ function PointSection({
       <div className="space-y-3">
         {items.map((item) => {
           const name = getLocalizedName(item as unknown as Record<string, unknown>, locale);
+          const imageIndex = sectionImages.findIndex((image) => image.src === item.image);
           const requirements = localized(
             item as unknown as Record<string, unknown>,
             locale,
@@ -455,7 +478,12 @@ function PointSection({
               <div className="grid gap-4 md:grid-cols-[minmax(220px,1.8fr)_minmax(120px,0.9fr)_90px_72px_72px_minmax(240px,1.7fr)_minmax(240px,1.7fr)] md:items-center md:text-center">
                 <button
                   type="button"
-                  onClick={() => onOpenImage({ src: item.image, alt: name })}
+                  onClick={() => onOpenImage({
+                    src: item.image,
+                    alt: name,
+                    images: sectionImages,
+                    index: imageIndex >= 0 ? imageIndex : undefined,
+                  })}
                   className="group relative block overflow-hidden rounded-lg"
                 >
                   <img src={item.image} alt={name} className="h-36 w-full object-cover md:h-32" />
@@ -519,9 +547,20 @@ function HtmlBlock({
         }
 
         event.preventDefault();
+        const images = Array.from(event.currentTarget.querySelectorAll("img"))
+          .map((image) => ({
+            src: image.currentSrc || image.src,
+            alt: image.alt || alt,
+          }))
+          .filter((image) => image.src);
+        const src = target.currentSrc || target.src;
+        const index = images.findIndex((image) => image.src === src);
+
         onOpenImage({
-          src: target.currentSrc || target.src,
+          src,
           alt: target.alt || alt,
+          images: images.length > 0 ? images : undefined,
+          index: index >= 0 ? index : undefined,
         });
       }}
       dangerouslySetInnerHTML={{ __html: value }}

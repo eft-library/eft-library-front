@@ -126,6 +126,8 @@ function formatSignedNumber(value: number) {
 interface ImagePopupState {
   src: string;
   alt: string;
+  images?: Array<{ src: string; alt: string }>;
+  index?: number;
 }
 
 export function QuestDetailPage({
@@ -137,6 +139,13 @@ export function QuestDetailPage({
 }) {
   const copy = copyByLocale[locale];
   const [imagePopup, setImagePopup] = useState<ImagePopupState | null>(null);
+  const navigateImagePopup = (index: number) => {
+    setImagePopup((current) => {
+      const image = current?.images?.[index];
+
+      return image ? { ...image, images: current?.images, index } : current;
+    });
+  };
   const questName = getLocalizedValue(
     data.quest as unknown as Record<string, unknown>,
     locale,
@@ -304,9 +313,20 @@ export function QuestDetailPage({
                 }
 
                 event.preventDefault();
+                const images = Array.from(event.currentTarget.querySelectorAll("img"))
+                  .map((image) => ({
+                    src: image.currentSrc || image.src,
+                    alt: image.alt || questName,
+                  }))
+                  .filter((image) => image.src);
+                const src = target.currentSrc || target.src;
+                const index = images.findIndex((image) => image.src === src);
+
                 setImagePopup({
-                  src: target.currentSrc || target.src,
+                  src,
                   alt: target.alt || questName,
+                  images: images.length > 0 ? images : undefined,
+                  index: index >= 0 ? index : undefined,
                 });
               }}
               dangerouslySetInnerHTML={{ __html: guideHtml }}
@@ -315,7 +335,13 @@ export function QuestDetailPage({
         ) : null}
       </div>
 
-      <ZoomableImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <ZoomableImagePopup
+        currentIndex={imagePopup?.index}
+        image={imagePopup}
+        images={imagePopup?.images}
+        onClose={() => setImagePopup(null)}
+        onNavigate={navigateImagePopup}
+      />
     </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 
 export interface ZoomableImagePopupImage {
   alt: string;
@@ -18,10 +18,16 @@ function clampZoom(value: number) {
 
 export function ZoomableImagePopup({
   image,
+  images,
+  currentIndex,
   onClose,
+  onNavigate,
 }: {
   image: ZoomableImagePopupImage | null;
+  images?: ZoomableImagePopupImage[];
+  currentIndex?: number;
   onClose: () => void;
+  onNavigate?: (index: number) => void;
 }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef<{
@@ -33,6 +39,11 @@ export function ZoomableImagePopup({
   } | null>(null);
   const [zoom, setZoom] = useState(0.75);
   const [isDragging, setIsDragging] = useState(false);
+  const hasNavigation = !!images && images.length > 1 && typeof currentIndex === "number" && !!onNavigate;
+  const previousIndex = hasNavigation
+    ? (currentIndex - 1 + images.length) % images.length
+    : -1;
+  const nextIndex = hasNavigation ? (currentIndex + 1) % images.length : -1;
 
   useEffect(() => {
     if (!image) {
@@ -43,6 +54,16 @@ export function ZoomableImagePopup({
       if (event.key === "Escape") {
         onClose();
       }
+
+      if (hasNavigation && event.key === "ArrowLeft") {
+        event.preventDefault();
+        onNavigate(previousIndex);
+      }
+
+      if (hasNavigation && event.key === "ArrowRight") {
+        event.preventDefault();
+        onNavigate(nextIndex);
+      }
     };
 
     document.body.style.overflow = "hidden";
@@ -52,7 +73,7 @@ export function ZoomableImagePopup({
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [image, onClose]);
+  }, [hasNavigation, image, nextIndex, onClose, onNavigate, previousIndex]);
 
   useEffect(() => {
     setZoom(0.75);
@@ -194,6 +215,29 @@ export function ZoomableImagePopup({
         >
           <X className="h-5 w-5" />
         </button>
+        {hasNavigation ? (
+          <>
+            <button
+              type="button"
+              aria-label="Previous image"
+              onClick={() => onNavigate(previousIndex)}
+              className="absolute left-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-orange-500"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next image"
+              onClick={() => onNavigate(nextIndex)}
+              className="absolute right-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-orange-500"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+            <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-xs font-bold text-white">
+              {currentIndex + 1} / {images.length}
+            </div>
+          </>
+        ) : null}
         <div
           ref={scrollerRef}
           className={`h-full w-full overflow-auto p-12 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}

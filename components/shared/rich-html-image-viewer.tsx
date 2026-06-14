@@ -8,6 +8,8 @@ import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
 interface ImagePopupState {
   src: string;
   alt: string;
+  images?: Array<{ src: string; alt: string }>;
+  index?: number;
 }
 
 interface RichHtmlImageViewerProps {
@@ -22,6 +24,13 @@ export function RichHtmlImageViewer({
   className,
 }: RichHtmlImageViewerProps) {
   const [imagePopup, setImagePopup] = useState<ImagePopupState | null>(null);
+  const navigateImagePopup = (index: number) => {
+    setImagePopup((current) => {
+      const image = current?.images?.[index];
+
+      return image ? { ...image, images: current?.images, index } : current;
+    });
+  };
 
   return (
     <>
@@ -35,15 +44,32 @@ export function RichHtmlImageViewer({
           }
 
           event.preventDefault();
+          const images = Array.from(event.currentTarget.querySelectorAll("img"))
+            .map((image) => ({
+              src: image.currentSrc || image.src,
+              alt: image.alt || imageAltFallback,
+            }))
+            .filter((image) => image.src);
+          const src = target.currentSrc || target.src;
+          const index = images.findIndex((image) => image.src === src);
+
           setImagePopup({
-            src: target.currentSrc || target.src,
+            src,
             alt: target.alt || imageAltFallback,
+            images: images.length > 0 ? images : undefined,
+            index: index >= 0 ? index : undefined,
           });
         }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
-      <ZoomableImagePopup image={imagePopup} onClose={() => setImagePopup(null)} />
+      <ZoomableImagePopup
+        currentIndex={imagePopup?.index}
+        image={imagePopup}
+        images={imagePopup?.images}
+        onClose={() => setImagePopup(null)}
+        onNavigate={navigateImagePopup}
+      />
     </>
   );
 }

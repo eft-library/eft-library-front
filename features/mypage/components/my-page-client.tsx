@@ -28,6 +28,7 @@ import {
 
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
 import { cn } from "@/lib/utils/class-name";
+import { stripHtml } from "@/features/community/utils";
 import {
   apiEndpoints,
   getMyPageBlocksEndpoint,
@@ -552,6 +553,8 @@ function PostCard({
   post: MyPagePostEntry | MyPageBookmarkEntry;
   meta?: React.ReactNode;
 }) {
+  const preview = buildPreviewText(post.contents);
+
   return (
     <Link
       href={getPostHref(post)}
@@ -567,9 +570,11 @@ function PostCard({
           <h3 className="mt-2 line-clamp-2 text-base font-black text-gray-950 dark:text-white">
             {post.title}
           </h3>
-          <p className="mt-2 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
-            {post.contents}
-          </p>
+          {preview ? (
+            <p className="mt-2 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
+              {preview}
+            </p>
+          ) : null}
         </div>
         {post.thumbnail ? (
           <img
@@ -591,6 +596,8 @@ function PostCard({
 }
 
 function CommentCard({ entry }: { entry: MyPageCommentEntry }) {
+  const preview = buildPreviewText(entry.comment.contents);
+
   return (
     <Link
       href={getPostHref(entry)}
@@ -604,14 +611,26 @@ function CommentCard({ entry }: { entry: MyPageCommentEntry }) {
       <h3 className="mt-2 line-clamp-1 text-base font-black text-gray-950 dark:text-white">
         {entry.title}
       </h3>
-      <p className="mt-3 rounded-md bg-white px-3 py-2 text-sm text-gray-600 dark:bg-[#252830] dark:text-gray-300">
-        {entry.comment.contents}
-      </p>
+      {preview ? (
+        <p className="mt-3 rounded-md bg-white px-3 py-2 text-sm text-gray-600 dark:bg-[#252830] dark:text-gray-300">
+          {preview}
+        </p>
+      ) : null}
       <p className="mt-3 text-xs font-semibold text-gray-500 dark:text-gray-400">
         {formatIsoDateTime(entry.comment.create_time)}
       </p>
     </Link>
   );
+}
+
+function buildPreviewText(value: string, maxLength = 120) {
+  const plainText = stripHtml(value);
+
+  if (plainText.length <= maxLength) {
+    return plainText;
+  }
+
+  return `${plainText.slice(0, maxLength).trimEnd()}...`;
 }
 
 function NotificationCard({ entry }: { entry: MyPageNotificationEntry }) {

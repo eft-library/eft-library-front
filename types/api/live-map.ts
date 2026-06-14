@@ -191,6 +191,12 @@ export interface StoryInfo {
 
 export interface StorySummaryInfo {
   story: StoryInfo["story"];
+  objective: {
+    objective_id: string;
+    description_en: string | null;
+    description_ko: string | null;
+    description_ja: string | null;
+  } | null;
 }
 
 export interface LiveMapStoryPoint {
@@ -235,6 +241,12 @@ export interface EventInfo {
 export interface EventSummaryInfo {
   event: EventInfo["event"];
   trader: QuestTraderEntry | null;
+  objective: {
+    objective_id: string;
+    description_en: string | null;
+    description_ko: string | null;
+    description_ja: string | null;
+  } | null;
 }
 
 export interface LiveMapEventPoint {

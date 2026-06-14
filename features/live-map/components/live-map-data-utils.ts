@@ -366,7 +366,11 @@ export function getStoryPointLabel(point: LiveMapStoryPoint, locale: Locale) {
     return point.id;
   }
 
-  return localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale);
+  const objectiveText = point.story_info.objective
+    ? localizedDescription(point.story_info.objective as unknown as Record<string, unknown>, locale)
+    : "";
+
+  return objectiveText || localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale);
 }
 
 export function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
@@ -374,7 +378,11 @@ export function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
     return point.id;
   }
 
-  return localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale);
+  const objectiveText = point.event_info.objective
+    ? localizedDescription(point.event_info.objective as unknown as Record<string, unknown>, locale)
+    : "";
+
+  return objectiveText || localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale);
 }
 
 export function getEntryLabel(entry: RightEntry, locale: Locale) {
