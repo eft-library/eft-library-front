@@ -40,8 +40,8 @@ type ItemRowEntry = {
 };
 
 function hasRequirementItem(
-  entry: StoryRequirement["items"][number],
-): entry is StoryRequirement["items"][number] & { item: QuestDetailItem } {
+  entry: NonNullable<StoryRequirement["items"]>[number],
+): entry is NonNullable<StoryRequirement["items"]>[number] & { item: QuestDetailItem } {
   return Boolean(entry.item);
 }
 
@@ -82,9 +82,10 @@ export function DetailPanel({
 }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const selectedScrollKey =
-    panel.type === "quest"
+    panel.type === "quest" && panel.pointId
       ? `${panel.type}:${panel.id}:${panel.pointId ?? ""}`
-      : panel.type === "story" || panel.type === "event"
+      : (panel.type === "story" && (panel.objectiveId || panel.requirementId || panel.pointId)) ||
+          (panel.type === "event" && (panel.objectiveId || panel.pointId))
         ? `${panel.type}:${panel.id}:${panel.objectiveId ?? ""}:${panel.type === "story" ? panel.requirementId ?? "" : ""}:${panel.pointId ?? ""}`
         : null;
 
@@ -390,6 +391,7 @@ function EventPanel({
         selectedObjectiveId={selectedObjective?.objective_id ?? null}
         selectedPointId={selectedPointId}
       />
+      <EventRewardList copy={copy} info={info} locale={locale} />
     </div>
   );
 }
@@ -542,13 +544,17 @@ function StoryRequirementList({
       </h4>
       <ul className="space-y-1">
         {requirements.map((requirement) => {
+          const details = requirement.details ?? [];
+          const items = requirement.items ?? [];
+          const maps = requirement.maps ?? [];
+          const points = requirement.live_map_points ?? [];
           const isSelected =
             requirement.id === selectedRequirementId ||
             (!!selectedPointId &&
-              requirement.live_map_points.some((point) => point.id === selectedPointId));
-          const isRemote = hasRemoteObjectivePoint(requirement.live_map_points, requirement.maps, normalizedName);
+              points.some((point) => point.id === selectedPointId));
+          const isRemote = hasRemoteObjectivePoint(points, maps, normalizedName);
           const description = localizedDescription(requirement as unknown as Record<string, unknown>, locale);
-          const visibleDetails = requirement.details.filter((detail) => {
+          const visibleDetails = details.filter((detail) => {
             const detailText = localizedDescription(detail as unknown as Record<string, unknown>, locale);
 
             return Boolean(detail.image) || (!!detailText && detailText !== description);
@@ -570,7 +576,7 @@ function StoryRequirementList({
                 count={null}
                 description={description}
                 onFocus={
-                  requirement.live_map_points.length > 0
+                  points.length > 0
                     ? () => onFocusRequirement?.(requirement)
                     : undefined
                 }
@@ -604,20 +610,20 @@ function StoryRequirementList({
                   })}
                 </div>
               ) : null}
-              {requirement.live_map_points.length > 0 ? (
+              {points.length > 0 ? (
                 <ObjectivePointList
                   copy={copy}
                   locale={locale}
                   normalizedName={normalizedName}
                   onFocusPoint={(pointId) => onFocusRequirement?.(requirement, pointId)}
-                  points={requirement.live_map_points}
+                  points={points}
                   selectedPointId={selectedPointId}
-                  maps={requirement.maps}
+                  maps={maps}
                 />
               ) : null}
-              {requirement.items.length > 0 ? (
+              {items.length > 0 ? (
                 <ItemRow
-                  items={requirement.items.filter(hasRequirementItem)}
+                  items={items.filter(hasRequirementItem)}
                   locale={locale}
                 />
               ) : null}
@@ -1310,6 +1316,97 @@ function StoryRewardList({
       </div>
     </section>
   );
+}
+
+function EventRewardList({
+  copy,
+  info,
+  locale,
+}: {
+  copy: LiveMapCopy;
+  info: EventInfo;
+  locale: Locale;
+}) {
+  const rewards = info.finish_rewards;
+
+  if (!rewards || (!rewards.trader_standing.length && !rewards.items.length && !rewards.texts.length)) {
+    return null;
+  }
+
+  const textGroups = groupRewardTexts(rewards.texts);
+
+  return (
+    <section>
+      <h4 className="mb-2 text-xs font-bold text-gray-500 dark:text-gray-300">
+        {copy.rewards}
+      </h4>
+      <div className="space-y-3">
+        {textGroups.map(([rewardType, texts]) => (
+          <RewardBlock
+            key={rewardType}
+            copy={copy}
+            title={getRewardTextTypeLabel(rewardType, locale, copy)}
+          >
+            {texts.map((reward) => (
+              <RewardPill key={reward.id}>
+                {localizedDescription(reward as unknown as Record<string, unknown>, locale)}
+              </RewardPill>
+            ))}
+          </RewardBlock>
+        ))}
+        {rewards.trader_standing.length > 0 ? (
+          <RewardBlock copy={copy} title={copy.traderStanding}>
+            {rewards.trader_standing.map((reward) => (
+              <RewardPill key={`${reward.trader.id}-${reward.standing}`}>
+                {localizedName(reward.trader as unknown as Record<string, unknown>, locale)}{" "}
+                {formatSignedNumber(reward.standing)}
+              </RewardPill>
+            ))}
+          </RewardBlock>
+        ) : null}
+        {rewards.items.length > 0 ? (
+          <RewardBlock copy={copy} title={copy.rewardItems}>
+            {rewards.items.map((reward) => (
+              <RewardItemLink
+                key={`${reward.item.id}-${reward.quantity}`}
+                image={reward.item.image}
+                meta={`x${reward.quantity.toLocaleString()}`}
+                name={localizedName(reward.item as unknown as Record<string, unknown>, locale)}
+                normalizedName={reward.item.normalized_name}
+              />
+            ))}
+          </RewardBlock>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function groupRewardTexts(texts: NonNullable<EventInfo["finish_rewards"]>["texts"]) {
+  const groups = new Map<string, typeof texts>();
+
+  texts.forEach((reward) => {
+    const rewardType = reward.reward_type?.trim() || "etc";
+    groups.set(rewardType, [...(groups.get(rewardType) ?? []), reward]);
+  });
+
+  return Array.from(groups.entries());
+}
+
+function getRewardTextTypeLabel(rewardType: string, locale: Locale, copy: LiveMapCopy) {
+  if (rewardType === "experience") {
+    return copy.experience;
+  }
+
+  if (rewardType === "achievement") {
+    return locale === "ko" ? "업적" : locale === "ja" ? "実績" : "Achievement";
+  }
+
+  if (rewardType === "etc") {
+    return locale === "ko" ? "기타 보상" : locale === "ja" ? "その他の報酬" : "Other Rewards";
+  }
+
+  return rewardType;
 }
 
 function RewardBlock({

@@ -147,15 +147,15 @@ export interface StoryRequirement {
   description_en: string | null;
   description_ko: string | null;
   description_ja: string | null;
-  details: LiveMapPointDetail[];
-  items: Array<{
+  details?: LiveMapPointDetail[];
+  items?: Array<{
     quantity: number | null;
     found_in_raid: boolean | null;
     item_role: string | null;
     item: QuestDetailItem | null;
   }>;
-  maps: QuestObjectiveMap[];
-  live_map_points: LiveMapObjectivePoint[];
+  maps?: QuestObjectiveMap[];
+  live_map_points?: LiveMapObjectivePoint[];
 }
 
 export interface StoryObjective {
@@ -199,9 +199,16 @@ export interface StoryInfo {
 }
 
 export interface StorySummaryInfo {
-  story: StoryInfo["story"];
+  story: StoryInfo["story"] | null;
   objective: {
     objective_id: string;
+    description_en: string | null;
+    description_ko: string | null;
+    description_ja: string | null;
+  } | null;
+  requirement: {
+    id: string;
+    requirement_type: string | null;
     description_en: string | null;
     description_ko: string | null;
     description_ja: string | null;
@@ -212,12 +219,13 @@ export interface LiveMapStoryPoint {
   id: string;
   story_id: string;
   objective_id: string | null;
+  requirement_id: string | null;
   map_id: string;
   floor_id: string | null;
   floor_no: number | null;
   x: number;
   z: number;
-  y: number;
+  y: number | null;
   story_info: StorySummaryInfo | null;
 }
 
@@ -245,6 +253,17 @@ export interface EventInfo {
   };
   trader: QuestTraderEntry | null;
   objectives: EventObjective[];
+  finish_rewards?: {
+    trader_standing: QuestRewardStanding[];
+    items: QuestRewardItem[];
+    texts: Array<{
+      id: string;
+      reward_type: string | null;
+      description_en: string | null;
+      description_ko: string | null;
+      description_ja: string | null;
+    }>;
+  };
 }
 
 export interface EventSummaryInfo {

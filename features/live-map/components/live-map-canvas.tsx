@@ -722,13 +722,20 @@ export function LiveMapCanvas({
         const card = thumb.closest<HTMLElement>(".live-map-popup-card");
         const mainImage = card?.querySelector<HTMLImageElement>(".live-map-popup-image");
         const count = card?.querySelector<HTMLElement>(".live-map-popup-count");
+        const location = card?.querySelector<HTMLElement>(".live-map-popup-location");
         const src = thumb.dataset.src;
         const alt = thumb.dataset.alt ?? "";
+        const description = thumb.dataset.description ?? "";
 
         if (mainImage && src) {
           mainImage.src = src;
           mainImage.dataset.fullSrc = src;
           mainImage.alt = alt;
+        }
+
+        if (location) {
+          location.textContent = description;
+          location.hidden = !description;
         }
 
         card?.querySelectorAll(".live-map-popup-thumb").forEach((entry) => {

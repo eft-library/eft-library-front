@@ -32,8 +32,10 @@ import { useWsStore } from "@/store/ws-store";
 import type {
   EventObjective,
   EventInfo,
+  LiveMapObjectivePoint,
   LiveMapPageData,
   LiveMapQuestInfo,
+  LiveMapStoryPoint,
   StoryInfo,
   StoryObjective,
   StoryRequirement,
@@ -60,6 +62,7 @@ import {
   getStoryPointLabel,
   groupStaticEntries,
   localizedName,
+  localizedTitle,
   matchesFilterText,
   parseCanvasMarkerId,
   uniqueById,
@@ -128,6 +131,13 @@ function addStoryObjectiveMapNames(names: Set<string>, objectives: StoryObjectiv
   });
 }
 
+function addStoryRequirementMapNames(names: Set<string>, requirements: StoryRequirement[]) {
+  requirements.forEach((requirement) => {
+    addMapListNames(names, requirement.maps ?? []);
+    addPointMapNames(names, requirement.live_map_points ?? []);
+  });
+}
+
 function addEventObjectiveMapNames(names: Set<string>, objectives: EventObjective[]) {
   objectives.forEach((objective) => {
     addPointMapNames(names, objective.live_map_points);
@@ -155,6 +165,7 @@ function getPanelObjectiveMapNames(panel: PanelState | null) {
 
   if (panel.type === "story") {
     addStoryObjectiveMapNames(names, panel.info.objectives);
+    addStoryRequirementMapNames(names, panel.info.requirements);
   }
 
   if (panel.type === "event") {
@@ -162,6 +173,106 @@ function getPanelObjectiveMapNames(panel: PanelState | null) {
   }
 
   return names;
+}
+
+function getStoryPointMapName(
+  point: LiveMapObjectivePoint,
+  maps: Array<{ id: string; normalized_name: string }>,
+) {
+  return point.map?.normalized_name ?? maps.find((map) => map.id === point.map_id)?.normalized_name ?? null;
+}
+
+function isStoryRequirementPointOnMap(
+  requirement: StoryRequirement,
+  point: LiveMapObjectivePoint,
+  normalizedName: string,
+) {
+  const pointMapName = getStoryPointMapName(point, requirement.maps ?? []);
+
+  return !pointMapName || pointMapName === normalizedName;
+}
+
+function makeStoryPointFromRequirement(
+  story: StoryInfo["story"],
+  requirement: StoryRequirement,
+  point: LiveMapObjectivePoint,
+): LiveMapStoryPoint {
+  return {
+    floor_id: point.floor_id,
+    floor_no: point.floor_no,
+    id: point.id,
+    map_id: point.map_id,
+    objective_id: null,
+    requirement_id: requirement.id,
+    story_id: story.id,
+    story_info: {
+      objective: null,
+      requirement: {
+        description_en: requirement.description_en,
+        description_ja: requirement.description_ja,
+        description_ko: requirement.description_ko,
+        id: requirement.id,
+        requirement_type: requirement.requirement_type,
+      },
+      story,
+    },
+    x: point.x,
+    y: point.y ?? 0,
+    z: point.z,
+  };
+}
+
+function makeStoryListPoint(storyDetail: StoryInfo): LiveMapStoryPoint {
+  const requirementWithPoint = storyDetail.requirements.find((requirement) => (requirement.live_map_points ?? []).length > 0);
+  const firstPoint = requirementWithPoint?.live_map_points?.[0];
+
+  if (requirementWithPoint && firstPoint) {
+    return makeStoryPointFromRequirement(storyDetail.story, requirementWithPoint, firstPoint);
+  }
+
+  return {
+    floor_id: null,
+    floor_no: null,
+    id: `${storyDetail.story.id}:summary`,
+    map_id: "",
+    objective_id: null,
+    requirement_id: null,
+    story_id: storyDetail.story.id,
+    story_info: {
+      objective: null,
+      requirement: null,
+      story: storyDetail.story,
+    },
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+}
+
+function getLoadedStoryDetails(panel: PanelState | null, cache: Map<string, StoryInfo>) {
+  const details = new Map<string, StoryInfo>();
+
+  cache.forEach((detail) => {
+    details.set(detail.story.id, detail);
+  });
+
+  if (panel?.type === "story") {
+    details.set(panel.info.story.id, panel.info);
+  }
+
+  return Array.from(details.values());
+}
+
+function findStoryRequirementByPointId(info: StoryInfo, pointId: string) {
+  for (const requirement of info.requirements) {
+    const point = (requirement.live_map_points ?? []).find((entry) => entry.id === pointId);
+
+    if (point) {
+      return { point, requirement };
+    }
+  }
+
+  return null;
 }
 
 function getCachedPopupHtml(
@@ -202,6 +313,7 @@ export function LiveMapClientPage({
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
   const eventDetailCacheRef = useRef<Map<string, EventInfo>>(new Map());
+  const openPanelForMarkerIdRef = useRef<(markerId: string) => Promise<boolean>>(() => Promise.resolve(false));
   const popupHtmlCacheRef = useRef<Map<string, string | undefined>>(new Map());
   const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
   const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
@@ -244,11 +356,17 @@ export function LiveMapClientPage({
     [data.quest_points],
   );
   const storyEntries = useMemo(
-    () => uniqueById(data.story_points.filter((point) => point.story_info).map((point) => ({
-      id: getStoryId(point),
-      point,
-    }))),
-    [data.story_points],
+    () => uniqueById([
+      ...data.story_points.filter((point) => point.story_info).map((point) => ({
+        id: getStoryId(point),
+        point,
+      })),
+      ...getLoadedStoryDetails(panel, storyDetailCacheRef.current).map((storyDetail) => ({
+        id: storyDetail.story.id,
+        point: makeStoryListPoint(storyDetail),
+      })),
+    ]),
+    [data.story_points, panel],
   );
   const eventEntries = useMemo(
     () => uniqueById(data.event_points.filter((point) => point.event_info).map((point) => ({
@@ -468,6 +586,44 @@ export function LiveMapClientPage({
           y: point.z,
         };
       });
+    const existingStoryMarkerIds = new Set(storyMarkers.map((marker) => marker.id));
+    const storyRequirementMarkers = getLoadedStoryDetails(panel, storyDetailCacheRef.current)
+      .flatMap((storyDetail) =>
+        storyDetail.requirements.flatMap((requirement) =>
+          (requirement.live_map_points ?? [])
+            .filter((point) => isStoryRequirementPointOnMap(requirement, point, normalizedName))
+            .map((point) => ({
+              point: makeStoryPointFromRequirement(storyDetail.story, requirement, point),
+              requirement,
+              storyDetail,
+            })),
+        ),
+      )
+      .filter(({ point, requirement, storyDetail }) => (
+        !existingStoryMarkerIds.has(`story:${point.id}`) &&
+        matchesFilterText(
+          [
+            localizedTitle(storyDetail.story as unknown as Record<string, unknown>, locale),
+            getStoryPointLabel(point, locale),
+          ].join(" "),
+          storyFilterQuery,
+        ) &&
+        (focusedMarkerId === `story:${point.id}` || enabledStoryIds.has(storyDetail.story.id)) &&
+        (requirement.live_map_points ?? []).some((entry) => entry.id === point.id)
+      ))
+      .map<LiveMapCanvasMarker>(({ point, storyDetail }) => ({
+        floorId: point.floor_id,
+        id: `story:${point.id}`,
+        kind: "story",
+        label: getStoryPointLabel(point, locale),
+        popupHtml: getCachedPopupHtml(
+          popupHtmlCache,
+          `${locale}:story:${point.id}:detail:${storyDetail.story.id}:requirement`,
+          () => getStoryDetailPointPopupHtml(point, storyDetail, locale),
+        ),
+        x: point.x,
+        y: point.z,
+      }));
     const eventMarkers = data.event_points
       .filter((point) => (
         point.event_info &&
@@ -524,7 +680,7 @@ export function LiveMapClientPage({
         y: point.z,
       }));
 
-    return [...questMarkers, ...storyMarkers, ...eventMarkers, ...staticMarkers];
+    return [...questMarkers, ...storyMarkers, ...storyRequirementMarkers, ...eventMarkers, ...staticMarkers];
   }, [
     data.event_points,
     data.quest_points,
@@ -543,6 +699,7 @@ export function LiveMapClientPage({
     storyFilterQuery,
     copy,
     locale,
+    normalizedName,
   ]);
 
   function showNotice(message: string) {
@@ -635,6 +792,7 @@ export function LiveMapClientPage({
     const detail = await getLiveMapStoryDetail(storyId);
     storyDetailCacheRef.current.set(detail.story.id, detail);
     storyDetailCacheRef.current.set(storyId, detail);
+    setEnabledStoryIds((current) => new Set([...current, detail.story.id]));
     return detail;
   }, []);
 
@@ -752,9 +910,10 @@ export function LiveMapClientPage({
 
   const focusStoryRequirement = useCallback(
     (requirement: StoryRequirement, storyId: string, pointId?: string) => {
+      const points = requirement.live_map_points ?? [];
       const point = pointId
-        ? requirement.live_map_points.find((entry) => entry.id === pointId)
-        : requirement.live_map_points[0];
+        ? points.find((entry) => entry.id === pointId)
+        : points[0];
 
       if (!point) {
         return;
@@ -762,8 +921,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        requirement.maps.find((map) => map.id === point.map_id)?.normalized_name ??
-        requirement.maps[0]?.normalized_name ??
+        requirement.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        requirement.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = `story:${point.id}`;
       setLocalFocusedMarkerId(focus);
@@ -924,18 +1083,53 @@ export function LiveMapClientPage({
           }
           try {
             const info = await loadStoryDetail(getStoryId(point));
-            setPanel({
-              id: info.story.id,
-              info,
-              objectiveId: point.objective_id,
-              pointId: point.id,
-              type: "story",
+            setPanel((current) => {
+              if (
+                current?.type === "story" &&
+                current.id === info.story.id &&
+                current.pointId === point.id &&
+                current.objectiveId === point.objective_id &&
+                current.requirementId === point.requirement_id
+              ) {
+                return current;
+              }
+
+              return {
+                id: info.story.id,
+                info,
+                objectiveId: point.objective_id,
+                pointId: point.id,
+                requirementId: point.requirement_id,
+                type: "story",
+              };
             });
             return true;
           } catch {
             showNotice(copy.noItems);
             return false;
           }
+        }
+
+        for (const storyDetail of getLoadedStoryDetails(panel, storyDetailCacheRef.current)) {
+          const requirementMatch = findStoryRequirementByPointId(storyDetail, id);
+
+          if (!requirementMatch) {
+            continue;
+          }
+
+          if (requirementMatch.point.floor_id) {
+            setSelectedFloorId(requirementMatch.point.floor_id);
+          }
+
+          setPanel({
+            id: storyDetail.story.id,
+            info: storyDetail,
+            objectiveId: null,
+            pointId: requirementMatch.point.id,
+            requirementId: requirementMatch.requirement.id,
+            type: "story",
+          });
+          return true;
         }
       }
 
@@ -992,8 +1186,13 @@ export function LiveMapClientPage({
       loadEventDetail,
       loadQuestDetail,
       loadStoryDetail,
+      panel,
     ],
   );
+
+  useEffect(() => {
+    openPanelForMarkerIdRef.current = (markerId: string) => openPanelForMarkerId(markerId);
+  }, [openPanelForMarkerId]);
 
   const openPanelForMarker = useCallback(
     async (marker: LiveMapCanvasMarker) => {
@@ -1208,8 +1407,8 @@ export function LiveMapClientPage({
       return;
     }
 
-    void openPanelForMarkerId(focusedMarkerId);
-  }, [focusedMarkerId, openPanelForMarkerId]);
+    void openPanelForMarkerIdRef.current(focusedMarkerId);
+  }, [focusedMarkerId]);
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">

@@ -14,6 +14,7 @@ import type { LiveMapCopy } from "./live-map-copy";
 import {
   findNestedObjectiveByPoint,
   findQuestObjectiveByPointId,
+  getLocalizedDetailText,
   getNestedObjectiveDescription,
   getPointDetailText,
   getQuestObjectiveDescription,
@@ -33,29 +34,45 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-function getPopupImages(details: LiveMapPointDetail[]) {
+function getPopupImages(details: LiveMapPointDetail[], locale: Locale) {
   return details
     .filter((detail) => detail.image)
     .map((detail) => ({
       alt: detail.description_en ?? detail.description_ko ?? detail.description_ja ?? "",
+      description: getLocalizedDetailText(detail, locale),
       src: detail.image ?? "",
     }));
 }
 
+function getDetailTexts(details: LiveMapPointDetail[], locale: Locale) {
+  return Array.from(
+    new Set(
+      details
+        .map((detail) => getLocalizedDetailText(detail, locale))
+        .filter(Boolean),
+    ),
+  );
+}
+
 function createMarkerPopupHtml({
   description,
+  detailTexts,
   images,
   location,
   title,
   titleImage,
 }: {
   description: string;
-  images: Array<{ alt: string; src: string }>;
+  detailTexts?: string[];
+  images: Array<{ alt: string; description: string; src: string }>;
   location: string;
   title: string;
   titleImage?: string | null;
 }) {
   const firstImage = images[0];
+  const activeLocation = firstImage?.description || location;
+  const textOnlyDetailTexts = !firstImage ? (detailTexts ?? []) : [];
+  const hasTextOnlyDetailList = textOnlyDetailTexts.length > 0;
   const thumbnails = images
     .map(
       (image, index) => `
@@ -65,6 +82,7 @@ function createMarkerPopupHtml({
           data-index="${index}"
           data-src="${escapeHtml(image.src)}"
           data-alt="${escapeHtml(image.alt)}"
+          data-description="${escapeHtml(image.description)}"
         >
           <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" />
         </button>
@@ -98,7 +116,20 @@ function createMarkerPopupHtml({
           : ""
       }
       <div class="live-map-popup-body live-map-popup-body-compact">
-        ${location ? `<p class="live-map-popup-location">${escapeHtml(location)}</p>` : ""}
+        ${
+          firstImage
+            ? `<p class="live-map-popup-location"${activeLocation ? "" : " hidden"}>${escapeHtml(activeLocation)}</p>`
+            : activeLocation && !hasTextOnlyDetailList
+              ? `<p class="live-map-popup-location">${escapeHtml(activeLocation)}</p>`
+              : ""
+        }
+        ${
+          hasTextOnlyDetailList
+            ? `<div class="live-map-popup-detail-list">${textOnlyDetailTexts
+                .map((text) => `<p class="live-map-popup-location">${escapeHtml(text)}</p>`)
+                .join("")}</div>`
+            : ""
+        }
       </div>
       ${thumbnails ? `<div class="live-map-popup-thumbs">${thumbnails}</div>` : ""}
     </div>
@@ -134,7 +165,8 @@ export function getQuestDetailPointPopupHtml(
 
   return createMarkerPopupHtml({
     description: getQuestObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
+    detailTexts: getDetailTexts(details, locale),
+    images: getPopupImages(details, locale),
     location: getPointDetailText(selectedPoint, locale),
     title: localizedName(info.quest as unknown as Record<string, unknown>, locale),
     titleImage: info.trader?.image,
@@ -146,11 +178,22 @@ export function getStoryPointPopupHtml(point: LiveMapStoryPoint, locale: Locale)
     return undefined;
   }
 
+  const description =
+    (point.story_info.objective
+      ? localizedDescription(point.story_info.objective as unknown as Record<string, unknown>, locale)
+      : "") ||
+    (point.story_info.requirement
+      ? localizedDescription(point.story_info.requirement as unknown as Record<string, unknown>, locale)
+      : "");
+  const title = point.story_info.story
+    ? localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
+    : point.story_id;
+
   return createMarkerPopupHtml({
-    description: "",
+    description,
     images: [],
     location: "",
-    title: localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale),
+    title,
   });
 }
 
@@ -165,12 +208,26 @@ export function getStoryDetailPointPopupHtml(
     point.objective_id,
   );
   const selectedPoint = objective?.live_map_points.find((entry) => entry.id === point.id);
-  const details = selectedPoint?.details ?? [];
+  const requirement = objective
+    ? null
+    : info.requirements.find((entry) =>
+        entry.id === point.requirement_id ||
+        entry.id === point.objective_id ||
+        (entry.live_map_points ?? []).some((requirementPoint) => requirementPoint.id === point.id),
+      );
+  const selectedRequirementPoint = requirement?.live_map_points?.find((entry) => entry.id === point.id);
+  const details = selectedPoint?.details ?? selectedRequirementPoint?.details ?? [];
+  const description = objective
+    ? getNestedObjectiveDescription(objective, locale)
+    : requirement
+      ? localizedDescription(requirement as unknown as Record<string, unknown>, locale)
+      : "";
 
   return createMarkerPopupHtml({
-    description: getNestedObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
-    location: getPointDetailText(selectedPoint, locale),
+    description,
+    detailTexts: getDetailTexts(details, locale),
+    images: getPopupImages(details, locale),
+    location: getPointDetailText(selectedPoint ?? selectedRequirementPoint, locale),
     title: localizedTitle(info.story as unknown as Record<string, unknown>, locale),
   });
 }
@@ -204,7 +261,8 @@ export function getEventDetailPointPopupHtml(
 
   return createMarkerPopupHtml({
     description: getNestedObjectiveDescription(objective, locale),
-    images: getPopupImages(details),
+    detailTexts: getDetailTexts(details, locale),
+    images: getPopupImages(details, locale),
     location: getPointDetailText(selectedPoint, locale),
     title: localizedTitle(info.event as unknown as Record<string, unknown>, locale),
     titleImage: info.trader?.image,
@@ -221,6 +279,7 @@ export function getStaticPointPopupHtml(
   const image = point.image
     ? [{
         alt: title,
+        description,
         src: point.image,
       }]
     : [];

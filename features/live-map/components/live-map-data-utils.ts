@@ -180,7 +180,7 @@ export function getQuestId(point: LiveMapQuestPoint) {
 }
 
 export function getStoryId(point: LiveMapStoryPoint) {
-  return point.story_info?.story.id ?? point.story_id;
+  return point.story_info?.story?.id ?? point.story_id;
 }
 
 export function getEventId(point: LiveMapEventPoint) {
@@ -376,8 +376,14 @@ export function getStoryPointLabel(point: LiveMapStoryPoint, locale: Locale) {
   const objectiveText = point.story_info.objective
     ? localizedDescription(point.story_info.objective as unknown as Record<string, unknown>, locale)
     : "";
+  const requirementText = point.story_info.requirement
+    ? localizedDescription(point.story_info.requirement as unknown as Record<string, unknown>, locale)
+    : "";
+  const storyTitle = point.story_info.story
+    ? localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
+    : "";
 
-  return objectiveText || localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale);
+  return objectiveText || requirementText || storyTitle || point.id;
 }
 
 export function getEventPointLabel(point: LiveMapEventPoint, locale: Locale) {
@@ -403,7 +409,9 @@ export function getEntryLabel(entry: RightEntry, locale: Locale) {
 
   if ("story_info" in entry.point) {
     return entry.point.story_info
-      ? localizedTitle(entry.point.story_info.story as unknown as Record<string, unknown>, locale)
+      ? entry.point.story_info.story
+        ? localizedTitle(entry.point.story_info.story as unknown as Record<string, unknown>, locale)
+        : entry.id
       : entry.id;
   }
 
@@ -435,7 +443,9 @@ export function getStoryMarkerSearchText(point: LiveMapStoryPoint, locale: Local
   }
 
   return [
-    localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale),
+    point.story_info.story
+      ? localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
+      : "",
     getStoryPointLabel(point, locale),
   ].join(" ");
 }
