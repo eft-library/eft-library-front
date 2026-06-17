@@ -21,7 +21,6 @@ import {
   findNestedObjectiveByPoint,
   getQuestObjectivePoint,
   getQuestObjectivePoints,
-  getPointDetailText,
   isRemoteObjectivePoint,
   localizedDescription,
   localizedName,
@@ -904,7 +903,6 @@ function ObjectivePointList({
       {points.map((point, index) => {
         const isSelected = point.id === selectedPointId;
         const isRemote = isRemoteObjectivePoint(point, maps, normalizedName);
-        const detailText = getPointDetailText(point, locale);
         const mapName = point.map
           ? localizedName(point.map as unknown as Record<string, unknown>, locale)
           : maps.find((map) => map.id === point.map_id)
@@ -938,11 +936,6 @@ function ObjectivePointList({
                   </span>
                 ) : null}
               </span>
-              {detailText ? (
-                <span className="block truncate text-[11px] font-medium leading-4 text-gray-500 group-hover:text-current dark:text-gray-300">
-                  {detailText}
-                </span>
-              ) : null}
             </span>
           </button>
         );
