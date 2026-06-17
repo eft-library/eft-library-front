@@ -103,9 +103,9 @@ const LiveMapImagePopup = dynamic(
 
 function addPointMapNames(
   names: Set<string>,
-  points: Array<{ map?: { normalized_name?: string | null } | null }>,
+  points: Array<{ map?: { normalized_name?: string | null } | null }> | null | undefined,
 ) {
-  points.forEach((point) => {
+  (points ?? []).forEach((point) => {
     if (point.map?.normalized_name) {
       names.add(point.map.normalized_name);
     }
@@ -114,9 +114,9 @@ function addPointMapNames(
 
 function addMapListNames(
   names: Set<string>,
-  maps: Array<{ normalized_name?: string | null }>,
+  maps: Array<{ normalized_name?: string | null }> | null | undefined,
 ) {
-  maps.forEach((map) => {
+  (maps ?? []).forEach((map) => {
     if (map.normalized_name) {
       names.add(map.normalized_name);
     }
@@ -124,10 +124,10 @@ function addMapListNames(
 }
 
 function addStoryObjectiveMapNames(names: Set<string>, objectives: StoryObjective[]) {
-  objectives.forEach((objective) => {
+  (objectives ?? []).forEach((objective) => {
     addMapListNames(names, objective.maps);
     addPointMapNames(names, objective.live_map_points);
-    addStoryObjectiveMapNames(names, objective.children);
+    addStoryObjectiveMapNames(names, objective.children ?? []);
   });
 }
 
@@ -139,9 +139,9 @@ function addStoryRequirementMapNames(names: Set<string>, requirements: StoryRequ
 }
 
 function addEventObjectiveMapNames(names: Set<string>, objectives: EventObjective[]) {
-  objectives.forEach((objective) => {
+  (objectives ?? []).forEach((objective) => {
     addPointMapNames(names, objective.live_map_points);
-    addEventObjectiveMapNames(names, objective.children);
+    addEventObjectiveMapNames(names, objective.children ?? []);
   });
 }
 
@@ -850,8 +850,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        objective.maps.find((map) => map.id === point.map_id)?.normalized_name ??
-        objective.maps[0]?.normalized_name ??
+        objective.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = `quest:${point.id}`;
       setLocalFocusedMarkerId(focus);
@@ -898,8 +898,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        objective.maps.find((map) => map.id === point.map_id)?.normalized_name ??
-        objective.maps[0]?.normalized_name ??
+        objective.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = getStoryMarkerId(storyId, point.id);
       setLocalFocusedMarkerId(focus);
