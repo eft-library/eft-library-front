@@ -44,6 +44,8 @@ export function ZoomableImagePopup({
     ? (currentIndex - 1 + images.length) % images.length
     : -1;
   const nextIndex = hasNavigation ? (currentIndex + 1) % images.length : -1;
+  const contentWidth = `${Math.max(100, zoom * 100)}%`;
+  const imageWidth = `${zoom >= 1 ? 100 : zoom * 100}%`;
 
   useEffect(() => {
     if (!image) {
@@ -252,13 +254,16 @@ export function ZoomableImagePopup({
             }
           }}
         >
-          <div className="flex min-h-full min-w-full items-center justify-center">
+          <div
+            className="flex min-h-full items-center justify-center"
+            style={{ width: contentWidth }}
+          >
             <img
               src={image.src}
               alt={image.alt}
               className="h-auto max-w-none select-none object-contain"
               draggable={false}
-              style={{ width: `${zoom * 100}%` }}
+              style={{ width: imageWidth }}
             />
           </div>
         </div>
