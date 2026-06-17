@@ -1645,6 +1645,7 @@ export function LiveMapClientPage({
                 mapKey={normalizedName}
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
+                onMapClick={clearFocusParam}
                 onMousePositionChange={setMousePosition}
                 onFocusedMarkerClose={clearFocusedMarker}
                 onPopupImageClick={openImagePopup}

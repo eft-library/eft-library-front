@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 
 export interface ZoomableImagePopupImage {
@@ -16,6 +16,10 @@ function clampZoom(value: number) {
   return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Number(value.toFixed(2))));
 }
 
+function clampRatio(value: number) {
+  return Math.min(1, Math.max(0, value));
+}
+
 export function ZoomableImagePopup({
   image,
   images,
@@ -29,6 +33,7 @@ export function ZoomableImagePopup({
   onClose: () => void;
   onNavigate?: (index: number) => void;
 }) {
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef<{
     pointerId: number;
@@ -36,6 +41,12 @@ export function ZoomableImagePopup({
     startY: number;
     scrollLeft: number;
     scrollTop: number;
+  } | null>(null);
+  const zoomAnchorRef = useRef<{
+    clientX: number;
+    clientY: number;
+    ratioX: number;
+    ratioY: number;
   } | null>(null);
   const [zoom, setZoom] = useState(0.75);
   const [isDragging, setIsDragging] = useState(false);
@@ -80,7 +91,27 @@ export function ZoomableImagePopup({
   useEffect(() => {
     setZoom(0.75);
     setIsDragging(false);
+    zoomAnchorRef.current = null;
   }, [image?.src]);
+
+  useLayoutEffect(() => {
+    const anchor = zoomAnchorRef.current;
+    const scroller = scrollerRef.current;
+    const imageElement = imageRef.current;
+
+    if (!anchor || !scroller || !imageElement) {
+      return;
+    }
+
+    zoomAnchorRef.current = null;
+
+    const imageRect = imageElement.getBoundingClientRect();
+    const desiredLeft = anchor.clientX - imageRect.width * anchor.ratioX;
+    const desiredTop = anchor.clientY - imageRect.height * anchor.ratioY;
+
+    scroller.scrollLeft += imageRect.left - desiredLeft;
+    scroller.scrollTop += imageRect.top - desiredTop;
+  }, [zoom]);
 
   if (!image) {
     return null;
@@ -91,26 +122,28 @@ export function ZoomableImagePopup({
     anchor?: { clientX: number; clientY: number },
   ) => {
     const scroller = scrollerRef.current;
+    const imageElement = imageRef.current;
 
-    if (!scroller) {
+    if (!scroller || !imageElement) {
       setZoom(nextZoom);
       return;
     }
 
-    const rect = scroller.getBoundingClientRect();
-    const anchorX = anchor ? anchor.clientX - rect.left : rect.width / 2;
-    const anchorY = anchor ? anchor.clientY - rect.top : rect.height / 2;
-    const contentX = scroller.scrollLeft + anchorX;
-    const contentY = scroller.scrollTop + anchorY;
-    const ratioX = scroller.scrollWidth > 0 ? contentX / scroller.scrollWidth : 0.5;
-    const ratioY = scroller.scrollHeight > 0 ? contentY / scroller.scrollHeight : 0.5;
+    const scrollerRect = scroller.getBoundingClientRect();
+    const imageRect = imageElement.getBoundingClientRect();
+    const clientX = anchor?.clientX ?? scrollerRect.left + scrollerRect.width / 2;
+    const clientY = anchor?.clientY ?? scrollerRect.top + scrollerRect.height / 2;
+    const ratioX = imageRect.width > 0 ? clampRatio((clientX - imageRect.left) / imageRect.width) : 0.5;
+    const ratioY = imageRect.height > 0 ? clampRatio((clientY - imageRect.top) / imageRect.height) : 0.5;
+
+    zoomAnchorRef.current = {
+      clientX,
+      clientY,
+      ratioX,
+      ratioY,
+    };
 
     setZoom(nextZoom);
-
-    window.requestAnimationFrame(() => {
-      scroller.scrollLeft = Math.max(0, ratioX * scroller.scrollWidth - anchorX);
-      scroller.scrollTop = Math.max(0, ratioY * scroller.scrollHeight - anchorY);
-    });
   };
 
   const zoomOut = () => setZoomPreservingPoint(clampZoom(zoom - ZOOM_STEP));
@@ -259,6 +292,7 @@ export function ZoomableImagePopup({
             style={{ width: contentWidth }}
           >
             <img
+              ref={imageRef}
               src={image.src}
               alt={image.alt}
               className="h-auto max-w-none select-none object-contain"
