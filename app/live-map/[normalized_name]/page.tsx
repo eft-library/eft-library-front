@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { LiveMapPage } from "@/features/live-map/components/live-map-page";
-import { getLiveMapDetail } from "@/features/live-map/api";
-import { getQuestCompletionGraph } from "@/features/quest/api";
+import { getLiveMapCompletionGraph, getLiveMapDetail } from "@/features/live-map/api";
 import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
@@ -37,7 +36,7 @@ export default async function Page({
   const { normalized_name: normalizedName } = await params;
   const [data, completionGraph] = await Promise.all([
     getLiveMapDetail(normalizedName),
-    getQuestCompletionGraph(),
+    getLiveMapCompletionGraph(),
   ]);
 
   if (!data.floors.length) {
