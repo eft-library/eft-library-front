@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import L, {
   CRS,
   type ImageOverlay as LeafletImageOverlay,
+  type LatLngBounds,
   type LatLng,
   type LeafletMouseEvent,
   type Map as LeafletMap,
@@ -525,6 +526,10 @@ function getPointMarkerPositionKey(mapKey: string, point: LiveMapCanvasMarker) {
   return `${mapKey}:${point.x}:${point.y}`;
 }
 
+function getPointMarkerLatLng(mapKey: string, point: LiveMapCanvasMarker) {
+  return L.latLng(getPointMarkerPosition(mapKey, point));
+}
+
 function getPointMarkerPresentationKey(
   point: LiveMapCanvasMarker,
   activeFloorId: string,
@@ -648,6 +653,7 @@ export function LiveMapCanvas({
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const mapKeyRef = useRef(mapKey);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
+  const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const imageBoundsKey = useMemo(
     () => JSON.stringify(coordinateInfo.image_bounds),
     [coordinateInfo.image_bounds],
@@ -695,6 +701,13 @@ export function LiveMapCanvas({
       zoomAnimation: false,
       zoomSnap: 0.5,
     });
+
+    const updateRenderBounds = () => {
+      setRenderBounds(map.getBounds().pad(1));
+    };
+
+    updateRenderBounds();
+    map.on("moveend zoomend resize", updateRenderBounds);
 
     map.on("mousemove", (event: LeafletMouseEvent) => {
       onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
@@ -826,6 +839,17 @@ export function LiveMapCanvas({
     onPopupImageClick,
   ]);
 
+  const renderMarkers = useMemo(() => {
+    if (!renderBounds) {
+      return markers;
+    }
+
+    return markers.filter((point) => (
+      point.id === focusedMarkerId ||
+      renderBounds.contains(getPointMarkerLatLng(mapKey, point))
+    ));
+  }, [focusedMarkerId, mapKey, markers, renderBounds]);
+
   useEffect(() => {
     const map = mapRef.current;
 
@@ -872,7 +896,7 @@ export function LiveMapCanvas({
       return;
     }
 
-    const nextIds = new Set(markers.map((point) => point.id));
+    const nextIds = new Set(renderMarkers.map((point) => point.id));
 
     pointMarkerByIdRef.current.forEach((entry, id) => {
       if (!nextIds.has(id)) {
@@ -881,7 +905,7 @@ export function LiveMapCanvas({
       }
     });
 
-    markers.forEach((point) => {
+    renderMarkers.forEach((point) => {
       const existing = pointMarkerByIdRef.current.get(point.id);
       const hoveredMarkerId = hoveredMarkerIdRef.current;
       const nextPositionKey = getPointMarkerPositionKey(mapKey, point);
@@ -1008,7 +1032,7 @@ export function LiveMapCanvas({
         presentationKey: nextPresentationKey,
       });
     });
-  }, [activeFloorId, focusedMarkerId, mapKey, markers]);
+  }, [activeFloorId, focusedMarkerId, mapKey, renderMarkers]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1056,7 +1080,7 @@ export function LiveMapCanvas({
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [activeFloorId, focusedMarkerId, markers]);
+  }, [activeFloorId, focusedMarkerId, renderMarkers]);
 
   useEffect(() => {
     const map = mapRef.current;
