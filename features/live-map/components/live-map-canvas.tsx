@@ -616,6 +616,7 @@ export function LiveMapCanvas({
   mapKey,
   markers,
   onMarkerClick,
+  onMapClick,
   onFocusedMarkerClose,
   onPopupImageClick,
   onMousePositionChange,
@@ -628,6 +629,7 @@ export function LiveMapCanvas({
   mapKey: string;
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
+  onMapClick?: () => void;
   onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
@@ -638,6 +640,7 @@ export function LiveMapCanvas({
   const pointMarkerByIdRef = useRef<Map<string, PointMarkerEntry>>(new Map());
   const hoveredMarkerIdRef = useRef<string | null>(null);
   const onMarkerClickRef = useRef(onMarkerClick);
+  const onMapClickRef = useRef<typeof onMapClick>(onMapClick);
   const lastFocusedMarkerRef = useRef<string | null>(null);
   const lastFocusedFloorRef = useRef<string | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
@@ -660,7 +663,8 @@ export function LiveMapCanvas({
     mapKeyRef.current = mapKey;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
-  }, [activeFloorId, focusedMarkerId, mapKey, onFocusedMarkerClose, onMarkerClick]);
+    onMapClickRef.current = onMapClick;
+  }, [activeFloorId, focusedMarkerId, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -694,6 +698,21 @@ export function LiveMapCanvas({
 
     map.on("mousemove", (event: LeafletMouseEvent) => {
       onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
+    });
+
+    map.on("click", (event: LeafletMouseEvent) => {
+      const target = event.originalEvent.target;
+
+      if (
+        target instanceof HTMLElement &&
+        (target.closest(".leaflet-marker-icon") ||
+          target.closest(".leaflet-popup") ||
+          target.closest(".leaflet-control"))
+      ) {
+        return;
+      }
+
+      onMapClickRef.current?.();
     });
 
     const handlePopupClick = (event: MouseEvent) => {
@@ -917,7 +936,9 @@ export function LiveMapCanvas({
       syncPointMarkerPopup(marker, point);
       syncPointMarkerTooltip(marker, point);
 
-      marker.on("click", () => {
+      marker.on("click", (event) => {
+        L.DomEvent.stopPropagation(event);
+
         const current = pointMarkerByIdRef.current.get(point.id)?.point ?? point;
         onMarkerClickRef.current(current);
 

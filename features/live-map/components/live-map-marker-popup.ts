@@ -70,7 +70,7 @@ function createMarkerPopupHtml({
   titleImage?: string | null;
 }) {
   const firstImage = images[0];
-  const activeLocation = firstImage?.description || location;
+  const activeLocation = firstImage ? firstImage.description : location;
   const textOnlyDetailTexts = !firstImage ? (detailTexts ?? []) : [];
   const hasTextOnlyDetailList = textOnlyDetailTexts.length > 0;
   const thumbnails = images
