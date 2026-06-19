@@ -17,8 +17,10 @@ export interface LiveMapFloor {
   name_ko: string | null;
   name_ja: string | null;
   image: string | null;
-  min_z: number | null;
-  max_z: number | null;
+  min_y: number | null;
+  max_y: number | null;
+  min_z?: number | null;
+  max_z?: number | null;
   map_bounds: [[number, number], [number, number]] | null;
   default_zoom_level: number | null;
   zones: LiveMapFloorZone[];
@@ -32,8 +34,10 @@ export interface LiveMapFloorZone {
   area_x_max: number;
   area_z_min: number;
   area_z_max: number;
-  override_min_z: number;
-  override_max_z: number;
+  override_min_y: number;
+  override_max_y: number;
+  override_min_z?: number | null;
+  override_max_z?: number | null;
 }
 
 export interface LiveMapCoordinateInfo {

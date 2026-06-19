@@ -7,6 +7,29 @@ export interface LiveMapLocation {
   yaw: number;
 }
 
+function getFloorMinY(floor: LiveMapFloor) {
+  return floor.min_y ?? floor.min_z ?? null;
+}
+
+function getFloorMaxY(floor: LiveMapFloor) {
+  return floor.max_y ?? floor.max_z ?? null;
+}
+
+function getZoneMinY(zone: LiveMapFloor["zones"][number]) {
+  return zone.override_min_y ?? zone.override_min_z ?? null;
+}
+
+function getZoneMaxY(zone: LiveMapFloor["zones"][number]) {
+  return zone.override_max_y ?? zone.override_max_z ?? null;
+}
+
+function isBetween(value: number, first: number, second: number) {
+  const min = Math.min(first, second);
+  const max = Math.max(first, second);
+
+  return value >= min && value <= max;
+}
+
 export function parseWhereText(text: string): LiveMapLocation | null {
   if (!text) {
     return null;
@@ -48,13 +71,16 @@ export function findFloorForHeight(
 ): LiveMapFloor | null {
   return (
     floors.find((floor) => {
-      if (floor.min_z === null || floor.max_z === null) {
+      const minY = getFloorMinY(floor);
+      const maxY = getFloorMaxY(floor);
+
+      if (minY === null || maxY === null) {
         return false;
       }
 
-      return height >= floor.min_z && height < floor.max_z;
+      return isBetween(height, minY, maxY);
     }) ??
-    floors.find((floor) => floor.min_z === null && floor.max_z === null) ??
+    floors.find((floor) => getFloorMinY(floor) === null && getFloorMaxY(floor) === null) ??
     floors[0] ??
     null
   );
@@ -67,21 +93,21 @@ export function findFloorForLocation(
   return (
     floors.find((floor) => {
       const matchedZone = (floor.zones ?? []).find((zone) =>
-        location.x >= zone.area_x_min &&
-        location.x <= zone.area_x_max &&
-        location.y >= zone.area_z_min &&
-        location.y <= zone.area_z_max,
+        isBetween(location.x, zone.area_x_min, zone.area_x_max) &&
+        isBetween(location.z, zone.area_z_min, zone.area_z_max),
       );
-      const minZ = matchedZone?.override_min_z ?? floor.min_z;
-      const maxZ = matchedZone?.override_max_z ?? floor.max_z;
+      const minY = matchedZone ? getZoneMinY(matchedZone) : null;
+      const maxY = matchedZone ? getZoneMaxY(matchedZone) : null;
+      const effectiveMinY = minY ?? getFloorMinY(floor);
+      const effectiveMaxY = maxY ?? getFloorMaxY(floor);
 
-      if (minZ === null || maxZ === null) {
+      if (effectiveMinY === null || effectiveMaxY === null) {
         return false;
       }
 
-      return location.z >= minZ && location.z < maxZ;
+      return isBetween(location.y, effectiveMinY, effectiveMaxY);
     }) ??
-    floors.find((floor) => floor.min_z === null && floor.max_z === null) ??
+    floors.find((floor) => getFloorMinY(floor) === null && getFloorMaxY(floor) === null) ??
     floors[0] ??
     null
   );

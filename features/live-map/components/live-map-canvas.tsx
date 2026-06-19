@@ -1096,7 +1096,11 @@ export function LiveMapCanvas({
       return;
     }
 
-    const position = getPlayerMarkerPosition(mapKey, location);
+    const position = getPlayerMarkerPosition(mapKey, {
+      x: location.x,
+      y: location.z,
+      yaw: location.yaw,
+    });
     const marker = L.marker(position, {
       icon: PlayerIcon(getPlayerMarkerYaw(mapKey, location.yaw)),
       zIndexOffset: 10000,

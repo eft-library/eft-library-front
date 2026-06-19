@@ -1623,7 +1623,7 @@ export function LiveMapClientPage({
                   {mousePosition?.lat.toFixed(2) ?? "0.00"}
                 </p>
                 <p>
-                  {copy.height}: {location?.z.toFixed(2) ?? "0.00"}
+                  {copy.height}: {location?.y.toFixed(2) ?? "0.00"}
                 </p>
               </div>
               {notice ? (
