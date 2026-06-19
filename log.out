@@ -1295,3 +1295,1698 @@ Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
     at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
   digest: '3362435961'
 }
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_extraction/note_with_code_word_adaptation.webp 404
+⨯ Error: API returned invalid payload for /api/item/v3/info/stich-profi-plate-carrier-v2-coyote-default-3
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '729268435'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/hindsight-20-20
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '4189797676'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_boss/shturman-portrait.png 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/our-own-land
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '2548169412'
+}
+[next-auth][error][OAUTH_CALLBACK_HANDLER_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_handler_error access_denied {
+  error: {
+    message: 'access_denied',
+    stack: 'Error: access_denied\n' +
+      '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+      '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+      '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+      '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+      '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+      '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+      '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+      '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+      '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+      '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+    name: 'Error'
+  },
+  error_description: undefined,
+  providerId: 'google',
+  message: 'access_denied'
+}
+[next-auth][error][OAUTH_CALLBACK_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_error access_denied {
+  message: 'access_denied',
+  stack: 'Error: access_denied\n' +
+    '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+    '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+    '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+    '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+    '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+    '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+    '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+    '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+    '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+  name: 'Error'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/hot-zone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '2124089580'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_main/roadmap_img.webp 404
+⨯ Error: API returned invalid payload for /api/item/v3/info/stich-profi-plate-carrier-v2-coyote-default-3
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '729268435'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_boss/death-knight-portrait.png 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_map/reserve/underground/underground.webp 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async s (.next/server/chunks/ssr/eft-library-front_06u1uln._.js:1:16488) {
+  digest: '502966604'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/developer-s-secrets-part-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '3473142572'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async M (.next/server/chunks/ssr/eft-library-front_09mwea1._.js:1:11041) {
+  digest: '120456007'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/forced-alliance
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '4215302124'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async s (.next/server/chunks/ssr/eft-library-front_06u1uln._.js:1:16488) {
+  digest: '502966604'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_map/completed_map/intelroom_first_floor.webp 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async M (.next/server/chunks/ssr/eft-library-front_09mwea1._.js:1:11041) {
+  digest: '120456007'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-multicam-default-2
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3876100723'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-gray-default-3
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1187713555'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-multicam-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2333501523'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/kalashnikov-ak-12-545x39-assault-rifle-gp-25
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2430029171'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_map/lighthouse/main/lighthouse.webp 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1180761650'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_map/lighthouse/main/lighthouse.webp 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/night-factory
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1463799858'
+}
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE_UNDERGROUND
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '914022522'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/639135cd8ba6894d155e77cb
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '10395340'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/terminal
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2272104634'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/ground-zero-21
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506677690'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async M (.next/server/chunks/ssr/eft-library-front_09mwea1._.js:1:11041) {
+  digest: '120456007'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/icebreaker
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '501077146'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/forced-alliance
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '4215302124'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_boss/partisan-portrait.png 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '3930205490'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/glock-17-9x19-pistol-tac-2
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2621374003'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/you-ve-got-mail
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '3926767468'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '262575994'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_boss/partisan-portrait.png 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1298907898'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2354332018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/5d25e48186f77443e625e386
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '129249676'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async s (.next/server/chunks/ssr/eft-library-front_06u1uln._.js:1:16488) {
+  digest: '502966604'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/rifle-dynamics-rd-704-762x39-assault-rifle-t-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1824644595'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async s (.next/server/chunks/ssr/eft-library-front_06u1uln._.js:1:16488) {
+  digest: '502966604'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/woods/dead_man_place.webp 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2086953522'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_map/lighthouse/main/lighthouse.webp 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS_GA_SECOND_FLOOR_DORMITORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '3647480570'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1810607354'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1298907898'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1810607354'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1810607354'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+[next-auth][error][OAUTH_CALLBACK_HANDLER_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_handler_error access_denied {
+  error: {
+    message: 'access_denied',
+    stack: 'Error: access_denied\n' +
+      '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+      '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+      '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+      '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+      '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+      '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+      '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+      '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+      '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+      '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+    name: 'Error'
+  },
+  error_description: undefined,
+  providerId: 'google',
+  message: 'access_denied'
+}
+[next-auth][error][OAUTH_CALLBACK_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_error access_denied {
+  message: 'access_denied',
+  stack: 'Error: access_denied\n' +
+    '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+    '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+    '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+    '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+    '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+    '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+    '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+    '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+    '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+  name: 'Error'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async s (.next/server/chunks/ssr/eft-library-front_06u1uln._.js:1:16488) {
+  digest: '502966604'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async M (.next/server/chunks/ssr/eft-library-front_09mwea1._.js:1:11041) {
+  digest: '120456007'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/easy-money-part-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '1803593196'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/WOODS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2628464250'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1810607354'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+[next-auth][error][OAUTH_CALLBACK_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_error State cookie was missing. {
+  error: Error [OAuthCallbackError]: State cookie was missing.
+      at Object.use (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:56992)
+      at l (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:59578)
+      at async Object.c (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64365)
+      at async _ (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19760)
+      at async a (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)
+      at async e.length.t (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)
+      at async c (.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559) {
+    code: undefined
+  },
+  providerId: 'google',
+  message: 'State cookie was missing.'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-19
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3784870387'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-multicam-default-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3544349011'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-16
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2829896627'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-14
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1326839987'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-3
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2652733971'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/ana-tactical-m2-plate-carrier-multicam-alpine-default
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3854782035'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '399341011'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-15
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '902949363'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/easy-money-part-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '1803593196'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-5
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2751723347'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-viking-default
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '977982931'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-multicam-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '485697083'
+}
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+⨯ Error: API returned invalid payload for /api/item/v3/info/fn-scar-h-762x51-assault-rifle-fde-face-2-2
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1587052531'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-12
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3504941491'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-8
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2983991091'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/FACTORY
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1810607354'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-10
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '2001884851'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-6
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3483733235'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-20
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '4101690547'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1482337939'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/crye-precision-jpc-plate-carrier-multicam-default
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '379369619'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-13
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3920231411'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/tac-kek-jaypc-plate-carrier-black-default
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '719506547'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-11
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1577994227'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/fort-gladiator-s-plate-carrier-lightweight-viking
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3599659603'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/reserve/d_2_req.webp 400
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async M (.next/server/chunks/ssr/eft-library-front_09mwea1._.js:1:11041) {
+  digest: '120456007'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+    at ignore-listed frames
+[next-auth][error][OAUTH_CALLBACK_HANDLER_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_handler_error access_denied {
+  error: {
+    message: 'access_denied',
+    stack: 'Error: access_denied\n' +
+      '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+      '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+      '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+      '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+      '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+      '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+      '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+      '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+      '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+      '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+    name: 'Error'
+  },
+  error_description: undefined,
+  providerId: 'google',
+  message: 'access_denied'
+}
+[next-auth][error][OAUTH_CALLBACK_ERROR] 
+https://next-auth.js.org/errors#oauth_callback_error access_denied {
+  message: 'access_denied',
+  stack: 'Error: access_denied\n' +
+    '    at l (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:58839)\n' +
+    '    at Object.c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:10:64384)\n' +
+    '    at _ (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:19768)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n' +
+    '    at async a (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:44474)\n' +
+    '    at async e.length.t (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:45917)\n' +
+    '    at async rW.do (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20926)\n' +
+    '    at async rW.handle (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25781)\n' +
+    '    at async c (/home/frontend_a/eft-library-front/.next/server/chunks/[root-of-the-server]__0gjfopp._.js:34:53559)\n' +
+    '    at async rW.handleResponse (/home/frontend_a/eft-library-front/node_modules/.pnpm/next@16.2.6_@babel+core@7.29.0_react-dom@19.2.6_react@19.2.6__react@19.2.6/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)',
+  name: 'Error'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/marathon-sightseeing
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '1109495756'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_main/container.webp 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_boss/killa-portrait.png 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/undefined
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3868918515'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '3930205490'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/ground-zero-tutorial
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2434582298'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/kalashnikov-pkm-762x54r-machine-gun-zenit-2-1
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '3588785459'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/6574e0dedc0d635f633a5805
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '2363474732'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/robots.txt
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '2601069018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1180761650'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1298907898'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/INTERCHANGE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1911708794'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/twitch-icebreaker-2026-case-rar-7
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '710149011'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/THE_LAB
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '491568378'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/shoreline/road_to_north_v_ex.webp 400
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/reserve/depot_hermetic_door.webp 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/item/v3/info/remington-model-700-762x51-bolt-action-sniper-rifle-mescalero
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async aq (.next/server/chunks/ssr/eft-library-front_app_item_info_[id]_page_tsx_0x~3.8h._.js:1:77041) {
+  digest: '1668635603'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/to-great-heights-part-5
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '3662460908'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_map/streets_of_tarkov/main/streets_of_tarkov_img.webp 404
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/ground_zero/mira_ave.webp 400
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/LIGHT_HOUSE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1298907898'
+}
+⨯ upstream image response failed for https://image.eftlibrary.com/tkl_extraction/minefield_map_woods.webp 400
+⨯ upstream image response failed for https://image.eftlibrary.com/eftlibrary/tkl_boss/kollontay-portrait.png 404
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/CUSTOMS
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '506337018'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/textile-part-2
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '183785196'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/GROUND_ZERO
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '4102032890'
+}
+⨯ Error: API request failed: 410 Gone
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3459)
+    at async m (.next/server/chunks/ssr/[root-of-the-server]__0w9hb64._.js:1:15633) {
+  digest: '3362435961'
+}
+⨯ Error: API returned invalid payload for /api/quest/v3/detail/against-the-conscience-part-2
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async i (.next/server/chunks/ssr/[root-of-the-server]__0g~-qe6._.js:1:11875) {
+  digest: '424816876'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/SHORELINE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1189533242'
+}
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/STREET_OF_TARKOV
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '1387100506'
+}
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+⨯ Error: API returned invalid payload for /api/map-of-tarkov/v3/detail/RESERVE
+    at c (.next/server/chunks/ssr/eft-library-front_12zmkru._.js:1:3574)
+    at async l (.next/server/chunks/ssr/[root-of-the-server]__0dpu8hv._.js:1:21218) {
+  digest: '3494559666'
+}
