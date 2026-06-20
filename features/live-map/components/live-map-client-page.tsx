@@ -318,6 +318,8 @@ export function LiveMapClientPage({
   const searchParams = useSearchParams();
   const urlFocusedMarkerId = searchParams.get("focus");
   const [localFocusedMarkerId, setLocalFocusedMarkerId] = useState<string | null>(null);
+  const [focusRequestKey, setFocusRequestKey] = useState(0);
+  const [focusTarget, setFocusTarget] = useState<{ id: string; key: number; x: number; y: number } | null>(null);
   const [, startFocusRouteTransition] = useTransition();
   const focusedMarkerId = localFocusedMarkerId ?? urlFocusedMarkerId;
   const locale = useAppStore((state) => state.uiLocale);
@@ -325,7 +327,6 @@ export function LiveMapClientPage({
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
   const latestWebsocketLocation = useWsStore((state) => state.latestLocation);
-  const storedMapLocation = useWsStore((state) => state.locationByMap[normalizedName] ?? "");
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
   const eventDetailCacheRef = useRef<Map<string, EventInfo>>(new Map());
@@ -334,6 +335,7 @@ export function LiveMapClientPage({
   const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
   const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
   const storyDetailCacheRef = useRef<Map<string, StoryInfo>>(new Map());
+  const focusRequestKeyRef = useRef(0);
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -425,6 +427,24 @@ export function LiveMapClientPage({
   const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
     new Set(),
   );
+  const requestMarkerFocus = useCallback((markerId: string | null, position?: { x: number; y: number }) => {
+    setLocalFocusedMarkerId(markerId);
+
+    if (markerId) {
+      const nextKey = focusRequestKeyRef.current + 1;
+      focusRequestKeyRef.current = nextKey;
+
+      setFocusRequestKey(nextKey);
+      setFocusTarget(position ? {
+        id: markerId,
+        key: nextKey,
+        x: position.x,
+        y: position.y,
+      } : null);
+    } else {
+      setFocusTarget(null);
+    }
+  }, []);
 
   useEffect(() => {
     popupHtmlCacheRef.current.clear();
@@ -865,7 +885,7 @@ export function LiveMapClientPage({
         objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = `quest:${point.id}`;
-      setLocalFocusedMarkerId(focus);
+      requestMarkerFocus(focus, { x: point.x, y: point.z });
 
       selectPointFloor(point);
 
@@ -886,13 +906,14 @@ export function LiveMapClientPage({
       }
 
       setLocalFocusedMarkerId(null);
+      setFocusTarget(null);
       setPanel(null);
       setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
+    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
   );
 
   const focusStoryObjective = useCallback(
@@ -911,7 +932,7 @@ export function LiveMapClientPage({
         objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = getStoryMarkerId(storyId, point.id);
-      setLocalFocusedMarkerId(focus);
+      requestMarkerFocus(focus, { x: point.x, y: point.z });
 
       selectPointFloor(point);
 
@@ -933,13 +954,14 @@ export function LiveMapClientPage({
       }
 
       setLocalFocusedMarkerId(null);
+      setFocusTarget(null);
       setPanel(null);
       setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
+    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
   );
 
   const focusStoryRequirement = useCallback(
@@ -959,7 +981,7 @@ export function LiveMapClientPage({
         requirement.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = getStoryMarkerId(storyId, point.id);
-      setLocalFocusedMarkerId(focus);
+      requestMarkerFocus(focus, { x: point.x, y: point.z });
 
       selectPointFloor(point);
 
@@ -982,13 +1004,14 @@ export function LiveMapClientPage({
       }
 
       setLocalFocusedMarkerId(null);
+      setFocusTarget(null);
       setPanel(null);
       setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
+    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
   );
 
   const focusEventObjective = useCallback(
@@ -1003,7 +1026,7 @@ export function LiveMapClientPage({
 
       const targetMap = point.map?.normalized_name ?? normalizedName;
       const focus = `event:${point.id}`;
-      setLocalFocusedMarkerId(focus);
+      requestMarkerFocus(focus, { x: point.x, y: point.z });
 
       selectPointFloor(point);
 
@@ -1025,19 +1048,20 @@ export function LiveMapClientPage({
       }
 
       setLocalFocusedMarkerId(null);
+      setFocusTarget(null);
       setPanel(null);
       setSelectedStaticId(null);
       router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
+    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
   );
 
   const focusStaticPoint = useCallback(
     (entry: StaticEntry) => {
       const focus = `static:${entry.point.id}`;
-      setLocalFocusedMarkerId(focus);
+      requestMarkerFocus(focus, { x: entry.point.x, y: entry.point.z });
 
       setSelectedStaticId(entry.id);
       setPanel((current) => (current?.type === "static" ? null : current));
@@ -1049,7 +1073,7 @@ export function LiveMapClientPage({
         replaceFocusParam(focus);
       }
     },
-    [focusedMarkerId, replaceFocusParam, selectPointFloor],
+    [focusedMarkerId, replaceFocusParam, requestMarkerFocus, selectPointFloor],
   );
 
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
@@ -1223,7 +1247,7 @@ export function LiveMapClientPage({
 
   const openPanelForMarker = useCallback(
     async (marker: LiveMapCanvasMarker) => {
-      setLocalFocusedMarkerId(marker.id);
+      requestMarkerFocus(marker.id, { x: marker.x, y: marker.y });
       const opened = await openPanelForMarkerId(marker.id);
 
       if (!opened || focusedMarkerId === marker.id) {
@@ -1232,11 +1256,12 @@ export function LiveMapClientPage({
 
       replaceFocusParam(marker.id);
     },
-    [focusedMarkerId, openPanelForMarkerId, replaceFocusParam],
+    [focusedMarkerId, openPanelForMarkerId, replaceFocusParam, requestMarkerFocus],
   );
 
   const clearFocusParam = useCallback(() => {
     setLocalFocusedMarkerId(null);
+    setFocusTarget(null);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("focus");
     const queryString = params.toString();
@@ -1408,13 +1433,10 @@ export function LiveMapClientPage({
   }, [defaultFloorId, normalizedName]);
 
   useEffect(() => {
-    setWhere(storedMapLocation);
-    if (storedMapLocation) {
-      applyWhereText(storedMapLocation, { save: false });
-    } else {
-      setLocation(null);
-    }
-  }, [normalizedName, storedMapLocation]);
+    previousLocationEventRef.current = latestWebsocketLocation?.receivedAt ?? null;
+    setWhere("");
+    setLocation(null);
+  }, [normalizedName]);
 
   useEffect(() => {
     if (
@@ -1632,6 +1654,8 @@ export function LiveMapClientPage({
                 activeFloorId={selectedFloor.id}
                 coordinateInfo={data.coordinate_info}
                 focusedMarkerId={focusedMarkerId}
+                focusRequestKey={focusRequestKey}
+                focusTarget={focusTarget}
                 floors={sortedFloors}
                 location={location}
                 mapKey={normalizedName}

@@ -526,7 +526,7 @@ function getPointMarkerPositionKey(mapKey: string, point: LiveMapCanvasMarker) {
   return `${mapKey}:${point.x}:${point.y}`;
 }
 
-function getPointMarkerLatLng(mapKey: string, point: LiveMapCanvasMarker) {
+function getPointMarkerLatLng(mapKey: string, point: Pick<LiveMapCanvasMarker, "x" | "y">) {
   return L.latLng(getPointMarkerPosition(mapKey, point));
 }
 
@@ -561,6 +561,7 @@ function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker)
   }
 
   marker.bindPopup(point.popupHtml, {
+    autoPan: false,
     className: "live-map-point-popup",
     closeButton: true,
     maxWidth: 460,
@@ -617,6 +618,8 @@ export function LiveMapCanvas({
   coordinateInfo,
   floors,
   focusedMarkerId,
+  focusRequestKey = 0,
+  focusTarget,
   location,
   mapKey,
   markers,
@@ -629,6 +632,8 @@ export function LiveMapCanvas({
   activeFloorId: string;
   coordinateInfo: LiveMapCoordinateInfo;
   focusedMarkerId?: string | null;
+  focusRequestKey?: number;
+  focusTarget?: { id: string; key: number; x: number; y: number } | null;
   floors: LiveMapFloor[];
   location: LiveMapLocation | null;
   mapKey: string;
@@ -648,6 +653,7 @@ export function LiveMapCanvas({
   const onMapClickRef = useRef<typeof onMapClick>(onMapClick);
   const lastFocusedMarkerRef = useRef<string | null>(null);
   const lastFocusedFloorRef = useRef<string | null>(null);
+  const lastFocusedRequestRef = useRef<number | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
   const activeFloorIdRef = useRef(activeFloorId);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
@@ -1036,51 +1042,76 @@ export function LiveMapCanvas({
 
   useEffect(() => {
     const map = mapRef.current;
+    const targetId = focusTarget?.id ?? focusedMarkerId;
 
-    if (!map || !focusedMarkerId) {
+    if (!map || !targetId) {
       return;
     }
 
-    const marker = pointMarkerByIdRef.current.get(focusedMarkerId)?.marker;
+    const focusedPoint =
+      focusTarget?.id === targetId
+        ? focusTarget
+        : renderMarkers.find((point) => point.id === targetId);
 
-    if (!marker) {
+    if (!focusedPoint) {
       return;
     }
+
+    const marker = pointMarkerByIdRef.current.get(targetId)?.marker;
+    const requestKey = focusTarget?.key ?? focusRequestKey;
 
     const shouldMoveView =
-      lastFocusedMarkerRef.current !== focusedMarkerId ||
-      lastFocusedFloorRef.current !== activeFloorId;
+      lastFocusedMarkerRef.current !== targetId ||
+      lastFocusedFloorRef.current !== activeFloorId ||
+      lastFocusedRequestRef.current !== requestKey;
 
-    if (!shouldMoveView && marker.isPopupOpen()) {
+    if (!shouldMoveView && marker?.isPopupOpen()) {
       return;
     }
 
-    lastFocusedMarkerRef.current = focusedMarkerId;
+    lastFocusedMarkerRef.current = targetId;
     lastFocusedFloorRef.current = activeFloorId;
-    const frameId = window.requestAnimationFrame(() => {
-      if (!map.getContainer().isConnected || !pointMarkerByIdRef.current.has(focusedMarkerId)) {
-        return;
+    lastFocusedRequestRef.current = requestKey;
+
+    const moveToFocusedPoint = () => {
+      if (!map.getContainer().isConnected) {
+        return null;
       }
 
-      const currentMarker = pointMarkerByIdRef.current.get(focusedMarkerId)?.marker;
-
-      if (!currentMarker) {
-        return;
-      }
+      const currentMarker = pointMarkerByIdRef.current.get(targetId)?.marker;
+      const targetLatLng = currentMarker?.getLatLng() ?? getPointMarkerLatLng(mapKey, focusedPoint);
 
       if (shouldMoveView) {
-        map.panTo(currentMarker.getLatLng(), { animate: false });
+        map.setView(targetLatLng, map.getZoom(), { animate: false });
       }
 
+      return currentMarker;
+    };
+
+    const markerAfterImmediateMove = moveToFocusedPoint();
+
+    if (markerAfterImmediateMove) {
       try {
-        currentMarker.openPopup();
+        markerAfterImmediateMove.openPopup();
       } catch {
         // Leaflet can throw when a marker is recreated during a fast repeated focus.
+      }
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      const currentMarker = moveToFocusedPoint();
+
+      if (currentMarker) {
+        try {
+          currentMarker.openPopup();
+        } catch {
+          // Leaflet can throw when a marker is recreated during a fast repeated focus.
+        }
       }
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [activeFloorId, focusedMarkerId, renderMarkers]);
+  }, [activeFloorId, focusedMarkerId, focusRequestKey, focusTarget, mapKey, renderMarkers]);
 
   useEffect(() => {
     const map = mapRef.current;
