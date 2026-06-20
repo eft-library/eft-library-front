@@ -572,7 +572,7 @@ function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker)
   });
 }
 
-function syncPointMarkerTooltip(marker: LeafletMarker, point: LiveMapCanvasMarker) {
+function updatePointMarkerTooltipContent(marker: LeafletMarker, point: LiveMapCanvasMarker) {
   if (!point.label) {
     marker.unbindTooltip();
     return;
@@ -582,15 +582,33 @@ function syncPointMarkerTooltip(marker: LeafletMarker, point: LiveMapCanvasMarke
 
   if (tooltip) {
     tooltip.setContent(point.label);
+  }
+}
+
+function openPointMarkerTooltip(marker: LeafletMarker, point: LiveMapCanvasMarker) {
+  if (!point.label) {
     return;
   }
 
-  marker.bindTooltip(point.label, {
-    className: "live-map-marker-tooltip",
-    direction: "top",
-    offset: [0, -28],
-    opacity: 0.95,
-  });
+  const tooltip = marker.getTooltip();
+
+  if (tooltip) {
+    tooltip.setContent(point.label);
+  } else {
+    marker.bindTooltip(point.label, {
+      className: "live-map-marker-tooltip",
+      direction: "top",
+      offset: [0, -28],
+      opacity: 0.95,
+    });
+  }
+
+  marker.openTooltip();
+}
+
+function closePointMarkerTooltip(marker: LeafletMarker) {
+  marker.closeTooltip();
+  marker.unbindTooltip();
 }
 
 function syncPointMarkerPresentation({
@@ -705,6 +723,8 @@ export function LiveMapCanvas({
       maxBoundsViscosity: 0.1,
       maxZoom: 4,
       minZoom: -2,
+      wheelDebounceTime: 80,
+      wheelPxPerZoomLevel: 120,
       zoom: coordinateInfo.default_zoom_level,
       zoomAnimation: false,
       zoomSnap: 0.5,
@@ -713,9 +733,18 @@ export function LiveMapCanvas({
     const updateRenderBounds = () => {
       setRenderBounds(map.getBounds().pad(1));
     };
+    const startZoomInteraction = () => {
+      container.classList.add("live-map-is-zooming");
+      pointMarkerByIdRef.current.forEach(({ marker }) => closePointMarkerTooltip(marker));
+    };
+    const endZoomInteraction = () => {
+      container.classList.remove("live-map-is-zooming");
+    };
 
     updateRenderBounds();
     map.on("moveend zoomend resize", updateRenderBounds);
+    map.on("zoomstart", startZoomInteraction);
+    map.on("zoomend", endZoomInteraction);
 
     map.on("mousemove", (event: LeafletMouseEvent) => {
       onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
@@ -821,6 +850,7 @@ export function LiveMapCanvas({
     mapRef.current = map;
 
     return () => {
+      container.classList.remove("live-map-is-zooming");
       markerRef.current?.remove();
       markerRef.current = null;
       pointMarkerByIdRef.current.forEach(({ marker }) => marker.remove());
@@ -934,7 +964,7 @@ export function LiveMapCanvas({
 
         if (existing.label !== point.label) {
           existing.marker.options.title = point.label;
-          syncPointMarkerTooltip(existing.marker, point);
+          updatePointMarkerTooltipContent(existing.marker, point);
           existing.label = point.label;
         }
 
@@ -966,7 +996,6 @@ export function LiveMapCanvas({
       });
 
       syncPointMarkerPopup(marker, point);
-      syncPointMarkerTooltip(marker, point);
 
       marker.on("click", (event) => {
         L.DomEvent.stopPropagation(event);
@@ -1000,6 +1029,7 @@ export function LiveMapCanvas({
             point: current.point,
           });
           current.presentationKey = nextPresentationKey;
+          openPointMarkerTooltip(current.marker, current.point);
         }
       });
 
@@ -1027,6 +1057,7 @@ export function LiveMapCanvas({
             point: current.point,
           });
           current.presentationKey = nextPresentationKey;
+          closePointMarkerTooltip(current.marker);
         }
       });
 

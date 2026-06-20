@@ -166,6 +166,15 @@ summary {
   border-top-color: rgba(21, 25, 29, 0.96);
 }
 
+.live-map-canvas.live-map-is-zooming .live-map-marker-icon > div {
+  filter: none !important;
+  transition: none !important;
+}
+
+.live-map-canvas.live-map-is-zooming .live-map-marker-tooltip {
+  display: none !important;
+}
+
 .live-map-point-popup .leaflet-popup-content-wrapper {
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.14);
