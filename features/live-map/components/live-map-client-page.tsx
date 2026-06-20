@@ -367,6 +367,35 @@ export function LiveMapClientPage({
     data.map_selector[0];
   const selectedFloor =
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
+  const selectedMapId = sortedFloors[0]?.map_id ?? null;
+  const resolvePointFloorId = useCallback(
+    (point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number }) => {
+      if (point.map_id && selectedMapId && point.map_id !== selectedMapId) {
+        return point.floor_id ?? null;
+      }
+
+      if (point.y === null) {
+        return point.floor_id ?? null;
+      }
+
+      return findFloorForLocation(sortedFloors, {
+        x: point.x,
+        y: point.y,
+        z: point.z,
+      })?.id ?? point.floor_id ?? null;
+    },
+    [selectedMapId, sortedFloors],
+  );
+  const selectPointFloor = useCallback(
+    (point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number }) => {
+      const floorId = resolvePointFloorId(point);
+
+      if (floorId) {
+        setSelectedFloorId(floorId);
+      }
+    },
+    [resolvePointFloorId],
+  );
 
   const questEntries = useMemo(
     () => uniqueById(data.quest_points.filter((point) => point.quest_info).map((point) => ({
@@ -556,7 +585,7 @@ export function LiveMapClientPage({
                 : undefined);
 
         return {
-          floorId: point.floor_id,
+          floorId: resolvePointFloorId(point),
           id: `quest:${point.id}`,
           kind: "quest",
           label: getQuestPointLabel(point, locale),
@@ -596,7 +625,7 @@ export function LiveMapClientPage({
           getStoryPointLabel(point, locale);
 
         return {
-          floorId: point.floor_id,
+          floorId: resolvePointFloorId(point),
           id: getStoryMarkerId(storyId, point.id),
           kind: "story",
           label: storyLabel,
@@ -639,7 +668,7 @@ export function LiveMapClientPage({
         (requirement.live_map_points ?? []).some((entry) => entry.id === point.id)
       ))
       .map<LiveMapCanvasMarker>(({ point, storyDetail }) => ({
-        floorId: point.floor_id,
+        floorId: resolvePointFloorId(point),
         id: getStoryMarkerId(storyDetail.story.id, point.id),
         kind: "story",
         label: getStoryPointLabel(point, locale),
@@ -671,7 +700,7 @@ export function LiveMapClientPage({
           getEventPointLabel(point, locale);
 
         return {
-          floorId: point.floor_id,
+          floorId: resolvePointFloorId(point),
           id: `event:${point.id}`,
           kind: "event",
           label: eventLabel,
@@ -692,7 +721,7 @@ export function LiveMapClientPage({
         (focusedMarkerId === `static:${point.id}` || enabledStaticIds.has(point.id))
       ))
       .map<LiveMapCanvasMarker>((point) => ({
-        floorId: point.floor_id,
+        floorId: resolvePointFloorId(point),
         id: `static:${point.id}`,
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
@@ -727,6 +756,7 @@ export function LiveMapClientPage({
     copy,
     locale,
     normalizedName,
+    resolvePointFloorId,
   ]);
 
   function showNotice(message: string) {
@@ -856,9 +886,7 @@ export function LiveMapClientPage({
       const focus = `quest:${point.id}`;
       setLocalFocusedMarkerId(focus);
 
-      if (point.floor_id) {
-        setSelectedFloorId(point.floor_id);
-      }
+      selectPointFloor(point);
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -883,7 +911,7 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
   );
 
   const focusStoryObjective = useCallback(
@@ -904,9 +932,7 @@ export function LiveMapClientPage({
       const focus = getStoryMarkerId(storyId, point.id);
       setLocalFocusedMarkerId(focus);
 
-      if (point.floor_id) {
-        setSelectedFloorId(point.floor_id);
-      }
+      selectPointFloor(point);
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -932,7 +958,7 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
   );
 
   const focusStoryRequirement = useCallback(
@@ -954,9 +980,7 @@ export function LiveMapClientPage({
       const focus = getStoryMarkerId(storyId, point.id);
       setLocalFocusedMarkerId(focus);
 
-      if (point.floor_id) {
-        setSelectedFloorId(point.floor_id);
-      }
+      selectPointFloor(point);
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -983,7 +1007,7 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
   );
 
   const focusEventObjective = useCallback(
@@ -1000,9 +1024,7 @@ export function LiveMapClientPage({
       const focus = `event:${point.id}`;
       setLocalFocusedMarkerId(focus);
 
-      if (point.floor_id) {
-        setSelectedFloorId(point.floor_id);
-      }
+      selectPointFloor(point);
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -1028,7 +1050,7 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, router],
+    [focusedMarkerId, normalizedName, replaceFocusParam, router, selectPointFloor],
   );
 
   const focusStaticPoint = useCallback(
@@ -1040,15 +1062,13 @@ export function LiveMapClientPage({
       setPanel((current) => (current?.type === "static" ? null : current));
       setExpandedStaticCategories((current) => new Set([...current, entry.point.category || "other"]));
 
-      if (entry.point.floor_id) {
-        setSelectedFloorId(entry.point.floor_id);
-      }
+      selectPointFloor(entry.point);
 
       if (focusedMarkerId !== focus) {
         replaceFocusParam(focus);
       }
     },
-    [focusedMarkerId, replaceFocusParam],
+    [focusedMarkerId, replaceFocusParam, selectPointFloor],
   );
 
   function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
@@ -1083,9 +1103,7 @@ export function LiveMapClientPage({
       if (kind === "quest") {
         const point = data.quest_points.find((entry) => entry.id === id);
         if (point?.quest_info) {
-          if (point.floor_id) {
-            setSelectedFloorId(point.floor_id);
-          }
+          selectPointFloor(point);
           try {
             const info = await loadQuestDetail(point.quest_info.quest?.normalized_name ?? getQuestId(point));
             setPanel({
@@ -1109,9 +1127,7 @@ export function LiveMapClientPage({
           (!storyMarker.storyId || getStoryId(entry) === storyMarker.storyId)
         );
         if (point?.story_info) {
-          if (point.floor_id) {
-            setSelectedFloorId(point.floor_id);
-          }
+          selectPointFloor(point);
           try {
             const info = await loadStoryDetail(getStoryId(point));
             setPanel((current) => {
@@ -1152,9 +1168,7 @@ export function LiveMapClientPage({
             continue;
           }
 
-          if (requirementMatch.point.floor_id) {
-            setSelectedFloorId(requirementMatch.point.floor_id);
-          }
+          selectPointFloor(requirementMatch.point);
 
           setPanel({
             id: storyDetail.story.id,
@@ -1171,9 +1185,7 @@ export function LiveMapClientPage({
       if (kind === "event") {
         const point = data.event_points.find((entry) => entry.id === id);
         if (point?.event_info) {
-          if (point.floor_id) {
-            setSelectedFloorId(point.floor_id);
-          }
+          selectPointFloor(point);
           try {
             const info = await loadEventDetail(getEventId(point));
             setPanel({
@@ -1195,9 +1207,7 @@ export function LiveMapClientPage({
         const point = data.static_points.find((entry) => entry.id === id);
         if (point) {
           setSelectedStaticId(point.id);
-          if (point.floor_id) {
-            setSelectedFloorId(point.floor_id);
-          }
+          selectPointFloor(point);
           setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
           setPanel((current) =>
             openStaticPanel
@@ -1222,6 +1232,7 @@ export function LiveMapClientPage({
       loadQuestDetail,
       loadStoryDetail,
       panel,
+      selectPointFloor,
     ],
   );
 
