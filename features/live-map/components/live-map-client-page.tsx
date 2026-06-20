@@ -369,9 +369,16 @@ export function LiveMapClientPage({
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const selectedMapId = sortedFloors[0]?.map_id ?? null;
   const resolvePointFloorId = useCallback(
-    (point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number }) => {
+    (
+      point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number },
+      { preferExplicitFloor = false }: { preferExplicitFloor?: boolean } = {},
+    ) => {
       if (point.map_id && selectedMapId && point.map_id !== selectedMapId) {
         return point.floor_id ?? null;
+      }
+
+      if (preferExplicitFloor && point.floor_id) {
+        return point.floor_id;
       }
 
       if (point.y === null) {
@@ -387,8 +394,11 @@ export function LiveMapClientPage({
     [selectedMapId, sortedFloors],
   );
   const selectPointFloor = useCallback(
-    (point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number }) => {
-      const floorId = resolvePointFloorId(point);
+    (
+      point: { floor_id?: string | null; map_id?: string | null; x: number; y: number | null; z: number },
+      options?: { preferExplicitFloor?: boolean },
+    ) => {
+      const floorId = resolvePointFloorId(point, options);
 
       if (floorId) {
         setSelectedFloorId(floorId);
@@ -625,7 +635,7 @@ export function LiveMapClientPage({
           getStoryPointLabel(point, locale);
 
         return {
-          floorId: resolvePointFloorId(point),
+          floorId: resolvePointFloorId(point, { preferExplicitFloor: true }),
           id: getStoryMarkerId(storyId, point.id),
           kind: "story",
           label: storyLabel,
@@ -668,7 +678,7 @@ export function LiveMapClientPage({
         (requirement.live_map_points ?? []).some((entry) => entry.id === point.id)
       ))
       .map<LiveMapCanvasMarker>(({ point, storyDetail }) => ({
-        floorId: resolvePointFloorId(point),
+        floorId: resolvePointFloorId(point, { preferExplicitFloor: true }),
         id: getStoryMarkerId(storyDetail.story.id, point.id),
         kind: "story",
         label: getStoryPointLabel(point, locale),
@@ -700,7 +710,7 @@ export function LiveMapClientPage({
           getEventPointLabel(point, locale);
 
         return {
-          floorId: resolvePointFloorId(point),
+          floorId: resolvePointFloorId(point, { preferExplicitFloor: true }),
           id: `event:${point.id}`,
           kind: "event",
           label: eventLabel,
@@ -721,7 +731,7 @@ export function LiveMapClientPage({
         (focusedMarkerId === `static:${point.id}` || enabledStaticIds.has(point.id))
       ))
       .map<LiveMapCanvasMarker>((point) => ({
-        floorId: resolvePointFloorId(point),
+        floorId: resolvePointFloorId(point, { preferExplicitFloor: true }),
         id: `static:${point.id}`,
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
@@ -932,7 +942,7 @@ export function LiveMapClientPage({
       const focus = getStoryMarkerId(storyId, point.id);
       setLocalFocusedMarkerId(focus);
 
-      selectPointFloor(point);
+      selectPointFloor(point, { preferExplicitFloor: true });
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -980,7 +990,7 @@ export function LiveMapClientPage({
       const focus = getStoryMarkerId(storyId, point.id);
       setLocalFocusedMarkerId(focus);
 
-      selectPointFloor(point);
+      selectPointFloor(point, { preferExplicitFloor: true });
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -1024,7 +1034,7 @@ export function LiveMapClientPage({
       const focus = `event:${point.id}`;
       setLocalFocusedMarkerId(focus);
 
-      selectPointFloor(point);
+      selectPointFloor(point, { preferExplicitFloor: true });
 
       if (targetMap === normalizedName) {
         setPanel((current) =>
@@ -1062,7 +1072,7 @@ export function LiveMapClientPage({
       setPanel((current) => (current?.type === "static" ? null : current));
       setExpandedStaticCategories((current) => new Set([...current, entry.point.category || "other"]));
 
-      selectPointFloor(entry.point);
+      selectPointFloor(entry.point, { preferExplicitFloor: true });
 
       if (focusedMarkerId !== focus) {
         replaceFocusParam(focus);
@@ -1127,7 +1137,7 @@ export function LiveMapClientPage({
           (!storyMarker.storyId || getStoryId(entry) === storyMarker.storyId)
         );
         if (point?.story_info) {
-          selectPointFloor(point);
+          selectPointFloor(point, { preferExplicitFloor: true });
           try {
             const info = await loadStoryDetail(getStoryId(point));
             setPanel((current) => {
@@ -1168,7 +1178,7 @@ export function LiveMapClientPage({
             continue;
           }
 
-          selectPointFloor(requirementMatch.point);
+          selectPointFloor(requirementMatch.point, { preferExplicitFloor: true });
 
           setPanel({
             id: storyDetail.story.id,
@@ -1185,7 +1195,7 @@ export function LiveMapClientPage({
       if (kind === "event") {
         const point = data.event_points.find((entry) => entry.id === id);
         if (point?.event_info) {
-          selectPointFloor(point);
+          selectPointFloor(point, { preferExplicitFloor: true });
           try {
             const info = await loadEventDetail(getEventId(point));
             setPanel({
@@ -1207,7 +1217,7 @@ export function LiveMapClientPage({
         const point = data.static_points.find((entry) => entry.id === id);
         if (point) {
           setSelectedStaticId(point.id);
-          selectPointFloor(point);
+          selectPointFloor(point, { preferExplicitFloor: true });
           setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
           setPanel((current) =>
             openStaticPanel
