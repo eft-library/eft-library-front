@@ -59,10 +59,10 @@ export interface LiveMapObjectivePoint {
   id: string;
   map_id: string;
   floor_id: string | null;
-  floor_no: number | null;
+  floor_no?: number | null;
   x: number;
   z: number;
-  y: number;
+  y?: number | null;
   details: LiveMapPointDetail[];
   map?: MapSelectorEntry | null;
 }
@@ -138,10 +138,10 @@ export interface LiveMapQuestPoint {
   id: string;
   map_id: string;
   floor_id: string | null;
-  floor_no: number | null;
+  floor_no?: number | null;
   x: number;
   z: number;
-  y: number;
+  y?: number | null;
   quest_info: LiveMapQuestSummaryInfo | null;
 }
 
@@ -226,10 +226,10 @@ export interface LiveMapStoryPoint {
   requirement_id: string | null;
   map_id: string;
   floor_id: string | null;
-  floor_no: number | null;
+  floor_no?: number | null;
   x: number;
   z: number;
-  y: number | null;
+  y?: number | null;
   story_info: StorySummaryInfo | null;
 }
 
@@ -287,10 +287,10 @@ export interface LiveMapEventPoint {
   objective_id: string | null;
   map_id: string;
   floor_id: string | null;
-  floor_no: number | null;
+  floor_no?: number | null;
   x: number;
   z: number;
-  y: number;
+  y?: number | null;
   event_info: EventSummaryInfo | null;
 }
 
@@ -298,7 +298,7 @@ export interface LiveMapStaticPoint {
   id: string;
   map_id: string;
   floor_id: string | null;
-  floor_no: number | null;
+  floor_no?: number | null;
   category: string;
   name_en: string;
   name_ko: string;
@@ -309,7 +309,7 @@ export interface LiveMapStaticPoint {
   image: string | null;
   x: number;
   z: number;
-  y: number;
+  y?: number | null;
   metadata: Record<string, unknown> | null;
 }
 
