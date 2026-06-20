@@ -43,8 +43,8 @@ export function parseWhereText(text: string): LiveMapLocation | null {
   }
 
   const x = Number.parseFloat(matches[0]);
-  const z = Number.parseFloat(matches[1]);
-  const y = Number.parseFloat(matches[2]);
+  const y = Number.parseFloat(matches[1]);
+  const z = Number.parseFloat(matches[2]);
   const qx = Number.parseFloat(matches[3]);
   const qy = Number.parseFloat(matches[4]);
   const qz = Number.parseFloat(matches[5]);
