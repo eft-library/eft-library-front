@@ -431,13 +431,15 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
 function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
   const { kind } = point;
   const color = markerColorByKind[kind];
+  const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
+
   if (kind !== "static") {
     const size = isFocused ? 28 : 22;
     const taskWrapperStyle = `
       width: ${size}px;
       height: ${size}px;
       position: relative;
-      opacity: ${isDimmed ? "0.32" : "1"};
+      opacity: ${markerOpacity};
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) ${isFocused ? `drop-shadow(0 0 9px ${color})` : ""};
       transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
       transform: ${isFocused ? "scale(1.12)" : "none"};
@@ -472,7 +474,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: ${isDimmed ? "0.32" : "1"};
+      opacity: ${markerOpacity};
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(30,33,38,0.98), rgba(8,10,13,0.98));
       box-shadow: inset 0 0 0 2px ${color}, inset 0 0 0 4px rgba(255,255,255,0.18);
