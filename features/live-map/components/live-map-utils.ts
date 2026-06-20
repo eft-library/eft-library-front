@@ -90,22 +90,40 @@ export function findFloorForLocation(
   floors: LiveMapFloor[],
   location: Pick<LiveMapLocation, "x" | "y" | "z">,
 ): LiveMapFloor | null {
-  return (
-    floors.find((floor) => {
-      const matchedZone = (floor.zones ?? []).find((zone) =>
-        isBetween(location.x, zone.area_x_min, zone.area_x_max) &&
-        isBetween(location.z, zone.area_z_min, zone.area_z_max),
-      );
-      const minY = matchedZone ? getZoneMinY(matchedZone) : null;
-      const maxY = matchedZone ? getZoneMaxY(matchedZone) : null;
-      const effectiveMinY = minY ?? getFloorMinY(floor);
-      const effectiveMaxY = maxY ?? getFloorMaxY(floor);
-
-      if (effectiveMinY === null || effectiveMaxY === null) {
+  const zoneFloor = floors.find((floor) =>
+    (floor.zones ?? []).some((zone) => {
+      if (
+        !isBetween(location.x, zone.area_x_min, zone.area_x_max) ||
+        !isBetween(location.z, zone.area_z_min, zone.area_z_max)
+      ) {
         return false;
       }
 
-      return isBetween(location.y, effectiveMinY, effectiveMaxY);
+      const minY = getZoneMinY(zone);
+      const maxY = getZoneMaxY(zone);
+
+      if (minY === null || maxY === null) {
+        return false;
+      }
+
+      return isBetween(location.y, minY, maxY);
+    }),
+  );
+
+  if (zoneFloor) {
+    return zoneFloor;
+  }
+
+  return (
+    floors.find((floor) => {
+      const minY = getFloorMinY(floor);
+      const maxY = getFloorMaxY(floor);
+
+      if (minY === null || maxY === null) {
+        return false;
+      }
+
+      return isBetween(location.y, minY, maxY);
     }) ??
     floors.find((floor) => getFloorMinY(floor) === null && getFloorMaxY(floor) === null) ??
     floors[0] ??
