@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Search, Store } from "lucide-react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   CartesianGrid,
   Line,
@@ -15,21 +15,23 @@ import {
 } from "recharts";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
-import { getApiBaseUrl } from "@/lib/config/app-env";
-import { getPriceSearchEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
   PriceSearchItem,
-  PriceSearchResponse,
   PriceSummaryRow,
   PriceTraderRow,
 } from "@/types/api/price";
 
-interface PriceSearchApiPayload {
-  msg: string;
-  data: PriceSearchResponse | null;
+type PriceSearchIndexItem = Omit<PriceSearchItem, "history_by_type" | "trader_prices">;
+
+interface StaticPriceSearchResponse {
+  data: PriceSearchIndexItem[];
+  total_count: number;
+  max_pages: number;
+  current_page: number;
 }
 
 const copyByLocale = {
@@ -160,29 +162,53 @@ function hasFleaPrice(
     summary?.flea_market_price !== undefined;
 }
 
-async function fetchPriceSearch({
-  page,
-  searchWord,
-}: {
-  page: number;
-  searchWord: string;
-}) {
-  const response = await fetch(
-    `${getApiBaseUrl()}${getPriceSearchEndpoint(page, 20, searchWord)}`,
-    { cache: "no-store" },
-  );
+function matchesPriceSearch(item: PriceSearchIndexItem, searchWord: string, locale: Locale) {
+  const keyword = searchWord.trim().toLowerCase();
 
-  if (!response.ok) {
-    throw new Error(String(response.status));
+  if (!keyword) {
+    return true;
   }
 
-  const payload = (await response.json()) as PriceSearchApiPayload;
+  return [
+    item.name_en,
+    item.name_ko,
+    item.name_ja,
+    item.normalized_name,
+    item.category,
+    item.parent_category,
+    String(pickLocalizedField(item as unknown as Record<string, unknown>, locale, "name") ?? ""),
+  ].some((value) => value?.toLowerCase().includes(keyword));
+}
 
-  if (payload.msg !== "OK" || payload.data === null) {
-    throw new Error("invalid-payload");
-  }
+function paginatePriceItems(
+  items: PriceSearchIndexItem[],
+  page: number,
+  searchWord: string,
+  locale: Locale,
+): StaticPriceSearchResponse {
+  const pageSize = 20;
+  const filteredItems = items.filter((item) => matchesPriceSearch(item, searchWord, locale));
+  const maxPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
+  const currentPage = Math.min(Math.max(1, page), maxPages);
 
-  return payload.data;
+  return {
+    current_page: currentPage,
+    data: filteredItems.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+    max_pages: maxPages,
+    total_count: filteredItems.length,
+  };
+}
+
+function fetchPriceSearchIndex() {
+  return staticJsonGet<PriceSearchIndexItem[]>("price", "/static/price/v3/search-index.json", {
+    revalidate: 60 * 60,
+  });
+}
+
+function fetchPriceDetail(normalizedName: string) {
+  return staticJsonGet<PriceSearchItem>("price", `/static/price/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60,
+  });
 }
 
 export function PricePage({ locale }: { locale: Locale }) {
@@ -191,18 +217,32 @@ export function PricePage({ locale }: { locale: Locale }) {
   const [searchWord, setSearchWord] = useState("");
   const [priceType, setPriceType] = useState<PriceMode>("pvp");
   const [page, setPage] = useState(1);
-  const [selectedItem, setSelectedItem] = useState<PriceSearchItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<PriceSearchIndexItem | null>(null);
   const theme = priceModeTheme[priceType];
 
   const {
-    data,
+    data: searchIndex,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ["price-search", page, searchWord],
-    queryFn: () => fetchPriceSearch({ page, searchWord }),
-    placeholderData: keepPreviousData,
+    queryKey: ["price-search-index"],
+    queryFn: fetchPriceSearchIndex,
+    staleTime: 60 * 60 * 1000,
   });
+
+  const data = useMemo(
+    () => searchIndex ? paginatePriceItems(searchIndex, page, searchWord, locale) : null,
+    [locale, page, searchIndex, searchWord],
+  );
+
+  const { data: selectedDetail } = useQuery({
+    enabled: Boolean(selectedItem?.normalized_name),
+    queryKey: ["price-detail", selectedItem?.normalized_name],
+    queryFn: () => fetchPriceDetail(selectedItem?.normalized_name ?? ""),
+    staleTime: 60 * 60 * 1000,
+  });
+
+  const detailItem = selectedDetail ?? selectedItem;
 
   useEffect(() => {
     if (!data) {
@@ -212,7 +252,6 @@ export function PricePage({ locale }: { locale: Locale }) {
 
     const nextSelectedItem =
       data.data.find((item) => hasFleaPrice(item.prices[priceType])) ??
-      data.data.find((item) => item.history_by_type[priceType].length > 0) ??
       data.data[0] ??
       null;
 
@@ -223,23 +262,23 @@ export function PricePage({ locale }: { locale: Locale }) {
     );
   }, [data, priceType]);
 
-  const selectedPrice = selectedItem?.prices[priceType] ?? null;
-  const selectedHistory = selectedItem?.history_by_type[priceType] ?? [];
-  const selectedTraderPrices = selectedItem?.trader_prices[priceType] ?? [];
+  const selectedPrice = detailItem?.prices[priceType] ?? null;
+  const selectedHistory = selectedDetail?.history_by_type[priceType] ?? [];
+  const selectedTraderPrices = selectedDetail?.trader_prices[priceType] ?? [];
 
   const localizedSelectedName = useMemo(() => {
-    if (!selectedItem) {
+    if (!detailItem) {
       return null;
     }
 
     return String(
       pickLocalizedField(
-        selectedItem as unknown as Record<string, unknown>,
+        detailItem as unknown as Record<string, unknown>,
         locale,
         "name",
-      ) ?? selectedItem.name_en,
+      ) ?? detailItem.name_en,
     );
-  }, [locale, selectedItem]);
+  }, [detailItem, locale]);
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
@@ -370,9 +409,6 @@ export function PricePage({ locale }: { locale: Locale }) {
                           ) : (
                             <span />
                           )}
-                          {item.history_by_type[priceType].length ? (
-                            <MiniTrend history={item.history_by_type[priceType]} barClassName={theme.miniBar} />
-                          ) : null}
                         </div>
                       </div>
                     </button>
@@ -415,12 +451,12 @@ export function PricePage({ locale }: { locale: Locale }) {
           <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
             <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
               <h2 className="text-lg font-black">{copy.selectedLabel}</h2>
-              {selectedItem && localizedSelectedName ? (
+              {detailItem && localizedSelectedName ? (
                 <div className="mt-5 space-y-5">
                   <div className="flex flex-col gap-5 sm:flex-row">
                     <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-[#2a3038] dark:bg-[#20242b]">
                       <Image
-                        src={selectedItem.image}
+                        src={detailItem.image}
                         alt={localizedSelectedName}
                         fill
                         sizes="128px"
@@ -430,14 +466,14 @@ export function PricePage({ locale }: { locale: Locale }) {
                     <div className="min-w-0 flex-1">
                       <h3 className="text-xl font-semibold">{localizedSelectedName}</h3>
                       <p className="mt-2 font-mono text-xs text-gray-500 dark:text-gray-400">
-                        {selectedItem.normalized_name}
+                        {detailItem.normalized_name}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${theme.subtlePill}`}>
-                          {selectedItem.category ?? "-"}
+                          {detailItem.category ?? "-"}
                         </span>
                         <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600 dark:bg-gray-700/60 dark:text-gray-200">
-                          {copy.sizeLabel} {selectedItem.width}x{selectedItem.height}
+                          {copy.sizeLabel} {detailItem.width}x{detailItem.height}
                         </span>
                         {selectedPrice?.has_flea ? (
                           <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${theme.subtlePill}`}>

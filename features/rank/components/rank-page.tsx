@@ -3,12 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
-import { getApiBaseUrl } from "@/lib/config/app-env";
-import { priceTopEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -240,11 +239,6 @@ const copyByLocale = {
   },
 } as const;
 
-interface PriceTopApiPayload {
-  msg: string;
-  data: PriceTopResponse | null;
-}
-
 function formatPrice(value: number | null, locale: Locale) {
   if (value === null) {
     return "-";
@@ -257,27 +251,10 @@ function formatPrice(value: number | null, locale: Locale) {
   return `${formattedValue} ₽`;
 }
 
-async function fetchPriceTop(categoryList: string[]) {
-  const response = await fetch(`${getApiBaseUrl()}${priceTopEndpoint}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ categoryList }),
-    cache: "no-store",
+function fetchPriceTop() {
+  return staticJsonGet<PriceTopResponse>("price", "/static/price/v3/rank/all.json", {
+    revalidate: 60 * 60,
   });
-
-  if (!response.ok) {
-    throw new Error(String(response.status));
-  }
-
-  const payload = (await response.json()) as PriceTopApiPayload;
-
-  if (payload.msg !== "OK" || payload.data === null) {
-    throw new Error("invalid-payload");
-  }
-
-  return payload.data;
 }
 
 function getLocalizedItemName(item: PriceTopItem, locale: Locale) {
@@ -318,14 +295,14 @@ export function RankPage({ locale }: { locale: Locale }) {
             .filter((group) => selectedCategoryGroups.includes(group.value))
             .flatMap((group) => group.categories),
         ),
-      ),
+      ) as string[],
     [selectedCategoryGroups],
   );
 
   const { data, isError, isFetching, isLoading } = useQuery({
-    queryKey: ["price-top", selectedCategories],
-    queryFn: () => fetchPriceTop(selectedCategories),
-    placeholderData: keepPreviousData,
+    queryKey: ["price-top"],
+    queryFn: fetchPriceTop,
+    staleTime: 60 * 60 * 1000,
   });
 
   const tiers = useMemo(() => {
@@ -336,10 +313,13 @@ export function RankPage({ locale }: { locale: Locale }) {
     return (selectedTiers ?? [])
       .map((tier) => ({
         ...tier,
-        list: tier.list.filter((item) => matchesSearch(item, searchWord)),
+        list: tier.list.filter((item) =>
+          selectedCategories.includes(item.category) &&
+          matchesSearch(item, searchWord)
+        ),
       }))
       .filter((tier) => tier.list.length > 0);
-  }, [data, priceType, searchWord]);
+  }, [data, priceType, searchWord, selectedCategories]);
 
   const totalItemCount = tiers.reduce((sum, tier) => sum + tier.list.length, 0);
 
