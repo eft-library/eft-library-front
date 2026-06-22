@@ -1,9 +1,8 @@
-import { apiGet } from "@/lib/api/api-client";
-import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { WipeSeasonResponse } from "@/types/api/news";
 
 export function getWipeSeasons() {
-  return apiGet<WipeSeasonResponse[]>(apiEndpoints.newsWipe, {
-    revalidate: 60 * 30,
+  return staticJsonGet<WipeSeasonResponse[]>("news", "/static/news/v3/wipe.json", {
+    revalidate: 60 * 60 * 24,
   });
 }

@@ -1,9 +1,4 @@
-import { apiGet } from "@/lib/api/api-client";
 import { staticJsonGet } from "@/lib/api/static-json-client";
-import {
-  getQuestListWithTraderEndpoint,
-  questEndpoints,
-} from "@/lib/config/api-endpoints";
 import type {
   QuestCompletionGraphNode,
   QuestDetailResponse,
@@ -19,7 +14,9 @@ export function getAllQuests() {
 }
 
 export function getQuestFeed() {
-  return apiGet<QuestFeedEntry[]>(questEndpoints.feed, { revalidate: 60 * 10 });
+  return staticJsonGet<QuestFeedEntry[]>("quest", "/static/quest/v3/feed.json", {
+    revalidate: 60 * 60 * 24,
+  });
 }
 
 export function getQuestCompletionGraph() {
@@ -29,8 +26,8 @@ export function getQuestCompletionGraph() {
 }
 
 export function getQuestListWithTrader(traderNormalizedName: string) {
-  return apiGet<QuestListWithTraderResponse>(getQuestListWithTraderEndpoint(traderNormalizedName), {
-    revalidate: 0,
+  return staticJsonGet<QuestListWithTraderResponse>("quest", `/static/quest/v3/list-with-trader/${traderNormalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }
 
