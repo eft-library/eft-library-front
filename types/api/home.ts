@@ -48,7 +48,11 @@ export interface HomeNewsGroups {
 }
 
 export interface HomePostItem {
-  [key: string]: unknown;
+  id: string;
+  slug: string | null;
+  user_email: string | null;
+  category: string | null;
+  title: string | null;
 }
 
 export interface HomeMainResponse {

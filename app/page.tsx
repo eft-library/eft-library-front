@@ -1,5 +1,5 @@
 import { HomePage } from "@/features/home/components/home-page";
-import { getHomeMain } from "@/features/home/api";
+import { getHomeMain, getHomePosts } from "@/features/home/api";
 import { getUserLocale } from "@/i18n/locale";
 import { getUICopy } from "@/lib/constants/ui-copy";
 import { createPageMetadata } from "@/lib/seo/metadata";
@@ -12,15 +12,17 @@ export const metadata = createPageMetadata({
 });
 
 export default async function Page() {
-  const [home, locale] = await Promise.all([
+  const [home, homePosts, locale] = await Promise.all([
     getHomeMain(),
+    getHomePosts().catch(() => null),
     getUserLocale(),
   ]);
   const copy = getUICopy(locale);
+  const homeWithFreshPosts = homePosts ? { ...home, home_posts: homePosts } : home;
 
   return (
     <HomePage
-      home={home}
+      home={homeWithFreshPosts}
       labels={{
         recommendationFeature: copy.home.recommendationFeature,
         event: copy.home.event,
