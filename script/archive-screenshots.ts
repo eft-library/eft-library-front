@@ -6,22 +6,25 @@ import fs from "node:fs/promises";
 const baseUrl = "https://eftlibrary.com";
 
 const pages = [
-//   { path: "/", name: "home" },
-//   { path: "/roadmap", name: "roadmap" },
-//   { path: "/price", name: "price" },
-//   { path: "/rank", name: "rank" },
-//   { path: "/story/tour", name: "story" },
-//   { path: "/quest/54cb50c76803fa8b248b4571", name: "quest" },
-//   { path: "/quest/detail/shooting-cans", name: "quest-detail" },
-//   { path: "/item/info/adrenaline-injector", name: "item-detail" },
-//   { path: "/hideout", name: "hideout" },
+  //   { path: "/", name: "home" },
+  //   { path: "/roadmap", name: "roadmap" },
+  //   { path: "/price", name: "price" },
+  //   { path: "/rank", name: "rank" },
+  //   { path: "/story/tour", name: "story" },
+  //   { path: "/quest/prapor", name: "quest" },
+  //   { path: "/quest/detail/shooting-cans", name: "quest-detail" },
+  //   { path: "/item/info/adrenaline-injector", name: "item-detail" },
+  //   { path: "/hideout", name: "hideout" },
   { path: "/boss/reshala", name: "boss-detail" },
-//   { path: "/event?id=1", name: "event" },
-//   { path: "/event/detail/event27", name: "event-detail" },
-//   { path: "/map-of-tarkov/CUSTOMS", name: "map-of-tarkov" },
-  { path: "/community/detail/809203066355191808-saiteu-seongneung-mic-nae-wici-cajgi-gineung-gaeseon-annae", name: "community-detail" },
-//   { path: "/wipe", name: "wipe" },
-//   { path: "/minigame", name: "minigame" },
+  //   { path: "/event?id=1", name: "event" },
+  //   { path: "/event/detail/event27", name: "event-detail" },
+  //   { path: "/map-of-tarkov/customs", name: "map-of-tarkov" },
+  {
+    path: "/community/detail/809203066355191808-saiteu-seongneung-mic-nae-wici-cajgi-gineung-gaeseon-annae",
+    name: "community-detail",
+  },
+  //   { path: "/wipe", name: "wipe" },
+  //   { path: "/minigame", name: "minigame" },
 ];
 
 const themes = ["dark", "light"] as const;
