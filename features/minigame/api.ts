@@ -1,4 +1,5 @@
 import { apiGet, apiPost } from "@/lib/api/api-client";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import type {
   ProgressItemResponse,
@@ -37,7 +38,7 @@ export function saveMinigameScore(payload: RngScoreSaveRequest) {
 }
 
 export function getProgressItems() {
-  return apiGet<ProgressItemResponse>(apiEndpoints.progressItem, {
-    revalidate: 60 * 10,
+  return staticJsonGet<ProgressItemResponse>("progress", "/static/progress/v3/progress-item.json", {
+    revalidate: 60 * 60 * 24,
   });
 }

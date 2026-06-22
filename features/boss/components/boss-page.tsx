@@ -96,9 +96,9 @@ function BossProfileSummary({
 
             <div className="mt-3 grid gap-2">
               {sortedSpawns.length > 0 ? (
-                sortedSpawns.map((spawn) => (
+                sortedSpawns.map((spawn, index) => (
                   <div
-                    key={`${spawn.name_en}-${spawn.spawn_chance}`}
+                    key={`${spawn.name_en}-${spawn.spawn_chance}-${index}`}
                     className="flex items-center justify-between gap-4 rounded-md bg-gray-50 px-4 py-3 dark:bg-[#1d2228]"
                   >
                     <span className="font-semibold">

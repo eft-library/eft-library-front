@@ -1,6 +1,6 @@
 import { apiGet } from "@/lib/api/api-client";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import {
-  getQuestDetailEndpoint,
   getQuestListWithTraderEndpoint,
   questEndpoints,
 } from "@/lib/config/api-endpoints";
@@ -13,7 +13,9 @@ import type {
 } from "@/types/api/quest";
 
 export function getAllQuests() {
-  return apiGet<QuestListEntry[]>(questEndpoints.all, { revalidate: 60 * 10 });
+  return staticJsonGet<QuestListEntry[]>("quest", "/static/quest/v3/all.json", {
+    revalidate: 60 * 60 * 24,
+  });
 }
 
 export function getQuestFeed() {
@@ -21,8 +23,8 @@ export function getQuestFeed() {
 }
 
 export function getQuestCompletionGraph() {
-  return apiGet<QuestCompletionGraphNode[]>(questEndpoints.completionGraph, {
-    revalidate: 60 * 30,
+  return staticJsonGet<QuestCompletionGraphNode[]>("quest", "/static/quest/v3/completion-graph.json", {
+    revalidate: 60 * 60 * 24,
   });
 }
 
@@ -33,7 +35,7 @@ export function getQuestListWithTrader(traderNormalizedName: string) {
 }
 
 export function getQuestDetail(normalizedName: string) {
-  return apiGet<QuestDetailResponse>(getQuestDetailEndpoint(normalizedName), {
-    revalidate: 60 * 10,
+  return staticJsonGet<QuestDetailResponse>("quest", `/static/quest/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

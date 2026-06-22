@@ -1,10 +1,9 @@
-import { apiGet } from "@/lib/api/api-client";
-import { getItemListEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 
 import type { ItemListEntry } from "@/features/item/types";
 
 export function getItemList(itemType: string) {
-  return apiGet<ItemListEntry[]>(getItemListEndpoint(itemType), {
-    revalidate: 60 * 30,
+  return staticJsonGet<ItemListEntry[]>("item", `/static/item/v3/lists/${itemType}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

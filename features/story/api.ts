@@ -1,21 +1,17 @@
-import { apiGet } from "@/lib/api/api-client";
-import {
-  apiEndpoints,
-  getStoryDetailEndpoint,
-} from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type {
   StoryDetailResponse,
   StoryRoadmapNode,
 } from "@/types/api/story";
 
 export function getStoryDetail(storyId: string) {
-  return apiGet<StoryDetailResponse>(getStoryDetailEndpoint(storyId), {
-    revalidate: 60 * 10,
+  return staticJsonGet<StoryDetailResponse>("story", `/static/story/v3/details/${storyId}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }
 
 export function getStoryRoadmap() {
-  return apiGet<StoryRoadmapNode[]>(apiEndpoints.storyRoadmap, {
-    revalidate: 60 * 10,
+  return staticJsonGet<StoryRoadmapNode[]>("story", "/static/story/v3/roadmap.json", {
+    revalidate: 60 * 60 * 24,
   });
 }

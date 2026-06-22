@@ -1,9 +1,8 @@
-import { apiGet } from "@/lib/api/api-client";
-import { getItemInfoEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { ItemInfoResponse } from "@/types/api/item-info";
 
 export function getItemInfo(normalizedName: string) {
-  return apiGet<ItemInfoResponse>(getItemInfoEndpoint(normalizedName), {
-    revalidate: 60 * 30,
+  return staticJsonGet<ItemInfoResponse>("item", `/static/item/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

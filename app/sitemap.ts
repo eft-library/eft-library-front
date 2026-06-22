@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { getApiBaseUrl } from "@/lib/config/app-env";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 
 interface SitemapApiItem {
   id: number;
@@ -12,13 +12,6 @@ interface SitemapApiItem {
   update_time: string;
 }
 
-interface SitemapApiResponse {
-  status: number;
-  msg: string;
-  data: SitemapApiItem[];
-}
-
-const sitemapEndpoint = "/api/search/v3/sitemap";
 const revalidateSeconds = 60 * 60 * 24 * 30;
 
 export const revalidate = 2592000;
@@ -41,21 +34,9 @@ function toChangeFrequency(
 }
 
 async function getSitemapItems() {
-  const response = await fetch(`${getApiBaseUrl()}${sitemapEndpoint}`, {
-    next: { revalidate: revalidateSeconds },
+  return staticJsonGet<SitemapApiItem[]>("search", "/static/search/v3/sitemap.json", {
+    revalidate: revalidateSeconds,
   });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch sitemap data: ${response.status}`);
-  }
-
-  const payload = (await response.json()) as SitemapApiResponse;
-
-  if (payload.msg !== "OK" || !Array.isArray(payload.data)) {
-    throw new Error("Invalid sitemap API response");
-  }
-
-  return payload.data;
 }
 
 export async function generateSitemaps() {

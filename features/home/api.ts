@@ -1,13 +1,14 @@
-import { apiGet } from "@/lib/api/api-client";
-import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { HomeMainResponse, HomeMenuResponse } from "@/types/api/home";
 
 export function getHomeMain() {
-  return apiGet<HomeMainResponse>(apiEndpoints.homeMain, { revalidate: 60 * 10 });
+  return staticJsonGet<HomeMainResponse>("home", "/static/home/v3/main.json", {
+    revalidate: 60 * 60 * 24,
+  });
 }
 
 export function getHomeMenu() {
-  return apiGet<HomeMenuResponse>(apiEndpoints.homeMenu, {
-    revalidate: 60 * 30,
+  return staticJsonGet<HomeMenuResponse>("home", "/static/home/v3/menu-with-autocomplete.json", {
+    revalidate: 60 * 60 * 24,
   });
 }

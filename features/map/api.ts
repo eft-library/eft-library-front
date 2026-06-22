@@ -1,9 +1,8 @@
-import { apiGet } from "@/lib/api/api-client";
-import { getMapDetailEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { MapDetailResponse } from "@/types/api/map";
 
 export function getMapDetail(normalizedName: string) {
-  return apiGet<MapDetailResponse>(getMapDetailEndpoint(normalizedName), {
-    revalidate: 60 * 30,
+  return staticJsonGet<MapDetailResponse>("map", `/static/map/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

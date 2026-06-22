@@ -1,9 +1,8 @@
-import { apiGet } from "@/lib/api/api-client";
-import { getMapOfTarkovDetailEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { MapOfTarkovDetailResponse } from "@/types/api/map-of-tarkov";
 
 export function getMapOfTarkovDetail(normalizedName: string) {
-  return apiGet<MapOfTarkovDetailResponse>(getMapOfTarkovDetailEndpoint(normalizedName), {
-    revalidate: 60 * 10,
+  return staticJsonGet<MapOfTarkovDetailResponse>("map-of-tarkov", `/static/map-of-tarkov/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

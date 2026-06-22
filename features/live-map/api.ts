@@ -1,11 +1,4 @@
-import { apiGet } from "@/lib/api/api-client";
-import {
-  getLiveMapDetailEndpoint,
-  getLiveMapEventDetailEndpoint,
-  getLiveMapQuestDetailEndpoint,
-  getLiveMapStoryDetailEndpoint,
-  questEndpoints,
-} from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { QuestCompletionGraphNode } from "@/types/api/quest";
 import type {
   EventInfo,
@@ -33,33 +26,33 @@ function withCoordinateInfo(liveMap: LiveMapDetailResponse): LiveMapPageData {
 }
 
 export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapPageData> {
-  const liveMap = await apiGet<LiveMapDetailResponse>(getLiveMapDetailEndpoint(normalizedName), {
-    revalidate: 60 * 30,
+  const liveMap = await staticJsonGet<LiveMapDetailResponse>("live-map", `/static/live-map/v3/maps/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 
   return withCoordinateInfo(liveMap);
 }
 
 export function getLiveMapQuestDetail(questIdOrNormalizedName: string) {
-  return apiGet<LiveMapQuestInfo>(getLiveMapQuestDetailEndpoint(questIdOrNormalizedName), {
-    revalidate: 60 * 30,
+  return staticJsonGet<LiveMapQuestInfo>("live-map", `/static/live-map/v3/quests/${questIdOrNormalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapStoryDetail(storyId: string) {
-  return apiGet<StoryInfo>(getLiveMapStoryDetailEndpoint(storyId), {
-    revalidate: 60 * 30,
+  return staticJsonGet<StoryInfo>("live-map", `/static/live-map/v3/stories/${storyId}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapEventDetail(eventId: string) {
-  return apiGet<EventInfo>(getLiveMapEventDetailEndpoint(eventId), {
-    revalidate: 60 * 30,
+  return staticJsonGet<EventInfo>("live-map", `/static/live-map/v3/events/${eventId}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapCompletionGraph() {
-  return apiGet<QuestCompletionGraphNode[]>(questEndpoints.completionGraph, {
-    revalidate: 60 * 30,
+  return staticJsonGet<QuestCompletionGraphNode[]>("live-map", "/static/live-map/v3/completion-graph.json", {
+    revalidate: 60 * 60 * 24,
   });
 }

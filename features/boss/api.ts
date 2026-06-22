@@ -1,9 +1,8 @@
-import { apiGet } from "@/lib/api/api-client";
-import { getBossDetailEndpoint } from "@/lib/config/api-endpoints";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import type { BossDetailResponse } from "@/types/api/boss";
 
 export function getBossDetail(normalizedName: string) {
-  return apiGet<BossDetailResponse>(getBossDetailEndpoint(normalizedName), {
-    revalidate: 60 * 10,
+  return staticJsonGet<BossDetailResponse>("boss", `/static/boss/v3/details/${normalizedName}.json`, {
+    revalidate: 60 * 60 * 24,
   });
 }

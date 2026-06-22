@@ -1,11 +1,11 @@
-import { apiGet } from "@/lib/api/api-client";
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
+import { staticJsonGet } from "@/lib/api/static-json-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import type { RoadmapResponse } from "@/types/api/roadmap";
 
 export function getRoadmap() {
-  return apiGet<RoadmapResponse>(apiEndpoints.roadmap, {
-    revalidate: 60 * 30,
+  return staticJsonGet<RoadmapResponse>("roadmap", "/static/roadmap/v3/get-roadmap.json", {
+    revalidate: 60 * 60 * 24,
   });
 }
 
