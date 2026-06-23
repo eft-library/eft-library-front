@@ -7,7 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { priceTopEndpoint } from "@/lib/config/api-endpoints";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -252,7 +253,8 @@ function formatPrice(value: number | null, locale: Locale) {
 }
 
 function fetchPriceTop() {
-  return staticJsonGet<PriceTopResponse>("price", "/static/price/v3/rank/all.json", {
+  return staticJsonGetWithFallback<PriceTopResponse>("price", "/static/price/v3/rank/all.json", {
+    apiPath: priceTopEndpoint,
     revalidate: 60 * 60,
   });
 }

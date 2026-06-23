@@ -1,7 +1,8 @@
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import {
   apiEndpoints,
+  getHideoutDetailEndpoint,
 } from "@/lib/config/api-endpoints";
 import type {
   HideoutDetailResponse,
@@ -10,13 +11,15 @@ import type {
 } from "@/types/api/hideout";
 
 export function getHideoutStations() {
-  return staticJsonGet<HideoutStationListResponse>("hideout", "/static/hideout/v3/get-station.json", {
+  return staticJsonGetWithFallback<HideoutStationListResponse>("hideout", "/static/hideout/v3/get-station.json", {
+    apiPath: apiEndpoints.hideoutStation,
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getHideoutDetail(normalizedName: string) {
-  return staticJsonGet<HideoutDetailResponse>("hideout", `/static/hideout/v3/details/${normalizedName}.json`, {
+  return staticJsonGetWithFallback<HideoutDetailResponse>("hideout", `/static/hideout/v3/details/${normalizedName}.json`, {
+    apiPath: getHideoutDetailEndpoint(normalizedName),
     revalidate: 60 * 60 * 24,
   });
 }

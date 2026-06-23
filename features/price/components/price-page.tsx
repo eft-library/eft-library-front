@@ -15,12 +15,15 @@ import {
 } from "recharts";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { apiGet } from "@/lib/api/api-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { getPriceSearchEndpoint } from "@/lib/config/api-endpoints";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
   PriceSearchItem,
+  PriceSearchResponse,
   PriceSummaryRow,
   PriceTraderRow,
 } from "@/types/api/price";
@@ -200,13 +203,32 @@ function paginatePriceItems(
 }
 
 function fetchPriceSearchIndex() {
-  return staticJsonGet<PriceSearchIndexItem[]>("price", "/static/price/v3/search-index.json", {
+  return staticJsonGetWithFallback<PriceSearchIndexItem[]>("price", "/static/price/v3/search-index.json", {
+    fallback: async () => {
+      const response = await apiGet<PriceSearchResponse>(getPriceSearchEndpoint(1, 100000, ""), {
+        revalidate: 60 * 60,
+      });
+
+      return response.data;
+    },
     revalidate: 60 * 60,
   });
 }
 
 function fetchPriceDetail(normalizedName: string) {
-  return staticJsonGet<PriceSearchItem>("price", `/static/price/v3/details/${normalizedName}.json`, {
+  return staticJsonGetWithFallback<PriceSearchItem>("price", `/static/price/v3/details/${normalizedName}.json`, {
+    fallback: async () => {
+      const response = await apiGet<PriceSearchResponse>(getPriceSearchEndpoint(1, 20, normalizedName), {
+        revalidate: 60 * 60,
+      });
+      const item = response.data.find((entry) => entry.normalized_name === normalizedName) ?? response.data[0];
+
+      if (!item) {
+        throw new Error(`Price detail fallback returned empty data for ${normalizedName}`);
+      }
+
+      return item;
+    },
     revalidate: 60 * 60,
   });
 }

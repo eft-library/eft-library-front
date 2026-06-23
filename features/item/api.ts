@@ -1,9 +1,11 @@
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { getItemListEndpoint } from "@/lib/config/api-endpoints";
 
 import type { ItemListEntry } from "@/features/item/types";
 
 export function getItemList(itemType: string) {
-  return staticJsonGet<ItemListEntry[]>("item", `/static/item/v3/lists/${itemType}.json`, {
+  return staticJsonGetWithFallback<ItemListEntry[]>("item", `/static/item/v3/lists/${itemType}.json`, {
+    apiPath: getItemListEndpoint(itemType),
     revalidate: 60 * 60 * 24,
   });
 }

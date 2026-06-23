@@ -1,6 +1,6 @@
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import type {
   ProgressItemResponse,
   ProgressItemSaveRequest,
@@ -14,7 +14,8 @@ export function getProgressItems(accessToken?: string) {
     });
   }
 
-  return staticJsonGet<ProgressItemResponse>("progress", "/static/progress/v3/progress-item.json", {
+  return staticJsonGetWithFallback<ProgressItemResponse>("progress", "/static/progress/v3/progress-item.json", {
+    apiPath: apiEndpoints.progressItem,
     revalidate: 60 * 60 * 24,
   });
 }

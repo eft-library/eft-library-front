@@ -1,4 +1,11 @@
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import {
+  getLiveMapDetailEndpoint,
+  getLiveMapEventDetailEndpoint,
+  getLiveMapQuestDetailEndpoint,
+  getLiveMapStoryDetailEndpoint,
+  questEndpoints,
+} from "@/lib/config/api-endpoints";
 import type { QuestCompletionGraphNode } from "@/types/api/quest";
 import type {
   EventInfo,
@@ -26,33 +33,42 @@ function withCoordinateInfo(liveMap: LiveMapDetailResponse): LiveMapPageData {
 }
 
 export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapPageData> {
-  const liveMap = await staticJsonGet<LiveMapDetailResponse>("live-map", `/static/live-map/v3/maps/${normalizedName}.json`, {
-    revalidate: 60 * 60 * 24,
-  });
+  const liveMap = await staticJsonGetWithFallback<LiveMapDetailResponse>(
+    "live-map",
+    `/static/live-map/v3/maps/${normalizedName}.json`,
+    {
+      apiPath: getLiveMapDetailEndpoint(normalizedName),
+      revalidate: 60 * 60 * 24,
+    },
+  );
 
   return withCoordinateInfo(liveMap);
 }
 
 export function getLiveMapQuestDetail(questIdOrNormalizedName: string) {
-  return staticJsonGet<LiveMapQuestInfo>("live-map", `/static/live-map/v3/quests/${questIdOrNormalizedName}.json`, {
+  return staticJsonGetWithFallback<LiveMapQuestInfo>("live-map", `/static/live-map/v3/quests/${questIdOrNormalizedName}.json`, {
+    apiPath: getLiveMapQuestDetailEndpoint(questIdOrNormalizedName),
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapStoryDetail(storyId: string) {
-  return staticJsonGet<StoryInfo>("live-map", `/static/live-map/v3/stories/${storyId}.json`, {
+  return staticJsonGetWithFallback<StoryInfo>("live-map", `/static/live-map/v3/stories/${storyId}.json`, {
+    apiPath: getLiveMapStoryDetailEndpoint(storyId),
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapEventDetail(eventId: string) {
-  return staticJsonGet<EventInfo>("live-map", `/static/live-map/v3/events/${eventId}.json`, {
+  return staticJsonGetWithFallback<EventInfo>("live-map", `/static/live-map/v3/events/${eventId}.json`, {
+    apiPath: getLiveMapEventDetailEndpoint(eventId),
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getLiveMapCompletionGraph() {
-  return staticJsonGet<QuestCompletionGraphNode[]>("live-map", "/static/live-map/v3/completion-graph.json", {
+  return staticJsonGetWithFallback<QuestCompletionGraphNode[]>("live-map", "/static/live-map/v3/completion-graph.json", {
+    apiPath: questEndpoints.completionGraph,
     revalidate: 60 * 60 * 24,
   });
 }

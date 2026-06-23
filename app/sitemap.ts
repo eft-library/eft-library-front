@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 
 interface SitemapApiItem {
   id: number;
@@ -34,7 +34,8 @@ function toChangeFrequency(
 }
 
 async function getSitemapItems() {
-  return staticJsonGet<SitemapApiItem[]>("search", "/static/search/v3/sitemap.json", {
+  return staticJsonGetWithFallback<SitemapApiItem[]>("search", "/static/search/v3/sitemap.json", {
+    apiPath: "/api/search/v3/sitemap",
     revalidate: revalidateSeconds,
   });
 }

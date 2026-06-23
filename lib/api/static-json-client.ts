@@ -1,3 +1,5 @@
+import { apiGet } from "@/lib/api/api-client";
+
 export interface StaticJsonEnvelope<T> {
   status: number;
   msg: string;
@@ -7,6 +9,13 @@ export interface StaticJsonEnvelope<T> {
 
 interface StaticJsonOptions {
   revalidate?: number;
+}
+
+interface StaticJsonFallbackOptions<T> extends StaticJsonOptions {
+  apiPath?: string;
+  apiRevalidate?: number;
+  fallback?: () => Promise<T>;
+  preferApiInDevelopment?: boolean;
 }
 
 function normalizeStaticPath(staticPath: string) {
@@ -81,4 +90,60 @@ export async function staticJsonGet<T>(
   }
 
   return payload.data;
+}
+
+function logStaticFallback(staticPath: string, error: unknown) {
+  if (process.env.NODE_ENV === "production") {
+    console.warn(`[static-json] fallback to API: ${staticPath}`);
+    return;
+  }
+
+  console.warn(`[static-json] fallback to API: ${staticPath}`, error);
+}
+
+async function getFallbackData<T>({
+  apiPath,
+  apiRevalidate,
+  fallback,
+}: Pick<StaticJsonFallbackOptions<T>, "apiPath" | "apiRevalidate" | "fallback">) {
+  if (fallback) {
+    return fallback();
+  }
+
+  if (apiPath) {
+    return apiGet<T>(apiPath, {
+      revalidate: apiRevalidate,
+    });
+  }
+
+  throw new Error("Static JSON fallback requires either apiPath or fallback");
+}
+
+export async function staticJsonGetWithFallback<T>(
+  domain: string,
+  staticPath: string,
+  {
+    apiPath,
+    apiRevalidate,
+    fallback,
+    preferApiInDevelopment = true,
+    ...staticOptions
+  }: StaticJsonFallbackOptions<T>,
+) {
+  const shouldUseApiFirst = process.env.NODE_ENV === "development" && preferApiInDevelopment;
+
+  if (shouldUseApiFirst && (apiPath || fallback)) {
+    try {
+      return await getFallbackData<T>({ apiPath, apiRevalidate, fallback });
+    } catch (error) {
+      console.warn(`[static-json] API first failed, trying static JSON: ${staticPath}`, error);
+    }
+  }
+
+  try {
+    return await staticJsonGet<T>(domain, staticPath, staticOptions);
+  } catch (error) {
+    logStaticFallback(staticPath, error);
+    return getFallbackData<T>({ apiPath, apiRevalidate, fallback });
+  }
 }

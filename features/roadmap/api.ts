@@ -1,10 +1,11 @@
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import type { RoadmapResponse } from "@/types/api/roadmap";
 
 export function getRoadmap() {
-  return staticJsonGet<RoadmapResponse>("roadmap", "/static/roadmap/v3/get-roadmap.json", {
+  return staticJsonGetWithFallback<RoadmapResponse>("roadmap", "/static/roadmap/v3/get-roadmap.json", {
+    apiPath: apiEndpoints.roadmap,
     revalidate: 60 * 60 * 24,
   });
 }

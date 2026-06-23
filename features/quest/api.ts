@@ -1,4 +1,9 @@
-import { staticJsonGet } from "@/lib/api/static-json-client";
+import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import {
+  getQuestDetailEndpoint,
+  getQuestListWithTraderEndpoint,
+  questEndpoints,
+} from "@/lib/config/api-endpoints";
 import type {
   QuestCompletionGraphNode,
   QuestDetailResponse,
@@ -8,31 +13,36 @@ import type {
 } from "@/types/api/quest";
 
 export function getAllQuests() {
-  return staticJsonGet<QuestListEntry[]>("quest", "/static/quest/v3/all.json", {
+  return staticJsonGetWithFallback<QuestListEntry[]>("quest", "/static/quest/v3/all.json", {
+    apiPath: questEndpoints.all,
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getQuestFeed() {
-  return staticJsonGet<QuestFeedEntry[]>("quest", "/static/quest/v3/feed.json", {
+  return staticJsonGetWithFallback<QuestFeedEntry[]>("quest", "/static/quest/v3/feed.json", {
+    apiPath: questEndpoints.feed,
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getQuestCompletionGraph() {
-  return staticJsonGet<QuestCompletionGraphNode[]>("quest", "/static/quest/v3/completion-graph.json", {
+  return staticJsonGetWithFallback<QuestCompletionGraphNode[]>("quest", "/static/quest/v3/completion-graph.json", {
+    apiPath: questEndpoints.completionGraph,
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getQuestListWithTrader(traderNormalizedName: string) {
-  return staticJsonGet<QuestListWithTraderResponse>("quest", `/static/quest/v3/list-with-trader/${traderNormalizedName}.json`, {
+  return staticJsonGetWithFallback<QuestListWithTraderResponse>("quest", `/static/quest/v3/list-with-trader/${traderNormalizedName}.json`, {
+    apiPath: getQuestListWithTraderEndpoint(traderNormalizedName),
     revalidate: 60 * 60 * 24,
   });
 }
 
 export function getQuestDetail(normalizedName: string) {
-  return staticJsonGet<QuestDetailResponse>("quest", `/static/quest/v3/details/${normalizedName}.json`, {
+  return staticJsonGetWithFallback<QuestDetailResponse>("quest", `/static/quest/v3/details/${normalizedName}.json`, {
+    apiPath: getQuestDetailEndpoint(normalizedName),
     revalidate: 60 * 60 * 24,
   });
 }
