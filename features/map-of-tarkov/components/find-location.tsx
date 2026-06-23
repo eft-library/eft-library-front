@@ -126,7 +126,9 @@ export function FindLocation({
 }) {
   const copy = copyByLocale[locale];
   const latestWebsocketLocation = useWsStore((state) => state.latestLocation);
-  const storedMapLocation = useWsStore((state) => state.locationByMap[mapKey] ?? "");
+  const storedMapLocation = useWsStore(
+    (state) => state.locationByMap[mapKey] ?? "",
+  );
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
   const [where, setWhere] = useState("");
@@ -135,7 +137,10 @@ export function FindLocation({
   const [imageCoord, setImageCoord] = useState({ x: 0, y: 0, yaw: 0 });
   const [mousePosition, setMousePosition] = useState<LatLng | null>(null);
 
-  function applyWhereText(text: string, { save = true }: { save?: boolean } = {}) {
+  function applyWhereText(
+    text: string,
+    { save = true }: { save?: boolean } = {},
+  ) {
     const result = parseWhereText(text);
     setImageCoord(result ?? { x: 0, y: 0, yaw: 0 });
     setIsViewWhere(Boolean(result));
@@ -269,7 +274,10 @@ function FindLocationGuide({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      onClick={onClose}
+    >
       <div
         role="dialog"
         aria-modal="true"
@@ -278,7 +286,11 @@ function FindLocationGuide({
       >
         <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-4 dark:border-gray-700">
           <h3 className="text-xl font-black">{copy.modalTitle}</h3>
-          <button type="button" onClick={onClose} className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-white/10">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-white/10"
+          >
             ×
           </button>
         </div>
@@ -287,7 +299,7 @@ function FindLocationGuide({
           <GuideCard title={copy.manualTitle} steps={copy.manualSteps} />
         </div>
         <a
-          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/where-am-i"
+          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/live-map-v2"
           target="_blank"
           rel="noreferrer"
           className="mt-5 inline-flex rounded-md bg-orange-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-600"
@@ -299,7 +311,13 @@ function FindLocationGuide({
   );
 }
 
-function GuideCard({ title, steps }: { title: string; steps: readonly string[] }) {
+function GuideCard({
+  title,
+  steps,
+}: {
+  title: string;
+  steps: readonly string[];
+}) {
   return (
     <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-[#1e2124]">
       <h4 className="font-black">{title}</h4>

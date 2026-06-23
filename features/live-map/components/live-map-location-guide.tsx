@@ -41,10 +41,13 @@ export function LiveMapLocationGuide({
         </div>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           <GuideCard title={copy.guideAutoTitle} steps={copy.guideAutoSteps} />
-          <GuideCard title={copy.guideManualTitle} steps={copy.guideManualSteps} />
+          <GuideCard
+            title={copy.guideManualTitle}
+            steps={copy.guideManualSteps}
+          />
         </div>
         <a
-          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/where-am-i"
+          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/live-map-v2"
           target="_blank"
           rel="noreferrer"
           className="mt-5 inline-flex rounded-md bg-orange-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-600 dark:text-[#1e2124]"
@@ -56,7 +59,13 @@ export function LiveMapLocationGuide({
   );
 }
 
-function GuideCard({ title, steps }: { title: string; steps: readonly string[] }) {
+function GuideCard({
+  title,
+  steps,
+}: {
+  title: string;
+  steps: readonly string[];
+}) {
   return (
     <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-[#1e2124]">
       <h4 className="font-black text-gray-950 dark:text-white">{title}</h4>
