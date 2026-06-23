@@ -33,9 +33,9 @@ export interface BossCharacter {
 
 export interface BossSpawnEntry {
   spawn_chance: number;
-  name_en: string;
-  name_ko: string;
-  name_ja: string;
+  name_en: string | null;
+  name_ko: string | null;
+  name_ja: string | null;
 }
 
 export interface BossItemEntry {

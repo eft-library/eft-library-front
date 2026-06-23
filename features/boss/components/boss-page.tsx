@@ -28,8 +28,42 @@ function formatPercent(value: number) {
   return `${Math.round(value * 100)} %`;
 }
 
-function getSortedSpawns(spawns: BossSpawnEntry[]) {
-  return [...spawns].sort((a, b) => b.spawn_chance - a.spawn_chance);
+function getSpawnName(spawn: BossSpawnEntry, locale: Locale) {
+  const fallbackName = spawn.name_ko?.trim() || spawn.name_en?.trim() || spawn.name_ja?.trim() || "";
+
+  switch (locale) {
+    case "en":
+      return spawn.name_en?.trim() || fallbackName;
+    case "ja":
+      return spawn.name_ja?.trim() || fallbackName;
+    case "ko":
+    default:
+      return spawn.name_ko?.trim() || fallbackName;
+  }
+}
+
+function getSortedSpawns(spawns: BossSpawnEntry[], locale: Locale) {
+  const uniqueSpawns = new Map<string, BossSpawnEntry>();
+
+  spawns.forEach((spawn) => {
+    const dedupeKey = [
+      spawn.name_en?.trim().toLowerCase(),
+      spawn.name_ko?.trim().toLowerCase(),
+      spawn.name_ja?.trim().toLowerCase(),
+    ].find(Boolean);
+
+    if (!dedupeKey) {
+      return;
+    }
+
+    const existing = uniqueSpawns.get(dedupeKey);
+
+    if (!existing || getSpawnName(existing, locale).length === 0) {
+      uniqueSpawns.set(dedupeKey, spawn);
+    }
+  });
+
+  return [...uniqueSpawns.values()].sort((a, b) => b.spawn_chance - a.spawn_chance);
 }
 
 function normalizeGuideHtml(value: unknown) {
@@ -50,7 +84,7 @@ function BossProfileSummary({
   labels: ReturnType<typeof getBossPageCopy>;
 }) {
   const bossName = pickLocalizedText(boss, locale);
-  const sortedSpawns = getSortedSpawns(spawns);
+  const sortedSpawns = getSortedSpawns(spawns, locale);
 
   return (
     <section className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#33404c] dark:bg-[#20252b]">
@@ -102,7 +136,7 @@ function BossProfileSummary({
                     className="flex items-center justify-between gap-4 rounded-md bg-gray-50 px-4 py-3 dark:bg-[#1d2228]"
                   >
                     <span className="font-semibold">
-                      {pickLocalizedText(spawn, locale)}
+                      {getSpawnName(spawn, locale)}
                     </span>
                     <span className="font-mono text-sm text-gray-500 dark:text-gray-300">
                       {formatPercent(spawn.spawn_chance)}
