@@ -10,6 +10,73 @@ import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 
 import type { ItemListPageProps } from "@/features/item/types";
+import type { AmmoEfficiency } from "@/types/api/item-info";
+
+const ammoEfficiencyLabels = ["1", "2", "3", "4", "5", "6"] as const;
+
+function getAmmoEfficiencyValues(efficiency: AmmoEfficiency) {
+  return [
+    efficiency.value_1,
+    efficiency.value_2,
+    efficiency.value_3,
+    efficiency.value_4,
+    efficiency.value_5,
+    efficiency.value_6,
+  ];
+}
+
+function getAmmoSortValues(item: ItemListPageProps["items"][number]) {
+  const efficiency = item.ammo_info?.efficiency;
+  const values = efficiency ? getAmmoEfficiencyValues(efficiency) : [null, null, null, null, null, null];
+
+  return {
+    classValues: [...values].reverse().map((value) => value ?? -1),
+    penetration: item.ammo_info?.penetration_power ?? -1,
+    damage: item.ammo_info?.damage ?? -1,
+  };
+}
+
+function compareAmmoItems(
+  left: ItemListPageProps["items"][number],
+  right: ItemListPageProps["items"][number],
+) {
+  const leftValues = getAmmoSortValues(left);
+  const rightValues = getAmmoSortValues(right);
+
+  for (let index = 0; index < leftValues.classValues.length; index += 1) {
+    const diff = rightValues.classValues[index] - leftValues.classValues[index];
+
+    if (diff !== 0) {
+      return diff;
+    }
+  }
+
+  return (
+    rightValues.penetration - leftValues.penetration ||
+    rightValues.damage - leftValues.damage ||
+    left.name_en.localeCompare(right.name_en)
+  );
+}
+
+function getAmmoEfficiencyTone(value: number | null) {
+  if (value === null) {
+    return "border-gray-200 bg-gray-50 text-gray-400 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-500";
+  }
+
+  if (value >= 6) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-500/15 dark:text-emerald-300";
+  }
+
+  if (value >= 4) {
+    return "border-lime-200 bg-lime-50 text-lime-700 dark:border-lime-400/30 dark:bg-lime-500/15 dark:text-lime-300";
+  }
+
+  if (value >= 2) {
+    return "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-400/30 dark:bg-amber-500/15 dark:text-amber-300";
+  }
+
+  return "border-red-200 bg-red-50 text-red-700 dark:border-red-400/30 dark:bg-red-500/15 dark:text-red-300";
+}
 
 function getPreviewFrameSize(width: number, height: number) {
   const safeWidth = Math.max(1, width);
@@ -52,12 +119,13 @@ export function ItemListPage({
 
   const filteredItems = useMemo(() => {
     const keyword = deferredQuery.trim().toLowerCase();
+    const sortedItems = itemType === "ammo" ? [...items].sort(compareAmmoItems) : items;
 
     if (!keyword) {
-      return items;
+      return sortedItems;
     }
 
-    return items.filter((item) => {
+    return sortedItems.filter((item) => {
       const localizedName = String(
         pickLocalizedField(
           item as unknown as Record<string, unknown>,
@@ -71,7 +139,7 @@ export function ItemListPage({
         item.name_en.toLowerCase().includes(keyword)
       );
     });
-  }, [deferredQuery, items, labels.locale]);
+  }, [deferredQuery, itemType, items, labels.locale]);
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
@@ -185,6 +253,32 @@ export function ItemListPage({
                         {itemType}
                       </span>
                     </div>
+                    {itemType === "ammo" && item.ammo_info?.efficiency ? (
+                      <div className="mt-4">
+                        <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500 dark:text-gray-400">
+                          Armor Class
+                        </div>
+                        <div className="grid grid-cols-6 gap-1">
+                          {getAmmoEfficiencyValues(item.ammo_info.efficiency).map((value, index) => (
+                            <div
+                              key={`${item.id}-efficiency-${ammoEfficiencyLabels[index]}`}
+                              className={cn(
+                                "flex min-w-0 flex-col items-center rounded-md border px-1.5 py-1",
+                                getAmmoEfficiencyTone(value),
+                              )}
+                              title={`Class ${ammoEfficiencyLabels[index]}: ${value ?? "-"}`}
+                            >
+                              <span className="text-[9px] font-semibold leading-none opacity-70">
+                                {ammoEfficiencyLabels[index]}
+                              </span>
+                              <span className="mt-0.5 text-xs font-bold leading-none">
+                                {value ?? "-"}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </Link>
               );

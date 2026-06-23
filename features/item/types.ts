@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/config";
+import type { AmmoInfo } from "@/types/api/item-info";
 
 export interface ItemListEntry {
   id: string;
@@ -9,6 +10,7 @@ export interface ItemListEntry {
   image: string;
   width: number;
   height: number;
+  ammo_info?: AmmoInfo;
 }
 
 export interface ItemListLabels {
