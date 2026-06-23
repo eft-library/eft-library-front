@@ -365,6 +365,28 @@ function RoadmapCanvas({
   const [selectedKappaItems, setSelectedKappaItems] = useState<string[]>([]);
   const [selectedRebirthItems, setSelectedRebirthItems] = useState<string[]>([]);
   const completedRef = useRef<Set<string>>(new Set());
+  const fitViewFrameRef = useRef<number | null>(null);
+
+  const scheduleFitView = useCallback(() => {
+    if (fitViewFrameRef.current !== null) {
+      cancelAnimationFrame(fitViewFrameRef.current);
+    }
+
+    fitViewFrameRef.current = requestAnimationFrame(() => {
+      fitViewFrameRef.current = requestAnimationFrame(() => {
+        fitView({ padding: 0.12 });
+        fitViewFrameRef.current = null;
+      });
+    });
+  }, [fitView]);
+
+  useEffect(() => {
+    return () => {
+      if (fitViewFrameRef.current !== null) {
+        cancelAnimationFrame(fitViewFrameRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -476,8 +498,8 @@ function RoadmapCanvas({
       })),
     );
     setFlowEdges(edges);
-    requestAnimationFrame(() => fitView());
-  }, [nodes, edges, fitView, setFlowEdges, setFlowNodes]);
+    scheduleFitView();
+  }, [nodes, edges, scheduleFitView, setFlowEdges, setFlowNodes]);
 
   useEffect(() => {
     setFlowNodes((currentNodes) =>
@@ -581,7 +603,6 @@ function RoadmapCanvas({
 
   function handleTraderChange(value: string) {
     setTabState(value);
-    requestAnimationFrame(() => fitView());
   }
 
   return (
@@ -1175,10 +1196,10 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
       <div className={cn("h-full rounded-xl bg-linear-to-br p-1 shadow-lg", getNodeColor(props.data.traderId))}>
         <div
           className={cn(
-            "relative flex h-full min-h-30 flex-col justify-center rounded-lg border-2 bg-white p-4 pt-10 text-center dark:bg-[#181c21]",
+            "relative flex h-full min-h-30 flex-col justify-center rounded-lg border-2 bg-white p-4 pt-10 text-center dark:bg-[#232a33]",
             props.data.completed
-              ? "border-emerald-400 dark:border-emerald-500"
-              : "border-gray-200 dark:border-[#2a3038]",
+              ? "border-emerald-400 dark:border-emerald-400"
+              : "border-gray-200 dark:border-[#47515f]",
           )}
         >
           <div className="absolute right-3 top-3">
@@ -1195,7 +1216,7 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
                 "flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border-2 transition",
                 props.data.completed
                   ? "border-emerald-500 bg-emerald-500 text-white"
-                  : "border-gray-300 bg-white hover:border-emerald-400 dark:border-gray-600 dark:bg-[#20242b]",
+                  : "border-gray-300 bg-white hover:border-emerald-400 dark:border-[#647184] dark:bg-[#1a2028]",
               )}
             >
               {props.data.completed ? <Check className="h-4 w-4" /> : null}
@@ -1222,7 +1243,7 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
           ) : null}
 
           {props.data.completed ? (
-            <div className="pointer-events-none absolute inset-0 rounded-lg bg-emerald-500/10" />
+            <div className="pointer-events-none absolute inset-0 rounded-lg bg-emerald-400/15" />
           ) : null}
         </div>
       </div>
@@ -1230,13 +1251,13 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
       <Handle
         type="target"
         position={Position.Left}
-        className="h-3 w-3 border-2 border-white bg-sky-500 dark:border-[#181c21]"
+        className="h-3 w-3 border-2 border-white bg-sky-500 dark:border-[#232a33]"
         isConnectable={props.isConnectable}
       />
       <Handle
         type="source"
         position={Position.Right}
-        className="h-3 w-3 border-2 border-white bg-sky-500 dark:border-[#181c21]"
+        className="h-3 w-3 border-2 border-white bg-sky-500 dark:border-[#232a33]"
         isConnectable={props.isConnectable}
       />
     </div>
@@ -1271,9 +1292,9 @@ function TraderFlowNode(props: NodeProps<RoadmapFlowNode>) {
       className="group relative min-h-56 min-w-52 cursor-pointer rounded-2xl text-left transition hover:scale-105 hover:shadow-2xl"
     >
       <div className={cn("h-full rounded-2xl bg-linear-to-br p-1 shadow-lg", getNodeColor(props.data.traderId))}>
-        <div className="h-full overflow-hidden rounded-xl border-2 border-gray-200 bg-white dark:border-[#2a3038] dark:bg-[#181c21]">
+        <div className="h-full overflow-hidden rounded-xl border-2 border-gray-200 bg-white dark:border-[#47515f] dark:bg-[#232a33]">
           <div className="flex justify-center px-4 pb-4 pt-8">
-            <div className="relative h-28 w-28 overflow-hidden rounded-full ring-4 ring-white dark:ring-[#20242b]">
+            <div className="relative h-28 w-28 overflow-hidden rounded-full ring-4 ring-white dark:ring-[#2f3945]">
               <Image src={props.data.image} alt={name} fill sizes="112px" className="object-cover" />
             </div>
           </div>
