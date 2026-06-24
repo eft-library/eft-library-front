@@ -40,3 +40,5 @@ next-env.d.ts
 
 # static
 /public/static
+
+log.out
