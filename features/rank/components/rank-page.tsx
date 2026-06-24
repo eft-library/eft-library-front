@@ -7,12 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { apiPost } from "@/lib/api/api-client";
 import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import { priceTopEndpoint } from "@/lib/config/api-endpoints";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
   PriceTopItem,
+  PriceTopRequest,
   PriceTopResponse,
   PriceTopTier,
 } from "@/types/api/price";
@@ -254,7 +256,18 @@ function formatPrice(value: number | null, locale: Locale) {
 
 function fetchPriceTop() {
   return staticJsonGetWithFallback<PriceTopResponse>("price", "/static/price/v3/rank/all.json", {
-    apiPath: priceTopEndpoint,
+    fallback: () =>
+      apiPost<PriceTopRequest, PriceTopResponse>(
+        priceTopEndpoint,
+        {
+          categoryList: Array.from(
+            new Set(rankCategoryGroups.flatMap((group) => group.categories)),
+          ),
+        },
+        {
+          revalidate: 60 * 60,
+        },
+      ),
     revalidate: 60 * 60,
   });
 }
