@@ -472,6 +472,13 @@ function ObjectiveList({
                 />
               ) : null}
               {objective.items.length > 0 ? <ItemRow items={objective.items} locale={locale} /> : null}
+              {objective.required_keys.length > 0 ? (
+                <RequiredKeyRow
+                  copy={copy}
+                  keys={objective.required_keys}
+                  locale={locale}
+                />
+              ) : null}
             </li>
           );
         })}
@@ -1035,6 +1042,48 @@ function ItemRow({
         </a>
       ))}
     </ExpandableRows>
+  );
+}
+
+function RequiredKeyRow({
+  copy,
+  keys,
+  locale,
+}: {
+  copy: LiveMapCopy;
+  keys: QuestDetailItem[];
+  locale: Locale;
+}) {
+  return (
+    <div className="space-y-1.5 pl-5">
+      <div className="text-[11px] font-black uppercase tracking-[0.12em] text-violet-600 dark:text-violet-300">
+        {copy.requiredKeys}
+      </div>
+      <ExpandableRows className="grid gap-1.5" copy={copy}>
+        {keys.map((keyItem) => (
+          <a
+            key={keyItem.id}
+            href={`/item/info/${keyItem.normalized_name}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-w-0 items-center gap-2 rounded-md border border-violet-200 bg-violet-50 px-2 py-1.5 text-xs font-medium text-violet-800 hover:border-violet-300 hover:text-violet-600 dark:border-violet-500/30 dark:bg-violet-500/10 dark:text-violet-100 dark:hover:border-violet-400 dark:hover:text-violet-200"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white/80 dark:bg-[#20242b]">
+              {keyItem.image ? (
+                <img
+                  alt={localizedName(keyItem as unknown as Record<string, unknown>, locale)}
+                  className="h-full w-full object-contain"
+                  src={keyItem.image}
+                />
+              ) : null}
+            </span>
+            <span className="min-w-0 flex-1 truncate">
+              {localizedName(keyItem as unknown as Record<string, unknown>, locale)}
+            </span>
+          </a>
+        ))}
+      </ExpandableRows>
+    </div>
   );
 }
 
