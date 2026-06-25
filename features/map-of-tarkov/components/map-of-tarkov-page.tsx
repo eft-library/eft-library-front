@@ -34,14 +34,12 @@ import type {
   MapPointInfo,
   MapSelectorEntry,
 } from "@/types/api/map-of-tarkov";
-import { FindLocation } from "./find-location";
 
 const copyByLocale = {
   ko: {
     title: "타르코프 지도",
     map: "지도",
     subMap: "하위 지도",
-    findLocation: "내 위치 찾기",
     extractionInfo: "탈출구",
     transitInfo: "Transits",
     bossInfo: "보스",
@@ -56,16 +54,12 @@ const copyByLocale = {
     oneTimeUse: "일회용",
     requirements: "필요 조건",
     tips: "Tip",
-    mapBounds: "지도 좌표",
-    imageBounds: "이미지 좌표",
-    defaultZoom: "기본 줌",
     none: "-",
   },
   en: {
     title: "Tarkov Map",
     map: "Map",
     subMap: "Sub Map",
-    findLocation: "Find My Location",
     extractionInfo: "Extraction",
     transitInfo: "Transits",
     bossInfo: "Boss",
@@ -80,16 +74,12 @@ const copyByLocale = {
     oneTimeUse: "One-time Use",
     requirements: "Requirements",
     tips: "Tip",
-    mapBounds: "Map Bounds",
-    imageBounds: "Image Bounds",
-    defaultZoom: "Default Zoom",
     none: "-",
   },
   ja: {
     title: "タルコフの地図",
     map: "マップ",
     subMap: "サブマップ",
-    findLocation: "私の位置を探す",
     extractionInfo: "脱出ポイント",
     transitInfo: "Transits",
     bossInfo: "ボス",
@@ -104,9 +94,6 @@ const copyByLocale = {
     oneTimeUse: "使い捨て",
     requirements: "必要条件",
     tips: "ヒント",
-    mapBounds: "マップ座標",
-    imageBounds: "画像座標",
-    defaultZoom: "デフォルトズーム",
     none: "-",
   },
 } as const;
@@ -208,15 +195,6 @@ export function MapOfTarkovPage({
             />
           </button>
         </section>
-
-        {contentMapData.find_info ? (
-          <FindLocation
-            key={contentMapData.map_info.normalized_name}
-            findInfo={contentMapData.find_info}
-            locale={locale}
-            mapKey={contentMapData.map_info.normalized_name}
-          />
-        ) : null}
 
         <BossSection bosses={contentMapData.boss_info} copy={copy} locale={locale} />
         <PointSection
@@ -346,15 +324,6 @@ function uniqueByNormalizedName(entries: MapSelectorEntry[]) {
     seen.add(entry.normalized_name);
     return true;
   });
-}
-
-function InfoStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-[#1e2124]">
-      <div className="text-xs font-bold uppercase tracking-[0.16em] text-gray-400">{label}</div>
-      <div className="mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">{value}</div>
-    </div>
-  );
 }
 
 function BossSection({
