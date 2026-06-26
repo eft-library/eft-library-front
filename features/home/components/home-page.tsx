@@ -118,13 +118,18 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
 
             <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {home.main.map((item) => (
+                {home.main.map((item, index) => (
                   <Link
                     key={item.id}
                     href={item.url}
                     className="group flex flex-col"
                   >
-                    <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 hover:scale-[1.02] hover:border-orange-300 hover:bg-gray-50 dark:border-gray-700/50 dark:bg-gray-800/20 dark:hover:border-orange-400/50 dark:hover:bg-gray-700/30">
+                    <div className="relative rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 hover:scale-[1.02] hover:border-orange-300 hover:bg-gray-50 dark:border-gray-700/50 dark:bg-gray-800/20 dark:hover:border-orange-400/50 dark:hover:bg-gray-700/30">
+                      {index === 1 ? (
+                        <span className="absolute right-2 top-2 z-10 rounded-full border border-orange-200 bg-orange-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white shadow-sm dark:border-orange-300/40 dark:bg-orange-500">
+                          NEW
+                        </span>
+                      ) : null}
                       <div className="relative mb-3 aspect-square overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700/50">
                         <Image
                           src={item.image}
