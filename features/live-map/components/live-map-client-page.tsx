@@ -12,6 +12,10 @@ import {
   Layers,
   LocateFixed,
   MapPinned,
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelRightClose,
+  PanelRightOpen,
   Search,
 } from "lucide-react";
 
@@ -342,6 +346,8 @@ export function LiveMapClientPage({
   const [mousePosition, setMousePosition] = useState<LatLng | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isMapSelectorOpen, setIsMapSelectorOpen] = useState(false);
+  const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
   const [panel, setPanel] = useState<PanelState | null>(null);
   const [imagePopup, setImagePopup] = useState<LiveMapPopupImage | null>(null);
   const [notice, setNotice] = useState("");
@@ -1505,8 +1511,35 @@ export function LiveMapClientPage({
         </header>
 
         <div className="flex min-h-0 flex-1">
-          <aside className="hidden w-72 shrink-0 flex-col border-r border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex">
-            <div className="min-h-0 flex-1 overflow-y-auto">
+          <aside
+            className={cn(
+              "hidden shrink-0 flex-col border-r border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
+              isLeftPanelOpen ? "w-72" : "w-11",
+            )}
+          >
+            <div
+              className={cn(
+                "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
+                isLeftPanelOpen ? "justify-end" : "justify-center",
+              )}
+            >
+              <button
+                type="button"
+                aria-expanded={isLeftPanelOpen}
+                aria-label={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
+                title={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
+                onClick={() => setIsLeftPanelOpen((value) => !value)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
+              >
+                {isLeftPanelOpen ? (
+                  <PanelLeftClose className="h-4 w-4" />
+                ) : (
+                  <PanelLeftOpen className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+
+            <div className={cn("min-h-0 flex-1 overflow-y-auto", !isLeftPanelOpen && "hidden")}>
               <PanelBlock>
                 <div className="relative">
                   <button
@@ -1626,7 +1659,7 @@ export function LiveMapClientPage({
               />
             </div>
 
-            <div className="border-t border-gray-200 p-3 text-xs text-gray-500 dark:border-[#3a3d41] dark:text-gray-400">
+            <div className={cn("border-t border-gray-200 p-3 text-xs text-gray-500 dark:border-[#3a3d41] dark:text-gray-400", !isLeftPanelOpen && "hidden")}>
               <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-gray-200">
                 <Layers className="h-3.5 w-3.5 text-orange-500" />
                 {selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : copy.title}
@@ -1704,8 +1737,35 @@ export function LiveMapClientPage({
             />
           ) : null}
 
-          <aside className="hidden w-72 shrink-0 flex-col border-l border-gray-200 bg-white dark:border-[#3a3d41] dark:bg-[#1f2124] lg:flex">
-            <div className="min-h-0 flex-1 overflow-y-auto">
+          <aside
+            className={cn(
+              "hidden shrink-0 flex-col border-l border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] lg:flex",
+              isRightPanelOpen ? "w-72" : "w-11",
+            )}
+          >
+            <div
+              className={cn(
+                "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
+                isRightPanelOpen ? "justify-start" : "justify-center",
+              )}
+            >
+              <button
+                type="button"
+                aria-expanded={isRightPanelOpen}
+                aria-label={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
+                title={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
+                onClick={() => setIsRightPanelOpen((value) => !value)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
+              >
+                {isRightPanelOpen ? (
+                  <PanelRightClose className="h-4 w-4" />
+                ) : (
+                  <PanelRightOpen className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+
+            <div className={cn("min-h-0 flex-1 overflow-y-auto", !isRightPanelOpen && "hidden")}>
               <RightSection
                 allLabel={copy.allOnOff}
                 completedQuestIds={completedQuestIds}

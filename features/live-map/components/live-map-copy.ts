@@ -14,6 +14,10 @@ export const copyByLocale = {
     stories: "스토리",
     events: "이벤트",
     staticPoints: "위치",
+    collapseSpawnPanel: "스폰 패널 접기",
+    expandSpawnPanel: "스폰 패널 펼치기",
+    collapseQuestPanel: "퀘스트 패널 접기",
+    expandQuestPanel: "퀘스트 패널 펼치기",
     staticCategoryAll: "전체",
     staticCategories: {
       black_div_spawn: "블랙 디비전 스폰",
@@ -96,6 +100,10 @@ export const copyByLocale = {
     stories: "Stories",
     events: "Events",
     staticPoints: "Locations",
+    collapseSpawnPanel: "Collapse spawn panel",
+    expandSpawnPanel: "Expand spawn panel",
+    collapseQuestPanel: "Collapse quest panel",
+    expandQuestPanel: "Expand quest panel",
     staticCategoryAll: "All",
     staticCategories: {
       black_div_spawn: "Black Div Spawns",
@@ -178,6 +186,10 @@ export const copyByLocale = {
     stories: "ストーリー",
     events: "イベント",
     staticPoints: "位置",
+    collapseSpawnPanel: "スポーンパネルを閉じる",
+    expandSpawnPanel: "スポーンパネルを開く",
+    collapseQuestPanel: "クエストパネルを閉じる",
+    expandQuestPanel: "クエストパネルを開く",
     staticCategoryAll: "全体",
     staticCategories: {
       black_div_spawn: "Black Divスポーン",

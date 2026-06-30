@@ -729,6 +729,11 @@ export function LiveMapCanvas({
       zoomAnimation: false,
       zoomSnap: 0.5,
     });
+    const resizeObserver = new ResizeObserver(() => {
+      map.invalidateSize({ debounceMoveend: true, pan: false });
+    });
+
+    resizeObserver.observe(container);
 
     const updateRenderBounds = () => {
       setRenderBounds(map.getBounds().pad(1));
@@ -850,6 +855,7 @@ export function LiveMapCanvas({
     mapRef.current = map;
 
     return () => {
+      resizeObserver.disconnect();
       container.classList.remove("live-map-is-zooming");
       markerRef.current?.remove();
       markerRef.current = null;
