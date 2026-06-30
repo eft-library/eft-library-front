@@ -1510,11 +1510,11 @@ export function LiveMapClientPage({
           </button>
         </header>
 
-        <div className="flex min-h-0 flex-1">
+        <div className="relative flex min-h-0 flex-1">
           <aside
             className={cn(
               "hidden shrink-0 flex-col border-r border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
-              isLeftPanelOpen ? "w-72" : "w-11",
+              isLeftPanelOpen ? "w-60 lg:w-72" : "w-11",
             )}
           >
             <div
@@ -1739,8 +1739,8 @@ export function LiveMapClientPage({
 
           <aside
             className={cn(
-              "hidden shrink-0 flex-col border-l border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] lg:flex",
-              isRightPanelOpen ? "w-72" : "w-11",
+              "hidden shrink-0 flex-col border-l border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
+              isRightPanelOpen ? "w-60 lg:w-72" : "w-11",
             )}
           >
             <div
