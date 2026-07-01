@@ -63,99 +63,18 @@ export function PlayerIcon(rotation: number) {
   return L.divIcon({
     className: "player-icon",
     html: `
-      <div style="
-        width: 46px;
-        height: 46px;
-        position: relative;
+      <div class="player-location-marker" style="
         transform: rotate(${rotation}deg);
-        transform-origin: center;
-        filter: drop-shadow(0 3px 6px rgba(0,0,0,0.55));
       ">
-
         <div class="player-icon-pulse"></div>
-
-        <!-- 방향 화살표 -->
-        <div style="
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 0;
-          height: 0;
-          border-left: 10px solid transparent;
-          border-right: 10px solid transparent;
-          border-bottom: 18px solid #f97316;
-          z-index: 5;
-          filter:
-            drop-shadow(0 1px 2px rgba(0,0,0,0.7))
-            drop-shadow(0 0 8px rgba(249,115,22,0.62));
-        "></div>
-
-        <!-- 화살표 하이라이트 -->
-        <div style="
-          position: absolute;
-          top: 6px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 0;
-          height: 0;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-bottom: 10px solid rgba(255,255,255,0.85);
-          z-index: 6;
-          opacity: 0.75;
-        "></div>
-
-        <!-- 외곽 링 -->
-        <div style="
-          position: absolute;
-          inset: 9px;
-          border-radius: 50%;
-          background: rgba(8,13,24,0.98);
-          border: 2px solid rgba(255,255,255,0.95);
-          box-sizing: border-box;
-          z-index: 1;
-          box-shadow:
-            0 0 0 3px rgba(14,165,233,0.52),
-            0 0 18px rgba(14,165,233,0.7);
-        "></div>
-
-        <!-- 몸통 -->
-        <div style="
-          position: absolute;
-          inset: 14px;
-          border-radius: 50%;
-          background:
-            radial-gradient(circle at 35% 30%,
-              #f0f9ff 0%,
-              #38bdf8 38%,
-              #2563eb 100%);
-          border: 1px solid rgba(0,0,0,0.45);
-          box-sizing: border-box;
-          z-index: 3;
-          box-shadow:
-            inset 0 1px 2px rgba(255,255,255,0.7),
-            inset 0 -2px 3px rgba(0,0,0,0.3),
-            0 0 10px rgba(56,189,248,0.68);
-        "></div>
-
-        <!-- 중심점 -->
-        <div style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 5px;
-          height: 5px;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          background: white;
-          z-index: 7;
-          box-shadow: 0 0 5px rgba(255,255,255,0.9);
-        "></div>
-
+        <div class="player-icon-view-cone"></div>
+        <div class="player-icon-heading"></div>
+        <div class="player-icon-ring"></div>
+        <div class="player-icon-body"></div>
+        <div class="player-icon-center"></div>
       </div>
     `,
-    iconSize: [46, 46],
-    iconAnchor: [23, 23],
+    iconSize: [64, 64],
+    iconAnchor: [32, 32],
   });
 }

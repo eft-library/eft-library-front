@@ -102,6 +102,10 @@ import {
   getStoryPointPopupHtml,
 } from "./live-map-marker-popup";
 import { LiveMapLocationGuide } from "./live-map-location-guide";
+import {
+  readLiveMapPreferences,
+  writeLiveMapPreferences,
+} from "./live-map-preferences-storage";
 import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
 import { findFloorForLocation, parseWhereText, type LiveMapLocation } from "./live-map-utils";
 
@@ -363,6 +367,7 @@ export function LiveMapClientPage({
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
+  const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
   const [undoDrawingRequest, setUndoDrawingRequest] = useState(0);
@@ -382,6 +387,28 @@ export function LiveMapClientPage({
     () => [...data.floors].sort((left, right) => left.floor_no - right.floor_no),
     [data.floors],
   );
+
+  useEffect(() => {
+    const preferences = readLiveMapPreferences();
+
+    if (preferences) {
+      setAreStaticLabelsVisible(preferences.areStaticLabelsVisible);
+      setIsAutoPanLocked(preferences.isAutoPanLocked);
+    }
+
+    setHasLoadedPreferences(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoadedPreferences) {
+      return;
+    }
+
+    writeLiveMapPreferences({
+      areStaticLabelsVisible,
+      isAutoPanLocked,
+    });
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked]);
   const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);

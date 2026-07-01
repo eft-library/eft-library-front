@@ -707,6 +707,7 @@ export function LiveMapCanvas({
   const containerRef = useRef<LeafletContainerElement | null>(null);
   const drawingCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawingStrokesRef = useRef<DrawingStroke[]>([]);
+  const drawingStrokesByFloorRef = useRef<Map<string, DrawingStroke[]>>(new Map());
   const currentDrawingStrokeRef = useRef<DrawingStroke | null>(null);
   const lastDrawingClientPointRef = useRef<{ x: number; y: number } | null>(null);
   const redrawDrawingRef = useRef<() => void>(() => undefined);
@@ -737,19 +738,15 @@ export function LiveMapCanvas({
     [coordinateInfo.map_bounds],
   );
 
-  function getDrawingStorageKey() {
-    return `eft-live-map-drawings:v1:${mapKey}:${activeFloorId}`;
+  function getDrawingCacheKey() {
+    return `${mapKey}:${activeFloorId}`;
   }
 
-  function saveDrawingStrokes() {
-    try {
-      window.localStorage.setItem(
-        getDrawingStorageKey(),
-        JSON.stringify(drawingStrokesRef.current),
-      );
-    } catch {
-      // Drawing remains available for the current session when storage is unavailable.
-    }
+  function cacheDrawingStrokes() {
+    drawingStrokesByFloorRef.current.set(
+      getDrawingCacheKey(),
+      drawingStrokesRef.current,
+    );
   }
 
   redrawDrawingRef.current = () => {
@@ -819,47 +816,7 @@ export function LiveMapCanvas({
   };
 
   useEffect(() => {
-    let storedValue: string | null = null;
-    let nextStrokes: DrawingStroke[] = [];
-
-    try {
-      storedValue = window.localStorage.getItem(getDrawingStorageKey());
-    } catch {
-      storedValue = null;
-    }
-
-    if (storedValue) {
-      try {
-        const parsed: unknown = JSON.parse(storedValue);
-
-        if (Array.isArray(parsed)) {
-          nextStrokes = parsed.filter((stroke): stroke is DrawingStroke => {
-            if (!stroke || typeof stroke !== "object") {
-              return false;
-            }
-
-            const candidate = stroke as Partial<DrawingStroke>;
-            return (
-              typeof candidate.color === "string" &&
-              typeof candidate.erase === "boolean" &&
-              Array.isArray(candidate.points) &&
-              candidate.points.every((point) => (
-                !!point &&
-                typeof point === "object" &&
-                typeof (point as Partial<DrawingPoint>).lat === "number" &&
-                typeof (point as Partial<DrawingPoint>).lng === "number"
-              )) &&
-              typeof candidate.width === "number" &&
-              typeof candidate.zoom === "number"
-            );
-          });
-        }
-      } catch {
-        nextStrokes = [];
-      }
-    }
-
-    drawingStrokesRef.current = nextStrokes;
+    drawingStrokesRef.current = drawingStrokesByFloorRef.current.get(getDrawingCacheKey()) ?? [];
     currentDrawingStrokeRef.current = null;
     window.requestAnimationFrame(() => redrawDrawingRef.current());
   }, [activeFloorId, mapKey]);
@@ -884,7 +841,7 @@ export function LiveMapCanvas({
 
     previousUndoDrawingRequestRef.current = undoDrawingRequest;
     drawingStrokesRef.current.pop();
-    saveDrawingStrokes();
+    cacheDrawingStrokes();
     redrawDrawingRef.current();
   }, [undoDrawingRequest]);
 
@@ -896,7 +853,7 @@ export function LiveMapCanvas({
     previousClearDrawingRequestRef.current = clearDrawingRequest;
     drawingStrokesRef.current = [];
     currentDrawingStrokeRef.current = null;
-    saveDrawingStrokes();
+    cacheDrawingStrokes();
     redrawDrawingRef.current();
   }, [clearDrawingRequest]);
 
@@ -976,7 +933,7 @@ export function LiveMapCanvas({
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
 
-    saveDrawingStrokes();
+    cacheDrawingStrokes();
     redrawDrawingRef.current();
     event.preventDefault();
   }
