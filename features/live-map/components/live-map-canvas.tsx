@@ -94,7 +94,7 @@ const staticMarkerColorByType: Record<string, string> = {
   raider_spawn: "#22d3ee",
   rogue_spawn: "#64748b",
   scav_spawn: "#fb923c",
-  sniper_spawn: "#fb923c",
+  sniper_spawn: "#22d3ee",
   stationary_weapon: "#94a3b8",
   transit: "#f87171",
   transit_switch: "#facc15",
@@ -473,8 +473,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       height: ${size}px;
       position: relative;
       opacity: ${markerOpacity};
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) ${isFocused ? `drop-shadow(0 0 9px ${color})` : ""};
-      transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
+      transition: transform 120ms ease, opacity 120ms ease;
       transform: ${isFocused ? "scale(1.12)" : "none"};
     `;
 
@@ -511,8 +510,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(30,33,38,0.98), rgba(8,10,13,0.98));
       box-shadow: inset 0 0 0 2px ${color}, inset 0 0 0 4px rgba(255,255,255,0.18);
-      filter: drop-shadow(0 3px 7px rgba(0,0,0,0.62)) ${isFocused ? `drop-shadow(0 0 11px ${color})` : ""};
-      transition: transform 120ms ease, opacity 120ms ease, filter 120ms ease;
+      transition: transform 120ms ease, opacity 120ms ease;
       transform: ${isFocused ? "scale(1.12)" : "none"};
     `;
 

@@ -166,11 +166,6 @@ summary {
   border-top-color: rgba(21, 25, 29, 0.96);
 }
 
-.live-map-canvas.live-map-is-zooming .live-map-marker-icon > div {
-  filter: none !important;
-  transition: none !important;
-}
-
 .live-map-canvas.live-map-is-zooming .live-map-marker-tooltip {
   display: none !important;
 }
