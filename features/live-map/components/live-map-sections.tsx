@@ -735,11 +735,13 @@ function getStaticPanelIconSvg(category: string, color: string, size: number, fa
   }
 
   if (category === "sniper_spawn") {
+    const reticleColor = "#22d3ee";
+
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
-        <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
-        <circle cx="12" cy="12" r="1.8" fill="${color}" />
+        <circle cx="12" cy="12" r="6.8" stroke="${reticleColor}" stroke-width="2.4" />
+        <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${reticleColor}" stroke-width="2.4" stroke-linecap="round" />
+        <circle cx="12" cy="12" r="1.8" fill="${reticleColor}" />
       </svg>
     `;
   }

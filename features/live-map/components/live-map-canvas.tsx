@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import L, {
   CRS,
   type ImageOverlay as LeafletImageOverlay,
@@ -21,6 +21,20 @@ import type { LiveMapCoordinateInfo, LiveMapFloor } from "@/types/api/live-map";
 import type { LiveMapLocation } from "./live-map-utils";
 
 export type LiveMapMarkerKind = "quest" | "story" | "event" | "static";
+export type LiveMapDrawingMode = "hand" | "red" | "blue" | "erase";
+
+interface DrawingPoint {
+  lat: number;
+  lng: number;
+}
+
+interface DrawingStroke {
+  color: string;
+  erase: boolean;
+  points: DrawingPoint[];
+  width: number;
+  zoom: number;
+}
 
 export interface LiveMapCanvasMarker {
   id: string;
@@ -119,6 +133,23 @@ export function getStaticCategoryMarkerType(category: string, faction?: string) 
 
 function getStaticMarkerColor(point: LiveMapCanvasMarker) {
   return getStaticMarkerColorByType(getStaticMarkerType(point));
+}
+
+function escapeMarkerLabel(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function getStaticMarkerLabelHtml(point: LiveMapCanvasMarker, color: string) {
+  if (point.staticCategory !== "boss_spawn" && point.staticCategory !== "extract") {
+    return "";
+  }
+
+  return `<span class="live-map-static-marker-label" style="--live-map-label-color: ${color}">${escapeMarkerLabel(point.label)}</span>`;
 }
 
 export function getStaticMarkerColorByType(type: string) {
@@ -225,12 +256,14 @@ function WeaponIconSvg(color: string, size: number) {
   `;
 }
 
-function SniperIconSvg(color: string, size: number) {
+function SniperIconSvg(size: number) {
+  const reticleColor = "#22d3ee";
+
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <circle cx="12" cy="12" r="6.8" stroke="${color}" stroke-width="2.4" />
-      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${color}" stroke-width="2.4" stroke-linecap="round" />
-      <circle cx="12" cy="12" r="1.8" fill="${color}" />
+      <circle cx="12" cy="12" r="6.8" stroke="${reticleColor}" stroke-width="2.4" />
+      <path d="M12 3.8v4M12 16.2v4M3.8 12h4M16.2 12h4" stroke="${reticleColor}" stroke-width="2.4" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="1.8" fill="${reticleColor}" />
     </svg>
   `;
 }
@@ -382,7 +415,7 @@ export function getStaticIconSvgForType(type: string, size: number) {
   }
 
   if (type === "sniper_spawn") {
-    return SniperIconSvg(color, size);
+    return SniperIconSvg(size);
   }
 
   if (type === "btr_stop") {
@@ -497,6 +530,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
           ">
             ${getStaticIconSvg(point, iconSize)}
           </span>
+          ${getStaticMarkerLabelHtml(point, color)}
         </div>
       `,
       iconAnchor: [size / 2, size / 2],
@@ -635,11 +669,14 @@ function syncPointMarkerPresentation({
 
 export function LiveMapCanvas({
   activeFloorId,
+  clearDrawingRequest,
   coordinateInfo,
+  drawingMode,
   floors,
   focusedMarkerId,
   focusRequestKey = 0,
   focusTarget,
+  isAutoPanLocked,
   location,
   mapKey,
   markers,
@@ -648,13 +685,17 @@ export function LiveMapCanvas({
   onFocusedMarkerClose,
   onPopupImageClick,
   onMousePositionChange,
+  undoDrawingRequest,
 }: {
   activeFloorId: string;
+  clearDrawingRequest: number;
   coordinateInfo: LiveMapCoordinateInfo;
+  drawingMode: LiveMapDrawingMode;
   focusedMarkerId?: string | null;
   focusRequestKey?: number;
   focusTarget?: { id: string; key: number; x: number; y: number } | null;
   floors: LiveMapFloor[];
+  isAutoPanLocked: boolean;
   location: LiveMapLocation | null;
   mapKey: string;
   markers: LiveMapCanvasMarker[];
@@ -663,8 +704,16 @@ export function LiveMapCanvas({
   onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
+  undoDrawingRequest: number;
 }) {
   const containerRef = useRef<LeafletContainerElement | null>(null);
+  const drawingCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const drawingStrokesRef = useRef<DrawingStroke[]>([]);
+  const currentDrawingStrokeRef = useRef<DrawingStroke | null>(null);
+  const lastDrawingClientPointRef = useRef<{ x: number; y: number } | null>(null);
+  const redrawDrawingRef = useRef<() => void>(() => undefined);
+  const previousClearDrawingRequestRef = useRef(clearDrawingRequest);
+  const previousUndoDrawingRequestRef = useRef(undoDrawingRequest);
   const imageOverlayRefs = useRef<LeafletImageOverlay[]>([]);
   const mapRef = useRef<LeafletMap | null>(null);
   const pointMarkerByIdRef = useRef<Map<string, PointMarkerEntry>>(new Map());
@@ -678,6 +727,7 @@ export function LiveMapCanvas({
   const activeFloorIdRef = useRef(activeFloorId);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const mapKeyRef = useRef(mapKey);
+  const isAutoPanLockedRef = useRef(isAutoPanLocked);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const imageBoundsKey = useMemo(
@@ -689,14 +739,259 @@ export function LiveMapCanvas({
     [coordinateInfo.map_bounds],
   );
 
+  function getDrawingStorageKey() {
+    return `eft-live-map-drawings:v1:${mapKey}:${activeFloorId}`;
+  }
+
+  function saveDrawingStrokes() {
+    try {
+      window.localStorage.setItem(
+        getDrawingStorageKey(),
+        JSON.stringify(drawingStrokesRef.current),
+      );
+    } catch {
+      // Drawing remains available for the current session when storage is unavailable.
+    }
+  }
+
+  redrawDrawingRef.current = () => {
+    const canvas = drawingCanvasRef.current;
+    const map = mapRef.current;
+
+    if (!canvas || !map) {
+      return;
+    }
+
+    const rect = map.getContainer().getBoundingClientRect();
+    const pixelRatio = window.devicePixelRatio || 1;
+    const nextWidth = Math.max(1, Math.round(rect.width * pixelRatio));
+    const nextHeight = Math.max(1, Math.round(rect.height * pixelRatio));
+
+    if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+      canvas.width = nextWidth;
+      canvas.height = nextHeight;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+    }
+
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      return;
+    }
+
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    context.clearRect(0, 0, rect.width, rect.height);
+
+    const drawStroke = (stroke: DrawingStroke) => {
+      if (stroke.points.length === 0) {
+        return;
+      }
+
+      const scale = 2 ** (map.getZoom() - stroke.zoom);
+      const firstPoint = map.latLngToContainerPoint(stroke.points[0]);
+
+      context.globalCompositeOperation = stroke.erase ? "destination-out" : "source-over";
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.lineWidth = Math.max(1, Math.min(48, stroke.width * scale));
+      context.strokeStyle = stroke.color;
+      context.beginPath();
+      context.moveTo(firstPoint.x, firstPoint.y);
+
+      if (stroke.points.length === 1) {
+        context.lineTo(firstPoint.x + 0.5, firstPoint.y + 0.5);
+      } else {
+        stroke.points.slice(1).forEach((point) => {
+          const canvasPoint = map.latLngToContainerPoint(point);
+          context.lineTo(canvasPoint.x, canvasPoint.y);
+        });
+      }
+
+      context.stroke();
+    };
+
+    drawingStrokesRef.current.forEach(drawStroke);
+
+    if (currentDrawingStrokeRef.current) {
+      drawStroke(currentDrawingStrokeRef.current);
+    }
+
+    context.globalCompositeOperation = "source-over";
+  };
+
+  useEffect(() => {
+    let storedValue: string | null = null;
+    let nextStrokes: DrawingStroke[] = [];
+
+    try {
+      storedValue = window.localStorage.getItem(getDrawingStorageKey());
+    } catch {
+      storedValue = null;
+    }
+
+    if (storedValue) {
+      try {
+        const parsed: unknown = JSON.parse(storedValue);
+
+        if (Array.isArray(parsed)) {
+          nextStrokes = parsed.filter((stroke): stroke is DrawingStroke => {
+            if (!stroke || typeof stroke !== "object") {
+              return false;
+            }
+
+            const candidate = stroke as Partial<DrawingStroke>;
+            return (
+              typeof candidate.color === "string" &&
+              typeof candidate.erase === "boolean" &&
+              Array.isArray(candidate.points) &&
+              candidate.points.every((point) => (
+                !!point &&
+                typeof point === "object" &&
+                typeof (point as Partial<DrawingPoint>).lat === "number" &&
+                typeof (point as Partial<DrawingPoint>).lng === "number"
+              )) &&
+              typeof candidate.width === "number" &&
+              typeof candidate.zoom === "number"
+            );
+          });
+        }
+      } catch {
+        nextStrokes = [];
+      }
+    }
+
+    drawingStrokesRef.current = nextStrokes;
+    currentDrawingStrokeRef.current = null;
+    window.requestAnimationFrame(() => redrawDrawingRef.current());
+  }, [activeFloorId, mapKey]);
+
+  useEffect(() => {
+    const canvas = drawingCanvasRef.current;
+
+    if (!canvas) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => redrawDrawingRef.current());
+    resizeObserver.observe(canvas.parentElement ?? canvas);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (previousUndoDrawingRequestRef.current === undoDrawingRequest) {
+      return;
+    }
+
+    previousUndoDrawingRequestRef.current = undoDrawingRequest;
+    drawingStrokesRef.current.pop();
+    saveDrawingStrokes();
+    redrawDrawingRef.current();
+  }, [undoDrawingRequest]);
+
+  useEffect(() => {
+    if (previousClearDrawingRequestRef.current === clearDrawingRequest) {
+      return;
+    }
+
+    previousClearDrawingRequestRef.current = clearDrawingRequest;
+    drawingStrokesRef.current = [];
+    currentDrawingStrokeRef.current = null;
+    saveDrawingStrokes();
+    redrawDrawingRef.current();
+  }, [clearDrawingRequest]);
+
+  function getDrawingPoint(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const map = mapRef.current;
+
+    if (!map) {
+      return null;
+    }
+
+    const rect = map.getContainer().getBoundingClientRect();
+    return map.containerPointToLatLng([
+      event.clientX - rect.left,
+      event.clientY - rect.top,
+    ]);
+  }
+
+  function handleDrawingPointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (drawingMode === "hand" || !mapRef.current) {
+      return;
+    }
+
+    const point = getDrawingPoint(event);
+
+    if (!point) {
+      return;
+    }
+
+    currentDrawingStrokeRef.current = {
+      color: drawingMode === "red" ? "#ef4444" : drawingMode === "blue" ? "#3b82f6" : "#000",
+      erase: drawingMode === "erase",
+      points: [{ lat: point.lat, lng: point.lng }],
+      width: drawingMode === "erase" ? 22 : 4,
+      zoom: mapRef.current.getZoom(),
+    };
+    lastDrawingClientPointRef.current = { x: event.clientX, y: event.clientY };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  }
+
+  function handleDrawingPointerMove(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const stroke = currentDrawingStrokeRef.current;
+    const lastPoint = lastDrawingClientPointRef.current;
+
+    if (!stroke || !lastPoint) {
+      return;
+    }
+
+    if (Math.hypot(event.clientX - lastPoint.x, event.clientY - lastPoint.y) < 2) {
+      return;
+    }
+
+    const point = getDrawingPoint(event);
+
+    if (!point) {
+      return;
+    }
+
+    stroke.points.push({ lat: point.lat, lng: point.lng });
+    lastDrawingClientPointRef.current = { x: event.clientX, y: event.clientY };
+    redrawDrawingRef.current();
+    event.preventDefault();
+  }
+
+  function finishDrawingStroke(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const stroke = currentDrawingStrokeRef.current;
+
+    if (!stroke) {
+      return;
+    }
+
+    drawingStrokesRef.current.push(stroke);
+    currentDrawingStrokeRef.current = null;
+    lastDrawingClientPointRef.current = null;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    saveDrawingStrokes();
+    redrawDrawingRef.current();
+    event.preventDefault();
+  }
+
   useEffect(() => {
     activeFloorIdRef.current = activeFloorId;
     focusedMarkerIdRef.current = focusedMarkerId;
     mapKeyRef.current = mapKey;
+    isAutoPanLockedRef.current = isAutoPanLocked;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -724,10 +1019,11 @@ export function LiveMapCanvas({
       maxZoom: 4,
       minZoom: -2,
       wheelDebounceTime: 80,
-      wheelPxPerZoomLevel: 120,
+      wheelPxPerZoomLevel: 240,
       zoom: coordinateInfo.default_zoom_level,
       zoomAnimation: false,
-      zoomSnap: 0.5,
+      zoomDelta: 0.25,
+      zoomSnap: 0.25,
     });
     const resizeObserver = new ResizeObserver(() => {
       map.invalidateSize({ debounceMoveend: true, pan: false });
@@ -748,6 +1044,7 @@ export function LiveMapCanvas({
 
     updateRenderBounds();
     map.on("moveend zoomend resize", updateRenderBounds);
+    map.on("move zoom viewreset resize", () => redrawDrawingRef.current());
     map.on("zoomstart", startZoomInteraction);
     map.on("zoomend", endZoomInteraction);
 
@@ -853,6 +1150,7 @@ export function LiveMapCanvas({
     container.addEventListener("click", handlePopupClick);
 
     mapRef.current = map;
+    window.requestAnimationFrame(() => redrawDrawingRef.current());
 
     return () => {
       resizeObserver.disconnect();
@@ -1191,7 +1489,7 @@ export function LiveMapCanvas({
     markerRef.current = marker;
 
     const frameId = window.requestAnimationFrame(() => {
-      if (map.getContainer().isConnected) {
+      if (map.getContainer().isConnected && !isAutoPanLockedRef.current) {
         map.setView(position, map.getZoom(), { animate: false });
       }
     });
@@ -1206,5 +1504,22 @@ export function LiveMapCanvas({
     };
   }, [location, mapKey]);
 
-  return <div ref={containerRef} className="eft-leaflet-map live-map-canvas h-full w-full" />;
+  return (
+    <>
+      <div ref={containerRef} className="eft-leaflet-map live-map-canvas h-full w-full" />
+      <canvas
+        ref={drawingCanvasRef}
+        aria-label="Map drawing layer"
+        onPointerCancel={finishDrawingStroke}
+        onPointerDown={handleDrawingPointerDown}
+        onPointerMove={handleDrawingPointerMove}
+        onPointerUp={finishDrawingStroke}
+        className="absolute inset-0 z-[900] touch-none"
+        style={{
+          cursor: drawingMode === "hand" ? "default" : drawingMode === "erase" ? "cell" : "crosshair",
+          pointerEvents: drawingMode === "hand" ? "none" : "auto",
+        }}
+      />
+    </>
+  );
 }

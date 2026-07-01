@@ -9,14 +9,23 @@ import type { LatLng } from "leaflet";
 import {
   ChevronDown,
   CircleHelp,
+  Eraser,
+  Eye,
+  EyeOff,
+  Hand,
   Layers,
+  Lock,
   LocateFixed,
   MapPinned,
   PanelLeftClose,
   PanelLeftOpen,
   PanelRightClose,
   PanelRightOpen,
+  Pencil,
+  RotateCcw,
   Search,
+  Trash2,
+  Unlock,
 } from "lucide-react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
@@ -45,7 +54,11 @@ import type {
   StoryRequirement,
 } from "@/types/api/live-map";
 import type { QuestCompletionGraphNode } from "@/types/api/quest";
-import type { LiveMapCanvasMarker, LiveMapPopupImage } from "./live-map-canvas";
+import type {
+  LiveMapCanvasMarker,
+  LiveMapDrawingMode,
+  LiveMapPopupImage,
+} from "./live-map-canvas";
 import { copyByLocale } from "./live-map-copy";
 import {
   getDefaultFloor,
@@ -348,6 +361,12 @@ export function LiveMapClientPage({
   const [isMapSelectorOpen, setIsMapSelectorOpen] = useState(false);
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
+  const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
+  const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
+  const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
+  const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
+  const [undoDrawingRequest, setUndoDrawingRequest] = useState(0);
+  const [clearDrawingRequest, setClearDrawingRequest] = useState(0);
   const [panel, setPanel] = useState<PanelState | null>(null);
   const [imagePopup, setImagePopup] = useState<LiveMapPopupImage | null>(null);
   const [notice, setNotice] = useState("");
@@ -1681,15 +1700,23 @@ export function LiveMapClientPage({
             </div>
           </aside>
 
-          <section className="relative min-w-0 flex-1 bg-gray-200 dark:bg-[#15171a]">
+          <section
+            className={cn(
+              "relative isolate min-w-0 flex-1 bg-gray-200 dark:bg-[#15171a]",
+              !areStaticLabelsVisible && "live-map-static-labels-hidden",
+            )}
+          >
             {selectedFloor && data.coordinate_info ? (
               <LiveMapCanvas
                 activeFloorId={selectedFloor.id}
+                clearDrawingRequest={clearDrawingRequest}
                 coordinateInfo={data.coordinate_info}
+                drawingMode={drawingMode}
                 focusedMarkerId={focusedMarkerId}
                 focusRequestKey={focusRequestKey}
                 focusTarget={focusTarget}
                 floors={sortedFloors}
+                isAutoPanLocked={isAutoPanLocked}
                 location={location}
                 mapKey={normalizedName}
                 markers={visibleMarkers}
@@ -1698,12 +1725,156 @@ export function LiveMapClientPage({
                 onMousePositionChange={setMousePosition}
                 onFocusedMarkerClose={clearFocusedMarker}
                 onPopupImageClick={openImagePopup}
+                undoDrawingRequest={undoDrawingRequest}
               />
             ) : (
               <div className="flex h-full items-center justify-center p-6 text-center text-sm text-gray-500 dark:text-gray-400">
                 {selectedFloor ? copy.noCoordinateInfo : copy.noFloors}
               </div>
             )}
+
+            <div className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
+              <button
+                type="button"
+                aria-expanded={isDrawingToolbarOpen}
+                aria-label={copy.drawingTools}
+                title={copy.drawingTools}
+                onClick={() => {
+                  setIsDrawingToolbarOpen((value) => {
+                    if (value) {
+                      setDrawingMode("hand");
+                    }
+
+                    return !value;
+                  });
+                }}
+                className={cn(
+                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                  isDrawingToolbarOpen
+                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
+                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
+                )}
+              >
+                <Pencil className="h-4 w-4" />
+                <span className="hidden sm:inline">{copy.drawing}</span>
+              </button>
+
+              <button
+                type="button"
+                aria-pressed={areStaticLabelsVisible}
+                aria-label={areStaticLabelsVisible ? copy.hideMapLabels : copy.showMapLabels}
+                title={areStaticLabelsVisible ? copy.hideMapLabels : copy.showMapLabels}
+                onClick={() => setAreStaticLabelsVisible((value) => !value)}
+                className={cn(
+                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                  areStaticLabelsVisible
+                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
+                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
+                )}
+              >
+                {areStaticLabelsVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                <span className="hidden sm:inline">
+                  {areStaticLabelsVisible ? copy.mapLabelsShown : copy.mapLabelsHidden}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                aria-pressed={isAutoPanLocked}
+                aria-label={isAutoPanLocked ? copy.unlockAutoMove : copy.lockAutoMove}
+                title={isAutoPanLocked ? copy.unlockAutoMove : copy.lockAutoMove}
+                onClick={() => setIsAutoPanLocked((value) => !value)}
+                className={cn(
+                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                  isAutoPanLocked
+                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
+                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
+                )}
+              >
+                {isAutoPanLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                <span className="hidden sm:inline">
+                  {isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
+                </span>
+              </button>
+
+              {isDrawingToolbarOpen ? (
+                <div className="absolute right-0 top-11 flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">
+                  <button
+                    type="button"
+                    aria-label={copy.panMap}
+                    title={copy.panMap}
+                    onClick={() => setDrawingMode("hand")}
+                    className={cn(
+                      "inline-flex h-8 w-8 items-center justify-center rounded-md border transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                      drawingMode === "hand"
+                        ? "border-orange-400 bg-orange-500 text-white dark:text-[#1e2124]"
+                        : "border-gray-200 text-gray-600 hover:text-orange-500 dark:border-[#3a3d41] dark:text-gray-200",
+                    )}
+                  >
+                    <Hand className="h-4 w-4" />
+                  </button>
+                  {(["red", "blue"] as const).map((colorMode) => (
+                    <button
+                      key={colorMode}
+                      type="button"
+                      aria-label={colorMode === "red" ? copy.redPen : copy.bluePen}
+                      title={colorMode === "red" ? copy.redPen : copy.bluePen}
+                      onClick={() => setDrawingMode(colorMode)}
+                      className={cn(
+                        "inline-flex h-8 w-8 items-center justify-center rounded-md border transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                        drawingMode === colorMode
+                          ? "border-white ring-2 ring-gray-700 dark:ring-white"
+                          : "border-gray-200 dark:border-[#3a3d41]",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "h-4 w-4 rounded-full",
+                          colorMode === "red" ? "bg-red-500" : "bg-blue-500",
+                        )}
+                      />
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    aria-label={copy.eraser}
+                    title={copy.eraser}
+                    onClick={() => setDrawingMode("erase")}
+                    className={cn(
+                      "inline-flex h-8 w-8 items-center justify-center rounded-md border transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                      drawingMode === "erase"
+                        ? "border-orange-400 bg-orange-500 text-white dark:text-[#1e2124]"
+                        : "border-gray-200 text-gray-600 hover:text-orange-500 dark:border-[#3a3d41] dark:text-gray-200",
+                    )}
+                  >
+                    <Eraser className="h-4 w-4" />
+                  </button>
+                  <span className="mx-0.5 h-6 w-px bg-gray-200 dark:bg-[#3a3d41]" />
+                  <button
+                    type="button"
+                    aria-label={copy.undoDrawing}
+                    title={copy.undoDrawing}
+                    onClick={() => setUndoDrawingRequest((value) => value + 1)}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 text-gray-600 transition hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-[#3a3d41] dark:text-gray-200"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={copy.clearDrawing}
+                    title={copy.clearDrawing}
+                    onClick={() => {
+                      if (window.confirm(copy.clearDrawingConfirm)) {
+                        setClearDrawingRequest((value) => value + 1);
+                      }
+                    }}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 text-gray-600 transition hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 dark:border-[#3a3d41] dark:text-gray-200"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : null}
+            </div>
 
             <div className="absolute bottom-3 left-3 right-3 grid gap-2 rounded-md border border-gray-200 bg-white/90 p-3 text-xs shadow-lg backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/90 sm:left-auto sm:right-3 sm:w-80">
               <div className="flex items-center justify-between gap-3">

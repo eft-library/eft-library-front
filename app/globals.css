@@ -175,6 +175,37 @@ summary {
   display: none !important;
 }
 
+.live-map-static-marker-label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  display: -webkit-box;
+  width: max-content;
+  max-width: 170px;
+  overflow: hidden;
+  padding: 3px 6px;
+  transform: translateX(-50%);
+  border: 1px solid var(--live-map-label-color, #f9fafb);
+  border-radius: 5px;
+  background: rgba(8, 10, 13, 0.9);
+  color: #fff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.65);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  text-shadow: 0 1px 2px #000;
+  white-space: normal;
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.live-map-static-labels-hidden .live-map-static-marker-label {
+  display: none;
+}
+
 .live-map-point-popup .leaflet-popup-content-wrapper {
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.14);
