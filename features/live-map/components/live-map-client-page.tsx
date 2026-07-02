@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import type { LatLng } from "leaflet";
 import {
   ChevronDown,
-  CircleHelp,
+  Download,
   Eraser,
   Eye,
   EyeOff,
@@ -1547,12 +1547,13 @@ export function LiveMapClientPage({
 
           <button
             type="button"
-            aria-label={copy.guideTitle}
-            title={copy.guideTitle}
+            aria-label={copy.guideDownload}
+            title={`${copy.guideDownload} · ${copy.guideTitle}`}
             onClick={() => setIsGuideOpen(true)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-200"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-md bg-orange-500 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#1f2124] sm:w-auto sm:px-3"
           >
-            <CircleHelp className="h-4 w-4" />
+            <Download className="h-4 w-4 shrink-0" />
+            <span className="hidden text-sm font-bold sm:inline">{copy.guideDownload}</span>
           </button>
         </header>
 
