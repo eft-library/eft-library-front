@@ -28,7 +28,9 @@ import type {
   PriceTraderRow,
 } from "@/types/api/price";
 
-type PriceSearchIndexItem = Omit<PriceSearchItem, "history_by_type" | "trader_prices">;
+type PriceSearchIndexItem = Omit<PriceSearchItem, "history_by_type" | "trader_prices"> & {
+  trend_by_type: Record<PriceMode, number[]>;
+};
 
 interface StaticPriceSearchResponse {
   data: PriceSearchIndexItem[];
@@ -209,7 +211,13 @@ function fetchPriceSearchIndex() {
         revalidate: 60 * 60,
       });
 
-      return response.data;
+      return response.data.map((item) => ({
+        ...item,
+        trend_by_type: {
+          pvp: item.history_by_type.pvp.slice(-8).map((entry) => entry.price),
+          pve: item.history_by_type.pve.slice(-8).map((entry) => entry.price),
+        },
+      }));
     },
     revalidate: 60 * 60,
   });
@@ -387,6 +395,7 @@ export function PricePage({ locale }: { locale: Locale }) {
                     ) ?? item.name_en,
                   );
                   const summary = item.prices[priceType];
+                  const trend = item.trend_by_type?.[priceType] ?? [];
 
                   return (
                     <button
@@ -431,6 +440,9 @@ export function PricePage({ locale }: { locale: Locale }) {
                           ) : (
                             <span />
                           )}
+                          {trend.length ? (
+                            <MiniTrend prices={trend} barClassName={theme.miniBar} />
+                          ) : null}
                         </div>
                       </div>
                     </button>
@@ -593,29 +605,29 @@ function PriceMetric({
 }
 
 function MiniTrend({
-  history,
+  prices,
   barClassName,
 }: {
-  history: Array<{ price: number }>;
+  prices: number[];
   barClassName: string;
 }) {
-  if (!history.length) {
-    return <div className="h-6 w-16 rounded bg-gray-100 dark:bg-[#20242b]" />;
+  if (!prices.length) {
+    return null;
   }
 
-  const points = history.slice(-8);
-  const max = Math.max(...points.map((point) => point.price));
-  const min = Math.min(...points.map((point) => point.price));
+  const points = prices.slice(-8);
+  const max = Math.max(...points);
+  const min = Math.min(...points);
   const range = max - min || 1;
 
   return (
     <div className="flex h-6 items-end gap-0.5">
-      {points.map((point, index) => {
-        const height = Math.max(4, Math.round(((point.price - min) / range) * 24));
+      {points.map((price, index) => {
+        const height = Math.max(4, Math.round(((price - min) / range) * 24));
 
         return (
           <span
-            key={`${point.price}-${index}`}
+            key={`${price}-${index}`}
             className={`w-1.5 rounded-sm ${barClassName}`}
             style={{ height: `${height}px` }}
           />
