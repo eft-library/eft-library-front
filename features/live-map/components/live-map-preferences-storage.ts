@@ -3,6 +3,8 @@ const LIVE_MAP_PREFERENCES_STORAGE_KEY = "eft-library-live-map-preferences-v1";
 export interface LiveMapPreferences {
   areStaticLabelsVisible: boolean;
   isAutoPanLocked: boolean;
+  isEyeComfortMode: boolean;
+  isMarkerSimplified: boolean;
 }
 
 export function readLiveMapPreferences(): LiveMapPreferences | null {
@@ -35,6 +37,14 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
     return {
       areStaticLabelsVisible: preferences.areStaticLabelsVisible,
       isAutoPanLocked: preferences.isAutoPanLocked,
+      isEyeComfortMode:
+        typeof preferences.isEyeComfortMode === "boolean"
+          ? preferences.isEyeComfortMode
+          : false,
+      isMarkerSimplified:
+        typeof preferences.isMarkerSimplified === "boolean"
+          ? preferences.isMarkerSimplified
+          : false,
     };
   } catch {
     return null;

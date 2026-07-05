@@ -105,6 +105,33 @@ summary {
     blur(0.6px);
 }
 
+.live-map-eye-comfort .eft-leaflet-map .live-map-floor-layer-active {
+  filter: brightness(0.74) contrast(0.88) saturate(0.42) grayscale(0.12) !important;
+}
+
+.live-map-eye-comfort .eft-leaflet-map .live-map-floor-layer-inactive {
+  filter: brightness(0.62) contrast(0.84) saturate(0.3) grayscale(0.48)
+    blur(0.6px) !important;
+}
+
+.dark .live-map-eye-comfort .eft-leaflet-map .live-map-floor-layer-active {
+  filter: brightness(0.64) contrast(0.86) saturate(0.4) grayscale(0.14) !important;
+}
+
+.dark .live-map-eye-comfort .eft-leaflet-map .live-map-floor-layer-inactive {
+  opacity: 0.3 !important;
+  filter: brightness(0.5) contrast(0.82) saturate(0.28) grayscale(0.52)
+    blur(0.6px) !important;
+}
+
+.live-map-eye-comfort .live-map-marker-icon > div {
+  filter: brightness(0.82) saturate(0.5) !important;
+}
+
+.live-map-eye-comfort .live-map-marker-icon.live-map-marker-focused > div {
+  filter: none !important;
+}
+
 .leaflet-control-zoom a {
   background: #ffffff;
   border-color: #e5e7eb;

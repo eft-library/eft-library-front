@@ -8,12 +8,14 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import type { LatLng } from "leaflet";
 import {
   ChevronDown,
+  CircleDot,
   Download,
   Eraser,
   Eye,
   EyeOff,
   Hand,
   Layers,
+  Leaf,
   Lock,
   LocateFixed,
   MapPinned,
@@ -367,6 +369,8 @@ export function LiveMapClientPage({
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
+  const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
+  const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
   const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
@@ -394,6 +398,8 @@ export function LiveMapClientPage({
     if (preferences) {
       setAreStaticLabelsVisible(preferences.areStaticLabelsVisible);
       setIsAutoPanLocked(preferences.isAutoPanLocked);
+      setIsEyeComfortMode(preferences.isEyeComfortMode);
+      setIsMarkerSimplified(preferences.isMarkerSimplified);
     }
 
     setHasLoadedPreferences(true);
@@ -407,8 +413,10 @@ export function LiveMapClientPage({
     writeLiveMapPreferences({
       areStaticLabelsVisible,
       isAutoPanLocked,
+      isEyeComfortMode,
+      isMarkerSimplified,
     });
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked]);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified]);
   const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
@@ -1732,6 +1740,7 @@ export function LiveMapClientPage({
             className={cn(
               "relative isolate min-w-0 flex-1 bg-gray-200 dark:bg-[#15171a]",
               !areStaticLabelsVisible && "live-map-static-labels-hidden",
+              isEyeComfortMode && "live-map-eye-comfort",
             )}
           >
             {selectedFloor && data.coordinate_info ? (
@@ -1745,6 +1754,7 @@ export function LiveMapClientPage({
                 focusTarget={focusTarget}
                 floors={sortedFloors}
                 isAutoPanLocked={isAutoPanLocked}
+                isMarkerSimplified={isMarkerSimplified}
                 location={location}
                 mapKey={normalizedName}
                 markers={visibleMarkers}
@@ -1762,6 +1772,44 @@ export function LiveMapClientPage({
             )}
 
             <div className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
+              <button
+                type="button"
+                aria-pressed={isEyeComfortMode}
+                aria-label={isEyeComfortMode ? copy.disableEyeComfort : copy.enableEyeComfort}
+                title={isEyeComfortMode ? copy.disableEyeComfort : copy.enableEyeComfort}
+                onClick={() => setIsEyeComfortMode((value) => !value)}
+                className={cn(
+                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                  isEyeComfortMode
+                    ? "border-emerald-500 bg-emerald-600 text-white hover:bg-emerald-700"
+                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-emerald-400 hover:text-emerald-600 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-emerald-500 dark:hover:text-emerald-300",
+                )}
+              >
+                <Leaf className="h-4 w-4" />
+                <span className="hidden 2xl:inline">
+                  {isEyeComfortMode ? copy.eyeComfortOn : copy.eyeComfortOff}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                aria-pressed={isMarkerSimplified}
+                aria-label={isMarkerSimplified ? copy.showDetailedMarkers : copy.simplifyMarkers}
+                title={isMarkerSimplified ? copy.showDetailedMarkers : copy.simplifyMarkers}
+                onClick={() => setIsMarkerSimplified((value) => !value)}
+                className={cn(
+                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                  isMarkerSimplified
+                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
+                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
+                )}
+              >
+                <CircleDot className="h-4 w-4" />
+                <span className="hidden 2xl:inline">
+                  {isMarkerSimplified ? copy.markersSimplified : copy.markersDetailed}
+                </span>
+              </button>
+
               <button
                 type="button"
                 aria-expanded={isDrawingToolbarOpen}
@@ -1784,7 +1832,7 @@ export function LiveMapClientPage({
                 )}
               >
                 <Pencil className="h-4 w-4" />
-                <span className="hidden sm:inline">{copy.drawing}</span>
+                <span className="hidden 2xl:inline">{copy.drawing}</span>
               </button>
 
               <button
@@ -1801,7 +1849,7 @@ export function LiveMapClientPage({
                 )}
               >
                 {areStaticLabelsVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                <span className="hidden sm:inline">
+                <span className="hidden 2xl:inline">
                   {areStaticLabelsVisible ? copy.mapLabelsShown : copy.mapLabelsHidden}
                 </span>
               </button>
@@ -1820,7 +1868,7 @@ export function LiveMapClientPage({
                 )}
               >
                 {isAutoPanLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
-                <span className="hidden sm:inline">
+                <span className="hidden 2xl:inline">
                   {isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
                 </span>
               </button>

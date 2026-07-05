@@ -461,10 +461,47 @@ function getStaticIconSvg(point: LiveMapCanvasMarker, size: number) {
   return getStaticIconSvgForType(getStaticMarkerType(point), size);
 }
 
-function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boolean) {
+function PointIcon(
+  point: LiveMapCanvasMarker,
+  isDimmed: boolean,
+  isFocused: boolean,
+  isMarkerSimplified: boolean,
+  isHovered = false,
+) {
   const { kind } = point;
-  const color = markerColorByKind[kind];
+  const color = kind === "static" ? getStaticMarkerColor(point) : markerColorByKind[kind];
   const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
+
+  if (isMarkerSimplified && !isFocused && !isHovered) {
+    const size = kind === "static" ? 16 : 14;
+    const labelHtml = kind === "static" ? getStaticMarkerLabelHtml(point, color) : "";
+
+    return L.divIcon({
+      className: `live-map-marker-icon live-map-marker-icon-${kind}${isFocused ? " live-map-marker-focused" : ""}`,
+      html: `
+        <div style="
+          width: ${size}px;
+          height: ${size}px;
+          position: relative;
+          opacity: ${markerOpacity};
+          border: 3px solid ${color};
+          border-radius: 999px;
+          background: #111827;
+          box-sizing: border-box;
+        ">
+          <span style="
+            position: absolute;
+            inset: 3px;
+            border-radius: 999px;
+            background: ${color};
+          "></span>
+          ${labelHtml}
+        </div>
+      `,
+      iconAnchor: [size / 2, size / 2],
+      iconSize: [size, size],
+    });
+  }
 
   if (kind !== "static") {
     const size = isFocused ? 28 : 22;
@@ -478,7 +515,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
     `;
 
     return L.divIcon({
-      className: `live-map-marker-icon live-map-marker-icon-${kind}`,
+      className: `live-map-marker-icon live-map-marker-icon-${kind}${isFocused ? " live-map-marker-focused" : ""}`,
       html: `
         <div style="${taskWrapperStyle}">
           <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -498,7 +535,6 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
 
   if (kind === "static") {
     const { iconSize, size } = getStaticMarkerSizes(point, isFocused);
-    const color = getStaticMarkerColor(point);
     const staticWrapperStyle = `
       width: ${size}px;
       height: ${size}px;
@@ -515,7 +551,7 @@ function PointIcon(point: LiveMapCanvasMarker, isDimmed: boolean, isFocused: boo
     `;
 
     return L.divIcon({
-      className: "live-map-marker-icon live-map-marker-icon-static",
+      className: `live-map-marker-icon live-map-marker-icon-static${isFocused ? " live-map-marker-focused" : ""}`,
       html: `
         <div style="${staticWrapperStyle}">
           <span style="
@@ -567,6 +603,7 @@ function getPointMarkerLatLng(mapKey: string, point: Pick<LiveMapCanvasMarker, "
 function getPointMarkerPresentationKey(
   point: LiveMapCanvasMarker,
   activeFloorId: string,
+  isMarkerSimplified: boolean,
   focusedMarkerId?: string | null,
   hoveredMarkerId?: string | null,
 ) {
@@ -576,6 +613,7 @@ function getPointMarkerPresentationKey(
     point.staticFaction ?? "",
     point.floorId ?? "",
     activeFloorId,
+    isMarkerSimplified ? "simplified" : "detailed",
     point.id === focusedMarkerId ? "focused" : "",
     point.id === hoveredMarkerId ? "hovered" : "",
   ].join("|");
@@ -647,6 +685,7 @@ function syncPointMarkerPresentation({
   activeFloorId,
   focusedMarkerId,
   hoveredMarkerId,
+  isMarkerSimplified,
   mapKey,
   marker,
   point,
@@ -654,14 +693,16 @@ function syncPointMarkerPresentation({
   activeFloorId: string;
   focusedMarkerId?: string | null;
   hoveredMarkerId?: string | null;
+  isMarkerSimplified: boolean;
   mapKey: string;
   marker: LeafletMarker;
   point: LiveMapCanvasMarker;
 }) {
   const isDimmed = point.floorId !== null && point.floorId !== activeFloorId;
   const isFocused = point.id === focusedMarkerId;
+  const isHovered = point.id === hoveredMarkerId;
 
-  marker.setIcon(PointIcon(point, isDimmed, isFocused));
+  marker.setIcon(PointIcon(point, isDimmed, isFocused, isMarkerSimplified, isHovered));
   marker.setZIndexOffset(getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerId));
 }
 
@@ -675,6 +716,7 @@ export function LiveMapCanvas({
   focusRequestKey = 0,
   focusTarget,
   isAutoPanLocked,
+  isMarkerSimplified,
   location,
   mapKey,
   markers,
@@ -694,6 +736,7 @@ export function LiveMapCanvas({
   focusTarget?: { id: string; key: number; x: number; y: number } | null;
   floors: LiveMapFloor[];
   isAutoPanLocked: boolean;
+  isMarkerSimplified: boolean;
   location: LiveMapLocation | null;
   mapKey: string;
   markers: LiveMapCanvasMarker[];
@@ -727,6 +770,7 @@ export function LiveMapCanvas({
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const mapKeyRef = useRef(mapKey);
   const isAutoPanLockedRef = useRef(isAutoPanLocked);
+  const isMarkerSimplifiedRef = useRef(isMarkerSimplified);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const imageBoundsKey = useMemo(
@@ -943,10 +987,11 @@ export function LiveMapCanvas({
     focusedMarkerIdRef.current = focusedMarkerId;
     mapKeyRef.current = mapKey;
     isAutoPanLockedRef.current = isAutoPanLocked;
+    isMarkerSimplifiedRef.current = isMarkerSimplified;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1209,6 +1254,7 @@ export function LiveMapCanvas({
       const nextPresentationKey = getPointMarkerPresentationKey(
         point,
         activeFloorId,
+        isMarkerSimplified,
         focusedMarkerId,
         hoveredMarkerId,
       );
@@ -1237,6 +1283,7 @@ export function LiveMapCanvas({
             activeFloorId,
             focusedMarkerId,
             hoveredMarkerId,
+            isMarkerSimplified,
             mapKey,
             marker: existing.marker,
             point,
@@ -1248,7 +1295,12 @@ export function LiveMapCanvas({
       }
 
       const marker = L.marker(getPointMarkerPosition(mapKey, point), {
-        icon: PointIcon(point, point.floorId !== null && point.floorId !== activeFloorId, point.id === focusedMarkerId),
+        icon: PointIcon(
+          point,
+          point.floorId !== null && point.floorId !== activeFloorId,
+          point.id === focusedMarkerId,
+          isMarkerSimplified,
+        ),
         keyboard: true,
         title: point.label,
         zIndexOffset: getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerIdRef.current),
@@ -1275,6 +1327,7 @@ export function LiveMapCanvas({
           const nextPresentationKey = getPointMarkerPresentationKey(
             current.point,
             activeFloorIdRef.current,
+            isMarkerSimplifiedRef.current,
             focusedMarkerIdRef.current,
             point.id,
           );
@@ -1283,6 +1336,7 @@ export function LiveMapCanvas({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
             hoveredMarkerId: point.id,
+            isMarkerSimplified: isMarkerSimplifiedRef.current,
             mapKey: mapKeyRef.current,
             marker: current.marker,
             point: current.point,
@@ -1303,6 +1357,7 @@ export function LiveMapCanvas({
           const nextPresentationKey = getPointMarkerPresentationKey(
             current.point,
             activeFloorIdRef.current,
+            isMarkerSimplifiedRef.current,
             focusedMarkerIdRef.current,
             hoveredMarkerIdRef.current,
           );
@@ -1311,6 +1366,7 @@ export function LiveMapCanvas({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
             hoveredMarkerId: hoveredMarkerIdRef.current,
+            isMarkerSimplified: isMarkerSimplifiedRef.current,
             mapKey: mapKeyRef.current,
             marker: current.marker,
             point: current.point,
@@ -1330,7 +1386,7 @@ export function LiveMapCanvas({
         presentationKey: nextPresentationKey,
       });
     });
-  }, [activeFloorId, focusedMarkerId, mapKey, renderMarkers]);
+  }, [activeFloorId, focusedMarkerId, isMarkerSimplified, mapKey, renderMarkers]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1427,10 +1483,6 @@ export function LiveMapCanvas({
     const marker = L.marker(position, {
       icon: PlayerIcon(getPlayerMarkerYaw(mapKey, location.yaw)),
       zIndexOffset: 10000,
-    }).bindTooltip("Player", {
-      direction: "top",
-      offset: [0, -10],
-      opacity: 1,
     });
 
     marker.addTo(map);
