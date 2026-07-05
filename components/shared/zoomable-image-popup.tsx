@@ -212,7 +212,7 @@ export function ZoomableImagePopup({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-x-0 bottom-0 top-14 z-[80] flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-x-0 bottom-0 top-14 z-[2000] flex items-center justify-center bg-black/80 p-4"
       onClick={onClose}
     >
       <div
