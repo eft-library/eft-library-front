@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { TriangleAlert, X } from "lucide-react";
 
 import type { LiveMapCopy } from "./live-map-copy";
 
@@ -39,7 +39,17 @@ export function LiveMapLocationGuide({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-950 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100">
+          <div className="flex items-center gap-2 font-black">
+            <TriangleAlert className="h-4 w-4 shrink-0 text-amber-500" />
+            {copy.guideScreenshotTitle}
+          </div>
+          <div className="mt-2 space-y-1.5 text-sm leading-relaxed">
+            <p>{copy.guideScreenshotNotice}</p>
+            <p>{copy.guideSteamNotice}</p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           <GuideCard title={copy.guideAutoTitle} steps={copy.guideAutoSteps} />
           <GuideCard
             title={copy.guideManualTitle}
