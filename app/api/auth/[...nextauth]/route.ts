@@ -101,11 +101,10 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60,
-    updateAge: 2 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60,
   },
   jwt: {
-    maxAge: 2 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
     async signIn({ user }) {
