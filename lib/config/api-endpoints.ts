@@ -53,6 +53,11 @@ export const apiEndpoints = {
   commentReport: "/api/comment/v3/report-comment",
   chatSearch: "/api/chat/search",
   chatStream: "/api/chat/stream",
+  kordBreachModifiers: "/api/kord-breach/v3/modifiers",
+  kordBreachPresets: "/api/kord-breach/v3/presets",
+  kordBreachSavePreset: "/api/kord-breach/v3/save-preset",
+  kordBreachDeletePreset: "/api/kord-breach/v3/delete-preset",
+  kordBreachRandom: "/api/kord-breach/v3/random",
 } as const;
 
 export function getItemListEndpoint(itemType: string) {
