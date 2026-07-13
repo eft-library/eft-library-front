@@ -15,7 +15,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="text-center md:text-left">
             <div className="text-sm text-gray-700 dark:text-gray-300">
-              Maps © 2024-2025 TKL |{" "}
+              Maps © 2024-2026 TKL |{" "}
               <span className="text-orange-500 dark:text-orange-400">
                 CC BY-NC-ND 4.0
               </span>
