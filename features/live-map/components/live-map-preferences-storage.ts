@@ -5,6 +5,7 @@ export interface LiveMapPreferences {
   isAutoPanLocked: boolean;
   isEyeComfortMode: boolean;
   isMarkerSimplified: boolean;
+  mapRotations: Record<string, number>;
 }
 
 export function readLiveMapPreferences(): LiveMapPreferences | null {
@@ -45,6 +46,14 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
         typeof preferences.isMarkerSimplified === "boolean"
           ? preferences.isMarkerSimplified
           : false,
+      mapRotations:
+        preferences.mapRotations && typeof preferences.mapRotations === "object"
+          ? Object.fromEntries(
+              Object.entries(preferences.mapRotations).filter(
+                ([, value]) => value === 0 || value === 90 || value === 180 || value === 270,
+              ),
+            )
+          : {},
     };
   } catch {
     return null;

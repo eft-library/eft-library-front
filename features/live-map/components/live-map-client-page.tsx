@@ -25,6 +25,7 @@ import {
   PanelRightOpen,
   Pencil,
   RotateCcw,
+  RotateCw,
   Search,
   Trash2,
   Unlock,
@@ -371,6 +372,8 @@ export function LiveMapClientPage({
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
+  const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
+  const [mapRotations, setMapRotations] = useState<Record<string, number>>({});
   const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
@@ -400,6 +403,9 @@ export function LiveMapClientPage({
       setIsAutoPanLocked(preferences.isAutoPanLocked);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
+      setMapRotations(preferences.mapRotations);
+      const savedRotation = preferences.mapRotations[normalizedName];
+      setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
     }
 
     setHasLoadedPreferences(true);
@@ -415,8 +421,30 @@ export function LiveMapClientPage({
       isAutoPanLocked,
       isEyeComfortMode,
       isMarkerSimplified,
+      mapRotations,
     });
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified]);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, mapRotations]);
+
+  useEffect(() => {
+    if (!hasLoadedPreferences) {
+      return;
+    }
+
+    const savedRotation = mapRotations[normalizedName];
+    setMapRotation(
+      savedRotation === 90 || savedRotation === 180 || savedRotation === 270
+        ? savedRotation
+        : 0,
+    );
+  }, [hasLoadedPreferences, mapRotations, normalizedName]);
+
+  const rotateMap = useCallback(() => {
+    setMapRotation((current) => {
+      const next = ((current + 90) % 360) as 0 | 90 | 180 | 270;
+      setMapRotations((rotations) => ({ ...rotations, [normalizedName]: next }));
+      return next;
+    });
+  }, [normalizedName]);
   const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
@@ -1757,6 +1785,7 @@ export function LiveMapClientPage({
                 isMarkerSimplified={isMarkerSimplified}
                 location={location}
                 mapKey={normalizedName}
+                rotation={mapRotation}
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
                 onMapClick={clearFocusParam}
@@ -1772,6 +1801,17 @@ export function LiveMapClientPage({
             )}
 
             <div className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
+              <button
+                type="button"
+                aria-label={`${copy.rotateMap} (${mapRotation}°)`}
+                title={`${copy.rotateMap} (${mapRotation}°)`}
+                onClick={rotateMap}
+                className="inline-flex h-9 items-center gap-2 rounded-md border border-gray-200 bg-white/90 px-3 text-xs font-black text-gray-700 shadow-lg backdrop-blur transition hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400"
+              >
+                <RotateCw className="h-4 w-4" />
+                <span className="hidden 2xl:inline">{copy.rotation} {mapRotation}°</span>
+              </button>
+
               <button
                 type="button"
                 aria-pressed={isEyeComfortMode}

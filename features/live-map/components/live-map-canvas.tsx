@@ -22,6 +22,7 @@ import type { LiveMapLocation } from "./live-map-utils";
 
 export type LiveMapMarkerKind = "quest" | "story" | "event" | "static";
 export type LiveMapDrawingMode = "hand" | "red" | "blue" | "erase";
+export type LiveMapRotation = 0 | 90 | 180 | 270;
 
 interface DrawingPoint {
   lat: number;
@@ -103,16 +104,76 @@ const staticMarkerColorByType: Record<string, string> = {
 function getPointMarkerPosition(
   mapId: string,
   point: Pick<LiveMapCanvasMarker, "x" | "y">,
+  coordinateInfo: LiveMapCoordinateInfo,
+  rotation: LiveMapRotation,
 ): [number, number] {
-  return getPlayerMarkerPosition(mapId, { x: point.x, y: point.y, yaw: 0 });
+  return rotateLatLng(
+    getPlayerMarkerPosition(mapId, { x: point.x, y: point.y, yaw: 0 }),
+    coordinateInfo.image_bounds,
+    rotation,
+  );
 }
 
-function getRelaxedMapBounds(bounds: LiveMapCoordinateInfo["map_bounds"]) {
-  return L.latLngBounds(bounds).pad(1.4);
+function getRelaxedMapBounds(bounds: LatLngBounds) {
+  return bounds.pad(1.4);
 }
 
 function getMapCenter(bounds: LiveMapCoordinateInfo["image_bounds"]) {
   return L.latLngBounds(bounds).getCenter();
+}
+
+function rotateLatLng(
+  value: { lat: number; lng: number } | [number, number],
+  bounds: LiveMapCoordinateInfo["image_bounds"],
+  rotation: number,
+): [number, number] {
+  const point = Array.isArray(value) ? { lat: value[0], lng: value[1] } : value;
+  const center = getMapCenter(bounds);
+  const radians = (rotation * Math.PI) / 180;
+  const cosine = Math.cos(radians);
+  const sine = Math.sin(radians);
+  const deltaLat = point.lat - center.lat;
+  const deltaLng = point.lng - center.lng;
+
+  return [
+    center.lat - sine * deltaLng + cosine * deltaLat,
+    center.lng + cosine * deltaLng + sine * deltaLat,
+  ];
+}
+
+function unrotateLatLng(
+  value: { lat: number; lng: number },
+  bounds: LiveMapCoordinateInfo["image_bounds"],
+  rotation: number,
+) {
+  const [lat, lng] = rotateLatLng(value, bounds, -rotation);
+  return L.latLng(lat, lng);
+}
+
+function getRotatedMapBounds(
+  bounds: LiveMapCoordinateInfo["map_bounds"],
+  imageBounds: LiveMapCoordinateInfo["image_bounds"],
+  rotation: LiveMapRotation,
+) {
+  const source = L.latLngBounds(bounds);
+  return L.latLngBounds([
+    rotateLatLng(source.getNorthWest(), imageBounds, rotation),
+    rotateLatLng(source.getNorthEast(), imageBounds, rotation),
+    rotateLatLng(source.getSouthWest(), imageBounds, rotation),
+    rotateLatLng(source.getSouthEast(), imageBounds, rotation),
+  ]);
+}
+
+function applyImageRotation(overlay: LeafletImageOverlay, rotation: LiveMapRotation) {
+  const element = overlay.getElement();
+
+  if (!element) {
+    return;
+  }
+
+  const baseTransform = element.style.transform.replace(/\srotate\([^)]*\)$/, "");
+  element.style.transform = rotation === 0 ? baseTransform : `${baseTransform} rotate(${rotation}deg)`;
+  element.style.transformOrigin = "center";
 }
 
 function getStaticMarkerType(point: LiveMapCanvasMarker) {
@@ -592,12 +653,12 @@ function getPointMarkerZIndex(
   return point.floorId === null || point.floorId === activeFloorId ? 700 : 0;
 }
 
-function getPointMarkerPositionKey(mapKey: string, point: LiveMapCanvasMarker) {
-  return `${mapKey}:${point.x}:${point.y}`;
+function getPointMarkerPositionKey(mapKey: string, point: LiveMapCanvasMarker, rotation: LiveMapRotation) {
+  return `${mapKey}:${point.x}:${point.y}:${rotation}`;
 }
 
-function getPointMarkerLatLng(mapKey: string, point: Pick<LiveMapCanvasMarker, "x" | "y">) {
-  return L.latLng(getPointMarkerPosition(mapKey, point));
+function getPointMarkerLatLng(mapKey: string, point: Pick<LiveMapCanvasMarker, "x" | "y">, coordinateInfo: LiveMapCoordinateInfo, rotation: LiveMapRotation) {
+  return L.latLng(getPointMarkerPosition(mapKey, point, coordinateInfo, rotation));
 }
 
 function getPointMarkerPresentationKey(
@@ -725,6 +786,7 @@ export function LiveMapCanvas({
   onFocusedMarkerClose,
   onPopupImageClick,
   onMousePositionChange,
+  rotation,
   undoDrawingRequest,
 }: {
   activeFloorId: string;
@@ -745,6 +807,7 @@ export function LiveMapCanvas({
   onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
+  rotation: LiveMapRotation;
   undoDrawingRequest: number;
 }) {
   const containerRef = useRef<LeafletContainerElement | null>(null);
@@ -771,6 +834,8 @@ export function LiveMapCanvas({
   const mapKeyRef = useRef(mapKey);
   const isAutoPanLockedRef = useRef(isAutoPanLocked);
   const isMarkerSimplifiedRef = useRef(isMarkerSimplified);
+  const rotationRef = useRef(rotation);
+  const previousRotationRef = useRef(rotation);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const imageBoundsKey = useMemo(
@@ -828,7 +893,9 @@ export function LiveMapCanvas({
       }
 
       const scale = 2 ** (map.getZoom() - stroke.zoom);
-      const firstPoint = map.latLngToContainerPoint(stroke.points[0]);
+      const firstPoint = map.latLngToContainerPoint(
+        rotateLatLng(stroke.points[0], coordinateInfo.image_bounds, rotation),
+      );
 
       context.globalCompositeOperation = stroke.erase ? "destination-out" : "source-over";
       context.lineCap = "round";
@@ -842,7 +909,9 @@ export function LiveMapCanvas({
         context.lineTo(firstPoint.x + 0.5, firstPoint.y + 0.5);
       } else {
         stroke.points.slice(1).forEach((point) => {
-          const canvasPoint = map.latLngToContainerPoint(point);
+          const canvasPoint = map.latLngToContainerPoint(
+            rotateLatLng(point, coordinateInfo.image_bounds, rotation),
+          );
           context.lineTo(canvasPoint.x, canvasPoint.y);
         });
       }
@@ -909,10 +978,11 @@ export function LiveMapCanvas({
     }
 
     const rect = map.getContainer().getBoundingClientRect();
-    return map.containerPointToLatLng([
+    const rotatedPoint = map.containerPointToLatLng([
       event.clientX - rect.left,
       event.clientY - rect.top,
     ]);
+    return unrotateLatLng(rotatedPoint, coordinateInfo.image_bounds, rotation);
   }
 
   function handleDrawingPointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
@@ -988,10 +1058,11 @@ export function LiveMapCanvas({
     mapKeyRef.current = mapKey;
     isAutoPanLockedRef.current = isAutoPanLocked;
     isMarkerSimplifiedRef.current = isMarkerSimplified;
+    rotationRef.current = rotation;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick, rotation]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1014,7 +1085,9 @@ export function LiveMapCanvas({
       doubleClickZoom: false,
       fadeAnimation: false,
       markerZoomAnimation: false,
-      maxBounds: getRelaxedMapBounds(coordinateInfo.map_bounds),
+      maxBounds: getRelaxedMapBounds(
+        getRotatedMapBounds(coordinateInfo.map_bounds, coordinateInfo.image_bounds, rotation),
+      ),
       maxBoundsViscosity: 0.1,
       maxZoom: 4,
       minZoom: -2,
@@ -1049,7 +1122,12 @@ export function LiveMapCanvas({
     map.on("zoomend", endZoomInteraction);
 
     map.on("mousemove", (event: LeafletMouseEvent) => {
-      onMousePositionChange(transformMousePosition(mapKey, event.latlng) as LatLng);
+      const basePosition = unrotateLatLng(
+        event.latlng,
+        coordinateInfo.image_bounds,
+        rotationRef.current,
+      );
+      onMousePositionChange(transformMousePosition(mapKey, basePosition) as LatLng);
     });
 
     map.on("click", (event: LeafletMouseEvent) => {
@@ -1188,9 +1266,33 @@ export function LiveMapCanvas({
 
     return markers.filter((point) => (
       point.id === focusedMarkerId ||
-      renderBounds.contains(getPointMarkerLatLng(mapKey, point))
+      renderBounds.contains(getPointMarkerLatLng(mapKey, point, coordinateInfo, rotation))
     ));
-  }, [focusedMarkerId, mapKey, markers, renderBounds]);
+  }, [coordinateInfo, focusedMarkerId, mapKey, markers, renderBounds, rotation]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map) {
+      previousRotationRef.current = rotation;
+      return;
+    }
+
+    const baseCenter = unrotateLatLng(
+      map.getCenter(),
+      coordinateInfo.image_bounds,
+      previousRotationRef.current,
+    );
+    const nextCenter = rotateLatLng(baseCenter, coordinateInfo.image_bounds, rotation);
+    map.setMaxBounds(
+      getRelaxedMapBounds(
+        getRotatedMapBounds(coordinateInfo.map_bounds, coordinateInfo.image_bounds, rotation),
+      ),
+    );
+    map.setView(nextCenter, map.getZoom(), { animate: false });
+    previousRotationRef.current = rotation;
+    window.requestAnimationFrame(() => redrawDrawingRef.current());
+  }, [coordinateInfo, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1217,6 +1319,7 @@ export function LiveMapCanvas({
       });
 
       overlay.addTo(map);
+      applyImageRotation(overlay, rotation);
 
       if (isActive) {
         overlay.bringToFront();
@@ -1225,11 +1328,20 @@ export function LiveMapCanvas({
       return overlay;
     });
 
+    const restoreImageRotation = () => {
+      window.requestAnimationFrame(() => {
+        imageOverlayRefs.current.forEach((overlay) => applyImageRotation(overlay, rotation));
+      });
+    };
+
+    map.on("viewreset zoomend", restoreImageRotation);
+
     return () => {
+      map.off("viewreset zoomend", restoreImageRotation);
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
     };
-  }, [activeFloorId, imageBoundsKey, floors]);
+  }, [activeFloorId, imageBoundsKey, floors, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1250,7 +1362,7 @@ export function LiveMapCanvas({
     renderMarkers.forEach((point) => {
       const existing = pointMarkerByIdRef.current.get(point.id);
       const hoveredMarkerId = hoveredMarkerIdRef.current;
-      const nextPositionKey = getPointMarkerPositionKey(mapKey, point);
+      const nextPositionKey = getPointMarkerPositionKey(mapKey, point, rotation);
       const nextPresentationKey = getPointMarkerPresentationKey(
         point,
         activeFloorId,
@@ -1263,7 +1375,7 @@ export function LiveMapCanvas({
         existing.point = point;
 
         if (existing.positionKey !== nextPositionKey) {
-          existing.marker.setLatLng(getPointMarkerPosition(mapKey, point));
+          existing.marker.setLatLng(getPointMarkerPosition(mapKey, point, coordinateInfo, rotation));
           existing.positionKey = nextPositionKey;
         }
 
@@ -1294,7 +1406,7 @@ export function LiveMapCanvas({
         return;
       }
 
-      const marker = L.marker(getPointMarkerPosition(mapKey, point), {
+      const marker = L.marker(getPointMarkerPosition(mapKey, point, coordinateInfo, rotation), {
         icon: PointIcon(
           point,
           point.floorId !== null && point.floorId !== activeFloorId,
@@ -1386,7 +1498,7 @@ export function LiveMapCanvas({
         presentationKey: nextPresentationKey,
       });
     });
-  }, [activeFloorId, focusedMarkerId, isMarkerSimplified, mapKey, renderMarkers]);
+  }, [activeFloorId, coordinateInfo, focusedMarkerId, isMarkerSimplified, mapKey, renderMarkers, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1427,7 +1539,12 @@ export function LiveMapCanvas({
       }
 
       const currentMarker = pointMarkerByIdRef.current.get(targetId)?.marker;
-      const targetLatLng = currentMarker?.getLatLng() ?? getPointMarkerLatLng(mapKey, focusedPoint);
+      const targetLatLng = currentMarker?.getLatLng() ?? getPointMarkerLatLng(
+        mapKey,
+        focusedPoint,
+        coordinateInfo,
+        rotation,
+      );
 
       if (shouldMoveView) {
         map.setView(targetLatLng, map.getZoom(), { animate: false });
@@ -1459,7 +1576,7 @@ export function LiveMapCanvas({
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [activeFloorId, focusedMarkerId, focusRequestKey, focusTarget, mapKey, renderMarkers]);
+  }, [activeFloorId, coordinateInfo, focusedMarkerId, focusRequestKey, focusTarget, mapKey, renderMarkers, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1475,13 +1592,17 @@ export function LiveMapCanvas({
       return;
     }
 
-    const position = getPlayerMarkerPosition(mapKey, {
-      x: location.x,
-      y: location.z,
-      yaw: location.yaw,
-    });
+    const position = rotateLatLng(
+      getPlayerMarkerPosition(mapKey, {
+        x: location.x,
+        y: location.z,
+        yaw: location.yaw,
+      }),
+      coordinateInfo.image_bounds,
+      rotation,
+    );
     const marker = L.marker(position, {
-      icon: PlayerIcon(getPlayerMarkerYaw(mapKey, location.yaw)),
+      icon: PlayerIcon((getPlayerMarkerYaw(mapKey, location.yaw) + rotation) % 360),
       zIndexOffset: 10000,
     });
 
@@ -1509,7 +1630,7 @@ export function LiveMapCanvas({
         markerRef.current = null;
       }
     };
-  }, [location, mapKey]);
+  }, [coordinateInfo.image_bounds, location, mapKey, rotation]);
 
   return (
     <>
