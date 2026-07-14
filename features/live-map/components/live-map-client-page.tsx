@@ -27,8 +27,10 @@ import {
   RotateCcw,
   RotateCw,
   Search,
+  Settings2,
   Trash2,
   Unlock,
+  type LucideIcon,
 } from "lucide-react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
@@ -329,6 +331,45 @@ function getCachedPopupHtml(
   return html;
 }
 
+function ViewSettingButton({
+  checked,
+  icon: Icon,
+  label,
+  onClick,
+}: {
+  checked: boolean;
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="menuitemcheckbox"
+      aria-checked={checked}
+      onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-bold text-gray-700 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-400 dark:text-gray-200 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
+    >
+      <Icon className="h-4 w-4 shrink-0" />
+      <span className="min-w-0 flex-1 truncate">{label}</span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "relative h-5 w-9 shrink-0 rounded-full transition-colors",
+          checked ? "bg-orange-500" : "bg-gray-300 dark:bg-gray-600",
+        )}
+      >
+        <span
+          className={cn(
+            "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform",
+            checked ? "translate-x-[18px]" : "translate-x-0.5",
+          )}
+        />
+      </span>
+    </button>
+  );
+}
+
 export function LiveMapClientPage({
   data,
   initialCompletionGraph,
@@ -374,8 +415,12 @@ export function LiveMapClientPage({
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
   const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
   const [mapRotations, setMapRotations] = useState<Record<string, number>>({});
+  const [isMapRotating, setIsMapRotating] = useState(false);
+  const rotationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
+  const [isViewSettingsOpen, setIsViewSettingsOpen] = useState(false);
+  const mapToolbarRef = useRef<HTMLDivElement | null>(null);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
   const [undoDrawingRequest, setUndoDrawingRequest] = useState(0);
   const [clearDrawingRequest, setClearDrawingRequest] = useState(0);
@@ -439,12 +484,57 @@ export function LiveMapClientPage({
   }, [hasLoadedPreferences, mapRotations, normalizedName]);
 
   const rotateMap = useCallback(() => {
+    if (isMapRotating) {
+      return;
+    }
+
+    setIsMapRotating(true);
     setMapRotation((current) => {
       const next = ((current + 90) % 360) as 0 | 90 | 180 | 270;
       setMapRotations((rotations) => ({ ...rotations, [normalizedName]: next }));
       return next;
     });
-  }, [normalizedName]);
+    rotationTimeoutRef.current = setTimeout(() => {
+      setIsMapRotating(false);
+      rotationTimeoutRef.current = null;
+    }, 200);
+  }, [isMapRotating, normalizedName]);
+
+  useEffect(() => {
+    return () => {
+      if (rotationTimeoutRef.current) {
+        clearTimeout(rotationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isViewSettingsOpen) {
+      return;
+    }
+
+    const closeSettings = (event: MouseEvent | KeyboardEvent) => {
+      if (event instanceof KeyboardEvent && event.key === "Escape") {
+        setIsViewSettingsOpen(false);
+        return;
+      }
+
+      if (
+        event instanceof MouseEvent &&
+        mapToolbarRef.current &&
+        !mapToolbarRef.current.contains(event.target as Node)
+      ) {
+        setIsViewSettingsOpen(false);
+      }
+    };
+
+    window.addEventListener("mousedown", closeSettings);
+    window.addEventListener("keydown", closeSettings);
+    return () => {
+      window.removeEventListener("mousedown", closeSettings);
+      window.removeEventListener("keydown", closeSettings);
+    };
+  }, [isViewSettingsOpen]);
   const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
@@ -1800,54 +1890,22 @@ export function LiveMapClientPage({
               </div>
             )}
 
-            <div className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
+            <div ref={mapToolbarRef} className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
               <button
                 type="button"
                 aria-label={`${copy.rotateMap} (${mapRotation}°)`}
                 title={`${copy.rotateMap} (${mapRotation}°)`}
                 onClick={rotateMap}
-                className="inline-flex h-9 items-center gap-2 rounded-md border border-gray-200 bg-white/90 px-3 text-xs font-black text-gray-700 shadow-lg backdrop-blur transition hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400"
+                disabled={isMapRotating}
+                className="inline-flex h-9 items-center gap-2 rounded-md border border-gray-200 bg-white/90 px-3 text-xs font-black text-gray-700 shadow-lg backdrop-blur transition hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:cursor-wait disabled:opacity-70 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400"
               >
-                <RotateCw className="h-4 w-4" />
+                <RotateCw
+                  className={cn(
+                    "h-4 w-4 transition-transform duration-200 motion-reduce:transition-none",
+                    isMapRotating && "rotate-90",
+                  )}
+                />
                 <span className="hidden 2xl:inline">{copy.rotation} {mapRotation}°</span>
-              </button>
-
-              <button
-                type="button"
-                aria-pressed={isEyeComfortMode}
-                aria-label={isEyeComfortMode ? copy.disableEyeComfort : copy.enableEyeComfort}
-                title={isEyeComfortMode ? copy.disableEyeComfort : copy.enableEyeComfort}
-                onClick={() => setIsEyeComfortMode((value) => !value)}
-                className={cn(
-                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
-                  isEyeComfortMode
-                    ? "border-emerald-500 bg-emerald-600 text-white hover:bg-emerald-700"
-                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-emerald-400 hover:text-emerald-600 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-emerald-500 dark:hover:text-emerald-300",
-                )}
-              >
-                <Leaf className="h-4 w-4" />
-                <span className="hidden 2xl:inline">
-                  {isEyeComfortMode ? copy.eyeComfortOn : copy.eyeComfortOff}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                aria-pressed={isMarkerSimplified}
-                aria-label={isMarkerSimplified ? copy.showDetailedMarkers : copy.simplifyMarkers}
-                title={isMarkerSimplified ? copy.showDetailedMarkers : copy.simplifyMarkers}
-                onClick={() => setIsMarkerSimplified((value) => !value)}
-                className={cn(
-                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
-                  isMarkerSimplified
-                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
-                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
-                )}
-              >
-                <CircleDot className="h-4 w-4" />
-                <span className="hidden 2xl:inline">
-                  {isMarkerSimplified ? copy.markersSimplified : copy.markersDetailed}
-                </span>
               </button>
 
               <button
@@ -1856,6 +1914,7 @@ export function LiveMapClientPage({
                 aria-label={copy.drawingTools}
                 title={copy.drawingTools}
                 onClick={() => {
+                  setIsViewSettingsOpen(false);
                   setIsDrawingToolbarOpen((value) => {
                     if (value) {
                       setDrawingMode("hand");
@@ -1877,41 +1936,54 @@ export function LiveMapClientPage({
 
               <button
                 type="button"
-                aria-pressed={areStaticLabelsVisible}
-                aria-label={areStaticLabelsVisible ? copy.hideMapLabels : copy.showMapLabels}
-                title={areStaticLabelsVisible ? copy.hideMapLabels : copy.showMapLabels}
-                onClick={() => setAreStaticLabelsVisible((value) => !value)}
+                aria-expanded={isViewSettingsOpen}
+                aria-haspopup="menu"
+                aria-label={copy.viewSettings}
+                title={copy.viewSettings}
+                onClick={() => {
+                  setIsDrawingToolbarOpen(false);
+                  setDrawingMode("hand");
+                  setIsViewSettingsOpen((value) => !value);
+                }}
                 className={cn(
                   "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
-                  areStaticLabelsVisible
+                  isViewSettingsOpen
                     ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
                     : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
                 )}
               >
-                {areStaticLabelsVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                <span className="hidden 2xl:inline">
-                  {areStaticLabelsVisible ? copy.mapLabelsShown : copy.mapLabelsHidden}
-                </span>
+                <Settings2 className="h-4 w-4" />
+                <span className="hidden 2xl:inline">{copy.viewSettings}</span>
               </button>
 
-              <button
-                type="button"
-                aria-pressed={isAutoPanLocked}
-                aria-label={isAutoPanLocked ? copy.unlockAutoMove : copy.lockAutoMove}
-                title={isAutoPanLocked ? copy.unlockAutoMove : copy.lockAutoMove}
-                onClick={() => setIsAutoPanLocked((value) => !value)}
-                className={cn(
-                  "inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-black shadow-lg backdrop-blur transition focus:outline-none focus:ring-2 focus:ring-orange-400",
-                  isAutoPanLocked
-                    ? "border-orange-400 bg-orange-500 text-white hover:bg-orange-600 dark:text-[#1e2124]"
-                    : "border-gray-200 bg-white/90 text-gray-700 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/90 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:text-orange-400",
-                )}
-              >
-                {isAutoPanLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
-                <span className="hidden 2xl:inline">
-                  {isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
-                </span>
-              </button>
+              {isViewSettingsOpen ? (
+                <div role="menu" aria-label={copy.viewSettings} className="absolute right-0 top-11 w-64 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">
+                  <ViewSettingButton
+                    checked={isEyeComfortMode}
+                    icon={Leaf}
+                    label={isEyeComfortMode ? copy.eyeComfortOn : copy.eyeComfortOff}
+                    onClick={() => setIsEyeComfortMode((value) => !value)}
+                  />
+                  <ViewSettingButton
+                    checked={isMarkerSimplified}
+                    icon={CircleDot}
+                    label={isMarkerSimplified ? copy.markersSimplified : copy.markersDetailed}
+                    onClick={() => setIsMarkerSimplified((value) => !value)}
+                  />
+                  <ViewSettingButton
+                    checked={areStaticLabelsVisible}
+                    icon={areStaticLabelsVisible ? Eye : EyeOff}
+                    label={areStaticLabelsVisible ? copy.mapLabelsShown : copy.mapLabelsHidden}
+                    onClick={() => setAreStaticLabelsVisible((value) => !value)}
+                  />
+                  <ViewSettingButton
+                    checked={isAutoPanLocked}
+                    icon={isAutoPanLocked ? Lock : Unlock}
+                    label={isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
+                    onClick={() => setIsAutoPanLocked((value) => !value)}
+                  />
+                </div>
+              ) : null}
 
               {isDrawingToolbarOpen ? (
                 <div className="absolute right-0 top-11 flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">

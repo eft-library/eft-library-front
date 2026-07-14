@@ -105,7 +105,7 @@ function getPointMarkerPosition(
   mapId: string,
   point: Pick<LiveMapCanvasMarker, "x" | "y">,
   coordinateInfo: LiveMapCoordinateInfo,
-  rotation: LiveMapRotation,
+  rotation: number,
 ): [number, number] {
   return rotateLatLng(
     getPlayerMarkerPosition(mapId, { x: point.x, y: point.y, yaw: 0 }),
@@ -164,7 +164,7 @@ function getRotatedMapBounds(
   ]);
 }
 
-function applyImageRotation(overlay: LeafletImageOverlay, rotation: LiveMapRotation) {
+function applyImageRotation(overlay: LeafletImageOverlay, rotation: number) {
   const element = overlay.getElement();
 
   if (!element) {
@@ -834,8 +834,10 @@ export function LiveMapCanvas({
   const mapKeyRef = useRef(mapKey);
   const isAutoPanLockedRef = useRef(isAutoPanLocked);
   const isMarkerSimplifiedRef = useRef(isMarkerSimplified);
-  const rotationRef = useRef(rotation);
-  const previousRotationRef = useRef(rotation);
+  const rotationRef = useRef<number>(rotation);
+  const animatedRotationRef = useRef<number>(rotation);
+  const rotationAnimationFrameRef = useRef<number | null>(null);
+  const locationRef = useRef(location);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const imageBoundsKey = useMemo(
@@ -846,6 +848,7 @@ export function LiveMapCanvas({
     () => JSON.stringify(coordinateInfo.map_bounds),
     [coordinateInfo.map_bounds],
   );
+  locationRef.current = location;
 
   function getDrawingCacheKey() {
     return `${mapKey}:${activeFloorId}`;
@@ -894,7 +897,7 @@ export function LiveMapCanvas({
 
       const scale = 2 ** (map.getZoom() - stroke.zoom);
       const firstPoint = map.latLngToContainerPoint(
-        rotateLatLng(stroke.points[0], coordinateInfo.image_bounds, rotation),
+        rotateLatLng(stroke.points[0], coordinateInfo.image_bounds, animatedRotationRef.current),
       );
 
       context.globalCompositeOperation = stroke.erase ? "destination-out" : "source-over";
@@ -910,7 +913,7 @@ export function LiveMapCanvas({
       } else {
         stroke.points.slice(1).forEach((point) => {
           const canvasPoint = map.latLngToContainerPoint(
-            rotateLatLng(point, coordinateInfo.image_bounds, rotation),
+            rotateLatLng(point, coordinateInfo.image_bounds, animatedRotationRef.current),
           );
           context.lineTo(canvasPoint.x, canvasPoint.y);
         });
@@ -982,7 +985,11 @@ export function LiveMapCanvas({
       event.clientX - rect.left,
       event.clientY - rect.top,
     ]);
-    return unrotateLatLng(rotatedPoint, coordinateInfo.image_bounds, rotation);
+    return unrotateLatLng(
+      rotatedPoint,
+      coordinateInfo.image_bounds,
+      animatedRotationRef.current,
+    );
   }
 
   function handleDrawingPointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
@@ -1058,11 +1065,10 @@ export function LiveMapCanvas({
     mapKeyRef.current = mapKey;
     isAutoPanLockedRef.current = isAutoPanLocked;
     isMarkerSimplifiedRef.current = isMarkerSimplified;
-    rotationRef.current = rotation;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick, rotation]);
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1274,25 +1280,110 @@ export function LiveMapCanvas({
     const map = mapRef.current;
 
     if (!map) {
-      previousRotationRef.current = rotation;
+      animatedRotationRef.current = rotation;
+      rotationRef.current = rotation;
       return;
+    }
+
+    if (rotationAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(rotationAnimationFrameRef.current);
+      rotationAnimationFrameRef.current = null;
+    }
+
+    const container = map.getContainer();
+    const startRotation = animatedRotationRef.current;
+    let rotationDelta = (rotation - (startRotation % 360) + 360) % 360;
+
+    if (rotationDelta > 180) {
+      rotationDelta -= 360;
     }
 
     const baseCenter = unrotateLatLng(
       map.getCenter(),
       coordinateInfo.image_bounds,
-      previousRotationRef.current,
+      startRotation,
     );
-    const nextCenter = rotateLatLng(baseCenter, coordinateInfo.image_bounds, rotation);
     map.setMaxBounds(
       getRelaxedMapBounds(
         getRotatedMapBounds(coordinateInfo.map_bounds, coordinateInfo.image_bounds, rotation),
       ),
     );
-    map.setView(nextCenter, map.getZoom(), { animate: false });
-    previousRotationRef.current = rotation;
-    window.requestAnimationFrame(() => redrawDrawingRef.current());
-  }, [coordinateInfo, rotation]);
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const duration = reduceMotion ? 0 : 180;
+    const startTime = performance.now();
+
+    if (duration > 0 && rotationDelta !== 0) {
+      container.classList.add("live-map-is-rotating");
+    }
+
+    const renderRotationFrame = (timestamp: number) => {
+      const progress = duration === 0 ? 1 : Math.min(1, (timestamp - startTime) / duration);
+      const easedProgress = 1 - (1 - progress) ** 3;
+      const currentRotation = startRotation + rotationDelta * easedProgress;
+      const nextCenter = rotateLatLng(
+        baseCenter,
+        coordinateInfo.image_bounds,
+        currentRotation,
+      );
+
+      animatedRotationRef.current = currentRotation;
+      rotationRef.current = currentRotation;
+      map.setView(nextCenter, map.getZoom(), { animate: false });
+      imageOverlayRefs.current.forEach((overlay) => applyImageRotation(overlay, currentRotation));
+      pointMarkerByIdRef.current.forEach((entry) => {
+        entry.marker.setLatLng(
+          getPointMarkerPosition(mapKey, entry.point, coordinateInfo, currentRotation),
+        );
+      });
+
+      const currentLocation = locationRef.current;
+
+      if (currentLocation && markerRef.current) {
+        markerRef.current.setLatLng(
+          rotateLatLng(
+            getPlayerMarkerPosition(mapKey, {
+              x: currentLocation.x,
+              y: currentLocation.z,
+              yaw: currentLocation.yaw,
+            }),
+            coordinateInfo.image_bounds,
+            currentRotation,
+          ),
+        );
+        const playerElement = markerRef.current
+          .getElement()
+          ?.querySelector<HTMLElement>(".player-location-marker");
+        playerElement?.style.setProperty(
+          "transform",
+          `rotate(${(getPlayerMarkerYaw(mapKey, currentLocation.yaw) + currentRotation) % 360}deg)`,
+        );
+      }
+
+      redrawDrawingRef.current();
+
+      if (progress < 1) {
+        rotationAnimationFrameRef.current = window.requestAnimationFrame(renderRotationFrame);
+        return;
+      }
+
+      animatedRotationRef.current = rotation;
+      rotationRef.current = rotation;
+      rotationAnimationFrameRef.current = null;
+      imageOverlayRefs.current.forEach((overlay) => applyImageRotation(overlay, rotation));
+      container.classList.remove("live-map-is-rotating");
+    };
+
+    rotationAnimationFrameRef.current = window.requestAnimationFrame(renderRotationFrame);
+
+    return () => {
+      if (rotationAnimationFrameRef.current !== null) {
+        window.cancelAnimationFrame(rotationAnimationFrameRef.current);
+        rotationAnimationFrameRef.current = null;
+      }
+      container.classList.remove("live-map-is-rotating");
+    };
+  }, [coordinateInfo, mapKey, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1319,7 +1410,7 @@ export function LiveMapCanvas({
       });
 
       overlay.addTo(map);
-      applyImageRotation(overlay, rotation);
+      applyImageRotation(overlay, animatedRotationRef.current);
 
       if (isActive) {
         overlay.bringToFront();
@@ -1330,7 +1421,9 @@ export function LiveMapCanvas({
 
     const restoreImageRotation = () => {
       window.requestAnimationFrame(() => {
-        imageOverlayRefs.current.forEach((overlay) => applyImageRotation(overlay, rotation));
+        imageOverlayRefs.current.forEach((overlay) =>
+          applyImageRotation(overlay, animatedRotationRef.current),
+        );
       });
     };
 
@@ -1341,7 +1434,7 @@ export function LiveMapCanvas({
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
     };
-  }, [activeFloorId, imageBoundsKey, floors, rotation]);
+  }, [activeFloorId, imageBoundsKey, floors]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1375,7 +1468,14 @@ export function LiveMapCanvas({
         existing.point = point;
 
         if (existing.positionKey !== nextPositionKey) {
-          existing.marker.setLatLng(getPointMarkerPosition(mapKey, point, coordinateInfo, rotation));
+          existing.marker.setLatLng(
+            getPointMarkerPosition(
+              mapKey,
+              point,
+              coordinateInfo,
+              animatedRotationRef.current,
+            ),
+          );
           existing.positionKey = nextPositionKey;
         }
 
@@ -1406,7 +1506,12 @@ export function LiveMapCanvas({
         return;
       }
 
-      const marker = L.marker(getPointMarkerPosition(mapKey, point, coordinateInfo, rotation), {
+      const marker = L.marker(getPointMarkerPosition(
+        mapKey,
+        point,
+        coordinateInfo,
+        animatedRotationRef.current,
+      ), {
         icon: PointIcon(
           point,
           point.floorId !== null && point.floorId !== activeFloorId,
@@ -1599,10 +1704,12 @@ export function LiveMapCanvas({
         yaw: location.yaw,
       }),
       coordinateInfo.image_bounds,
-      rotation,
+      animatedRotationRef.current,
     );
     const marker = L.marker(position, {
-      icon: PlayerIcon((getPlayerMarkerYaw(mapKey, location.yaw) + rotation) % 360),
+      icon: PlayerIcon(
+        (getPlayerMarkerYaw(mapKey, location.yaw) + animatedRotationRef.current) % 360,
+      ),
       zIndexOffset: 10000,
     });
 
