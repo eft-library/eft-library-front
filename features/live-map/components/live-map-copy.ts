@@ -46,6 +46,7 @@ export const copyByLocale = {
     undoDrawing: "마지막 작업 취소",
     clearDrawing: "그림 전체 삭제",
     clearDrawingConfirm: "현재 지도와 층에 그린 그림을 모두 삭제할까요?",
+    cancel: "취소",
     staticCategoryAll: "전체",
     staticCategories: {
       black_div_spawn: "블랙 디비전 스폰",
@@ -163,6 +164,7 @@ export const copyByLocale = {
     undoDrawing: "Undo last action",
     clearDrawing: "Clear drawing",
     clearDrawingConfirm: "Clear every drawing on this map floor?",
+    cancel: "Cancel",
     staticCategoryAll: "All",
     staticCategories: {
       black_div_spawn: "Black Div Spawns",
@@ -280,6 +282,7 @@ export const copyByLocale = {
     undoDrawing: "最後の操作を元に戻す",
     clearDrawing: "描画をすべて削除",
     clearDrawingConfirm: "このマップ階層の描画をすべて削除しますか？",
+    cancel: "キャンセル",
     staticCategoryAll: "全体",
     staticCategories: {
       black_div_spawn: "Black Divスポーン",

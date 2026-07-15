@@ -286,6 +286,13 @@ export interface LiveMapEventPoint {
   event_id: string;
   objective_id: string | null;
   map_id: string;
+  map?: {
+    id: string;
+    normalized_name: string;
+    name_en: string | null;
+    name_ko: string | null;
+    name_ja: string | null;
+  } | null;
   floor_id: string | null;
   floor_no?: number | null;
   x: number;

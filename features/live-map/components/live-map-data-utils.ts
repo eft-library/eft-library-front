@@ -458,6 +458,9 @@ export function getEventMarkerSearchText(point: LiveMapEventPoint, locale: Local
   return [
     localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale),
     getEventPointLabel(point, locale),
+    point.map
+      ? localizedName(point.map as unknown as Record<string, unknown>, locale)
+      : "",
   ].join(" ");
 }
 

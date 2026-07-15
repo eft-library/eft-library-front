@@ -24,6 +24,22 @@ import {
   type StaticEntry,
 } from "./live-map-data-utils";
 
+function getEntryMapLabel(entry: RightEntry, locale: Locale) {
+  if (!("event_info" in entry.point) || !entry.point.map) {
+    return "";
+  }
+
+  switch (locale) {
+    case "en":
+      return entry.point.map.name_en ?? entry.point.map.name_ko ?? "";
+    case "ja":
+      return entry.point.map.name_ja ?? entry.point.map.name_en ?? "";
+    case "ko":
+    default:
+      return entry.point.map.name_ko ?? entry.point.map.name_en ?? "";
+  }
+}
+
 const compactStaticCategories = new Set([
   "black_div_spawn",
   "bloodhounds_spawn",
@@ -74,7 +90,10 @@ export function RightSection<TEntry extends RightEntry>({
   title: string;
 }) {
   const filteredItems = useMemo(
-    () => items.filter((entry) => matchesFilterText(getEntryLabel(entry, locale), searchQuery)),
+    () => items.filter((entry) => matchesFilterText(
+      [getEntryLabel(entry, locale), getEntryMapLabel(entry, locale)].join(" "),
+      searchQuery,
+    )),
     [items, locale, searchQuery],
   );
   const enabledCount = items.filter((entry) => enabledIds.has(entry.id)).length;
@@ -129,6 +148,7 @@ export function RightSection<TEntry extends RightEntry>({
                 const isSelected = selectedId === entry.id;
                 const enabled = enabledIds.has(entry.id);
                 const label = getEntryLabel(entry, locale);
+                const mapLabel = kind === "event" ? getEntryMapLabel(entry, locale) : "";
                 const completed = kind === "quest" && completedQuestIds.includes(entry.id);
                 const isKappaQuest =
                   "quest_info" in entry.point && !!entry.point.quest_info?.quest?.kappa_required;
@@ -173,13 +193,18 @@ export function RightSection<TEntry extends RightEntry>({
                     >
                       <span
                         className={cn(
-                          "min-w-0 truncate font-medium text-gray-700 dark:text-gray-100",
+                          "min-w-0 flex-1 truncate font-medium text-gray-700 dark:text-gray-100",
                           isSelected ? "font-black text-orange-500" : "",
                         )}
                       >
                         {label}
                       </span>
                       {isKappaQuest ? <KappaBadge /> : null}
+                      {mapLabel ? (
+                        <span className="max-w-20 shrink-0 truncate rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
+                          {mapLabel}
+                        </span>
+                      ) : null}
                     </button>
                     <button
                       type="button"

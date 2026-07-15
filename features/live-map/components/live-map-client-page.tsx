@@ -419,6 +419,7 @@ export function LiveMapClientPage({
   const rotationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
+  const [isClearDrawingConfirmOpen, setIsClearDrawingConfirmOpen] = useState(false);
   const [isViewSettingsOpen, setIsViewSettingsOpen] = useState(false);
   const mapToolbarRef = useRef<HTMLDivElement | null>(null);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
@@ -535,6 +536,21 @@ export function LiveMapClientPage({
       window.removeEventListener("keydown", closeSettings);
     };
   }, [isViewSettingsOpen]);
+
+  useEffect(() => {
+    if (!isClearDrawingConfirmOpen) {
+      return;
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsClearDrawingConfirmOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isClearDrawingConfirmOpen]);
   const defaultFloor = getDefaultFloor(sortedFloors);
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
@@ -543,6 +559,8 @@ export function LiveMapClientPage({
     data.map_selector[0];
   const selectedFloor =
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
+  const currentMapId =
+    selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -862,6 +880,7 @@ export function LiveMapClientPage({
     const eventMarkers = data.event_points
       .filter((point) => (
         point.event_info &&
+        point.map_id === currentMapId &&
         matchesFilterText(getEventMarkerSearchText(point, locale), eventFilterQuery) &&
         (focusedMarkerId === `event:${point.id}` || enabledEventIds.has(getEventId(point)))
       ))
@@ -922,6 +941,7 @@ export function LiveMapClientPage({
     data.static_points,
     data.story_points,
     completedQuestIds,
+    currentMapId,
     enabledEventIds,
     enabledQuestIds,
     enabledStaticIds,
@@ -1594,6 +1614,19 @@ export function LiveMapClientPage({
       return;
     }
 
+    const targetMap = entry.point.map?.normalized_name;
+
+    if (targetMap && targetMap !== normalizedName) {
+      const focus = `event:${entry.point.id}`;
+      setLocalFocusedMarkerId(null);
+      setFocusTarget(null);
+      clearLiveMapSelection();
+      router.push(`/live-map/${targetMap}?focus=${encodeURIComponent(focus)}`, {
+        scroll: false,
+      });
+      return;
+    }
+
     try {
       const info = await loadEventDetail(getEventId(entry.point));
       setPanel({
@@ -2051,11 +2084,7 @@ export function LiveMapClientPage({
                     type="button"
                     aria-label={copy.clearDrawing}
                     title={copy.clearDrawing}
-                    onClick={() => {
-                      if (window.confirm(copy.clearDrawingConfirm)) {
-                        setClearDrawingRequest((value) => value + 1);
-                      }
-                    }}
+                    onClick={() => setIsClearDrawingConfirmOpen(true)}
                     className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 text-gray-600 transition hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 dark:border-[#3a3d41] dark:text-gray-200"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -2063,6 +2092,59 @@ export function LiveMapClientPage({
                 </div>
               ) : null}
             </div>
+
+            {isClearDrawingConfirmOpen ? (
+              <div
+                className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/55 p-4 backdrop-blur-sm"
+                onMouseDown={(event) => {
+                  if (event.currentTarget === event.target) {
+                    setIsClearDrawingConfirmOpen(false);
+                  }
+                }}
+              >
+                <div
+                  role="alertdialog"
+                  aria-modal="true"
+                  aria-labelledby="clear-drawing-dialog-title"
+                  aria-describedby="clear-drawing-dialog-description"
+                  className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-5 shadow-2xl dark:border-[#3a3d41] dark:bg-[#1f2124]"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-500 dark:bg-red-500/10 dark:text-red-400">
+                      <Trash2 className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <h2 id="clear-drawing-dialog-title" className="font-black text-gray-900 dark:text-white">
+                        {copy.clearDrawing}
+                      </h2>
+                      <p id="clear-drawing-dialog-description" className="mt-1.5 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                        {copy.clearDrawingConfirm}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-5 flex justify-end gap-2">
+                    <button
+                      type="button"
+                      autoFocus
+                      onClick={() => setIsClearDrawingConfirmOpen(false)}
+                      className="h-9 rounded-md border border-gray-200 px-4 text-sm font-bold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-[#3a3d41] dark:text-gray-200 dark:hover:bg-[#2a2d31]"
+                    >
+                      {copy.cancel}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setClearDrawingRequest((value) => value + 1);
+                        setIsClearDrawingConfirmOpen(false);
+                      }}
+                      className="h-9 rounded-md bg-red-500 px-4 text-sm font-black text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 dark:focus:ring-offset-[#1f2124]"
+                    >
+                      {copy.clearDrawing}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             <div className="absolute bottom-3 left-3 right-3 grid gap-2 rounded-md border border-gray-200 bg-white/90 p-3 text-xs shadow-lg backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/90 sm:left-auto sm:right-3 sm:w-80">
               <div className="flex items-center justify-between gap-3">
