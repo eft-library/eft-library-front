@@ -1239,13 +1239,37 @@ export function LiveMapCanvas({
       }
     };
 
+    const preventDocumentSelection = (event: Event) => {
+      event.preventDefault();
+    };
+    const endMapDrag = () => {
+      document.documentElement.classList.remove("live-map-document-dragging");
+      document.removeEventListener("selectstart", preventDocumentSelection);
+    };
+    const startMapDrag = () => {
+      window.getSelection()?.removeAllRanges();
+      document.documentElement.classList.add("live-map-document-dragging");
+      document.addEventListener("selectstart", preventDocumentSelection);
+    };
+
     container.addEventListener("click", handlePopupClick);
     container.addEventListener("dragstart", preventControlDrag);
+    map.on("dragstart", startMapDrag);
+    map.on("dragend", endMapDrag);
+    window.addEventListener("mouseup", endMapDrag, true);
+    window.addEventListener("pointerup", endMapDrag, true);
+    window.addEventListener("pointercancel", endMapDrag, true);
+    window.addEventListener("blur", endMapDrag);
 
     mapRef.current = map;
     window.requestAnimationFrame(() => redrawDrawingRef.current());
 
     return () => {
+      endMapDrag();
+      window.removeEventListener("mouseup", endMapDrag, true);
+      window.removeEventListener("pointerup", endMapDrag, true);
+      window.removeEventListener("pointercancel", endMapDrag, true);
+      window.removeEventListener("blur", endMapDrag);
       resizeObserver.disconnect();
       container.classList.remove("live-map-is-zooming");
       markerRef.current?.remove();

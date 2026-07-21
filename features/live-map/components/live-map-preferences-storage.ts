@@ -5,6 +5,7 @@ export interface LiveMapPreferences {
   isAutoPanLocked: boolean;
   isEyeComfortMode: boolean;
   isMarkerSimplified: boolean;
+  openQuestDetailsOnMarkerClick: boolean;
   isRightPanelOpen: boolean;
   mapRotations: Record<string, number>;
 }
@@ -47,6 +48,10 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
         typeof preferences.isMarkerSimplified === "boolean"
           ? preferences.isMarkerSimplified
           : false,
+      openQuestDetailsOnMarkerClick:
+        typeof preferences.openQuestDetailsOnMarkerClick === "boolean"
+          ? preferences.openQuestDetailsOnMarkerClick
+          : true,
       isRightPanelOpen:
         typeof preferences.isRightPanelOpen === "boolean"
           ? preferences.isRightPanelOpen

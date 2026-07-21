@@ -404,6 +404,7 @@ export function LiveMapClientPage({
   const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
   const storyDetailCacheRef = useRef<Map<string, StoryInfo>>(new Map());
   const focusRequestKeyRef = useRef(0);
+  const skipQuestDetailAutoOpenRef = useRef<string | null>(null);
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -416,6 +417,7 @@ export function LiveMapClientPage({
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
+  const [openQuestDetailsOnMarkerClick, setOpenQuestDetailsOnMarkerClick] = useState(true);
   const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
   const [mapRotations, setMapRotations] = useState<Record<string, number>>({});
   const [isMapRotating, setIsMapRotating] = useState(false);
@@ -429,6 +431,7 @@ export function LiveMapClientPage({
   const [undoDrawingRequest, setUndoDrawingRequest] = useState(0);
   const [clearDrawingRequest, setClearDrawingRequest] = useState(0);
   const [panel, setPanel] = useState<PanelState | null>(null);
+  const [questDetailRevision, setQuestDetailRevision] = useState(0);
   const [imagePopup, setImagePopup] = useState<LiveMapPopupImage | null>(null);
   const [notice, setNotice] = useState("");
   const [loadingQuestNormalizedName, setLoadingQuestNormalizedName] = useState<string | null>(null);
@@ -452,6 +455,7 @@ export function LiveMapClientPage({
       setIsAutoPanLocked(preferences.isAutoPanLocked);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
+      setOpenQuestDetailsOnMarkerClick(preferences.openQuestDetailsOnMarkerClick);
       setIsRightPanelOpen(preferences.isRightPanelOpen);
       setMapRotations(preferences.mapRotations);
       const savedRotation = preferences.mapRotations[normalizedName];
@@ -471,10 +475,11 @@ export function LiveMapClientPage({
       isAutoPanLocked,
       isEyeComfortMode,
       isMarkerSimplified,
+      openQuestDetailsOnMarkerClick,
       isRightPanelOpen,
       mapRotations,
     });
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations]);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openQuestDetailsOnMarkerClick]);
 
   useEffect(() => {
     if (!hasLoadedPreferences) {
@@ -961,6 +966,7 @@ export function LiveMapClientPage({
     eventFilterQuery,
     focusedMarkerId,
     panel,
+    questDetailRevision,
     questFilterQuery,
     staticFilterQuery,
     storyFilterQuery,
@@ -1047,6 +1053,7 @@ export function LiveMapClientPage({
     questDetailCacheRef.current.set(detail.quest.id, detail);
     questDetailCacheRef.current.set(detail.quest.normalized_name, detail);
     questDetailCacheRef.current.set(questIdOrNormalizedName, detail);
+    setQuestDetailRevision((current) => current + 1);
     return detail;
   }, []);
 
@@ -1312,7 +1319,13 @@ export function LiveMapClientPage({
   }
 
   const openPanelForMarkerId = useCallback(
-    async (markerId: string, { openStaticPanel = false }: { openStaticPanel?: boolean } = {}) => {
+    async (
+      markerId: string,
+      {
+        openQuestPanel = true,
+        openStaticPanel = false,
+      }: { openQuestPanel?: boolean; openStaticPanel?: boolean } = {},
+    ) => {
       const { id, kind } = parseCanvasMarkerId(markerId);
 
       if (kind === "quest") {
@@ -1321,12 +1334,14 @@ export function LiveMapClientPage({
           selectPointFloor(point);
           try {
             const info = await loadQuestDetail(point.quest_info.quest?.normalized_name ?? getQuestId(point));
-            setPanel({
-              id: info.quest.id,
-              info,
-              pointId: point.id,
-              type: "quest",
-            });
+            if (openQuestPanel) {
+              setPanel({
+                id: info.quest.id,
+                info,
+                pointId: point.id,
+                type: "quest",
+              });
+            }
             return true;
           } catch {
             showNotice(copy.noItems);
@@ -1457,6 +1472,19 @@ export function LiveMapClientPage({
 
   const openPanelForMarker = useCallback(
     async (marker: LiveMapCanvasMarker) => {
+      if (marker.kind === "quest" && !openQuestDetailsOnMarkerClick) {
+        skipQuestDetailAutoOpenRef.current = marker.id;
+        setPanel(null);
+        requestMarkerFocus(marker.id, { x: marker.x, y: marker.y });
+        const opened = await openPanelForMarkerId(marker.id, { openQuestPanel: false });
+
+        if (opened && focusedMarkerId !== marker.id) {
+          replaceFocusParam(marker.id);
+        }
+
+        return;
+      }
+
       requestMarkerFocus(marker.id, { x: marker.x, y: marker.y });
       const opened = await openPanelForMarkerId(marker.id);
 
@@ -1466,7 +1494,7 @@ export function LiveMapClientPage({
 
       replaceFocusParam(marker.id);
     },
-    [focusedMarkerId, openPanelForMarkerId, replaceFocusParam, requestMarkerFocus],
+    [focusedMarkerId, openPanelForMarkerId, openQuestDetailsOnMarkerClick, replaceFocusParam, requestMarkerFocus],
   );
 
   const clearFocusParam = useCallback(() => {
@@ -1699,6 +1727,11 @@ export function LiveMapClientPage({
 
   useEffect(() => {
     if (!focusedMarkerId) {
+      return;
+    }
+
+    if (skipQuestDetailAutoOpenRef.current === focusedMarkerId) {
+      skipQuestDetailAutoOpenRef.current = null;
       return;
     }
 
@@ -2025,7 +2058,7 @@ export function LiveMapClientPage({
               </button>
 
               {isViewSettingsOpen ? (
-                <div role="menu" aria-label={copy.viewSettings} className="absolute right-0 top-11 w-64 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">
+                <div role="menu" aria-label={copy.viewSettings} className="absolute right-0 top-11 w-80 max-w-[calc(100vw-1.5rem)] rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">
                   <ViewSettingButton
                     checked={isEyeComfortMode}
                     icon={Leaf}
@@ -2049,6 +2082,12 @@ export function LiveMapClientPage({
                     icon={isAutoPanLocked ? Lock : Unlock}
                     label={isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
                     onClick={() => setIsAutoPanLocked((value) => !value)}
+                  />
+                  <ViewSettingButton
+                    checked={openQuestDetailsOnMarkerClick}
+                    icon={PanelRightOpen}
+                    label={openQuestDetailsOnMarkerClick ? copy.questDetailsOn : copy.questDetailsOff}
+                    onClick={() => setOpenQuestDetailsOnMarkerClick((value) => !value)}
                   />
                 </div>
               ) : null}

@@ -146,6 +146,12 @@ summary {
   -webkit-user-drag: none;
 }
 
+html.live-map-document-dragging,
+html.live-map-document-dragging * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
 .leaflet-control-zoom a:hover {
   background: #f9fafb;
   color: #f97316;
