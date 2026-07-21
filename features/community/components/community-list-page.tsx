@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PenLine, Search } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { LogIn, PenLine, Search } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
 
 import { useAppStore } from "@/components/providers/app-store-provider";
 import {
@@ -28,7 +27,7 @@ interface CommunityListPageProps {
 export function CommunityListPage({ category }: CommunityListPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const locale = useAppStore((state) => state.uiLocale);
   const setActiveCategory = useAppStore(
     (state) => state.setActiveCommunityCategory,
@@ -38,6 +37,9 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
   const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [loginNotice, setLoginNotice] = useState("");
+  const [isStartingLogin, setIsStartingLogin] = useState(false);
+  const loginRedirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
   const currentCategory = useMemo(
@@ -81,6 +83,31 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
     };
   }, [currentCategory, page, session?.accessToken]);
 
+  useEffect(() => {
+    return () => {
+      if (loginRedirectTimerRef.current) {
+        clearTimeout(loginRedirectTimerRef.current);
+      }
+    };
+  }, []);
+
+  function openPostEditor() {
+    if (status === "loading" || isStartingLogin) {
+      return;
+    }
+
+    if (status === "authenticated") {
+      router.push("/community/create");
+      return;
+    }
+
+    setLoginNotice("글을 작성하려면 로그인이 필요합니다. 로그인 화면으로 이동합니다.");
+    setIsStartingLogin(true);
+    loginRedirectTimerRef.current = setTimeout(() => {
+      void signIn("google", { callbackUrl: "/community/create" });
+    }, 1200);
+  }
+
   function changePage(nextPage: number) {
     router.push(`/community/${currentCategory}?page=${nextPage}`);
   }
@@ -107,13 +134,15 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
               </p>
               <h1 className="mt-1 text-2xl font-black">PMC 라운지</h1>
             </div>
-            <Link
-              href="/community/create"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-500 px-4 text-sm font-bold text-white transition hover:bg-orange-600"
+            <button
+              type="button"
+              onClick={openPostEditor}
+              disabled={status === "loading" || isStartingLogin}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-500 px-4 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-wait disabled:opacity-70"
             >
               <PenLine className="h-4 w-4" />
-              글쓰기
-            </Link>
+              {isStartingLogin ? "로그인으로 이동 중" : "글쓰기"}
+            </button>
           </div>
 
           <CommunityCategoryTabs />
@@ -161,6 +190,16 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
 
         <CommunitySidebar side={side} locale={locale} />
       </div>
+      {loginNotice ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 left-1/2 z-[100] flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-lg border border-orange-400/30 bg-gray-950 px-4 py-3 text-sm font-semibold text-white shadow-2xl dark:bg-white dark:text-gray-950"
+        >
+          <LogIn className="h-4 w-4 shrink-0 text-orange-400" />
+          <span>{loginNotice}</span>
+        </div>
+      ) : null}
     </main>
   );
 }
