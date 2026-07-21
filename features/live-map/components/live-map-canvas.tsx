@@ -1231,7 +1231,16 @@ export function LiveMapCanvas({
       });
     };
 
+    const preventControlDrag = (event: DragEvent) => {
+      const target = event.target;
+
+      if (target instanceof HTMLElement && target.closest(".leaflet-control")) {
+        event.preventDefault();
+      }
+    };
+
     container.addEventListener("click", handlePopupClick);
+    container.addEventListener("dragstart", preventControlDrag);
 
     mapRef.current = map;
     window.requestAnimationFrame(() => redrawDrawingRef.current());
@@ -1256,6 +1265,7 @@ export function LiveMapCanvas({
       }
 
       container.removeEventListener("click", handlePopupClick);
+      container.removeEventListener("dragstart", preventControlDrag);
     };
   }, [
     coordinateInfo.default_zoom_level,

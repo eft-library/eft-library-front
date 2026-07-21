@@ -136,6 +136,14 @@ summary {
   background: #ffffff;
   border-color: #e5e7eb;
   color: #374151;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.eft-leaflet-map .leaflet-control,
+.eft-leaflet-map .leaflet-control * {
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .leaflet-control-zoom a:hover {

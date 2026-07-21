@@ -382,11 +382,14 @@ export function LiveMapClientPage({
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlFocusedMarkerId = searchParams.get("focus");
-  const [localFocusedMarkerId, setLocalFocusedMarkerId] = useState<string | null>(null);
+  const [localFocusedMarkerId, setLocalFocusedMarkerId] = useState<
+    string | null | undefined
+  >(undefined);
   const [focusRequestKey, setFocusRequestKey] = useState(0);
   const [focusTarget, setFocusTarget] = useState<{ id: string; key: number; x: number; y: number } | null>(null);
   const [, startFocusRouteTransition] = useTransition();
-  const focusedMarkerId = localFocusedMarkerId ?? urlFocusedMarkerId;
+  const focusedMarkerId =
+    localFocusedMarkerId === undefined ? urlFocusedMarkerId : localFocusedMarkerId;
   const locale = useAppStore((state) => state.uiLocale);
   const copy = copyByLocale[locale];
   const { data: session } = useSession();
@@ -449,6 +452,7 @@ export function LiveMapClientPage({
       setIsAutoPanLocked(preferences.isAutoPanLocked);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
+      setIsRightPanelOpen(preferences.isRightPanelOpen);
       setMapRotations(preferences.mapRotations);
       const savedRotation = preferences.mapRotations[normalizedName];
       setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
@@ -467,9 +471,10 @@ export function LiveMapClientPage({
       isAutoPanLocked,
       isEyeComfortMode,
       isMarkerSimplified,
+      isRightPanelOpen,
       mapRotations,
     });
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, mapRotations]);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations]);
 
   useEffect(() => {
     if (!hasLoadedPreferences) {
@@ -706,10 +711,17 @@ export function LiveMapClientPage({
   ]);
 
   useEffect(() => {
-    if (localFocusedMarkerId && urlFocusedMarkerId === localFocusedMarkerId) {
-      setLocalFocusedMarkerId(null);
+    if (
+      localFocusedMarkerId !== undefined &&
+      urlFocusedMarkerId === localFocusedMarkerId
+    ) {
+      setLocalFocusedMarkerId(undefined);
     }
   }, [localFocusedMarkerId, urlFocusedMarkerId]);
+
+  useEffect(() => {
+    setLocalFocusedMarkerId(undefined);
+  }, [normalizedName]);
 
   useEffect(() => {
     getPanelObjectiveMapNames(panel).forEach((mapName) => {
@@ -1472,6 +1484,29 @@ export function LiveMapClientPage({
     });
   }, [normalizedName, router, searchParams, startFocusRouteTransition]);
 
+  const closeDetailPanel = useCallback(() => {
+    setPanel(null);
+
+    if (focusedMarkerId) {
+      clearFocusParam();
+    }
+  }, [clearFocusParam, focusedMarkerId]);
+
+  useEffect(() => {
+    if (!panel) {
+      return;
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeDetailPanel();
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [closeDetailPanel, panel]);
+
   const clearFocusedMarker = useCallback(
     (markerId: string) => {
       if (focusedMarkerId !== markerId) {
@@ -2170,7 +2205,7 @@ export function LiveMapClientPage({
               loadingQuestNormalizedName={loadingQuestNormalizedName}
               locale={locale}
               normalizedName={normalizedName}
-              onClose={() => setPanel(null)}
+              onClose={closeDetailPanel}
               onOpenQuest={openQuestDetail}
               onToggleQuest={toggleQuestCompletionState}
               panel={panel}
