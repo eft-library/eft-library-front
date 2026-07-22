@@ -697,6 +697,7 @@ function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker)
     autoPan: false,
     className: "live-map-point-popup",
     closeButton: true,
+    closeOnClick: false,
     maxWidth: 460,
     minWidth: 460,
     offset: [0, -30],
@@ -778,6 +779,7 @@ export function LiveMapCanvas({
   focusTarget,
   isAutoPanLocked,
   isMarkerSimplified,
+  preserveFocusOnPopupEscape,
   location,
   mapKey,
   markers,
@@ -799,6 +801,7 @@ export function LiveMapCanvas({
   floors: LiveMapFloor[];
   isAutoPanLocked: boolean;
   isMarkerSimplified: boolean;
+  preserveFocusOnPopupEscape: boolean;
   location: LiveMapLocation | null;
   mapKey: string;
   markers: LiveMapCanvasMarker[];
@@ -823,6 +826,8 @@ export function LiveMapCanvas({
   const mapRef = useRef<LeafletMap | null>(null);
   const pointMarkerByIdRef = useRef<Map<string, PointMarkerEntry>>(new Map());
   const hoveredMarkerIdRef = useRef<string | null>(null);
+  const dismissedPopupMarkerIdRef = useRef<string | null>(null);
+  const openPopupMarkerIdRef = useRef<string | null>(null);
   const onMarkerClickRef = useRef(onMarkerClick);
   const onMapClickRef = useRef<typeof onMapClick>(onMapClick);
   const lastFocusedMarkerRef = useRef<string | null>(null);
@@ -834,6 +839,7 @@ export function LiveMapCanvas({
   const mapKeyRef = useRef(mapKey);
   const isAutoPanLockedRef = useRef(isAutoPanLocked);
   const isMarkerSimplifiedRef = useRef(isMarkerSimplified);
+  const preserveFocusOnPopupEscapeRef = useRef(preserveFocusOnPopupEscape);
   const rotationRef = useRef<number>(rotation);
   const animatedRotationRef = useRef<number>(rotation);
   const rotationAnimationFrameRef = useRef<number | null>(null);
@@ -1065,10 +1071,11 @@ export function LiveMapCanvas({
     mapKeyRef.current = mapKey;
     isAutoPanLockedRef.current = isAutoPanLocked;
     isMarkerSimplifiedRef.current = isMarkerSimplified;
+    preserveFocusOnPopupEscapeRef.current = preserveFocusOnPopupEscape;
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick]);
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick, preserveFocusOnPopupEscape]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1148,6 +1155,7 @@ export function LiveMapCanvas({
         return;
       }
 
+      map.closePopup();
       onMapClickRef.current?.();
     });
 
@@ -1239,6 +1247,29 @@ export function LiveMapCanvas({
       }
     };
 
+    const closePopupOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      const markerId = openPopupMarkerIdRef.current;
+      const marker = markerId ? pointMarkerByIdRef.current.get(markerId)?.marker : null;
+
+      if (!markerId || !marker?.isPopupOpen()) {
+        return;
+      }
+
+      dismissedPopupMarkerIdRef.current = markerId;
+      marker.closePopup();
+
+      if (!preserveFocusOnPopupEscapeRef.current) {
+        onFocusedMarkerCloseRef.current?.(markerId);
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
     const preventDocumentSelection = (event: Event) => {
       event.preventDefault();
     };
@@ -1260,6 +1291,7 @@ export function LiveMapCanvas({
     window.addEventListener("pointerup", endMapDrag, true);
     window.addEventListener("pointercancel", endMapDrag, true);
     window.addEventListener("blur", endMapDrag);
+    window.addEventListener("keydown", closePopupOnEscape, true);
 
     mapRef.current = map;
     window.requestAnimationFrame(() => redrawDrawingRef.current());
@@ -1270,6 +1302,7 @@ export function LiveMapCanvas({
       window.removeEventListener("pointerup", endMapDrag, true);
       window.removeEventListener("pointercancel", endMapDrag, true);
       window.removeEventListener("blur", endMapDrag);
+      window.removeEventListener("keydown", closePopupOnEscape, true);
       resizeObserver.disconnect();
       container.classList.remove("live-map-is-zooming");
       markerRef.current?.remove();
@@ -1559,10 +1592,24 @@ export function LiveMapCanvas({
 
       syncPointMarkerPopup(marker, point);
 
+      marker.on("popupopen", () => {
+        openPopupMarkerIdRef.current = point.id;
+        dismissedPopupMarkerIdRef.current = null;
+      });
+
+      marker.on("popupclose", () => {
+        if (openPopupMarkerIdRef.current === point.id) {
+          openPopupMarkerIdRef.current = null;
+        }
+
+        dismissedPopupMarkerIdRef.current = point.id;
+      });
+
       marker.on("click", (event) => {
         L.DomEvent.stopPropagation(event);
 
         const current = pointMarkerByIdRef.current.get(point.id)?.point ?? point;
+        dismissedPopupMarkerIdRef.current = null;
         onMarkerClickRef.current(current);
 
         if (current.popupHtml && (!current.floorId || current.floorId === activeFloorIdRef.current)) {
@@ -1664,8 +1711,16 @@ export function LiveMapCanvas({
       lastFocusedFloorRef.current !== activeFloorId ||
       lastFocusedRequestRef.current !== requestKey;
 
+    if (!shouldMoveView && dismissedPopupMarkerIdRef.current === targetId) {
+      return;
+    }
+
     if (!shouldMoveView && marker?.isPopupOpen()) {
       return;
+    }
+
+    if (shouldMoveView) {
+      dismissedPopupMarkerIdRef.current = null;
     }
 
     lastFocusedMarkerRef.current = targetId;

@@ -1976,6 +1976,7 @@ export function LiveMapClientPage({
                 isMarkerSimplified={isMarkerSimplified}
                 location={location}
                 mapKey={normalizedName}
+                preserveFocusOnPopupEscape={panel !== null}
                 rotation={mapRotation}
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
