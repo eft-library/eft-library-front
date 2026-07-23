@@ -157,10 +157,18 @@ export function RightSection<TEntry extends RightEntry>({
                   <div
                     key={entry.id}
                     className={cn(
-                      "grid h-8 grid-cols-[32px_1fr_48px] items-center rounded-md text-xs",
-                      isSelected ? "bg-gray-100 dark:bg-[#2a2d31]" : "",
+                      "relative grid h-8 grid-cols-[32px_1fr_48px] items-center overflow-hidden rounded-md border border-transparent text-xs transition-colors",
+                      isSelected
+                        ? "border-orange-300 bg-orange-50 shadow-sm ring-1 ring-inset ring-orange-200 dark:border-orange-500/60 dark:bg-orange-500/15 dark:ring-orange-400/20"
+                        : "",
                     )}
                   >
+                    {isSelected ? (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 left-0 w-1 bg-orange-500 dark:bg-orange-400"
+                      />
+                    ) : null}
                     <button
                       type="button"
                       onClick={() => {
@@ -189,12 +197,18 @@ export function RightSection<TEntry extends RightEntry>({
                     <button
                       type="button"
                       onClick={() => onOpen(entry)}
-                      className="flex h-8 min-w-0 items-center gap-1 rounded px-1 text-left hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                      aria-current={isSelected ? "true" : undefined}
+                      className={cn(
+                        "flex h-8 min-w-0 items-center gap-1 rounded px-1 text-left transition-colors hover:bg-gray-100 dark:hover:bg-[#2a2d31]",
+                        isSelected && "hover:bg-orange-100 dark:hover:bg-orange-500/20",
+                      )}
                     >
                       <span
                         className={cn(
                           "min-w-0 flex-1 truncate font-medium text-gray-700 dark:text-gray-100",
-                          isSelected ? "font-black text-orange-500" : "",
+                          isSelected
+                            ? "font-black text-orange-700 dark:text-orange-300"
+                            : "",
                         )}
                       >
                         {label}
