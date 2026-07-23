@@ -83,8 +83,14 @@ function formatSecondsToDuration(totalSeconds: number) {
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = Number((totalSeconds % 60).toFixed(2));
 
-  return [days > 0 ? `${days}d` : null, hours > 0 ? `${hours}h` : null, `${minutes}m`]
+  return [
+    days > 0 ? `${days}d` : null,
+    hours > 0 ? `${hours}h` : null,
+    minutes > 0 ? `${minutes}m` : null,
+    seconds > 0 || (days === 0 && hours === 0 && minutes === 0) ? `${seconds}s` : null,
+  ]
     .filter(Boolean)
     .join(" ");
 }
