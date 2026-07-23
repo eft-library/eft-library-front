@@ -764,9 +764,37 @@ function syncPointMarkerPopup(marker: LeafletMarker, point: LiveMapCanvasMarker)
     closeButton: true,
     closeOnClick: false,
     maxWidth: 460,
-    minWidth: 460,
+    minWidth: 160,
     offset: [0, -30],
   });
+}
+
+function resizePointMarkerPopup(marker: LeafletMarker) {
+  const popup = marker.getPopup();
+
+  if (!popup) {
+    return;
+  }
+
+  const viewportWidth = window.innerWidth;
+  const popupWidth = Math.max(
+    160,
+    Math.min(
+      460,
+      viewportWidth - 64,
+      Math.floor(viewportWidth * 0.3),
+    ),
+  );
+
+  popup.options.maxWidth = popupWidth;
+  popup.options.minWidth = popupWidth;
+  popup
+    .getElement()
+    ?.style.setProperty("--live-map-popup-content-width", `${popupWidth}px`);
+
+  if (popup.isOpen()) {
+    popup.update();
+  }
 }
 
 function updatePointMarkerTooltipContent(marker: LeafletMarker, point: LiveMapCanvasMarker) {
@@ -863,7 +891,13 @@ export function LiveMapCanvas({
   drawingMode: LiveMapDrawingMode;
   focusedMarkerId?: string | null;
   focusRequestKey?: number;
-  focusTarget?: { id: string; key: number; x: number; y: number } | null;
+  focusTarget?: {
+    id: string;
+    key: number;
+    moveView: boolean;
+    x: number;
+    y: number;
+  } | null;
   floors: LiveMapFloor[];
   isAutoPanLocked: boolean;
   isMarkerSimplified: boolean;
@@ -1241,6 +1275,12 @@ export function LiveMapCanvas({
     });
     const resizeObserver = new ResizeObserver(() => {
       map.invalidateSize({ debounceMoveend: true, pan: false });
+
+      pointMarkerByIdRef.current.forEach(({ marker }) => {
+        if (marker.isPopupOpen()) {
+          resizePointMarkerPopup(marker);
+        }
+      });
     });
 
     resizeObserver.observe(container);
@@ -1750,6 +1790,7 @@ export function LiveMapCanvas({
       marker.on("popupopen", () => {
         openPopupMarkerIdRef.current = point.id;
         dismissedPopupMarkerIdRef.current = null;
+        resizePointMarkerPopup(marker);
       });
 
       marker.on("popupclose", () => {
@@ -1768,6 +1809,7 @@ export function LiveMapCanvas({
         onMarkerClickRef.current(current);
 
         if (current.popupHtml && (!current.floorId || current.floorId === activeFloorIdRef.current)) {
+          resizePointMarkerPopup(marker);
           marker.openPopup();
         }
       });
@@ -1862,9 +1904,12 @@ export function LiveMapCanvas({
     const requestKey = focusTarget?.key ?? focusRequestKey;
 
     const shouldMoveView =
-      lastFocusedMarkerRef.current !== targetId ||
-      lastFocusedFloorRef.current !== activeFloorId ||
-      lastFocusedRequestRef.current !== requestKey;
+      (focusTarget?.moveView ?? true) &&
+      (
+        lastFocusedMarkerRef.current !== targetId ||
+        lastFocusedFloorRef.current !== activeFloorId ||
+        lastFocusedRequestRef.current !== requestKey
+      );
 
     if (!shouldMoveView && dismissedPopupMarkerIdRef.current === targetId) {
       return;
@@ -1906,6 +1951,7 @@ export function LiveMapCanvas({
 
     if (markerAfterImmediateMove) {
       try {
+        resizePointMarkerPopup(markerAfterImmediateMove);
         markerAfterImmediateMove.openPopup();
       } catch {
         // Leaflet can throw when a marker is recreated during a fast repeated focus.
@@ -1917,6 +1963,7 @@ export function LiveMapCanvas({
 
       if (currentMarker) {
         try {
+          resizePointMarkerPopup(currentMarker);
           currentMarker.openPopup();
         } catch {
           // Leaflet can throw when a marker is recreated during a fast repeated focus.

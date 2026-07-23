@@ -407,6 +407,10 @@ html.live-map-document-dragging * {
   line-height: 1.5;
 }
 
+.live-map-point-popup .leaflet-popup-content {
+  width: var(--live-map-popup-content-width, 460px) !important;
+}
+
 .live-map-popup-header {
   display: flex;
   min-height: 54px;

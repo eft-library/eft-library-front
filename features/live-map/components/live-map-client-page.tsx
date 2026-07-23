@@ -387,7 +387,13 @@ export function LiveMapClientPage({
     string | null | undefined
   >(undefined);
   const [focusRequestKey, setFocusRequestKey] = useState(0);
-  const [focusTarget, setFocusTarget] = useState<{ id: string; key: number; x: number; y: number } | null>(null);
+  const [focusTarget, setFocusTarget] = useState<{
+    id: string;
+    key: number;
+    moveView: boolean;
+    x: number;
+    y: number;
+  } | null>(null);
   const [, startFocusRouteTransition] = useTransition();
   const focusedMarkerId =
     localFocusedMarkerId === undefined ? urlFocusedMarkerId : localFocusedMarkerId;
@@ -637,7 +643,11 @@ export function LiveMapClientPage({
   const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
     new Set(),
   );
-  const requestMarkerFocus = useCallback((markerId: string | null, position?: { x: number; y: number }) => {
+  const requestMarkerFocus = useCallback((
+    markerId: string | null,
+    position?: { x: number; y: number },
+    { moveView = true }: { moveView?: boolean } = {},
+  ) => {
     setLocalFocusedMarkerId(markerId);
 
     if (markerId) {
@@ -648,6 +658,7 @@ export function LiveMapClientPage({
       setFocusTarget(position ? {
         id: markerId,
         key: nextKey,
+        moveView,
         x: position.x,
         y: position.y,
       } : null);
@@ -1479,7 +1490,11 @@ export function LiveMapClientPage({
       if (marker.kind === "quest" && !openQuestDetailsOnMarkerClick) {
         skipQuestDetailAutoOpenRef.current = marker.id;
         setPanel(null);
-        requestMarkerFocus(marker.id, { x: marker.x, y: marker.y });
+        requestMarkerFocus(
+          marker.id,
+          { x: marker.x, y: marker.y },
+          { moveView: false },
+        );
         const opened = await openPanelForMarkerId(marker.id, { openQuestPanel: false });
 
         if (opened && focusedMarkerId !== marker.id) {
@@ -1489,7 +1504,11 @@ export function LiveMapClientPage({
         return;
       }
 
-      requestMarkerFocus(marker.id, { x: marker.x, y: marker.y });
+      requestMarkerFocus(
+        marker.id,
+        { x: marker.x, y: marker.y },
+        { moveView: false },
+      );
       const opened = await openPanelForMarkerId(marker.id);
 
       if (!opened || focusedMarkerId === marker.id) {
