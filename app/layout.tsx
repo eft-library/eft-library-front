@@ -11,6 +11,7 @@ import { AppStoreProvider } from "@/components/providers/app-store-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { WebSocketProvider } from "@/components/providers/websocket-provider";
+import { DeploymentNotice } from "@/features/deployment-notice/components/deployment-notice";
 // import { ChatData } from "@/features/chat/components/chat-data";
 import { getHomeMenu } from "@/features/home/api";
 import { defaultLocale } from "@/i18n/config";
@@ -115,6 +116,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
           themeToggleLabel={copy.navigation.themeToggle}
           locale={locale}
         />
+        <DeploymentNotice locale={locale} />
         <AdSideRails />
         {/* <ChatData /> */}
         <div className="flex-1">{children}</div>

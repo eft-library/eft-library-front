@@ -1255,6 +1255,7 @@ export function LiveMapCanvas({
         const alt = thumb.dataset.alt ?? "";
         const description = thumb.dataset.description ?? "";
         const shouldContainImage = thumb.dataset.fit === "contain";
+        const href = thumb.dataset.href ?? "";
 
         if (mainImage && src) {
           mainImage.src = src;
@@ -1265,7 +1266,28 @@ export function LiveMapCanvas({
         }
 
         if (location) {
-          location.textContent = description;
+          const locationText = location.querySelector<HTMLElement>(".live-map-popup-location-text");
+
+          if (locationText) {
+            locationText.textContent = description;
+          } else {
+            location.textContent = description;
+          }
+
+          if (location instanceof HTMLAnchorElement) {
+            const linkLabel = location.querySelector<HTMLElement>(".live-map-popup-item-link-label");
+
+            if (href) {
+              location.href = href;
+            } else {
+              location.removeAttribute("href");
+            }
+
+            if (linkLabel) {
+              linkLabel.hidden = !href;
+            }
+          }
+
           location.hidden = !description;
         }
 

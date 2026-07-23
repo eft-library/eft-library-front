@@ -58,6 +58,7 @@ export const apiEndpoints = {
   kordBreachSavePreset: "/api/kord-breach/v3/save-preset",
   kordBreachDeletePreset: "/api/kord-breach/v3/delete-preset",
   kordBreachRandom: "/api/kord-breach/v3/random",
+  deploymentNoticeStatus: "/api/deployment-notice/v3/status",
 } as const;
 
 export function getItemListEndpoint(itemType: string) {

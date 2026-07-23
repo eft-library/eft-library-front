@@ -57,15 +57,13 @@ function getDetailTexts(details: LiveMapPointDetail[], locale: Locale) {
 function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
   const raw = point.metadata?.raw;
 
-  if (!raw || typeof raw !== "object") {
-    return [];
-  }
-
-  const keyItems = "keyItems" in raw && Array.isArray(raw.keyItems)
+  const keyItems = raw && typeof raw === "object" && "keyItems" in raw && Array.isArray(raw.keyItems)
     ? raw.keyItems
-    : "keyItem" in raw && raw.keyItem && typeof raw.keyItem === "object"
+    : raw && typeof raw === "object" && "keyItem" in raw && raw.keyItem && typeof raw.keyItem === "object"
       ? [raw.keyItem]
-      : [];
+      : point.metadata?.key_item && typeof point.metadata.key_item === "object"
+        ? [point.metadata.key_item]
+        : [];
 
   return Array.from(
     new Map(
@@ -88,6 +86,17 @@ function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
           const value = item[key as keyof typeof item];
           return typeof value === "string" ? value.trim() : "";
         }, "");
+        const normalizedName = ["normalized_name", "normalizedName"].reduce<string>(
+          (result, key) => {
+            if (result || !(key in item)) {
+              return result;
+            }
+
+            const value = item[key as keyof typeof item];
+            return typeof value === "string" ? value.trim() : "";
+          },
+          "",
+        );
 
         if (!image) {
           return [];
@@ -97,6 +106,7 @@ function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
           alt: name,
           description: name,
           fit: "contain" as const,
+          href: normalizedName ? `/item/info/${encodeURIComponent(normalizedName)}` : undefined,
           src: image,
         }] as const];
       }),
@@ -108,6 +118,7 @@ function createMarkerPopupHtml({
   description,
   detailTexts,
   images,
+  imageLinkLabel,
   location,
   title,
   titleImage,
@@ -118,8 +129,10 @@ function createMarkerPopupHtml({
     alt: string;
     description: string;
     fit?: "contain" | "cover";
+    href?: string;
     src: string;
   }>;
+  imageLinkLabel?: string;
   location: string;
   title: string;
   titleImage?: string | null;
@@ -140,6 +153,7 @@ function createMarkerPopupHtml({
           data-alt="${escapeHtml(image.alt)}"
           data-description="${escapeHtml(image.description)}"
           data-fit="${image.fit ?? "cover"}"
+          data-href="${escapeHtml(image.href ?? "")}"
         >
           <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" />
         </button>
@@ -175,7 +189,12 @@ function createMarkerPopupHtml({
       <div class="live-map-popup-body live-map-popup-body-compact">
         ${
           firstImage
-            ? `<p class="live-map-popup-location"${activeLocation ? "" : " hidden"}>${escapeHtml(activeLocation)}</p>`
+            ? firstImage.href
+              ? `<a class="live-map-popup-location live-map-popup-item-link" href="${escapeHtml(firstImage.href)}" target="_blank" rel="noopener noreferrer"${activeLocation ? "" : " hidden"}>
+                  <span class="live-map-popup-location-text">${escapeHtml(activeLocation)}</span>
+                  <span class="live-map-popup-item-link-label">${escapeHtml(imageLinkLabel ?? "Detail")} ↗</span>
+                </a>`
+              : `<p class="live-map-popup-location"${activeLocation ? "" : " hidden"}>${escapeHtml(activeLocation)}</p>`
             : activeLocation && !hasTextOnlyDetailList
               ? `<p class="live-map-popup-location">${escapeHtml(activeLocation)}</p>`
               : ""
@@ -353,6 +372,7 @@ export function getStaticPointPopupHtml(
   return createMarkerPopupHtml({
     description,
     images,
+    imageLinkLabel: copy.questDetailPage,
     location: getStaticCategoryLabel(point.category, copy),
     title,
   });
