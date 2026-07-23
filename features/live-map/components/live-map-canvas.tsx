@@ -850,6 +850,7 @@ export function LiveMapCanvas({
   markers,
   onMarkerClick,
   onMapClick,
+  onFloorStep,
   onFocusedMarkerClose,
   onPopupImageClick,
   onMousePositionChange,
@@ -872,6 +873,7 @@ export function LiveMapCanvas({
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
   onMapClick?: () => void;
+  onFloorStep: (direction: "next" | "previous") => void;
   onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
   onMousePositionChange: (latlng: LatLng) => void;
@@ -895,6 +897,7 @@ export function LiveMapCanvas({
   const openPopupMarkerIdRef = useRef<string | null>(null);
   const onMarkerClickRef = useRef(onMarkerClick);
   const onMapClickRef = useRef<typeof onMapClick>(onMapClick);
+  const onFloorStepRef = useRef(onFloorStep);
   const lastFocusedMarkerRef = useRef<string | null>(null);
   const lastFocusedFloorRef = useRef<string | null>(null);
   const lastFocusedRequestRef = useRef<number | null>(null);
@@ -1140,7 +1143,67 @@ export function LiveMapCanvas({
     onFocusedMarkerCloseRef.current = onFocusedMarkerClose;
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFocusedMarkerClose, onMapClick, onMarkerClick, preserveFocusOnPopupEscape]);
+    onFloorStepRef.current = onFloorStep;
+  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFloorStep, onFocusedMarkerClose, onMapClick, onMarkerClick, preserveFocusOnPopupEscape]);
+
+  useEffect(() => {
+    let accumulatedDelta = 0;
+    let lastStepTime = 0;
+
+    const handleFloorWheel = (event: WheelEvent) => {
+      if (!event.altKey) {
+        accumulatedDelta = 0;
+        return;
+      }
+
+      const container = containerRef.current;
+      const drawingCanvas = drawingCanvasRef.current;
+      const target = event.target;
+
+      if (
+        !(target instanceof Node) ||
+        (!container?.contains(target) && !drawingCanvas?.contains(target))
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const now = performance.now();
+
+      if (now - lastStepTime < 250) {
+        return;
+      }
+
+      const deltaMultiplier =
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE
+          ? 16
+          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+            ? window.innerHeight
+            : 1;
+      accumulatedDelta += event.deltaY * deltaMultiplier;
+
+      if (Math.abs(accumulatedDelta) < 30) {
+        return;
+      }
+
+      onFloorStepRef.current(accumulatedDelta < 0 ? "previous" : "next");
+      accumulatedDelta = 0;
+      lastStepTime = now;
+    };
+
+    window.addEventListener("wheel", handleFloorWheel, {
+      capture: true,
+      passive: false,
+    });
+
+    return () => {
+      window.removeEventListener("wheel", handleFloorWheel, {
+        capture: true,
+      });
+    };
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;

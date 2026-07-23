@@ -1561,6 +1561,26 @@ export function LiveMapClientPage({
     [clearFocusParam, focusedMarkerId],
   );
 
+  const stepFloor = useCallback(
+    (direction: "next" | "previous") => {
+      const currentIndex = sortedFloors.findIndex(
+        (floor) => floor.id === selectedFloor?.id,
+      );
+
+      if (currentIndex === -1) {
+        return;
+      }
+
+      const nextIndex = currentIndex + (direction === "next" ? 1 : -1);
+      const nextFloor = sortedFloors[nextIndex];
+
+      if (nextFloor) {
+        selectFloor(nextFloor.id);
+      }
+    },
+    [selectFloor, selectedFloor?.id, sortedFloors],
+  );
+
   function clearLiveMapSelection() {
     setPanel(null);
     setSelectedStaticId(null);
@@ -1980,6 +2000,7 @@ export function LiveMapClientPage({
                 markers={visibleMarkers}
                 onMarkerClick={openPanelForMarker}
                 onMapClick={clearFocusParam}
+                onFloorStep={stepFloor}
                 onMousePositionChange={setMousePosition}
                 onFocusedMarkerClose={clearFocusedMarker}
                 onPopupImageClick={openImagePopup}
