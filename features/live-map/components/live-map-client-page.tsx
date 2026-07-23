@@ -14,7 +14,6 @@ import {
   Eye,
   EyeOff,
   Hand,
-  Layers,
   Leaf,
   Lock,
   LocateFixed,
@@ -1926,6 +1925,21 @@ export function LiveMapClientPage({
                   });
                 }}
                 onToggleCategoryOpen={(category) => toggleSet(setExpandedStaticCategories, category)}
+                onSetCategoriesOpen={(categories, open) => {
+                  setExpandedStaticCategories((current) => {
+                    const next = new Set(current);
+
+                    categories.forEach((category) => {
+                      if (open) {
+                        next.add(category);
+                      } else {
+                        next.delete(category);
+                      }
+                    });
+
+                    return next;
+                  });
+                }}
                 searchQuery={staticFilterQuery}
                 selectedId={selectedStaticId}
                 title={copy.staticPoints}
@@ -1933,26 +1947,6 @@ export function LiveMapClientPage({
               />
             </div>
 
-            <div className={cn("border-t border-gray-200 p-3 text-xs text-gray-500 dark:border-[#3a3d41] dark:text-gray-400", !isLeftPanelOpen && "hidden")}>
-              <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-gray-200">
-                <Layers className="h-3.5 w-3.5 text-orange-500" />
-                {selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : copy.title}
-              </div>
-              <div className="mt-2 space-y-1">
-                <p>
-                  {copy.coordinates}: X {mousePosition?.lng.toFixed(2) ?? "0.00"} / Z{" "}
-                  {mousePosition?.lat.toFixed(2) ?? "0.00"}
-                </p>
-                <p>
-                  {copy.height}: {location?.y.toFixed(2) ?? "0.00"}
-                </p>
-              </div>
-              {notice ? (
-                <div className="mt-2 border-t border-gray-200 pt-2 font-bold text-orange-500 dark:border-[#3a3d41]">
-                  {notice}
-                </div>
-              ) : null}
-            </div>
           </aside>
 
           <section
@@ -1991,6 +1985,15 @@ export function LiveMapClientPage({
                 {selectedFloor ? copy.noCoordinateInfo : copy.noFloors}
               </div>
             )}
+
+            {notice ? (
+              <div
+                role="status"
+                className="pointer-events-none absolute left-1/2 top-3 z-[1100] -translate-x-1/2 rounded-md border border-orange-300 bg-white/95 px-4 py-2 text-sm font-bold text-orange-600 shadow-lg backdrop-blur dark:border-orange-500/50 dark:bg-[#1f2124]/95 dark:text-orange-400"
+              >
+                {notice}
+              </div>
+            ) : null}
 
             <div ref={mapToolbarRef} className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
               <button

@@ -241,6 +241,7 @@ export function StaticPointSection({
   onToggleAll,
   onToggleCategory,
   onToggleCategoryOpen,
+  onSetCategoriesOpen,
   searchQuery,
   selectedId,
   title,
@@ -258,6 +259,7 @@ export function StaticPointSection({
   onToggleAll: () => void;
   onToggleCategory: (category: string, ids: string[]) => void;
   onToggleCategoryOpen: (category: string) => void;
+  onSetCategoriesOpen: (categories: string[], open: boolean) => void;
   searchQuery: string;
   selectedId: string | null;
   title: string;
@@ -278,6 +280,12 @@ export function StaticPointSection({
     [copy, groups, locale, searchQuery],
   );
   const hasQuery = searchQuery.trim().length > 0;
+  const expandableCategories = groups
+    .filter((group) => !compactStaticCategories.has(group.category))
+    .map((group) => group.category);
+  const areAllCategoriesOpen =
+    expandableCategories.length > 0 &&
+    expandableCategories.every((category) => expandedCategories.has(category));
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -296,13 +304,25 @@ export function StaticPointSection({
             {totalCount}
           </span>
         </h2>
-        <button
-          type="button"
-          onClick={onToggleAll}
-          className="h-6 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
-        >
-          {allLabel}
-        </button>
+        <div className="flex items-center gap-0.5">
+          <button
+            type="button"
+            disabled={expandableCategories.length === 0}
+            aria-label={areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
+            title={areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
+            onClick={() => onSetCategoriesOpen(expandableCategories, !areAllCategoriesOpen)}
+            className="inline-flex h-6 items-center justify-center rounded px-2 text-xs font-bold text-gray-600 transition hover:bg-white hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-200 dark:hover:bg-[#3a3d41] dark:hover:text-orange-400"
+          >
+            {areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
+          </button>
+          <button
+            type="button"
+            onClick={onToggleAll}
+            className="h-6 rounded px-2 text-xs font-bold text-orange-500 hover:bg-white dark:hover:bg-[#3a3d41]"
+          >
+            {allLabel}
+          </button>
+        </div>
       </div>
       {groups.length > 0 ? (
         <div className="relative mb-2">
@@ -645,6 +665,22 @@ function getStaticIconColor(category: string, faction?: string) {
     return "#facc15";
   }
 
+  if (category === "key_spawn") {
+    return "#fbbf24";
+  }
+
+  if (category === "keycard_spawn") {
+    return "#c084fc";
+  }
+
+  if (category === "locked_door") {
+    return "#fb7185";
+  }
+
+  if (category === "locked_container") {
+    return "#2dd4bf";
+  }
+
   if (category === "stationary_weapon") {
     return "#94a3b8";
   }
@@ -740,6 +776,52 @@ function getStaticPanelIconSvg(category: string, color: string, size: number, fa
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="m13.2 2.8-7 10.4h5.3l-1.2 8 7-10.5h-5.2z" fill="${color}" stroke="${color}" stroke-width="1.1" stroke-linejoin="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "key_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="7.5" cy="8" r="4" stroke="${color}" stroke-width="2.5" />
+        <path d="m10.4 10.9 8.7 8.7M15.1 15.6l2.4-2.4M17.3 17.8l2.2-2.2" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="7.5" cy="8" r="1.2" fill="${color}" />
+      </svg>
+    `;
+  }
+
+  if (category === "keycard_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2.8" y="5" width="18.4" height="14" rx="2.4" stroke="${color}" stroke-width="2.2" />
+        <path d="M3.8 9h16.4" stroke="${color}" stroke-width="2.2" />
+        <rect x="6" y="12" width="5.2" height="3.5" rx=".7" fill="${color}" />
+        <path d="M14.2 13h3.8M14.2 15h2.5" stroke="${color}" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "locked_door") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4.5 21V3h12v7" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M7.5 6h6v15h-6z" fill="${color}" opacity=".34" />
+        <path d="M4 21h16" stroke="${color}" stroke-width="2.2" stroke-linecap="round" />
+        <rect x="12.2" y="13" width="8.3" height="6.8" rx="1.4" fill="${color}" />
+        <path d="M14.3 13v-1.4a2.05 2.05 0 0 1 4.1 0V13" stroke="${color}" stroke-width="2" stroke-linecap="round" />
+        <circle cx="16.35" cy="16.2" r=".9" fill="#111827" />
+      </svg>
+    `;
+  }
+
+  if (category === "locked_container") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 8h18v12H3z" stroke="${color}" stroke-width="2.1" stroke-linejoin="round" />
+        <path d="M3 12h18M7 8v12M17 8v12" stroke="${color}" stroke-width="1.5" opacity=".72" />
+        <rect x="9" y="11.5" width="6" height="5.5" rx="1.1" fill="${color}" />
+        <path d="M10.6 11.5v-1.1a1.4 1.4 0 0 1 2.8 0v1.1" stroke="${color}" stroke-width="1.7" stroke-linecap="round" />
+        <circle cx="12" cy="14.2" r=".75" fill="#111827" />
       </svg>
     `;
   }

@@ -54,6 +54,55 @@ function getDetailTexts(details: LiveMapPointDetail[], locale: Locale) {
   );
 }
 
+function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
+  const raw = point.metadata?.raw;
+
+  if (!raw || typeof raw !== "object" || !("keyItems" in raw)) {
+    return [];
+  }
+
+  const keyItems = raw.keyItems;
+
+  if (!Array.isArray(keyItems)) {
+    return [];
+  }
+
+  return Array.from(
+    new Map(
+      keyItems.flatMap((item) => {
+        if (!item || typeof item !== "object" || !("image" in item)) {
+          return [];
+        }
+
+        const image = typeof item.image === "string" ? item.image.trim() : "";
+        const nameKeys = locale === "ko"
+          ? ["name_ko", "nameKo", "name_en", "nameEn", "name"]
+          : locale === "ja"
+            ? ["name_ja", "nameJa", "name_en", "nameEn", "name"]
+            : ["name_en", "nameEn", "name"];
+        const name = nameKeys.reduce<string>((result, key) => {
+          if (result || !(key in item)) {
+            return result;
+          }
+
+          const value = item[key as keyof typeof item];
+          return typeof value === "string" ? value.trim() : "";
+        }, "");
+
+        if (!image) {
+          return [];
+        }
+
+        return [[image, {
+          alt: name,
+          description: name,
+          src: image,
+        }] as const];
+      }),
+    ).values(),
+  );
+}
+
 function createMarkerPopupHtml({
   description,
   detailTexts,
@@ -276,7 +325,10 @@ export function getStaticPointPopupHtml(
 ) {
   const title = localizedName(point as unknown as Record<string, unknown>, locale);
   const description = localizedDescription(point as unknown as Record<string, unknown>, locale);
-  const image = point.image
+  const metadataImages = getStaticMetadataImages(point, locale);
+  const images = metadataImages.length > 0
+    ? metadataImages
+    : point.image
     ? [{
         alt: title,
         description,
@@ -286,7 +338,7 @@ export function getStaticPointPopupHtml(
 
   return createMarkerPopupHtml({
     description,
-    images: image,
+    images,
     location: getStaticCategoryLabel(point.category, copy),
     title,
   });
