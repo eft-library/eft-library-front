@@ -311,7 +311,7 @@ export function StaticPointSection({
             aria-label={areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
             title={areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
             onClick={() => onSetCategoriesOpen(expandableCategories, !areAllCategoriesOpen)}
-            className="inline-flex h-6 items-center justify-center rounded px-2 text-xs font-bold text-gray-600 transition hover:bg-white hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-200 dark:hover:bg-[#3a3d41] dark:hover:text-orange-400"
+            className="inline-flex h-6 items-center justify-center rounded px-2 text-xs font-bold text-orange-500 transition hover:bg-white hover:text-orange-600 disabled:cursor-not-allowed disabled:opacity-40 dark:text-orange-400 dark:hover:bg-[#3a3d41] dark:hover:text-orange-300"
           >
             {areAllCategoriesOpen ? copy.collapseAllCategories : copy.expandAllCategories}
           </button>
