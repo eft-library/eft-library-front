@@ -2304,7 +2304,7 @@ export function LiveMapClientPage({
           <aside
             className={cn(
               "hidden shrink-0 flex-col border-l border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
-              isRightPanelOpen ? "w-60 lg:w-72" : "w-11",
+              isRightPanelOpen ? "w-52 lg:w-60 xl:w-72" : "w-11",
             )}
           >
             <div

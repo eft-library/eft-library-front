@@ -105,7 +105,7 @@ export function DetailPanel({
   }, [selectedScrollKey]);
 
   return (
-    <aside className="absolute inset-y-0 right-0 z-[600] flex w-full max-w-96 shrink-0 flex-col border-l border-gray-200 bg-white shadow-2xl dark:border-[#3a3d41] dark:bg-[#1f2124] xl:static xl:w-96 xl:shadow-none">
+    <aside className="absolute inset-y-0 right-0 z-[600] flex w-full max-w-72 shrink-0 flex-col border-l border-gray-200 bg-white shadow-2xl dark:border-[#3a3d41] dark:bg-[#1f2124] lg:max-w-80 xl:static xl:w-96 xl:max-w-96 xl:shadow-none">
       <div className="flex h-10 items-center justify-between border-b border-gray-200 px-3 dark:border-[#3a3d41]">
         <span className="text-xs font-black text-orange-500">
           {panel.type === "quest"
