@@ -670,7 +670,7 @@ function getStaticIconColor(category: string, faction?: string) {
   }
 
   if (category === "keycard_spawn") {
-    return "#c084fc";
+    return "#818cf8";
   }
 
   if (category === "locked_door") {
@@ -804,12 +804,10 @@ function getStaticPanelIconSvg(category: string, color: string, size: number, fa
   if (category === "locked_door") {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4.5 21V3h12v7" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M7.5 6h6v15h-6z" fill="${color}" opacity=".34" />
-        <path d="M4 21h16" stroke="${color}" stroke-width="2.2" stroke-linecap="round" />
-        <rect x="12.2" y="13" width="8.3" height="6.8" rx="1.4" fill="${color}" />
-        <path d="M14.3 13v-1.4a2.05 2.05 0 0 1 4.1 0V13" stroke="${color}" stroke-width="2" stroke-linecap="round" />
-        <circle cx="16.35" cy="16.2" r=".9" fill="#111827" />
+        <path d="M7.2 10V7.7a4.8 4.8 0 0 1 9.6 0V10" stroke="${color}" stroke-width="2.8" stroke-linecap="round" />
+        <rect x="4.2" y="9.2" width="15.6" height="11.6" rx="2.3" fill="${color}" />
+        <circle cx="12" cy="14.2" r="1.5" fill="#111827" />
+        <path d="M12 15.5v2" stroke="#111827" stroke-width="1.8" stroke-linecap="round" />
       </svg>
     `;
   }

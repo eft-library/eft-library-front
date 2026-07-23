@@ -51,7 +51,8 @@ export interface LiveMapCanvasMarker {
 
 export interface LiveMapPopupImage {
   alt: string;
-  images?: Array<{ alt: string; src: string }>;
+  fit?: "contain" | "cover";
+  images?: Array<{ alt: string; fit?: "contain" | "cover"; src: string }>;
   index?: number;
   src: string;
 }
@@ -92,7 +93,7 @@ const staticMarkerColorByType: Record<string, string> = {
   cultist_spawn: "#a3e635",
   goons_spawn: "#ef4444",
   key_spawn: "#fbbf24",
-  keycard_spawn: "#c084fc",
+  keycard_spawn: "#818cf8",
   locked_container: "#2dd4bf",
   locked_door: "#fb7185",
   pmc_spawn: "#60a5fa",
@@ -327,12 +328,10 @@ function KeycardIconSvg(color: string, size: number) {
 function LockedDoorIconSvg(color: string, size: number) {
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true" shape-rendering="geometricPrecision">
-      <path d="M4.5 21V3h12v7" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M7.5 6h6v15h-6z" fill="${color}" opacity=".34" />
-      <path d="M4 21h16" stroke="${color}" stroke-width="2.2" stroke-linecap="round" />
-      <rect x="12.2" y="13" width="8.3" height="6.8" rx="1.4" fill="${color}" />
-      <path d="M14.3 13v-1.4a2.05 2.05 0 0 1 4.1 0V13" stroke="${color}" stroke-width="2" stroke-linecap="round" />
-      <circle cx="16.35" cy="16.2" r=".9" fill="#111827" />
+      <path d="M7.2 10V7.7a4.8 4.8 0 0 1 9.6 0V10" stroke="${color}" stroke-width="2.8" stroke-linecap="round" />
+      <rect x="4.2" y="9.2" width="15.6" height="11.6" rx="2.3" fill="${color}" />
+      <circle cx="12" cy="14.2" r="1.5" fill="#111827" />
+      <path d="M12 15.5v2" stroke="#111827" stroke-width="1.8" stroke-linecap="round" />
     </svg>
   `;
 }
@@ -1255,11 +1254,14 @@ export function LiveMapCanvas({
         const src = thumb.dataset.src;
         const alt = thumb.dataset.alt ?? "";
         const description = thumb.dataset.description ?? "";
+        const shouldContainImage = thumb.dataset.fit === "contain";
 
         if (mainImage && src) {
           mainImage.src = src;
           mainImage.dataset.fullSrc = src;
+          mainImage.dataset.fit = shouldContainImage ? "contain" : "cover";
           mainImage.alt = alt;
+          mainImage.classList.toggle("live-map-popup-image-contain", shouldContainImage);
         }
 
         if (location) {
@@ -1292,6 +1294,7 @@ export function LiveMapCanvas({
       const thumbs = Array.from(card?.querySelectorAll<HTMLButtonElement>(".live-map-popup-thumb") ?? []);
       const images = thumbs.map((thumb) => ({
         alt: thumb.dataset.alt ?? "",
+        fit: thumb.dataset.fit === "contain" ? "contain" as const : "cover" as const,
         src: thumb.dataset.src ?? "",
       })).filter((entry) => entry.src);
       const currentSrc = image.dataset.fullSrc ?? image.src;
@@ -1299,6 +1302,7 @@ export function LiveMapCanvas({
 
       onPopupImageClick({
         alt: image.alt,
+        fit: image.dataset.fit === "contain" ? "contain" : "cover",
         images: images.length > 0 ? images : undefined,
         index: index >= 0 ? index : undefined,
         src: image.dataset.fullSrc ?? image.src,

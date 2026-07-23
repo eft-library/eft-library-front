@@ -21,12 +21,14 @@ function clampRatio(value: number) {
 }
 
 export function ZoomableImagePopup({
+  compact = false,
   image,
   images,
   currentIndex,
   onClose,
   onNavigate,
 }: {
+  compact?: boolean;
   image: ZoomableImagePopupImage | null;
   images?: ZoomableImagePopupImage[];
   currentIndex?: number;
@@ -216,7 +218,11 @@ export function ZoomableImagePopup({
       onClick={onClose}
     >
       <div
-        className="relative flex h-full w-full max-w-[88vw] flex-col overflow-hidden rounded-lg bg-black/50 shadow-2xl"
+        className={
+          compact
+            ? "relative flex h-[min(70vh,620px)] w-full max-w-lg flex-col overflow-hidden rounded-lg bg-black/70 shadow-2xl"
+            : "relative flex h-full w-full max-w-[88vw] flex-col overflow-hidden rounded-lg bg-black/50 shadow-2xl"
+        }
         onClick={(event) => event.stopPropagation()}
       >
         <div className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-full bg-black/70 p-1 text-white">

@@ -13,6 +13,7 @@ export function LiveMapImagePopup({
 }) {
   return (
     <ZoomableImagePopup
+      compact={image?.fit === "contain"}
       currentIndex={image?.index}
       image={image}
       images={image?.images}
