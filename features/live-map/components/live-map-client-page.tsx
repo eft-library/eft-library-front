@@ -2282,31 +2282,46 @@ export function LiveMapClientPage({
             </div>
           </section>
 
-          {panel ? (
-            <DetailPanel
-              completedQuestIds={completedQuestIds}
-              copy={copy}
-              focusEventObjective={focusEventObjective}
-              focusQuestObjective={focusQuestObjective}
-              focusStoryObjective={focusStoryObjective}
-              focusStoryRequirement={focusStoryRequirement}
-              loadingQuestNormalizedName={loadingQuestNormalizedName}
-              locale={locale}
-              normalizedName={normalizedName}
-              onClose={closeDetailPanel}
-              onOpenQuest={openQuestDetail}
-              onToggleQuest={toggleQuestCompletionState}
-              panel={panel}
-              savingQuestId={savingQuestId}
-            />
-          ) : null}
-
-          <aside
+          <div
             className={cn(
-              "hidden shrink-0 flex-col border-l border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
-              isRightPanelOpen ? "w-52 lg:w-60 xl:w-72" : "w-11",
+              "contents md:flex md:min-h-0 md:shrink-0 md:flex-col md:border-l md:border-gray-200 md:bg-white md:transition-[width] md:duration-200 dark:md:border-[#3a3d41] dark:md:bg-[#1f2124] xl:w-auto xl:flex-row xl:border-l-0 xl:bg-transparent dark:xl:bg-transparent",
+              panel
+                ? "md:w-72 lg:w-80"
+                : isRightPanelOpen
+                  ? "md:w-52 lg:w-60"
+                  : "md:w-11",
             )}
           >
+            {panel ? (
+              <DetailPanel
+                completedQuestIds={completedQuestIds}
+                copy={copy}
+                focusEventObjective={focusEventObjective}
+                focusQuestObjective={focusQuestObjective}
+                focusStoryObjective={focusStoryObjective}
+                focusStoryRequirement={focusStoryRequirement}
+                loadingQuestNormalizedName={loadingQuestNormalizedName}
+                locale={locale}
+                normalizedName={normalizedName}
+                onClose={closeDetailPanel}
+                onOpenQuest={openQuestDetail}
+                onToggleQuest={toggleQuestCompletionState}
+                panel={panel}
+                savingQuestId={savingQuestId}
+              />
+            ) : null}
+
+            <aside
+              className={cn(
+                "hidden shrink-0 flex-col bg-white dark:bg-[#1f2124] md:order-1 md:flex md:min-h-0 md:w-full xl:order-2 xl:border-l xl:border-gray-200 dark:xl:border-[#3a3d41]",
+                panel
+                  ? isRightPanelOpen
+                    ? "md:h-[38%] xl:h-auto"
+                    : "md:h-11 xl:h-auto"
+                  : "md:flex-1 xl:flex-none",
+                isRightPanelOpen ? "xl:w-72" : "xl:w-11",
+              )}
+            >
             <div
               className={cn(
                 "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
@@ -2407,7 +2422,8 @@ export function LiveMapClientPage({
                 locale={locale}
               />
             </div>
-          </aside>
+            </aside>
+          </div>
         </div>
       </div>
       <LiveMapLocationGuide
