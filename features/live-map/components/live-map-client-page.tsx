@@ -126,6 +126,8 @@ const LiveMapImagePopup = dynamic(
   { ssr: false },
 );
 
+const RIGHT_SECTION_IDS = ["quest", "story", "event"] as const;
+
 function addPointMapNames(
   names: Set<string>,
   points: Array<{ map?: { normalized_name?: string | null } | null }> | null | undefined,
@@ -627,6 +629,9 @@ export function LiveMapClientPage({
   const [staticFilterQuery, setStaticFilterQuery] = useState("");
   const [expandedRightSections, setExpandedRightSections] = useState<Set<string>>(
     () => new Set(["quest", "story", "event"]),
+  );
+  const areAllRightSectionsOpen = RIGHT_SECTION_IDS.every((section) =>
+    expandedRightSections.has(section)
   );
   const [hydratedFilterMap, setHydratedFilterMap] = useState<string | null>(null);
   const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
@@ -2265,7 +2270,7 @@ export function LiveMapClientPage({
             <div
               className={cn(
                 "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
-                isRightPanelOpen ? "justify-start" : "justify-center",
+                isRightPanelOpen ? "justify-between" : "justify-center",
               )}
             >
               <button
@@ -2282,6 +2287,21 @@ export function LiveMapClientPage({
                   <PanelRightOpen className="h-4 w-4" />
                 )}
               </button>
+              {isRightPanelOpen ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setExpandedRightSections(
+                      areAllRightSectionsOpen ? new Set() : new Set(RIGHT_SECTION_IDS),
+                    );
+                  }}
+                  className="mr-1 inline-flex h-7 items-center rounded px-2 text-xs font-bold text-orange-500 transition hover:bg-gray-100 hover:text-orange-600 dark:text-orange-400 dark:hover:bg-[#2a2d31] dark:hover:text-orange-300"
+                >
+                  {areAllRightSectionsOpen
+                    ? copy.collapseAllCategories
+                    : copy.expandAllCategories}
+                </button>
+              ) : null}
             </div>
 
             <div className={cn("min-h-0 flex-1 overflow-y-auto", !isRightPanelOpen && "hidden")}>
