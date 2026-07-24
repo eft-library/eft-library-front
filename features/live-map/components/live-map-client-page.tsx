@@ -702,20 +702,18 @@ export function LiveMapClientPage({
     const storyIds = storyEntries.map((entry) => entry.id);
     const eventIds = eventEntries.map((entry) => entry.id);
     const staticIds = staticEntries.map((entry) => entry.id);
-    const staticCategories = staticGroups.map((group) => group.category);
 
     setEnabledQuestIds(getEnabledIdsFromDisabled(questIds, savedFilters?.disabledQuestIds));
     setEnabledStoryIds(getEnabledIdsFromDisabled(storyIds, savedFilters?.disabledStoryIds));
     setEnabledEventIds(getEnabledIdsFromDisabled(eventIds, savedFilters?.disabledEventIds));
     setEnabledStaticIds(getEnabledIdsFromDisabled(staticIds, savedFilters?.disabledStaticIds));
-    setExpandedStaticCategories(new Set(staticCategories));
+    setExpandedStaticCategories(new Set());
     setHydratedFilterMap(normalizedName);
   }, [
     eventEntries,
     normalizedName,
     questEntries,
     staticEntries,
-    staticGroups,
     storyEntries,
   ]);
 
