@@ -414,7 +414,7 @@ export function LiveMapClientPage({
   const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
   const storyDetailCacheRef = useRef<Map<string, StoryInfo>>(new Map());
   const focusRequestKeyRef = useRef(0);
-  const skipQuestDetailAutoOpenRef = useRef<string | null>(null);
+  const skipMarkerDetailAutoOpenRef = useRef<string | null>(null);
   const initializedFilterMapRef = useRef<string | null>(null);
   const [where, setWhere] = useState("");
   const [location, setLocation] = useState<LiveMapLocation | null>(null);
@@ -427,7 +427,7 @@ export function LiveMapClientPage({
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
-  const [openQuestDetailsOnMarkerClick, setOpenQuestDetailsOnMarkerClick] = useState(true);
+  const [openMarkerDetailsOnMarkerClick, setOpenMarkerDetailsOnMarkerClick] = useState(true);
   const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
   const [mapRotations, setMapRotations] = useState<Record<string, number>>({});
   const [isMapRotating, setIsMapRotating] = useState(false);
@@ -472,7 +472,7 @@ export function LiveMapClientPage({
       setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
     }
 
-    setOpenQuestDetailsOnMarkerClick(
+    setOpenMarkerDetailsOnMarkerClick(
       markerDetailsPreference ??
         preferences?.openQuestDetailsOnMarkerClick ??
         true,
@@ -490,12 +490,12 @@ export function LiveMapClientPage({
       isAutoPanLocked,
       isEyeComfortMode,
       isMarkerSimplified,
-      openQuestDetailsOnMarkerClick,
+      openQuestDetailsOnMarkerClick: openMarkerDetailsOnMarkerClick,
       isRightPanelOpen,
       mapRotations,
     });
-    writeLiveMapMarkerDetailsPreference(openQuestDetailsOnMarkerClick);
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openQuestDetailsOnMarkerClick]);
+    writeLiveMapMarkerDetailsPreference(openMarkerDetailsOnMarkerClick);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openMarkerDetailsOnMarkerClick]);
 
   useEffect(() => {
     if (!hasLoadedPreferences) {
@@ -1378,9 +1378,9 @@ export function LiveMapClientPage({
     async (
       markerId: string,
       {
-        openQuestPanel = true,
+        openDetailsPanel = true,
         openStaticPanel = false,
-      }: { openQuestPanel?: boolean; openStaticPanel?: boolean } = {},
+      }: { openDetailsPanel?: boolean; openStaticPanel?: boolean } = {},
     ) => {
       const { id, kind } = parseCanvasMarkerId(markerId);
 
@@ -1390,7 +1390,7 @@ export function LiveMapClientPage({
           selectPointFloor(point);
           try {
             const info = await loadQuestDetail(point.quest_info.quest?.normalized_name ?? getQuestId(point));
-            if (openQuestPanel) {
+            if (openDetailsPanel) {
               setPanel({
                 id: info.quest.id,
                 info,
@@ -1416,26 +1416,28 @@ export function LiveMapClientPage({
           selectPointFloor(point);
           try {
             const info = await loadStoryDetail(getStoryId(point));
-            setPanel((current) => {
-              if (
-                current?.type === "story" &&
-                current.id === info.story.id &&
-                current.pointId === point.id &&
-                current.objectiveId === point.objective_id &&
-                current.requirementId === point.requirement_id
-              ) {
-                return current;
-              }
+            if (openDetailsPanel) {
+              setPanel((current) => {
+                if (
+                  current?.type === "story" &&
+                  current.id === info.story.id &&
+                  current.pointId === point.id &&
+                  current.objectiveId === point.objective_id &&
+                  current.requirementId === point.requirement_id
+                ) {
+                  return current;
+                }
 
-              return {
-                id: info.story.id,
-                info,
-                objectiveId: point.objective_id,
-                pointId: point.id,
-                requirementId: point.requirement_id,
-                type: "story",
-              };
-            });
+                return {
+                  id: info.story.id,
+                  info,
+                  objectiveId: point.objective_id,
+                  pointId: point.id,
+                  requirementId: point.requirement_id,
+                  type: "story",
+                };
+              });
+            }
             return true;
           } catch {
             showNotice(copy.noItems);
@@ -1456,14 +1458,16 @@ export function LiveMapClientPage({
 
           selectPointFloor(requirementMatch.point);
 
-          setPanel({
-            id: storyDetail.story.id,
-            info: storyDetail,
-            objectiveId: null,
-            pointId: requirementMatch.point.id,
-            requirementId: requirementMatch.requirement.id,
-            type: "story",
-          });
+          if (openDetailsPanel) {
+            setPanel({
+              id: storyDetail.story.id,
+              info: storyDetail,
+              objectiveId: null,
+              pointId: requirementMatch.point.id,
+              requirementId: requirementMatch.requirement.id,
+              type: "story",
+            });
+          }
           return true;
         }
       }
@@ -1474,13 +1478,15 @@ export function LiveMapClientPage({
           selectPointFloor(point);
           try {
             const info = await loadEventDetail(getEventId(point));
-            setPanel({
-              id: info.event.id,
-              info,
-              objectiveId: point.objective_id,
-              pointId: point.id,
-              type: "event",
-            });
+            if (openDetailsPanel) {
+              setPanel({
+                id: info.event.id,
+                info,
+                objectiveId: point.objective_id,
+                pointId: point.id,
+                type: "event",
+              });
+            }
             return true;
           } catch {
             showNotice(copy.noItems);
@@ -1528,15 +1534,22 @@ export function LiveMapClientPage({
 
   const openPanelForMarker = useCallback(
     async (marker: LiveMapCanvasMarker) => {
-      if (marker.kind === "quest" && !openQuestDetailsOnMarkerClick) {
-        skipQuestDetailAutoOpenRef.current = marker.id;
+      if (
+        (marker.kind === "quest" ||
+          marker.kind === "story" ||
+          marker.kind === "event") &&
+        !openMarkerDetailsOnMarkerClick
+      ) {
+        skipMarkerDetailAutoOpenRef.current = marker.id;
         setPanel(null);
         requestMarkerFocus(
           marker.id,
           { x: marker.x, y: marker.y },
           { moveView: false },
         );
-        const opened = await openPanelForMarkerId(marker.id, { openQuestPanel: false });
+        const opened = await openPanelForMarkerId(marker.id, {
+          openDetailsPanel: false,
+        });
 
         if (opened && focusedMarkerId !== marker.id) {
           replaceFocusParam(marker.id);
@@ -1558,7 +1571,7 @@ export function LiveMapClientPage({
 
       replaceFocusParam(marker.id);
     },
-    [focusedMarkerId, openPanelForMarkerId, openQuestDetailsOnMarkerClick, replaceFocusParam, requestMarkerFocus],
+    [focusedMarkerId, openMarkerDetailsOnMarkerClick, openPanelForMarkerId, replaceFocusParam, requestMarkerFocus],
   );
 
   const clearFocusParam = useCallback(() => {
@@ -1841,8 +1854,8 @@ export function LiveMapClientPage({
       return;
     }
 
-    if (skipQuestDetailAutoOpenRef.current === focusedMarkerId) {
-      skipQuestDetailAutoOpenRef.current = null;
+    if (skipMarkerDetailAutoOpenRef.current === focusedMarkerId) {
+      skipMarkerDetailAutoOpenRef.current = null;
       return;
     }
 
@@ -2203,10 +2216,10 @@ export function LiveMapClientPage({
                     onClick={() => setIsAutoPanLocked((value) => !value)}
                   />
                   <ViewSettingButton
-                    checked={openQuestDetailsOnMarkerClick}
+                    checked={openMarkerDetailsOnMarkerClick}
                     icon={PanelRightOpen}
-                    label={openQuestDetailsOnMarkerClick ? copy.questDetailsOn : copy.questDetailsOff}
-                    onClick={() => setOpenQuestDetailsOnMarkerClick((value) => !value)}
+                    label={openMarkerDetailsOnMarkerClick ? copy.questDetailsOn : copy.questDetailsOff}
+                    onClick={() => setOpenMarkerDetailsOnMarkerClick((value) => !value)}
                   />
                 </div>
               ) : null}
