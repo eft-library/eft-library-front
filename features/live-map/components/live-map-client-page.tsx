@@ -627,7 +627,15 @@ export function LiveMapClientPage({
     [data.event_points],
   );
   const activeStaticPoints = useMemo(
-    () => data.static_points.filter((point) => point.is_use === true),
+    () => {
+      const hasUsageFlags = data.static_points.some(
+        (point) => typeof point.is_use === "boolean",
+      );
+
+      return hasUsageFlags
+        ? data.static_points.filter((point) => point.is_use === true)
+        : data.static_points;
+    },
     [data.static_points],
   );
   const staticEntries = useMemo<StaticEntry[]>(
