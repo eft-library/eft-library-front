@@ -25,6 +25,15 @@ import {
   localizedTitle,
 } from "./live-map-data-utils";
 
+const ESCORT_SPAWN_CATEGORIES = new Set([
+  "boss_spawn",
+  "black_div_spawn",
+  "cultist_spawn",
+  "goons_spawn",
+  "raider_spawn",
+  "rogue_spawn",
+]);
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -114,12 +123,219 @@ function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
   );
 }
 
+function getObjectValue(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object"
+    ? value as Record<string, unknown>
+    : null;
+}
+
+function getLocalizedSpawnName(
+  value: Record<string, unknown>,
+  locale: Locale,
+) {
+  const keys = locale === "ko"
+    ? ["name_ko", "name_en", "name_ja"]
+    : locale === "ja"
+      ? ["name_ja", "name_en", "name_ko"]
+      : ["name_en", "name_ko", "name_ja"];
+
+  for (const key of keys) {
+    const name = value[key];
+
+    if (typeof name === "string" && name.trim()) {
+      return name.trim();
+    }
+  }
+
+  return typeof value.id === "string" ? value.id : "";
+}
+
+function getStaticSpawnPresentation(
+  point: LiveMapStaticPoint,
+  locale: Locale,
+) {
+  if (!ESCORT_SPAWN_CATEGORIES.has(point.category)) {
+    return {
+      bossImage: null,
+      bossName: "",
+      escorts: [],
+      locationChance: null,
+      spawnChance: null,
+    };
+  }
+
+  const boss = getObjectValue(point.metadata?.boss);
+  const bossImage =
+    boss && typeof boss.image === "string" && boss.image.trim()
+      ? boss.image.trim()
+      : null;
+  const bossName = boss ? getLocalizedSpawnName(boss, locale) : "";
+  const spawnChance =
+    typeof point.metadata?.spawn_chance === "number" &&
+    Number.isFinite(point.metadata.spawn_chance)
+      ? point.metadata.spawn_chance
+      : null;
+  const locationChance =
+    typeof point.metadata?.location_chance === "number" &&
+    Number.isFinite(point.metadata.location_chance)
+      ? point.metadata.location_chance
+      : null;
+  const rawEscorts = Array.isArray(point.metadata?.escorts)
+    ? point.metadata.escorts
+    : [];
+  const escorts = rawEscorts.flatMap((entry) => {
+    const escort = getObjectValue(entry);
+
+    if (!escort) {
+      return [];
+    }
+
+    const image =
+      typeof escort.image === "string" && escort.image.trim()
+        ? escort.image.trim()
+        : null;
+    const amounts = Array.isArray(escort.amount)
+      ? escort.amount.flatMap((amountEntry) => {
+          const amount = getObjectValue(amountEntry);
+          const count = amount?.count;
+          const chance = amount?.chance;
+
+          if (typeof count !== "number" || !Number.isFinite(count)) {
+            return [];
+          }
+
+          return [{
+            chance:
+              typeof chance === "number" && Number.isFinite(chance)
+                ? chance
+                : null,
+            count,
+          }];
+        })
+      : [];
+
+    return [{
+      amounts,
+      image,
+      name: getLocalizedSpawnName(escort, locale),
+    }];
+  });
+
+  return {
+    bossImage,
+    bossName,
+    escorts,
+    locationChance,
+    spawnChance,
+  };
+}
+
+function getSpawnAmountLabel(
+  amounts: Array<{ chance: number | null; count: number }>,
+  locale: Locale,
+) {
+  const percentFormatter = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 1,
+    style: "percent",
+  });
+
+  return amounts
+    .map(({ chance, count }) =>
+      chance !== null
+        ? `×${count} ${percentFormatter.format(chance)}`
+        : `×${count}`,
+    )
+    .join(" · ");
+}
+
+function getSpawnPopupHtml(
+  point: LiveMapStaticPoint,
+  locale: Locale,
+  copy: LiveMapCopy,
+) {
+  const {
+    bossImage,
+    bossName,
+    escorts,
+    locationChance,
+    spawnChance,
+  } = getStaticSpawnPresentation(point, locale);
+
+  if (!bossName && !bossImage && escorts.length === 0) {
+    return "";
+  }
+
+  const percentFormatter = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 1,
+    style: "percent",
+  });
+
+  return `
+    <section class="live-map-popup-spawn-info">
+      ${
+        bossName || bossImage
+          ? `<div class="live-map-popup-spawn-leader">
+              ${
+                bossImage
+                  ? `<img src="${escapeHtml(bossImage)}" alt="" />`
+                  : `<span class="live-map-popup-escort-placeholder" aria-hidden="true"></span>`
+              }
+              <span class="live-map-popup-spawn-leader-info">
+                <small>${escapeHtml(copy.spawnLeader)}</small>
+                <strong>${escapeHtml(bossName)}</strong>
+              </span>
+              <span class="live-map-popup-spawn-chances">
+                ${
+                  spawnChance !== null
+                    ? `<span><small>${escapeHtml(copy.spawnChance)}</small><strong>${escapeHtml(percentFormatter.format(spawnChance))}</strong></span>`
+                    : ""
+                }
+                ${
+                  locationChance !== null
+                    ? `<span><small>${escapeHtml(copy.locationChance)}</small><strong>${escapeHtml(percentFormatter.format(locationChance))}</strong></span>`
+                    : ""
+                }
+              </span>
+            </div>`
+          : ""
+      }
+      ${
+        escorts.length > 0
+          ? `<strong class="live-map-popup-escorts-title">${escapeHtml(copy.escorts)}</strong>
+            <div class="live-map-popup-escort-list">
+              ${escorts
+                .map((escort) => `
+                  <div class="live-map-popup-escort">
+                    ${
+                      escort.image
+                        ? `<img src="${escapeHtml(escort.image)}" alt="" />`
+                        : `<span class="live-map-popup-escort-placeholder" aria-hidden="true"></span>`
+                    }
+                    <span class="live-map-popup-escort-info">
+                      <strong>${escapeHtml(escort.name)}</strong>
+                      ${
+                        escort.amounts.length > 0
+                          ? `<small>${escapeHtml(getSpawnAmountLabel(escort.amounts, locale))}</small>`
+                          : ""
+                      }
+                    </span>
+                  </div>
+                `)
+                .join("")}
+            </div>`
+          : ""
+      }
+    </section>
+  `;
+}
+
 function createMarkerPopupHtml({
   description,
   detailTexts,
   images,
   imageLinkLabel,
   location,
+  supplementaryHtml,
   title,
   titleImage,
 }: {
@@ -134,6 +350,7 @@ function createMarkerPopupHtml({
   }>;
   imageLinkLabel?: string;
   location: string;
+  supplementaryHtml?: string;
   title: string;
   titleImage?: string | null;
 }) {
@@ -207,6 +424,7 @@ function createMarkerPopupHtml({
             : ""
         }
       </div>
+      ${supplementaryHtml ?? ""}
       ${thumbnails ? `<div class="live-map-popup-thumbs">${thumbnails}</div>` : ""}
     </div>
   `;
@@ -352,6 +570,7 @@ export function getStaticPointPopupHtml(
 ) {
   const title = localizedName(point as unknown as Record<string, unknown>, locale);
   const description = localizedDescription(point as unknown as Record<string, unknown>, locale);
+  const spawnPresentation = getStaticSpawnPresentation(point, locale);
   const metadataImages = getStaticMetadataImages(point, locale);
   const usesItemImagePresentation =
     point.category === "key_spawn" ||
@@ -374,6 +593,8 @@ export function getStaticPointPopupHtml(
     images,
     imageLinkLabel: copy.questDetailPage,
     location: getStaticCategoryLabel(point.category, copy),
+    supplementaryHtml: getSpawnPopupHtml(point, locale, copy),
     title,
+    titleImage: spawnPresentation.bossImage,
   });
 }

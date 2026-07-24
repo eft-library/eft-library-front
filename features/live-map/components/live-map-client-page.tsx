@@ -626,9 +626,13 @@ export function LiveMapClientPage({
     }))),
     [data.event_points],
   );
-  const staticEntries = useMemo<StaticEntry[]>(
-    () => uniqueById(data.static_points.map((point) => ({ id: point.id, point }))),
+  const activeStaticPoints = useMemo(
+    () => data.static_points.filter((point) => point.is_use === true),
     [data.static_points],
+  );
+  const staticEntries = useMemo<StaticEntry[]>(
+    () => uniqueById(activeStaticPoints.map((point) => ({ id: point.id, point }))),
+    [activeStaticPoints],
   );
   const staticGroups = useMemo(() => groupStaticEntries(staticEntries), [staticEntries]);
   const [enabledQuestIds, setEnabledQuestIds] = useState<Set<string>>(new Set());
@@ -955,7 +959,7 @@ export function LiveMapClientPage({
           y: point.z,
         };
       });
-    const staticMarkers = data.static_points
+    const staticMarkers = activeStaticPoints
       .filter((point) => (
         matchesFilterText(getStaticMarkerSearchText(point, locale, copy), staticFilterQuery) &&
         (focusedMarkerId === `static:${point.id}` || enabledStaticIds.has(point.id))
@@ -980,7 +984,7 @@ export function LiveMapClientPage({
   }, [
     data.event_points,
     data.quest_points,
-    data.static_points,
+    activeStaticPoints,
     data.story_points,
     completedQuestIds,
     currentMapId,
@@ -1493,7 +1497,7 @@ export function LiveMapClientPage({
       }
 
       if (kind === "static") {
-        const point = data.static_points.find((entry) => entry.id === id);
+        const point = activeStaticPoints.find((entry) => entry.id === id);
         if (point) {
           setSelectedStaticId(point.id);
           selectPointFloor(point);
@@ -1515,7 +1519,7 @@ export function LiveMapClientPage({
       copy.noItems,
       data.event_points,
       data.quest_points,
-      data.static_points,
+      activeStaticPoints,
       data.story_points,
       loadEventDetail,
       loadQuestDetail,

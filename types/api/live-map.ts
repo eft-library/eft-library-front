@@ -308,6 +308,7 @@ export interface LiveMapStaticPoint {
   map_id: string;
   floor_id: string | null;
   floor_no?: number | null;
+  is_use: boolean;
   category: string;
   name_en: string;
   name_ko: string;

@@ -52,6 +52,10 @@ export const copyByLocale = {
     staticCategoryAll: "전체",
     expandAllCategories: "전체 펼치기",
     collapseAllCategories: "전체 접기",
+    spawnLeader: "대장",
+    spawnChance: "등장 확률",
+    locationChance: "현재 위치 확률",
+    escorts: "부하",
     staticCategories: {
       black_div_spawn: "블랙 디비전 스폰",
       bloodhounds_spawn: "블랙 디비전 스폰",
@@ -178,6 +182,10 @@ export const copyByLocale = {
     staticCategoryAll: "All",
     expandAllCategories: "Expand",
     collapseAllCategories: "Collapse",
+    spawnLeader: "Leader",
+    spawnChance: "Spawn chance",
+    locationChance: "Location chance",
+    escorts: "Escorts",
     staticCategories: {
       black_div_spawn: "Black Div Spawns",
       bloodhounds_spawn: "Bloodhounds",
@@ -304,6 +312,10 @@ export const copyByLocale = {
     staticCategoryAll: "全体",
     expandAllCategories: "展開",
     collapseAllCategories: "折りたたむ",
+    spawnLeader: "リーダー",
+    spawnChance: "出現確率",
+    locationChance: "現在地の確率",
+    escorts: "護衛",
     staticCategories: {
       black_div_spawn: "Black Divスポーン",
       bloodhounds_spawn: "Bloodhounds",
