@@ -1,5 +1,13 @@
 import type React from "react";
-import { Children, useEffect, useRef, useState } from "react";
+import {
+  Children,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
@@ -8,6 +16,7 @@ import type { QuestDetailItem } from "@/types/api/quest";
 import type {
   EventInfo,
   EventObjective,
+  LiveMapFloor,
   LiveMapObjectivePoint,
   LiveMapQuestInfo,
   LiveMapStaticPoint,
@@ -19,6 +28,7 @@ import type {
 import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
 import {
   findNestedObjectiveByPoint,
+  getFloorLabel,
   getQuestObjectivePoint,
   getQuestObjectivePoints,
   isRemoteObjectivePoint,
@@ -29,6 +39,8 @@ import {
 } from "./live-map-data-utils";
 import { KappaBadge } from "./live-map-sections";
 
+const LiveMapFloorsContext = createContext<LiveMapFloor[]>([]);
+
 type ItemRowEntry = {
   quantity?: number | null;
   count?: number | null;
@@ -37,6 +49,41 @@ type ItemRowEntry = {
   item_type?: string;
   item: QuestDetailItem;
 };
+
+function getNestedStoryPoints(objectives: StoryObjective[]): LiveMapObjectivePoint[] {
+  return objectives.flatMap((objective) => [
+    ...objective.live_map_points,
+    ...getNestedStoryPoints(objective.children),
+  ]);
+}
+
+function getNestedEventPoints(objectives: EventObjective[]): LiveMapObjectivePoint[] {
+  return objectives.flatMap((objective) => [
+    ...objective.live_map_points,
+    ...getNestedEventPoints(objective.children),
+  ]);
+}
+
+function getPanelLocationPoints(panel: PanelState) {
+  if (panel.type === "quest") {
+    return panel.info.objectives.flatMap(getQuestObjectivePoints);
+  }
+
+  if (panel.type === "story") {
+    return [
+      ...panel.info.requirements.flatMap(
+        (requirement) => requirement.live_map_points ?? [],
+      ),
+      ...getNestedStoryPoints(panel.info.objectives),
+    ];
+  }
+
+  if (panel.type === "event") {
+    return getNestedEventPoints(panel.info.objectives);
+  }
+
+  return [];
+}
 
 function hasRequirementItem(
   entry: NonNullable<StoryRequirement["items"]>[number],
@@ -47,6 +94,8 @@ function hasRequirementItem(
 export function DetailPanel({
   completedQuestIds,
   copy,
+  currentMapId,
+  floors,
   focusEventObjective,
   focusQuestObjective,
   focusStoryObjective,
@@ -56,12 +105,16 @@ export function DetailPanel({
   normalizedName,
   onClose,
   onOpenQuest,
+  onSelectFloor,
   onToggleQuest,
   panel,
   savingQuestId,
+  selectedFloorId,
 }: {
   completedQuestIds: string[];
   copy: LiveMapCopy;
+  currentMapId: string | null;
+  floors: LiveMapFloor[];
   focusQuestObjective: (
     objective: LiveMapQuestInfo["objectives"][number],
     questId: string,
@@ -75,9 +128,11 @@ export function DetailPanel({
   normalizedName: string;
   onClose: () => void;
   onOpenQuest: (normalizedQuestName: string) => void;
+  onSelectFloor: (floorId: string) => void;
   onToggleQuest: (questId: string) => void;
   panel: PanelState;
   savingQuestId: string | null;
+  selectedFloorId: string;
 }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const selectedScrollKey =
@@ -104,9 +159,37 @@ export function DetailPanel({
     });
   }, [selectedScrollKey]);
 
+  const floorSummaries = useMemo(() => {
+    if (!currentMapId) {
+      return [];
+    }
+
+    const uniquePoints = Array.from(
+      new Map(
+        getPanelLocationPoints(panel).map((point) => [point.id, point]),
+      ).values(),
+    );
+    const counts = new Map<string, number>();
+
+    uniquePoints.forEach((point) => {
+      if (point.map_id !== currentMapId || !point.floor_id) {
+        return;
+      }
+
+      counts.set(point.floor_id, (counts.get(point.floor_id) ?? 0) + 1);
+    });
+
+    return floors.flatMap((floor) => {
+      const count = counts.get(floor.id);
+
+      return count ? [{ count, floor }] : [];
+    });
+  }, [currentMapId, floors, panel]);
+
   return (
-    <aside className="absolute inset-y-0 right-0 z-[600] flex w-full max-w-72 shrink-0 flex-col border-l border-gray-200 bg-white shadow-2xl dark:border-[#3a3d41] dark:bg-[#1f2124] md:static md:order-2 md:min-h-0 md:max-w-none md:flex-1 md:border-l-0 md:border-t md:shadow-none lg:max-w-none xl:order-1 xl:w-96 xl:max-w-96 xl:flex-none xl:border-l xl:border-t-0">
-      <div className="flex h-10 items-center justify-between border-b border-gray-200 px-3 dark:border-[#3a3d41]">
+    <LiveMapFloorsContext.Provider value={floors}>
+      <aside className="absolute inset-y-0 right-0 z-[600] flex w-full max-w-72 shrink-0 flex-col border-l border-gray-200 bg-white shadow-2xl dark:border-[#3a3d41] dark:bg-[#1f2124] md:static md:order-2 md:min-h-0 md:max-w-none md:flex-1 md:border-l-0 md:border-t md:shadow-none lg:max-w-none xl:order-1 xl:w-96 xl:max-w-96 xl:flex-none xl:border-l xl:border-t-0">
+        <div className="flex h-10 items-center justify-between border-b border-gray-200 px-3 dark:border-[#3a3d41]">
         <span className="text-xs font-black text-orange-500">
           {panel.type === "quest"
             ? copy.quests
@@ -123,8 +206,42 @@ export function DetailPanel({
         >
           <X className="h-4 w-4" />
         </button>
-      </div>
-      <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto p-3">
+        </div>
+        {floorSummaries.length > 1 ? (
+          <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto border-b border-gray-200 px-3 py-2 dark:border-[#3a3d41]">
+            <span className="mr-0.5 shrink-0 text-[10px] font-bold text-gray-500 dark:text-gray-300">
+              {copy.floor}
+            </span>
+            {floorSummaries.map(({ count, floor }) => {
+              const isSelected = floor.id === selectedFloorId;
+
+              return (
+                <button
+                  key={floor.id}
+                  type="button"
+                  onClick={() => onSelectFloor(floor.id)}
+                  className={cn(
+                    "inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-bold transition",
+                    isSelected
+                      ? "border-sky-500 bg-sky-500 text-white dark:text-[#15171a]"
+                      : "border-sky-200 bg-sky-50 text-sky-700 hover:border-sky-400 hover:bg-sky-100 dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-200 dark:hover:border-sky-400 dark:hover:bg-sky-500/15",
+                  )}
+                >
+                  {getFloorLabel(floor, locale)}
+                  <span className={cn(
+                    "rounded-full px-1 text-[9px]",
+                    isSelected
+                      ? "bg-white/20"
+                      : "bg-sky-100 dark:bg-sky-500/20",
+                  )}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+        <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto p-3">
         {panel.type === "quest" ? (
           <QuestPanel
             completed={completedQuestIds.includes(panel.info.quest.id)}
@@ -167,8 +284,9 @@ export function DetailPanel({
         {panel.type === "static" ? (
           <StaticPanel point={panel.point} locale={locale} />
         ) : null}
-      </div>
-    </aside>
+        </div>
+      </aside>
+    </LiveMapFloorsContext.Provider>
   );
 }
 
@@ -452,12 +570,14 @@ function ObjectiveList({
               <ObjectiveLine
                 count={objective.count}
                 description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+                locale={locale}
                 onFocus={
                   points.length > 0
                     ? () => onFocusObjective?.(objective)
                     : undefined
                 }
                 optional={false}
+                points={points}
                 remote={isRemote}
               />
               {points.length > 1 ? (
@@ -581,12 +701,14 @@ function StoryRequirementList({
               <ObjectiveLine
                 count={null}
                 description={description}
+                locale={locale}
                 onFocus={
                   points.length > 0
                     ? () => onFocusRequirement?.(requirement)
                     : undefined
                 }
                 optional={false}
+                points={points}
                 remote={isRemote}
               />
               {visibleDetails.length > 0 ? (
@@ -717,12 +839,14 @@ function NestedStoryObjectives({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              locale={locale}
               onFocus={
                 objective.live_map_points.length > 0
                   ? () => onFocusObjective?.(objective)
                   : undefined
               }
               optional={objective.is_optional}
+              points={objective.live_map_points}
               remote={isRemote}
               />
             {objective.live_map_points.length > 1 ? (
@@ -840,12 +964,14 @@ function NestedEventObjectives({
             <ObjectiveLine
               count={objective.count}
               description={localizedDescription(objective as unknown as Record<string, unknown>, locale)}
+              locale={locale}
               onFocus={
                 objective.live_map_points.length > 0
                   ? () => onFocusObjective?.(objective)
                   : undefined
               }
               optional={objective.is_optional}
+              points={objective.live_map_points}
               remote={isRemote}
             />
             {objective.live_map_points.length > 1 ? (
@@ -905,6 +1031,8 @@ function ObjectivePointList({
   points: LiveMapObjectivePoint[];
   selectedPointId?: string;
 }) {
+  const floors = useContext(LiveMapFloorsContext);
+
   return (
     <div className="ml-5 grid gap-1 border-l border-gray-200 pl-2 dark:border-[#3a3d41]">
       {points.map((point, index) => {
@@ -915,6 +1043,11 @@ function ObjectivePointList({
           : maps.find((map) => map.id === point.map_id)
             ? localizedName(maps.find((map) => map.id === point.map_id) as unknown as Record<string, unknown>, locale)
             : "";
+        const floor = floors.find(
+          (entry) =>
+            entry.id === point.floor_id &&
+            entry.map_id === point.map_id,
+        );
 
         return (
           <button
@@ -942,6 +1075,11 @@ function ObjectivePointList({
                     {mapName}
                   </span>
                 ) : null}
+                {floor ? (
+                  <span className="ml-1 inline-flex rounded border border-sky-200 bg-sky-50 px-1 py-0.5 text-[9px] font-bold leading-none text-sky-700 dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-200">
+                    {getFloorLabel(floor, locale)}
+                  </span>
+                ) : null}
               </span>
             </span>
           </button>
@@ -954,16 +1092,34 @@ function ObjectivePointList({
 function ObjectiveLine({
   count,
   description,
+  locale,
   onFocus,
   optional,
+  points = [],
   remote = false,
 }: {
   count: number | null;
   description: string;
+  locale: Locale;
   onFocus?: () => void;
   optional: boolean;
+  points?: LiveMapObjectivePoint[];
   remote?: boolean;
 }) {
+  const floors = useContext(LiveMapFloorsContext);
+  const floorLabels = Array.from(
+    new Set(
+      points.flatMap((point) => {
+        const floor = floors.find(
+          (entry) =>
+            entry.id === point.floor_id &&
+            entry.map_id === point.map_id,
+        );
+
+        return floor ? [getFloorLabel(floor, locale)] : [];
+      }),
+    ),
+  );
   const badges = (
     <>
       {optional ? (
@@ -976,6 +1132,14 @@ function ObjectiveLine({
           x{count}
         </span>
       ) : null}
+      {floorLabels.map((floorLabel) => (
+        <span
+          key={floorLabel}
+          className="ml-1 inline-flex whitespace-nowrap rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-sky-700 align-[1px] dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-200"
+        >
+          {floorLabel}
+        </span>
+      ))}
     </>
   );
 

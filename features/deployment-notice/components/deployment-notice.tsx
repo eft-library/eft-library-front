@@ -103,7 +103,7 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
     <aside
       aria-atomic="true"
       aria-live="assertive"
-      className="pointer-events-none fixed bottom-4 left-4 right-4 z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 sm:bottom-6 sm:left-auto sm:right-6 sm:w-full sm:max-w-md"
+      className="pointer-events-none fixed bottom-4 left-4 right-4 z-[1500] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 sm:bottom-6 sm:left-auto sm:right-6 sm:w-full sm:max-w-md"
       role="alert"
     >
       <div className="relative flex items-start gap-3.5 overflow-hidden rounded-xl border-2 border-orange-400 bg-orange-50/98 px-4 py-3.5 text-orange-950 shadow-[0_16px_40px_-12px_rgba(234,88,12,0.55)] ring-1 ring-orange-300/50 backdrop-blur dark:border-orange-500 dark:bg-[#332418]/98 dark:text-orange-50 dark:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.8)] dark:ring-orange-400/30">

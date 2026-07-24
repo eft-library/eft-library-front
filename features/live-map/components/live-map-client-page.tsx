@@ -387,6 +387,7 @@ export function LiveMapClientPage({
     string | null | undefined
   >(undefined);
   const [focusRequestKey, setFocusRequestKey] = useState(0);
+  const [closeMarkerPopupRequest, setCloseMarkerPopupRequest] = useState(0);
   const [focusTarget, setFocusTarget] = useState<{
     id: string;
     key: number;
@@ -578,6 +579,15 @@ export function LiveMapClientPage({
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
     selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
+  const highlightedMarkerGroup = useMemo(
+    () =>
+      panel?.type === "quest" ||
+      panel?.type === "story" ||
+      panel?.type === "event"
+        ? { id: panel.id, kind: panel.type }
+        : null,
+    [panel?.id, panel?.type],
+  );
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -815,6 +825,7 @@ export function LiveMapClientPage({
 
         return {
           floorId: resolvePointFloorId(point),
+          groupId: questId,
           id: `quest:${point.id}`,
           kind: "quest",
           label: getQuestPointLabel(point, locale),
@@ -855,6 +866,7 @@ export function LiveMapClientPage({
 
         return {
           floorId: resolvePointFloorId(point),
+          groupId: storyId,
           id: getStoryMarkerId(storyId, point.id),
           kind: "story",
           label: storyLabel,
@@ -898,6 +910,7 @@ export function LiveMapClientPage({
       ))
       .map<LiveMapCanvasMarker>(({ point, storyDetail }) => ({
         floorId: resolvePointFloorId(point),
+        groupId: storyDetail.story.id,
         id: getStoryMarkerId(storyDetail.story.id, point.id),
         kind: "story",
         label: getStoryPointLabel(point, locale),
@@ -931,6 +944,7 @@ export function LiveMapClientPage({
 
         return {
           floorId: resolvePointFloorId(point),
+          groupId: eventId,
           id: `event:${point.id}`,
           kind: "event",
           label: eventLabel,
@@ -1543,6 +1557,25 @@ export function LiveMapClientPage({
     }
   }, [clearFocusParam, focusedMarkerId]);
 
+  const prepareListSelection = useCallback(
+    (
+      type: "event" | "quest" | "story",
+      id: string,
+      { clearFocus = true }: { clearFocus?: boolean } = {},
+    ) => {
+      if (panel?.type === type && panel.id === id) {
+        return;
+      }
+
+      setCloseMarkerPopupRequest((value) => value + 1);
+
+      if (clearFocus && focusedMarkerId) {
+        clearFocusParam();
+      }
+    },
+    [clearFocusParam, focusedMarkerId, panel],
+  );
+
   useEffect(() => {
     if (!panel) {
       return;
@@ -1680,6 +1713,7 @@ export function LiveMapClientPage({
       return;
     }
 
+    prepareListSelection("quest", getQuestId(entry.point));
     setLoadingQuestNormalizedName(entry.point.quest_info.quest.normalized_name);
 
     try {
@@ -1703,6 +1737,8 @@ export function LiveMapClientPage({
       return;
     }
 
+    prepareListSelection("story", getStoryId(entry.point));
+
     try {
       const info = await loadStoryDetail(getStoryId(entry.point));
       setPanel({
@@ -1721,6 +1757,11 @@ export function LiveMapClientPage({
     }
 
     const targetMap = entry.point.map?.normalized_name;
+    const eventId = getEventId(entry.point);
+
+    prepareListSelection("event", eventId, {
+      clearFocus: !targetMap || targetMap === normalizedName,
+    });
 
     if (targetMap && targetMap !== normalizedName) {
       const focus = `event:${entry.point.id}`;
@@ -1734,7 +1775,7 @@ export function LiveMapClientPage({
     }
 
     try {
-      const info = await loadEventDetail(getEventId(entry.point));
+      const info = await loadEventDetail(eventId);
       setPanel({
         id: info.event.id,
         info,
@@ -2004,12 +2045,14 @@ export function LiveMapClientPage({
               <LiveMapCanvas
                 activeFloorId={selectedFloor.id}
                 clearDrawingRequest={clearDrawingRequest}
+                closePopupRequest={closeMarkerPopupRequest}
                 coordinateInfo={data.coordinate_info}
                 drawingMode={drawingMode}
                 focusedMarkerId={focusedMarkerId}
                 focusRequestKey={focusRequestKey}
                 focusTarget={focusTarget}
                 floors={sortedFloors}
+                highlightedGroup={highlightedMarkerGroup}
                 isAutoPanLocked={isAutoPanLocked}
                 isMarkerSimplified={isMarkerSimplified}
                 location={location}
@@ -2296,6 +2339,8 @@ export function LiveMapClientPage({
               <DetailPanel
                 completedQuestIds={completedQuestIds}
                 copy={copy}
+                currentMapId={currentMapId}
+                floors={sortedFloors}
                 focusEventObjective={focusEventObjective}
                 focusQuestObjective={focusQuestObjective}
                 focusStoryObjective={focusStoryObjective}
@@ -2305,9 +2350,11 @@ export function LiveMapClientPage({
                 normalizedName={normalizedName}
                 onClose={closeDetailPanel}
                 onOpenQuest={openQuestDetail}
+                onSelectFloor={selectFloor}
                 onToggleQuest={toggleQuestCompletionState}
                 panel={panel}
                 savingQuestId={savingQuestId}
+                selectedFloorId={selectedFloor?.id ?? ""}
               />
             ) : null}
 

@@ -24,6 +24,11 @@ export type LiveMapMarkerKind = "quest" | "story" | "event" | "static";
 export type LiveMapDrawingMode = "hand" | "red" | "blue" | "erase";
 export type LiveMapRotation = 0 | 90 | 180 | 270;
 
+type HighlightedMarkerGroup = {
+  id: string;
+  kind: Exclude<LiveMapMarkerKind, "static">;
+};
+
 interface DrawingPoint {
   lat: number;
   lng: number;
@@ -38,6 +43,7 @@ interface DrawingStroke {
 }
 
 export interface LiveMapCanvasMarker {
+  groupId?: string;
   id: string;
   kind: LiveMapMarkerKind;
   label: string;
@@ -68,6 +74,20 @@ interface PointMarkerEntry {
   point: LiveMapCanvasMarker;
   positionKey: string;
   presentationKey: string;
+}
+
+function getMarkerGroupPresentation(
+  point: LiveMapCanvasMarker,
+  highlightedGroup?: HighlightedMarkerGroup | null,
+) {
+  const isHighlighted =
+    point.kind !== "static" &&
+    point.kind === highlightedGroup?.kind &&
+    point.groupId === highlightedGroup.id;
+
+  return {
+    isGroupHighlighted: isHighlighted,
+  };
 }
 
 function clearLeafletContainer(container: LeafletContainerElement) {
@@ -593,12 +613,13 @@ function PointIcon(
   isFocused: boolean,
   isMarkerSimplified: boolean,
   isHovered = false,
+  isGroupHighlighted = false,
 ) {
   const { kind } = point;
   const color = kind === "static" ? getStaticMarkerColor(point) : markerColorByKind[kind];
   const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
 
-  if (isMarkerSimplified && !isFocused && !isHovered) {
+  if (isMarkerSimplified && !isFocused && !isHovered && !isGroupHighlighted) {
     const size = kind === "static" ? 16 : 14;
     const labelHtml = kind === "static" ? getStaticMarkerLabelHtml(point, color) : "";
 
@@ -630,20 +651,25 @@ function PointIcon(
   }
 
   if (kind !== "static") {
-    const size = isFocused ? 28 : 22;
+    const size = isFocused ? 30 : isGroupHighlighted ? 28 : 22;
     const taskWrapperStyle = `
       width: ${size}px;
       height: ${size}px;
       position: relative;
       opacity: ${markerOpacity};
       transition: transform 120ms ease, opacity 120ms ease;
-      transform: ${isFocused ? "scale(1.12)" : "none"};
+      transform: ${isFocused ? "scale(1.16)" : isGroupHighlighted ? "scale(1.1)" : "none"};
     `;
 
     return L.divIcon({
       className: `live-map-marker-icon live-map-marker-icon-${kind}${isFocused ? " live-map-marker-focused" : ""}`,
       html: `
         <div style="${taskWrapperStyle}">
+          ${
+            isGroupHighlighted
+              ? `<span class="live-map-marker-group-highlight" style="--live-map-marker-highlight-color: ${color}"></span>`
+              : ""
+          }
           <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="10.2" fill="#1a1c1f" stroke="#0b0d10" stroke-width="2.1" />
             <circle cx="12" cy="12" r="8.1" fill="#1a1c1f" stroke="${color}" stroke-width="2.2" />
@@ -706,6 +732,7 @@ function getPointMarkerZIndex(
   activeFloorId: string,
   focusedMarkerId?: string | null,
   hoveredMarkerId?: string | null,
+  isGroupHighlighted = false,
 ) {
   if (point.id === focusedMarkerId) {
     return 3000;
@@ -713,6 +740,10 @@ function getPointMarkerZIndex(
 
   if (point.id === hoveredMarkerId) {
     return 2200;
+  }
+
+  if (isGroupHighlighted) {
+    return 1800;
   }
 
   return point.floorId === null || point.floorId === activeFloorId ? 700 : 0;
@@ -730,6 +761,7 @@ function getPointMarkerPresentationKey(
   point: LiveMapCanvasMarker,
   activeFloorId: string,
   isMarkerSimplified: boolean,
+  isGroupHighlighted: boolean,
   focusedMarkerId?: string | null,
   hoveredMarkerId?: string | null,
 ) {
@@ -740,6 +772,7 @@ function getPointMarkerPresentationKey(
     point.floorId ?? "",
     activeFloorId,
     isMarkerSimplified ? "simplified" : "detailed",
+    isGroupHighlighted ? "group-highlighted" : "",
     point.id === focusedMarkerId ? "focused" : "",
     point.id === hoveredMarkerId ? "hovered" : "",
   ].join("|");
@@ -840,6 +873,7 @@ function syncPointMarkerPresentation({
   activeFloorId,
   focusedMarkerId,
   hoveredMarkerId,
+  isGroupHighlighted,
   isMarkerSimplified,
   mapKey,
   marker,
@@ -848,6 +882,7 @@ function syncPointMarkerPresentation({
   activeFloorId: string;
   focusedMarkerId?: string | null;
   hoveredMarkerId?: string | null;
+  isGroupHighlighted: boolean;
   isMarkerSimplified: boolean;
   mapKey: string;
   marker: LeafletMarker;
@@ -857,17 +892,36 @@ function syncPointMarkerPresentation({
   const isFocused = point.id === focusedMarkerId;
   const isHovered = point.id === hoveredMarkerId;
 
-  marker.setIcon(PointIcon(point, isDimmed, isFocused, isMarkerSimplified, isHovered));
-  marker.setZIndexOffset(getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerId));
+  marker.setIcon(
+    PointIcon(
+      point,
+      isDimmed,
+      isFocused,
+      isMarkerSimplified,
+      isHovered,
+      isGroupHighlighted,
+    ),
+  );
+  marker.setZIndexOffset(
+    getPointMarkerZIndex(
+      point,
+      activeFloorId,
+      focusedMarkerId,
+      hoveredMarkerId,
+      isGroupHighlighted,
+    ),
+  );
 }
 
 export function LiveMapCanvas({
   activeFloorId,
   clearDrawingRequest,
+  closePopupRequest,
   coordinateInfo,
   drawingMode,
   floors,
   focusedMarkerId,
+  highlightedGroup,
   focusRequestKey = 0,
   focusTarget,
   isAutoPanLocked,
@@ -887,6 +941,7 @@ export function LiveMapCanvas({
 }: {
   activeFloorId: string;
   clearDrawingRequest: number;
+  closePopupRequest: number;
   coordinateInfo: LiveMapCoordinateInfo;
   drawingMode: LiveMapDrawingMode;
   focusedMarkerId?: string | null;
@@ -901,6 +956,7 @@ export function LiveMapCanvas({
   floors: LiveMapFloor[];
   isAutoPanLocked: boolean;
   isMarkerSimplified: boolean;
+  highlightedGroup?: HighlightedMarkerGroup | null;
   preserveFocusOnPopupEscape: boolean;
   location: LiveMapLocation | null;
   mapKey: string;
@@ -922,6 +978,7 @@ export function LiveMapCanvas({
   const lastDrawingClientPointRef = useRef<{ x: number; y: number } | null>(null);
   const redrawDrawingRef = useRef<() => void>(() => undefined);
   const previousClearDrawingRequestRef = useRef(clearDrawingRequest);
+  const previousClosePopupRequestRef = useRef(closePopupRequest);
   const previousUndoDrawingRequestRef = useRef(undoDrawingRequest);
   const imageOverlayRefs = useRef<LeafletImageOverlay[]>([]);
   const mapRef = useRef<LeafletMap | null>(null);
@@ -938,6 +995,9 @@ export function LiveMapCanvas({
   const markerRef = useRef<LeafletMarker | null>(null);
   const activeFloorIdRef = useRef(activeFloorId);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
+  const highlightedGroupRef = useRef<HighlightedMarkerGroup | null | undefined>(
+    highlightedGroup,
+  );
   const mapKeyRef = useRef(mapKey);
   const isAutoPanLockedRef = useRef(isAutoPanLocked);
   const isMarkerSimplifiedRef = useRef(isMarkerSimplified);
@@ -1170,6 +1230,7 @@ export function LiveMapCanvas({
   useEffect(() => {
     activeFloorIdRef.current = activeFloorId;
     focusedMarkerIdRef.current = focusedMarkerId;
+    highlightedGroupRef.current = highlightedGroup;
     mapKeyRef.current = mapKey;
     isAutoPanLockedRef.current = isAutoPanLocked;
     isMarkerSimplifiedRef.current = isMarkerSimplified;
@@ -1178,7 +1239,17 @@ export function LiveMapCanvas({
     onMarkerClickRef.current = onMarkerClick;
     onMapClickRef.current = onMapClick;
     onFloorStepRef.current = onFloorStep;
-  }, [activeFloorId, focusedMarkerId, isAutoPanLocked, isMarkerSimplified, mapKey, onFloorStep, onFocusedMarkerClose, onMapClick, onMarkerClick, preserveFocusOnPopupEscape]);
+  }, [activeFloorId, focusedMarkerId, highlightedGroup, isAutoPanLocked, isMarkerSimplified, mapKey, onFloorStep, onFocusedMarkerClose, onMapClick, onMarkerClick, preserveFocusOnPopupEscape]);
+
+  useEffect(() => {
+    if (previousClosePopupRequestRef.current === closePopupRequest) {
+      return;
+    }
+
+    previousClosePopupRequestRef.current = closePopupRequest;
+    mapRef.current?.closePopup();
+    openPopupMarkerIdRef.current = null;
+  }, [closePopupRequest]);
 
   useEffect(() => {
     let accumulatedDelta = 0;
@@ -1717,11 +1788,14 @@ export function LiveMapCanvas({
     renderMarkers.forEach((point) => {
       const existing = pointMarkerByIdRef.current.get(point.id);
       const hoveredMarkerId = hoveredMarkerIdRef.current;
+      const { isGroupHighlighted } =
+        getMarkerGroupPresentation(point, highlightedGroup);
       const nextPositionKey = getPointMarkerPositionKey(mapKey, point, rotation);
       const nextPresentationKey = getPointMarkerPresentationKey(
         point,
         activeFloorId,
         isMarkerSimplified,
+        isGroupHighlighted,
         focusedMarkerId,
         hoveredMarkerId,
       );
@@ -1757,6 +1831,7 @@ export function LiveMapCanvas({
             activeFloorId,
             focusedMarkerId,
             hoveredMarkerId,
+            isGroupHighlighted,
             isMarkerSimplified,
             mapKey,
             marker: existing.marker,
@@ -1779,10 +1854,18 @@ export function LiveMapCanvas({
           point.floorId !== null && point.floorId !== activeFloorId,
           point.id === focusedMarkerId,
           isMarkerSimplified,
+          false,
+          isGroupHighlighted,
         ),
         keyboard: true,
         title: point.label,
-        zIndexOffset: getPointMarkerZIndex(point, activeFloorId, focusedMarkerId, hoveredMarkerIdRef.current),
+        zIndexOffset: getPointMarkerZIndex(
+          point,
+          activeFloorId,
+          focusedMarkerId,
+          hoveredMarkerIdRef.current,
+          isGroupHighlighted,
+        ),
       });
 
       syncPointMarkerPopup(marker, point);
@@ -1819,10 +1902,15 @@ export function LiveMapCanvas({
         const current = pointMarkerByIdRef.current.get(point.id);
 
         if (current) {
+          const groupPresentation = getMarkerGroupPresentation(
+            current.point,
+            highlightedGroupRef.current,
+          );
           const nextPresentationKey = getPointMarkerPresentationKey(
             current.point,
             activeFloorIdRef.current,
             isMarkerSimplifiedRef.current,
+            groupPresentation.isGroupHighlighted,
             focusedMarkerIdRef.current,
             point.id,
           );
@@ -1831,6 +1919,7 @@ export function LiveMapCanvas({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
             hoveredMarkerId: point.id,
+            ...groupPresentation,
             isMarkerSimplified: isMarkerSimplifiedRef.current,
             mapKey: mapKeyRef.current,
             marker: current.marker,
@@ -1849,10 +1938,15 @@ export function LiveMapCanvas({
         const current = pointMarkerByIdRef.current.get(point.id);
 
         if (current) {
+          const groupPresentation = getMarkerGroupPresentation(
+            current.point,
+            highlightedGroupRef.current,
+          );
           const nextPresentationKey = getPointMarkerPresentationKey(
             current.point,
             activeFloorIdRef.current,
             isMarkerSimplifiedRef.current,
+            groupPresentation.isGroupHighlighted,
             focusedMarkerIdRef.current,
             hoveredMarkerIdRef.current,
           );
@@ -1861,6 +1955,7 @@ export function LiveMapCanvas({
             activeFloorId: activeFloorIdRef.current,
             focusedMarkerId: focusedMarkerIdRef.current,
             hoveredMarkerId: hoveredMarkerIdRef.current,
+            ...groupPresentation,
             isMarkerSimplified: isMarkerSimplifiedRef.current,
             mapKey: mapKeyRef.current,
             marker: current.marker,
@@ -1881,7 +1976,7 @@ export function LiveMapCanvas({
         presentationKey: nextPresentationKey,
       });
     });
-  }, [activeFloorId, coordinateInfo, focusedMarkerId, isMarkerSimplified, mapKey, renderMarkers, rotation]);
+  }, [activeFloorId, coordinateInfo, focusedMarkerId, highlightedGroup, isMarkerSimplified, mapKey, renderMarkers, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;

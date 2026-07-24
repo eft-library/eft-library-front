@@ -132,6 +132,42 @@ summary {
   filter: none !important;
 }
 
+.live-map-marker-group-highlight {
+  position: absolute;
+  inset: -5px;
+  z-index: 0;
+  pointer-events: none;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 2px var(--live-map-marker-highlight-color),
+    0 0 12px var(--live-map-marker-highlight-color);
+  animation: live-map-marker-group-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes live-map-marker-group-pulse {
+  0% {
+    opacity: 0.65;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+
+  100% {
+    opacity: 0.65;
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-map-marker-group-highlight {
+    animation: none;
+  }
+}
+
 .leaflet-control-zoom a {
   background: #ffffff;
   border-color: #e5e7eb;
