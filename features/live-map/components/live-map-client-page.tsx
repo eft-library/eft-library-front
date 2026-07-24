@@ -107,7 +107,9 @@ import {
 } from "./live-map-marker-popup";
 import { LiveMapLocationGuide } from "./live-map-location-guide";
 import {
+  readLiveMapMarkerDetailsPreference,
   readLiveMapPreferences,
+  writeLiveMapMarkerDetailsPreference,
   writeLiveMapPreferences,
 } from "./live-map-preferences-storage";
 import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
@@ -457,19 +459,24 @@ export function LiveMapClientPage({
 
   useEffect(() => {
     const preferences = readLiveMapPreferences();
+    const markerDetailsPreference = readLiveMapMarkerDetailsPreference();
 
     if (preferences) {
       setAreStaticLabelsVisible(preferences.areStaticLabelsVisible);
       setIsAutoPanLocked(preferences.isAutoPanLocked);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
-      setOpenQuestDetailsOnMarkerClick(preferences.openQuestDetailsOnMarkerClick);
       setIsRightPanelOpen(preferences.isRightPanelOpen);
       setMapRotations(preferences.mapRotations);
       const savedRotation = preferences.mapRotations[normalizedName];
       setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
     }
 
+    setOpenQuestDetailsOnMarkerClick(
+      markerDetailsPreference ??
+        preferences?.openQuestDetailsOnMarkerClick ??
+        true,
+    );
     setHasLoadedPreferences(true);
   }, []);
 
@@ -487,6 +494,7 @@ export function LiveMapClientPage({
       isRightPanelOpen,
       mapRotations,
     });
+    writeLiveMapMarkerDetailsPreference(openQuestDetailsOnMarkerClick);
   }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openQuestDetailsOnMarkerClick]);
 
   useEffect(() => {
@@ -579,15 +587,6 @@ export function LiveMapClientPage({
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
     selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
-  const highlightedMarkerGroup = useMemo(
-    () =>
-      panel?.type === "quest" ||
-      panel?.type === "story" ||
-      panel?.type === "event"
-        ? { id: panel.id, kind: panel.type }
-        : null,
-    [panel?.id, panel?.type],
-  );
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -1004,6 +1003,34 @@ export function LiveMapClientPage({
     normalizedName,
     resolvePointFloorId,
   ]);
+
+  const highlightedMarkerGroup = useMemo(() => {
+    if (
+      panel?.type === "quest" ||
+      panel?.type === "story" ||
+      panel?.type === "event"
+    ) {
+      return { id: panel.id, kind: panel.type };
+    }
+
+    const focusedMarker = visibleMarkers.find(
+      (marker) => marker.id === focusedMarkerId,
+    );
+
+    if (
+      focusedMarker?.groupId &&
+      (focusedMarker.kind === "quest" ||
+        focusedMarker.kind === "story" ||
+        focusedMarker.kind === "event")
+    ) {
+      return {
+        id: focusedMarker.groupId,
+        kind: focusedMarker.kind,
+      };
+    }
+
+    return null;
+  }, [focusedMarkerId, panel, visibleMarkers]);
 
   function showNotice(message: string) {
     setNotice(message);

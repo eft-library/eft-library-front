@@ -1,4 +1,6 @@
 const LIVE_MAP_PREFERENCES_STORAGE_KEY = "eft-library-live-map-preferences-v1";
+const LIVE_MAP_MARKER_DETAILS_STORAGE_KEY =
+  "eft-library-live-map-marker-details-v1";
 
 export interface LiveMapPreferences {
   areStaticLabelsVisible: boolean;
@@ -79,6 +81,45 @@ export function writeLiveMapPreferences(preferences: LiveMapPreferences) {
     window.localStorage.setItem(
       LIVE_MAP_PREFERENCES_STORAGE_KEY,
       JSON.stringify(preferences),
+    );
+  } catch {
+    // Ignore storage failures so live map controls remain usable.
+  }
+}
+
+export function readLiveMapMarkerDetailsPreference(): boolean | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(
+      LIVE_MAP_MARKER_DETAILS_STORAGE_KEY,
+    );
+
+    if (rawValue === "true") {
+      return true;
+    }
+
+    if (rawValue === "false") {
+      return false;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeLiveMapMarkerDetailsPreference(value: boolean) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      LIVE_MAP_MARKER_DETAILS_STORAGE_KEY,
+      String(value),
     );
   } catch {
     // Ignore storage failures so live map controls remain usable.

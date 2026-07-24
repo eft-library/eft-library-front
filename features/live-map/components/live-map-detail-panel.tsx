@@ -207,7 +207,7 @@ export function DetailPanel({
           <X className="h-4 w-4" />
         </button>
         </div>
-        {floorSummaries.length > 1 ? (
+        {panel.type !== "quest" && floorSummaries.length > 1 ? (
           <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto border-b border-gray-200 px-3 py-2 dark:border-[#3a3d41]">
             <span className="mr-0.5 shrink-0 text-[10px] font-bold text-gray-500 dark:text-gray-300">
               {copy.floor}
