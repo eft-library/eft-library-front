@@ -452,10 +452,7 @@ export function LiveMapClientPage({
     () => createQuestCompletionMap(initialCompletionGraph),
     [initialCompletionGraph],
   );
-  const sortedFloors = useMemo(
-    () => [...data.floors].sort((left, right) => left.floor_no - right.floor_no),
-    [data.floors],
-  );
+  const sortedFloors = useMemo(() => [...data.floors], [data.floors]);
 
   useEffect(() => {
     const preferences = readLiveMapPreferences();

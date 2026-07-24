@@ -13,6 +13,8 @@ export interface LiveMapFloor {
   id: string;
   map_id: string;
   floor_no: number;
+  sort_order?: number | null;
+  is_main: boolean | null;
   name_en: string | null;
   name_ko: string | null;
   name_ja: string | null;

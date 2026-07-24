@@ -74,7 +74,12 @@ export function getFloorLabel(floor: LiveMapFloor, locale: Locale) {
 }
 
 export function getDefaultFloor(floors: LiveMapFloor[]) {
-  return floors.find((floor) => Number(floor.floor_no) === 1) ?? floors[0] ?? null;
+  return (
+    floors.find((floor) => floor.is_main === true) ??
+    floors.find((floor) => Number(floor.floor_no) === 1) ??
+    floors[0] ??
+    null
+  );
 }
 
 export function getStaticCategoryLabel(category: string, copy: LiveMapCopy) {
