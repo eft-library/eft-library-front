@@ -118,7 +118,7 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
           <p className="text-sm font-extrabold leading-5">
             {noticeTitles[locale]}
           </p>
-          <p className="mt-0.5 text-sm font-medium leading-5 text-orange-900 dark:text-orange-100">
+          <p className="mt-0.5 whitespace-pre-wrap break-words text-sm font-medium leading-5 text-orange-900 dark:text-orange-100">
             {getLocalizedMessage(notice, locale)}
           </p>
         </div>
