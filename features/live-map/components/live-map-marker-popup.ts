@@ -230,7 +230,7 @@ function getStaticSpawnPresentation(
   };
 }
 
-function getSpawnAmountLabel(
+function getSpawnChanceLabel(
   amounts: Array<{ chance: number | null; count: number }>,
   locale: Locale,
 ) {
@@ -240,12 +240,18 @@ function getSpawnAmountLabel(
   });
 
   return amounts
-    .map(({ chance, count }) =>
-      chance !== null
-        ? `×${count} ${percentFormatter.format(chance)}`
-        : `×${count}`,
+    .flatMap(({ chance }) =>
+      chance === null ? [] : [percentFormatter.format(chance)],
     )
-    .join(" · ");
+    .join(" / ");
+}
+
+function getSpawnCountLabel(
+  amounts: Array<{ chance: number | null; count: number }>,
+) {
+  return amounts
+    .map(({ count }) => `×${count}`)
+    .join(" / ");
 }
 
 function getSpawnPopupHtml(
@@ -312,10 +318,17 @@ function getSpawnPopupHtml(
                         : `<span class="live-map-popup-escort-placeholder" aria-hidden="true"></span>`
                     }
                     <span class="live-map-popup-escort-info">
-                      <strong>${escapeHtml(escort.name)}</strong>
+                      <strong>
+                        <span class="live-map-popup-escort-name">${escapeHtml(escort.name)}</span>
+                        ${
+                          escort.amounts.length > 0
+                            ? `<span class="live-map-popup-escort-count">${escapeHtml(getSpawnCountLabel(escort.amounts))}</span>`
+                            : ""
+                        }
+                      </strong>
                       ${
-                        escort.amounts.length > 0
-                          ? `<small>${escapeHtml(getSpawnAmountLabel(escort.amounts, locale))}</small>`
+                        escort.amounts.some(({ chance }) => chance !== null)
+                          ? `<small>${escapeHtml(getSpawnChanceLabel(escort.amounts, locale))}</small>`
                           : ""
                       }
                     </span>
