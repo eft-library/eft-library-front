@@ -4,7 +4,7 @@ import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import type {
   ProgressItemResponse,
   ProgressItemSaveRequest,
-} from "@/types/api/minigame";
+} from "@/types/api/progress";
 
 export function getProgressItems(accessToken?: string) {
   if (accessToken) {

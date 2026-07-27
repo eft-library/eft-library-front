@@ -45,7 +45,7 @@ import {
 } from "@/lib/quest/quest-completion";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
-import type { ProgressItemResponse, ProgressTrackedItem } from "@/types/api/minigame";
+import type { ProgressItemResponse, ProgressTrackedItem } from "@/types/api/progress";
 import type {
   RoadmapEdge,
   RoadmapQuestNode,

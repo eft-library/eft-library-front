@@ -62,9 +62,6 @@
   공지사항
 * [https://eftlibrary.com/patch-notes](https://eftlibrary.com/patch-notes)
   패치노트
-* [https://eftlibrary.com/minigame](https://eftlibrary.com/minigame)
-  EFT Library의 보조 미니게임 기능
-
 ---
 
 ## Data Freshness

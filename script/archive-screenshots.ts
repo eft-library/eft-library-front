@@ -24,7 +24,6 @@ const pages = [
     name: "community-detail",
   },
   //   { path: "/wipe", name: "wipe" },
-  //   { path: "/minigame", name: "minigame" },
 ];
 
 const themes = ["dark", "light"] as const;

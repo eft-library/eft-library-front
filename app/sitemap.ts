@@ -13,6 +13,7 @@ interface SitemapApiItem {
 }
 
 const revalidateSeconds = 60 * 60 * 24 * 30;
+const removedRoutes = new Set(["/minigame"]);
 
 export const revalidate = 2592000;
 
@@ -64,7 +65,17 @@ export default async function sitemap({
     const items = await getSitemapItems();
 
     return items
-      .filter((item) => item.sitemap_value === resolvedId)
+      .filter((item) => {
+        if (item.sitemap_value !== resolvedId) {
+          return false;
+        }
+
+        try {
+          return !removedRoutes.has(new URL(item.url).pathname);
+        } catch {
+          return true;
+        }
+      })
       .map((item) => ({
         url: item.url,
         lastModified: new Date(item.update_time),

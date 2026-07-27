@@ -32,7 +32,6 @@ const pages = [
     name: "community-detail",
   },
   { path: "/wipe", name: "wipe" },
-  { path: "/minigame", name: "minigame" },
   { path: "/live-map/customs", name: "live-map-customs" },
   { path: "/live-map/streets-of-tarkov", name: "live-map-streets-of-tarkov" },
 ];
