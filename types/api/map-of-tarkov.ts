@@ -16,14 +16,6 @@ export interface MapInfo {
   mot_image_ja: string;
 }
 
-export interface FindInfo {
-  id: string;
-  image: string;
-  map_bounds: [[number, number], [number, number]];
-  image_bounds: [[number, number], [number, number]];
-  default_zoom_level: number;
-}
-
 export interface MapPointInfo {
   id: string;
   point_type: "extraction" | "transit";
@@ -76,7 +68,6 @@ export interface MapOfTarkovDetailResponse {
   map_info: MapInfo;
   map_selector: MapSelectorEntry[];
   child_maps: MapSelectorEntry[];
-  find_info: FindInfo | null;
   extraction_info: MapPointInfo[];
   transit_info: MapPointInfo[];
   boss_info: MapBossInfo[];
