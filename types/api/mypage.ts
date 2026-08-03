@@ -57,7 +57,7 @@ export interface MyPageCommentEntry extends MyPagePostEntry {
   comment: MyPageCommentDetail;
 }
 
-export interface MyPageBookmarkEntry extends MyPagePostEntry {}
+export type MyPageBookmarkEntry = MyPagePostEntry;
 
 export interface MyPageBlockEntry {
   blocker_email: string;

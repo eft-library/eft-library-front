@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -7,20 +8,11 @@ import {
   Check,
   ChevronDown,
   ChevronRight,
-  Clipboard,
-  Clock,
   ExternalLink,
-  Heart,
-  Lightbulb,
   Map,
   MapPin,
   Navigation2,
-  Percent,
-  Repeat,
-  Shield,
   Skull,
-  Tag,
-  Users,
   X,
 } from "lucide-react";
 
@@ -106,10 +98,6 @@ function getLocalizedName(value: Record<string, unknown>, locale: Locale) {
   return localized(value, locale, "name");
 }
 
-function formatBounds(bounds: [[number, number], [number, number]]) {
-  return `${bounds[0][0].toFixed(2)}, ${bounds[0][1].toFixed(2)} / ${bounds[1][0].toFixed(2)}, ${bounds[1][1].toFixed(2)}`;
-}
-
 function getFactionClass(faction: string) {
   switch (faction) {
     case "ALL":
@@ -188,6 +176,8 @@ export function MapOfTarkovPage({
             onClick={() => setImagePopup({ src: localizedMapImage, alt: localizedMapName })}
             className="block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-[#252830]"
           >
+            {/* Completed maps have different aspect ratios and open at their natural size. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={localizedMapImage}
               alt={localizedMapName}
@@ -360,7 +350,13 @@ function BossSection({
             >
               <div className="grid gap-4 md:grid-cols-6 md:items-center md:text-center">
                 <div className="flex justify-center">
-                  <img src={boss.image} alt={name} className="h-20 w-20 rounded-xl object-cover md:h-24 md:w-24" />
+                  <Image
+                    src={boss.image}
+                    alt={name}
+                    className="h-20 w-20 rounded-xl object-cover md:h-24 md:w-24"
+                    height={96}
+                    width={96}
+                  />
                 </div>
                 <Link
                   href={`/boss/${boss.normalized_name}`}
@@ -455,7 +451,13 @@ function PointSection({
                   })}
                   className="group relative block overflow-hidden rounded-lg"
                 >
-                  <img src={item.image} alt={name} className="h-36 w-full object-cover md:h-32" />
+                  <Image
+                    src={item.image}
+                    alt={name}
+                    className="h-36 w-full object-cover md:h-32"
+                    height={144}
+                    width={640}
+                  />
                   <ExternalLink className="absolute right-2 top-2 h-4 w-4 rounded bg-black/50 p-0.5 text-white opacity-0 transition group-hover:opacity-100" />
                 </button>
                 <div className="font-bold text-gray-900 dark:text-white">

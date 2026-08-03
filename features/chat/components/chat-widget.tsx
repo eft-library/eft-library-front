@@ -9,7 +9,6 @@ import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/class-name";
 import type {
   ChatSearchEntry,
-  ChatSourceDocument,
   ChatStreamEvent,
   ChatStreamRequest,
 } from "@/types/api/chat";

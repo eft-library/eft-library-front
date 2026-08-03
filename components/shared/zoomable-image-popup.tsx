@@ -297,6 +297,8 @@ export function ZoomableImagePopup({
             className="flex min-h-full items-center justify-center"
             style={{ width: contentWidth }}
           >
+            {/* The popup needs the source image's natural dimensions for custom zoom and pan. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={imageRef}
               src={image.src}

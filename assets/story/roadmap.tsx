@@ -1,6 +1,6 @@
 import type { StationSize } from "../assetTypes";
 
-export default function Roadmap({ color, width, height }: StationSize) {
+export default function Roadmap({ width, height }: StationSize) {
   return (
     <svg
       id="레이어_1"

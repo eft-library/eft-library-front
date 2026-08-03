@@ -34,6 +34,11 @@ export default defineConfig([
         },
       ],
       "@next/next/no-img-element": "warn",
+      // Adopt the React Compiler rules incrementally instead of blocking lint
+      // on existing state/effect and ref patterns across the migrated frontend.
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/preserve-manual-memoization": "off",
     },
   },
 ]);

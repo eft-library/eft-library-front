@@ -39,7 +39,6 @@ import {
   getLiveMapStoryDetail,
 } from "@/features/live-map/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
-import type { Locale } from "@/i18n/config";
 import {
   createQuestCompletionMap,
   toggleQuestCompletion,

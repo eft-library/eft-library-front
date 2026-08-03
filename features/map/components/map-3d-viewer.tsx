@@ -18,12 +18,8 @@ function Loader() {
   );
 }
 
-function Scene({ map }: { map: MapDetailModel }) {
-  if (!map.three_image) {
-    return null;
-  }
-
-  const { materials, meshes } = useGLTF(map.three_image, true);
+function Scene({ map, modelUrl }: { map: MapDetailModel; modelUrl: string }) {
+  const { materials, meshes } = useGLTF(modelUrl, true);
 
   return (
     <group>
@@ -79,7 +75,7 @@ export function Map3DViewer({ map }: { map: MapDetailModel }) {
           <ambientLight intensity={1.2} />
           <directionalLight position={[10, 20, 10]} intensity={2} />
           <pointLight position={[0, 10, 0]} intensity={1.4} />
-          <Scene map={map} />
+          <Scene map={map} modelUrl={map.three_image} />
         </Suspense>
       </Canvas>
     </div>

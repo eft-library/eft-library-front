@@ -875,7 +875,6 @@ function syncPointMarkerPresentation({
   hoveredMarkerId,
   isGroupHighlighted,
   isMarkerSimplified,
-  mapKey,
   marker,
   point,
 }: {
@@ -884,7 +883,6 @@ function syncPointMarkerPresentation({
   hoveredMarkerId?: string | null;
   isGroupHighlighted: boolean;
   isMarkerSimplified: boolean;
-  mapKey: string;
   marker: LeafletMarker;
   point: LiveMapCanvasMarker;
 }) {
@@ -1833,7 +1831,6 @@ export function LiveMapCanvas({
             hoveredMarkerId,
             isGroupHighlighted,
             isMarkerSimplified,
-            mapKey,
             marker: existing.marker,
             point,
           });
@@ -1921,7 +1918,6 @@ export function LiveMapCanvas({
             hoveredMarkerId: point.id,
             ...groupPresentation,
             isMarkerSimplified: isMarkerSimplifiedRef.current,
-            mapKey: mapKeyRef.current,
             marker: current.marker,
             point: current.point,
           });
@@ -1957,7 +1953,6 @@ export function LiveMapCanvas({
             hoveredMarkerId: hoveredMarkerIdRef.current,
             ...groupPresentation,
             isMarkerSimplified: isMarkerSimplifiedRef.current,
-            mapKey: mapKeyRef.current,
             marker: current.marker,
             point: current.point,
           });

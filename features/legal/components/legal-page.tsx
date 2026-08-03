@@ -3,7 +3,6 @@ import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 export function LegalPage({
   eyebrow,
   title,
-  description,
   updatedAt,
   sections,
 }: {

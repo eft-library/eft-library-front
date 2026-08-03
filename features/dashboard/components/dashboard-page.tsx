@@ -9,9 +9,7 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock,
-  Server,
   TrendingUp,
-  Users,
 } from "lucide-react";
 import {
   Area,

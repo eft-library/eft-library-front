@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -577,10 +578,12 @@ function PostCard({
           ) : null}
         </div>
         {post.thumbnail ? (
-          <img
+          <Image
             src={post.thumbnail}
             alt=""
             className="h-20 w-full rounded-md object-cover sm:w-28"
+            height={80}
+            width={112}
           />
         ) : null}
       </div>

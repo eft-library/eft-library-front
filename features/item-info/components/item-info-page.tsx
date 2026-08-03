@@ -568,7 +568,7 @@ function template(value: string, text: string) {
   return text.replace("{value}", value);
 }
 
-function getCategoryDescription(category: string | null, locale: Locale) {
+export function getCategoryDescription(category: string | null, locale: Locale) {
   if (!category) {
     return null;
   }
@@ -580,7 +580,7 @@ function getCategoryDescription(category: string | null, locale: Locale) {
   return template(category, itemInfoCopy[locale].fallback.category);
 }
 
-function getParentCategoryDescription(parentCategory: string | null, locale: Locale) {
+export function getParentCategoryDescription(parentCategory: string | null, locale: Locale) {
   if (!parentCategory) {
     return null;
   }

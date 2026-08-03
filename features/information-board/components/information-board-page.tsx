@@ -73,7 +73,6 @@ function getDisplayTitle(path: string, title: string) {
 export function InformationBoardPage({
   boardPath,
   boardTitle,
-  boardDescription,
   board,
   locale,
   labels,

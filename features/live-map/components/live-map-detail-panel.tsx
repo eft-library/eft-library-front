@@ -1,4 +1,5 @@
 import type React from "react";
+import Image from "next/image";
 import {
   Children,
   createContext,
@@ -29,7 +30,6 @@ import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
 import {
   findNestedObjectiveByPoint,
   getFloorLabel,
-  getQuestObjectivePoint,
   getQuestObjectivePoints,
   isRemoteObjectivePoint,
   localizedDescription,
@@ -323,10 +323,12 @@ function QuestPanel({
     <div className="space-y-4">
       <div className="flex items-start gap-2">
         {info.trader?.image ? (
-          <img
+          <Image
             alt={localizedName(info.trader as unknown as Record<string, unknown>, locale)}
             className="h-8 w-8 rounded object-cover"
+            height={32}
             src={info.trader.image}
+            width={32}
           />
         ) : null}
         <div className="min-w-0 flex-1">
@@ -482,10 +484,12 @@ function EventPanel({
     <div className="space-y-4">
       <div className="flex items-start gap-2">
         {info.trader?.image ? (
-          <img
+          <Image
             alt={localizedName(info.trader as unknown as Record<string, unknown>, locale)}
             className="h-8 w-8 rounded object-cover"
+            height={32}
             src={info.trader.image}
+            width={32}
           />
         ) : null}
         <div className="min-w-0 flex-1">
@@ -727,10 +731,12 @@ function StoryRequirementList({
                           </p>
                         ) : null}
                         {detail.image ? (
-                          <img
+                          <Image
                             alt={detailText || description}
                             className="mt-2 max-h-36 w-full rounded object-cover"
+                            height={144}
                             src={detail.image}
+                            width={640}
                           />
                         ) : null}
                       </div>
@@ -1193,10 +1199,12 @@ function ItemRow({
         >
           <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-gray-50 dark:bg-[#20242b]">
             {entry.item.image ? (
-              <img
+              <Image
                 alt={localizedName(entry.item as unknown as Record<string, unknown>, locale)}
                 className="h-full w-full object-contain"
+                height={32}
                 src={entry.item.image}
+                width={32}
               />
             ) : null}
           </span>
@@ -1234,10 +1242,12 @@ function RequiredKeyRow({
           >
             <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white/80 dark:bg-[#20242b]">
               {keyItem.image ? (
-                <img
+                <Image
                   alt={localizedName(keyItem as unknown as Record<string, unknown>, locale)}
                   className="h-full w-full object-contain"
+                  height={32}
                   src={keyItem.image}
+                  width={32}
                 />
               ) : null}
             </span>
@@ -1668,7 +1678,15 @@ function RewardItemLink({
       )}
     >
       <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-white dark:bg-[#20242b]">
-        {image ? <img alt={name} className="h-full w-full object-contain" src={image} /> : null}
+        {image ? (
+          <Image
+            alt={name}
+            className="h-full w-full object-contain"
+            height={32}
+            src={image}
+            width={32}
+          />
+        ) : null}
       </span>
       <span className="min-w-0 flex-1 truncate">{name}</span>
       <span

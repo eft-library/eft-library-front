@@ -1,4 +1,5 @@
 import type React from "react";
+import Image from "next/image";
 import { useEffect, useMemo, useRef } from "react";
 import {
   BookOpen,
@@ -751,7 +752,6 @@ function StaticPanelMarkerIcon({
   faction?: string;
   size?: "sm" | "md";
 }) {
-  const color = getStaticIconColor(category);
   const markerSize = size === "sm" ? 18 : 20;
   const iconSize = size === "sm" ? 13 : 14;
 
@@ -769,14 +769,14 @@ function StaticPanelMarkerIcon({
         aria-hidden="true"
         className="block"
         dangerouslySetInnerHTML={{
-          __html: getStaticPanelIconSvg(category, getStaticIconColor(category, faction), iconSize, faction),
+          __html: getStaticPanelIconSvg(category, getStaticIconColor(category, faction), iconSize),
         }}
       />
     </span>
   );
 }
 
-function getStaticPanelIconSvg(category: string, color: string, size: number, faction?: string) {
+function getStaticPanelIconSvg(category: string, color: string, size: number) {
   if (category === "transit") {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -978,11 +978,13 @@ function getStaticPanelIconSvg(category: string, color: string, size: number, fa
 
 export function KappaBadge() {
   return (
-    <img
+    <Image
       alt="Kappa"
       className="h-4 w-4 shrink-0 rounded object-contain"
+      height={16}
       src={KAPPA_IMAGE}
       title="Kappa"
+      width={16}
     />
   );
 }

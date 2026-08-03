@@ -8,7 +8,6 @@ import type { getBossPageCopy } from "@/features/boss/config";
 import type {
   BossCharacter,
   BossDetailResponse,
-  BossItemEntry,
   BossSpawnEntry,
 } from "@/types/api/boss";
 
