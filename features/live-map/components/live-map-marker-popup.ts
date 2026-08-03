@@ -34,6 +34,12 @@ const ESCORT_SPAWN_CATEGORIES = new Set([
   "rogue_spawn",
 ]);
 
+const requiredKeysLabel: Record<Locale, string> = {
+  ko: "필요 열쇠",
+  en: "Required Keys",
+  ja: "必要な鍵",
+};
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -61,6 +67,43 @@ function getDetailTexts(details: LiveMapPointDetail[], locale: Locale) {
         .filter(Boolean),
     ),
   );
+}
+
+function getRequiredKeysPopupHtml(
+  keys: LiveMapQuestInfo["objectives"][number]["required_keys"],
+  locale: Locale,
+) {
+  const uniqueKeys = Array.from(new Map(keys.map((key) => [key.id, key])).values());
+
+  if (uniqueKeys.length === 0) {
+    return "";
+  }
+
+  return `
+    <section class="live-map-popup-required-keys">
+      <strong class="live-map-popup-required-keys-title">${escapeHtml(requiredKeysLabel[locale])}</strong>
+      <div class="live-map-popup-required-key-list">
+        ${uniqueKeys
+          .map((key) => {
+            const name = localizedName(key as unknown as Record<string, unknown>, locale);
+            const href = `/item/info/${encodeURIComponent(key.normalized_name)}`;
+
+            return `
+              <a class="live-map-popup-required-key" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+                ${
+                  key.image
+                    ? `<img src="${escapeHtml(key.image)}" alt="" />`
+                    : `<span class="live-map-popup-required-key-placeholder" aria-hidden="true"></span>`
+                }
+                <span>${escapeHtml(name)}</span>
+                <small aria-hidden="true">↗</small>
+              </a>
+            `;
+          })
+          .join("")}
+      </div>
+    </section>
+  `;
 }
 
 function getStaticMetadataImages(point: LiveMapStaticPoint, locale: Locale) {
@@ -475,6 +518,7 @@ export function getQuestDetailPointPopupHtml(
     detailTexts: getDetailTexts(details, locale),
     images: getPopupImages(details, locale),
     location: getPointDetailText(selectedPoint, locale),
+    supplementaryHtml: getRequiredKeysPopupHtml(objective?.required_keys ?? [], locale),
     title: localizedName(info.quest as unknown as Record<string, unknown>, locale),
     titleImage: info.trader?.image,
   });
