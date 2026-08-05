@@ -5,6 +5,7 @@ import {
   getHideoutDetailEndpoint,
 } from "@/lib/config/api-endpoints";
 import type {
+  HideoutAllItemRequirementsResponse,
   HideoutDetailResponse,
   HideoutStationListResponse,
   HideoutUserItem,
@@ -37,6 +38,17 @@ export function getHideoutStations() {
     apiPath: apiEndpoints.hideoutStation,
     revalidate: 60 * 60 * 24,
   });
+}
+
+export function getHideoutAllItemRequirements() {
+  return staticJsonGetWithFallback<HideoutAllItemRequirementsResponse>(
+    "hideout",
+    "/static/hideout/v3/all-item-requirements.json",
+    {
+      apiPath: apiEndpoints.hideoutAllItemRequirements,
+      revalidate: 60 * 60 * 24,
+    },
+  );
 }
 
 export async function getHideoutDetail(normalizedName: string) {

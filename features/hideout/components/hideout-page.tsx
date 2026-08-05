@@ -15,6 +15,7 @@ import {
   Plus,
   RotateCcw,
   Save,
+  Search,
   Wrench,
 } from "lucide-react";
 import Image from "next/image";
@@ -30,6 +31,7 @@ import {
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type {
+  HideoutAllItemRequirement,
   HideoutBonus,
   HideoutCraft,
   HideoutDetailResponse,
@@ -44,6 +46,7 @@ import type {
 } from "@/types/api/hideout";
 
 const MAX_ITEM_COUNT = 999;
+type HideoutTab = "station" | "items" | "all-items";
 const STATION_ICON_COLOR = "#94a3b8";
 const LEVEL_COLORS = [
   "#D4A076",
@@ -146,18 +149,24 @@ function StationSelector({
   onIncreaseItem,
   onDecreaseItem,
   onChangeItem,
+  allItemRequirements,
+  isAuthenticated,
+  onChangeAllItem,
 }: {
   selectedStation: string;
   stations: HideoutStationSummary[];
   completeList: string[];
-  tabState: "station" | "items";
-  onTabChange: (tab: "station" | "items") => void;
+  tabState: HideoutTab;
+  onTabChange: (tab: HideoutTab) => void;
   itemRequirements: HideoutRequirementItem[];
   userItemMap: Map<string, number>;
   locale: Locale;
   onIncreaseItem: (item: HideoutRequirementItem) => void;
   onDecreaseItem: (item: HideoutRequirementItem) => void;
   onChangeItem: (item: HideoutRequirementItem, count: number) => void;
+  allItemRequirements: HideoutAllItemRequirement[];
+  isAuthenticated: boolean;
+  onChangeAllItem: (item: HideoutAllItemRequirement, count: number) => void;
 }) {
   return (
     <section className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm dark:border-slate-700/40 dark:bg-[#20252d]">
@@ -185,11 +194,24 @@ function StationSelector({
           >
             Items
           </button>
+          <button
+            type="button"
+            onClick={() => onTabChange("all-items")}
+            className={`h-9 rounded-md px-4 text-sm font-semibold transition ${
+              tabState === "all-items"
+                ? "bg-amber-600 text-white shadow-sm"
+                : "text-gray-600 hover:bg-white dark:text-gray-300 dark:hover:bg-slate-700/50"
+            }`}
+          >
+            All Items
+          </button>
         </div>
         <span className="text-xs text-gray-500 dark:text-gray-400">
           {tabState === "station"
             ? `${stations.length} stations`
-            : `${itemRequirements.length} items`}
+            : tabState === "items"
+              ? `${itemRequirements.length} items`
+              : `${allItemRequirements.length} items`}
         </span>
       </div>
       <div className="max-h-[560px] overflow-y-auto pr-1">
@@ -240,7 +262,7 @@ function StationSelector({
               );
             })}
           </div>
-        ) : (
+        ) : tabState === "items" ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {itemRequirements.map((item) => (
               <ItemCounterCard
@@ -259,6 +281,15 @@ function StationSelector({
               </div>
             ) : null}
           </div>
+        ) : (
+          <AllItemsPanel
+            items={allItemRequirements}
+            completeList={completeList}
+            userItemMap={userItemMap}
+            locale={locale}
+            isAuthenticated={isAuthenticated}
+            onChangeItem={onChangeAllItem}
+          />
         )}
       </div>
     </section>
@@ -357,6 +388,296 @@ function ItemCounterCard({
     </div>
   );
 }
+
+function AllItemsPanel({
+  items,
+  completeList,
+  userItemMap,
+  locale,
+  isAuthenticated,
+  onChangeItem,
+}: {
+  items: HideoutAllItemRequirement[];
+  completeList: string[];
+  userItemMap: Map<string, number>;
+  locale: Locale;
+  isAuthenticated: boolean;
+  onChangeItem: (item: HideoutAllItemRequirement, count: number) => void;
+}) {
+  const [quantityMode, setQuantityMode] = useState<"remaining" | "total">(
+    isAuthenticated ? "remaining" : "total",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [inRaidOnly, setInRaidOnly] = useState(false);
+  const [missingOnly, setMissingOnly] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setQuantityMode("total");
+    }
+  }, [isAuthenticated]);
+
+  const visibleItems = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
+
+    return items
+      .map((item) => {
+        const activeRequirements =
+          quantityMode === "remaining"
+            ? item.requirements.filter(
+                (requirement) => !completeList.includes(requirement.hideout_level_id),
+              )
+            : item.requirements;
+        const requiredQuantity = activeRequirements.reduce(
+          (sum, requirement) => sum + requirement.quantity,
+          0,
+        );
+        const ownedQuantity = isAuthenticated
+          ? (userItemMap.get(getItemKey(item.item_id, item.in_raid)) ?? 0)
+          : 0;
+        const missingQuantity = Math.max(requiredQuantity - ownedQuantity, 0);
+
+        return {
+          item,
+          activeRequirements,
+          requiredQuantity,
+          ownedQuantity,
+          missingQuantity,
+          localizedName: getLocalizedName(item, locale),
+        };
+      })
+      .filter((entry) => {
+        if (inRaidOnly && !entry.item.in_raid) return false;
+        if (quantityMode === "remaining" && entry.requiredQuantity === 0) {
+          return false;
+        }
+        if (missingOnly && entry.missingQuantity === 0) return false;
+        if (!normalizedQuery) return true;
+
+        return [
+          entry.item.name_en,
+          entry.item.name_ko,
+          entry.item.name_ja,
+          entry.localizedName,
+        ].some((name) => name.toLocaleLowerCase().includes(normalizedQuery));
+      })
+      .sort((left, right) => {
+        const nameOrder = left.localizedName.localeCompare(right.localizedName, locale);
+        if (nameOrder !== 0) return nameOrder;
+        return Number(left.item.in_raid) - Number(right.item.in_raid);
+      });
+  }, [
+    completeList,
+    inRaidOnly,
+    isAuthenticated,
+    items,
+    locale,
+    missingOnly,
+    quantityMode,
+    searchQuery,
+    userItemMap,
+  ]);
+
+  return (
+    <div className="space-y-4">
+      <div className="sticky top-0 z-20 space-y-3 rounded-lg border border-gray-200 bg-white/95 p-3 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-[#20252d]/95">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex rounded-md bg-gray-100 p-1 dark:bg-[#171b21]">
+            <button
+              type="button"
+              onClick={() => setQuantityMode("remaining")}
+              disabled={!isAuthenticated}
+              className={`rounded px-3 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-45 ${
+                quantityMode === "remaining"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 dark:text-gray-300"
+              }`}
+            >
+              남은 요구량
+            </button>
+            <button
+              type="button"
+              onClick={() => setQuantityMode("total")}
+              className={`rounded px-3 py-1.5 text-xs font-semibold transition ${
+                quantityMode === "total"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 dark:text-gray-300"
+              }`}
+            >
+              전체 요구량
+            </button>
+          </div>
+          <label className="relative min-w-56 flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="아이템 검색"
+              className="h-9 w-full rounded-md border border-gray-200 bg-white pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-blue-400 dark:border-slate-700 dark:bg-[#171b21] dark:text-white"
+            />
+          </label>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-gray-600 dark:text-gray-300">
+          <label className="inline-flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={inRaidOnly}
+              onChange={(event) => setInRaidOnly(event.target.checked)}
+              className="accent-red-600"
+            />
+            인레이드만
+          </label>
+          <label className="inline-flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={missingOnly}
+              onChange={(event) => setMissingOnly(event.target.checked)}
+              className="accent-orange-600"
+            />
+            부족한 아이템만
+          </label>
+          <span className="ml-auto text-gray-500 dark:text-gray-400">
+            {visibleItems.length}개 항목
+          </span>
+        </div>
+        {!isAuthenticated ? (
+          <p className="rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-800 dark:bg-blue-500/10 dark:text-blue-100">
+            로그인하면 보유량과 남은 요구량을 관리할 수 있습니다.
+          </p>
+        ) : null}
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          인레이드 아이템은 일반 요구에도 사용할 수 있지만 부족 수량에는 자동 반영되지 않습니다.
+        </p>
+      </div>
+
+      <div className="grid gap-3 lg:grid-cols-2">
+        {visibleItems.map((entry) => (
+          <div
+            key={getItemKey(entry.item.item_id, entry.item.in_raid)}
+            className={`rounded-lg border p-4 ${
+              entry.requiredQuantity === 0 || entry.missingQuantity === 0
+                ? "border-green-200 bg-green-50/70 dark:border-green-800 dark:bg-green-950/25"
+                : "border-gray-200 bg-gray-50 dark:border-slate-700 dark:bg-[#171b21]"
+            }`}
+          >
+            <div className="flex gap-3">
+              <Link
+                href={`/item/info/${entry.item.normalized_name}`}
+                target="_blank"
+                rel="noreferrer"
+                className="relative h-20 w-20 shrink-0"
+              >
+                <Image
+                  src={entry.item.image}
+                  alt={entry.localizedName}
+                  fill
+                  sizes="80px"
+                  className="object-contain"
+                />
+              </Link>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <Link
+                    href={`/item/info/${entry.item.normalized_name}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-gray-900 hover:text-orange-600 dark:text-white dark:hover:text-orange-300"
+                  >
+                    {entry.localizedName}
+                  </Link>
+                  <span
+                    className={`rounded-full px-2 py-1 text-[11px] font-bold ${
+                      entry.item.in_raid
+                        ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-200"
+                        : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200"
+                    }`}
+                  >
+                    {entry.item.in_raid ? "인레이드 필수" : "일반"}
+                  </span>
+                </div>
+                {isAuthenticated ? (
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onChangeItem(entry.item, entry.ownedQuantity - 1)}
+                      disabled={entry.ownedQuantity === 0}
+                      className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-200 bg-white disabled:opacity-40 dark:border-slate-700 dark:bg-[#20252d]"
+                      aria-label={`${entry.localizedName} decrease`}
+                    >
+                      <Minus className="h-3.5 w-3.5" />
+                    </button>
+                    <input
+                      type="number"
+                      min={0}
+                      max={MAX_ITEM_COUNT}
+                      value={entry.ownedQuantity}
+                      onChange={(event) => onChangeItem(entry.item, Number(event.target.value))}
+                      className="h-8 w-16 rounded-md border border-gray-200 bg-white text-center text-sm font-semibold text-gray-900 outline-none focus:border-blue-400 dark:border-slate-700 dark:bg-[#20252d] dark:text-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => onChangeItem(entry.item, entry.ownedQuantity + 1)}
+                      className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-200 bg-white dark:border-slate-700 dark:bg-[#20252d]"
+                      aria-label={`${entry.localizedName} increase`}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                      보유 {entry.ownedQuantity} / 필요 {entry.requiredQuantity}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm font-semibold text-gray-800 dark:text-gray-100">
+                    전체 필요 {entry.requiredQuantity}개
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <details className="mt-3 border-t border-gray-200 pt-3 text-xs dark:border-slate-700">
+              <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200">
+                필요 시설 {entry.activeRequirements.length}곳
+              </summary>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {entry.activeRequirements.map((requirement) => (
+                  <Link
+                    key={requirement.requirement_id}
+                    href={`/hideout/${requirement.station_normalized_name}`}
+                    className="rounded-md border border-gray-200 bg-white px-2 py-1.5 text-gray-700 hover:border-orange-300 hover:text-orange-600 dark:border-slate-700 dark:bg-[#20252d] dark:text-gray-200 dark:hover:border-orange-500"
+                  >
+                    {getLocalizedName(
+                      {
+                        name_en: requirement.station_name_en,
+                        name_ko: requirement.station_name_ko,
+                        name_ja: requirement.station_name_ja,
+                      },
+                      locale,
+                    )}{" "}
+                    Lv.{requirement.station_level} · x
+                    {requirement.quantity}
+                  </Link>
+                ))}
+                {entry.activeRequirements.length === 0 ? (
+                  <span className="text-gray-500 dark:text-gray-400">
+                    완료하지 않은 요구 시설이 없습니다.
+                  </span>
+                ) : null}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+
+      {visibleItems.length === 0 ? (
+        <div className="rounded-lg bg-gray-50 p-8 text-center text-sm text-gray-500 dark:bg-[#171b21] dark:text-gray-400">
+          조건에 맞는 필요 아이템이 없습니다.
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function LevelTabs({
   levels,
   selectedLevelId,
@@ -755,12 +1076,14 @@ export function HideoutPage({
   stations,
   userHideout,
   hideout,
+  allItemRequirements,
   locale,
 }: {
   selectedStation: string;
   stations: HideoutStationSummary[];
   userHideout: HideoutUserState | null;
   hideout: HideoutDetailResponse;
+  allItemRequirements: HideoutAllItemRequirement[];
   locale: Locale;
 }) {
   const { data: session, status } = useSession();
@@ -775,17 +1098,22 @@ export function HideoutPage({
   const [selectedLevelId, setSelectedLevelId] = useState(() =>
     getNextLevelId(hideout.levels, userHideout?.complete_list ?? []),
   );
-  const [stationTab, setStationTab] = useState<"station" | "items">("station");
+  const [stationTab, setStationTab] = useState<HideoutTab>("station");
   const [notice, setNotice] = useState("");
   const [isSavingStation, setIsSavingStation] = useState(false);
   const [isSavingItems, setIsSavingItems] = useState(false);
   const [isLoadingUserState, setIsLoadingUserState] = useState(false);
 
   useEffect(() => {
+    const selectedLevelBelongsToStation = hideout.levels.some(
+      (level) => level.id === selectedLevelId,
+    );
+    if (selectedLevelBelongsToStation) return;
+
     const nextLevelId = getNextLevelId(hideout.levels, completeList);
     setSelectedLevelId(nextLevelId);
-    setStationTab("station");
-  }, [hideout.master.id]);
+    setStationTab((current) => (current === "all-items" ? current : "station"));
+  }, [completeList, hideout.levels, selectedLevelId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -920,7 +1248,7 @@ export function HideoutPage({
   };
 
   const updateUserItem = (
-    item: HideoutRequirementItem,
+    item: { item_id: string; in_raid: boolean },
     updater: (current: number) => number,
   ) => {
     setUserItemList((prev) => {
@@ -1065,6 +1393,9 @@ export function HideoutPage({
               onIncreaseItem={(item) => updateUserItem(item, (current) => current + 1)}
               onDecreaseItem={(item) => updateUserItem(item, (current) => current - 1)}
               onChangeItem={(item, count) => updateUserItem(item, () => count)}
+              allItemRequirements={allItemRequirements}
+              isAuthenticated={status === "authenticated"}
+              onChangeAllItem={(item, count) => updateUserItem(item, () => count)}
             />
         </section>
 

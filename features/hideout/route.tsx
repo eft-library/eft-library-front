@@ -1,5 +1,9 @@
 import { getUserLocale } from "@/i18n/locale";
-import { getHideoutDetail, getHideoutStations } from "@/features/hideout/api";
+import {
+  getHideoutAllItemRequirements,
+  getHideoutDetail,
+  getHideoutStations,
+} from "@/features/hideout/api";
 import { HideoutPage } from "@/features/hideout/components/hideout-page";
 
 export async function HideoutRoute({
@@ -7,10 +11,11 @@ export async function HideoutRoute({
 }: {
   stationId: string;
 }) {
-  const [locale, stationResponse, hideout] = await Promise.all([
+  const [locale, stationResponse, hideout, allItemRequirements] = await Promise.all([
     getUserLocale(),
     getHideoutStations(),
     getHideoutDetail(stationId),
+    getHideoutAllItemRequirements(),
   ]);
 
   return (
@@ -19,6 +24,7 @@ export async function HideoutRoute({
       stations={stationResponse.hideout_list}
       userHideout={stationResponse.user_hideout}
       hideout={hideout}
+      allItemRequirements={allItemRequirements.items}
       locale={locale}
     />
   );

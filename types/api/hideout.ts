@@ -43,6 +43,33 @@ export interface HideoutRequirementItem extends LocalizedName {
   normalized_name: string;
 }
 
+export interface HideoutAllItemRequirementDetail {
+  requirement_id: string;
+  hideout_level_id: string;
+  station_id: string;
+  station_normalized_name: string;
+  station_level: number;
+  station_name_en: string;
+  station_name_ko: string;
+  station_name_ja: string;
+  quantity: number;
+}
+
+export interface HideoutAllItemRequirement extends LocalizedName {
+  item_id: string;
+  normalized_name: string;
+  image: string;
+  width: number;
+  height: number;
+  in_raid: boolean;
+  total_quantity: number;
+  requirements: HideoutAllItemRequirementDetail[];
+}
+
+export interface HideoutAllItemRequirementsResponse {
+  items: HideoutAllItemRequirement[];
+}
+
 export interface HideoutRequirementStation extends LocalizedName {
   id: string;
   hideout_level_id: string;

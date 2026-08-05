@@ -4,6 +4,7 @@ export const apiEndpoints = {
   dashboardAnalysis: "/api/dashboard/v3/analysis",
   newsWipe: "/api/news/v3/wipe",
   hideoutStation: "/api/hideout/v3/get-station",
+  hideoutAllItemRequirements: "/api/hideout/v3/all-item-requirements",
   hideoutSaveStation: "/api/hideout/v3/save-station",
   hideoutSaveStationItem: "/api/hideout/v3/save-station-item",
   roadmap: "/api/roadmap/v3/get-roadmap",
