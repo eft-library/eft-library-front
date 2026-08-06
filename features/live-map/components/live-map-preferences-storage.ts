@@ -10,6 +10,7 @@ export interface LiveMapPreferences {
   openQuestDetailsOnMarkerClick: boolean;
   isRightPanelOpen: boolean;
   mapRotations: Record<string, number>;
+  isBtrVisible: boolean;
 }
 
 export function readLiveMapPreferences(): LiveMapPreferences | null {
@@ -66,6 +67,10 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
               ),
             )
           : {},
+      isBtrVisible:
+        typeof preferences.isBtrVisible === "boolean"
+          ? preferences.isBtrVisible
+          : true,
     };
   } catch {
     return null;

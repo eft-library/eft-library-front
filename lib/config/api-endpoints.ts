@@ -94,10 +94,6 @@ export function getLiveMapRaidDurationEndpoint(normalizedName: string) {
   return `/api/live-map/v3/raid-duration/${normalizedName}`;
 }
 
-export function getLiveMapBtrRoutesEndpoint(normalizedName: string) {
-  return `/api/live-map/v3/btr-routes/${normalizedName}`;
-}
-
 export function getLiveMapQuestDetailEndpoint(questIdOrNormalizedName: string) {
   return `/api/live-map/v3/quest/${questIdOrNormalizedName}`;
 }

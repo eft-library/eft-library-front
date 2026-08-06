@@ -133,6 +133,7 @@ const LiveMapImagePopup = dynamic(
 );
 
 const RIGHT_SECTION_IDS = ["quest", "story", "event"] as const;
+const BTR_AUTO_TRACKING_ENABLED = false;
 
 function addPointMapNames(
   names: Set<string>,
@@ -480,6 +481,7 @@ export function LiveMapClientPage({
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
       setIsRightPanelOpen(preferences.isRightPanelOpen);
+      setIsBtrVisible(preferences.isBtrVisible);
       setMapRotations(preferences.mapRotations);
       const savedRotation = preferences.mapRotations[normalizedName];
       setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
@@ -505,10 +507,11 @@ export function LiveMapClientPage({
       isMarkerSimplified,
       openQuestDetailsOnMarkerClick: openMarkerDetailsOnMarkerClick,
       isRightPanelOpen,
+      isBtrVisible,
       mapRotations,
     });
     writeLiveMapMarkerDetailsPreference(openMarkerDetailsOnMarkerClick);
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openMarkerDetailsOnMarkerClick]);
+  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isBtrVisible, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openMarkerDetailsOnMarkerClick]);
 
   useEffect(() => {
     if (!hasLoadedPreferences) {
@@ -1875,7 +1878,7 @@ export function LiveMapClientPage({
   useEffect(() => {
     const raidState = latestRaidState?.value;
     if (
-      (!raidState?.is_active || !raidState.started_at) &&
+      (!BTR_AUTO_TRACKING_ENABLED || !raidState?.is_active || !raidState.started_at) &&
       (manualBtrTimer === null || manualBtrTimer.startedAt === null)
     ) {
       return;
@@ -1962,6 +1965,7 @@ export function LiveMapClientPage({
         ? manualBtrTimer.remainingSeconds
         : Math.max(0, manualBtrTimer.remainingSeconds - Math.floor((raidClock - manualBtrTimer.startedAt) / 1000));
     }
+    if (!BTR_AUTO_TRACKING_ENABLED) return null;
     const state = latestRaidState?.value;
     if (!state?.is_active || !state.started_at || raidDurationMinutes === null) return null;
     const startedAt = new Date(state.started_at).getTime();
@@ -2383,7 +2387,7 @@ export function LiveMapClientPage({
                     >
                       <div className="mb-2 flex items-center justify-between gap-2">
                         <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">{locale === "ko" ? "현재 레이드 잔여 시간" : locale === "ja" ? "現在のレイド残り時間" : "Current raid time remaining"}</span>
-                        {manualBtrTimer ? <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">{locale === "ko" ? "수동" : "MANUAL"}</span> : null}
+                        <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">{manualBtrTimer ? (locale === "ko" ? "수동 실행 중" : "MANUAL") : (locale === "ko" ? "수동 대기" : "MANUAL READY")}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <input aria-label={locale === "ko" ? "분" : "Minutes"} inputMode="numeric" value={manualBtrMinutes} onChange={(event) => setManualBtrMinutes(event.currentTarget.value.replace(/\D/g, "").slice(0, 2))} className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]" placeholder="00" />

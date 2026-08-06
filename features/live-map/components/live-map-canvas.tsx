@@ -1042,6 +1042,8 @@ export function LiveMapCanvas({
     () => JSON.stringify(coordinateInfo.map_bounds),
     [coordinateInfo.map_bounds],
   );
+  const isBtrFloorDimmed = mapKey === "streets-of-tarkov" &&
+    floors.find((floor) => floor.id === activeFloorId)?.floor_no !== 1;
   locationRef.current = location;
 
   function getDrawingCacheKey() {
@@ -1139,7 +1141,9 @@ export function LiveMapCanvas({
       btrRoutes.forEach((route) => {
         const positions = route.points.map((point) =>
           L.latLng(getPointMarkerPosition(mapKey, { x: point.x, y: point.z }, coordinateInfo, rotation)));
-        const opacity = route.emphasized ? 0.9 : 0.38;
+        const floorOpacity = isBtrFloorDimmed ? 0.18 : 1;
+        const routeOpacity = route.emphasized ? 0.9 : 0.38;
+        const opacity = routeOpacity * floorOpacity;
         if (positions.length > 1) {
           L.polyline(positions, { color: route.color, opacity, weight: route.emphasized ? 5 : 3 })
             .bindTooltip(route.name, { sticky: true })
@@ -1158,24 +1162,25 @@ export function LiveMapCanvas({
             const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
             L.marker(map.containerPointToLatLng(arrowPoint), {
               interactive: false,
-              icon: L.divIcon({ className: "live-map-btr-arrow", html: `<span style="--btr-color:${route.color};opacity:${route.emphasized ? 1 : 0.48};transform:rotate(${angle}deg)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9V5l7 7-7 7v-5H4z" /></svg></span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
+              icon: L.divIcon({ className: "live-map-btr-arrow", html: `<span style="--btr-color:${route.color};opacity:${(route.emphasized ? 1 : 0.48) * floorOpacity};transform:rotate(${angle}deg)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9V5l7 7-7 7v-5H4z" /></svg></span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
             }).addTo(layer);
             distanceSinceArrow = 0;
           }
         }
         const spawn = positions[0];
         if (spawn) {
-          L.marker(spawn, { icon: L.divIcon({ className: "live-map-btr-spawn", html: `<span style="--btr-color:${route.color}">START</span>`, iconAnchor: [24, 12], iconSize: [48, 24] }) })
+          L.marker(spawn, { opacity: floorOpacity, icon: L.divIcon({ className: "live-map-btr-spawn", html: `<span style="--btr-color:${route.color}">START</span>`, iconAnchor: [24, 12], iconSize: [48, 24] }) })
             .bindTooltip(`${route.name} START`, { direction: "top" }).addTo(layer);
         }
         route.stops.forEach((stop) => {
           const stopMarker = L.marker(getPointMarkerPosition(mapKey, { x: stop.x, y: stop.z }, coordinateInfo, rotation), {
-            icon: L.divIcon({ className: "live-map-btr-stop", html: `<span style="--btr-color:${route.color};opacity:${opacity}">${stop.visitOrder}</span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
+            opacity: floorOpacity,
+            icon: L.divIcon({ className: "live-map-btr-stop", html: `<span style="--btr-color:${route.color};opacity:${routeOpacity}">${stop.visitOrder}</span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
           }).addTo(layer);
           const labelKey = `${stop.x.toFixed(2)}:${stop.z.toFixed(2)}:${stop.label}`;
           if (!labeledStops.has(labelKey)) {
             labeledStops.add(labelKey);
-            stopMarker.bindTooltip(stop.label, { className: "live-map-btr-stop-label", direction: "top", offset: [0, -11], permanent: true });
+            stopMarker.bindTooltip(stop.label, { className: "live-map-btr-stop-label", direction: "top", offset: [0, -11], opacity: floorOpacity, permanent: true });
           } else {
             stopMarker.bindTooltip(`${stop.visitOrder}. ${stop.label}`, { direction: "top" });
           }
@@ -1190,7 +1195,7 @@ export function LiveMapCanvas({
       layer.remove();
       if (btrStaticLayerRef.current === layer) btrStaticLayerRef.current = null;
     };
-  }, [btrRoutes, coordinateInfo, mapKey, mapRevision, rotation]);
+  }, [btrRoutes, coordinateInfo, isBtrFloorDimmed, mapKey, mapRevision, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1225,14 +1230,15 @@ export function LiveMapCanvas({
         html: `<div style="--btr-color:${prediction.color};--btr-facing:${Math.cos(direction * Math.PI / 180) < 0 ? -1 : 1}"><span>${VehicleIconSvg("#ffffff", 30)}</span></div><strong>${escapeMarkerLabel(prediction.routeName)} ${escapeMarkerLabel(prediction.label)}</strong>`,
         iconAnchor: [22, 22], iconSize: [44, 44],
       });
-      L.marker(current, { icon, opacity: prediction.emphasized ? 1 : 0.62, zIndexOffset: prediction.emphasized ? 2700 : 2400 })
+      const floorOpacity = isBtrFloorDimmed ? 0.18 : 1;
+      L.marker(current, { icon, opacity: (prediction.emphasized ? 1 : 0.62) * floorOpacity, zIndexOffset: prediction.emphasized ? 2700 : 2400 })
         .bindTooltip(`${prediction.routeName} ${prediction.label}`, { direction: "top", offset: [0, -24] }).addTo(layer);
     });
     return () => {
       layer.remove();
       if (btrPredictionLayerRef.current === layer) btrPredictionLayerRef.current = null;
     };
-  }, [btrPredictions, btrRoutes, coordinateInfo, mapKey, mapRevision, rotation]);
+  }, [btrPredictions, btrRoutes, coordinateInfo, isBtrFloorDimmed, mapKey, mapRevision, rotation]);
 
   useEffect(() => {
     drawingStrokesRef.current = drawingStrokesByFloorRef.current.get(getDrawingCacheKey()) ?? [];
