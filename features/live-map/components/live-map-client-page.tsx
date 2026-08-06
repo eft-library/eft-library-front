@@ -2357,7 +2357,10 @@ export function LiveMapClientPage({
             ) : null}
 
             {btrRoutes.length > 0 ? (
-              <div className="absolute left-3 right-3 top-14 z-[1000] w-auto rounded-xl border border-gray-200 bg-white/95 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95 sm:left-auto sm:right-[9.75rem] sm:top-3 sm:w-[min(22rem,calc(100%-1.5rem))] 2xl:right-[18.5rem]">
+              <div className={cn(
+                "absolute left-3 right-3 top-14 z-[1000] w-auto rounded-xl border border-gray-200 bg-white/95 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95 sm:left-auto sm:right-3 sm:w-[min(22rem,calc(100%-1.5rem))]",
+                (isDrawingToolbarOpen || isViewSettingsOpen) && "hidden",
+              )}>
                 <div className="flex items-center gap-2 border-b border-gray-200 p-3 dark:border-[#3a3d41]">
                   <button type="button" aria-expanded={!isBtrPanelCollapsed} onClick={toggleBtrPanel} className="flex min-w-0 flex-1 items-center gap-2 rounded-md text-left focus:outline-none focus:ring-2 focus:ring-orange-400">
                     <BusFront className="h-4 w-4 shrink-0 text-orange-500" />
