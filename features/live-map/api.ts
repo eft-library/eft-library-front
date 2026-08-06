@@ -2,13 +2,17 @@ import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import {
   getLiveMapDetailEndpoint,
   getLiveMapEventDetailEndpoint,
+  getLiveMapBtrRoutesEndpoint,
   getLiveMapQuestDetailEndpoint,
   getLiveMapStoryDetailEndpoint,
+  getLiveMapRaidDurationEndpoint,
   questEndpoints,
 } from "@/lib/config/api-endpoints";
+import { apiGet } from "@/lib/api/api-client";
 import type { QuestCompletionGraphNode } from "@/types/api/quest";
 import type {
   EventInfo,
+  BtrRoutesResponseV3,
   LiveMapDetailResponse,
   LiveMapPageData,
   LiveMapQuestInfo,
@@ -42,6 +46,20 @@ export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapP
     },
   );
 
+  if (normalizedName === "woods" || normalizedName === "streets-of-tarkov") {
+    try {
+      const btrData = await apiGet<BtrRoutesResponseV3>(
+        getLiveMapBtrRoutesEndpoint(normalizedName),
+        { revalidate: 60 * 5 },
+      );
+      liveMap.btr_routes = btrData.routes;
+    } catch {
+      // BTR is an optional overlay; its API must never prevent the base map loading.
+    }
+  } else {
+    liveMap.btr_routes = [];
+  }
+
   return withCoordinateInfo(liveMap);
 }
 
@@ -71,4 +89,11 @@ export function getLiveMapCompletionGraph() {
     apiPath: questEndpoints.completionGraph,
     revalidate: 60 * 60 * 24,
   });
+}
+
+export function getLiveMapRaidDuration(normalizedName: string) {
+  return apiGet<{ normalized_name: string; minutes: number }>(
+    getLiveMapRaidDurationEndpoint(normalizedName),
+    { revalidate: 60 * 15 },
+  );
 }

@@ -9,6 +9,8 @@ import type { LatLng } from "leaflet";
 import {
   ChevronDown,
   CircleDot,
+  Clock3,
+  BusFront,
   Download,
   Eraser,
   Eye,
@@ -36,6 +38,7 @@ import { useAppStore } from "@/components/providers/app-store-provider";
 import {
   getLiveMapEventDetail,
   getLiveMapQuestDetail,
+  getLiveMapRaidDuration,
   getLiveMapStoryDetail,
 } from "@/features/live-map/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
@@ -113,6 +116,8 @@ import {
 } from "./live-map-preferences-storage";
 import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
 import { findFloorForLocation, parseWhereText, type LiveMapLocation } from "./live-map-utils";
+import { BTR_ROUTE_COLORS, formatBtrTime, getBtrRouteStatus } from "./live-map-btr";
+import type { LiveMapBtrPrediction, LiveMapBtrRouteLayer } from "./live-map-canvas";
 
 const LiveMapCanvas = dynamic(
   () => import("./live-map-canvas").then((mod) => mod.LiveMapCanvas),
@@ -404,8 +409,20 @@ export function LiveMapClientPage({
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
   const latestWebsocketLocation = useWsStore((state) => state.latestLocation);
+  const latestRaidState = useWsStore((state) => state.latestRaidState);
+  const latestLogLocation = useWsStore((state) => state.latestLogLocation);
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
   const previousLocationEventRef = useRef<number | null>(null);
+  const previousTransitCountRef = useRef<number | null>(null);
+  const [raidClock, setRaidClock] = useState(() => Date.now());
+  const [raidDurationMinutes, setRaidDurationMinutes] = useState<number | null>(null);
+  const [isBtrVisible, setIsBtrVisible] = useState(true);
+  const [isBtrPanelCollapsed, setIsBtrPanelCollapsed] = useState(false);
+  const [manualBtrMinutes, setManualBtrMinutes] = useState(() => String(Math.floor((data.btr_routes?.[0]?.raid_duration_seconds ?? 0) / 60)));
+  const [manualBtrSeconds, setManualBtrSeconds] = useState("00");
+  const [manualBtrTimer, setManualBtrTimer] = useState<{ remainingSeconds: number; startedAt: number | null } | null>(null);
+  const [selectedBtrRouteId, setSelectedBtrRouteId] = useState<string | null>(null);
+  const [isTransitDetected, setIsTransitDetected] = useState(false);
   const eventDetailCacheRef = useRef<Map<string, EventInfo>>(new Map());
   const openPanelForMarkerIdRef = useRef<(markerId: string) => Promise<boolean>>(() => Promise.resolve(false));
   const popupHtmlCacheRef = useRef<Map<string, string | undefined>>(new Map());
@@ -1856,6 +1873,176 @@ export function LiveMapClientPage({
   }, [latestWebsocketLocation]);
 
   useEffect(() => {
+    const raidState = latestRaidState?.value;
+    if (
+      (!raidState?.is_active || !raidState.started_at) &&
+      (manualBtrTimer === null || manualBtrTimer.startedAt === null)
+    ) {
+      return;
+    }
+
+    setRaidClock(Date.now());
+    const interval = window.setInterval(() => setRaidClock(Date.now()), 1000);
+    return () => window.clearInterval(interval);
+  }, [latestRaidState, manualBtrTimer]);
+
+  useEffect(() => {
+    const raidState = latestRaidState?.value;
+    if (!raidState?.is_active || !raidState.map) {
+      setRaidDurationMinutes(null);
+      return;
+    }
+
+    let isCurrent = true;
+    void getLiveMapRaidDuration(raidState.map)
+      .then((result) => {
+        if (isCurrent) {
+          setRaidDurationMinutes(result.minutes);
+        }
+      })
+      .catch(() => {
+        if (isCurrent) {
+          setRaidDurationMinutes(null);
+        }
+      });
+    return () => {
+      isCurrent = false;
+    };
+  }, [latestRaidState]);
+
+  useEffect(() => {
+    const raidState = latestRaidState?.value;
+    if (!raidState) {
+      return;
+    }
+
+    if (
+      raidState.is_active &&
+      raidState.map &&
+      raidState.map !== normalizedName &&
+      data.map_selector.some((entry) => entry.normalized_name === raidState.map)
+    ) {
+      clearLiveMapSelection();
+      router.replace(`/live-map/${raidState.map}`, { scroll: false });
+    }
+
+    if (
+      previousTransitCountRef.current !== null &&
+      raidState.transit_count > previousTransitCountRef.current
+    ) {
+      setIsTransitDetected(true);
+      window.setTimeout(() => setIsTransitDetected(false), 10000);
+    }
+    previousTransitCountRef.current = raidState.transit_count;
+  }, [data.map_selector, latestRaidState, normalizedName, router]);
+
+  const raidRemainingText = useMemo(() => {
+    const state = latestRaidState?.value;
+    if (!state?.is_active || !state.started_at) {
+      return null;
+    }
+
+    const startedAt = new Date(state.started_at).getTime();
+    if (!Number.isFinite(startedAt)) {
+      return null;
+    }
+
+    const elapsedSeconds = Math.max(0, Math.floor((raidClock - startedAt) / 1000));
+    const remainingSeconds = raidDurationMinutes === null
+      ? elapsedSeconds
+      : Math.max(0, raidDurationMinutes * 60 - elapsedSeconds);
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = String(remainingSeconds % 60).padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  }, [latestRaidState, raidClock, raidDurationMinutes]);
+
+  const raidRemainingSeconds = useMemo(() => {
+    if (manualBtrTimer) {
+      return manualBtrTimer.startedAt === null
+        ? manualBtrTimer.remainingSeconds
+        : Math.max(0, manualBtrTimer.remainingSeconds - Math.floor((raidClock - manualBtrTimer.startedAt) / 1000));
+    }
+    const state = latestRaidState?.value;
+    if (!state?.is_active || !state.started_at || raidDurationMinutes === null) return null;
+    const startedAt = new Date(state.started_at).getTime();
+    if (!Number.isFinite(startedAt)) return null;
+    return Math.max(0, raidDurationMinutes * 60 - Math.floor((raidClock - startedAt) / 1000));
+  }, [latestRaidState, manualBtrTimer, raidClock, raidDurationMinutes]);
+
+  useEffect(() => {
+    if (!manualBtrTimer || raidRemainingSeconds === null) return;
+    setManualBtrMinutes(String(Math.floor(raidRemainingSeconds / 60)).padStart(2, "0"));
+    setManualBtrSeconds(String(raidRemainingSeconds % 60).padStart(2, "0"));
+  }, [manualBtrTimer, raidRemainingSeconds]);
+
+  const btrRoutes = useMemo(() => data.btr_routes ?? [], [data.btr_routes]);
+  const maximumBtrRaidSeconds = useMemo(
+    () => Math.max(0, ...btrRoutes.map((route) => route.raid_duration_seconds)),
+    [btrRoutes],
+  );
+  const btrStatuses = useMemo(
+    () => btrRoutes.map((route) => ({ route, status: getBtrRouteStatus(route, raidRemainingSeconds) })),
+    [btrRoutes, raidRemainingSeconds],
+  );
+  const visibleBtrRoutes = useMemo<LiveMapBtrRouteLayer[]>(() => {
+    if (!isBtrVisible) return [];
+    return btrRoutes
+      .filter((route) => selectedBtrRouteId === null || selectedBtrRouteId === route.id)
+      .map((route) => ({
+        color: BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length],
+        emphasized: selectedBtrRouteId === route.id,
+        id: route.id,
+        name: route.name,
+        points: [...route.points].sort((a, b) => a.sort_order - b.sort_order),
+        stops: [...route.stops].sort((a, b) => a.visit_order - b.visit_order).map((stop) => ({
+          id: stop.id,
+          label: locale === "ko" ? stop.name_ko : locale === "ja" ? stop.name_ja : stop.name_en,
+          visitOrder: stop.visit_order,
+          x: stop.x,
+          z: stop.z,
+        })),
+      }));
+  }, [btrRoutes, isBtrVisible, locale, selectedBtrRouteId]);
+  const btrPredictions = useMemo<LiveMapBtrPrediction[]>(() => {
+    if (!isBtrVisible) return [];
+    return btrStatuses
+      .filter(({ route }) => selectedBtrRouteId === null || selectedBtrRouteId === route.id)
+      .map(({ route, status }) => ({
+        color: BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length],
+        emphasized: selectedBtrRouteId === route.id,
+        label: locale === "ko" ? "예상" : locale === "ja" ? "予想" : "estimated",
+        position: status.position,
+        routeId: route.id,
+        routeName: route.name.split(" ")[0] ?? route.name,
+      }));
+  }, [btrRoutes, btrStatuses, isBtrVisible, locale, selectedBtrRouteId]);
+
+  const activeLogLocation = useMemo(() => {
+    const value = latestLogLocation?.value;
+    if (!value || value.map !== normalizedName) {
+      return null;
+    }
+
+    const observedAt = new Date(value.observed_at).getTime();
+    if (!Number.isFinite(observedAt) || raidClock - observedAt > 30_000) {
+      return null;
+    }
+
+    return value;
+  }, [latestLogLocation, normalizedName, raidClock]);
+
+  useEffect(() => {
+    if (!activeLogLocation) {
+      return;
+    }
+
+    const matchedFloor = findFloorForLocation(sortedFloors, activeLogLocation);
+    if (matchedFloor) {
+      setSelectedFloorId(matchedFloor.id);
+    }
+  }, [activeLogLocation, sortedFloors]);
+
+  useEffect(() => {
     if (!focusedMarkerId) {
       return;
     }
@@ -1867,6 +2054,15 @@ export function LiveMapClientPage({
 
     void openPanelForMarkerIdRef.current(focusedMarkerId);
   }, [focusedMarkerId]);
+
+  function toggleBtrPanel() {
+    if (isBtrPanelCollapsed) {
+      setIsDrawingToolbarOpen(false);
+      setIsViewSettingsOpen(false);
+      setDrawingMode("hand");
+    }
+    setIsBtrPanelCollapsed((value) => !value);
+  }
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
@@ -1893,6 +2089,25 @@ export function LiveMapClientPage({
             />
           </div>
 
+          {raidRemainingText ? (
+            <div
+              className="hidden h-9 shrink-0 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300 sm:flex"
+              title={raidDurationMinutes === null ? "레이드 경과 시간" : "레이드 예상 잔여 시간"}
+            >
+              <Clock3 className="h-4 w-4" />
+              <span>{raidDurationMinutes === null ? "+" : ""}{raidRemainingText}</span>
+            </div>
+          ) : null}
+
+          {activeLogLocation ? (
+            <div
+              className="hidden h-9 shrink-0 items-center rounded-md border border-sky-200 bg-sky-50 px-2.5 text-xs font-bold text-sky-700 dark:border-sky-900 dark:bg-sky-950/60 dark:text-sky-300 lg:flex"
+              title="30초 동안 유효한 EFT 로그 자동 위치"
+            >
+              로그 위치
+            </div>
+          ) : null}
+
           <button
             type="button"
             onClick={() => applyWhereText(where)}
@@ -1915,6 +2130,11 @@ export function LiveMapClientPage({
         </header>
 
         <div className="relative flex min-h-0 flex-1">
+          {isTransitDetected ? (
+            <div className="absolute left-1/2 top-3 z-[700] -translate-x-1/2 rounded-md border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-bold text-violet-800 shadow-lg dark:border-violet-700 dark:bg-violet-950 dark:text-violet-200">
+              트랜짓이 감지되었습니다. 도착한 맵을 확인하고 있습니다.
+            </div>
+          ) : null}
           <aside
             className={cn(
               "hidden shrink-0 flex-col border-r border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
@@ -2090,6 +2310,8 @@ export function LiveMapClientPage({
             {selectedFloor && data.coordinate_info ? (
               <LiveMapCanvas
                 activeFloorId={selectedFloor.id}
+                btrPredictions={btrPredictions}
+                btrRoutes={visibleBtrRoutes}
                 clearDrawingRequest={clearDrawingRequest}
                 closePopupRequest={closeMarkerPopupRequest}
                 coordinateInfo={data.coordinate_info}
@@ -2102,6 +2324,7 @@ export function LiveMapClientPage({
                 isAutoPanLocked={isAutoPanLocked}
                 isMarkerSimplified={isMarkerSimplified}
                 location={location}
+                logLocation={activeLogLocation}
                 mapKey={normalizedName}
                 preserveFocusOnPopupEscape={panel !== null}
                 rotation={mapRotation}
@@ -2129,6 +2352,88 @@ export function LiveMapClientPage({
               </div>
             ) : null}
 
+            {btrRoutes.length > 0 ? (
+              <div className="absolute left-3 right-3 top-14 z-[1000] w-auto rounded-xl border border-gray-200 bg-white/95 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95 sm:left-auto sm:right-[9.75rem] sm:top-3 sm:w-[min(22rem,calc(100%-1.5rem))] 2xl:right-[18.5rem]">
+                <div className="flex items-center gap-2 border-b border-gray-200 p-3 dark:border-[#3a3d41]">
+                  <button type="button" aria-expanded={!isBtrPanelCollapsed} onClick={toggleBtrPanel} className="flex min-w-0 flex-1 items-center gap-2 rounded-md text-left focus:outline-none focus:ring-2 focus:ring-orange-400">
+                    <BusFront className="h-4 w-4 shrink-0 text-orange-500" />
+                    <strong className="min-w-0 flex-1 text-sm">BTR {locale === "ko" ? "예상 경로" : locale === "ja" ? "予想ルート" : "Estimated routes"}</strong>
+                  </button>
+                  <button type="button" role="switch" aria-checked={isBtrVisible} onClick={() => setIsBtrVisible((value) => !value)} className={cn("h-6 rounded-full px-2 text-[10px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", isBtrVisible ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-200 text-gray-600 dark:bg-[#34383e] dark:text-gray-200")}>{isBtrVisible ? "ON" : "OFF"}</button>
+                  <button type="button" aria-expanded={!isBtrPanelCollapsed} aria-label={isBtrPanelCollapsed ? (locale === "ko" ? "BTR 패널 펼치기" : "Expand BTR panel") : (locale === "ko" ? "BTR 패널 접기" : "Collapse BTR panel")} onClick={toggleBtrPanel} className="grid h-7 w-7 place-items-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#30343a]">
+                    <ChevronDown className={cn("h-4 w-4 transition-transform", !isBtrPanelCollapsed && "rotate-180")} />
+                  </button>
+                </div>
+                {isBtrVisible && !isBtrPanelCollapsed ? (
+                  <div className="max-h-[min(19rem,45vh)] space-y-2 overflow-y-auto p-3 text-xs font-semibold">
+                    <p className="text-xs font-bold leading-5 text-gray-600 dark:text-gray-300">
+                      {locale === "ko" ? "가능한 후보 노선입니다. 스폰 편차와 플레이어 상호작용에 따라 실제 시간과 다를 수 있습니다." : locale === "ja" ? "候補ルートです。スポーンの変動やプレイヤーの操作により時間がずれる場合があります。" : "Possible routes only. Timing may vary due to spawn variance and player interaction."}
+                    </p>
+                    <form
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        const minutes = Number(manualBtrMinutes);
+                        const seconds = Number(manualBtrSeconds);
+                        if (!Number.isFinite(minutes) || !Number.isFinite(seconds)) return;
+                        const remainingSeconds = Math.max(0, Math.min(maximumBtrRaidSeconds, Math.floor(minutes) * 60 + Math.min(59, Math.floor(seconds))));
+                        setManualBtrTimer({ remainingSeconds, startedAt: Date.now() });
+                        setRaidClock(Date.now());
+                      }}
+                      className="rounded-lg border border-gray-200 bg-gray-50 p-2.5 dark:border-[#3a3d41] dark:bg-[#24272c]"
+                    >
+                      <div className="mb-2 flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">{locale === "ko" ? "현재 레이드 잔여 시간" : locale === "ja" ? "現在のレイド残り時間" : "Current raid time remaining"}</span>
+                        {manualBtrTimer ? <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">{locale === "ko" ? "수동" : "MANUAL"}</span> : null}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <input aria-label={locale === "ko" ? "분" : "Minutes"} inputMode="numeric" value={manualBtrMinutes} onChange={(event) => setManualBtrMinutes(event.currentTarget.value.replace(/\D/g, "").slice(0, 2))} className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]" placeholder="00" />
+                        <span className="font-black text-gray-400">:</span>
+                        <input aria-label={locale === "ko" ? "초" : "Seconds"} inputMode="numeric" value={manualBtrSeconds} onChange={(event) => setManualBtrSeconds(event.currentTarget.value.replace(/\D/g, "").slice(0, 2))} className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]" placeholder="00" />
+                        <button type="submit" className="h-9 flex-1 rounded-md bg-orange-500 px-3 text-xs font-black text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-[#1e2124]">{locale === "ko" ? "수동 시작" : locale === "ja" ? "手動開始" : "Start manual"}</button>
+                      </div>
+                      <div className="mt-2 grid grid-cols-4 gap-1">
+                        {[40, 35, 30, 25, 20, 15, 10, 5].filter((minute) => minute * 60 <= maximumBtrRaidSeconds).map((minute) => <button key={minute} type="button" onClick={() => { setManualBtrMinutes(String(minute).padStart(2, "0")); setManualBtrSeconds("00"); setManualBtrTimer({ remainingSeconds: minute * 60, startedAt: Date.now() }); setRaidClock(Date.now()); }} className="min-w-[3.25rem] flex-1 rounded bg-gray-200 py-1 text-[10px] font-black text-gray-600 hover:bg-orange-100 hover:text-orange-600 dark:bg-[#34383e] dark:text-gray-200 dark:hover:bg-orange-500/15 dark:hover:text-orange-300">{minute}:00</button>)}
+                      </div>
+                      {manualBtrTimer ? (
+                        <div className="mt-2 grid grid-cols-5 gap-1">
+                          <button type="button" onClick={() => { const remainingSeconds = raidRemainingSeconds ?? manualBtrTimer.remainingSeconds; setManualBtrTimer({ remainingSeconds, startedAt: manualBtrTimer.startedAt === null ? Date.now() : null }); setRaidClock(Date.now()); }} className="rounded border border-orange-300 bg-orange-50 py-1 text-[10px] font-black text-orange-700 hover:bg-orange-100 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-300">{manualBtrTimer.startedAt === null ? (locale === "ko" ? "재개" : "RESUME") : (locale === "ko" ? "정지" : "PAUSE")}</button>
+                          {[60, 10, -10, -60].map((delta) => <button key={delta} type="button" onClick={() => { const current = raidRemainingSeconds ?? manualBtrTimer.remainingSeconds; const remainingSeconds = Math.max(0, Math.min(maximumBtrRaidSeconds, current + delta)); setManualBtrTimer({ remainingSeconds, startedAt: manualBtrTimer.startedAt === null ? null : Date.now() }); setRaidClock(Date.now()); }} className="rounded border border-gray-200 bg-white py-1 font-mono text-[10px] font-black text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#17191c] dark:text-gray-200">{delta > 0 ? "+" : "−"}{Math.abs(delta) === 60 ? "1m" : "10s"}</button>)}
+                        </div>
+                      ) : null}
+                    </form>
+                    <div className="flex flex-wrap gap-1" role="group" aria-label="BTR route filter">
+                      <button type="button" aria-pressed={selectedBtrRouteId === null} onClick={() => setSelectedBtrRouteId(null)} className={cn("rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", selectedBtrRouteId === null ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200")}>{locale === "ko" ? "전체" : locale === "ja" ? "すべて" : "All"}</button>
+                      {btrRoutes.map((route) => <button key={route.id} type="button" aria-pressed={selectedBtrRouteId === route.id} onClick={() => setSelectedBtrRouteId(route.id)} className={cn("rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", selectedBtrRouteId === route.id ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200")}>{route.name.split(" ")[0]}</button>)}
+                    </div>
+                    {btrStatuses.map(({ route, status }) => {
+                      const color = BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length];
+                      const enabled = selectedBtrRouteId === null || selectedBtrRouteId === route.id;
+                      const stopName = status.nextStop ? (locale === "ko" ? status.nextStop.name_ko : locale === "ja" ? status.nextStop.name_ja : status.nextStop.name_en) : null;
+                      const currentStopName = status.currentStop ? (locale === "ko" ? status.currentStop.name_ko : locale === "ja" ? status.currentStop.name_ja : status.currentStop.name_en) : null;
+                      const previousStopName = status.previousStop ? (locale === "ko" ? status.previousStop.name_ko : locale === "ja" ? status.previousStop.name_ja : status.previousStop.name_en) : null;
+                      const variance = status.etaSeconds === null ? null : route.timing_variance_seconds;
+                      return (
+                        <button key={route.id} type="button" aria-pressed={selectedBtrRouteId === route.id} onClick={() => setSelectedBtrRouteId(route.id)} className={cn("w-full rounded-lg border p-2.5 text-left transition focus:outline-none focus:ring-2 focus:ring-orange-400", enabled ? "border-gray-200 bg-gray-50 dark:border-[#3a3d41] dark:bg-[#292c31]" : "border-transparent bg-gray-100 opacity-45 dark:bg-[#17191c]")}>
+                          <span className="flex items-center gap-2 text-xs font-black"><span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />{route.name}</span>
+                          <span className="mt-1 block pl-[18px] text-xs font-semibold leading-5 text-gray-700 dark:text-gray-200">
+                            {status.kind === "unknown" ? (locale === "ko" ? "레이드 시작 후 예상 위치를 확인할 수 있습니다" : "Estimated position is available after the raid starts") : status.kind === "not-spawned" ? `${locale === "ko" ? "BTR 생성 전 · 예상 생성까지" : "Not spawned · Spawn ETA"} ${formatBtrTime(status.etaSeconds ?? 0)}` : status.kind === "stopped" ? `${locale === "ko" ? "정차 중" : "Stopped"} · ${currentStopName ?? "-"}${status.departureSeconds !== null ? ` · ${locale === "ko" ? "출발까지" : "Departs in"} ${formatBtrTime(status.departureSeconds)}` : ""}` : status.kind === "moving" ? (
+                              <>
+                                <span>{locale === "ko" ? "이동 중" : "Moving"} · </span>
+                                <span className="font-black text-sky-700 dark:text-sky-300">{previousStopName ?? "START"}</span>
+                                <span className="px-1 font-black text-gray-400">→</span>
+                                <span className="font-black text-orange-600 dark:text-orange-300">{stopName ?? "-"}</span>
+                                {status.etaSeconds !== null && variance !== null ? <span>{` · ETA ${formatBtrTime(Math.max(0, status.etaSeconds - variance))}–${formatBtrTime(status.etaSeconds + variance)} · ±${formatBtrTime(variance)}`}</span> : null}
+                              </>
+                            ) : (locale === "ko" ? "운행 종료" : "Route finished")}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
             <div ref={mapToolbarRef} className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
               <button
                 type="button"
@@ -2153,6 +2458,7 @@ export function LiveMapClientPage({
                 aria-label={copy.drawingTools}
                 title={copy.drawingTools}
                 onClick={() => {
+                  setIsBtrPanelCollapsed(true);
                   setIsViewSettingsOpen(false);
                   setIsDrawingToolbarOpen((value) => {
                     if (value) {
@@ -2180,6 +2486,7 @@ export function LiveMapClientPage({
                 aria-label={copy.viewSettings}
                 title={copy.viewSettings}
                 onClick={() => {
+                  setIsBtrPanelCollapsed(true);
                   setIsDrawingToolbarOpen(false);
                   setDrawingMode("hand");
                   setIsViewSettingsOpen((value) => !value);

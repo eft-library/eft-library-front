@@ -323,6 +323,48 @@ export interface LiveMapStaticPoint {
   metadata: Record<string, unknown> | null;
 }
 
+export interface BtrRoutePointV3 {
+  id: string;
+  x: number;
+  z: number;
+  sort_order: number;
+}
+
+export interface BtrRouteStopV3 {
+  id: string;
+  static_point_id: string;
+  route_point_id: string | null;
+  name_en: string;
+  name_ko: string;
+  name_ja: string;
+  x: number;
+  z: number;
+  arrival_remaining_seconds: number;
+  departure_remaining_seconds: number | null;
+  visit_order: number;
+  route_point_order: number | null;
+}
+
+export interface BtrRouteV3 {
+  id: string;
+  name: string;
+  spawn_type: string | null;
+  raid_duration_seconds: number;
+  spawn_remaining_seconds: number | null;
+  stop_duration_seconds: number;
+  timing_variance_seconds: number;
+  points: BtrRoutePointV3[];
+  stops: BtrRouteStopV3[];
+}
+
+export interface BtrRoutesResponseV3 {
+  map: {
+    id: string;
+    normalized_name: string;
+  };
+  routes: BtrRouteV3[];
+}
+
 export interface LiveMapDetailResponse {
   map_selector: MapSelectorEntry[];
   floors: LiveMapFloor[];
@@ -330,6 +372,7 @@ export interface LiveMapDetailResponse {
   story_points: LiveMapStoryPoint[];
   event_points: LiveMapEventPoint[];
   static_points: LiveMapStaticPoint[];
+  btr_routes?: BtrRouteV3[];
 }
 
 export interface LiveMapPageData extends LiveMapDetailResponse {

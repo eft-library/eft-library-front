@@ -69,6 +69,26 @@ export function localizedDescription(value: Record<string, unknown>, locale: Loc
   );
 }
 
+export function getMultilingualSearchText(
+  value: Record<string, unknown> | null | undefined,
+  prefixes: string[],
+) {
+  if (!value) {
+    return "";
+  }
+
+  return [
+    ...prefixes.flatMap((prefix) => [
+      value[`${prefix}_en`],
+      value[`${prefix}_ko`],
+      value[`${prefix}_ja`],
+    ]),
+    value.normalized_name,
+  ]
+    .filter((entry): entry is string => typeof entry === "string" && entry.length > 0)
+    .join(" ");
+}
+
 export function getFloorLabel(floor: LiveMapFloor, locale: Locale) {
   return localizedName(floor as unknown as Record<string, unknown>, locale);
 }
@@ -433,15 +453,77 @@ export function getEntryLabel(entry: RightEntry, locale: Locale) {
   return localizedName(entry.point as unknown as Record<string, unknown>, locale);
 }
 
+export function getEntrySearchText(entry: RightEntry) {
+  if ("quest_info" in entry.point) {
+    return [
+      getMultilingualSearchText(
+        entry.point.quest_info?.quest as unknown as Record<string, unknown> | undefined,
+        ["name"],
+      ),
+      getMultilingualSearchText(
+        entry.point.quest_info?.objective as unknown as Record<string, unknown> | undefined,
+        ["description"],
+      ),
+    ].join(" ");
+  }
+
+  if ("story_info" in entry.point) {
+    return [
+      getMultilingualSearchText(
+        entry.point.story_info?.story as unknown as Record<string, unknown> | undefined,
+        ["title"],
+      ),
+      getMultilingualSearchText(
+        entry.point.story_info?.objective as unknown as Record<string, unknown> | undefined,
+        ["description"],
+      ),
+      getMultilingualSearchText(
+        entry.point.story_info?.requirement as unknown as Record<string, unknown> | undefined,
+        ["description"],
+      ),
+    ].join(" ");
+  }
+
+  if ("event_info" in entry.point) {
+    return [
+      getMultilingualSearchText(
+        entry.point.event_info?.event as unknown as Record<string, unknown> | undefined,
+        ["title"],
+      ),
+      getMultilingualSearchText(
+        entry.point.event_info?.objective as unknown as Record<string, unknown> | undefined,
+        ["description"],
+      ),
+      getMultilingualSearchText(
+        entry.point.map as unknown as Record<string, unknown> | undefined,
+        ["name"],
+      ),
+    ].join(" ");
+  }
+
+  return [
+    getMultilingualSearchText(
+      entry.point as unknown as Record<string, unknown>,
+      ["name", "description"],
+    ),
+    entry.point.category,
+  ].join(" ");
+}
+
 export function getQuestMarkerSearchText(point: LiveMapQuestPoint, locale: Locale) {
   if (!point.quest_info) {
     return point.id;
   }
 
   return [
-    point.quest_info.quest
-      ? localizedName(point.quest_info.quest as unknown as Record<string, unknown>, locale)
-      : "",
+    getMultilingualSearchText(
+      point.quest_info.quest as unknown as Record<string, unknown> | undefined,
+      ["name"],
+    ),
+    getMultilingualSearchText(
+      point.quest_info.objective as unknown as Record<string, unknown> | undefined,
+      ["description"],
+    ),
     getQuestPointLabel(point, locale),
   ].join(" ");
 }
@@ -452,9 +534,18 @@ export function getStoryMarkerSearchText(point: LiveMapStoryPoint, locale: Local
   }
 
   return [
-    point.story_info.story
-      ? localizedTitle(point.story_info.story as unknown as Record<string, unknown>, locale)
-      : "",
+    getMultilingualSearchText(
+      point.story_info.story as unknown as Record<string, unknown> | undefined,
+      ["title"],
+    ),
+    getMultilingualSearchText(
+      point.story_info.objective as unknown as Record<string, unknown> | undefined,
+      ["description"],
+    ),
+    getMultilingualSearchText(
+      point.story_info.requirement as unknown as Record<string, unknown> | undefined,
+      ["description"],
+    ),
     getStoryPointLabel(point, locale),
   ].join(" ");
 }
@@ -465,11 +556,19 @@ export function getEventMarkerSearchText(point: LiveMapEventPoint, locale: Local
   }
 
   return [
-    localizedTitle(point.event_info.event as unknown as Record<string, unknown>, locale),
+    getMultilingualSearchText(
+      point.event_info.event as unknown as Record<string, unknown>,
+      ["title"],
+    ),
+    getMultilingualSearchText(
+      point.event_info.objective as unknown as Record<string, unknown> | undefined,
+      ["description"],
+    ),
     getEventPointLabel(point, locale),
-    point.map
-      ? localizedName(point.map as unknown as Record<string, unknown>, locale)
-      : "",
+    getMultilingualSearchText(
+      point.map as unknown as Record<string, unknown> | undefined,
+      ["name"],
+    ),
   ].join(" ");
 }
 
@@ -479,8 +578,11 @@ export function getStaticMarkerSearchText(
   copy: LiveMapCopy,
 ) {
   return [
-    localizedName(point as unknown as Record<string, unknown>, locale),
-    localizedDescription(point as unknown as Record<string, unknown>, locale),
+    getMultilingualSearchText(
+      point as unknown as Record<string, unknown>,
+      ["name", "description"],
+    ),
+    point.category,
     getStaticCategoryLabel(point.category, copy),
   ].join(" ");
 }

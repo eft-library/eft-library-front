@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils/class-name";
 import { copyByLocale, KAPPA_IMAGE, type LiveMapCopy } from "./live-map-copy";
 import {
   getEntryLabel,
+  getEntrySearchText,
   getStaticCategoryLabel,
   getStaticFaction,
   getStaticFactionLabel,
@@ -92,7 +93,7 @@ export function RightSection<TEntry extends RightEntry>({
 }) {
   const filteredItems = useMemo(
     () => items.filter((entry) => matchesFilterText(
-      [getEntryLabel(entry, locale), getEntryMapLabel(entry, locale)].join(" "),
+      [getEntrySearchText(entry), getEntryMapLabel(entry, locale)].join(" "),
       searchQuery,
     )),
     [items, locale, searchQuery],
@@ -287,12 +288,12 @@ export function StaticPointSection({
         const isCategoryMatch = matchesFilterText(categoryLabel, searchQuery);
         const entries = isCategoryMatch
           ? group.entries
-          : group.entries.filter((entry) => matchesFilterText(getEntryLabel(entry, locale), searchQuery));
+          : group.entries.filter((entry) => matchesFilterText(getEntrySearchText(entry), searchQuery));
 
         return { ...group, entries };
       })
       .filter((group) => group.entries.length > 0),
-    [copy, groups, locale, searchQuery],
+    [copy, groups, searchQuery],
   );
   const hasQuery = searchQuery.trim().length > 0;
   const expandableCategories = groups

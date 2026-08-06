@@ -278,6 +278,128 @@ html.live-map-document-dragging * {
   display: none;
 }
 
+.live-map-btr-marker > div {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 2px dashed white;
+  border-radius: 9999px;
+  background: var(--btr-color);
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--btr-color) 40%, transparent), 0 5px 14px rgb(0 0 0 / 35%);
+}
+
+.live-map-btr-marker > div > span {
+  display: grid;
+  place-items: center;
+  transform: scaleX(var(--btr-facing));
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 65%));
+}
+
+.live-map-btr-marker > strong {
+  position: absolute;
+  top: 47px;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  background: rgb(255 255 255 / 90%);
+  padding: 2px 6px;
+  color: #111827;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+}
+
+.dark .live-map-btr-marker > strong {
+  background: rgb(31 33 36 / 92%);
+  color: #f9fafb;
+}
+
+.live-map-btr-marker-emphasized > div {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--btr-color) 45%, transparent), 0 7px 18px rgb(0 0 0 / 40%);
+}
+
+.live-map-btr-arrow span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 2px solid #111827;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--btr-color), 0 2px 7px rgb(0 0 0 / 65%);
+  transform-origin: center;
+}
+
+.live-map-btr-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: #111827;
+  stroke: #111827;
+  stroke-width: 0.8;
+}
+
+.live-map-btr-spawn span,
+.live-map-btr-stop span {
+  display: grid;
+  place-items: center;
+  border: 2px solid white;
+  background: var(--btr-color);
+  color: white;
+  font-size: 9px;
+  font-weight: 900;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 35%);
+}
+
+.live-map-btr-stop-label.leaflet-tooltip {
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 5px;
+  background: rgb(17 24 39 / 88%);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  padding: 3px 6px;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 40%);
+  pointer-events: none;
+}
+
+.live-map-btr-stop-label.leaflet-tooltip::before {
+  border-top-color: rgb(17 24 39 / 88%);
+}
+
+.dark .live-map-btr-stop-label.leaflet-tooltip {
+  border-color: rgb(249 250 251 / 45%);
+  background: rgb(249 250 251 / 92%);
+  color: #111827;
+}
+
+.dark .live-map-btr-stop-label.leaflet-tooltip::before {
+  border-top-color: rgb(249 250 251 / 92%);
+}
+
+.live-map-btr-spawn span {
+  width: 48px;
+  height: 22px;
+  border-radius: 5px;
+}
+
+.live-map-btr-stop span {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+}
+
+.dark .live-map-btr-marker > div {
+  border-color: #1f2124;
+  color: #111827;
+}
+
 .live-map-point-popup .leaflet-popup-content-wrapper {
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.14);

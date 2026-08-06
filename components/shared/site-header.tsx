@@ -71,6 +71,14 @@ function getAutocompleteText(item: HomeAutocompleteItem, locale: Locale) {
   }
 }
 
+function getAutocompleteSearchTexts(item: HomeAutocompleteItem) {
+  return [
+    item.autocomplete_text_en,
+    item.autocomplete_text_ko,
+    item.autocomplete_text_ja,
+  ].map((value) => value.toLocaleLowerCase());
+}
+
 function SearchAutocomplete({
   autocompleteItems,
   locale,
@@ -96,17 +104,21 @@ function SearchAutocomplete({
         return true;
       }
 
-      return getAutocompleteText(item, locale)
-        .toLowerCase()
-        .includes(normalizedQuery);
+      return getAutocompleteSearchTexts(item).some((text) =>
+        text.includes(normalizedQuery),
+      );
     });
 
     return items
       .sort((left, right) => {
         const leftText = getAutocompleteText(left, locale).toLowerCase();
         const rightText = getAutocompleteText(right, locale).toLowerCase();
-        const leftStartsWith = leftText.startsWith(normalizedQuery) ? 1 : 0;
-        const rightStartsWith = rightText.startsWith(normalizedQuery) ? 1 : 0;
+        const leftStartsWith = getAutocompleteSearchTexts(left).some((text) =>
+          text.startsWith(normalizedQuery),
+        ) ? 1 : 0;
+        const rightStartsWith = getAutocompleteSearchTexts(right).some((text) =>
+          text.startsWith(normalizedQuery),
+        ) ? 1 : 0;
 
         if (leftStartsWith !== rightStartsWith) {
           return rightStartsWith - leftStartsWith;

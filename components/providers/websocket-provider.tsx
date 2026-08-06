@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 
 import { normalizeNotificationMessage } from "@/lib/utils/notification";
-import { useWsStore } from "@/store/ws-store";
+import { useWsStore, type LogLocation, type RaidState } from "@/store/ws-store";
 import type { MyPageNotificationEntry } from "@/types/api/mypage";
 
 interface WebSocketMessage {
@@ -17,6 +17,8 @@ interface WebSocketMessage {
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const setLocation = useWsStore((state) => state.setLocation);
+  const setRaidState = useWsStore((state) => state.setRaidState);
+  const setLogLocation = useWsStore((state) => state.setLogLocation);
   const setNotifications = useWsStore((state) => state.setNotifications);
   const prependNotification = useWsStore((state) => state.prependNotification);
   const wsRef = useRef<WebSocket | null>(null);
@@ -66,6 +68,16 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
           typeof parsed.payload === "string"
         ) {
           setLocation(parsed.payload);
+          return;
+        }
+
+        if (parsed.type === "wpf_raid_state" && isRaidState(parsed.payload)) {
+          setRaidState(parsed.payload);
+          return;
+        }
+
+        if (parsed.type === "wpf_log_location" && isLogLocation(parsed.payload)) {
+          setLogLocation(parsed.payload);
         }
       } catch {
         // Ignore non-JSON keepalive or malformed websocket messages.
@@ -88,7 +100,36 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       }
       wsRef.current = null;
     };
-  }, [prependNotification, session?.accessToken, setLocation, setNotifications]);
+  }, [prependNotification, session?.accessToken, setLocation, setLogLocation, setNotifications, setRaidState]);
 
   return <>{children}</>;
+}
+
+function isLogLocation(value: unknown): value is LogLocation {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const location = value as Record<string, unknown>;
+  return (
+    (typeof location.map === "string" || location.map === null) &&
+    typeof location.x === "number" &&
+    typeof location.y === "number" &&
+    typeof location.z === "number" &&
+    typeof location.observed_at === "string"
+  );
+}
+
+function isRaidState(value: unknown): value is RaidState {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const state = value as Record<string, unknown>;
+  return (
+    (typeof state.map === "string" || state.map === null) &&
+    (typeof state.started_at === "string" || state.started_at === null) &&
+    typeof state.is_active === "boolean" &&
+    typeof state.transit_count === "number"
+  );
 }

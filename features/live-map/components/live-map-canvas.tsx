@@ -63,6 +63,24 @@ export interface LiveMapPopupImage {
   src: string;
 }
 
+export interface LiveMapBtrRouteLayer {
+  id: string;
+  name: string;
+  color: string;
+  points: Array<{ x: number; z: number }>;
+  stops: Array<{ id: string; label: string; visitOrder: number; x: number; z: number }>;
+  emphasized: boolean;
+}
+
+export interface LiveMapBtrPrediction {
+  routeId: string;
+  routeName: string;
+  color: string;
+  position: { x: number; z: number } | null;
+  label: string;
+  emphasized: boolean;
+}
+
 type LeafletContainerElement = HTMLDivElement & {
   _leaflet_id?: number;
 };
@@ -913,6 +931,8 @@ function syncPointMarkerPresentation({
 
 export function LiveMapCanvas({
   activeFloorId,
+  btrPredictions,
+  btrRoutes,
   clearDrawingRequest,
   closePopupRequest,
   coordinateInfo,
@@ -926,6 +946,7 @@ export function LiveMapCanvas({
   isMarkerSimplified,
   preserveFocusOnPopupEscape,
   location,
+  logLocation,
   mapKey,
   markers,
   onMarkerClick,
@@ -938,6 +959,8 @@ export function LiveMapCanvas({
   undoDrawingRequest,
 }: {
   activeFloorId: string;
+  btrPredictions: LiveMapBtrPrediction[];
+  btrRoutes: LiveMapBtrRouteLayer[];
   clearDrawingRequest: number;
   closePopupRequest: number;
   coordinateInfo: LiveMapCoordinateInfo;
@@ -957,6 +980,7 @@ export function LiveMapCanvas({
   highlightedGroup?: HighlightedMarkerGroup | null;
   preserveFocusOnPopupEscape: boolean;
   location: LiveMapLocation | null;
+  logLocation: { x: number; y: number; z: number } | null;
   mapKey: string;
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
@@ -979,6 +1003,8 @@ export function LiveMapCanvas({
   const previousClosePopupRequestRef = useRef(closePopupRequest);
   const previousUndoDrawingRequestRef = useRef(undoDrawingRequest);
   const imageOverlayRefs = useRef<LeafletImageOverlay[]>([]);
+  const btrStaticLayerRef = useRef<L.LayerGroup | null>(null);
+  const btrPredictionLayerRef = useRef<L.LayerGroup | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const pointMarkerByIdRef = useRef<Map<string, PointMarkerEntry>>(new Map());
   const hoveredMarkerIdRef = useRef<string | null>(null);
@@ -991,6 +1017,7 @@ export function LiveMapCanvas({
   const lastFocusedFloorRef = useRef<string | null>(null);
   const lastFocusedRequestRef = useRef<number | null>(null);
   const markerRef = useRef<LeafletMarker | null>(null);
+  const logMarkerRef = useRef<LeafletMarker | null>(null);
   const activeFloorIdRef = useRef(activeFloorId);
   const focusedMarkerIdRef = useRef<string | null | undefined>(focusedMarkerId);
   const highlightedGroupRef = useRef<HighlightedMarkerGroup | null | undefined>(
@@ -1006,6 +1033,7 @@ export function LiveMapCanvas({
   const locationRef = useRef(location);
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
+  const [mapRevision, setMapRevision] = useState(0);
   const imageBoundsKey = useMemo(
     () => JSON.stringify(coordinateInfo.image_bounds),
     [coordinateInfo.image_bounds],
@@ -1096,6 +1124,115 @@ export function LiveMapCanvas({
 
     context.globalCompositeOperation = "source-over";
   };
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    btrStaticLayerRef.current?.remove();
+    const layer = L.layerGroup().addTo(map);
+    btrStaticLayerRef.current = layer;
+
+    const drawRoutes = () => {
+      layer.clearLayers();
+      const labeledStops = new Set<string>();
+      btrRoutes.forEach((route) => {
+        const positions = route.points.map((point) =>
+          L.latLng(getPointMarkerPosition(mapKey, { x: point.x, y: point.z }, coordinateInfo, rotation)));
+        const opacity = route.emphasized ? 0.9 : 0.38;
+        if (positions.length > 1) {
+          L.polyline(positions, { color: route.color, opacity, weight: route.emphasized ? 5 : 3 })
+            .bindTooltip(route.name, { sticky: true })
+            .addTo(layer);
+
+          let distanceSinceArrow = 0;
+          const arrowGap = route.emphasized ? 90 : 130;
+          for (let index = 1; index < positions.length; index += 1) {
+            const from = map.latLngToContainerPoint(positions[index - 1]);
+            const to = map.latLngToContainerPoint(positions[index]);
+            const segmentLength = from.distanceTo(to);
+            distanceSinceArrow += segmentLength;
+            if (distanceSinceArrow < arrowGap || segmentLength < 1) continue;
+            const ratio = Math.max(0, 1 - (distanceSinceArrow - arrowGap) / segmentLength);
+            const arrowPoint = L.point(from.x + (to.x - from.x) * ratio, from.y + (to.y - from.y) * ratio);
+            const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+            L.marker(map.containerPointToLatLng(arrowPoint), {
+              interactive: false,
+              icon: L.divIcon({ className: "live-map-btr-arrow", html: `<span style="--btr-color:${route.color};opacity:${route.emphasized ? 1 : 0.48};transform:rotate(${angle}deg)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9V5l7 7-7 7v-5H4z" /></svg></span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
+            }).addTo(layer);
+            distanceSinceArrow = 0;
+          }
+        }
+        const spawn = positions[0];
+        if (spawn) {
+          L.marker(spawn, { icon: L.divIcon({ className: "live-map-btr-spawn", html: `<span style="--btr-color:${route.color}">START</span>`, iconAnchor: [24, 12], iconSize: [48, 24] }) })
+            .bindTooltip(`${route.name} START`, { direction: "top" }).addTo(layer);
+        }
+        route.stops.forEach((stop) => {
+          const stopMarker = L.marker(getPointMarkerPosition(mapKey, { x: stop.x, y: stop.z }, coordinateInfo, rotation), {
+            icon: L.divIcon({ className: "live-map-btr-stop", html: `<span style="--btr-color:${route.color};opacity:${opacity}">${stop.visitOrder}</span>`, iconAnchor: [12, 12], iconSize: [24, 24] }),
+          }).addTo(layer);
+          const labelKey = `${stop.x.toFixed(2)}:${stop.z.toFixed(2)}:${stop.label}`;
+          if (!labeledStops.has(labelKey)) {
+            labeledStops.add(labelKey);
+            stopMarker.bindTooltip(stop.label, { className: "live-map-btr-stop-label", direction: "top", offset: [0, -11], permanent: true });
+          } else {
+            stopMarker.bindTooltip(`${stop.visitOrder}. ${stop.label}`, { direction: "top" });
+          }
+        });
+      });
+    };
+    drawRoutes();
+    map.on("zoomend", drawRoutes);
+
+    return () => {
+      map.off("zoomend", drawRoutes);
+      layer.remove();
+      if (btrStaticLayerRef.current === layer) btrStaticLayerRef.current = null;
+    };
+  }, [btrRoutes, coordinateInfo, mapKey, mapRevision, rotation]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    btrPredictionLayerRef.current?.remove();
+    const layer = L.layerGroup().addTo(map);
+    btrPredictionLayerRef.current = layer;
+    btrPredictions.forEach((prediction) => {
+      if (!prediction.position) return;
+      const route = btrRoutes.find((entry) => entry.id === prediction.routeId);
+      const current = L.latLng(getPointMarkerPosition(mapKey, { x: prediction.position.x, y: prediction.position.z }, coordinateInfo, rotation));
+      const currentPixel = map.latLngToContainerPoint(current);
+      let direction = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+      route?.points.slice(1).forEach((point, index) => {
+        const previous = route.points[index];
+        const from = map.latLngToContainerPoint(getPointMarkerPosition(mapKey, { x: previous.x, y: previous.z }, coordinateInfo, rotation));
+        const to = map.latLngToContainerPoint(getPointMarkerPosition(mapKey, { x: point.x, y: point.z }, coordinateInfo, rotation));
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const lengthSquared = dx * dx + dy * dy;
+        const progress = lengthSquared === 0 ? 0 : Math.max(0, Math.min(1, ((currentPixel.x - from.x) * dx + (currentPixel.y - from.y) * dy) / lengthSquared));
+        const nearest = L.point(from.x + dx * progress, from.y + dy * progress);
+        const distance = currentPixel.distanceTo(nearest);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          direction = Math.atan2(dy, dx) * 180 / Math.PI;
+        }
+      });
+      const icon = L.divIcon({
+        className: `live-map-btr-marker${prediction.emphasized ? " live-map-btr-marker-emphasized" : ""}`,
+        html: `<div style="--btr-color:${prediction.color};--btr-facing:${Math.cos(direction * Math.PI / 180) < 0 ? -1 : 1}"><span>${VehicleIconSvg("#ffffff", 30)}</span></div><strong>${escapeMarkerLabel(prediction.routeName)} ${escapeMarkerLabel(prediction.label)}</strong>`,
+        iconAnchor: [22, 22], iconSize: [44, 44],
+      });
+      L.marker(current, { icon, opacity: prediction.emphasized ? 1 : 0.62, zIndexOffset: prediction.emphasized ? 2700 : 2400 })
+        .bindTooltip(`${prediction.routeName} ${prediction.label}`, { direction: "top", offset: [0, -24] }).addTo(layer);
+    });
+    return () => {
+      layer.remove();
+      if (btrPredictionLayerRef.current === layer) btrPredictionLayerRef.current = null;
+    };
+  }, [btrPredictions, btrRoutes, coordinateInfo, mapKey, mapRevision, rotation]);
 
   useEffect(() => {
     drawingStrokesRef.current = drawingStrokesByFloorRef.current.get(getDrawingCacheKey()) ?? [];
@@ -1558,6 +1695,7 @@ export function LiveMapCanvas({
     window.addEventListener("keydown", closePopupOnEscape, true);
 
     mapRef.current = map;
+    setMapRevision((value) => value + 1);
     window.requestAnimationFrame(() => redrawDrawingRef.current());
 
     return () => {
@@ -1575,6 +1713,10 @@ export function LiveMapCanvas({
       pointMarkerByIdRef.current.clear();
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
+      btrStaticLayerRef.current?.remove();
+      btrStaticLayerRef.current = null;
+      btrPredictionLayerRef.current?.remove();
+      btrPredictionLayerRef.current = null;
       map.off();
       map.remove();
       mapRef.current = null;
@@ -2119,6 +2261,47 @@ export function LiveMapCanvas({
       }
     };
   }, [coordinateInfo.image_bounds, location, mapKey, rotation]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) {
+      return;
+    }
+
+    logMarkerRef.current?.remove();
+    logMarkerRef.current = null;
+    if (!logLocation) {
+      return;
+    }
+
+    const position = rotateLatLng(
+      getPlayerMarkerPosition(mapKey, {
+        x: logLocation.x,
+        y: logLocation.z,
+        yaw: 0,
+      }),
+      coordinateInfo.image_bounds,
+      animatedRotationRef.current,
+    );
+    const marker = L.marker(position, {
+      icon: L.divIcon({
+        className: "log-location-icon",
+        html: '<div title="로그 자동 위치" style="width:22px;height:22px;border-radius:999px;background:#38bdf8;border:4px solid white;box-shadow:0 0 0 3px rgba(56,189,248,.45),0 2px 8px rgba(0,0,0,.45)"></div>',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+      }),
+      zIndexOffset: 9500,
+    });
+    marker.addTo(map);
+    logMarkerRef.current = marker;
+
+    return () => {
+      marker.remove();
+      if (logMarkerRef.current === marker) {
+        logMarkerRef.current = null;
+      }
+    };
+  }, [coordinateInfo.image_bounds, logLocation, mapKey, rotation]);
 
   return (
     <>
