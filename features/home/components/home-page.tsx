@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Flame, Pin, Star } from "lucide-react";
+import { Construction, Flame, Pin, Star } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
@@ -10,6 +10,7 @@ import type { HomeMainResponse } from "@/types/api/home";
 import type { HomeNewsSection } from "../types";
 
 interface HomePageLabels {
+  underConstruction: string;
   recommendationFeature: string;
   event: string;
   comingSoon: string;
@@ -125,6 +126,12 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                     className="group flex flex-col"
                   >
                     <div className="relative rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 hover:scale-[1.02] hover:border-orange-300 hover:bg-gray-50 dark:border-gray-700/50 dark:bg-gray-800/20 dark:hover:border-orange-400/50 dark:hover:bg-gray-700/30">
+                      {item.id === "ROADMAP" ? (
+                        <span className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50/95 px-2 py-1 text-[10px] font-bold text-amber-800 shadow-sm backdrop-blur-sm dark:border-amber-500/40 dark:bg-gray-900/90 dark:text-amber-300">
+                          <Construction aria-hidden="true" className="size-3" />
+                          {labels.underConstruction}
+                        </span>
+                      ) : null}
                       <div className="relative mb-3 aspect-square overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700/50">
                         <Image
                           src={item.image}

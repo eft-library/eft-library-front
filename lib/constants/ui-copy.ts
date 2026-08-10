@@ -15,6 +15,7 @@ export interface NavigationCopy {
 }
 
 export interface HomeCopy {
+  underConstruction: string;
   recommendationFeature: string;
   event: string;
   comingSoon: string;
@@ -60,6 +61,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       themeToggle: "테마 전환",
     },
     home: {
+      underConstruction: "공사중",
       recommendationFeature: "추천 기능",
       event: "이벤트",
       comingSoon: "업데이트 예정",
@@ -97,6 +99,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       themeToggle: "Toggle theme",
     },
     home: {
+      underConstruction: "Under construction",
       recommendationFeature: "Recommended",
       event: "Events",
       comingSoon: "Coming Soon",
@@ -134,6 +137,7 @@ const uiCopyByLocale: Record<Locale, UICopy> = {
       themeToggle: "テーマ切替",
     },
     home: {
+      underConstruction: "工事中",
       recommendationFeature: "おすすめ機能",
       event: "イベント",
       comingSoon: "アップデート予定",

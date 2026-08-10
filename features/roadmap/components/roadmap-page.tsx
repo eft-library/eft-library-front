@@ -8,6 +8,7 @@ import {
   BackgroundVariant,
   Controls,
   Handle,
+  Panel,
   Position,
   ReactFlow,
   ReactFlowProvider,
@@ -26,6 +27,7 @@ import {
   CheckSquare,
   ChevronDown,
   ChevronUp,
+  Construction,
   ExternalLink,
   Eye,
   RotateCcw,
@@ -91,6 +93,7 @@ const roadmapCopy = {
   ko: {
     title: "퀘스트 로드맵",
     eyebrow: "Roadmap",
+    underConstruction: "공사중",
     searchPlaceholder: "퀘스트 검색",
     all: "ALL",
     selectTrader: "상인 선택",
@@ -123,6 +126,7 @@ const roadmapCopy = {
   en: {
     title: "Quest Roadmap",
     eyebrow: "Roadmap",
+    underConstruction: "Under construction",
     searchPlaceholder: "Quest Search",
     all: "ALL",
     selectTrader: "Select Trader",
@@ -155,6 +159,7 @@ const roadmapCopy = {
   ja: {
     title: "Quest Roadmap",
     eyebrow: "Roadmap",
+    underConstruction: "工事中",
     searchPlaceholder: "クエスト検索",
     all: "ALL",
     selectTrader: "トレーダーを選択",
@@ -612,7 +617,13 @@ function RoadmapCanvas({
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
             {copy.eyebrow}
           </p>
-          <h1 className="mt-2 text-3xl font-black">{copy.title}</h1>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <h1 className="text-3xl font-black">{copy.title}</h1>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
+              <Construction aria-hidden="true" className="size-3.5" />
+              {copy.underConstruction}
+            </span>
+          </div>
         </section>
 
         <HorizontalAdBanner className="my-0" />
@@ -655,6 +666,12 @@ function RoadmapCanvas({
             zoomOnDoubleClick={false}
             className="bg-white dark:bg-[#111418] [--roadmap-grid:rgba(100,116,139,0.28)] dark:[--roadmap-grid:rgba(148,163,184,0.32)]"
           >
+            <Panel position="top-right" className="m-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50/95 px-2.5 py-1 text-xs font-bold text-amber-800 shadow-sm backdrop-blur-sm dark:border-amber-500/40 dark:bg-[#181c21]/95 dark:text-amber-300">
+                <Construction aria-hidden="true" className="size-3.5" />
+                {copy.underConstruction}
+              </span>
+            </Panel>
             <Controls className="border border-gray-200 bg-white text-gray-900 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-[#2a3038] dark:[&_.react-flow__controls-button]:bg-[#181c21] dark:[&_.react-flow__controls-button]:text-gray-300 dark:[&_.react-flow__controls-button:hover]:bg-[#242a32]" />
             <Background
               variant={BackgroundVariant.Dots}

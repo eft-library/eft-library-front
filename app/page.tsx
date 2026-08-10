@@ -24,6 +24,7 @@ export default async function Page() {
     <HomePage
       home={homeWithFreshPosts}
       labels={{
+        underConstruction: copy.home.underConstruction,
         recommendationFeature: copy.home.recommendationFeature,
         event: copy.home.event,
         comingSoon: copy.home.comingSoon,
