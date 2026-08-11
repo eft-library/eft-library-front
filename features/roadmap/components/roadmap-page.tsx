@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import type { Locale } from "@/i18n/config";
 import { getProgressItems, saveProgressItems } from "@/features/progress/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
@@ -54,6 +55,7 @@ import type {
   RoadmapResponse,
   RoadmapTraderNode,
 } from "@/types/api/roadmap";
+import type { QuestAffinityType } from "@/types/api/quest";
 
 type RoadmapNodeKind = "traderNode" | "questNode";
 
@@ -67,10 +69,12 @@ interface RoadmapNodeData extends Record<string, unknown> {
   traderId: string;
   kappaRequired: boolean;
   minPlayerLevel: number;
+  affinityType: RoadmapQuestNode["affinity_type"];
   requirements: string[];
   next: string[];
   completed: boolean;
   hiddenByKappa: boolean;
+  dimmedByAffinity: boolean;
   locale: Locale;
   onToggle?: (node: RoadmapNodeData, checked: boolean) => void;
 }
@@ -94,6 +98,9 @@ const roadmapCopy = {
     title: "퀘스트 로드맵",
     eyebrow: "Roadmap",
     underConstruction: "공사중",
+    mainQuest: "주요 임무",
+    affinityFilter: "우호도 필터",
+    kappaFilter: "카파 필터",
     searchPlaceholder: "퀘스트 검색",
     all: "ALL",
     selectTrader: "상인 선택",
@@ -127,6 +134,9 @@ const roadmapCopy = {
     title: "Quest Roadmap",
     eyebrow: "Roadmap",
     underConstruction: "Under construction",
+    mainQuest: "Main Quest",
+    affinityFilter: "Loyalty filter",
+    kappaFilter: "Kappa filter",
     searchPlaceholder: "Quest Search",
     all: "ALL",
     selectTrader: "Select Trader",
@@ -160,6 +170,9 @@ const roadmapCopy = {
     title: "Quest Roadmap",
     eyebrow: "Roadmap",
     underConstruction: "工事中",
+    mainQuest: "メイン任務",
+    affinityFilter: "親密度フィルター",
+    kappaFilter: "カッパフィルター",
     searchPlaceholder: "クエスト検索",
     all: "ALL",
     selectTrader: "トレーダーを選択",
@@ -209,6 +222,14 @@ function getLocalizedName(
   return typeof localized === "string" && localized ? localized : value.name_en;
 }
 
+const affinityTypes: QuestAffinityType[] = [
+  "level_1",
+  "level_2",
+  "level_3",
+  "level_4",
+  "main_quest",
+];
+
 const traderColorMap: Record<string, string> = {
   "5935c25fb3acc3127c3d8cd9": "from-amber-400 to-orange-500 dark:from-yellow-800 dark:to-orange-900",
   "579dc571d53a0658a154fbec": "from-green-400 to-emerald-500 dark:from-green-800 dark:to-emerald-900",
@@ -248,12 +269,14 @@ function createNodes({
   roadmap,
   tabState,
   onlyKappa,
+  selectedAffinityTypes,
   locale,
   onToggle,
 }: {
   roadmap: RoadmapResponse;
   tabState: string;
   onlyKappa: boolean;
+  selectedAffinityTypes: QuestAffinityType[];
   locale: Locale;
   onToggle: (node: RoadmapNodeData, checked: boolean) => void;
 }) {
@@ -271,7 +294,7 @@ function createNodes({
         position: getQuestPosition(quest, tabState, onlyKappa),
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
-        draggable: false,
+        draggable: true,
         data: {
           id: quest.id,
           normalizedName: isTraderStartNode ? trader.normalized_name : quest.normalized_name,
@@ -282,10 +305,15 @@ function createNodes({
           traderId: trader.id,
           kappaRequired: isTraderStartNode ? false : quest.kappa_required,
           minPlayerLevel: quest.min_player_level,
+          affinityType: isTraderStartNode ? null : quest.affinity_type,
           requirements: quest.task_requirements,
           next: quest.task_next,
           completed: false,
           hiddenByKappa: onlyKappa && !quest.kappa_required && !isTraderStartNode,
+          dimmedByAffinity:
+            !isTraderStartNode &&
+            selectedAffinityTypes.length > 0 &&
+            (!quest.affinity_type || !selectedAffinityTypes.includes(quest.affinity_type)),
           locale,
           onToggle,
         },
@@ -294,7 +322,11 @@ function createNodes({
   });
 }
 
-function createEdges(edgeInfo: RoadmapEdge[], nodeIds: Set<string>) {
+function createEdges(
+  edgeInfo: RoadmapEdge[],
+  nodeIds: Set<string>,
+  dimmedNodeIds: Set<string>,
+) {
   return edgeInfo
     .filter((edge) => nodeIds.has(edge.source_id) && nodeIds.has(edge.target_id))
     .map<RoadmapFlowEdge>((edge) => ({
@@ -303,7 +335,11 @@ function createEdges(edgeInfo: RoadmapEdge[], nodeIds: Set<string>) {
       target: edge.target_id,
       type: "smoothstep",
       animated: false,
-      style: { stroke: "#38bdf8", strokeWidth: 2 },
+      style: {
+        opacity: dimmedNodeIds.has(edge.source_id) || dimmedNodeIds.has(edge.target_id) ? 0.12 : 1,
+        stroke: "#38bdf8",
+        strokeWidth: 2,
+      },
     }));
 }
 
@@ -362,6 +398,7 @@ function RoadmapCanvas({
   const { fitView, fitBounds } = useReactFlow();
   const [tabState, setTabState] = useState("all");
   const [onlyKappa, setOnlyKappa] = useState(false);
+  const [selectedAffinityTypes, setSelectedAffinityTypes] = useState<QuestAffinityType[]>([]);
   const [completed, setCompleted] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchIndex, setSearchIndex] = useState(0);
@@ -474,18 +511,23 @@ function RoadmapCanvas({
         roadmap,
         tabState,
         onlyKappa,
+        selectedAffinityTypes,
         locale,
         onToggle: handleToggleNode,
       }),
-    [roadmap, tabState, onlyKappa, locale, handleToggleNode],
+    [roadmap, tabState, onlyKappa, selectedAffinityTypes, locale, handleToggleNode],
   );
   const visibleNodeIds = useMemo(
     () => new Set(nodes.filter((node) => !node.data.hiddenByKappa).map((node) => node.id)),
     [nodes],
   );
+  const dimmedNodeIds = useMemo(
+    () => new Set(nodes.filter((node) => node.data.dimmedByAffinity).map((node) => node.id)),
+    [nodes],
+  );
   const edges = useMemo(
-    () => createEdges(roadmap.edge_info, visibleNodeIds),
-    [roadmap.edge_info, visibleNodeIds],
+    () => createEdges(roadmap.edge_info, visibleNodeIds, dimmedNodeIds),
+    [roadmap.edge_info, visibleNodeIds, dimmedNodeIds],
   );
   const [flowNodes, setFlowNodes, onNodesChange] = useNodesState<RoadmapFlowNode>(nodes);
   const [flowEdges, setFlowEdges, onEdgesChange] = useEdgesState<RoadmapFlowEdge>(edges);
@@ -610,6 +652,14 @@ function RoadmapCanvas({
     setTabState(value);
   }
 
+  function handleAffinityToggle(affinityType: QuestAffinityType) {
+    setSelectedAffinityTypes((current) =>
+      current.includes(affinityType)
+        ? current.filter((type) => type !== affinityType)
+        : [...current, affinityType],
+    );
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#111418] dark:text-white">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -638,12 +688,16 @@ function RoadmapCanvas({
 
         <ControlPanel
           copy={copy}
+          locale={locale}
           onlyKappa={onlyKappa}
+          selectedAffinityTypes={selectedAffinityTypes}
           searchQuery={searchQuery}
           onSearch={handleSearch}
           onSave={handleSave}
           onSelectAll={handleSelectAll}
           onToggleKappa={() => setOnlyKappa((current) => !current)}
+          onToggleAffinity={handleAffinityToggle}
+          onClearAffinity={() => setSelectedAffinityTypes([])}
           onUnselectAll={handleUnselectAll}
           setSearchQuery={setSearchQuery}
         />
@@ -671,6 +725,32 @@ function RoadmapCanvas({
                 <Construction aria-hidden="true" className="size-3.5" />
                 {copy.underConstruction}
               </span>
+            </Panel>
+            <Panel position="top-left" className="m-3">
+              <div className="flex flex-nowrap items-center gap-2 rounded-lg border border-gray-200 bg-white/95 px-2.5 py-2 text-[10px] font-bold text-gray-600 shadow-sm backdrop-blur-sm dark:border-[#2a3038] dark:bg-[#181c21]/95 dark:text-gray-300">
+                {(["level_1", "level_2", "level_3", "level_4"] as const).map(
+                  (affinityType, index) => (
+                    <span key={affinityType} className="inline-flex shrink-0 items-center gap-1">
+                      <QuestAffinityBadge
+                        affinityType={affinityType}
+                        compact
+                        locale={locale}
+                        className="size-5 shadow-none"
+                      />
+                      Lv.{index + 1}
+                    </span>
+                  ),
+                )}
+                <span className="inline-flex shrink-0 items-center gap-1">
+                  <QuestAffinityBadge
+                    affinityType="main_quest"
+                    compact
+                    locale={locale}
+                    className="size-5 shadow-none"
+                  />
+                  {copy.mainQuest}
+                </span>
+              </div>
             </Panel>
             <Controls className="border border-gray-200 bg-white text-gray-900 dark:border-[#2a3038] dark:bg-[#181c21] dark:text-gray-200 [&_.react-flow__controls-button]:border-gray-200 [&_.react-flow__controls-button]:bg-white [&_.react-flow__controls-button]:text-gray-700 dark:[&_.react-flow__controls-button]:border-[#2a3038] dark:[&_.react-flow__controls-button]:bg-[#181c21] dark:[&_.react-flow__controls-button]:text-gray-300 dark:[&_.react-flow__controls-button:hover]:bg-[#242a32]" />
             <Background
@@ -801,52 +881,120 @@ function TraderTabButton({
 
 function ControlPanel({
   copy,
+  locale,
   onlyKappa,
+  selectedAffinityTypes,
   searchQuery,
+  onClearAffinity,
   onSearch,
   onSave,
   onSelectAll,
   onToggleKappa,
+  onToggleAffinity,
   onUnselectAll,
   setSearchQuery,
 }: {
   copy: (typeof roadmapCopy)[Locale];
+  locale: Locale;
   onlyKappa: boolean;
+  selectedAffinityTypes: QuestAffinityType[];
   searchQuery: string;
+  onClearAffinity: () => void;
   onSearch: () => void;
   onSave: () => void;
   onSelectAll: () => void;
   onToggleKappa: () => void;
+  onToggleAffinity: (affinityType: QuestAffinityType) => void;
   onUnselectAll: () => void;
   setSearchQuery: (value: string) => void;
 }) {
   return (
-    <section className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21] lg:flex-row lg:items-center lg:justify-end">
-      <div className="relative min-w-0 flex-1 lg:max-w-sm">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        <input
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onSearch();
-            }
-          }}
-          placeholder={copy.searchPlaceholder}
-          className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-orange-400 dark:border-[#2a3038] dark:bg-[#20242b]"
-        />
+    <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
+        <div className="relative min-w-0 flex-1 lg:max-w-sm">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <input
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                onSearch();
+              }
+            }}
+            placeholder={copy.searchPlaceholder}
+            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-orange-400 dark:border-[#2a3038] dark:bg-[#20242b]"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <ActionButton icon={<Search className="h-4 w-4" />} label={copy.searchPlaceholder} onClick={onSearch} />
+          <ActionButton icon={<CheckSquare className="h-4 w-4" />} label={copy.selectAll} onClick={onSelectAll} />
+          <ActionButton icon={<Square className="h-4 w-4" />} label={copy.unselectAll} onClick={onUnselectAll} />
+          <ActionButton icon={<Check className="h-4 w-4" />} label={copy.save} onClick={onSave} />
+        </div>
       </div>
-      <div className="flex flex-wrap gap-2">
-        <ActionButton icon={<Search className="h-4 w-4" />} label={copy.searchPlaceholder} onClick={onSearch} />
-        <ActionButton icon={<CheckSquare className="h-4 w-4" />} label={copy.selectAll} onClick={onSelectAll} />
-        <ActionButton icon={<Square className="h-4 w-4" />} label={copy.unselectAll} onClick={onUnselectAll} />
-        <ActionButton icon={<Check className="h-4 w-4" />} label={copy.save} onClick={onSave} />
-        <ActionButton
-          icon={<Eye className="h-4 w-4" />}
-          label={onlyKappa ? copy.viewAll : copy.viewKappa}
-          onClick={onToggleKappa}
-          active={onlyKappa}
-        />
+      <div className="grid gap-3 border-t border-gray-100 pt-3 dark:border-[#2a3038] lg:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-[#2a3038] dark:bg-[#20242b]/60">
+          <span className="mr-1 text-sm font-black text-gray-900 dark:text-white">
+            {copy.affinityFilter}
+          </span>
+          <button
+            type="button"
+            aria-pressed={selectedAffinityTypes.length === 0}
+            onClick={onClearAffinity}
+            className={cn(
+              "h-8 rounded-md border px-2.5 text-xs font-bold transition",
+              selectedAffinityTypes.length === 0
+                ? "border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-500/50 dark:bg-orange-500/10 dark:text-orange-300"
+                : "border-gray-200 bg-white text-gray-600 hover:border-orange-300 dark:border-[#39414d] dark:bg-[#181c21] dark:text-gray-300",
+            )}
+          >
+            {copy.all}
+          </button>
+          {affinityTypes.map((affinityType, index) => {
+            const active = selectedAffinityTypes.includes(affinityType);
+            return (
+              <button
+                key={affinityType}
+                type="button"
+                aria-pressed={active}
+                onClick={() => onToggleAffinity(affinityType)}
+                className={cn(
+                  "inline-flex h-8 items-center gap-1.5 rounded-md border bg-white px-2 text-xs font-bold text-gray-600 transition dark:bg-[#181c21] dark:text-gray-300",
+                  active
+                    ? "border-orange-300 bg-orange-50 ring-1 ring-orange-200 dark:border-orange-500/50 dark:bg-orange-500/10 dark:ring-orange-500/20"
+                    : "border-gray-200 hover:border-orange-300 dark:border-[#39414d]",
+                )}
+              >
+                <QuestAffinityBadge
+                  affinityType={affinityType}
+                  compact
+                  locale={locale}
+                  className="size-5 shadow-none"
+                />
+                {affinityType === "main_quest" ? copy.mainQuest : `Lv.${index + 1}`}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-[#2a3038] dark:bg-[#20242b]/60">
+          <span className="shrink-0 text-sm font-black text-gray-900 dark:text-white">
+            {copy.kappaFilter}
+          </span>
+          <button
+            type="button"
+            aria-pressed={onlyKappa}
+            onClick={onToggleKappa}
+            className={cn(
+              "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border bg-white px-2.5 text-xs font-bold transition dark:bg-[#181c21]",
+              onlyKappa
+                ? "border-purple-300 bg-purple-50 text-purple-700 ring-1 ring-purple-200 dark:border-purple-500/50 dark:bg-purple-500/10 dark:text-purple-300 dark:ring-purple-500/20"
+                : "border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 dark:border-[#39414d] dark:text-gray-300 dark:hover:border-purple-500 dark:hover:text-purple-300",
+            )}
+          >
+            <Eye className="size-3.5" />
+            {copy.kappa}
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -1206,7 +1354,7 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
         "hover:scale-105 hover:shadow-2xl",
       )}
       style={{
-        opacity: props.data.hiddenByKappa ? 0 : 1,
+        opacity: props.data.hiddenByKappa ? 0 : props.data.dimmedByAffinity ? 0.2 : 1,
         pointerEvents: props.data.hiddenByKappa ? "none" : "auto",
       }}
     >
@@ -1219,6 +1367,11 @@ function QuestFlowNode(props: NodeProps<RoadmapFlowNode>) {
               : "border-gray-200 dark:border-[#47515f]",
           )}
         >
+          <QuestAffinityBadge
+            affinityType={props.data.affinityType}
+            locale={props.data.locale}
+            className="absolute left-3 top-3 z-10 text-[10px]"
+          />
           <div className="absolute right-3 top-3">
             <input
               id={`roadmap-quest-${props.data.id}`}

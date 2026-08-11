@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
 import { cn } from "@/lib/utils/class-name";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -190,6 +191,7 @@ export function QuestDetailPage({
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">{questName}</h1>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
+            <QuestAffinityBadge affinityType={data.quest.affinity_type} locale={locale} />
             <span className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 dark:border-yellow-400/60 dark:bg-yellow-400/10 dark:text-yellow-300">
               {copy.minLevel} {data.quest.min_player_level ?? copy.empty}
             </span>
@@ -560,14 +562,17 @@ function QuestRelationSection({
           renderItem={(item) => (
             <Link
               href={`/quest/detail/${item.normalized_name}`}
-              className="block rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
+              className="flex items-center justify-between gap-2 rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-[#2a3038] dark:bg-[#20242b] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:text-orange-300"
             >
-              {getLocalizedValue(
-                item as unknown as Record<string, unknown>,
-                locale,
-                "name",
-                item.name_en,
-              )}
+              <span className="min-w-0 truncate">
+                {getLocalizedValue(
+                  item as unknown as Record<string, unknown>,
+                  locale,
+                  "name",
+                  item.name_en,
+                )}
+              </span>
+              <QuestAffinityBadge affinityType={item.affinity_type} compact locale={locale} />
             </Link>
           )}
         />

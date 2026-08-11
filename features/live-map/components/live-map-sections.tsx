@@ -1,5 +1,4 @@
 import type React from "react";
-import Image from "next/image";
 import { useEffect, useMemo, useRef } from "react";
 import {
   BookOpen,
@@ -8,12 +7,14 @@ import {
   ChevronDown,
   Flag,
   Search,
+  Zap,
 } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 
-import { copyByLocale, KAPPA_IMAGE, type LiveMapCopy } from "./live-map-copy";
+import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
 import {
   getEntryLabel,
   getEntrySearchText,
@@ -154,6 +155,10 @@ export function RightSection<TEntry extends RightEntry>({
                 const completed = kind === "quest" && completedQuestIds.includes(entry.id);
                 const isKappaQuest =
                   "quest_info" in entry.point && !!entry.point.quest_info?.quest?.kappa_required;
+                const affinityType =
+                  "quest_info" in entry.point
+                    ? entry.point.quest_info?.quest?.affinity_type
+                    : null;
 
                 return (
                   <div
@@ -216,6 +221,7 @@ export function RightSection<TEntry extends RightEntry>({
                         {label}
                       </span>
                       {isKappaQuest ? <KappaBadge /> : null}
+                      <QuestAffinityBadge affinityType={affinityType} compact locale={locale} />
                       {mapLabel ? (
                         <span className="max-w-20 shrink-0 truncate rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
                           {mapLabel}
@@ -979,14 +985,10 @@ function getStaticPanelIconSvg(category: string, color: string, size: number) {
 
 export function KappaBadge() {
   return (
-    <Image
-      alt="Kappa"
-      className="h-4 w-4 shrink-0 rounded object-contain"
-      height={16}
-      src={KAPPA_IMAGE}
-      title="Kappa"
-      width={16}
-    />
+    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-black leading-none text-white shadow-sm">
+      <Zap aria-hidden="true" className="size-3" />
+      Kappa
+    </span>
   );
 }
 

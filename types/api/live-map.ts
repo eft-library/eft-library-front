@@ -1,5 +1,6 @@
 import type { MapSelectorEntry } from "@/types/api/map-of-tarkov";
 import type {
+  QuestAffinityType,
   QuestDetailItem,
   QuestObjectiveMap,
   QuestRelatedEntry,
@@ -105,6 +106,7 @@ export interface LiveMapQuestInfo {
     delay_min: number | null;
     kappa_required: boolean;
     min_player_level: number | null;
+    affinity_type: QuestAffinityType | null;
     wiki_url: string | null;
   };
   trader: QuestTraderEntry | null;
@@ -123,6 +125,7 @@ export interface LiveMapQuestSummaryInfo {
     name_ja: string;
     min_player_level: number | null;
     kappa_required?: boolean | null;
+    affinity_type?: QuestAffinityType | null;
   } | null;
   trader: QuestTraderEntry | null;
   objective: {

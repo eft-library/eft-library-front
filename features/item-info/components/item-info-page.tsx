@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -793,6 +794,7 @@ function QuestLink({ quest, locale }: { quest: RelatedQuestInfo; locale: Locale 
       className="inline-flex min-w-0 items-center gap-1 font-semibold text-orange-600 hover:text-orange-500 dark:text-orange-300 dark:hover:text-orange-200"
     >
       <span className="truncate">{getEntityName(quest, locale)}</span>
+      <QuestAffinityBadge affinityType={quest.affinity_type} compact locale={locale} />
       <ExternalLink className="h-3.5 w-3.5" />
     </Link>
   );

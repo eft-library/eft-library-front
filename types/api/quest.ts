@@ -1,3 +1,5 @@
+export type QuestAffinityType = "level_1" | "level_2" | "level_3" | "level_4" | "main_quest";
+
 export interface QuestListEntry {
   id: string;
   normalized_name: string;
@@ -7,6 +9,7 @@ export interface QuestListEntry {
   trader_id: string | null;
   kappa_required: boolean;
   min_player_level: number | null;
+  affinity_type: QuestAffinityType | null;
   trader_name_en?: string | null;
   trader_name_ko?: string | null;
   trader_name_ja?: string | null;
@@ -22,6 +25,7 @@ export interface QuestFeedEntry {
   guide_en: string | null;
   guide_ko: string | null;
   guide_ja: string | null;
+  affinity_type: QuestAffinityType | null;
   update_time: string;
 }
 
@@ -40,6 +44,7 @@ export interface QuestRelatedEntry {
   name_en: string;
   name_ko: string;
   name_ja: string;
+  affinity_type: QuestAffinityType | null;
 }
 
 export interface QuestDetailItem {
@@ -119,6 +124,7 @@ export interface QuestBase {
   delay_min: number | null;
   kappa_required: boolean;
   min_player_level: number | null;
+  affinity_type: QuestAffinityType | null;
   wiki_url: string | null;
 }
 

@@ -1,3 +1,5 @@
+import type { QuestAffinityType } from "@/types/api/quest";
+
 export interface RelatedItemInfo {
   id: string;
   name_en: string;
@@ -15,6 +17,7 @@ export interface RelatedQuestInfo {
   name_en: string;
   name_ko: string;
   name_ja: string;
+  affinity_type?: QuestAffinityType | null;
 }
 
 export interface RelatedTraderInfo {

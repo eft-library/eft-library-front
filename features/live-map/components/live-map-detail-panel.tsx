@@ -12,6 +12,7 @@ import {
 import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 import type { QuestDetailItem } from "@/types/api/quest";
 import type {
@@ -338,6 +339,11 @@ function QuestPanel({
             </h3>
             {info.quest.kappa_required ? <KappaBadge /> : null}
           </div>
+          <QuestAffinityBadge
+            affinityType={info.quest.affinity_type}
+            locale={locale}
+            className="mt-1"
+          />
           {info.trader ? (
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {localizedName(info.trader as unknown as Record<string, unknown>, locale)}

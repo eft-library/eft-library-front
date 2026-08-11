@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Search, Skull } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -350,13 +351,18 @@ export function QuestListPage({
                   rel="noopener noreferrer"
                   className="group grid gap-3 border-b border-gray-100 px-5 py-4 transition last:border-b-0 hover:bg-orange-50/40 dark:border-[#2a3038] dark:hover:bg-[#20242b] md:grid-cols-[minmax(180px,0.7fr)_minmax(300px,1.45fr)_minmax(300px,1.45fr)_80px] md:items-center md:gap-5"
                 >
-                  <div className="min-w-0">
+                  <div className="min-w-0 md:flex md:flex-col md:items-center md:text-center">
                     <h2 className="text-base font-bold text-gray-900 transition group-hover:text-orange-500 dark:text-gray-100 dark:group-hover:text-orange-300">
                       {questName}
                     </h2>
-                    <p className="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">
-                      {copy.minLevel}: {quest.min_player_level ?? "-"}
-                    </p>
+                    <div className="mt-1.5 space-y-2">
+                      <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+                        {copy.minLevel}: {quest.min_player_level ?? "-"}
+                      </p>
+                      <div className="md:flex md:justify-center">
+                        <QuestAffinityBadge affinityType={quest.affinity_type} locale={locale} />
+                      </div>
+                    </div>
                   </div>
                   <div className="min-w-0 text-sm leading-6 text-gray-600 dark:text-gray-300">
                     <span className="font-semibold text-gray-800 dark:text-gray-200 md:hidden">

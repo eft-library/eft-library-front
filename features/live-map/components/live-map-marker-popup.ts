@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/config";
+import { getQuestAffinityLabel } from "@/components/shared/quest-affinity-badge";
 import type {
   EventInfo,
   LiveMapEventPoint,
@@ -392,6 +393,7 @@ function createMarkerPopupHtml({
   imageLinkLabel,
   location,
   supplementaryHtml,
+  affinityLabel,
   title,
   titleImage,
 }: {
@@ -407,6 +409,7 @@ function createMarkerPopupHtml({
   imageLinkLabel?: string;
   location: string;
   supplementaryHtml?: string;
+  affinityLabel?: string;
   title: string;
   titleImage?: string | null;
 }) {
@@ -442,7 +445,14 @@ function createMarkerPopupHtml({
             ? `<img class="live-map-popup-avatar" src="${escapeHtml(titleImage)}" alt="" />`
             : ""
         }
-        <strong>${escapeHtml(title)}</strong>
+        <div class="live-map-popup-heading">
+          <strong>${escapeHtml(title)}</strong>
+          ${
+            affinityLabel
+              ? `<span class="live-map-popup-affinity">${escapeHtml(affinityLabel)}</span>`
+              : ""
+          }
+        </div>
       </div>
       <div class="live-map-popup-body">
         ${
@@ -492,6 +502,9 @@ export function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale)
   }
 
   return createMarkerPopupHtml({
+    affinityLabel: point.quest_info.quest?.affinity_type
+      ? getQuestAffinityLabel(point.quest_info.quest.affinity_type, locale)
+      : undefined,
     description: point.quest_info.objective
       ? localizedDescription(point.quest_info.objective as unknown as Record<string, unknown>, locale)
       : "",
@@ -514,6 +527,9 @@ export function getQuestDetailPointPopupHtml(
   const details = selectedPoint?.details ?? [];
 
   return createMarkerPopupHtml({
+    affinityLabel: info.quest.affinity_type
+      ? getQuestAffinityLabel(info.quest.affinity_type, locale)
+      : undefined,
     description: getQuestObjectiveDescription(objective, locale),
     detailTexts: getDetailTexts(details, locale),
     images: getPopupImages(details, locale),

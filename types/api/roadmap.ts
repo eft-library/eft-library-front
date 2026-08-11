@@ -1,4 +1,5 @@
 import type { LocalizedName } from "@/types/api/home";
+import type { QuestAffinityType } from "@/types/api/quest";
 
 export interface RoadmapQuestNode extends LocalizedName {
   id: string;
@@ -6,6 +7,7 @@ export interface RoadmapQuestNode extends LocalizedName {
   trader_id: string;
   kappa_required: boolean;
   min_player_level: number;
+  affinity_type: QuestAffinityType | null;
   task_requirements: string[];
   task_next: string[];
   total_x_coordinate: number;
