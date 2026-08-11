@@ -1,4 +1,5 @@
 import type React from "react";
+import Image from "next/image";
 import { useEffect, useMemo, useRef } from "react";
 import {
   BookOpen,
@@ -15,6 +16,14 @@ import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 
 import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
+import {
+  getStaticIconSvgForType,
+  getStaticMarkerColorByType,
+} from "./live-map-canvas";
+import {
+  documentSpawnDefinitions,
+  getDocumentSpawnItemId,
+} from "./live-map-document-spawns";
 import {
   getEntryLabel,
   getEntrySearchText,
@@ -437,6 +446,19 @@ export function StaticPointSection({
                         selectedId={selectedId}
                         selectedItemRef={selectedItemRef}
                       />
+                    ) : group.category === "document_spawn" ? (
+                      <DocumentSpawnGroups
+                        enabledIds={enabledIds}
+                        entries={group.entries}
+                        locale={locale}
+                        onOpen={onOpen}
+                        onToggle={onToggle}
+                        onToggleGroup={(itemId, itemIds) =>
+                          onToggleCategory(`${group.category}:${itemId}`, itemIds)
+                        }
+                        selectedId={selectedId}
+                        selectedItemRef={selectedItemRef}
+                      />
                     ) : (
                       group.entries.map((entry) => (
                         <StaticEntryRow
@@ -461,6 +483,101 @@ export function StaticPointSection({
         <p className="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">{emptyLabel}</p>
       )}
     </section>
+  );
+}
+
+function DocumentSpawnGroups({
+  enabledIds,
+  entries,
+  locale,
+  onOpen,
+  onToggle,
+  onToggleGroup,
+  selectedId,
+  selectedItemRef,
+}: {
+  enabledIds: Set<string>;
+  entries: StaticEntry[];
+  locale: Locale;
+  onOpen: (entry: StaticEntry) => void;
+  onToggle: (id: string) => void;
+  onToggleGroup: (itemId: string, ids: string[]) => void;
+  selectedId: string | null;
+  selectedItemRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const groups = documentSpawnDefinitions
+    .map((definition) => ({
+      definition,
+      entries: entries.filter((entry) => getDocumentSpawnItemId(entry.point) === definition.id),
+    }))
+    .filter((group) => group.entries.length > 0);
+
+  return (
+    <div className="space-y-1">
+      {groups.map(({ definition, entries: documentEntries }) => {
+        const ids = documentEntries.map((entry) => entry.id);
+        const enabledCount = ids.filter((id) => enabledIds.has(id)).length;
+
+        return (
+          <div
+            key={definition.id}
+            className="rounded border border-gray-200 bg-white/70 dark:border-[#2f343a] dark:bg-[#1b1e22]"
+          >
+            <div className="grid min-h-10 grid-cols-[1fr_42px] items-center">
+              <div className="flex min-w-0 items-center gap-2 px-2 py-1">
+                <span className="relative size-8 shrink-0">
+                  <Image
+                    src={definition.image}
+                    alt=""
+                    fill
+                    sizes="32px"
+                    className="object-contain"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-0.5 -right-0.5 flex size-[18px] items-center justify-center rounded-full bg-[#111827] shadow-sm ring-1 ring-white/80 dark:ring-[#2f343a]"
+                    style={{
+                      boxShadow: `inset 0 0 0 1.5px ${getStaticMarkerColorByType(`document_spawn:${definition.id}`)}`,
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: getStaticIconSvgForType(`document_spawn:${definition.id}`, 13),
+                    }}
+                  />
+                </span>
+                <span className="min-w-0 flex-1 truncate text-[11px] font-black text-gray-700 dark:text-gray-100">
+                  {definition.labels[locale]}
+                </span>
+                <span className="text-[10px] font-bold text-gray-500 dark:text-gray-300">
+                  {enabledCount}/{ids.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onToggleGroup(definition.id, ids)}
+                className="flex h-full items-center justify-center rounded-r hover:bg-gray-100 dark:hover:bg-[#2a2d31]"
+                aria-label={definition.labels[locale]}
+              >
+                <TogglePill enabled={enabledCount === ids.length} />
+              </button>
+            </div>
+            <div className="border-t border-gray-200 p-1 dark:border-[#2f343a]">
+              {documentEntries.map((entry) => (
+                <StaticEntryRow
+                  enabled={enabledIds.has(entry.id)}
+                  entry={entry}
+                  isSelected={selectedId === entry.id}
+                  key={entry.id}
+                  locale={locale}
+                  onOpen={onOpen}
+                  onToggle={onToggle}
+                  selectedItemRef={selectedItemRef}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -695,6 +812,10 @@ function getStaticIconColor(category: string, faction?: string) {
     return "#818cf8";
   }
 
+  if (category === "document_spawn") {
+    return "#f59e0b";
+  }
+
   if (category === "locked_door") {
     return "#fb7185";
   }
@@ -818,6 +939,15 @@ function getStaticPanelIconSvg(category: string, color: string, size: number) {
         <path d="M3.8 9h16.4" stroke="${color}" stroke-width="2.2" />
         <rect x="6" y="12" width="5.2" height="3.5" rx=".7" fill="${color}" />
         <path d="M14.2 13h3.8M14.2 15h2.5" stroke="${color}" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    `;
+  }
+
+  if (category === "document_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 2.8h8.5L19 7.3v13.9H6z" stroke="${color}" stroke-width="2.1" stroke-linejoin="round" />
+        <path d="M14 3v5h5M9 12h7M9 16h7" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
       </svg>
     `;
   }

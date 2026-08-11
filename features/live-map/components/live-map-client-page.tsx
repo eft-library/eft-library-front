@@ -92,6 +92,7 @@ import {
   type PanelState,
   type StaticEntry,
 } from "./live-map-data-utils";
+import { getDocumentSpawnItemId } from "./live-map-document-spawns";
 import {
   getDisabledIds,
   getEnabledIdsFromDisabled,
@@ -1001,6 +1002,7 @@ export function LiveMapClientPage({
         ),
         staticCategory: point.category,
         staticFaction: getStaticFaction(point),
+        staticItemId: getDocumentSpawnItemId(point) ?? undefined,
         x: point.x,
         y: point.z,
       }));

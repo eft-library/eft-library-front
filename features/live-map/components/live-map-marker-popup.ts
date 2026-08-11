@@ -12,6 +12,7 @@ import type {
 } from "@/types/api/live-map";
 
 import type { LiveMapCopy } from "./live-map-copy";
+import { getDocumentSpawnDefinition } from "./live-map-document-spawns";
 import {
   findNestedObjectiveByPoint,
   findQuestObjectiveByPointId,
@@ -644,6 +645,7 @@ export function getStaticPointPopupHtml(
   const title = localizedName(point as unknown as Record<string, unknown>, locale);
   const description = localizedDescription(point as unknown as Record<string, unknown>, locale);
   const spawnPresentation = getStaticSpawnPresentation(point, locale);
+  const documentSpawn = getDocumentSpawnDefinition(point);
   const metadataImages = getStaticMetadataImages(point, locale);
   const usesItemImagePresentation =
     point.category === "key_spawn" ||
@@ -668,6 +670,6 @@ export function getStaticPointPopupHtml(
     location: getStaticCategoryLabel(point.category, copy),
     supplementaryHtml: getSpawnPopupHtml(point, locale, copy),
     title,
-    titleImage: spawnPresentation.bossImage,
+    titleImage: documentSpawn?.image ?? spawnPresentation.bossImage,
   });
 }

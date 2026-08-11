@@ -50,6 +50,7 @@ export interface LiveMapCanvasMarker {
   popupHtml?: string;
   staticCategory?: string;
   staticFaction?: string;
+  staticItemId?: string;
   x: number;
   y: number;
   floorId: string | null;
@@ -132,6 +133,7 @@ const staticMarkerColorByType: Record<string, string> = {
   goons_spawn: "#ef4444",
   key_spawn: "#fbbf24",
   keycard_spawn: "#818cf8",
+  document_spawn: "#f59e0b",
   locked_container: "#2dd4bf",
   locked_door: "#fb7185",
   pmc_spawn: "#60a5fa",
@@ -143,6 +145,40 @@ const staticMarkerColorByType: Record<string, string> = {
   transit: "#f87171",
   transit_switch: "#facc15",
 };
+
+const documentMarkerPresentation: Record<string, { color: string }> = {
+  "6a31824878450ec91c0ea1ae": { color: "#94a3b8" },
+  "6a31830dde69ceafd805afa0": { color: "#64748b" },
+  "6a3182dc6cd8de21cf0a3a7d": { color: "#7dd3fc" },
+  "6a3182b72fd891345e047eef": { color: "#818cf8" },
+  "6a3181f178450ec91c0ea1aa": { color: "#fde68a" },
+  "6a317b9692cfdcddcb02a58e": { color: "#9ca3af" },
+  "6a31807f17005505b70d5827": { color: "#7dd3fc" },
+  "6a31828557705071410ca00e": { color: "#38bdf8" },
+};
+
+function getDocumentMarkerGlyph(itemId: string) {
+  switch (itemId) {
+    case "6a31824878450ec91c0ea1ae":
+      return `<rect x="4" y="5" width="16" height="14" rx="2" fill="#252a2e" stroke="#cbd5e1" stroke-width="1" /><rect x="6" y="7" width="12" height="9.5" rx="1.2" fill="#8f999d" stroke="#475569" stroke-width="1" /><path d="M7.5 8.5h9" stroke="#dbe3e7" stroke-width=".7" opacity=".65" />`;
+    case "6a31830dde69ceafd805afa0":
+      return `<rect x="6" y="3.5" width="12" height="17" rx="1" fill="#252329" stroke="#94a3b8" stroke-width="1" /><path d="M8 5v13.5M16.5 5v13.5" stroke="#4b5563" stroke-width=".8" /><rect x="8.7" y="7" width="5.5" height="3" rx=".4" fill="#f1f5f9" /><path d="M9.5 8.1h4M9.5 9h2.8" stroke="#64748b" stroke-width=".5" />`;
+    case "6a3182dc6cd8de21cf0a3a7d":
+      return `<rect x="5.5" y="3" width="13" height="18" rx="1" fill="#dbeafe" stroke="#64748b" stroke-width="1" /><rect x="8.5" y="2.2" width="7" height="2.2" rx=".6" fill="#64748b" /><circle cx="9" cy="8" r="2.4" fill="#1f2937" stroke="#94a3b8" stroke-width=".6" /><path d="M12.5 7h4M12.5 9h3M7.5 13h9M7.5 15h9M7.5 17h6" stroke="#64748b" stroke-width=".65" /><path d="M7.5 19h4" stroke="#ef4444" stroke-width=".8" />`;
+    case "6a3182b72fd891345e047eef":
+      return `<rect x="6" y="2.5" width="12" height="19" rx="1" fill="#18223c" stroke="#818cf8" stroke-width="1" /><path d="M8 16 12 7l4 9-4-3zM8 16l4-3 4 3M12 7v6" fill="none" stroke="#a5b4fc" stroke-width=".75" /><path d="M8 18.5h8" stroke="#64748b" stroke-width=".65" />`;
+    case "6a3181f178450ec91c0ea1aa":
+      return `<rect x="4" y="3" width="16" height="18" rx="2" fill="#262629" /><rect x="7" y="3.5" width="4.2" height="16.5" rx="2.1" fill="#f5e89a" stroke="#a99d55" stroke-width=".8" /><ellipse cx="16" cy="17.2" rx="3.2" ry="2.6" fill="#dbeafe" stroke="#94a3b8" stroke-width=".8" /><path d="M13.2 17.2h5.6" stroke="#64748b" stroke-width=".6" />`;
+    case "6a317b9692cfdcddcb02a58e":
+      return `<rect x="4" y="4.5" width="16" height="15" rx="1.5" fill="#202327" stroke="#9ca3af" stroke-width="1" /><rect x="6" y="6.5" width="12" height="10.5" rx=".7" fill="#292d31" stroke="#4b5563" stroke-width=".8" /><path d="M7 18h10" stroke="#d1d5db" stroke-width=".6" />`;
+    case "6a31807f17005505b70d5827":
+      return `<path d="M5 3.5h14v17H5z" fill="#bae6fd" stroke="#64748b" stroke-width="1" /><path d="m7 8 4 3-4 3M11 11h6M13 11l3 6M9 17h7" fill="none" stroke="#334155" stroke-width="1" /><path d="M7 6h9" stroke="#64748b" stroke-width=".7" />`;
+    case "6a31828557705071410ca00e":
+      return `<rect x="5" y="3" width="14" height="18" rx="1" fill="#dbeafe" stroke="#0284c7" stroke-width="1" /><rect x="8" y="2.2" width="8" height="2.3" rx=".6" fill="#64748b" /><path d="M7 8h10M7 11h10M7 14h3M7 17h10" stroke="#64748b" stroke-width=".65" /><path d="m11 16 2-4 1.5 2 2.5-4" fill="none" stroke="#0284c7" stroke-width="1" />`;
+    default:
+      return `<path d="M6 3h12v18H6z" fill="#e2e8f0" stroke="#64748b" stroke-width="1" /><path d="M9 11h6M9 15h6" fill="none" stroke="#334155" stroke-width="1.4" stroke-linecap="round" />`;
+  }
+}
 
 function getPointMarkerPosition(
   mapId: string,
@@ -224,6 +260,10 @@ function getStaticMarkerType(point: LiveMapCanvasMarker) {
     return getStaticCategoryMarkerType(point.staticCategory, point.staticFaction);
   }
 
+  if (point.staticCategory === "document_spawn" && point.staticItemId) {
+    return `document_spawn:${point.staticItemId}`;
+  }
+
   return point.staticCategory ?? "static";
 }
 
@@ -257,6 +297,10 @@ function getStaticMarkerLabelHtml(point: LiveMapCanvasMarker, color: string) {
 }
 
 export function getStaticMarkerColorByType(type: string) {
+  if (type.startsWith("document_spawn:")) {
+    return documentMarkerPresentation[type.slice("document_spawn:".length)]?.color ?? "#f59e0b";
+  }
+
   return staticMarkerColorByType[type] ?? markerColorByKind.static;
 }
 
@@ -546,6 +590,15 @@ function GoonIconSvg(color: string, size: number) {
 export function getStaticIconSvgForType(type: string, size: number) {
   const color = getStaticMarkerColorByType(type);
 
+  if (type.startsWith("document_spawn:")) {
+    const itemId = type.slice("document_spawn:".length);
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        ${getDocumentMarkerGlyph(itemId)}
+      </svg>
+    `;
+  }
+
   if (type.startsWith("extract:")) {
     return PersonIconSvg(color, size);
   }
@@ -564,6 +617,15 @@ export function getStaticIconSvgForType(type: string, size: number) {
 
   if (type === "keycard_spawn") {
     return KeycardIconSvg(color, size);
+  }
+
+  if (type === "document_spawn") {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 2.8h8.5L19 7.3v13.9H6z" stroke="${color}" stroke-width="2.1" stroke-linejoin="round" />
+        <path d="M14 3v5h5M9 12h7M9 16h7" stroke="${color}" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+    `;
   }
 
   if (type === "locked_door") {
@@ -787,6 +849,7 @@ function getPointMarkerPresentationKey(
     point.kind,
     point.staticCategory ?? "",
     point.staticFaction ?? "",
+    point.staticItemId ?? "",
     point.floorId ?? "",
     activeFloorId,
     isMarkerSimplified ? "simplified" : "detailed",

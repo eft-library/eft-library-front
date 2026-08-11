@@ -15,6 +15,7 @@ import type {
 import type { QuestDetailResponse } from "@/types/api/quest";
 
 import type { LiveMapCopy } from "./live-map-copy";
+import { getDocumentSpawnDefinition } from "./live-map-document-spawns";
 
 export type PanelState =
   | { type: "quest"; id: string; info: LiveMapQuestInfo; pointId?: string }
@@ -164,6 +165,7 @@ export function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[
         "transit_switch",
         "key_spawn",
         "keycard_spawn",
+        "document_spawn",
         "locked_door",
         "locked_container",
         "stationary_weapon",
@@ -507,6 +509,7 @@ export function getEntrySearchText(entry: RightEntry) {
       ["name", "description"],
     ),
     entry.point.category,
+    ...Object.values(getDocumentSpawnDefinition(entry.point)?.labels ?? {}),
   ].join(" ");
 }
 
@@ -584,6 +587,7 @@ export function getStaticMarkerSearchText(
     ),
     point.category,
     getStaticCategoryLabel(point.category, copy),
+    ...Object.values(getDocumentSpawnDefinition(point)?.labels ?? {}),
   ].join(" ");
 }
 
