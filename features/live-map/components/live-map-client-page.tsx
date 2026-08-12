@@ -8,6 +8,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import type { LatLng } from "leaflet";
 import {
   ChevronDown,
+  ChevronsLeftRight,
+  ChevronsRightLeft,
   CircleDot,
   Clock3,
   BusFront,
@@ -441,6 +443,7 @@ export function LiveMapClientPage({
   const [isMapSelectorOpen, setIsMapSelectorOpen] = useState(false);
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
+  const [mobileSidebar, setMobileSidebar] = useState<"left" | "right" | null>(null);
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
@@ -470,6 +473,12 @@ export function LiveMapClientPage({
     () => createQuestCompletionMap(initialCompletionGraph),
     [initialCompletionGraph],
   );
+
+  useEffect(() => {
+    if (panel) {
+      setMobileSidebar(null);
+    }
+  }, [panel]);
   const sortedFloors = useMemo(() => [...data.floors], [data.floors]);
 
   useEffect(() => {
@@ -2074,9 +2083,21 @@ export function LiveMapClientPage({
     <main className="min-h-[calc(100vh-4rem)] bg-gray-100 text-gray-950 dark:bg-[#1e2124] dark:text-white">
       <div className="flex h-[calc(100vh-4rem)] min-h-[720px] flex-col overflow-hidden">
         <header className="flex min-h-14 items-center gap-3 border-b border-gray-200 bg-white px-3 shadow-sm dark:border-[#3a3d41] dark:bg-[#1f2124]">
-          <div className="hidden items-center gap-2 text-sm font-black sm:flex">
-            <MapPinned className="h-4 w-4 text-orange-500" />
-            <span>{copy.title}</span>
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="hidden items-center gap-2 text-sm font-black sm:flex">
+              <MapPinned className="h-4 w-4 text-orange-500" />
+              <span>{copy.title}</span>
+            </div>
+            <button
+              type="button"
+              aria-label={copy.guideDownload}
+              title={`${copy.guideDownload} · ${copy.guideTitle}`}
+              onClick={() => setIsGuideOpen(true)}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center gap-1.5 rounded-md bg-orange-500 text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#1f2124] lg:w-auto lg:px-2.5"
+            >
+              <Download className="h-4 w-4 shrink-0" />
+              <span className="hidden text-xs font-bold lg:inline">{copy.guideDownload}</span>
+            </button>
           </div>
 
           <div className="relative min-w-0 flex-1 sm:max-w-xl">
@@ -2125,17 +2146,64 @@ export function LiveMapClientPage({
 
           <button
             type="button"
-            aria-label={copy.guideDownload}
-            title={`${copy.guideDownload} · ${copy.guideTitle}`}
-            onClick={() => setIsGuideOpen(true)}
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-md bg-orange-500 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#1f2124] sm:w-auto sm:px-3"
+            aria-pressed={isLeftPanelOpen && isRightPanelOpen}
+            aria-label={
+              isLeftPanelOpen && isRightPanelOpen
+                ? copy.collapseBothPanels
+                : copy.expandBothPanels
+            }
+            title={
+              isLeftPanelOpen && isRightPanelOpen
+                ? copy.collapseBothPanels
+                : copy.expandBothPanels
+            }
+            onClick={() => {
+              const shouldOpen = !(isLeftPanelOpen && isRightPanelOpen);
+              setIsLeftPanelOpen(shouldOpen);
+              setIsRightPanelOpen(shouldOpen);
+            }}
+            className="hidden h-9 shrink-0 items-center justify-center rounded-md bg-orange-500 px-3 text-sm font-black text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#1f2124] md:inline-flex"
           >
-            <Download className="h-4 w-4 shrink-0" />
-            <span className="hidden text-sm font-bold sm:inline">{copy.guideDownload}</span>
+            {isLeftPanelOpen && isRightPanelOpen ? (
+              <ChevronsRightLeft className="mr-1 h-4 w-4 shrink-0" />
+            ) : (
+              <ChevronsLeftRight className="mr-1 h-4 w-4 shrink-0" />
+            )}
+            {isLeftPanelOpen && isRightPanelOpen
+              ? copy.collapseBothPanels
+              : copy.expandBothPanels}
           </button>
         </header>
 
         <div className="relative flex min-h-0 flex-1">
+          {mobileSidebar ? (
+            <button
+              type="button"
+              aria-label={copy.cancel}
+              onClick={() => setMobileSidebar(null)}
+              className="fixed inset-0 z-[790] bg-black/20 md:hidden"
+            />
+          ) : null}
+          <button
+            type="button"
+            aria-expanded={mobileSidebar === "left"}
+            aria-label={copy.expandSpawnPanel}
+            onClick={() => setMobileSidebar((current) => current === "left" ? null : "left")}
+            className="absolute left-3 top-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
+          >
+            <PanelLeftOpen className="h-5 w-5" />
+          </button>
+          {!panel ? (
+            <button
+              type="button"
+              aria-expanded={mobileSidebar === "right"}
+              aria-label={copy.expandQuestPanel}
+              onClick={() => setMobileSidebar((current) => current === "right" ? null : "right")}
+              className="absolute right-3 top-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
+            >
+              <PanelRightOpen className="h-5 w-5" />
+            </button>
+          ) : null}
           {isTransitDetected ? (
             <div className="absolute left-1/2 top-3 z-[700] -translate-x-1/2 rounded-md border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-bold text-violet-800 shadow-lg dark:border-violet-700 dark:bg-violet-950 dark:text-violet-200">
               트랜짓이 감지되었습니다. 도착한 맵을 확인하고 있습니다.
@@ -2143,8 +2211,9 @@ export function LiveMapClientPage({
           ) : null}
           <aside
             className={cn(
-              "hidden shrink-0 flex-col border-r border-gray-200 bg-white transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:flex",
-              isLeftPanelOpen ? "w-60 lg:w-72" : "w-11",
+              "fixed inset-y-0 left-0 z-[800] w-[min(17rem,calc(100vw-4rem))] shrink-0 flex-col border-r border-gray-200 bg-white shadow-2xl transition-[width] duration-200 dark:border-[#3a3d41] dark:bg-[#1f2124] md:static md:z-auto md:flex md:shadow-none",
+              mobileSidebar === "left" ? "flex" : "hidden",
+              isLeftPanelOpen ? "md:w-60 lg:w-72" : "md:w-11",
             )}
           >
             <div
@@ -2158,7 +2227,13 @@ export function LiveMapClientPage({
                 aria-expanded={isLeftPanelOpen}
                 aria-label={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
                 title={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
-                onClick={() => setIsLeftPanelOpen((value) => !value)}
+                onClick={() => {
+                  if (mobileSidebar === "left") {
+                    setMobileSidebar(null);
+                    return;
+                  }
+                  setIsLeftPanelOpen((value) => !value);
+                }}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
               >
                 {isLeftPanelOpen ? (
@@ -2169,7 +2244,12 @@ export function LiveMapClientPage({
               </button>
             </div>
 
-            <div className={cn("min-h-0 flex-1 overflow-y-auto", !isLeftPanelOpen && "hidden")}>
+            <div
+              className={cn(
+                "min-h-0 flex-1 overflow-y-auto",
+                !isLeftPanelOpen && mobileSidebar !== "left" && "hidden",
+              )}
+            >
               <PanelBlock>
                 <div className="relative">
                   <button
@@ -2722,7 +2802,8 @@ export function LiveMapClientPage({
 
             <aside
               className={cn(
-                "hidden shrink-0 flex-col bg-white dark:bg-[#1f2124] md:order-1 md:flex md:min-h-0 md:w-full xl:order-2 xl:border-l xl:border-gray-200 dark:xl:border-[#3a3d41]",
+                "fixed inset-y-0 right-0 z-[800] w-[min(20rem,calc(100vw-3rem))] shrink-0 flex-col bg-white shadow-2xl dark:bg-[#1f2124] md:static md:z-auto md:order-1 md:flex md:min-h-0 md:w-full md:shadow-none xl:order-2 xl:border-l xl:border-gray-200 dark:xl:border-[#3a3d41]",
+                mobileSidebar === "right" ? "flex" : "hidden",
                 panel
                   ? isRightPanelOpen
                     ? "md:h-[38%] xl:h-auto"
@@ -2742,7 +2823,13 @@ export function LiveMapClientPage({
                 aria-expanded={isRightPanelOpen}
                 aria-label={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
                 title={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
-                onClick={() => setIsRightPanelOpen((value) => !value)}
+                onClick={() => {
+                  if (mobileSidebar === "right") {
+                    setMobileSidebar(null);
+                    return;
+                  }
+                  setIsRightPanelOpen((value) => !value);
+                }}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
               >
                 {isRightPanelOpen ? (
@@ -2751,7 +2838,7 @@ export function LiveMapClientPage({
                   <PanelRightOpen className="h-4 w-4" />
                 )}
               </button>
-              {isRightPanelOpen ? (
+              {isRightPanelOpen || mobileSidebar === "right" ? (
                 <button
                   type="button"
                   onClick={() => {
@@ -2768,7 +2855,12 @@ export function LiveMapClientPage({
               ) : null}
             </div>
 
-            <div className={cn("min-h-0 flex-1 overflow-y-auto", !isRightPanelOpen && "hidden")}>
+            <div
+              className={cn(
+                "min-h-0 flex-1 overflow-y-auto",
+                !isRightPanelOpen && mobileSidebar !== "right" && "hidden",
+              )}
+            >
               <RightSection
                 allLabel={copy.allOnOff}
                 completedQuestIds={completedQuestIds}

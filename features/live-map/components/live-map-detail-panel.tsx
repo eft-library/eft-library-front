@@ -203,9 +203,11 @@ export function DetailPanel({
         <button
           type="button"
           onClick={onClose}
-          className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-orange-500 dark:text-gray-400 dark:hover:bg-[#2a2d31]"
+          aria-label={locale === "ko" ? "상세 정보 닫기" : locale === "ja" ? "詳細を閉じる" : "Close details"}
+          title={locale === "ko" ? "닫기" : locale === "ja" ? "閉じる" : "Close"}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-600 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-300 dark:hover:border-orange-500 dark:hover:bg-orange-500/10 dark:hover:text-orange-300"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" />
         </button>
         </div>
         {panel.type !== "quest" && floorSummaries.length > 1 ? (

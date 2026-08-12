@@ -16,10 +16,7 @@ import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 
 import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
-import {
-  getStaticIconSvgForType,
-  getStaticMarkerColorByType,
-} from "./live-map-canvas";
+import { getDocumentMarkerColor, getDocumentMarkerSvg } from "./live-map-document-marker";
 import {
   documentSpawnDefinitions,
   getDocumentSpawnItemId,
@@ -537,10 +534,10 @@ function DocumentSpawnGroups({
                     aria-hidden="true"
                     className="absolute -bottom-0.5 -right-0.5 flex size-[18px] items-center justify-center rounded-full bg-[#111827] shadow-sm ring-1 ring-white/80 dark:ring-[#2f343a]"
                     style={{
-                      boxShadow: `inset 0 0 0 1.5px ${getStaticMarkerColorByType(`document_spawn:${definition.id}`)}`,
+                      boxShadow: `inset 0 0 0 1.5px ${getDocumentMarkerColor(definition.id)}`,
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: getStaticIconSvgForType(`document_spawn:${definition.id}`, 13),
+                      __html: getDocumentMarkerSvg(definition.id, 13),
                     }}
                   />
                 </span>
