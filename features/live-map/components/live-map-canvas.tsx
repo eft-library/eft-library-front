@@ -1548,8 +1548,20 @@ export function LiveMapCanvas({
       zoomDelta: 0.25,
       zoomSnap: 0.25,
     });
+    let previousContainerLeft = container.getBoundingClientRect().left;
     const resizeObserver = new ResizeObserver(() => {
+      const nextContainerLeft = container.getBoundingClientRect().left;
+      const horizontalShift = nextContainerLeft - previousContainerLeft;
+      previousContainerLeft = nextContainerLeft;
+
       map.invalidateSize({ debounceMoveend: true, pan: false });
+
+      // The desktop spawn panel participates in the flex layout. When its
+      // width changes, the map container's left edge moves as well. Offset
+      // Leaflet by the same amount so the map content stays fixed on screen.
+      if (Math.abs(horizontalShift) > 0.01) {
+        map.panBy([horizontalShift, 0], { animate: false });
+      }
 
       pointMarkerByIdRef.current.forEach(({ marker }) => {
         if (marker.isPopupOpen()) {
