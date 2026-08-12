@@ -2189,7 +2189,7 @@ export function LiveMapClientPage({
             aria-expanded={mobileSidebar === "left"}
             aria-label={copy.expandSpawnPanel}
             onClick={() => setMobileSidebar((current) => current === "left" ? null : "left")}
-            className="absolute left-3 top-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
+            className="absolute left-3 top-20 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
           >
             <PanelLeftOpen className="h-5 w-5" />
           </button>
