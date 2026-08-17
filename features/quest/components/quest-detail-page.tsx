@@ -17,6 +17,7 @@ import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
 import { cn } from "@/lib/utils/class-name";
+import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -485,6 +486,11 @@ function ObjectiveCard({
             {objective.count ? (
               <span className="font-normal">
                 x{objective.count.toLocaleString()}
+              </span>
+            ) : null}
+            {objective.optional ? (
+              <span className="ml-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+                {getOptionalObjectiveLabel(locale)}
               </span>
             ) : null}
           </p>

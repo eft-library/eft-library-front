@@ -14,6 +14,7 @@ import { Check, ExternalLink, MapPin, Route, X } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
+import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import type { QuestDetailItem } from "@/types/api/quest";
 import type {
   EventInfo,
@@ -588,7 +589,7 @@ function ObjectiveList({
                     ? () => onFocusObjective?.(objective)
                     : undefined
                 }
-                optional={false}
+                optional={objective.optional}
                 points={points}
                 remote={isRemote}
               />
@@ -1137,8 +1138,8 @@ function ObjectiveLine({
   const badges = (
     <>
       {optional ? (
-        <span className="ml-1 inline-flex whitespace-nowrap rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-blue-600 align-[1px] dark:bg-blue-500/10 dark:text-blue-300">
-          Optional
+        <span className="ml-1 inline-flex whitespace-nowrap rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-[11px] font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+          {getOptionalObjectiveLabel(locale)}
         </span>
       ) : null}
       {count !== null ? (

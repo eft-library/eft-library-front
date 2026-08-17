@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/config";
 import { getQuestAffinityLabel } from "@/components/shared/quest-affinity-badge";
+import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import type {
   EventInfo,
   LiveMapEventPoint,
@@ -507,7 +508,7 @@ export function getQuestPointPopupHtml(point: LiveMapQuestPoint, locale: Locale)
       ? getQuestAffinityLabel(point.quest_info.quest.affinity_type, locale)
       : undefined,
     description: point.quest_info.objective
-      ? localizedDescription(point.quest_info.objective as unknown as Record<string, unknown>, locale)
+      ? `${localizedDescription(point.quest_info.objective as unknown as Record<string, unknown>, locale)}${point.quest_info.objective.optional ? ` (${getOptionalObjectiveLabel(locale)})` : ""}`
       : "",
     images: [],
     location: "",
@@ -531,7 +532,7 @@ export function getQuestDetailPointPopupHtml(
     affinityLabel: info.quest.affinity_type
       ? getQuestAffinityLabel(info.quest.affinity_type, locale)
       : undefined,
-    description: getQuestObjectiveDescription(objective, locale),
+    description: `${getQuestObjectiveDescription(objective, locale)}${objective?.optional ? ` (${getOptionalObjectiveLabel(locale)})` : ""}`,
     detailTexts: getDetailTexts(details, locale),
     images: getPopupImages(details, locale),
     location: getPointDetailText(selectedPoint, locale),

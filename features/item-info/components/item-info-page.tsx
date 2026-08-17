@@ -36,6 +36,7 @@ import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import type { Locale } from "@/i18n/config";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
+import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import type {
   ItemInfoResponse,
   ConsumableStimEffect,
@@ -1867,6 +1868,9 @@ export function ItemInfoPage({
                     ) : null}
                     {entry.objective.found_in_raid ? (
                       <RaidRequiredBadge label={copy.labels.foundInRaid} />
+                    ) : null}
+                    {entry.objective.optional ? (
+                      <Badge>{getOptionalObjectiveLabel(locale)}</Badge>
                     ) : null}
                   </div>
                 </div>

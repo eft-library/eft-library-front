@@ -7,6 +7,7 @@ import { Search, Skull } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
+import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -59,6 +60,7 @@ const fallbackDash = "-";
 interface ObjectiveRow {
   text: string;
   count: number | null;
+  optional: boolean;
   type: string | null;
 }
 
@@ -119,7 +121,7 @@ function getExperienceFromEntry(entry: QuestListRow) {
 
 function getObjectiveRows(objectives: QuestObjective[], locale: Locale): ObjectiveRow[] {
   if (objectives.length === 0) {
-    return [{ text: fallbackDash, count: null, type: null }];
+    return [{ text: fallbackDash, count: null, optional: false, type: null }];
   }
 
   return objectives.map((objective) => {
@@ -134,6 +136,7 @@ function getObjectiveRows(objectives: QuestObjective[], locale: Locale): Objecti
       return {
         text: description,
         count: null,
+        optional: objective.optional,
         type: objective.type,
       };
     }
@@ -141,6 +144,7 @@ function getObjectiveRows(objectives: QuestObjective[], locale: Locale): Objecti
     return {
       text: description,
       count: objective.count,
+      optional: objective.optional,
       type: objective.type,
     };
   });
@@ -389,6 +393,11 @@ export function QuestListPage({
                       {objectiveRows.map((objective, index) => (
                         <li key={`${quest.id}-objective-${index}`} className="break-words">
                           <span>{objective.text}</span>
+                          {objective.optional ? (
+                            <span className="ml-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+                              {getOptionalObjectiveLabel(locale)}
+                            </span>
+                          ) : null}
                           {objective.type === "shoot" ? (
                             <Skull
                               aria-hidden="true"

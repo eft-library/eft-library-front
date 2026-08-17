@@ -87,6 +87,7 @@ export interface LiveMapQuestObjective {
   description_ja: string | null;
   count: number | null;
   found_in_raid: boolean | null;
+  optional: boolean;
   items: LiveMapObjectiveItem[];
   required_keys: QuestDetailItem[];
   maps: QuestObjectiveMap[];
@@ -136,6 +137,7 @@ export interface LiveMapQuestSummaryInfo {
     description_ja: string | null;
     count: number | null;
     found_in_raid: boolean | null;
+    optional: boolean;
   } | null;
 }
 

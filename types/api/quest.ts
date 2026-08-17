@@ -77,6 +77,7 @@ export interface QuestObjective {
   description_ja: string;
   count: number | null;
   found_in_raid: boolean | null;
+  optional: boolean;
   items: QuestObjectiveItem[];
   required_keys: QuestDetailItem[];
   maps: QuestObjectiveMap[];

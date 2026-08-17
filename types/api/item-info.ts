@@ -62,6 +62,7 @@ export interface QuestObjectiveInfo {
   description_ja: string | null;
   count: number | null;
   found_in_raid: boolean | null;
+  optional: boolean;
   item_type: string | null;
 }
 
