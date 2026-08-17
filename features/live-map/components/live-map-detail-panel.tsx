@@ -1135,13 +1135,13 @@ function ObjectiveLine({
       }),
     ),
   );
+  const optionalBadge = optional ? (
+    <span className="mr-1 inline-flex whitespace-nowrap rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-[11px] font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+      {getOptionalObjectiveLabel(locale)}
+    </span>
+  ) : null;
   const badges = (
     <>
-      {optional ? (
-        <span className="ml-1 inline-flex whitespace-nowrap rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-[11px] font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
-          {getOptionalObjectiveLabel(locale)}
-        </span>
-      ) : null}
       {count !== null ? (
         <span className="ml-1 inline-flex whitespace-nowrap rounded bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-orange-600 align-[1px] dark:bg-orange-500/10 dark:text-orange-300">
           x{count}
@@ -1174,11 +1174,13 @@ function ObjectiveLine({
                   : "text-orange-600 dark:text-orange-300",
               )}
             >
+              {optionalBadge}
               {description || "-"}
               {badges}
             </button>
           ) : (
             <span>
+              {optionalBadge}
               {description || "-"}
               {badges}
             </span>

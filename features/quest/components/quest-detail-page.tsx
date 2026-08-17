@@ -474,6 +474,11 @@ function ObjectiveCard({
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm leading-6 text-gray-800 dark:text-gray-200">
+            {objective.optional ? (
+              <span className="mr-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+                {getOptionalObjectiveLabel(locale)}
+              </span>
+            ) : null}
             {description}
             {objective.type === "shoot" ? (
               <Skull
@@ -486,11 +491,6 @@ function ObjectiveCard({
             {objective.count ? (
               <span className="font-normal">
                 x{objective.count.toLocaleString()}
-              </span>
-            ) : null}
-            {objective.optional ? (
-              <span className="ml-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 align-[1px] dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
-                {getOptionalObjectiveLabel(locale)}
               </span>
             ) : null}
           </p>

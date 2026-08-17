@@ -392,12 +392,12 @@ export function QuestListPage({
                     <ul className="space-y-1">
                       {objectiveRows.map((objective, index) => (
                         <li key={`${quest.id}-objective-${index}`} className="break-words">
-                          <span>{objective.text}</span>
                           {objective.optional ? (
-                            <span className="ml-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
+                            <span className="mr-1 inline-flex rounded-md border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-bold leading-none text-teal-700 dark:border-teal-400/30 dark:bg-teal-400/10 dark:text-teal-200">
                               {getOptionalObjectiveLabel(locale)}
                             </span>
                           ) : null}
+                          <span>{objective.text}</span>
                           {objective.type === "shoot" ? (
                             <Skull
                               aria-hidden="true"
