@@ -84,11 +84,13 @@ function SearchAutocomplete({
   locale,
   placeholder,
   noResultsLabel,
+  onNavigate,
 }: {
   autocompleteItems: HomeAutocompleteItem[];
   locale: Locale;
   placeholder: string;
   noResultsLabel: string;
+  onNavigate?: () => void;
 }) {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -182,6 +184,7 @@ function SearchAutocomplete({
   const onSelect = (item: HomeAutocompleteItem) => {
     setQuery("");
     setIsOpen(false);
+    onNavigate?.();
     router.push(item.url);
   };
 
@@ -452,6 +455,7 @@ export function SiteHeader({
               locale={locale}
               placeholder={searchPlaceholder}
               noResultsLabel={noSearchResultsLabel}
+              onNavigate={() => setIsMobileOpen(false)}
             />
 
             {status === "authenticated" ? (

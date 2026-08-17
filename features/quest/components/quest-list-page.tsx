@@ -109,6 +109,14 @@ function getRewardsFromEntry(entry: QuestListRow) {
   return emptyRewards;
 }
 
+function getExperienceFromEntry(entry: QuestListRow) {
+  if (hasHydratedQuest(entry)) {
+    return entry.quest.experience;
+  }
+
+  return null;
+}
+
 function getObjectiveRows(objectives: QuestObjective[], locale: Locale): ObjectiveRow[] {
   if (objectives.length === 0) {
     return [{ text: fallbackDash, count: null, type: null }];
@@ -138,7 +146,14 @@ function getObjectiveRows(objectives: QuestObjective[], locale: Locale): Objecti
   });
 }
 
-function getRewardRows(rewards: QuestRewardGroup, locale: Locale) {
+function getRewardRows(
+  rewards: QuestRewardGroup,
+  experience: number | null,
+  locale: Locale,
+) {
+  const experienceRewards = experience && experience > 0
+    ? [`${experience.toLocaleString()} EXP`]
+    : [];
   const itemRewards = rewards.items.map((reward) => {
     const name = getLocalizedValue(
       reward.item as unknown as Record<string, unknown>,
@@ -194,6 +209,7 @@ function getRewardRows(rewards: QuestRewardGroup, locale: Locale) {
     return `${skillName} +${reward.skill_level}`;
   });
   const rows = [
+    ...experienceRewards,
     ...itemRewards,
     ...standingRewards,
     ...offerRewards,
@@ -340,6 +356,7 @@ export function QuestListPage({
               );
               const rewardRows = getRewardRows(
                 getRewardsFromEntry(entry),
+                getExperienceFromEntry(entry),
                 locale,
               );
 
