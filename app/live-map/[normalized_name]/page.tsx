@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { LiveMapPage } from "@/features/live-map/components/live-map-page";
 import { getLiveMapCompletionGraph, getLiveMapDetail } from "@/features/live-map/api";
@@ -28,7 +29,19 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({
+export default function Page({
+  params,
+}: {
+  params: Promise<{ normalized_name: string }>;
+}) {
+  return (
+    <Suspense fallback={<LiveMapLoadingFallback />}>
+      <LiveMapContent params={params} />
+    </Suspense>
+  );
+}
+
+async function LiveMapContent({
   params,
 }: {
   params: Promise<{ normalized_name: string }>;
@@ -49,5 +62,23 @@ export default async function Page({
       initialCompletionGraph={completionGraph}
       normalizedName={normalizedName}
     />
+  );
+}
+
+function LiveMapLoadingFallback() {
+  return (
+    <div
+      className="flex min-h-[60vh] items-center justify-center bg-background text-foreground"
+      role="status"
+      aria-live="polite"
+    >
+      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <span
+          className="size-5 animate-spin rounded-full border-2 border-current border-r-transparent"
+          aria-hidden="true"
+        />
+        <span>지도를 불러오는 중...</span>
+      </div>
+    </div>
   );
 }

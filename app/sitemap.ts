@@ -15,8 +15,6 @@ interface SitemapApiItem {
 const revalidateSeconds = 60 * 60 * 24 * 30;
 const removedRoutes = new Set(["/minigame"]);
 
-export const revalidate = 2592000;
-
 function toChangeFrequency(
   value: string,
 ): MetadataRoute.Sitemap[number]["changeFrequency"] {
