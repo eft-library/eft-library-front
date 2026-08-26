@@ -16,7 +16,7 @@ export const documentSpawnDefinitions: DocumentSpawnDefinition[] = [
   {
     id: "6a31830dde69ceafd805afa0",
     image: "https://assets.tarkov.dev/6a31830dde69ceafd805afa0-grid-image.webp",
-    labels: { ko: "기술 문서", en: "Technical documentation", ja: "技術文書" },
+    labels: { ko: "장비 문서", en: "Technical documentation", ja: "技術文書" },
   },
   {
     id: "6a3182dc6cd8de21cf0a3a7d",
@@ -36,17 +36,17 @@ export const documentSpawnDefinitions: DocumentSpawnDefinition[] = [
   {
     id: "6a317b9692cfdcddcb02a58e",
     image: "https://assets.tarkov.dev/6a317b9692cfdcddcb02a58e-grid-image.webp",
-    labels: { ko: "PMC 인사 파일", en: "PMC personnel files", ja: "PMC人事ファイル" },
+    labels: { ko: "PMC 인사 기록", en: "PMC personnel files", ja: "PMC人事ファイル" },
   },
   {
     id: "6a31807f17005505b70d5827",
     image: "https://assets.tarkov.dev/6a31807f17005505b70d5827-grid-image.webp",
-    labels: { ko: "재무 문서", en: "Financial documents", ja: "財務文書" },
+    labels: { ko: "회계 문서", en: "Financial documents", ja: "財務文書" },
   },
   {
     id: "6a31828557705071410ca00e",
     image: "https://assets.tarkov.dev/6a31828557705071410ca00e-grid-image.webp",
-    labels: { ko: "시험 문서", en: "Test documentation", ja: "テスト文書" },
+    labels: { ko: "테스트 문서", en: "Test documentation", ja: "テスト文書" },
   },
 ];
 

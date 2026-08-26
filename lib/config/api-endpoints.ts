@@ -55,8 +55,13 @@ export const apiEndpoints = {
   kordBreachSavePreset: "/api/kord-breach/v3/save-preset",
   kordBreachDeletePreset: "/api/kord-breach/v3/delete-preset",
   kordBreachRandom: "/api/kord-breach/v3/random",
+  battlePassActive: "/api/battle-pass/v3/active",
   deploymentNoticeStatus: "/api/deployment-notice/v3/status",
 } as const;
+
+export function getBattlePassDetailEndpoint(seasonCode: string) {
+  return `/api/battle-pass/v3/detail/${encodeURIComponent(seasonCode)}`;
+}
 
 export function getItemListEndpoint(itemType: string) {
   return `/api/item/v3/list/${itemType}`;
