@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { HomePage } from "@/features/home/components/home-page";
 import { getHomeMain, getHomePosts } from "@/features/home/api";
 import { getUserLocale } from "@/i18n/locale";
@@ -11,7 +13,15 @@ export const metadata = createPageMetadata({
   path: "/",
 });
 
-export default async function Page() {
+export default function Page() {
+  return (
+    <Suspense fallback={<HomePageFallback />}>
+      <HomePageContent />
+    </Suspense>
+  );
+}
+
+async function HomePageContent() {
   const [home, homePosts, locale] = await Promise.all([
     getHomeMain(),
     getHomePosts().catch(() => null),
@@ -37,5 +47,22 @@ export default async function Page() {
       }}
       locale={locale}
     />
+  );
+}
+
+function HomePageFallback() {
+  return (
+    <main className="mx-auto min-h-[70vh] w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="h-56 animate-pulse rounded-xl border border-line bg-surface" />
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }, (_, index) => (
+          <div
+            key={index}
+            className="h-32 animate-pulse rounded-xl border border-line bg-surface"
+          />
+        ))}
+      </div>
+      <span className="sr-only">홈 화면을 불러오는 중...</span>
+    </main>
   );
 }
