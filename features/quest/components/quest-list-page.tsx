@@ -72,6 +72,7 @@ const emptyRewards: QuestRewardGroup = {
   offer_unlock: [],
   items: [],
   craft_unlock: [],
+  customizations: [],
 };
 
 function getLocalizedValue(
@@ -212,6 +213,22 @@ function getRewardRows(
 
     return `${skillName} +${reward.skill_level}`;
   });
+  const customizationRewards = rewards.customizations.map((customization) => {
+    const name = getLocalizedValue(
+      customization as unknown as Record<string, unknown>,
+      locale,
+      "name",
+      customization.name_en ?? customization.id,
+    );
+    const typeName = getLocalizedValue(
+      customization as unknown as Record<string, unknown>,
+      locale,
+      "customization_type_name",
+      customization.customization_type_name_en ?? customization.customization_type ?? "",
+    );
+
+    return typeName ? `${name} · ${typeName}` : name;
+  });
   const rows = [
     ...experienceRewards,
     ...itemRewards,
@@ -219,6 +236,7 @@ function getRewardRows(
     ...offerRewards,
     ...craftRewards,
     ...skillRewards,
+    ...customizationRewards,
   ];
 
   return rows.length > 0 ? rows : [fallbackDash];

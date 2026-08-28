@@ -1,6 +1,7 @@
 import type { MapSelectorEntry } from "@/types/api/map-of-tarkov";
 import type {
   QuestAffinityType,
+  QuestCustomizationRewardGroup,
   QuestDetailItem,
   QuestObjectiveMap,
   QuestRelatedEntry,
@@ -114,7 +115,9 @@ export interface LiveMapQuestInfo {
   require_quests: QuestRelatedEntry[];
   next_quests: QuestRelatedEntry[];
   objectives: LiveMapQuestObjective[];
+  start_rewards: QuestCustomizationRewardGroup;
   finish_rewards: QuestRewardGroup;
+  failure_rewards: QuestCustomizationRewardGroup;
 }
 
 export interface LiveMapQuestSummaryInfo {

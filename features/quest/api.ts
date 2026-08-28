@@ -1,3 +1,4 @@
+import { apiGet } from "@/lib/api/api-client";
 import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import {
   getQuestDetailEndpoint,
@@ -34,15 +35,13 @@ export function getQuestCompletionGraph() {
 }
 
 export function getQuestListWithTrader(traderNormalizedName: string) {
-  return staticJsonGetWithFallback<QuestListWithTraderResponse>("quest", `/static/quest/v3/list-with-trader/${traderNormalizedName}.json`, {
-    apiPath: getQuestListWithTraderEndpoint(traderNormalizedName),
-    revalidate: 60 * 60 * 24,
+  return apiGet<QuestListWithTraderResponse>(getQuestListWithTraderEndpoint(traderNormalizedName), {
+    revalidate: 60 * 30,
   });
 }
 
 export function getQuestDetail(normalizedName: string) {
-  return staticJsonGetWithFallback<QuestDetailResponse>("quest", `/static/quest/v3/details/${normalizedName}.json`, {
-    apiPath: getQuestDetailEndpoint(normalizedName),
-    revalidate: 60 * 60 * 24,
+  return apiGet<QuestDetailResponse>(getQuestDetailEndpoint(normalizedName), {
+    revalidate: 60 * 30,
   });
 }

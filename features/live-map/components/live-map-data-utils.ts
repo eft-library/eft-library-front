@@ -220,6 +220,7 @@ export function getEventId(point: LiveMapEventPoint) {
 
 export function toLiveMapQuestInfo(response: QuestDetailResponse): LiveMapQuestInfo {
   return {
+    failure_rewards: response.failure_rewards,
     finish_rewards: response.finish_rewards,
     next_quests: response.next_quests,
     objectives: response.objectives.map((objective) => ({
@@ -230,6 +231,7 @@ export function toLiveMapQuestInfo(response: QuestDetailResponse): LiveMapQuestI
     })),
     quest: response.quest,
     require_quests: response.require_quests,
+    start_rewards: response.start_rewards,
     trader: response.trader,
   };
 }

@@ -114,6 +114,31 @@ export interface QuestRewardCraftUnlock {
   reward_item: QuestDetailItem | null;
 }
 
+export interface QuestCustomizationItem {
+  id: string;
+  normalized_name: string | null;
+  name_en: string | null;
+  name_ko: string | null;
+  name_ja: string | null;
+  image: string | null;
+}
+
+export interface QuestCustomization {
+  id: string;
+  name_key: string | null;
+  name_en: string | null;
+  name_ko: string | null;
+  name_ja: string | null;
+  image_link: string | null;
+  customization_type: string | null;
+  customization_type_name_key: string | null;
+  customization_type_name_en: string | null;
+  customization_type_name_ko: string | null;
+  customization_type_name_ja: string | null;
+  items: QuestCustomizationItem[];
+  sort_order: number | null;
+}
+
 export interface QuestBase {
   id: string;
   normalized_name: string;
@@ -135,6 +160,11 @@ export interface QuestRewardGroup {
   offer_unlock: QuestRewardOfferUnlock[];
   items: QuestRewardItem[];
   craft_unlock: QuestRewardCraftUnlock[];
+  customizations: QuestCustomization[];
+}
+
+export interface QuestCustomizationRewardGroup {
+  customizations: QuestCustomization[];
 }
 
 export interface QuestListWithTraderEntry {
@@ -161,7 +191,9 @@ export interface QuestDetailResponse {
   require_quests: QuestRelatedEntry[];
   next_quests: QuestRelatedEntry[];
   objectives: QuestObjective[];
+  start_rewards: QuestCustomizationRewardGroup;
   finish_rewards: QuestRewardGroup;
+  failure_rewards: QuestCustomizationRewardGroup;
 }
 export interface QuestCompletionGraphNode {
   id: string;

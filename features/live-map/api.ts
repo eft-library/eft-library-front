@@ -53,9 +53,8 @@ export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapP
 }
 
 export function getLiveMapQuestDetail(questIdOrNormalizedName: string) {
-  return staticJsonGetWithFallback<LiveMapQuestInfo>("live-map", `/static/live-map/v3/quests/${questIdOrNormalizedName}.json`, {
-    apiPath: getLiveMapQuestDetailEndpoint(questIdOrNormalizedName),
-    revalidate: 60 * 60 * 24,
+  return apiGet<LiveMapQuestInfo>(getLiveMapQuestDetailEndpoint(questIdOrNormalizedName), {
+    revalidate: 60 * 30,
   });
 }
 

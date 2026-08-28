@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
+  Palette,
   Skull,
   Star,
 } from "lucide-react";
@@ -21,6 +22,8 @@ import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
 import type { Locale } from "@/i18n/config";
 import type {
+  QuestCustomization,
+  QuestCustomizationItem,
   QuestDetailItem,
   QuestDetailResponse,
   QuestObjective,
@@ -42,6 +45,11 @@ const copyByLocale = {
     noRequirements: "이전 퀘스트 없음",
     noNextQuests: "다음 퀘스트 없음",
     rewards: "보상",
+    startRewards: "시작 보상",
+    finishRewards: "완료 보상",
+    failureRewards: "실패 보상",
+    customizations: "커스터마이징",
+    relatedItems: "연결 아이템",
     trader: "트레이더",
     minLevel: "LV.",
     experience: "경험치",
@@ -67,6 +75,11 @@ const copyByLocale = {
     noRequirements: "No previous quests",
     noNextQuests: "No next quests",
     rewards: "Rewards",
+    startRewards: "Start rewards",
+    finishRewards: "Completion rewards",
+    failureRewards: "Failure rewards",
+    customizations: "Customizations",
+    relatedItems: "Related items",
     trader: "Trader",
     minLevel: "LV.",
     experience: "Experience",
@@ -92,6 +105,11 @@ const copyByLocale = {
     noRequirements: "前提クエストなし",
     noNextQuests: "後続クエストなし",
     rewards: "報酬",
+    startRewards: "開始報酬",
+    finishRewards: "完了報酬",
+    failureRewards: "失敗報酬",
+    customizations: "カスタマイズ",
+    relatedItems: "関連アイテム",
     trader: "トレーダー",
     minLevel: "LV.",
     experience: "経験値",
@@ -248,54 +266,84 @@ export function QuestDetailPage({
 
         <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
           <SectionTitle>{copy.rewards}</SectionTitle>
-          <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-2">
-            <div className="grid min-w-0 content-start gap-6">
-              {data.quest.experience !== null && data.quest.experience !== undefined ? (
-                <ExperienceReward
-                  title={copy.experience}
-                  value={data.quest.experience}
-                  locale={locale}
-                />
-              ) : null}
-              {data.finish_rewards.trader_standing.length > 0 ? (
-                <StandingSection
-                  title={copy.standing}
-                  items={data.finish_rewards.trader_standing}
-                  locale={locale}
-                />
-              ) : null}
-              {data.finish_rewards.skill_level_reward.length > 0 ? (
-                <SkillSection
-                  title={copy.skill}
-                  items={data.finish_rewards.skill_level_reward}
-                  locale={locale}
-                />
-              ) : null}
+          {data.start_rewards.customizations.length > 0 ? (
+            <RewardPhase title={copy.startRewards} className="mt-5">
+              <CustomizationSection
+                title={copy.customizations}
+                items={data.start_rewards.customizations}
+                locale={locale}
+                relatedItemsLabel={copy.relatedItems}
+              />
+            </RewardPhase>
+          ) : null}
+          <RewardPhase title={copy.finishRewards} className="mt-5">
+            <div className="grid min-w-0 gap-6 lg:grid-cols-2">
+              <div className="grid min-w-0 content-start gap-6">
+                {data.quest.experience !== null && data.quest.experience !== undefined ? (
+                  <ExperienceReward
+                    title={copy.experience}
+                    value={data.quest.experience}
+                    locale={locale}
+                  />
+                ) : null}
+                {data.finish_rewards.trader_standing.length > 0 ? (
+                  <StandingSection
+                    title={copy.standing}
+                    items={data.finish_rewards.trader_standing}
+                    locale={locale}
+                  />
+                ) : null}
+                {data.finish_rewards.skill_level_reward.length > 0 ? (
+                  <SkillSection
+                    title={copy.skill}
+                    items={data.finish_rewards.skill_level_reward}
+                    locale={locale}
+                  />
+                ) : null}
+              </div>
+              <div className="grid min-w-0 content-start gap-6">
+                {data.finish_rewards.items.length > 0 ? (
+                  <RewardItemSection
+                    title={copy.items}
+                    rewards={data.finish_rewards.items}
+                    locale={locale}
+                  />
+                ) : null}
+                {data.finish_rewards.offer_unlock.length > 0 ? (
+                  <OfferSection
+                    title={copy.offers}
+                    items={data.finish_rewards.offer_unlock}
+                    locale={locale}
+                  />
+                ) : null}
+                {data.finish_rewards.craft_unlock.length > 0 ? (
+                  <CraftSection
+                    title={copy.crafts}
+                    items={data.finish_rewards.craft_unlock}
+                    locale={locale}
+                  />
+                ) : null}
+                {data.finish_rewards.customizations.length > 0 ? (
+                  <CustomizationSection
+                    title={copy.customizations}
+                    items={data.finish_rewards.customizations}
+                    locale={locale}
+                    relatedItemsLabel={copy.relatedItems}
+                  />
+                ) : null}
+              </div>
             </div>
-            <div className="grid min-w-0 content-start gap-6">
-              {data.finish_rewards.items.length > 0 ? (
-                <RewardItemSection
-                  title={copy.items}
-                  rewards={data.finish_rewards.items}
-                  locale={locale}
-                />
-              ) : null}
-              {data.finish_rewards.offer_unlock.length > 0 ? (
-                <OfferSection
-                  title={copy.offers}
-                  items={data.finish_rewards.offer_unlock}
-                  locale={locale}
-                />
-              ) : null}
-              {data.finish_rewards.craft_unlock.length > 0 ? (
-                <CraftSection
-                  title={copy.crafts}
-                  items={data.finish_rewards.craft_unlock}
-                  locale={locale}
-                />
-              ) : null}
-            </div>
-          </div>
+          </RewardPhase>
+          {data.failure_rewards.customizations.length > 0 ? (
+            <RewardPhase title={copy.failureRewards} className="mt-5">
+              <CustomizationSection
+                title={copy.customizations}
+                items={data.failure_rewards.customizations}
+                locale={locale}
+                relatedItemsLabel={copy.relatedItems}
+              />
+            </RewardPhase>
+          ) : null}
         </section>
 
         <HorizontalAdBanner />
@@ -791,6 +839,127 @@ function RewardGroup({
       <h3 className="text-sm font-black text-gray-900 dark:text-gray-100">{title}</h3>
       <ExpandableChildren copy={copy}>{children}</ExpandableChildren>
     </div>
+  );
+}
+
+function RewardPhase({
+  title,
+  className,
+  children,
+}: {
+  title: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={cn("rounded-lg border border-gray-200 bg-gray-50/70 p-4 dark:border-[#2a3038] dark:bg-[#15191e]", className)}>
+      <h3 className="mb-4 text-xs font-black uppercase tracking-[0.12em] text-orange-600 dark:text-orange-300">{title}</h3>
+      {children}
+    </div>
+  );
+}
+
+function CustomizationSection({
+  title,
+  items,
+  locale,
+  relatedItemsLabel,
+}: {
+  title: string;
+  items: QuestCustomization[];
+  locale: Locale;
+  relatedItemsLabel: string;
+}) {
+  return (
+    <RewardGroup title={title} copy={copyByLocale[locale]}>
+      {items.map((customization) => (
+        <CustomizationCard
+          key={customization.id}
+          customization={customization}
+          locale={locale}
+          relatedItemsLabel={relatedItemsLabel}
+        />
+      ))}
+    </RewardGroup>
+  );
+}
+
+function CustomizationCard({
+  customization,
+  locale,
+  relatedItemsLabel,
+}: {
+  customization: QuestCustomization;
+  locale: Locale;
+  relatedItemsLabel: string;
+}) {
+  const name = getLocalizedValue(
+    customization as unknown as Record<string, unknown>,
+    locale,
+    "name",
+    customization.name_en ?? customization.id,
+  );
+  const typeName = getLocalizedValue(
+    customization as unknown as Record<string, unknown>,
+    locale,
+    "customization_type_name",
+    customization.customization_type_name_en ?? customization.customization_type ?? "",
+  );
+
+  return (
+    <article className="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-[#2a3038] dark:bg-[#181c21]">
+      <div className="flex min-w-0 items-center gap-3 p-3">
+        <span className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-gray-100 dark:bg-[#20242b]">
+          {customization.image_link ? (
+            <Image src={customization.image_link} alt={name} fill sizes="64px" className="object-contain" />
+          ) : (
+            <Palette className="h-7 w-7 text-gray-400" aria-hidden="true" />
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          {typeName ? <small className="block truncate text-[11px] font-bold uppercase tracking-[0.08em] text-orange-600 dark:text-orange-300">{typeName}</small> : null}
+          <strong className="mt-1 block truncate text-sm text-gray-900 dark:text-gray-100">{name}</strong>
+        </span>
+      </div>
+      {customization.items.length > 0 ? (
+        <div className="border-t border-gray-200 px-3 pb-3 dark:border-[#2a3038]">
+          <p className="py-2 text-[11px] font-bold text-gray-500 dark:text-gray-400">{relatedItemsLabel}</p>
+          <div className="grid gap-2">
+            {customization.items.map((item) => (
+              <CustomizationItemCard key={item.id} item={item} locale={locale} />
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
+function CustomizationItemCard({ item, locale }: { item: QuestCustomizationItem; locale: Locale }) {
+  const name = getLocalizedValue(
+    item as unknown as Record<string, unknown>,
+    locale,
+    "name",
+    item.name_en ?? item.id,
+  );
+  const content = (
+    <>
+      {item.image ? (
+        <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-[#20242b]">
+          <Image src={item.image} alt="" fill sizes="32px" className="object-contain" />
+        </span>
+      ) : null}
+      <span className="min-w-0 flex-1 truncate">{name}</span>
+    </>
+  );
+  const className = "flex min-w-0 items-center gap-2 rounded-md border border-gray-200 bg-gray-50 p-2 text-xs dark:border-[#2a3038] dark:bg-[#20242b]";
+
+  return item.normalized_name ? (
+    <Link href={`/item/info/${item.normalized_name}`} target="_blank" rel="noopener noreferrer" className={`${className} hover:border-orange-300 hover:text-orange-500 dark:hover:border-orange-500 dark:hover:text-orange-300`}>
+      {content}
+    </Link>
+  ) : (
+    <div className={className}>{content}</div>
   );
 }
 

@@ -15,7 +15,7 @@ import type { Locale } from "@/i18n/config";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
-import type { QuestDetailItem } from "@/types/api/quest";
+import type { QuestCustomization, QuestDetailItem } from "@/types/api/quest";
 import type {
   EventInfo,
   EventObjective,
@@ -1398,13 +1398,19 @@ function QuestRewardList({
   locale: Locale;
 }) {
   const rewards = info.finish_rewards;
+  const startCustomizations = info.start_rewards.customizations;
+  const finishCustomizations = rewards.customizations;
+  const failureCustomizations = info.failure_rewards.customizations;
   const hasRewards =
     !!info.quest.experience ||
     rewards.trader_standing.length > 0 ||
     rewards.skill_level_reward.length > 0 ||
     rewards.items.length > 0 ||
     rewards.offer_unlock.length > 0 ||
-    rewards.craft_unlock.length > 0;
+    rewards.craft_unlock.length > 0 ||
+    startCustomizations.length > 0 ||
+    finishCustomizations.length > 0 ||
+    failureCustomizations.length > 0;
 
   if (!hasRewards) {
     return null;
@@ -1416,6 +1422,14 @@ function QuestRewardList({
         {copy.rewards}
       </h4>
       <div className="space-y-3">
+        {startCustomizations.length > 0 ? (
+          <CustomizationRewardBlock
+            copy={copy}
+            items={startCustomizations}
+            locale={locale}
+            phaseTitle={copy.startRewards}
+          />
+        ) : null}
         {info.quest.experience ? (
           <RewardBlock copy={copy} title={copy.experience}>
             <RewardPill>{info.quest.experience.toLocaleString()} EXP</RewardPill>
@@ -1491,8 +1505,115 @@ function QuestRewardList({
             )}
           </RewardBlock>
         ) : null}
+        {finishCustomizations.length > 0 ? (
+          <CustomizationRewardBlock
+            copy={copy}
+            items={finishCustomizations}
+            locale={locale}
+            phaseTitle={copy.finishRewards}
+          />
+        ) : null}
+        {failureCustomizations.length > 0 ? (
+          <CustomizationRewardBlock
+            copy={copy}
+            items={failureCustomizations}
+            locale={locale}
+            phaseTitle={copy.failureRewards}
+          />
+        ) : null}
       </div>
     </section>
+  );
+}
+
+function CustomizationRewardBlock({
+  copy,
+  items,
+  locale,
+  phaseTitle,
+}: {
+  copy: LiveMapCopy;
+  items: QuestCustomization[];
+  locale: Locale;
+  phaseTitle: string;
+}) {
+  return (
+    <RewardBlock copy={copy} title={`${phaseTitle} · ${copy.customizations}`}>
+      {items.map((customization) => (
+        <LiveMapCustomizationCard
+          key={customization.id}
+          copy={copy}
+          customization={customization}
+          locale={locale}
+        />
+      ))}
+    </RewardBlock>
+  );
+}
+
+function LiveMapCustomizationCard({
+  copy,
+  customization,
+  locale,
+}: {
+  copy: LiveMapCopy;
+  customization: QuestCustomization;
+  locale: Locale;
+}) {
+  const name = localizedName(customization as unknown as Record<string, unknown>, locale);
+  const typeName = String(
+    localizedName(
+      {
+        name_en: customization.customization_type_name_en ?? customization.customization_type,
+        name_ko: customization.customization_type_name_ko,
+        name_ja: customization.customization_type_name_ja,
+      },
+      locale,
+    ) || customization.customization_type || "",
+  );
+
+  return (
+    <div className="overflow-hidden rounded-md border border-gray-200 bg-gray-50 dark:border-[#3a3d41] dark:bg-[#15171a]">
+      <div className="flex min-w-0 items-center gap-2 p-2">
+        <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded bg-white dark:bg-[#20242b]">
+          {customization.image_link ? (
+            <Image
+              alt={name}
+              className="h-full w-full object-contain"
+              height={44}
+              src={customization.image_link}
+              width={44}
+            />
+          ) : null}
+        </span>
+        <span className="min-w-0 flex-1">
+          <strong className="block truncate text-xs text-gray-800 dark:text-gray-100">{name}</strong>
+          {typeName ? <small className="mt-0.5 block truncate text-[10px] text-orange-600 dark:text-orange-300">{typeName}</small> : null}
+        </span>
+      </div>
+      {customization.items.length > 0 ? (
+        <div className="border-t border-gray-200 px-2 pb-2 dark:border-[#3a3d41]">
+          <p className="py-1.5 text-[10px] font-bold text-gray-500 dark:text-gray-400">{copy.relatedItems}</p>
+          <div className="grid gap-1.5">
+            {customization.items.map((item) =>
+              item.normalized_name ? (
+                <RewardItemLink
+                  key={item.id}
+                  image={item.image}
+                  meta=""
+                  name={localizedName(item as unknown as Record<string, unknown>, locale)}
+                  normalizedName={item.normalized_name}
+                />
+              ) : (
+                <RewardPill key={item.id}>
+                  {localizedName(item as unknown as Record<string, unknown>, locale)}
+                </RewardPill>
+              ),
+            )}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -1671,7 +1792,7 @@ function RewardItemLink({
   tone = "default",
 }: {
   image: string | null;
-  meta: string;
+  meta?: string;
   name: string;
   normalizedName: string;
   tone?: "default" | "success";
@@ -1700,16 +1821,18 @@ function RewardItemLink({
         ) : null}
       </span>
       <span className="min-w-0 flex-1 truncate">{name}</span>
-      <span
-        className={cn(
-          "shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold",
-          tone === "success"
-            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
-            : "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300",
-        )}
-      >
-        {meta}
-      </span>
+      {meta ? (
+        <span
+          className={cn(
+            "shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold",
+            tone === "success"
+              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
+              : "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300",
+          )}
+        >
+          {meta}
+        </span>
+      ) : null}
     </a>
   );
 }
