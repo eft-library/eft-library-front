@@ -48,6 +48,7 @@ export interface BattlePassReward {
 
 export interface BattlePassPage {
   page_number: number;
+  required_previous_page_reward_count: number;
   rewards: BattlePassReward[];
 }
 

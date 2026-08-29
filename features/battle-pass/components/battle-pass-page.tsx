@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FileQuestion, Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import type {
   BattlePassData,
@@ -21,7 +22,7 @@ const copy = {
     rewards: "보상",
     rewardCount: (count: number) => `보상 ${count}개`,
     pageRewards: (page: number) => `${page}페이지 보상`,
-    unlockNotice: "이전 페이지에서 일정 수의 보상을 획득하면 해금됩니다.",
+    unlockNotice: (count: number) => `이전 페이지에서 보상 ${count}개 획득 시 해금됩니다.`,
     requirements: "필요 문서",
     documentIndex: "DOCUMENT INDEX",
     documentList: "필요 문서 목록",
@@ -52,7 +53,7 @@ const copy = {
     rewards: "Rewards",
     rewardCount: (count: number) => `${count} rewards`,
     pageRewards: (page: number) => `Page ${page} Rewards`,
-    unlockNotice: "Unlocks after earning a certain number of rewards from the previous page.",
+    unlockNotice: (count: number) => `Unlocks after earning ${count} rewards from the previous page.`,
     requirements: "Required documents",
     documentIndex: "DOCUMENT INDEX",
     documentList: "Required Document List",
@@ -83,7 +84,7 @@ const copy = {
     rewards: "報酬",
     rewardCount: (count: number) => `報酬 ${count}個`,
     pageRewards: (page: number) => `${page}ページ報酬`,
-    unlockNotice: "前のページで一定数の報酬を獲得すると解放されます。",
+    unlockNotice: (count: number) => `前のページで報酬を${count}個獲得すると解放されます。`,
     requirements: "必要文書",
     documentIndex: "DOCUMENT INDEX",
     documentList: "必要文書一覧",
@@ -188,7 +189,7 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
       <nav className="mt-1 border-t border-line pt-4" aria-label={labels.pageSelection}>
         <div className="mb-3 flex items-center justify-between gap-4 px-0.5">
           <span className="text-xl font-bold tracking-[-0.03em] text-amber-600 dark:text-amber-400">{labels.pageSelection}</span>
-          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">{currentPageNumber} / {totalPages}</span>
+          <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{currentPageNumber} / {totalPages}</span>
         </div>
         <div className="overflow-x-auto pb-1">
           <div className="grid min-w-[720px] grid-cols-6 lg:min-w-0">
@@ -204,7 +205,7 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
                   onClick={() => setSelectedPageNumber(page.page_number)}
                 >
                   <span className="font-mono text-xl font-black text-amber-600 dark:text-amber-400">{String(page.page_number).padStart(2, "0")}</span>
-                  <b className="text-[10px] tracking-[0.04em]">{labels.rewardCount(page.rewards.length)}</b>
+                  <b className="text-xs tracking-[0.04em]">{labels.rewardCount(page.rewards.length)}</b>
                 </button>
               );
             })}
@@ -214,20 +215,30 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
 
       <div className="flex flex-col gap-2 pb-5 pt-10 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 className="text-xl font-bold tracking-[-0.03em] sm:text-2xl">{labels.pageRewards(currentPageNumber)}</h2>
-        {currentPageNumber > 1 ? (
-          <span className="text-xs text-gray-500 dark:text-gray-400">{labels.unlockNotice}</span>
+        {selectedPage && selectedPage.page_number > 1 ? (
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {labels.unlockNotice(selectedPage.required_previous_page_reward_count)}
+          </span>
         ) : null}
       </div>
 
       {selectedPage?.rewards.length ? (
         <section className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" aria-label={labels.pageRewards(currentPageNumber)}>
-          {selectedPage.rewards.map((reward) => (
-            <RewardCard key={reward.id} reward={reward} locale={locale} labels={labels} />
+          {selectedPage.rewards.map((reward, index) => (
+            <RewardCard
+              key={reward.id}
+              reward={reward}
+              locale={locale}
+              labels={labels}
+              eagerImage={index === 0}
+            />
           ))}
         </section>
       ) : (
         <div className="rounded-xl border border-dashed border-line bg-surface px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400">{labels.noRewards}</div>
       )}
+
+      <HorizontalAdBanner className="mb-0 mt-9" />
 
       <InfoSection
         kicker={labels.documentIndex}
@@ -298,7 +309,7 @@ function InfoSection({
           <span className="text-[10px] font-bold tracking-[0.16em] text-amber-600 dark:text-amber-400">{kicker}</span>
           <h2 className="mt-1.5 text-xl font-bold tracking-[-0.035em] sm:text-2xl">{title}</h2>
         </div>
-        {description ? <p className="max-w-md text-xs leading-5 text-gray-500 sm:text-right dark:text-gray-400">{description}</p> : null}
+        {description ? <p className="max-w-md text-sm leading-6 text-gray-500 sm:text-right dark:text-gray-400">{description}</p> : null}
       </div>
       {children}
     </section>
@@ -321,9 +332,9 @@ function DocumentCatalogItem({
     <article className={`flex min-w-0 items-center gap-3 bg-surface p-3 ${classified ? "bg-amber-50 dark:bg-amber-400/10" : ""}`}>
       <DocumentImage document={document} size="catalog" />
       <div className="grid min-w-0 gap-0.5">
-        <strong className={`truncate text-xs ${classified ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{localizedName(document, locale)}</strong>
-        <small className="truncate text-[10px] text-gray-500 dark:text-gray-400">{document.name_en}</small>
-        <b className={`font-mono text-xs ${classified ? "text-gray-500 dark:text-gray-400" : "text-amber-600 dark:text-amber-400"}`}>
+        <strong className={`truncate text-sm ${classified ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{localizedName(document, locale)}</strong>
+        <small className="truncate text-xs text-gray-500 dark:text-gray-400">{document.name_en}</small>
+        <b className={`font-mono text-sm ${classified ? "text-gray-500 dark:text-gray-400" : "text-amber-600 dark:text-amber-400"}`}>
           {classified ? labels.classifiedPurchase : labels.totalDocuments(total)}
         </b>
       </div>
@@ -331,16 +342,32 @@ function DocumentCatalogItem({
   );
 }
 
-function RewardCard({ reward, locale, labels }: { reward: BattlePassReward; locale: Locale; labels: (typeof copy)[Locale] }) {
+function RewardCard({
+  reward,
+  locale,
+  labels,
+  eagerImage,
+}: {
+  reward: BattlePassReward;
+  locale: Locale;
+  labels: (typeof copy)[Locale];
+  eagerImage: boolean;
+}) {
   const classified = reward.requirements.some((requirement) => requirement.document.document_role === "classified");
   return (
     <article className={`overflow-hidden rounded-xl border bg-surface ${classified ? "border-amber-400/40" : "border-line"}`}>
-      <RewardVisual reward={reward} label={labels.imageUnavailable} classified={classified} locale={locale} />
+      <RewardVisual
+        reward={reward}
+        label={labels.imageUnavailable}
+        classified={classified}
+        locale={locale}
+        eager={eagerImage}
+      />
       <div className="px-4 pb-5 pt-1">
-        <span className="text-[11px] text-gray-500 dark:text-gray-400">{reward.reward_type}</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">{reward.reward_type}</span>
         <h3 className="mb-4 mt-2 min-h-11 text-[15px] font-semibold leading-[1.45] tracking-[-0.02em]">{localizedName(reward, locale)}</h3>
         <div>
-          <span className="block pb-2 text-[11px] text-gray-500 dark:text-gray-400">{labels.requirements}</span>
+          <span className="block pb-2 text-xs text-gray-500 dark:text-gray-400">{labels.requirements}</span>
           {reward.requirements.map((requirement) => (
             <RequirementBadge key={`${reward.id}-${requirement.document.id}`} requirement={requirement} locale={locale} />
           ))}
@@ -350,15 +377,35 @@ function RewardCard({ reward, locale, labels }: { reward: BattlePassReward; loca
   );
 }
 
-function RewardVisual({ reward, label, classified, locale }: { reward: BattlePassReward; label: string; classified: boolean; locale: Locale }) {
+function RewardVisual({
+  reward,
+  label,
+  classified,
+  locale,
+  eager,
+}: {
+  reward: BattlePassReward;
+  label: string;
+  classified: boolean;
+  locale: Locale;
+  eager: boolean;
+}) {
   return (
     <div className={`relative m-2.5 flex h-52 items-center justify-center overflow-hidden rounded-lg border ${classified ? "border-amber-400/30 bg-amber-100/70 dark:bg-amber-400/10" : "border-line bg-surface-elevated"}`}>
       {reward.image ? (
-        <Image src={reward.image} alt={localizedName(reward, locale)} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw" className="object-contain p-3" />
+        <Image
+          src={reward.image}
+          alt={localizedName(reward, locale)}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+          className="object-contain p-3"
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
+        />
       ) : (
         <div className="flex flex-col items-center gap-3 text-gray-400 dark:text-gray-500">
           <Package className="size-10" strokeWidth={1.2} aria-hidden="true" />
-          <span className="text-[10px] uppercase tracking-[0.08em]">{label}</span>
+          <span className="text-xs uppercase tracking-[0.08em]">{label}</span>
         </div>
       )}
       {reward.reward_quantity > 1 ? <span className="absolute bottom-2 right-2 rounded-md bg-gray-950/80 px-2 py-1 font-mono text-xs font-bold text-white">×{reward.reward_quantity}</span> : null}
@@ -371,8 +418,8 @@ function RequirementBadge({ requirement, locale }: { requirement: BattlePassRequ
   return (
     <div className="flex min-h-[78px] items-center gap-3 border-t border-line py-3">
       <DocumentImage document={requirement.document} size="requirement" />
-      <span className={`min-w-0 flex-1 text-xs font-bold leading-5 ${classified ? "text-amber-700 dark:text-amber-300" : ""}`}>{localizedName(requirement.document, locale)}</span>
-      <strong className="min-w-11 shrink-0 rounded bg-amber-500/10 px-2 py-2 text-center font-mono text-xs text-amber-600 dark:text-amber-400">×{requirement.quantity}</strong>
+      <span className={`min-w-0 flex-1 text-sm font-bold leading-5 ${classified ? "text-amber-700 dark:text-amber-300" : ""}`}>{localizedName(requirement.document, locale)}</span>
+      <strong className="min-w-11 shrink-0 rounded bg-amber-500/10 px-2 py-2 text-center font-mono text-sm text-amber-600 dark:text-amber-400">×{requirement.quantity}</strong>
     </div>
   );
 }
