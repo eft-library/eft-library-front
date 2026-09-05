@@ -285,13 +285,19 @@ function createNodes({
       return [];
     }
 
-    return trader.quests.map<RoadmapFlowNode>((quest) => {
+    return trader.quests.flatMap<RoadmapFlowNode>((quest) => {
       const isTraderStartNode = quest.id === trader.id || quest.id === quest.trader_id;
+      const position = getQuestPosition(quest, tabState, onlyKappa);
 
-      return {
+      if (position.x === null || position.y === null) {
+        return [];
+      }
+      const visiblePosition = { x: position.x, y: position.y };
+
+      return [{
         id: quest.id,
         type: isTraderStartNode ? "traderNode" : "questNode",
-        position: getQuestPosition(quest, tabState, onlyKappa),
+        position: visiblePosition,
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
         draggable: true,
@@ -317,7 +323,7 @@ function createNodes({
           locale,
           onToggle,
         },
-      };
+      }];
     });
   });
 }

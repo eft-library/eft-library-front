@@ -10,14 +10,14 @@ export interface RoadmapQuestNode extends LocalizedName {
   affinity_type: QuestAffinityType | null;
   task_requirements: string[];
   task_next: string[];
-  total_x_coordinate: number;
-  total_y_coordinate: number;
-  single_x_coordinate: number;
-  single_y_coordinate: number;
-  total_kappa_x_coordinate: number;
-  total_kappa_y_coordinate: number;
-  single_kappa_x_coordinate: number;
-  single_kappa_y_coordinate: number;
+  total_x_coordinate: number | null;
+  total_y_coordinate: number | null;
+  single_x_coordinate: number | null;
+  single_y_coordinate: number | null;
+  total_kappa_x_coordinate: number | null;
+  total_kappa_y_coordinate: number | null;
+  single_kappa_x_coordinate: number | null;
+  single_kappa_y_coordinate: number | null;
 }
 
 export interface RoadmapTraderNode extends LocalizedName {
