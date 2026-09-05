@@ -286,6 +286,10 @@ function createNodes({
     }
 
     return trader.quests.flatMap<RoadmapFlowNode>((quest) => {
+      if (quest.is_use === false) {
+        return [];
+      }
+
       const isTraderStartNode = quest.id === trader.id || quest.id === quest.trader_id;
       const position = getQuestPosition(quest, tabState, onlyKappa);
 

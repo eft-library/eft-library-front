@@ -5,6 +5,7 @@ export interface RoadmapQuestNode extends LocalizedName {
   id: string;
   normalized_name: string;
   trader_id: string;
+  is_use: boolean;
   kappa_required: boolean;
   min_player_level: number;
   affinity_type: QuestAffinityType | null;
