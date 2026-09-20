@@ -160,6 +160,7 @@ export function groupStaticEntries(entries: StaticEntry[]): StaticCategoryGroup[
     }))
     .sort((left, right) => {
       const categoryOrder = [
+        "landmark",
         "extract",
         "transit",
         "transit_switch",

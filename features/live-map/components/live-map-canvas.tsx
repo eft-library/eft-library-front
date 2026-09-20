@@ -699,6 +699,15 @@ function PointIcon(
   const color = kind === "static" ? getStaticMarkerColor(point) : markerColorByKind[kind];
   const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
 
+  if (kind === "static" && point.staticCategory === "landmark") {
+    return L.divIcon({
+      className: "live-map-landmark-icon",
+      html: `<span class="live-map-landmark-label${isFocused ? " live-map-landmark-label-focused" : ""}" style="opacity: ${markerOpacity}">${escapeMarkerLabel(point.label)}</span>`,
+      iconSize: [0, 0],
+      iconAnchor: [0, 0],
+    });
+  }
+
   if (isMarkerSimplified && !isFocused && !isHovered && !isGroupHighlighted) {
     const size = kind === "static" ? 16 : 14;
     const labelHtml = kind === "static" ? getStaticMarkerLabelHtml(point, color) : "";
@@ -850,6 +859,7 @@ function getPointMarkerPresentationKey(
     point.staticCategory ?? "",
     point.staticFaction ?? "",
     point.staticItemId ?? "",
+    point.label,
     point.floorId ?? "",
     activeFloorId,
     isMarkerSimplified ? "simplified" : "detailed",
@@ -1548,6 +1558,10 @@ export function LiveMapCanvas({
       zoomDelta: 0.25,
       zoomSnap: 0.25,
     });
+    // Place non-interactive place names above the map and below point markers.
+    const landmarkPane = map.createPane("landmarks");
+    landmarkPane.style.zIndex = "450";
+    landmarkPane.style.pointerEvents = "none";
     let previousContainerLeft = container.getBoundingClientRect().left;
     const resizeObserver = new ResizeObserver(() => {
       const nextContainerLeft = container.getBoundingClientRect().left;
@@ -2077,7 +2091,9 @@ export function LiveMapCanvas({
           false,
           isGroupHighlighted,
         ),
-        keyboard: true,
+        interactive: point.staticCategory !== "landmark",
+        keyboard: point.staticCategory !== "landmark",
+        pane: point.staticCategory === "landmark" ? "landmarks" : "markerPane",
         title: point.label,
         zIndexOffset: getPointMarkerZIndex(
           point,

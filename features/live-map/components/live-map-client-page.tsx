@@ -1004,7 +1004,7 @@ export function LiveMapClientPage({
         id: `static:${point.id}`,
         kind: "static",
         label: localizedName(point as unknown as Record<string, unknown>, locale),
-        popupHtml: getCachedPopupHtml(
+        popupHtml: point.category === "landmark" ? undefined : getCachedPopupHtml(
           popupHtmlCache,
           `${locale}:static:${point.id}`,
           () => getStaticPointPopupHtml(point, locale, copy),

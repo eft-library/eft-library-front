@@ -59,6 +59,7 @@ export const copyByLocale = {
     locationChance: "현재 위치 확률",
     escorts: "부하",
     staticCategories: {
+      landmark: "건물·지명",
       black_div_spawn: "블랙 디비전 스폰",
       bloodhounds_spawn: "블랙 디비전 스폰",
       boss_spawn: "보스 스폰",
@@ -202,6 +203,7 @@ export const copyByLocale = {
     locationChance: "Location chance",
     escorts: "Escorts",
     staticCategories: {
+      landmark: "Buildings & landmarks",
       black_div_spawn: "Black Div Spawns",
       bloodhounds_spawn: "Bloodhounds",
       boss_spawn: "Boss Spawns",
@@ -345,6 +347,7 @@ export const copyByLocale = {
     locationChance: "現在地の確率",
     escorts: "護衛",
     staticCategories: {
+      landmark: "建物・地名",
       black_div_spawn: "Black Divスポーン",
       bloodhounds_spawn: "Bloodhounds",
       boss_spawn: "ボススポーン",

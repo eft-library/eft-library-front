@@ -880,6 +880,18 @@ function StaticPanelMarkerIcon({
   const markerSize = size === "sm" ? 18 : 20;
   const iconSize = size === "sm" ? 13 : 14;
 
+  if (category === "landmark") {
+    return (
+      <span
+        aria-hidden="true"
+        className="inline-flex shrink-0 items-center justify-center font-serif text-sm font-semibold text-gray-600 dark:text-gray-300"
+        style={{ width: markerSize, height: markerSize }}
+      >
+        T
+      </span>
+    );
+  }
+
   return (
     <span
       className="inline-flex shrink-0 items-center justify-center rounded-full"
