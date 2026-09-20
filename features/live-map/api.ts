@@ -44,7 +44,10 @@ export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapP
     },
   );
 
-  const supportsBtr = normalizedName === "woods" || normalizedName === "streets-of-tarkov";
+  const supportsBtr =
+    normalizedName === "woods" ||
+    normalizedName === "streets-of-tarkov" ||
+    normalizedName === "lighthouse";
   const btrRoutes = supportsBtr && Array.isArray(liveMap.btr_routes)
     ? liveMap.btr_routes
     : [];
