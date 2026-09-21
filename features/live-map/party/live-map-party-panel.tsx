@@ -9,6 +9,11 @@ import type {
   PartyMarkerResponseV3,
   PartyRoomListV3,
 } from "@/types/api/live-map-party";
+import {
+  PartyConfirmDialog,
+  type PartyConfirmKind,
+} from "./party-confirm-dialog";
+import { PartyPassword } from "./party-password";
 import { PartyLiveControls } from "./party-live-controls";
 import { PartyApiError, partyRequest } from "./api";
 import { partyErrorText, partyText, type PartyLocale } from "./copy";
@@ -40,6 +45,14 @@ export function LiveMapPartyPanel({
 }) {
   const t = (ko: string, en: string, ja: string) =>
     partyText(locale, ko, en, ja);
+  const [confirmation, setConfirmation] = useState<{
+    kind: PartyConfirmKind;
+    message: string;
+    path: string;
+    method: string;
+    body?: unknown;
+    result: "snapshot" | "leave" | "refresh";
+  } | null>(null);
   const [search, setSearch] = useState("");
   const [submittedSearch, setSubmittedSearch] = useState("");
   const [offset, setOffset] = useState(0);
@@ -71,6 +84,7 @@ export function LiveMapPartyPanel({
   });
   useEffect(() => {
     setForm(null);
+    setConfirmation(null);
   }, [party.roomId]);
   useEffect(() => {
     if (!open) return;
@@ -94,16 +108,35 @@ export function LiveMapPartyPanel({
     selectedMarker &&
     (owner || selectedMarker.created_by_member_id === snapshot?.me.id);
   const confirmAction = (
+    kind: PartyConfirmKind,
     message: string,
     path: string,
     method: string,
     body?: unknown,
     result: "snapshot" | "leave" | "refresh" = "snapshot",
   ) => {
-    if (window.confirm(message)) void party.run(path, method, body, result);
+    party.setError(null);
+    setConfirmation({ kind, message, path, method, body, result });
   };
   return (
     <div className="pointer-events-none absolute right-3 top-3 z-[1200] flex max-w-[calc(100%-1.5rem)] flex-col items-end">
+      {confirmation && (
+        <PartyConfirmDialog
+          kind={confirmation.kind}
+          message={confirmation.message}
+          locale={locale}
+          error={party.error}
+          onDismiss={() => setConfirmation(null)}
+          onConfirm={() =>
+            party.run(
+              confirmation.path,
+              confirmation.method,
+              confirmation.body,
+              confirmation.result,
+            )
+          }
+        />
+      )}
       {party.placing && !party.open && (
         <div
           role="status"
@@ -225,6 +258,7 @@ export function LiveMapPartyPanel({
                         disabled={party.busy}
                         onClick={() =>
                           confirmAction(
+                            "leave",
                             t(
                               "파티에서 나갈까요?",
                               "Leave this party?",
@@ -436,6 +470,11 @@ export function LiveMapPartyPanel({
             )}
             {snapshot && (
               <>
+                <PartyPassword
+                  key={`${snapshot.room.id}:${party.enteredPassword}`}
+                  password={party.enteredPassword}
+                  locale={locale}
+                />
                 <div>
                   <h3 className="break-words font-bold">
                     {snapshot.room.name}{" "}
@@ -486,6 +525,7 @@ export function LiveMapPartyPanel({
                     disabled={party.busy}
                     onClick={() =>
                       confirmAction(
+                        "leave",
                         t(
                           "파티에서 나갈까요? 마지막 참여자라면 방이 종료됩니다.",
                           "Leave the party? The room closes if you are the last member.",
@@ -514,6 +554,7 @@ export function LiveMapPartyPanel({
                       disabled={party.busy}
                       onClick={() =>
                         confirmAction(
+                          "close",
                           t(
                             "모든 참여자의 파티를 종료할까요? 되돌릴 수 없습니다.",
                             "Close this room for everyone? This cannot be undone.",
@@ -577,6 +618,7 @@ export function LiveMapPartyPanel({
                               aria-label={`${member.nickname} ${t("방장 양도", "transfer ownership", "リーダーを譲る")}`}
                               onClick={() =>
                                 confirmAction(
+                                  "transfer",
                                   t(
                                     `${member.nickname}님에게 방장을 양도할까요?`,
                                     `Transfer ownership to ${member.nickname}?`,
@@ -596,6 +638,7 @@ export function LiveMapPartyPanel({
                               aria-label={`${member.nickname} ${t("강퇴", "kick", "退出させる")}`}
                               onClick={() =>
                                 confirmAction(
+                                  "kick",
                                   t(
                                     `${member.nickname}님을 강퇴할까요? 재입장할 수 없습니다.`,
                                     `Remove ${member.nickname}? They cannot rejoin.`,
@@ -789,6 +832,7 @@ export function LiveMapPartyPanel({
                                 disabled={party.busy}
                                 onClick={() =>
                                   confirmAction(
+                                    "delete",
                                     t(
                                       "공유 마커를 삭제할까요?",
                                       "Delete this shared marker?",

@@ -1061,6 +1061,7 @@ export function LiveMapClientPage({
       id: `party-${event.type}:${event.type === "position" ? event.data.member_id : event.event_id}`,
       kind: "party", floorId: event.data.floor_id, x: event.data.x, y: event.data.z,
       partyColor: event.data.color, partyTemporary: event.type,
+      partyYaw: event.type === "position" ? event.data.yaw : undefined,
       partyType: event.type === "ping" ? event.data.marker_type : "normal",
       label: `${event.data.nickname} · ${event.type === "ping" ? event.data.label || partyText(locale, "핑", "Ping", "ピン") : partyText(locale, "수동 위치", "Manual position", "手動位置")}`,
     })), [party.pings, party.positions, selectedFloor?.id, locale]);
@@ -1115,6 +1116,17 @@ export function LiveMapClientPage({
 
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
+      if (party.roomId && party.connected) {
+        party.sendPoint({
+          type: "position",
+          floor_id: matchedFloor.id,
+          x: parsed.x,
+          z: parsed.z,
+          yaw: ((parsed.yaw % 360) + 360) % 360,
+          persistent: true,
+          request_id: crypto.randomUUID(),
+        });
+      }
     }
   }
 
@@ -2079,6 +2091,15 @@ export function LiveMapClientPage({
     const matchedFloor = findFloorForLocation(sortedFloors, activeLogLocation);
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
+      if (party.roomId && party.connected) {
+        party.sendPoint({
+          type: "position",
+          floor_id: matchedFloor.id,
+          x: activeLogLocation.x,
+          z: activeLogLocation.z,
+          request_id: crypto.randomUUID(),
+        });
+      }
     }
   }, [activeLogLocation, sortedFloors]);
 
@@ -2209,7 +2230,7 @@ export function LiveMapClientPage({
               className="fixed inset-0 z-[790] bg-black/20 md:hidden"
             />
           ) : null}
-          {!(party.isAdmin && party.open) && <button
+          {!(party.isAdmin && (party.open || party.placing)) && <button
             type="button"
             aria-expanded={mobileSidebar === "left"}
             aria-label={copy.expandSpawnPanel}
@@ -2218,7 +2239,7 @@ export function LiveMapClientPage({
           >
             <PanelLeftOpen className="h-5 w-5" />
           </button>}
-          {!panel && !(party.isAdmin && party.open) ? (
+          {!panel && !(party.isAdmin && (party.open || party.placing)) ? (
             <button
               type="button"
               aria-expanded={mobileSidebar === "right"}

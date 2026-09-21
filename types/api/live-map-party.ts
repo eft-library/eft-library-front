@@ -117,7 +117,10 @@ export interface PartyEventV3<T extends string, D> {
 }
 export type PartyPositionEventV3 = PartyEventV3<
   "position",
-  PartyTemporaryPointV3
+  Omit<PartyTemporaryPointV3, "expires_at"> & {
+    yaw?: number;
+    expires_at: number | null;
+  }
 >;
 export type PartyPingEventV3 = PartyEventV3<
   "ping",
@@ -155,5 +158,7 @@ export type PartyPointCommandV3 =
       floor_id: string;
       x: number;
       z: number;
+      yaw?: number;
+      persistent?: boolean;
       request_id?: string;
     };

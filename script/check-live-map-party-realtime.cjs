@@ -247,6 +247,26 @@ async function test(name, fn) {
     assert.equal(h.view.positions.length, 1);
     h.client.dispose();
   });
+  await test("persistent received positions survive expiry, restore and replace", async () => {
+    const h = harness();
+    await h.start();
+    h.ready();
+    const ws = h.sockets[0],
+      pos = h.point("position", { expires_at: null, yaw: 90 });
+    ws.receive(pos);
+    for (let i = 0; i < 20; i++) {
+      h.clock.tick(15000);
+      ws.receive(h.snapshot({ positions: [pos] }));
+    }
+    assert.equal(h.view.positions.length, 1);
+    assert.equal(h.view.positions[0].data.yaw, 90);
+    ws.receive(h.point("position", { expires_at: null, x: 99 }, Date.now()));
+    assert.equal(h.view.positions.length, 1);
+    assert.equal(h.view.positions[0].data.x, 99);
+    ws.receive(h.snapshot({ members: [], positions: [] }));
+    assert.equal(h.view.positions.length, 0);
+    h.client.dispose();
+  });
   await test("positions expire without heartbeat extending their TTL", async () => {
     const h = harness();
     await h.start();

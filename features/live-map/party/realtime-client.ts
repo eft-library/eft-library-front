@@ -88,7 +88,7 @@ export class PartyRealtimeClient {
     const now = this.serverNow() / 1000;
     const pings = this.view.pings.filter((e) => e.data.expires_at > now);
     const positions = this.view.positions.filter(
-      (e) => e.data.expires_at > now,
+      (e) => e.data.expires_at === null || e.data.expires_at > now,
     );
     const cooldown = Date.now() < this.retryAt;
     if (
@@ -343,7 +343,8 @@ export class PartyRealtimeClient {
           p.type === "position" &&
           p.room_id === event.room_id &&
           members.some((m) => m.id === p.data.member_id) &&
-          p.data.expires_at > this.serverNow() / 1000,
+          (p.data.expires_at === null ||
+            p.data.expires_at > this.serverNow() / 1000),
       );
       // A delayed snapshot must not replace a position broadcast that is newer.
       for (const p of this.view.positions) {
@@ -392,8 +393,9 @@ export class PartyRealtimeClient {
       time < eventTime(member.joined_at) ||
       !Number.isFinite(event.data.x) ||
       !Number.isFinite(event.data.z) ||
-      !Number.isFinite(event.data.expires_at) ||
-      event.data.expires_at <= this.serverNow() / 1000
+      (!(event.type === "position" && event.data.expires_at === null) &&
+        (!Number.isFinite(event.data.expires_at) ||
+          event.data.expires_at! <= this.serverNow() / 1000))
     )
       return;
     if (event.type === "ping")

@@ -19,14 +19,19 @@ export function useLiveMapParty(normalizedName: string) {
   const isAdmin = session?.userInfo?.is_admin === true;
   const token = isAdmin ? session?.accessToken : undefined;
   const account = session?.userInfo?.email ?? session?.user?.email;
-  const storageKey = isAdmin && account
-    ? `live-map-party:v3:${account}:${normalizedName}`
-    : null;
+  const storageKey =
+    isAdmin && account
+      ? `live-map-party:v3:${account}:${normalizedName}`
+      : null;
   const [savedRoom, setSavedRoom] = useState<{
     key: string;
     id: string;
   } | null>(null);
   const roomId = savedRoom?.key === storageKey ? savedRoom.id : null;
+  const [roomPassword, setRoomPassword] = useState<{
+    scope: string;
+    value: string;
+  } | null>(null);
   const [open, setOpen] = useState(false);
   const [placing, setPlacing] = useState(false);
   const [placementKind, setPlacementKind] = useState<
@@ -50,6 +55,19 @@ export function useLiveMapParty(normalizedName: string) {
   } | null>(null);
   const roomScope = `${storageKey}:${roomId}`;
   const view = realtime?.key === roomScope && token ? realtime.view : undefined;
+  useEffect(() => {
+    if (!roomId || !storageKey) {
+      setRoomPassword(null);
+      return;
+    }
+    try {
+      const value = sessionStorage.getItem(`${roomScope}:password`);
+      setRoomPassword(value === null ? null : { scope: roomScope, value });
+    } catch {
+      /* Storage may be disabled. */
+    }
+  }, [roomId, storageKey, roomScope]);
+
   const roomScopeRef = useRef(roomScope);
   roomScopeRef.current = roomScope;
 
@@ -123,7 +141,9 @@ export function useLiveMapParty(normalizedName: string) {
       getToken: async () => {
         const latest = await getSession();
         const email = latest?.userInfo?.email ?? latest?.user?.email;
-        return email === account && latest?.userInfo?.is_admin === true ? latest.accessToken : undefined;
+        return email === account && latest?.userInfo?.is_admin === true
+          ? latest.accessToken
+          : undefined;
       },
       onChange: (next) => {
         if (roomScopeRef.current === roomScope)
@@ -188,8 +208,28 @@ export function useLiveMapParty(normalizedName: string) {
       if (result === "leave") {
         client?.dispose();
         rememberRoom(null);
+        setRoomPassword(null);
+        try {
+          sessionStorage.removeItem(`${scope}:password`);
+        } catch {
+          /* Storage may be disabled. */
+        }
       } else if (result === "snapshot") {
         const snapshot = data as PartySnapshotV3;
+        if (
+          body &&
+          typeof body === "object" &&
+          "password" in body &&
+          typeof body.password === "string"
+        ) {
+          const passwordScope = `${storageKey}:${snapshot.room.id}`;
+          setRoomPassword({ scope: passwordScope, value: body.password });
+          try {
+            sessionStorage.setItem(`${passwordScope}:password`, body.password);
+          } catch {
+            /* Keep the in-memory value. */
+          }
+        }
         if (!roomId) rememberRoom(snapshot.room.id);
         else client?.sync();
       } else {
@@ -237,6 +277,8 @@ export function useLiveMapParty(normalizedName: string) {
   };
   return {
     isAdmin,
+    enteredPassword:
+      roomPassword?.scope === roomScope ? roomPassword.value : null,
     token,
     status,
     roomId,

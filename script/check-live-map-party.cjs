@@ -55,6 +55,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       conflict = false,
       closed = false,
       rateLimit = false;
+    let failDelete = false;
     const sockets = new Set();
     let positions = [];
     const commands = [];
@@ -112,7 +113,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
                 membership_epoch: "current-epoch",
                 nickname: snapshot.me.nickname,
                 color: snapshot.me.color,
-                expires_at: Date.now() / 1000 + (type === "ping" ? 5 : 60),
+                expires_at:
+                  type === "position" && body.persistent
+                    ? null
+                    : Date.now() / 1000 + (type === "ping" ? 5 : 60),
               },
             };
             if (type === "position") positions = [event];
@@ -132,7 +136,11 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       r.fulfill({
         json: {
           user: { name: "테스터", email: "party-test@example.invalid" },
-          userInfo: { is_admin: true, email: "party-test@example.invalid", nickname: "테스터" },
+          userInfo: {
+            is_admin: true,
+            email: "party-test@example.invalid",
+            nickname: "테스터",
+          },
           accessToken: "test-token",
           expires: "2099-01-01T00:00:00Z",
         },
@@ -230,6 +238,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
           return ok(marker);
         }
         if (method === "DELETE") {
+          if (failDelete) {
+            failDelete = false;
+            return fail(503, "PARTY_DATABASE_UNAVAILABLE");
+          }
           assert.equal(Number(url.searchParams.get("version")), marker.version);
           snapshot.markers = [];
           return ok({ id: marker.id });
@@ -251,7 +263,9 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     const page = await context.newPage();
     let pageErrors = [];
     page.on("pageerror", (e) => pageErrors.push(e.message));
-    page.on("dialog", (d) => d.accept());
+    page.on("dialog", () => {
+      throw new Error("Unexpected native dialog");
+    });
     const panel = () => page.getByRole("region", { name: "라이브 맵 파티" });
     await page.goto(`${baseUrl}/live-map/customs`);
     await page
@@ -262,7 +276,8 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByLabel("비밀번호", { exact: true }).fill(" secret ");
     await page.getByRole("button", { name: "방 생성", exact: true }).click();
     await page.getByRole("heading", { name: /공유 마커/ }).waitFor();
-    console.log("PASS create, auth and untrimmed password");
+    assert.equal(await panel().locator("code").textContent(), " secret ");
+    console.log("PASS create, auth and untrimmed password display");
     await page.getByRole("button", { name: "좌표 입력", exact: true }).click();
     await page
       .getByLabel("마커 설명")
@@ -322,11 +337,52 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     assert.equal(await page.getByLabel("마커 설명").count(), 0);
     await page.getByRole("button", { name: "공유하기", exact: true }).click();
     await page.locator(".live-map-party-position").waitFor();
+    const whereInput = page.locator("main header input").first();
+    await whereInput.fill("123 0 -45 0 0 0 1");
+    await whereInput.press("Enter");
+    await page.waitForFunction(() =>
+      document.body.textContent.includes("X 123.0 / Z -45.0"),
+    );
+    assert.equal(positions[0].data.x, 123);
+    assert.equal(positions[0].data.z, -45);
+    assert.equal(positions[0].data.yaw, 0);
+    assert.equal(positions[0].data.expires_at, null);
+    await page
+      .locator(".live-map-party-position .player-icon-heading")
+      .waitFor();
+    await whereInput.fill(
+      "123 0 -45 0 0.7071067811865476 0 0.7071067811865476",
+    );
+    await whereInput.press("Enter");
+    await page.waitForFunction(
+      () =>
+        document.querySelector(
+          ".live-map-party-position .player-location-marker",
+        )?.style.transform === "rotate(270deg)",
+    );
+    assert.ok(Math.abs(positions[0].data.yaw - 90) < 0.001);
+    await panel().getByRole("button", { name: "닫기", exact: true }).click();
+    for (const heading of [0, 90, 180, 270]) {
+      await page
+        .getByRole("button", { name: /지도 시계 방향으로 90도 회전/ })
+        .click();
+      await page.waitForFunction(
+        (heading) =>
+          document.querySelector(
+            ".live-map-party-position .player-location-marker",
+          )?.style.transform === `rotate(${heading}deg)`,
+        heading,
+      );
+    }
+    await page.getByRole("button", { name: /^파티 2\/5$/ }).click();
+
     const second = await context.newPage();
     await second.goto(`${baseUrl}/live-map/customs`);
     await second.getByRole("button", { name: /^파티 2\/5$/ }).click();
     await second.getByText("온라인: 1 / 2", { exact: true }).waitFor();
-    await second.locator(".live-map-party-position").waitFor();
+    await second
+      .locator(".live-map-party-position .player-icon-heading")
+      .waitFor();
     await second.close();
     assert.equal(
       requests.filter((r) => r.method === "GET" && r.suffix === `/${id}`)
@@ -358,7 +414,61 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     console.log("PASS themes, mobile bounds and placement panel dismissal");
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.getByRole("button", { name: /^파티 2\/5$/ }).click();
+    const deleteCount = () =>
+      requests.filter((r) => r.method === "DELETE").length;
+    const beforeCancel = deleteCount();
     await page.getByRole("button", { name: "삭제", exact: true }).click();
+    const dialog = page.getByRole("alertdialog");
+    await dialog.waitFor();
+    assert.equal(
+      await dialog
+        .getByRole("button", { name: "취소", exact: true })
+        .evaluate((el) => el === document.activeElement),
+      true,
+    );
+    await page.keyboard.press("Tab");
+    assert.equal(
+      await dialog.evaluate((el) => el.contains(document.activeElement)),
+      true,
+    );
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate(
+        (theme) =>
+          document.documentElement.classList.toggle("dark", theme === "dark"),
+        theme,
+      );
+      // Let button color transitions finish after switching the theme.
+      await page.waitForTimeout(250);
+      await page.screenshot({
+        path: `${outputDir}/eft-party-confirm-${theme}.png`,
+      });
+    }
+    await dialog.getByRole("button", { name: "취소", exact: true }).click();
+    assert.equal(deleteCount(), beforeCancel);
+    assert.equal(
+      await page
+        .getByRole("button", { name: "삭제", exact: true })
+        .evaluate((el) => el === document.activeElement),
+      true,
+    );
+    await page.getByRole("button", { name: "삭제", exact: true }).click();
+    await page.keyboard.press("Escape");
+    await dialog.waitFor({ state: "detached" });
+    assert.equal(await panel().isVisible(), true);
+    assert.equal(deleteCount(), beforeCancel);
+    await page.getByRole("button", { name: "삭제", exact: true }).click();
+    failDelete = true;
+    await dialog.getByRole("button", { name: "삭제하기", exact: true }).click();
+    await dialog.getByRole("alert").waitFor();
+    assert.equal(snapshot.markers.length, 1);
+    console.log(
+      "PASS custom dialog cancellation, Escape, focus restore, inline failure and retry",
+    );
+
+    await page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: "삭제하기", exact: true })
+      .click();
     await page.getByRole("heading", { name: "공유 마커 (0/200)" }).waitFor();
     await page.getByRole("button", { name: "방 설정", exact: true }).click();
     await page.getByLabel("방 이름", { exact: true }).fill("새 이름");
@@ -382,6 +492,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByRole("button", { name: "새로고침", exact: true }).click();
     await page.getByRole("button", { name: "강퇴 대상 강퇴" }).click();
     await page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: "강퇴하기", exact: true })
+      .click();
+    await page
       .getByRole("button", { name: "강퇴 대상 강퇴" })
       .waitFor({ state: "detached" });
     assert.equal(
@@ -391,10 +505,18 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     console.log("PASS member profile and kick");
     await page.getByRole("button", { name: "파티원 방장 양도" }).click();
     await page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: "양도하기", exact: true })
+      .click();
+    await page
       .getByRole("button", { name: "방 설정", exact: true })
       .waitFor({ state: "detached" });
     console.log("PASS versioned delete, owner settings and transfer");
     await page.getByRole("button", { name: "퇴장", exact: true }).click();
+    await page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: "퇴장하기", exact: true })
+      .click();
     await page
       .getByRole("button", { name: "방 만들기", exact: true })
       .waitFor();

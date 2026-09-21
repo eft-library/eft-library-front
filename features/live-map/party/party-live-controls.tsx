@@ -24,8 +24,8 @@ export function PartyLiveControls({
     <div className="space-y-2 border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
       <h3 className="text-sm font-bold">
         {t(
-          "핑·수동 위치 공유",
-          "Pings & manual positions",
+          "핑·위치 공유",
+          "Pings & positions",
           "ピン・手動位置の共有",
         )}
       </h3>
@@ -49,9 +49,9 @@ export function PartyLiveControls({
       </div>
       <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">
         {t(
-          "핑은 5초, 수동 위치는 60초 후 사라집니다. 게임 위치를 자동 추적하지 않습니다.",
-          "Pings last 5s; manual positions last 60s. Game positions are not tracked automatically.",
-          "ピンは5秒、手動位置は60秒で消えます。ゲーム内の位置は自動追跡しません。",
+          "기존 위치 입력·WebSocket 수신 시 파티에도 공유합니다. 수신한 위치는 다음 입력까지 유지됩니다. 핑은 5초, 지도에 직접 찍은 위치는 60초간 표시됩니다.",
+          "Location input and incoming location updates are shared with the party. Received positions remain until replaced. Pings last 5s; manually placed positions last 60s.",
+          "位置入力・位置の受信時にパーティーにも共有します。受信した位置は次の入力まで維持します。ピンは5秒、地図で指定した位置は60秒で消えます。",
         )}
       </p>
       {party.pings.filter((p) => p.data.floor_id !== activeFloorId).length >

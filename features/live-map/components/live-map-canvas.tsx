@@ -44,6 +44,8 @@ interface DrawingStroke {
 
 export interface LiveMapCanvasMarker {
   partyTemporary?: "ping" | "position";
+  partyYaw?: number;
+  partyHeading?: number;
   partyColor?: string;
   partyType?: "normal" | "danger" | "rally" | "target";
   groupId?: string;
@@ -705,6 +707,14 @@ function PointIcon(
 
   if (kind === "party") {
     const partyColor = /^#[0-9a-f]{6}$/i.test(point.partyColor ?? "") ? point.partyColor! : "#fb923c";
+    if (point.partyTemporary === "position" && Number.isFinite(point.partyHeading)) {
+      const icon = PlayerIcon(point.partyHeading!);
+      return L.divIcon({
+        ...icon.options,
+        className: "live-map-marker-icon live-map-party-marker live-map-party-position",
+        html: `<div style="--party-color:${partyColor};opacity:${markerOpacity}">${icon.options.html}</div>`,
+      });
+    }
     const glyph = point.partyTemporary === "position" ? "⌖" : { normal: "●", danger: "!", rally: "⚑", target: "◎" }[point.partyType ?? "normal"];
     return L.divIcon({
       className: `live-map-marker-icon live-map-party-marker${point.partyTemporary ? ` live-map-party-${point.partyTemporary}` : ""}`,
@@ -875,6 +885,7 @@ function getPointMarkerPresentationKey(
   return [
     point.kind,
     point.partyTemporary ?? "",
+    point.partyHeading ?? "",
     point.partyColor ?? "",
     point.partyType ?? "",
     point.staticCategory ?? "",
@@ -1857,14 +1868,12 @@ export function LiveMapCanvas({
   ]);
 
   const renderMarkers = useMemo(() => {
-    if (!renderBounds) {
-      return markers;
-    }
-
-    return markers.filter((point) => (
+    return markers.filter((point) => !renderBounds ||
       point.id === focusedMarkerId ||
       renderBounds.contains(getPointMarkerLatLng(mapKey, point, coordinateInfo, rotation))
-    ));
+    ).map(point => point.partyTemporary === "position" && Number.isFinite(point.partyYaw)
+      ? { ...point, partyHeading: (getPlayerMarkerYaw(mapKey, point.partyYaw!) + rotation) % 360 }
+      : point);
   }, [coordinateInfo, focusedMarkerId, mapKey, markers, renderBounds, rotation]);
 
   useEffect(() => {
@@ -1923,6 +1932,11 @@ export function LiveMapCanvas({
       map.setView(nextCenter, map.getZoom(), { animate: false });
       imageOverlayRefs.current.forEach((overlay) => applyImageRotation(overlay, currentRotation));
       pointMarkerByIdRef.current.forEach((entry) => {
+        if (entry.point.partyTemporary === "position" && Number.isFinite(entry.point.partyYaw)) {
+          entry.marker.getElement()?.querySelector<HTMLElement>(".player-location-marker")?.style.setProperty(
+            "transform", `rotate(${(getPlayerMarkerYaw(mapKey, entry.point.partyYaw!) + currentRotation) % 360}deg)`,
+          );
+        }
         entry.marker.setLatLng(
           getPointMarkerPosition(mapKey, entry.point, coordinateInfo, currentRotation),
         );

@@ -1312,3 +1312,15 @@ html.live-map-document-dragging * {
     @apply my-5 aspect-video h-auto w-full max-w-[800px] rounded-lg border border-gray-200 bg-black dark:border-[#2a3038];
   }
 }
+
+/* Party positions share the player heading shape, with each member's color. */
+.live-map-party-position .player-icon-view-cone {
+  background: radial-gradient(circle at 50% 100%, var(--party-color) 0%, transparent 85%);
+}
+.live-map-party-position .player-icon-body { background: var(--party-color); }
+.live-map-party-position .player-icon-ring {
+  box-shadow: 0 0 0 3px var(--party-color), 0 0 14px var(--party-color);
+}
+.live-map-party-position .player-icon-pulse {
+  background: radial-gradient(circle, var(--party-color) 0%, transparent 70%);
+}
