@@ -117,6 +117,7 @@ function harness() {
       members: [member],
       markers: [],
       positions: [],
+      view_maps: [],
       presence: { online_member_ids: ["member"], online_count: 1 },
       heartbeat_interval_seconds: 15,
       reconnect_grace_seconds: 90,
@@ -270,6 +271,62 @@ async function test(name, fn) {
     assert.equal(h.view.positions[0].data.x, 99);
     ws.receive(h.snapshot({ members: [], positions: [] }));
     assert.equal(h.view.positions.length, 0);
+    h.client.dispose();
+  });
+  await test("view maps report on connect, recover and remain separate from positions", async () => {
+    const h = harness();
+    const command = { type: "view_map", map_id: "map-a", floor_id: "floor-a" };
+    h.client.setViewMap(command);
+    await h.start();
+    h.ready();
+    const ws = h.sockets[0];
+    assert.equal(ws.sent.filter((x) => x.type === "view_map").length, 1);
+    const viewed = {
+      ...h.point("view_map"),
+      data: {
+        ...h.point("view_map").data,
+        map_id: "map-a",
+        floor_id: "floor-a",
+        map: { id: "map-a" },
+        floor: { id: "floor-a" },
+      },
+    };
+    ws.receive(viewed);
+    ws.receive(h.point("position", { map_id: "map-a", expires_at: null }));
+    h.client.setViewMap({
+      type: "view_map",
+      map_id: "map-b",
+      floor_id: "floor-b",
+    });
+    assert.equal(h.view.positions[0].data.map_id, "map-a");
+    assert.equal(h.sockets.length, 1);
+    ws.receive(h.snapshot({ view_maps: [viewed] }));
+    assert.equal(h.view.viewMaps.length, 1);
+    const before = ws.sent.length;
+    ws.receive(h.snapshot());
+    assert.equal(h.view.viewMaps.length, 0);
+    assert.equal(ws.sent[before].map_id, "map-b");
+    ws.close(1012);
+    h.clock.tick(1000);
+    await flush();
+    h.sockets[1].open();
+    h.sockets[1].receive(h.snapshot({ view_maps: [viewed] }));
+    assert.equal(h.sockets[1].sent.at(-1).map_id, "map-b");
+    h.client.dispose();
+  });
+  await test("view maps reject old events and snapshots, clear membership generations", async () => {
+    const h = harness();
+    await h.start();
+    h.ready();
+    const ws = h.sockets[0],
+      time = h.time;
+    const event = h.point("view_map", { map_id: "map-b" }, time + 2000);
+    ws.receive(event);
+    ws.receive(h.point("view_map", { map_id: "map-a" }, time + 1000));
+    ws.receive(h.snapshot({ view_maps: [] }, time + 1000));
+    assert.equal(h.view.viewMaps[0].data.map_id, "map-b");
+    ws.receive(h.snapshot({ members: [], view_maps: [] }, time + 3000));
+    assert.equal(h.view.viewMaps.length, 0);
     h.client.dispose();
   });
   await test("positions expire without heartbeat extending their TTL", async () => {

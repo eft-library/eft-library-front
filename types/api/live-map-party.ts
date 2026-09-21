@@ -104,6 +104,7 @@ export interface PartyTemporaryPointV3 {
   floor_id: string;
   x: number;
   z: number;
+  map_id?: string;
   expires_at: number;
   request_id?: string;
 }
@@ -129,9 +130,34 @@ export type PartyPingEventV3 = PartyEventV3<
     label?: string;
   }
 >;
+export interface PartyViewMapCommandV3 {
+  type: "view_map";
+  map_id: string;
+  floor_id: string;
+}
+export interface PartyMapNameV3 {
+  id: string;
+  name_ko: string | null;
+  name_en: string | null;
+  name_ja: string | null;
+}
+export type PartyViewMapEventV3 = PartyEventV3<
+  "view_map",
+  {
+    member_id: string;
+    membership_epoch: string;
+    nickname: string;
+    color: string;
+    map_id: string;
+    floor_id: string;
+    map: PartyMapNameV3;
+    floor: PartyMapNameV3 & { map_id: string; floor_no: number | null };
+  }
+>;
 export interface PartyRealtimeSnapshotV3 extends PartySnapshotV3 {
   presence: { online_member_ids: string[]; online_count: number };
   positions: PartyPositionEventV3[];
+  view_maps: PartyViewMapEventV3[];
   heartbeat_interval_seconds: number;
   reconnect_grace_seconds: number;
   reason: "connected" | "changed" | "heartbeat" | "sync";
@@ -150,11 +176,17 @@ export type PartySocketEventV3 =
   | PartySnapshotEventV3
   | PartyPingEventV3
   | PartyPositionEventV3
+  | PartyViewMapEventV3
   | PartySocketErrorV3;
 export type PartyPointCommandV3 =
-  | ({ type: "ping"; request_id?: string } & PartyMarkerCreateV3)
+  | ({
+      type: "ping";
+      map_id?: string;
+      request_id?: string;
+    } & PartyMarkerCreateV3)
   | {
       type: "position";
+      map_id?: string;
       floor_id: string;
       x: number;
       z: number;

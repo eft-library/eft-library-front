@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
 import { Crown, LockKeyhole, MapPin, RefreshCw, Users, X } from "lucide-react";
+import type { MapSelectorEntry } from "@/types/api/map-of-tarkov";
 import type { LiveMapFloor } from "@/types/api/live-map";
 import type {
   PartyMarkerResponseV3,
@@ -32,6 +33,7 @@ export function LiveMapPartyPanel({
   floors,
   activeFloorId,
   mapName,
+  mapOptions,
   onFocus,
   onPlace,
 }: {
@@ -40,6 +42,7 @@ export function LiveMapPartyPanel({
   floors: LiveMapFloor[];
   activeFloorId: string;
   mapName: string;
+  mapOptions: MapSelectorEntry[];
   onFocus: (marker: PartyMarkerResponseV3) => void;
   onPlace: () => void;
 }) {
@@ -106,7 +109,9 @@ export function LiveMapPartyPanel({
   const selectedMarker = snapshot?.markers.find(
     (m) => m.id === party.editingId,
   );
+  const isRoomMap = snapshot?.room.map_id === party.mapId;
   const canEdit =
+    isRoomMap &&
     selectedMarker &&
     (owner || selectedMarker.created_by_member_id === snapshot?.me.id);
   useEffect(() => {
@@ -115,8 +120,13 @@ export function LiveMapPartyPanel({
       const content = contentRef.current;
       const form = markerFormRef.current;
       if (!content || !form) return;
-      content.scrollTop += form.getBoundingClientRect().top - content.getBoundingClientRect().top - 16;
-      form.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      content.scrollTop +=
+        form.getBoundingClientRect().top -
+        content.getBoundingClientRect().top -
+        16;
+      form
+        .querySelector<HTMLInputElement>("input")
+        ?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
   }, [open, party.point, party.editingId, canEdit]);
@@ -200,7 +210,10 @@ export function LiveMapPartyPanel({
               <X className="h-4 w-4" />
             </button>
           </header>
-          <div ref={contentRef} className="space-y-4 overflow-y-auto overscroll-contain p-4">
+          <div
+            ref={contentRef}
+            className="space-y-4 overflow-y-auto overscroll-contain p-4"
+          >
             {error && (
               <p
                 role="alert"
@@ -606,6 +619,20 @@ export function LiveMapPartyPanel({
                         />
                         <span className="min-w-0 flex-1 break-words">
                           {member.nickname}
+                          <span className="block text-gray-500 dark:text-gray-400">
+                            {(() => {
+                              const viewed = party.viewMaps.find(
+                                (v) => v.data.member_id === member.id,
+                              )?.data;
+                              return viewed
+                                ? `${viewed.map[`name_${locale}`] || viewed.map.name_en || viewed.map.id} · ${viewed.floor[`name_${locale}`] || viewed.floor.name_en || viewed.floor.id}`
+                                : t(
+                                    "보고 있는 지도 미확인",
+                                    "Viewing map unknown",
+                                    "閲覧中のマップは未確認",
+                                  );
+                            })()}
+                          </span>
                           <span className="mx-1 inline-block rounded bg-gray-200 px-1 py-0.5 text-[10px] text-gray-700 dark:bg-[#34383e] dark:text-gray-200">
                             {party.connected &&
                             snapshot.presence.online_member_ids.includes(
@@ -687,190 +714,223 @@ export function LiveMapPartyPanel({
                   </div>
                 </details>
                 <PartyLiveControls
+                  mapOptions={mapOptions}
                   party={party}
                   locale={locale}
                   floors={floors}
                 />
-                <div className="border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
-                  <h3 className="mb-2 text-sm font-bold">
-                    {t("공유 마커", "Shared markers", "共有マーカー")} (
-                    {snapshot.markers.length}/200)
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      className={partyButton}
-                      disabled={
-                        party.busy ||
-                        !activeFloorId ||
-                        snapshot.markers.length >= 200
-                      }
-                      aria-pressed={party.placing}
-                      onClick={() => {
-                        party.setPoint(null);
-                        party.setEditingId(null);
-                        if (party.placing) party.setPlacing(false);
-                        else onPlace();
-                      }}
-                    >
-                      <MapPin className="h-3 w-3" />
-                      {party.placing
-                        ? t(
-                            "위치 선택 취소",
-                            "Cancel placement",
-                            "位置選択を取消",
-                          )
-                        : t("지도에 마커 추가", "Place on map", "マップに追加")}
-                    </button>
-                    <button
-                      className={partyButton}
-                      disabled={
-                        party.busy ||
-                        !activeFloorId ||
-                        snapshot.markers.length >= 200
-                      }
-                      onClick={() => {
-                        party.setPlacing(false);
-                        party.setEditingId(null);
-                        party.setPoint({ floor_id: activeFloorId, x: 0, z: 0 });
-                      }}
-                    >
-                      {t("좌표 입력", "Enter coordinates", "座標を入力")}
-                    </button>
-                  </div>
-                  {party.placing && (
-                    <p
-                      role="status"
-                      className="mt-2 text-xs font-semibold text-orange-700 dark:text-orange-300"
-                    >
-                      {t(
-                        "지도의 빈 곳을 클릭하거나 터치하세요.",
-                        "Click or tap an empty point on the map.",
-                        "マップの空いている場所をタップしてください。",
-                      )}
-                    </p>
-                  )}
-                  {(party.point || canEdit) && (
-                    <div ref={markerFormRef} className="mt-3 rounded-lg border border-orange-300 p-3 dark:border-orange-800">
-                      <h4 className="mb-3 text-sm font-bold">
-                        {canEdit
-                          ? t("공유 마커 수정", "Edit shared marker", "共有マーカーを編集")
-                          : t("공유 마커 추가", "Add shared marker", "共有マーカーを追加")}
-                      </h4>
-                      <PartyMarkerForm
-                        key={
-                          selectedMarker?.id ??
-                          `${party.point?.floor_id}:${party.point?.x}:${party.point?.z}`
+                {!isRoomMap && (
+                  <p className="rounded-lg bg-gray-100 p-3 text-xs text-gray-600 dark:bg-[#2a2d31] dark:text-gray-300">
+                    {t(
+                      "공유 마커는 방을 만든 지도에서 사용할 수 있습니다.",
+                      "Shared markers are available on the room's original map.",
+                      "共有マーカーは部屋を作成したマップで使用できます。",
+                    )}
+                  </p>
+                )}
+                {isRoomMap && (
+                  <div className="border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
+                    <h3 className="mb-2 text-sm font-bold">
+                      {t("공유 마커", "Shared markers", "共有マーカー")} (
+                      {snapshot.markers.length}/200)
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        className={partyButton}
+                        disabled={
+                          party.busy ||
+                          !activeFloorId ||
+                          snapshot.markers.length >= 200
                         }
-                        party={party}
-                        locale={locale}
-                        floors={floors}
-                        marker={canEdit ? selectedMarker : undefined}
-                      />
-                    </div>
-                  )}
-                  {selectedMarker && !canEdit && (
-                    <p className="mt-2 text-xs text-gray-600 dark:text-gray-300">
-                      {t(
-                        "작성자와 방장만 수정할 수 있습니다.",
-                        "Only the author and owner can edit this marker.",
-                        "作成者とリーダーのみ編集できます。",
-                      )}
-                    </p>
-                  )}
-                  {snapshot.markers.length === 0 && (
-                    <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-                      {t(
-                        "아직 공유 마커가 없습니다.",
-                        "No shared markers yet.",
-                        "共有マーカーはまだありません。",
-                      )}
-                    </p>
-                  )}
-                  <ul className="mt-3 space-y-2">
-                    {snapshot.markers.map((marker) => {
-                      const author = snapshot.members.find(
-                        (m) => m.id === marker.created_by_member_id,
-                      );
-                      const editable =
-                        owner || marker.created_by_member_id === snapshot.me.id;
-                      const floor = floors.find(
-                        (f) => f.id === marker.floor_id,
-                      );
-                      return (
-                        <li
-                          key={marker.id}
-                          className="rounded-md bg-gray-100 p-2 dark:bg-[#2a2d31]"
-                        >
-                          <button
-                            className="w-full break-words rounded text-left text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                            onClick={() => onFocus(marker)}
-                          >
-                            {marker.label || t("마커", "Marker", "マーカー")} ·{" "}
-                            {t(
-                              {
-                                normal: "일반",
-                                danger: "위험",
-                                rally: "집결",
-                                target: "목표",
-                              }[marker.marker_type],
-                              marker.marker_type,
-                              {
-                                normal: "通常",
-                                danger: "危険",
-                                rally: "集合",
-                                target: "目標",
-                              }[marker.marker_type],
+                        aria-pressed={party.placing}
+                        onClick={() => {
+                          party.setPoint(null);
+                          party.setEditingId(null);
+                          if (party.placing) party.setPlacing(false);
+                          else onPlace();
+                        }}
+                      >
+                        <MapPin className="h-3 w-3" />
+                        {party.placing
+                          ? t(
+                              "위치 선택 취소",
+                              "Cancel placement",
+                              "位置選択を取消",
+                            )
+                          : t(
+                              "지도에 마커 추가",
+                              "Place on map",
+                              "マップに追加",
                             )}
-                            <span className="mt-1 block font-normal text-gray-500 dark:text-gray-400">
-                              {author?.nickname ??
-                                t(
-                                  "이전 참여자",
-                                  "Former member",
-                                  "以前の参加者",
-                                )}{" "}
-                              · {floor?.[`name_${locale}`] ?? marker.floor_id}
-                            </span>
-                          </button>
-                          {editable && (
-                            <div className="mt-2 flex gap-2">
-                              <button
-                                className={partyButton}
-                                disabled={party.busy}
-                                onClick={() => {
-                                  party.setPoint(null);
-                                  party.setPlacing(false);
-                                  party.setEditingId(marker.id);
-                                }}
-                              >
-                                {t("수정", "Edit", "編集")}
-                              </button>
-                              <button
-                                className={partyButton}
-                                disabled={party.busy}
-                                onClick={() =>
-                                  confirmAction(
-                                    "delete",
-                                    t(
-                                      "공유 마커를 삭제할까요?",
-                                      "Delete this shared marker?",
-                                      "共有マーカーを削除しますか？",
-                                    ),
-                                    `/${party.roomId}/markers/${marker.id}?version=${marker.version}`,
-                                    "DELETE",
-                                    undefined,
-                                    "refresh",
-                                  )
-                                }
-                              >
-                                {t("삭제", "Delete", "削除")}
-                              </button>
-                            </div>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+                      </button>
+                      <button
+                        className={partyButton}
+                        disabled={
+                          party.busy ||
+                          !activeFloorId ||
+                          snapshot.markers.length >= 200
+                        }
+                        onClick={() => {
+                          party.setPlacing(false);
+                          party.setEditingId(null);
+                          party.setPoint({
+                            floor_id: activeFloorId,
+                            x: 0,
+                            z: 0,
+                          });
+                        }}
+                      >
+                        {t("좌표 입력", "Enter coordinates", "座標を入力")}
+                      </button>
+                    </div>
+                    {party.placing && (
+                      <p
+                        role="status"
+                        className="mt-2 text-xs font-semibold text-orange-700 dark:text-orange-300"
+                      >
+                        {t(
+                          "지도의 빈 곳을 클릭하거나 터치하세요.",
+                          "Click or tap an empty point on the map.",
+                          "マップの空いている場所をタップしてください。",
+                        )}
+                      </p>
+                    )}
+                    {(party.point || canEdit) && (
+                      <div
+                        ref={markerFormRef}
+                        className="mt-3 rounded-lg border border-orange-300 p-3 dark:border-orange-800"
+                      >
+                        <h4 className="mb-3 text-sm font-bold">
+                          {canEdit
+                            ? t(
+                                "공유 마커 수정",
+                                "Edit shared marker",
+                                "共有マーカーを編集",
+                              )
+                            : t(
+                                "공유 마커 추가",
+                                "Add shared marker",
+                                "共有マーカーを追加",
+                              )}
+                        </h4>
+                        <PartyMarkerForm
+                          key={
+                            selectedMarker?.id ??
+                            `${party.point?.floor_id}:${party.point?.x}:${party.point?.z}`
+                          }
+                          party={party}
+                          locale={locale}
+                          floors={floors}
+                          marker={canEdit ? selectedMarker : undefined}
+                        />
+                      </div>
+                    )}
+                    {selectedMarker && !canEdit && (
+                      <p className="mt-2 text-xs text-gray-600 dark:text-gray-300">
+                        {t(
+                          "작성자와 방장만 수정할 수 있습니다.",
+                          "Only the author and owner can edit this marker.",
+                          "作成者とリーダーのみ編集できます。",
+                        )}
+                      </p>
+                    )}
+                    {snapshot.markers.length === 0 && (
+                      <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                        {t(
+                          "아직 공유 마커가 없습니다.",
+                          "No shared markers yet.",
+                          "共有マーカーはまだありません。",
+                        )}
+                      </p>
+                    )}
+                    <ul className="mt-3 space-y-2">
+                      {snapshot.markers.map((marker) => {
+                        const author = snapshot.members.find(
+                          (m) => m.id === marker.created_by_member_id,
+                        );
+                        const editable =
+                          owner ||
+                          marker.created_by_member_id === snapshot.me.id;
+                        const floor = floors.find(
+                          (f) => f.id === marker.floor_id,
+                        );
+                        return (
+                          <li
+                            key={marker.id}
+                            className="rounded-md bg-gray-100 p-2 dark:bg-[#2a2d31]"
+                          >
+                            <button
+                              className="w-full break-words rounded text-left text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                              onClick={() => onFocus(marker)}
+                            >
+                              {marker.label || t("마커", "Marker", "マーカー")}{" "}
+                              ·{" "}
+                              {t(
+                                {
+                                  normal: "일반",
+                                  danger: "위험",
+                                  rally: "집결",
+                                  target: "목표",
+                                }[marker.marker_type],
+                                marker.marker_type,
+                                {
+                                  normal: "通常",
+                                  danger: "危険",
+                                  rally: "集合",
+                                  target: "目標",
+                                }[marker.marker_type],
+                              )}
+                              <span className="mt-1 block font-normal text-gray-500 dark:text-gray-400">
+                                {author?.nickname ??
+                                  t(
+                                    "이전 참여자",
+                                    "Former member",
+                                    "以前の参加者",
+                                  )}{" "}
+                                · {floor?.[`name_${locale}`] ?? marker.floor_id}
+                              </span>
+                            </button>
+                            {editable && (
+                              <div className="mt-2 flex gap-2">
+                                <button
+                                  className={partyButton}
+                                  disabled={party.busy}
+                                  onClick={() => {
+                                    party.setPoint(null);
+                                    party.setPlacing(false);
+                                    party.setEditingId(marker.id);
+                                  }}
+                                >
+                                  {t("수정", "Edit", "編集")}
+                                </button>
+                                <button
+                                  className={partyButton}
+                                  disabled={party.busy}
+                                  onClick={() =>
+                                    confirmAction(
+                                      "delete",
+                                      t(
+                                        "공유 마커를 삭제할까요?",
+                                        "Delete this shared marker?",
+                                        "共有マーカーを削除しますか？",
+                                      ),
+                                      `/${party.roomId}/markers/${marker.id}?version=${marker.version}`,
+                                      "DELETE",
+                                      undefined,
+                                      "refresh",
+                                    )
+                                  }
+                                >
+                                  {t("삭제", "Delete", "削除")}
+                                </button>
+                              </div>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
               </>
             )}
           </div>

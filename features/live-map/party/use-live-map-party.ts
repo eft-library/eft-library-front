@@ -1,6 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  createElement,
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSession, useSession } from "next-auth/react";
 import { apiGet } from "@/lib/api/api-client";
@@ -9,20 +18,22 @@ import type { PartySnapshotV3 } from "@/types/api/live-map-party";
 import { PartyApiError, partyRequest } from "./api";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import { PartyRealtimeClient, type PartyRealtimeView } from "./realtime-client";
-import type { PartyPointCommandV3 } from "@/types/api/live-map-party";
+import { usePartyLocationSharing } from "./use-party-location-sharing";
+import type {
+  PartyViewMapCommandV3,
+  PartyPointCommandV3,
+} from "@/types/api/live-map-party";
 
 const EMPTY_PINGS: PartyRealtimeView["pings"] = [];
+const EMPTY_VIEW_MAPS: PartyRealtimeView["viewMaps"] = [];
 const EMPTY_POSITIONS: PartyRealtimeView["positions"] = [];
 
-export function useLiveMapParty(normalizedName: string) {
+function usePartySession() {
   const { data: session, status } = useSession();
   const isAdmin = session?.userInfo?.is_admin === true;
   const token = isAdmin ? session?.accessToken : undefined;
   const account = session?.userInfo?.email ?? session?.user?.email;
-  const storageKey =
-    isAdmin && account
-      ? `live-map-party:v3:${account}:${normalizedName}`
-      : null;
+  const storageKey = isAdmin && account ? `live-map-party:v3:${account}` : null;
   const [savedRoom, setSavedRoom] = useState<{
     key: string;
     id: string;
@@ -46,6 +57,7 @@ export function useLiveMapParty(normalizedName: string) {
   const [retryAt, setRetryAt] = useState(0);
   const queryClient = useQueryClient();
   const clientRef = useRef<PartyRealtimeClient | null>(null);
+  const viewMapRef = useRef<PartyViewMapCommandV3 | undefined>(undefined);
   const [realtime, setRealtime] = useState<{
     key: string;
     view: PartyRealtimeView;
@@ -79,7 +91,29 @@ export function useLiveMapParty(normalizedName: string) {
     }
     const restore = () => {
       try {
-        const id = localStorage.getItem(storageKey);
+        let id = localStorage.getItem(storageKey);
+        const legacyKeys = Object.keys(localStorage).filter((key) =>
+          key.startsWith(`${storageKey}:`),
+        );
+        if (!id) {
+          const ids = new Set(
+            legacyKeys.map((key) => localStorage.getItem(key)).filter(Boolean),
+          );
+          if (ids.size === 1) {
+            id = [...ids][0]!;
+            localStorage.setItem(storageKey, id);
+            for (const key of legacyKeys) {
+              const password = sessionStorage.getItem(`${key}:${id}:password`);
+              if (password !== null)
+                sessionStorage.setItem(
+                  `${storageKey}:${id}:password`,
+                  password,
+                );
+            }
+          }
+        }
+        // Do not restore obsolete per-map memberships after an explicit leave.
+        for (const key of legacyKeys) localStorage.removeItem(key);
         setSavedRoom(id ? { key: storageKey, id } : null);
       } catch {
         setSavedRoom(null);
@@ -116,16 +150,6 @@ export function useLiveMapParty(normalizedName: string) {
     [storageKey],
   );
 
-  const mapQuery = useQuery({
-    queryKey: ["live-map-party-map", normalizedName],
-    queryFn: () =>
-      apiGet<MapDetailResponse>(
-        `/api/map/v3/detail/${encodeURIComponent(normalizedName)}`,
-      ),
-    enabled: isAdmin && (open || !!roomId),
-    staleTime: 60 * 60 * 1000,
-  });
-
   useEffect(() => {
     if (!roomId || !account || !token) return;
     const url = new URL(
@@ -154,6 +178,7 @@ export function useLiveMapParty(normalizedName: string) {
       },
     });
     clientRef.current = client;
+    client.setViewMap(viewMapRef.current);
     client.start();
     const wake = () => {
       if (document.visibilityState === "visible") client.wake();
@@ -179,7 +204,7 @@ export function useLiveMapParty(normalizedName: string) {
     return () => window.clearTimeout(timer);
   }, [retryAt]);
 
-  // Discard a response if the user changed accounts or maps while it was in flight.
+  // Discard a response if the account or party changed while it was in flight.
   async function run(
     path: string,
     method: string,
@@ -272,7 +297,24 @@ export function useLiveMapParty(normalizedName: string) {
     setError(new PartyApiError(503, "PARTY_REALTIME_UNAVAILABLE"));
     return false;
   };
+  const setViewMap = useCallback(
+    (command: PartyViewMapCommandV3 | undefined) => {
+      viewMapRef.current = command;
+      clientRef.current?.setViewMap(command);
+    },
+    [],
+  );
+  const locationSharing = usePartyLocationSharing({
+    account,
+    roomScope,
+    roomId,
+    connected,
+    sendPoint,
+  });
   return {
+    ...locationSharing,
+    setViewMap,
+    viewMaps: view?.viewMaps ?? EMPTY_VIEW_MAPS,
     isAdmin,
     enteredPassword:
       roomPassword?.scope === roomScope ? roomPassword.value : null,
@@ -305,10 +347,6 @@ export function useLiveMapParty(normalizedName: string) {
         : null),
     setError,
     run,
-    mapId: mapQuery.data?.map.id,
-    mapError: mapQuery.error,
-    mapLoading: mapQuery.isFetching,
-    retryMap: () => mapQuery.refetch(),
     refresh: () => {
       setError(null);
       if (connected) clientRef.current?.sync();
@@ -321,6 +359,43 @@ export function useLiveMapParty(normalizedName: string) {
         view?.connection === "reconnecting"),
     syncing: false,
     nickname: session?.userInfo?.nickname ?? "",
+  };
+}
+
+const PartyContext = createContext<ReturnType<typeof usePartySession> | null>(
+  null,
+);
+
+export function LiveMapPartyProvider({ children }: { children: ReactNode }) {
+  const value = usePartySession();
+  return createElement(PartyContext.Provider, { value }, children);
+}
+
+export function useLiveMapParty(normalizedName: string) {
+  const party = useContext(PartyContext);
+  if (!party) throw new Error("LiveMapPartyProvider is missing");
+  const { setPoint, setEditingId, setPlacing, setViewMap } = party;
+  useEffect(() => {
+    setPoint(null);
+    setEditingId(null);
+    setPlacing(false);
+    return () => setViewMap(undefined);
+  }, [normalizedName, setPoint, setEditingId, setPlacing, setViewMap]);
+  const mapQuery = useQuery({
+    queryKey: ["live-map-party-map", normalizedName],
+    queryFn: () =>
+      apiGet<MapDetailResponse>(
+        `/api/map/v3/detail/${encodeURIComponent(normalizedName)}`,
+      ),
+    enabled: party.isAdmin && (party.open || !!party.roomId),
+    staleTime: 60 * 60 * 1000,
+  });
+  return {
+    ...party,
+    mapId: mapQuery.data?.map.id,
+    mapError: mapQuery.error,
+    mapLoading: mapQuery.isFetching,
+    retryMap: () => mapQuery.refetch(),
   };
 }
 

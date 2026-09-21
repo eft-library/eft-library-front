@@ -58,6 +58,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     let failDelete = false;
     const sockets = new Set();
     let positions = [];
+    let viewMaps = [];
     const commands = [];
     const broadcast = (reason = "changed") => {
       for (const socket of sockets) {
@@ -81,6 +82,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
                 online_count: 1,
               },
               positions,
+              view_maps: viewMaps,
               heartbeat_interval_seconds: 15,
               reconnect_grace_seconds: 90,
               reason,
@@ -97,6 +99,39 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         socket.onMessage((raw) => {
           const message = JSON.parse(raw);
           commands.push(message);
+          if (message.type === "view_map") {
+            const event = {
+              type: "view_map",
+              event_id: crypto.randomUUID(),
+              room_id: id,
+              server_time: new Date().toISOString(),
+              data: {
+                ...message,
+                member_id: snapshot.me.id,
+                membership_epoch: "current-epoch",
+                nickname: snapshot.me.nickname,
+                color: snapshot.me.color,
+                map: {
+                  id: message.map_id,
+                  name_ko: "세관",
+                  name_en: "Customs",
+                  name_ja: "税関",
+                },
+                floor: {
+                  id: message.floor_id,
+                  map_id: message.map_id,
+                  floor_no: 1,
+                  name_ko: "1층",
+                  name_en: "Floor 1",
+                  name_ja: "1階",
+                },
+              },
+            };
+            viewMaps = [event];
+            for (const peer of sockets) peer.send(JSON.stringify(event));
+            return;
+          }
+
           if (message.type === "ping" || message.type === "position") {
             assert.ok(!("member_id" in message));
             if (message.type === "position")
@@ -331,6 +366,9 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         .count(),
       0,
     );
+    await page
+      .getByLabel("플레이 중인 지도", { exact: true })
+      .selectOption("customs");
     const whereInput = page.locator("main header input").first();
     await whereInput.fill("123 0 -45 0 0 0 1");
     await whereInput.press("Enter");

@@ -617,8 +617,13 @@ export function LiveMapClientPage({
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
     selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
+  useEffect(() => {
+    if (party.mapId && selectedFloor?.id) {
+      party.setViewMap({ type: "view_map", map_id: party.mapId, floor_id: selectedFloor.id });
+    }
+  }, [party.mapId, selectedFloor?.id, party.setViewMap]);
   const partyMarkers = useMemo<LiveMapCanvasMarker[]>(() => (party.snapshot?.markers ?? [])
-    .filter(marker => marker.floor_id === selectedFloor?.id)
+    .filter(marker => party.snapshot?.room.map_id === party.mapId && marker.floor_id === selectedFloor?.id)
     .map(marker => {
       const member = party.snapshot?.members.find(entry => entry.id === marker.created_by_member_id);
       return {
@@ -626,7 +631,7 @@ export function LiveMapClientPage({
         x: marker.x, y: marker.z, partyColor: member?.color, partyType: marker.marker_type,
         label: `${marker.label || partyText(locale, "공유 마커", "Shared marker", "共有マーカー")} · ${member?.nickname ?? ""}`,
       };
-    }), [party.snapshot, selectedFloor?.id, locale]);
+    }), [party.snapshot, party.mapId, selectedFloor?.id, locale]);
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -1056,7 +1061,7 @@ export function LiveMapClientPage({
   ]);
 
   const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(() => party.positions
-    .filter(event => event.data.floor_id === selectedFloor?.id)
+    .filter(event => (event.data.map_id ?? party.snapshot?.room.map_id) === party.mapId && event.data.floor_id === selectedFloor?.id)
     .map(event => ({
       id: `party-${event.type}:${event.data.member_id}`,
       kind: "party", floorId: event.data.floor_id, x: event.data.x, y: event.data.z,
@@ -1064,7 +1069,7 @@ export function LiveMapClientPage({
       partyYaw: event.data.yaw,
       partyType: "normal",
       label: `${event.data.nickname} · ${partyText(locale, "위치", "Position", "位置")}`,
-    })), [party.positions, selectedFloor?.id, locale]);
+    })), [party.positions, party.mapId, party.snapshot?.room.map_id, selectedFloor?.id, locale]);
   const allVisibleMarkers = useMemo(() => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers], [visibleMarkers, partyMarkers, temporaryPartyMarkers]);
 
   const highlightedMarkerGroup = useMemo(() => {
@@ -1102,6 +1107,13 @@ export function LiveMapClientPage({
 
   function applyWhereText(text: string, { save = true }: { save?: boolean } = {}) {
     const parsed = parseWhereText(text);
+    if (party.roomId && parsed) {
+      party.shareLocation(text);
+      if (party.actualMapName !== normalizedName) {
+        setLocation(null);
+        return;
+      }
+    }
     setLocation(parsed);
 
     if (!parsed) {
@@ -1116,17 +1128,7 @@ export function LiveMapClientPage({
 
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
-      if (party.roomId && party.connected) {
-        party.sendPoint({
-          type: "position",
-          floor_id: matchedFloor.id,
-          x: parsed.x,
-          z: parsed.z,
-          yaw: ((parsed.yaw % 360) + 360) % 360,
-          persistent: true,
-          request_id: crypto.randomUUID(),
-        });
-      }
+
     }
   }
 
@@ -1919,9 +1921,22 @@ export function LiveMapClientPage({
     }
 
     previousLocationEventRef.current = latestWebsocketLocation.receivedAt;
-    setWhere(latestWebsocketLocation.value);
-    applyWhereText(latestWebsocketLocation.value);
+    if (!party.roomId) {
+      setWhere(latestWebsocketLocation.value);
+      applyWhereText(latestWebsocketLocation.value);
+    }
   }, [latestWebsocketLocation]);
+
+  useEffect(() => {
+    if (!party.roomId) return;
+    const point = party.localPosition;
+    const location = point?.mapName === normalizedName ? point.location : null;
+    setLocation(location);
+    if (location) {
+      const floor = findFloorForLocation(sortedFloors, location);
+      if (floor) setSelectedFloorId(floor.id);
+    }
+  }, [party.localPosition, party.roomId, normalizedName, sortedFloors]);
 
   useEffect(() => {
     const raidState = latestRaidState?.value;
@@ -1968,6 +1983,7 @@ export function LiveMapClientPage({
     }
 
     if (
+      !party.roomId &&
       raidState.is_active &&
       raidState.map &&
       raidState.map !== normalizedName &&
@@ -1985,7 +2001,7 @@ export function LiveMapClientPage({
       window.setTimeout(() => setIsTransitDetected(false), 10000);
     }
     previousTransitCountRef.current = raidState.transit_count;
-  }, [data.map_selector, latestRaidState, normalizedName, router]);
+  }, [data.map_selector, latestRaidState, normalizedName, party.roomId, router]);
 
   const raidRemainingText = useMemo(() => {
     const state = latestRaidState?.value;
@@ -2091,15 +2107,7 @@ export function LiveMapClientPage({
     const matchedFloor = findFloorForLocation(sortedFloors, activeLogLocation);
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
-      if (party.roomId && party.connected) {
-        party.sendPoint({
-          type: "position",
-          floor_id: matchedFloor.id,
-          x: activeLogLocation.x,
-          z: activeLogLocation.z,
-          request_id: crypto.randomUUID(),
-        });
-      }
+
     }
   }, [activeLogLocation, sortedFloors]);
 
@@ -2495,6 +2503,7 @@ export function LiveMapClientPage({
               locale={locale}
               floors={sortedFloors}
               activeFloorId={selectedFloor?.id ?? ""}
+              mapOptions={data.map_selector}
               mapName={selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : normalizedName}
               onPlace={() => { setDrawingMode("hand"); party.setPoint(null); party.setEditingId(null); party.setPlacing(true); party.setOpen(false); }}
               onFocus={(marker) => {

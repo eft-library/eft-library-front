@@ -10,6 +10,7 @@ import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { LiveMapPartyProvider } from "@/features/live-map/party/use-live-map-party";
 import { WebSocketProvider } from "@/components/providers/websocket-provider";
 import { DeploymentNotice } from "@/features/deployment-notice/components/deployment-notice";
 // import { ChatData } from "@/features/chat/components/chat-data";
@@ -119,7 +120,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
         <DeploymentNotice locale={locale} />
         <AdSideRails />
         {/* <ChatData /> */}
-        <div className="flex-1">{children}</div>
+        <div className="flex-1"><LiveMapPartyProvider>{children}</LiveMapPartyProvider></div>
         <SiteFooterGuard />
       </AppStoreProvider>
     </div>

@@ -75,7 +75,7 @@ const assert = require("node:assert/strict");
         );
       await p.routeWebSocket("**/api/live-map/v3/party/rooms/*/ws", (ws) => {
         socket = ws;
-        ws.onMessage(() => broadcast());
+        ws.onMessage(raw => { if (JSON.parse(raw).type !== "view_map") broadcast(); });
       });
       await p.route("**/api/auth/session", (r) =>
         r.fulfill({

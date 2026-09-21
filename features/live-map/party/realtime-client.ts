@@ -1,5 +1,7 @@
 import type {
   PartySocketEventV3,
+  PartyViewMapEventV3,
+  PartyViewMapCommandV3,
   PartyRealtimeSnapshotV3,
   PartyPingEventV3,
   PartyPositionEventV3,
@@ -28,6 +30,7 @@ export interface PartyRealtimeView {
   snapshot?: PartyRealtimeSnapshotV3;
   pings: PartyPingEventV3[];
   positions: PartyPositionEventV3[];
+  viewMaps: PartyViewMapEventV3[];
   error?: PartySocketErrorV3;
   cooldown: boolean;
 }
@@ -50,11 +53,13 @@ export class PartyRealtimeClient {
   private latestServerTime = -Infinity;
   private clockOffset = 0;
   private seen = new Set<string>();
+  private desiredView?: PartyViewMapCommandV3;
   private positionTimes = new Map<string, number>();
   private view: PartyRealtimeView = {
     connection: "connecting",
     pings: [],
     positions: [],
+    viewMaps: [],
     cooldown: false,
   };
 
@@ -129,6 +134,14 @@ export class PartyRealtimeClient {
       return false;
     return this.write(command);
   }
+  setViewMap(command: PartyViewMapCommandV3 | undefined) {
+    const changed =
+      command?.map_id !== this.desiredView?.map_id ||
+      command?.floor_id !== this.desiredView?.floor_id;
+    this.desiredView = command;
+    if (changed && command && this.view.connection === "connected")
+      this.write(command);
+  }
   /** Stop reconnecting before leave; keep the current connection until REST confirms it. */
   suspend() {
     this.suspended = true;
@@ -189,6 +202,7 @@ export class PartyRealtimeClient {
       connection: this.attempts ? "reconnecting" : "connecting",
       pings: [],
       positions: [],
+      viewMaps: [],
     });
     this.seen.clear();
     this.positionTimes.clear();
@@ -245,6 +259,7 @@ export class PartyRealtimeClient {
             snapshot: undefined,
             pings: [],
             positions: [],
+            viewMaps: [],
           });
           this.options.onTerminal(
             error && [403, 404, 410].includes(error.status)
@@ -304,7 +319,7 @@ export class PartyRealtimeClient {
       return;
     }
     if (
-      !["snapshot", "ping", "position"].includes(event.type) ||
+      !["snapshot", "ping", "position", "view_map"].includes(event.type) ||
       event.room_id !== this.options.roomId ||
       typeof event.event_id !== "string"
     )
@@ -359,6 +374,27 @@ export class PartyRealtimeClient {
           positions.push(p);
         }
       }
+      const viewMaps = (event.data.view_maps ?? []).filter(
+        (v) =>
+          v.type === "view_map" &&
+          v.room_id === event.room_id &&
+          members.some((m) => m.id === v.data.member_id),
+      );
+      for (const v of this.view.viewMaps) {
+        if (
+          eventTime(v.server_time) > time &&
+          sameMembership(v.data.member_id)
+        ) {
+          const index = viewMaps.findIndex(
+            (item) => item.data.member_id === v.data.member_id,
+          );
+          if (index >= 0) viewMaps.splice(index, 1);
+          viewMaps.push(v);
+        }
+      }
+      const shouldReportView =
+        this.view.connection !== "connected" ||
+        !viewMaps.some((v) => v.data.member_id === event.data.me.id);
       this.positionTimes.clear();
       positions.forEach((p) =>
         this.positionTimes.set(p.data.member_id, eventTime(p.server_time)),
@@ -379,15 +415,43 @@ export class PartyRealtimeClient {
         connection: "connected",
         snapshot: event.data,
         positions,
+        viewMaps,
         pings: this.view.pings.filter((p) => sameMembership(p.data.member_id)),
         error: Date.now() < this.retryAt ? this.view.error : undefined,
       });
+      if (shouldReportView && this.desiredView) this.write(this.desiredView);
       this.expire();
       return;
     }
     const member = this.view.snapshot?.members.find(
       (m) => m.id === event.data.member_id && m.status === "joined",
     );
+    if (event.type === "view_map") {
+      if (
+        !member ||
+        time < eventTime(member.joined_at) ||
+        time < this.latestSnapshotTime
+      )
+        return;
+      const previous = this.view.viewMaps.find(
+        (v) => v.data.member_id === event.data.member_id,
+      );
+      if (
+        previous &&
+        (previous.data.membership_epoch !== event.data.membership_epoch ||
+          eventTime(previous.server_time) > time)
+      )
+        return;
+      this.emit({
+        viewMaps: [
+          ...this.view.viewMaps.filter(
+            (v) => v.data.member_id !== event.data.member_id,
+          ),
+          event,
+        ],
+      });
+      return;
+    }
     if (
       !member ||
       time < eventTime(member.joined_at) ||
