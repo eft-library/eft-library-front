@@ -279,21 +279,6 @@ export function PartyMarkerForm({
           label,
           marker_type: type,
         };
-        if (!initial && party.placementKind !== "marker") {
-          const ok = party.sendPoint(
-            party.placementKind === "position"
-              ? {
-                  type: "position",
-                  floor_id: floorId,
-                  x: Number(x),
-                  z: Number(z),
-                  request_id: crypto.randomUUID(),
-                }
-              : { ...body, type: "ping", request_id: crypto.randomUUID() },
-          );
-          if (ok) party.setPoint(null);
-          return;
-        }
         const update: PartyMarkerUpdateV3 | undefined = initial
           ? { ...body, version: initial.version }
           : undefined;
@@ -312,61 +297,29 @@ export function PartyMarkerForm({
         disabled={party.busy || (!!party.roomId && !party.connected)}
         className="space-y-2"
       >
-        {!initial && (
-          <PartyField label={t("공유 방식", "Share as", "共有方法")}>
+        <PartyField label={t("마커 설명", "Marker label", "マーカーの説明")}>
+          <input
+            className={partyInput}
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            maxLength={100}
+          />
+        </PartyField>
+        <div className="grid grid-cols-2 gap-2">
+          <PartyField label={t("종류", "Type", "種類")}>
             <select
               className={partyInput}
-              value={party.placementKind}
+              value={type}
               onChange={(e) =>
-                party.setPlacementKind(
-                  e.target.value as "marker" | "ping" | "position",
-                )
+                setType(e.target.value as PartyMarkerCreateV3["marker_type"])
               }
             >
-              <option value="marker">
-                {t("지속 마커", "Persistent marker", "持続マーカー")}
-              </option>
-              <option value="ping">
-                {t("순간 핑 (5초)", "Ping (5s)", "ピン（5秒）")}
-              </option>
-              <option value="position">
-                {t(
-                  "내 수동 위치 (60초)",
-                  "My manual position (60s)",
-                  "自分の手動位置（60秒）",
-                )}
-              </option>
+              <option value="normal">{t("일반", "Normal", "通常")}</option>
+              <option value="danger">{t("위험", "Danger", "危険")}</option>
+              <option value="rally">{t("집결", "Rally", "集合")}</option>
+              <option value="target">{t("목표", "Target", "目標")}</option>
             </select>
           </PartyField>
-        )}
-
-        {(initial || party.placementKind !== "position") && (
-          <PartyField label={t("마커 설명", "Marker label", "マーカーの説明")}>
-            <input
-              className={partyInput}
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              maxLength={100}
-            />
-          </PartyField>
-        )}
-        <div className="grid grid-cols-2 gap-2">
-          {(initial || party.placementKind !== "position") && (
-            <PartyField label={t("종류", "Type", "種類")}>
-              <select
-                className={partyInput}
-                value={type}
-                onChange={(e) =>
-                  setType(e.target.value as PartyMarkerCreateV3["marker_type"])
-                }
-              >
-                <option value="normal">{t("일반", "Normal", "通常")}</option>
-                <option value="danger">{t("위험", "Danger", "危険")}</option>
-                <option value="rally">{t("집결", "Rally", "集合")}</option>
-                <option value="target">{t("목표", "Target", "目標")}</option>
-              </select>
-            </PartyField>
-          )}
           <PartyField label={t("층", "Floor", "階")}>
             <select
               className={partyInput}
@@ -406,9 +359,7 @@ export function PartyMarkerForm({
         </div>
         <div className="flex gap-2">
           <button className={partyButton}>
-            {!initial && party.placementKind !== "marker"
-              ? t("공유하기", "Share", "共有")
-              : t("마커 저장", "Save marker", "マーカーを保存")}
+            {t("마커 저장", "Save marker", "マーカーを保存")}
           </button>
           <button
             type="button"

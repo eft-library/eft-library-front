@@ -137,7 +137,7 @@ const assert = require("node:assert/strict");
           `${map}/${rotation} x mismatch ${JSON.stringify(bounds)} vs ${x}`,
         );
         assert.ok(
-          Math.abs(bounds.y + bounds.height / 2 - y) < 3,
+          Math.abs(bounds.y + 40 - y) < 3,
           `${map}/${rotation} y mismatch`,
         );
         assert.ok(

@@ -116,7 +116,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
                 expires_at:
                   type === "position" && body.persistent
                     ? null
-                    : Date.now() / 1000 + (type === "ping" ? 5 : 60),
+                    : Date.now() / 1000 + 60,
               },
             };
             if (type === "position") positions = [event];
@@ -319,24 +319,18 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByRole("button", { name: "마커 저장" }).click();
     assert.equal(snapshot.markers[0].version, 3);
     console.log("PASS refresh restore, conflict recovery, versioned update");
-    await page.getByRole("button", { name: "좌표 입력", exact: true }).click();
-    await page.getByLabel("공유 방식").selectOption("ping");
-    await page.getByLabel("마커 설명").fill("실시간 핑 테스트");
-    await page.getByLabel("X", { exact: true }).fill("120");
-    await page.getByLabel("Z", { exact: true }).fill("-40");
-    await page.getByRole("button", { name: "공유하기", exact: true }).click();
-    await page.locator(".live-map-party-ping").waitFor();
-    assert.equal(await page.locator(".live-map-party-ping").count(), 1);
-    await page
-      .locator(".live-map-party-ping")
-      .waitFor({ state: "detached", timeout: 8000 });
-    await page.getByRole("button", { name: "좌표 입력", exact: true }).click();
-    await page.getByLabel("공유 방식").selectOption("position");
-    await page.getByLabel("X", { exact: true }).fill("122");
-    await page.getByLabel("Z", { exact: true }).fill("-42");
-    assert.equal(await page.getByLabel("마커 설명").count(), 0);
-    await page.getByRole("button", { name: "공유하기", exact: true }).click();
-    await page.locator(".live-map-party-position").waitFor();
+    assert.equal(
+      await page
+        .getByRole("button", { name: "순간 핑 찍기", exact: true })
+        .count(),
+      0,
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "내 위치 찍기", exact: true })
+        .count(),
+      0,
+    );
     const whereInput = page.locator("main header input").first();
     await whereInput.fill("123 0 -45 0 0 0 1");
     await whereInput.press("Enter");
@@ -390,7 +384,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       0,
     );
     console.log(
-      "PASS ping dedupe/expiry, manual position, multi-tab snapshot restore without REST polling",
+      "PASS received position, multi-tab snapshot restore without REST polling",
     );
 
     for (const theme of ["light", "dark"]) {

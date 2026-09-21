@@ -41,7 +41,7 @@ export function LiveMapPartyPanel({
   activeFloorId: string;
   mapName: string;
   onFocus: (marker: PartyMarkerResponseV3) => void;
-  onPlace: (kind?: "marker" | "ping" | "position") => void;
+  onPlace: () => void;
 }) {
   const t = (ko: string, en: string, ja: string) =>
     partyText(locale, ko, en, ja);
@@ -58,6 +58,8 @@ export function LiveMapPartyPanel({
   const [offset, setOffset] = useState(0);
   const [form, setForm] = useState<"create" | "settings" | string | null>(null);
   const panelRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const markerFormRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { open, setOpen, setPlacing } = party;
   const snapshot = party.snapshot;
@@ -107,6 +109,18 @@ export function LiveMapPartyPanel({
   const canEdit =
     selectedMarker &&
     (owner || selectedMarker.created_by_member_id === snapshot?.me.id);
+  useEffect(() => {
+    if (!open || (!party.point && !canEdit)) return;
+    const frame = requestAnimationFrame(() => {
+      const content = contentRef.current;
+      const form = markerFormRef.current;
+      if (!content || !form) return;
+      content.scrollTop += form.getBoundingClientRect().top - content.getBoundingClientRect().top - 16;
+      form.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [open, party.point, party.editingId, canEdit]);
+
   const confirmAction = (
     kind: PartyConfirmKind,
     message: string,
@@ -186,7 +200,7 @@ export function LiveMapPartyPanel({
               <X className="h-4 w-4" />
             </button>
           </header>
-          <div className="space-y-4 overflow-y-auto overscroll-contain p-4">
+          <div ref={contentRef} className="space-y-4 overflow-y-auto overscroll-contain p-4">
             {error && (
               <p
                 role="alert"
@@ -676,8 +690,6 @@ export function LiveMapPartyPanel({
                   party={party}
                   locale={locale}
                   floors={floors}
-                  activeFloorId={activeFloorId}
-                  onPlace={onPlace}
                 />
                 <div className="border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
                   <h3 className="mb-2 text-sm font-bold">
@@ -697,7 +709,7 @@ export function LiveMapPartyPanel({
                         party.setPoint(null);
                         party.setEditingId(null);
                         if (party.placing) party.setPlacing(false);
-                        else onPlace("marker");
+                        else onPlace();
                       }}
                     >
                       <MapPin className="h-3 w-3" />
@@ -738,7 +750,12 @@ export function LiveMapPartyPanel({
                     </p>
                   )}
                   {(party.point || canEdit) && (
-                    <div className="mt-3 rounded-lg border border-orange-300 p-3 dark:border-orange-800">
+                    <div ref={markerFormRef} className="mt-3 rounded-lg border border-orange-300 p-3 dark:border-orange-800">
+                      <h4 className="mb-3 text-sm font-bold">
+                        {canEdit
+                          ? t("공유 마커 수정", "Edit shared marker", "共有マーカーを編集")
+                          : t("공유 마커 추가", "Add shared marker", "共有マーカーを追加")}
+                      </h4>
                       <PartyMarkerForm
                         key={
                           selectedMarker?.id ??
@@ -864,12 +881,12 @@ export function LiveMapPartyPanel({
         type="button"
         aria-expanded={party.open}
         onClick={() => party.setOpen(!party.open)}
-        className="pointer-events-auto order-first mb-2 inline-flex h-9 w-28 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 text-sm font-bold text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
+        className="pointer-events-auto order-first mb-2 inline-flex h-9 w-40 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold leading-none text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
       >
-        <Users className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-        {t("파티", "Party", "パーティー")}
+        <Users className="h-4 w-4 shrink-0 text-orange-600 dark:text-orange-400" />
+        <span className="shrink-0">{t("파티", "Party", "パーティー")}</span>
         {snapshot && (
-          <span className="rounded bg-orange-100 px-1.5 text-xs text-orange-800 dark:bg-orange-950 dark:text-orange-200">
+          <span className="shrink-0 rounded bg-orange-100 px-1.5 py-1 text-xs leading-none tabular-nums text-orange-800 dark:bg-orange-950 dark:text-orange-200">
             {snapshot.room.member_count}/{snapshot.room.max_members}
           </span>
         )}

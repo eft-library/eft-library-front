@@ -715,11 +715,25 @@ function PointIcon(
         html: `<div style="--party-color:${partyColor};opacity:${markerOpacity}">${icon.options.html}</div>`,
       });
     }
-    const glyph = point.partyTemporary === "position" ? "⌖" : { normal: "●", danger: "!", rally: "⚑", target: "◎" }[point.partyType ?? "normal"];
+    if (point.partyTemporary === "position") {
+      return L.divIcon({
+        className: "live-map-marker-icon live-map-party-marker live-map-party-position",
+        html: `<span style="display:grid;place-items:center;width:28px;height:28px;border:3px solid ${partyColor};border-radius:50%;background:#111827;color:#ffffff;font-size:18px;box-shadow:0 0 0 2px #ffffff;opacity:${markerOpacity}">⌖</span>`,
+        iconSize: [28, 28], iconAnchor: [14, 14],
+      });
+    }
+    const markerType = point.partyType ?? "normal";
+    const accent = markerType === "danger" ? "#fb7185" : partyColor;
+    const symbols = {
+      normal: `<path d="M20 40C16 34 5 26 5 18a15 15 0 0 1 30 0c0 8-11 16-15 22Z"/><circle cx="20" cy="18" r="5" fill="${accent}" stroke="#fff" stroke-width="2"/>`,
+      danger: `<path d="m20 4 17 29H3L20 4Z" stroke-linejoin="round"/><path d="M20 14v8" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="27" r="1.6" fill="#fff" stroke="none"/><path d="m16 34 4 6 4-6" stroke-linejoin="round"/>`,
+      rally: `<path d="M20 40C16 34 5 26 5 18a15 15 0 0 1 30 0c0 8-11 16-15 22Z"/><path d="M15 27V10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M16 11h11l-3 5 3 5H16" fill="${accent}" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>`,
+      target: `<path d="m15 32 5 8 5-8" stroke-linejoin="round"/><circle cx="20" cy="18" r="15"/><circle cx="20" cy="18" r="7" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M20 6v6m0 12v6M8 18h6m12 0h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="18" r="2.5" fill="${accent}" stroke="none"/>`,
+    };
     return L.divIcon({
-      className: `live-map-marker-icon live-map-party-marker${point.partyTemporary ? ` live-map-party-${point.partyTemporary}` : ""}`,
-      html: `<span style="display:grid;place-items:center;width:28px;height:28px;border:3px solid ${partyColor};border-radius:${point.partyTemporary === "position" ? "50%" : "8px"};background:#111827;color:#ffffff;font-size:18px;font-weight:900;box-shadow:0 0 0 2px #ffffff;opacity:${markerOpacity}">${glyph}</span>`,
-      iconSize: [28, 28], iconAnchor: [14, 14],
+      className: "live-map-marker-icon live-map-party-marker live-map-party-pin",
+      html: `<svg aria-hidden="true" width="40" height="44" viewBox="0 0 40 44" style="overflow:visible;opacity:${markerOpacity};filter:drop-shadow(0 2px 3px rgba(0,0,0,.65));transform-origin:20px 40px;transform:scale(${isFocused || isHovered ? 1.12 : 1});transition:transform 120ms ease"><g fill="#15171a" stroke="#fff" stroke-width="5">${symbols[markerType]}</g><g fill="#15171a" stroke="${accent}" stroke-width="2.5">${symbols[markerType]}</g></svg>`,
+      iconSize: [40, 44], iconAnchor: [20, 40], tooltipAnchor: [0, -34],
     });
   }
 

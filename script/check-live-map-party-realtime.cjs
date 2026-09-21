@@ -138,7 +138,7 @@ function harness() {
       x: 12,
       z: 24,
       marker_type: "danger",
-      expires_at: serverTime / 1000 + (type === "ping" ? 5 : 60),
+      expires_at: serverTime / 1000 + 60,
       ...overrides,
     },
   });
@@ -210,7 +210,12 @@ async function test(name, fn) {
     h.clock.tick(2000);
     ws.receive(h.snapshot({}, server + 2000));
     assert.equal(h.view.pings.length, 1);
-    h.clock.tick(3250);
+    for (let elapsed = 12000; elapsed <= 52000; elapsed += 10000) {
+      h.clock.tick(10000);
+      ws.receive(h.snapshot({}, server + elapsed));
+      assert.equal(h.view.pings.length, 1);
+    }
+    h.clock.tick(8250);
     assert.equal(h.view.pings.length, 0);
     h.client.dispose();
   });

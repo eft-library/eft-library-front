@@ -34,9 +34,6 @@ export function useLiveMapParty(normalizedName: string) {
   } | null>(null);
   const [open, setOpen] = useState(false);
   const [placing, setPlacing] = useState(false);
-  const [placementKind, setPlacementKind] = useState<
-    "marker" | "ping" | "position"
-  >("marker");
   const [point, setPoint] = useState<{
     floor_id: string;
     x: number;
@@ -286,8 +283,6 @@ export function useLiveMapParty(normalizedName: string) {
     open,
     setOpen,
     placing,
-    placementKind,
-    setPlacementKind,
     connected,
     connection: view?.connection ?? "connecting",
     pings: view?.pings ?? EMPTY_PINGS,

@@ -1055,16 +1055,16 @@ export function LiveMapClientPage({
     resolvePointFloorId,
   ]);
 
-  const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(() => [...party.pings, ...party.positions]
+  const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(() => party.positions
     .filter(event => event.data.floor_id === selectedFloor?.id)
     .map(event => ({
-      id: `party-${event.type}:${event.type === "position" ? event.data.member_id : event.event_id}`,
+      id: `party-${event.type}:${event.data.member_id}`,
       kind: "party", floorId: event.data.floor_id, x: event.data.x, y: event.data.z,
       partyColor: event.data.color, partyTemporary: event.type,
-      partyYaw: event.type === "position" ? event.data.yaw : undefined,
-      partyType: event.type === "ping" ? event.data.marker_type : "normal",
-      label: `${event.data.nickname} · ${event.type === "ping" ? event.data.label || partyText(locale, "핑", "Ping", "ピン") : partyText(locale, "수동 위치", "Manual position", "手動位置")}`,
-    })), [party.pings, party.positions, selectedFloor?.id, locale]);
+      partyYaw: event.data.yaw,
+      partyType: "normal",
+      label: `${event.data.nickname} · ${partyText(locale, "위치", "Position", "位置")}`,
+    })), [party.positions, selectedFloor?.id, locale]);
   const allVisibleMarkers = useMemo(() => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers], [visibleMarkers, partyMarkers, temporaryPartyMarkers]);
 
   const highlightedMarkerGroup = useMemo(() => {
@@ -2496,7 +2496,7 @@ export function LiveMapClientPage({
               floors={sortedFloors}
               activeFloorId={selectedFloor?.id ?? ""}
               mapName={selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : normalizedName}
-              onPlace={(kind = "marker") => { setDrawingMode("hand"); party.setPoint(null); party.setEditingId(null); party.setPlacementKind(kind); party.setPlacing(true); party.setOpen(false); }}
+              onPlace={() => { setDrawingMode("hand"); party.setPoint(null); party.setEditingId(null); party.setPlacing(true); party.setOpen(false); }}
               onFocus={(marker) => {
                 setSelectedFloorId(marker.floor_id);
                 setFocusTarget({ id: `party:${marker.id}`, key: Date.now(), moveView: true, x: marker.x, y: marker.z });
@@ -2599,7 +2599,7 @@ export function LiveMapClientPage({
               </div>
             ) : null}
 
-            <div ref={mapToolbarRef} className={cn("absolute top-3 z-[1000] flex items-center gap-2", party.isAdmin ? "right-[8.5rem]" : "right-3")}>
+            <div ref={mapToolbarRef} className={cn("absolute top-3 z-[1000] flex items-center gap-2", party.isAdmin ? "right-[11.5rem]" : "right-3")}>
               <button
                 type="button"
                 aria-label={`${copy.rotateMap} (${mapRotation}°)`}
