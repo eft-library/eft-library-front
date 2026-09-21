@@ -67,6 +67,9 @@ import type {
   LiveMapDrawingMode,
   LiveMapPopupImage,
 } from "./live-map-canvas";
+import { useLiveMapParty } from "../party/use-live-map-party";
+import { LiveMapPartyPanel } from "../party/live-map-party-panel";
+import { partyText } from "../party/copy";
 import { copyByLocale } from "./live-map-copy";
 import {
   getDefaultFloor,
@@ -390,6 +393,7 @@ export function LiveMapClientPage({
   initialCompletionGraph: QuestCompletionGraphNode[];
   normalizedName: string;
 }) {
+  const party = useLiveMapParty(normalizedName);
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlFocusedMarkerId = searchParams.get("focus");
@@ -613,6 +617,16 @@ export function LiveMapClientPage({
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
     selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
+  const partyMarkers = useMemo<LiveMapCanvasMarker[]>(() => (party.snapshot?.markers ?? [])
+    .filter(marker => marker.floor_id === selectedFloor?.id)
+    .map(marker => {
+      const member = party.snapshot?.members.find(entry => entry.id === marker.created_by_member_id);
+      return {
+        id: `party:${marker.id}`, kind: "party", floorId: marker.floor_id,
+        x: marker.x, y: marker.z, partyColor: member?.color, partyType: marker.marker_type,
+        label: `${marker.label || partyText(locale, "공유 마커", "Shared marker", "共有マーカー")} · ${member?.nickname ?? ""}`,
+      };
+    }), [party.snapshot, selectedFloor?.id, locale]);
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -1040,6 +1054,17 @@ export function LiveMapClientPage({
     normalizedName,
     resolvePointFloorId,
   ]);
+
+  const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(() => [...party.pings, ...party.positions]
+    .filter(event => event.data.floor_id === selectedFloor?.id)
+    .map(event => ({
+      id: `party-${event.type}:${event.type === "position" ? event.data.member_id : event.event_id}`,
+      kind: "party", floorId: event.data.floor_id, x: event.data.x, y: event.data.z,
+      partyColor: event.data.color, partyTemporary: event.type,
+      partyType: event.type === "ping" ? event.data.marker_type : "normal",
+      label: `${event.data.nickname} · ${event.type === "ping" ? event.data.label || partyText(locale, "핑", "Ping", "ピン") : partyText(locale, "수동 위치", "Manual position", "手動位置")}`,
+    })), [party.pings, party.positions, selectedFloor?.id, locale]);
+  const allVisibleMarkers = useMemo(() => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers], [visibleMarkers, partyMarkers, temporaryPartyMarkers]);
 
   const highlightedMarkerGroup = useMemo(() => {
     if (
@@ -2184,7 +2209,7 @@ export function LiveMapClientPage({
               className="fixed inset-0 z-[790] bg-black/20 md:hidden"
             />
           ) : null}
-          <button
+          {!(party.isAdmin && party.open) && <button
             type="button"
             aria-expanded={mobileSidebar === "left"}
             aria-label={copy.expandSpawnPanel}
@@ -2192,14 +2217,14 @@ export function LiveMapClientPage({
             className="absolute left-3 top-20 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
           >
             <PanelLeftOpen className="h-5 w-5" />
-          </button>
-          {!panel ? (
+          </button>}
+          {!panel && !(party.isAdmin && party.open) ? (
             <button
               type="button"
               aria-expanded={mobileSidebar === "right"}
               aria-label={copy.expandQuestPanel}
               onClick={() => setMobileSidebar((current) => current === "right" ? null : "right")}
-              className="absolute right-3 top-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
+              className={cn("absolute right-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden", party.isAdmin ? "top-14" : "top-3")}
             >
               <PanelRightOpen className="h-5 w-5" />
             </button>
@@ -2414,9 +2439,23 @@ export function LiveMapClientPage({
                 mapKey={normalizedName}
                 preserveFocusOnPopupEscape={panel !== null}
                 rotation={mapRotation}
-                markers={visibleMarkers}
-                onMarkerClick={openPanelForMarker}
-                onMapClick={clearFocusParam}
+                markers={allVisibleMarkers}
+                onMarkerClick={(marker) => {
+                  if (marker.kind === "party") {
+                    if (marker.partyTemporary) { party.setOpen(true); return; }
+                    party.setPoint(null);
+                    party.setPlacing(false);
+                    party.setEditingId(marker.id.slice(6));
+                    party.setOpen(true);
+                  } else { void openPanelForMarker(marker); }
+                }}
+                onMapClick={(position) => {
+                  if (party.placing && !party.busy && party.connected && drawingMode === "hand") {
+                    party.setPoint({ floor_id: selectedFloor.id, ...position });
+                    party.setPlacing(false);
+                    party.setOpen(true);
+                  } else { clearFocusParam(); }
+                }}
                 onFloorStep={stepFloor}
                 onMousePositionChange={setMousePosition}
                 onFocusedMarkerClose={clearFocusedMarker}
@@ -2428,6 +2467,22 @@ export function LiveMapClientPage({
                 {selectedFloor ? copy.noCoordinateInfo : copy.noFloors}
               </div>
             )}
+
+            {party.isAdmin && <LiveMapPartyPanel
+              key={normalizedName}
+              party={party}
+              locale={locale}
+              floors={sortedFloors}
+              activeFloorId={selectedFloor?.id ?? ""}
+              mapName={selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : normalizedName}
+              onPlace={(kind = "marker") => { setDrawingMode("hand"); party.setPoint(null); party.setEditingId(null); party.setPlacementKind(kind); party.setPlacing(true); party.setOpen(false); }}
+              onFocus={(marker) => {
+                setSelectedFloorId(marker.floor_id);
+                setFocusTarget({ id: `party:${marker.id}`, key: Date.now(), moveView: true, x: marker.x, y: marker.z });
+                setLocalFocusedMarkerId(`party:${marker.id}`);
+                party.setOpen(false);
+              }}
+            />}
 
             {notice ? (
               <div
@@ -2523,7 +2578,7 @@ export function LiveMapClientPage({
               </div>
             ) : null}
 
-            <div ref={mapToolbarRef} className="absolute right-3 top-3 z-[1000] flex items-center gap-2">
+            <div ref={mapToolbarRef} className={cn("absolute top-3 z-[1000] flex items-center gap-2", party.isAdmin ? "right-[8.5rem]" : "right-3")}>
               <button
                 type="button"
                 aria-label={`${copy.rotateMap} (${mapRotation}°)`}

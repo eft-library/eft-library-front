@@ -20,7 +20,7 @@ import {
 import type { LiveMapCoordinateInfo, LiveMapFloor } from "@/types/api/live-map";
 import type { LiveMapLocation } from "./live-map-utils";
 
-export type LiveMapMarkerKind = "quest" | "story" | "event" | "static";
+export type LiveMapMarkerKind = "quest" | "story" | "event" | "static" | "party";
 export type LiveMapDrawingMode = "hand" | "red" | "blue" | "erase";
 export type LiveMapRotation = 0 | 90 | 180 | 270;
 
@@ -43,6 +43,9 @@ interface DrawingStroke {
 }
 
 export interface LiveMapCanvasMarker {
+  partyTemporary?: "ping" | "position";
+  partyColor?: string;
+  partyType?: "normal" | "danger" | "rally" | "target";
   groupId?: string;
   id: string;
   kind: LiveMapMarkerKind;
@@ -115,6 +118,7 @@ function clearLeafletContainer(container: LeafletContainerElement) {
 }
 
 const markerColorByKind: Record<LiveMapMarkerKind, string> = {
+  party: "#fb923c",
   event: "#60a5fa",
   quest: "#ffb400",
   static: "#34d399",
@@ -699,6 +703,16 @@ function PointIcon(
   const color = kind === "static" ? getStaticMarkerColor(point) : markerColorByKind[kind];
   const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
 
+  if (kind === "party") {
+    const partyColor = /^#[0-9a-f]{6}$/i.test(point.partyColor ?? "") ? point.partyColor! : "#fb923c";
+    const glyph = point.partyTemporary === "position" ? "⌖" : { normal: "●", danger: "!", rally: "⚑", target: "◎" }[point.partyType ?? "normal"];
+    return L.divIcon({
+      className: `live-map-marker-icon live-map-party-marker${point.partyTemporary ? ` live-map-party-${point.partyTemporary}` : ""}`,
+      html: `<span style="display:grid;place-items:center;width:28px;height:28px;border:3px solid ${partyColor};border-radius:${point.partyTemporary === "position" ? "50%" : "8px"};background:#111827;color:#ffffff;font-size:18px;font-weight:900;box-shadow:0 0 0 2px #ffffff;opacity:${markerOpacity}">${glyph}</span>`,
+      iconSize: [28, 28], iconAnchor: [14, 14],
+    });
+  }
+
   if (kind === "static" && point.staticCategory === "landmark") {
     return L.divIcon({
       className: "live-map-landmark-icon",
@@ -831,6 +845,10 @@ function getPointMarkerZIndex(
     return 2200;
   }
 
+  if (point.kind === "party") {
+    return 2000;
+  }
+
   if (isGroupHighlighted) {
     return 1800;
   }
@@ -856,6 +874,9 @@ function getPointMarkerPresentationKey(
 ) {
   return [
     point.kind,
+    point.partyTemporary ?? "",
+    point.partyColor ?? "",
+    point.partyType ?? "",
     point.staticCategory ?? "",
     point.staticFaction ?? "",
     point.staticItemId ?? "",
@@ -930,7 +951,7 @@ function updatePointMarkerTooltipContent(marker: LeafletMarker, point: LiveMapCa
   const tooltip = marker.getTooltip();
 
   if (tooltip) {
-    tooltip.setContent(point.label);
+    tooltip.setContent(escapeMarkerLabel(point.label));
   }
 }
 
@@ -942,9 +963,9 @@ function openPointMarkerTooltip(marker: LeafletMarker, point: LiveMapCanvasMarke
   const tooltip = marker.getTooltip();
 
   if (tooltip) {
-    tooltip.setContent(point.label);
+    tooltip.setContent(escapeMarkerLabel(point.label));
   } else {
-    marker.bindTooltip(point.label, {
+    marker.bindTooltip(escapeMarkerLabel(point.label), {
       className: "live-map-marker-tooltip",
       direction: "top",
       offset: [0, -28],
@@ -1057,7 +1078,7 @@ export function LiveMapCanvas({
   mapKey: string;
   markers: LiveMapCanvasMarker[];
   onMarkerClick: (marker: LiveMapCanvasMarker) => void;
-  onMapClick?: () => void;
+  onMapClick?: (position: { x: number; z: number }) => void;
   onFloorStep: (direction: "next" | "previous") => void;
   onFocusedMarkerClose?: (markerId: string) => void;
   onPopupImageClick: (image: LiveMapPopupImage) => void;
@@ -1625,7 +1646,9 @@ export function LiveMapCanvas({
       }
 
       map.closePopup();
-      onMapClickRef.current?.();
+      const base = unrotateLatLng(event.latlng, coordinateInfo.image_bounds, rotationRef.current);
+      const position = transformMousePosition(mapKey, base);
+      onMapClickRef.current?.({ x: position.lng, z: position.lat });
     });
 
     const handlePopupClick = (event: MouseEvent) => {
