@@ -317,6 +317,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByLabel("비밀번호", { exact: true }).fill(" secret ");
     await page.getByRole("button", { name: "방 생성", exact: true }).click();
     await page.getByRole("heading", { name: /공유 마커/ }).waitFor();
+    assert.equal(await panel().locator("code").textContent(), "••••");
+    await panel()
+      .getByRole("button", { name: "비밀번호 보기", exact: true })
+      .click();
     assert.equal(await panel().locator("code").textContent(), " secret ");
     console.log("PASS create, auth and untrimmed password display");
     await page.getByRole("button", { name: "좌표 입력", exact: true }).click();
@@ -469,7 +473,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     const second = await context.newPage();
     await second.goto(`${baseUrl}/live-map/customs`);
     await second.getByRole("button", { name: /^파티 2\/5$/ }).click();
-    await second.getByText("온라인: 1 / 2", { exact: true }).waitFor();
+    await second.getByRole("status", { name: "실시간 연결됨" }).waitFor();
     await second
       .locator(".live-map-party-position .player-icon-heading")
       .waitFor();

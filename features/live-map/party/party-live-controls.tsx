@@ -15,6 +15,9 @@ export function PartyLiveControls({
 }) {
   const t = (ko: string, en: string, ja: string) =>
     partyText(locale, ko, en, ja);
+  if (party.locationIssue !== "map-unavailable" && party.positions.length === 0) {
+    return null;
+  }
   return (
     <div className="space-y-2 border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
       <h3 className="text-sm font-bold">
@@ -29,13 +32,6 @@ export function PartyLiveControls({
           )}
         </p>
       )}
-      <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">
-        {t(
-          "내 위치는 현재 보고 있는 지도에 자동으로 공유되며, 다음 위치가 올 때까지 유지됩니다.",
-          "Your position is shared automatically on the map you are viewing and remains until the next update.",
-          "自分の位置は現在表示中のマップに自動共有され、次の更新まで表示されます。",
-        )}
-      </p>
       {party.positions.length > 0 && (
         <ul className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
           {party.positions.map((position) => (

@@ -111,6 +111,24 @@ export function LiveMapPartyPanel({
   const canEdit =
     selectedMarker &&
     (owner || selectedMarker.created_by_member_id === snapshot?.me.id);
+  const markerFormVisible = !!party.point || !!canEdit;
+  const connectionLabel = party.connected
+    ? t("실시간 연결됨", "Live connection active", "リアルタイム接続中")
+    : party.connection === "auth-required"
+      ? t("로그인이 필요합니다", "Sign-in required", "ログインが必要です")
+      : party.connection === "limited"
+        ? t(
+            "연결 제한 · 잠시 기다려 주세요",
+            "Connection limit · please wait",
+            "接続制限・しばらくお待ちください",
+          )
+        : party.connection === "stopped"
+          ? t("연결 중단", "Connection stopped", "接続停止")
+          : t(
+              "실시간 서버에 연결 중…",
+              "Connecting to the live server…",
+              "リアルタイムサーバーに接続中…",
+            );
   useEffect(() => {
     if (!open || (!party.point && !canEdit)) return;
     const frame = requestAnimationFrame(() => {
@@ -191,9 +209,21 @@ export function LiveMapPartyPanel({
         >
           <header className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-[#3a3d41]">
             <Users className="h-4 w-4 text-orange-500" />
-            <h2 className="flex-1 font-bold">
+            <h2 className="min-w-0 flex-1 truncate font-bold">
               {t("파티", "Party", "パーティー")} · {mapName}
             </h2>
+            {party.roomId && (
+              <span
+                role="status"
+                aria-label={connectionLabel}
+                title={connectionLabel}
+                className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-[#2a2d31]"
+              >
+                <span
+                  className={`h-2 w-2 rounded-full ${party.connected ? "bg-emerald-500" : "bg-amber-500"}`}
+                />
+              </span>
+            )}
             <button
               type="button"
               className={partyButton}
@@ -211,7 +241,7 @@ export function LiveMapPartyPanel({
             ref={contentRef}
             className="space-y-4 overflow-y-auto overscroll-contain p-4"
           >
-            {error && (
+            {error && (!markerFormVisible || error !== party.error) && (
               <p
                 role="alert"
                 className="rounded-md border border-red-300 bg-red-50 p-2 text-xs leading-5 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200"
@@ -228,47 +258,9 @@ export function LiveMapPartyPanel({
                 {t("다시 로그인", "Sign in again", "再ログイン")}
               </button>
             )}
-            {party.roomId && (
-              <div
-                role="status"
-                className="rounded-lg bg-gray-100 p-3 text-xs text-gray-700 dark:bg-[#2a2d31] dark:text-gray-200"
-              >
-                <p>
-                  {party.connected
-                    ? t(
-                        "실시간 연결됨",
-                        "Live connection active",
-                        "リアルタイム接続中",
-                      )
-                    : party.connection === "auth-required"
-                      ? t(
-                          "로그인이 필요합니다",
-                          "Sign-in required",
-                          "ログインが必要です",
-                        )
-                      : party.connection === "limited"
-                        ? t(
-                            "연결 제한 · 잠시 기다려 주세요",
-                            "Connection limit · please wait",
-                            "接続制限・しばらくお待ちください",
-                          )
-                        : party.connection === "stopped"
-                          ? t("연결 중단", "Connection stopped", "接続停止")
-                          : t(
-                              "실시간 서버에 연결 중…",
-                              "Connecting to the live server…",
-                              "リアルタイムサーバーに接続中…",
-                            )}
-                </p>
-                {party.connected && snapshot && (
-                  <p className="mt-1">
-                    {t("온라인", "Online", "オンライン")}:{" "}
-                    {snapshot.presence.online_count} /{" "}
-                    {snapshot.room.member_count}
-                  </p>
-                )}
-                {!party.connected && (
-                  <div className="mt-2 flex gap-2">
+            {party.roomId && !party.connected && (
+                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+                    <span>{connectionLabel}</span>
                     <button
                       className={partyButton}
                       disabled={party.busy}
@@ -299,8 +291,6 @@ export function LiveMapPartyPanel({
                       </button>
                     )}
                   </div>
-                )}
-              </div>
             )}
             {party.loading && (
               <p role="status" className="text-sm">
@@ -508,13 +498,6 @@ export function LiveMapPartyPanel({
                     {snapshot.room.is_locked
                       ? ` · ${t("입장 잠김", "Locked", "入室ロック")}`
                       : ""}
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    {t(
-                      "연결 종료 후 유예 시간이 지나면 자동 퇴장됩니다.",
-                      "You leave automatically after the reconnection grace period.",
-                      "切断後、再接続の猶予時間を過ぎると自動退出します。",
-                    )}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -726,6 +709,7 @@ export function LiveMapPartyPanel({
                         }
                         aria-pressed={party.placing}
                         onClick={() => {
+                          party.setError(null);
                           party.setPoint(null);
                           party.setEditingId(null);
                           if (party.placing) party.setPlacing(false);
@@ -753,6 +737,7 @@ export function LiveMapPartyPanel({
                           snapshot.markers.length >= 200
                         }
                         onClick={() => {
+                          party.setError(null);
                           party.setPlacing(false);
                           party.setEditingId(null);
                           party.setPoint({
@@ -878,6 +863,7 @@ export function LiveMapPartyPanel({
                                   className={partyButton}
                                   disabled={party.busy}
                                   onClick={() => {
+                                    party.setError(null);
                                     party.setPoint(null);
                                     party.setPlacing(false);
                                     party.setEditingId(marker.id);

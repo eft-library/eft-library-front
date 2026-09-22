@@ -18,7 +18,7 @@ import type {
   PartyRoomPatchV3,
 } from "@/types/api/live-map-party";
 import type { LiveMapPartyController } from "./use-live-map-party";
-import { partyText, type PartyLocale } from "./copy";
+import { partyErrorText, partyText, type PartyLocale } from "./copy";
 
 export const partyButton =
   "inline-flex shrink-0 whitespace-nowrap min-h-9 items-center justify-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs font-bold text-gray-800 transition hover:bg-orange-50 hover:border-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#3a3d41] dark:text-gray-100 dark:hover:bg-[#2a2d31]";
@@ -303,7 +303,10 @@ export function PartyMarkerForm({
           <input
             className={partyInput}
             value={label}
-            onChange={(e) => setLabel(e.target.value)}
+            onChange={(e) => {
+              setLabel(e.target.value);
+              party.setError(null);
+            }}
             maxLength={100}
           />
         </PartyField>
@@ -312,9 +315,10 @@ export function PartyMarkerForm({
             <select
               className={partyInput}
               value={type}
-              onChange={(e) =>
-                setType(e.target.value as PartyMarkerCreateV3["marker_type"])
-              }
+              onChange={(e) => {
+                setType(e.target.value as PartyMarkerCreateV3["marker_type"]);
+                party.setError(null);
+              }}
             >
               <option value="normal">{t("일반", "Normal", "通常")}</option>
               <option value="danger">{t("위험", "Danger", "危険")}</option>
@@ -326,7 +330,10 @@ export function PartyMarkerForm({
             <select
               className={partyInput}
               value={floorId}
-              onChange={(e) => setFloorId(e.target.value)}
+              onChange={(e) => {
+                setFloorId(e.target.value);
+                party.setError(null);
+              }}
               required
             >
               {floors.map((f) => (
@@ -345,7 +352,10 @@ export function PartyMarkerForm({
               step="any"
               required
               value={x}
-              onChange={(e) => setX(e.target.value)}
+              onChange={(e) => {
+                setX(e.target.value);
+                party.setError(null);
+              }}
             />
           </PartyField>
           <PartyField label="Z">
@@ -355,7 +365,10 @@ export function PartyMarkerForm({
               step="any"
               required
               value={z}
-              onChange={(e) => setZ(e.target.value)}
+              onChange={(e) => {
+                setZ(e.target.value);
+                party.setError(null);
+              }}
             />
           </PartyField>
         </div>
@@ -367,6 +380,7 @@ export function PartyMarkerForm({
             type="button"
             className={partyButton}
             onClick={() => {
+              party.setError(null);
               party.setPoint(null);
               party.setEditingId(null);
             }}
@@ -374,6 +388,14 @@ export function PartyMarkerForm({
             {t("취소", "Cancel", "キャンセル")}
           </button>
         </div>
+        {party.error && (
+          <p
+            role="alert"
+            className="rounded-md border border-red-300 bg-red-50 p-2 text-xs leading-5 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200"
+          >
+            {partyErrorText(party.error, locale)}
+          </p>
+        )}
       </fieldset>
     </form>
   );
