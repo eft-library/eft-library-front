@@ -699,6 +699,27 @@ export function LiveMapClientPage({
     data.map_selector.find(
       (entry) => entry.normalized_name === normalizedName,
     ) ?? data.map_selector[0];
+  const getPartyFloorLabel = useCallback(
+    (floorId: string) => {
+      const floor = sortedFloors.find((entry) => entry.id === floorId);
+      if (!floor) return floorId;
+      const floorName = localizedName(
+        floor as unknown as Record<string, unknown>,
+        locale,
+      );
+      const currentMapName = selectedMap
+        ? localizedName(
+            selectedMap as unknown as Record<string, unknown>,
+            locale,
+          )
+        : "";
+      if (currentMapName && floorName.startsWith(currentMapName)) {
+        return floorName.slice(currentMapName.length).trim() || floorName;
+      }
+      return floorName;
+    },
+    [locale, selectedMap, sortedFloors],
+  );
   const selectedFloor =
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
@@ -740,15 +761,12 @@ export function LiveMapClientPage({
             x: marker.x,
             y: marker.z,
             partyColor: member?.color,
-            partyFloorLabel:
-              sortedFloors.find((floor) => floor.id === marker.floor_id)?.[
-                `name_${locale}`
-              ] ?? marker.floor_id,
+            partyFloorLabel: getPartyFloorLabel(marker.floor_id),
             partyType: marker.marker_type,
             label: `${marker.label || partyText(locale, "공유 마커", "Shared marker", "共有マーカー")} · ${member?.nickname ?? ""}`,
           };
         }),
-    [party.snapshot, party.mapId, sortedFloors, locale],
+    [party.snapshot, party.mapId, getPartyFloorLabel, locale],
   );
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
@@ -1300,10 +1318,7 @@ export function LiveMapClientPage({
           x: event.data.x,
           y: event.data.z,
           partyColor: event.data.color,
-          partyFloorLabel:
-            sortedFloors.find(
-              (floor) => floor.id === event.data.floor_id,
-            )?.[`name_${locale}`] ?? event.data.floor_id,
+          partyFloorLabel: getPartyFloorLabel(event.data.floor_id),
           partyTemporary: event.type,
           partyYaw: event.data.yaw,
           partyType: "normal",
@@ -1313,7 +1328,7 @@ export function LiveMapClientPage({
       party.positions,
       party.mapId,
       party.snapshot?.room.map_id,
-      sortedFloors,
+      getPartyFloorLabel,
       locale,
     ],
   );

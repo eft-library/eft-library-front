@@ -1322,7 +1322,7 @@ html.live-map-document-dragging * {
 
 .live-map-party-floor-label {
   position: absolute;
-  bottom: calc(100% + 4px);
+  bottom: calc(100% - 4px);
   left: 50%;
   z-index: 20;
   width: max-content;

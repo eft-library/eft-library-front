@@ -345,9 +345,11 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     assert.equal(await page.evaluate(() => !!window.partyXss), false);
     await page.getByRole("button", { name: "세관 2층", exact: true }).click();
     await page.locator(".live-map-party-marker").waitFor();
-    await page
-      .locator(".live-map-party-floor-label", { hasText: "세관 1층" })
-      .waitFor();
+    await page.locator(".live-map-party-floor-label").waitFor();
+    assert.equal(
+      await page.locator(".live-map-party-floor-label").textContent(),
+      "1층",
+    );
     assert.equal(
       await page
         .locator(".live-map-party-icon-frame")
@@ -408,10 +410,14 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByRole("button", { name: "세관 2층", exact: true }).click();
     await page.locator(".live-map-party-position").waitFor();
     await page
-      .locator(".live-map-party-position .live-map-party-floor-label", {
-        hasText: "세관 1층",
-      })
+      .locator(".live-map-party-position .live-map-party-floor-label")
       .waitFor();
+    assert.equal(
+      await page
+        .locator(".live-map-party-position .live-map-party-floor-label")
+        .textContent(),
+      "1층",
+    );
     assert.equal(
       await page
         .locator(".live-map-party-position .live-map-party-icon-frame")
