@@ -593,23 +593,54 @@ export function LiveMapPartyPanel({
                               : "#808080",
                           }}
                         />
-                        <span className="min-w-0 flex-1 break-words">
-                          {member.nickname}
-                          <span className="block text-gray-500 dark:text-gray-400">
+                        <span className="min-w-0 flex-1 break-words leading-6">
+                          <span
+                            aria-label={
+                              member.id === snapshot.me.id
+                                ? `${member.nickname} (${t("나", "me", "自分")})`
+                                : member.nickname
+                            }
+                            className={`font-semibold ${
+                              member.id === snapshot.me.id
+                                ? "text-orange-600 dark:text-orange-400"
+                                : ""
+                            }`}
+                          >
+                            {member.nickname}
+                          </span>
+                          <span className="font-medium text-gray-700 dark:text-gray-300">
+                            {" · "}
                             {(() => {
                               const viewed = party.viewMaps.find(
                                 (v) => v.data.member_id === member.id,
                               )?.data;
-                              return viewed
-                                ? `${viewed.map[`name_${locale}`] || viewed.map.name_en || viewed.map.id} · ${viewed.floor[`name_${locale}`] || viewed.floor.name_en || viewed.floor.id}`
-                                : t(
+                              if (!viewed)
+                                return t(
                                     "보고 있는 지도 미확인",
                                     "Viewing map unknown",
                                     "閲覧中のマップは未確認",
                                   );
+                              const viewedMap =
+                                viewed.map[`name_${locale}`] ||
+                                viewed.map.name_en ||
+                                viewed.map.id;
+                              const viewedFloor =
+                                viewed.floor[`name_${locale}`] ||
+                                viewed.floor.name_en ||
+                                viewed.floor.id;
+                              const shortFloor = viewedFloor.startsWith(
+                                viewedMap,
+                              )
+                                ? viewedFloor
+                                    .slice(viewedMap.length)
+                                    .replace(/^[\s·\-–—:]+/, "")
+                                : viewedFloor;
+                              return shortFloor
+                                ? `${viewedMap} · ${shortFloor}`
+                                : viewedMap;
                             })()}
                           </span>
-                          <span className="mx-1 inline-block rounded bg-gray-200 px-1 py-0.5 text-[10px] text-gray-700 dark:bg-[#34383e] dark:text-gray-200">
+                          <span className="ml-1 inline-block rounded bg-gray-200 px-1 py-0.5 text-[10px] leading-none text-gray-700 dark:bg-[#34383e] dark:text-gray-200">
                             {party.connected &&
                             snapshot.presence.online_member_ids.includes(
                               member.id,
@@ -617,9 +648,6 @@ export function LiveMapPartyPanel({
                               ? t("온라인", "Online", "オンライン")
                               : t("오프라인", "Offline", "オフライン")}
                           </span>
-                          {member.id === snapshot.me.id
-                            ? ` (${t("나", "me", "自分")})`
-                            : ""}
                         </span>
                         {member.role === "owner" && (
                           <Crown
