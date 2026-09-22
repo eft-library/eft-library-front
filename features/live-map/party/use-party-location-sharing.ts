@@ -14,13 +14,11 @@ import {
 } from "../components/live-map-utils";
 
 export function usePartyLocationSharing({
-  account,
   roomScope,
   roomId,
   connected,
   sendPoint,
 }: {
-  account: string | null | undefined;
   roomScope: string;
   roomId: string | null;
   connected: boolean;
@@ -28,15 +26,9 @@ export function usePartyLocationSharing({
 }) {
   const queryClient = useQueryClient();
   const latest = useWsStore((state) => state.latestLocation);
-  const raid = useWsStore((state) => state.latestRaidState);
   const log = useWsStore((state) => state.latestLogLocation);
-  const [manual, setManual] = useState<{
-    account: string;
-    name: string;
-  } | null>(null);
-  const manualMapName = manual && manual.account === account ? manual.name : "";
-  const gameMapName = raid?.value.is_active ? raid.value.map : null;
-  const actualMapName = gameMapName || manualMapName || null;
+  const [viewedMapName, setViewedMapName] = useState<string | null>(null);
+  const actualMapName = viewedMapName;
   const [locationIssue, setLocationIssue] = useState<
     "unknown-map" | "map-unavailable" | null
   >(null);
@@ -61,16 +53,6 @@ export function usePartyLocationSharing({
   useEffect(() => {
     setLocationIssue(null);
   }, [actualMapName]);
-  useEffect(() => {
-    // A raid transition invalidates a previous manual choice; never carry it into another raid.
-    setManual(null);
-  }, [
-    raid?.value.is_active,
-    raid?.value.map,
-    raid?.value.started_at,
-    raid?.value.transit_count,
-  ]);
-
   async function sharePosition(
     mapName: string | null,
     location: LiveMapLocation,
@@ -159,13 +141,9 @@ export function usePartyLocationSharing({
 
   return {
     actualMapName,
-    gameMapName,
-    manualMapName,
     locationIssue,
     localPosition: localPosition?.scope === roomScope ? localPosition : null,
-    setManualMapName: (name: string) => {
-      if (account) setManual({ account, name });
-    },
+    setViewedMapName,
     shareLocation,
   };
 }

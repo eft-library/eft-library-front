@@ -272,7 +272,9 @@ export function PartyMarkerForm({
       onSubmit={async (e) => {
         e.preventDefault();
         if (!Number.isFinite(Number(x)) || !Number.isFinite(Number(z))) return;
+        if (!party.mapId) return;
         const body: PartyMarkerCreateV3 = {
+          map_id: party.mapId,
           floor_id: floorId,
           x: Number(x),
           z: Number(z),

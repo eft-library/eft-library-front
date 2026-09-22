@@ -1314,6 +1314,42 @@ html.live-map-document-dragging * {
 }
 
 /* Party positions share the player heading shape, with each member's color. */
+.live-map-party-icon-frame {
+  position: relative;
+  width: max-content;
+  height: max-content;
+}
+
+.live-map-party-floor-label {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  z-index: 20;
+  width: max-content;
+  max-width: 120px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111827;
+  padding: 3px 7px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.24);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.dark .live-map-party-floor-label {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(31, 33, 36, 0.96);
+  color: #f3f4f6;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
 .live-map-party-position .player-icon-view-cone {
   background: radial-gradient(circle at 50% 100%, var(--party-color) 0%, transparent 85%);
 }

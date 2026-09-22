@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
 import { Crown, LockKeyhole, MapPin, RefreshCw, Users, X } from "lucide-react";
-import type { MapSelectorEntry } from "@/types/api/map-of-tarkov";
 import type { LiveMapFloor } from "@/types/api/live-map";
 import type {
   PartyMarkerResponseV3,
@@ -33,7 +32,6 @@ export function LiveMapPartyPanel({
   floors,
   activeFloorId,
   mapName,
-  mapOptions,
   onFocus,
   onPlace,
 }: {
@@ -42,7 +40,6 @@ export function LiveMapPartyPanel({
   floors: LiveMapFloor[];
   activeFloorId: string;
   mapName: string;
-  mapOptions: MapSelectorEntry[];
   onFocus: (marker: PartyMarkerResponseV3) => void;
   onPlace: () => void;
 }) {
@@ -67,14 +64,15 @@ export function LiveMapPartyPanel({
   const { open, setOpen, setPlacing } = party;
   const snapshot = party.snapshot;
   const owner = snapshot?.me.role === "owner";
+  const visibleMarkers =
+    snapshot?.markers.filter((marker) => marker.map_id === party.mapId) ?? [];
   const params = new URLSearchParams({
-    map_id: party.mapId ?? "",
     limit: "20",
     offset: String(offset),
     ...(submittedSearch ? { search: submittedSearch } : {}),
   });
   const rooms = useQuery({
-    queryKey: ["live-map-party-rooms", party.mapId, submittedSearch, offset],
+    queryKey: ["live-map-party-rooms", submittedSearch, offset],
     queryFn: ({ signal }) =>
       partyRequest<PartyRoomListV3>(
         `?${params}`,
@@ -83,7 +81,7 @@ export function LiveMapPartyPanel({
         undefined,
         signal,
       ),
-    enabled: party.open && !!party.mapId && !party.roomId,
+    enabled: party.open && !party.roomId,
     refetchInterval: 15000,
     retry: false,
   });
@@ -107,11 +105,10 @@ export function LiveMapPartyPanel({
   const error =
     party.error ?? party.mapError ?? (!party.roomId ? rooms.error : null);
   const selectedMarker = snapshot?.markers.find(
-    (m) => m.id === party.editingId,
+    (marker) =>
+      marker.id === party.editingId && marker.map_id === party.mapId,
   );
-  const isRoomMap = snapshot?.room.map_id === party.mapId;
   const canEdit =
-    isRoomMap &&
     selectedMarker &&
     (owner || selectedMarker.created_by_member_id === snapshot?.me.id);
   useEffect(() => {
@@ -327,9 +324,9 @@ export function LiveMapPartyPanel({
               <>
                 <p className="text-xs leading-5 text-gray-600 dark:text-gray-300">
                   {t(
-                    "현재 맵의 파티에 참여해 마커를 공유하세요. 모든 방은 비밀번호가 필요합니다.",
-                    "Join a party on this map to share markers. All rooms require a password.",
-                    "このマップのパーティーでマーカーを共有できます。入室にはパスワードが必要です。",
+                    "어느 지도에서 만든 파티든 참여할 수 있습니다. 모든 방은 비밀번호가 필요합니다.",
+                    "Join a party created on any map. All rooms require a password.",
+                    "どのマップで作成されたパーティーにも参加できます。入室にはパスワードが必要です。",
                   )}
                 </p>
                 {!party.token && (
@@ -392,11 +389,7 @@ export function LiveMapPartyPanel({
                           "Refresh rooms",
                           "部屋一覧を更新",
                         )}
-                        onClick={() =>
-                          void (party.mapId
-                            ? rooms.refetch()
-                            : party.retryMap())
-                        }
+                        onClick={() => void rooms.refetch()}
                       >
                         <RefreshCw className="h-4 w-4" />
                       </button>
@@ -714,25 +707,14 @@ export function LiveMapPartyPanel({
                   </div>
                 </details>
                 <PartyLiveControls
-                  mapOptions={mapOptions}
                   party={party}
                   locale={locale}
                   floors={floors}
                 />
-                {!isRoomMap && (
-                  <p className="rounded-lg bg-gray-100 p-3 text-xs text-gray-600 dark:bg-[#2a2d31] dark:text-gray-300">
-                    {t(
-                      "공유 마커는 방을 만든 지도에서 사용할 수 있습니다.",
-                      "Shared markers are available on the room's original map.",
-                      "共有マーカーは部屋を作成したマップで使用できます。",
-                    )}
-                  </p>
-                )}
-                {isRoomMap && (
-                  <div className="border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
+                <div className="border-t border-gray-200 pt-3 dark:border-[#3a3d41]">
                     <h3 className="mb-2 text-sm font-bold">
                       {t("공유 마커", "Shared markers", "共有マーカー")} (
-                      {snapshot.markers.length}/200)
+                      {visibleMarkers.length}/200)
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -834,7 +816,7 @@ export function LiveMapPartyPanel({
                         )}
                       </p>
                     )}
-                    {snapshot.markers.length === 0 && (
+                    {visibleMarkers.length === 0 && (
                       <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
                         {t(
                           "아직 공유 마커가 없습니다.",
@@ -844,7 +826,7 @@ export function LiveMapPartyPanel({
                       </p>
                     )}
                     <ul className="mt-3 space-y-2">
-                      {snapshot.markers.map((marker) => {
+                      {visibleMarkers.map((marker) => {
                         const author = snapshot.members.find(
                           (m) => m.id === marker.created_by_member_id,
                         );
@@ -930,7 +912,6 @@ export function LiveMapPartyPanel({
                       })}
                     </ul>
                   </div>
-                )}
               </>
             )}
           </div>

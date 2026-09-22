@@ -33,11 +33,7 @@ const room = {
 };
 const clone = (x) => JSON.parse(JSON.stringify(x));
 (async () => {
-  const mapData = (
-    await (
-      await fetch("https://back.eftlibrary.com/api/live-map/v3/detail/customs")
-    ).json()
-  ).data;
+  const mapData = require("../public/static/live-map/v3/maps/customs.json").data;
   const floorId =
     mapData.floors.find((f) => f.is_main)?.id || mapData.floors[0].id;
   const browser = await chromium.launch();
@@ -57,6 +53,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       rateLimit = false;
     let failDelete = false;
     const sockets = new Set();
+    let socketConnections = 0;
     let positions = [];
     let viewMaps = [];
     const commands = [];
@@ -94,6 +91,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await context.routeWebSocket(
       "**/api/live-map/v3/party/rooms/*/ws",
       (socket) => {
+        socketConnections++;
         sockets.add(socket);
         socket.onClose(() => sockets.delete(socket));
         socket.onMessage((raw) => {
@@ -194,8 +192,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       };
       const fail = (status, msg) =>
         route.fulfill({ status, json: { status, msg, data: null } });
-      if (method === "GET" && !suffix)
+      if (method === "GET" && !suffix) {
+        assert.equal(url.searchParams.has("map_id"), false);
         return ok({ rooms: [snapshot.room], total: 1, limit: 20, offset: 0 });
+      }
       assert.equal(req.headers().authorization, "Bearer test-token");
       if (closed) return fail(410, "ROOM_CLOSED");
       if (method === "GET") return ok(snapshot);
@@ -247,6 +247,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         return ok(snapshot);
       }
       if (suffix.endsWith("/markers") && method === "POST") {
+        assert.ok(body.map_id);
         const marker = {
           ...body,
           id: "44444444-4444-4444-8444-444444444444",
@@ -278,7 +279,9 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
             return fail(503, "PARTY_DATABASE_UNAVAILABLE");
           }
           assert.equal(Number(url.searchParams.get("version")), marker.version);
-          snapshot.markers = [];
+          snapshot.markers = snapshot.markers.filter(
+            (entry) => entry.id !== marker.id,
+          );
           return ok({ id: marker.id });
         }
       }
@@ -302,7 +305,10 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       throw new Error("Unexpected native dialog");
     });
     const panel = () => page.getByRole("region", { name: "라이브 맵 파티" });
-    await page.goto(`${baseUrl}/live-map/customs`);
+    await page.goto(`${baseUrl}/live-map/customs`, {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    });
     await page
       .getByRole("button", { name: "파티", exact: true })
       .click({ timeout: 90000 });
@@ -320,16 +326,32 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByLabel("X", { exact: true }).fill("125.5");
     await page.getByLabel("Z", { exact: true }).fill("-48.25");
     await page.getByLabel("종류", { exact: true }).selectOption("danger");
+    assert.equal(await page.getByLabel("X", { exact: true }).inputValue(), "125.5");
+    assert.equal(await page.getByLabel("Z", { exact: true }).inputValue(), "-48.25");
     await page.getByRole("button", { name: "마커 저장" }).click();
     await page.getByRole("heading", { name: "공유 마커 (1/200)" }).waitFor();
     assert.equal(snapshot.markers[0].x, 125.5);
     assert.equal(snapshot.markers[0].z, -48.25);
     assert.equal(snapshot.markers[0].floor_id, floorId);
+    assert.equal(snapshot.markers[0].map_id, mapId);
     await page.getByRole("button", { name: "닫기", exact: true }).click();
     await page.locator(".live-map-party-marker").hover();
     await page.locator(".live-map-marker-tooltip").waitFor();
     assert.equal(await page.locator(".live-map-marker-tooltip img").count(), 0);
     assert.equal(await page.evaluate(() => !!window.partyXss), false);
+    await page.getByRole("button", { name: "세관 2층", exact: true }).click();
+    await page.locator(".live-map-party-marker").waitFor();
+    await page
+      .locator(".live-map-party-floor-label", { hasText: "세관 1층" })
+      .waitFor();
+    assert.equal(
+      await page
+        .locator(".live-map-party-icon-frame")
+        .first()
+        .evaluate((element) => getComputedStyle(element).opacity),
+      "1",
+    );
+    await page.getByRole("button", { name: "세관 1층", exact: true }).click();
     console.log("PASS marker coordinates/type/floor, safe tooltip");
     await page.reload();
     await page
@@ -366,9 +388,6 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         .count(),
       0,
     );
-    await page
-      .getByLabel("플레이 중인 지도", { exact: true })
-      .selectOption("customs");
     const whereInput = page.locator("main header input").first();
     await whereInput.fill("123 0 -45 0 0 0 1");
     await whereInput.press("Enter");
@@ -382,6 +401,20 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page
       .locator(".live-map-party-position .player-icon-heading")
       .waitFor();
+    await page.getByRole("button", { name: "세관 2층", exact: true }).click();
+    await page.locator(".live-map-party-position").waitFor();
+    await page
+      .locator(".live-map-party-position .live-map-party-floor-label", {
+        hasText: "세관 1층",
+      })
+      .waitFor();
+    assert.equal(
+      await page
+        .locator(".live-map-party-position .live-map-party-icon-frame")
+        .evaluate((element) => getComputedStyle(element).opacity),
+      "1",
+    );
+    await page.getByRole("button", { name: "세관 1층", exact: true }).click();
     await whereInput.fill(
       "123 0 -45 0 0.7071067811865476 0 0.7071067811865476",
     );
@@ -393,7 +426,34 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         )?.style.transform === "rotate(270deg)",
     );
     assert.ok(Math.abs(positions[0].data.yaw - 90) < 0.001);
+    const connectionsBeforeMapSwitch = socketConnections;
     await panel().getByRole("button", { name: "닫기", exact: true }).click();
+    await page.getByRole("button", { name: "세관", exact: true }).click();
+    await page.getByRole("button", { name: "공장", exact: true }).click();
+    await page.waitForURL("**/live-map/factory");
+    await page.getByRole("button", { name: /^파티 2\/5$/ }).waitFor();
+    for (let attempt = 0; attempt < 50 && snapshot.markers.length; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    assert.equal(snapshot.markers.length, 0);
+    assert.equal(socketConnections, connectionsBeforeMapSwitch);
+    assert.equal(await page.locator(".live-map-party-position").count(), 0);
+    assert.notEqual(
+      commands.filter((command) => command.type === "view_map").at(-1).map_id,
+      mapId,
+    );
+    await page.getByRole("button", { name: "공장", exact: true }).click();
+    await page.getByRole("button", { name: "세관", exact: true }).click();
+    await page.waitForURL("**/live-map/customs");
+    await page.locator(".live-map-party-position").waitFor();
+    assert.equal(socketConnections, connectionsBeforeMapSwitch);
+    await page.getByRole("button", { name: /^파티 2\/5$/ }).click();
+    await panel().getByRole("button", { name: "좌표 입력", exact: true }).click();
+    await panel().getByLabel("마커 설명").fill("새 지도 마커");
+    await panel().getByLabel("X", { exact: true }).fill("125.5");
+    await panel().getByLabel("Z", { exact: true }).fill("-48.25");
+    await panel().getByRole("button", { name: "마커 저장" }).click();
+    await panel().getByRole("heading", { name: "공유 마커 (1/200)" }).waitFor();
     for (const heading of [0, 90, 180, 270]) {
       await page
         .getByRole("button", { name: /지도 시계 방향으로 90도 회전/ })
@@ -406,8 +466,6 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         heading,
       );
     }
-    await page.getByRole("button", { name: /^파티 2\/5$/ }).click();
-
     const second = await context.newPage();
     await second.goto(`${baseUrl}/live-map/customs`);
     await second.getByRole("button", { name: /^파티 2\/5$/ }).click();
@@ -508,11 +566,13 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByRole("button", { name: "저장", exact: true }).click();
     await page.getByRole("heading", { name: /새 이름/ }).waitFor();
     assert.equal(snapshot.room.is_locked, true);
-    await page.getByText("내 닉네임·색상 변경", { exact: true }).click();
-    await page.getByLabel("내 닉네임", { exact: true }).fill("새 닉네임");
-    await page.getByLabel("내 색상", { exact: true }).fill("#aabbcc");
-    await page.getByRole("button", { name: "내 정보 저장" }).click();
-    await page.getByText(/새 닉네임.*온라인.*\(나\)/).waitFor();
+    await panel()
+      .getByText("내 닉네임·색상 변경", { exact: true })
+      .click();
+    await panel().getByLabel("내 닉네임", { exact: true }).fill("새 닉네임");
+    await panel().getByLabel("내 색상", { exact: true }).fill("#aabbcc");
+    await panel().getByRole("button", { name: "내 정보 저장" }).click();
+    await panel().getByText(/새 닉네임.*온라인.*\(나\)/).waitFor();
     assert.equal(snapshot.me.nickname, "새 닉네임");
     assert.equal(snapshot.me.color, "#aabbcc");
     snapshot.members.push({

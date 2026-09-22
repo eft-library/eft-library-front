@@ -4,7 +4,14 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import type { LatLng } from "leaflet";
 import {
   ChevronDown,
@@ -120,10 +127,25 @@ import {
   writeLiveMapMarkerDetailsPreference,
   writeLiveMapPreferences,
 } from "./live-map-preferences-storage";
-import { PanelBlock, RightSection, StaticPointSection } from "./live-map-sections";
-import { findFloorForLocation, parseWhereText, type LiveMapLocation } from "./live-map-utils";
-import { BTR_ROUTE_COLORS, formatBtrTime, getBtrRouteStatus } from "./live-map-btr";
-import type { LiveMapBtrPrediction, LiveMapBtrRouteLayer } from "./live-map-canvas";
+import {
+  PanelBlock,
+  RightSection,
+  StaticPointSection,
+} from "./live-map-sections";
+import {
+  findFloorForLocation,
+  parseWhereText,
+  type LiveMapLocation,
+} from "./live-map-utils";
+import {
+  BTR_ROUTE_COLORS,
+  formatBtrTime,
+  getBtrRouteStatus,
+} from "./live-map-btr";
+import type {
+  LiveMapBtrPrediction,
+  LiveMapBtrRouteLayer,
+} from "./live-map-canvas";
 
 const LiveMapCanvas = dynamic(
   () => import("./live-map-canvas").then((mod) => mod.LiveMapCanvas),
@@ -143,7 +165,10 @@ const BTR_AUTO_TRACKING_ENABLED = false;
 
 function addPointMapNames(
   names: Set<string>,
-  points: Array<{ map?: { normalized_name?: string | null } | null }> | null | undefined,
+  points:
+    | Array<{ map?: { normalized_name?: string | null } | null }>
+    | null
+    | undefined,
 ) {
   (points ?? []).forEach((point) => {
     if (point.map?.normalized_name) {
@@ -163,7 +188,10 @@ function addMapListNames(
   });
 }
 
-function addStoryObjectiveMapNames(names: Set<string>, objectives: StoryObjective[]) {
+function addStoryObjectiveMapNames(
+  names: Set<string>,
+  objectives: StoryObjective[],
+) {
   (objectives ?? []).forEach((objective) => {
     addMapListNames(names, objective.maps);
     addPointMapNames(names, objective.live_map_points);
@@ -171,14 +199,20 @@ function addStoryObjectiveMapNames(names: Set<string>, objectives: StoryObjectiv
   });
 }
 
-function addStoryRequirementMapNames(names: Set<string>, requirements: StoryRequirement[]) {
+function addStoryRequirementMapNames(
+  names: Set<string>,
+  requirements: StoryRequirement[],
+) {
   requirements.forEach((requirement) => {
     addMapListNames(names, requirement.maps ?? []);
     addPointMapNames(names, requirement.live_map_points ?? []);
   });
 }
 
-function addEventObjectiveMapNames(names: Set<string>, objectives: EventObjective[]) {
+function addEventObjectiveMapNames(
+  names: Set<string>,
+  objectives: EventObjective[],
+) {
   (objectives ?? []).forEach((objective) => {
     addPointMapNames(names, objective.live_map_points);
     addEventObjectiveMapNames(names, objective.children ?? []);
@@ -219,7 +253,11 @@ function getStoryPointMapName(
   point: LiveMapObjectivePoint,
   maps: Array<{ id: string; normalized_name: string }>,
 ) {
-  return point.map?.normalized_name ?? maps.find((map) => map.id === point.map_id)?.normalized_name ?? null;
+  return (
+    point.map?.normalized_name ??
+    maps.find((map) => map.id === point.map_id)?.normalized_name ??
+    null
+  );
 }
 
 function isStoryRequirementPointOnMap(
@@ -261,11 +299,17 @@ function makeStoryPointFromRequirement(
 }
 
 function makeStoryListPoint(storyDetail: StoryInfo): LiveMapStoryPoint {
-  const requirementWithPoint = storyDetail.requirements.find((requirement) => (requirement.live_map_points ?? []).length > 0);
+  const requirementWithPoint = storyDetail.requirements.find(
+    (requirement) => (requirement.live_map_points ?? []).length > 0,
+  );
   const firstPoint = requirementWithPoint?.live_map_points?.[0];
 
   if (requirementWithPoint && firstPoint) {
-    return makeStoryPointFromRequirement(storyDetail.story, requirementWithPoint, firstPoint);
+    return makeStoryPointFromRequirement(
+      storyDetail.story,
+      requirementWithPoint,
+      firstPoint,
+    );
   }
 
   return {
@@ -285,7 +329,10 @@ function makeStoryListPoint(storyDetail: StoryInfo): LiveMapStoryPoint {
   };
 }
 
-function getLoadedStoryDetails(panel: PanelState | null, cache: Map<string, StoryInfo>) {
+function getLoadedStoryDetails(
+  panel: PanelState | null,
+  cache: Map<string, StoryInfo>,
+) {
   const details = new Map<string, StoryInfo>();
 
   cache.forEach((detail) => {
@@ -301,7 +348,9 @@ function getLoadedStoryDetails(panel: PanelState | null, cache: Map<string, Stor
 
 function findStoryRequirementByPointId(info: StoryInfo, pointId: string) {
   for (const requirement of info.requirements) {
-    const point = (requirement.live_map_points ?? []).find((entry) => entry.id === pointId);
+    const point = (requirement.live_map_points ?? []).find(
+      (entry) => entry.id === pointId,
+    );
 
     if (point) {
       return { point, requirement };
@@ -411,7 +460,9 @@ export function LiveMapClientPage({
   } | null>(null);
   const [, startFocusRouteTransition] = useTransition();
   const focusedMarkerId =
-    localFocusedMarkerId === undefined ? urlFocusedMarkerId : localFocusedMarkerId;
+    localFocusedMarkerId === undefined
+      ? urlFocusedMarkerId
+      : localFocusedMarkerId;
   const locale = useAppStore((state) => state.uiLocale);
   const copy = copyByLocale[locale];
   const { data: session } = useSession();
@@ -423,16 +474,27 @@ export function LiveMapClientPage({
   const previousLocationEventRef = useRef<number | null>(null);
   const previousTransitCountRef = useRef<number | null>(null);
   const [raidClock, setRaidClock] = useState(() => Date.now());
-  const [raidDurationMinutes, setRaidDurationMinutes] = useState<number | null>(null);
+  const [raidDurationMinutes, setRaidDurationMinutes] = useState<number | null>(
+    null,
+  );
   const [isBtrVisible, setIsBtrVisible] = useState(true);
   const [isBtrPanelCollapsed, setIsBtrPanelCollapsed] = useState(false);
-  const [manualBtrMinutes, setManualBtrMinutes] = useState(() => String(Math.floor((data.btr_routes?.[0]?.raid_duration_seconds ?? 0) / 60)));
+  const [manualBtrMinutes, setManualBtrMinutes] = useState(() =>
+    String(Math.floor((data.btr_routes?.[0]?.raid_duration_seconds ?? 0) / 60)),
+  );
   const [manualBtrSeconds, setManualBtrSeconds] = useState("00");
-  const [manualBtrTimer, setManualBtrTimer] = useState<{ remainingSeconds: number; startedAt: number | null } | null>(null);
-  const [selectedBtrRouteId, setSelectedBtrRouteId] = useState<string | null>(null);
+  const [manualBtrTimer, setManualBtrTimer] = useState<{
+    remainingSeconds: number;
+    startedAt: number | null;
+  } | null>(null);
+  const [selectedBtrRouteId, setSelectedBtrRouteId] = useState<string | null>(
+    null,
+  );
   const [isTransitDetected, setIsTransitDetected] = useState(false);
   const eventDetailCacheRef = useRef<Map<string, EventInfo>>(new Map());
-  const openPanelForMarkerIdRef = useRef<(markerId: string) => Promise<boolean>>(() => Promise.resolve(false));
+  const openPanelForMarkerIdRef = useRef<
+    (markerId: string) => Promise<boolean>
+  >(() => Promise.resolve(false));
   const popupHtmlCacheRef = useRef<Map<string, string | undefined>>(new Map());
   const prefetchedMapNamesRef = useRef<Set<string>>(new Set());
   const questDetailCacheRef = useRef<Map<string, LiveMapQuestInfo>>(new Map());
@@ -447,19 +509,23 @@ export function LiveMapClientPage({
   const [isMapSelectorOpen, setIsMapSelectorOpen] = useState(false);
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
-  const [mobileSidebar, setMobileSidebar] = useState<"left" | "right" | null>(null);
+  const [mobileSidebar, setMobileSidebar] = useState<"left" | "right" | null>(
+    null,
+  );
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
-  const [openMarkerDetailsOnMarkerClick, setOpenMarkerDetailsOnMarkerClick] = useState(true);
+  const [openMarkerDetailsOnMarkerClick, setOpenMarkerDetailsOnMarkerClick] =
+    useState(true);
   const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
   const [mapRotations, setMapRotations] = useState<Record<string, number>>({});
   const [isMapRotating, setIsMapRotating] = useState(false);
   const rotationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasLoadedPreferences, setHasLoadedPreferences] = useState(false);
   const [isDrawingToolbarOpen, setIsDrawingToolbarOpen] = useState(false);
-  const [isClearDrawingConfirmOpen, setIsClearDrawingConfirmOpen] = useState(false);
+  const [isClearDrawingConfirmOpen, setIsClearDrawingConfirmOpen] =
+    useState(false);
   const [isViewSettingsOpen, setIsViewSettingsOpen] = useState(false);
   const mapToolbarRef = useRef<HTMLDivElement | null>(null);
   const [drawingMode, setDrawingMode] = useState<LiveMapDrawingMode>("hand");
@@ -469,7 +535,9 @@ export function LiveMapClientPage({
   const [questDetailRevision, setQuestDetailRevision] = useState(0);
   const [imagePopup, setImagePopup] = useState<LiveMapPopupImage | null>(null);
   const [notice, setNotice] = useState("");
-  const [loadingQuestNormalizedName, setLoadingQuestNormalizedName] = useState<string | null>(null);
+  const [loadingQuestNormalizedName, setLoadingQuestNormalizedName] = useState<
+    string | null
+  >(null);
   const [savingQuestId, setSavingQuestId] = useState<string | null>(null);
   const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([]);
   const [selectedStaticId, setSelectedStaticId] = useState<string | null>(null);
@@ -498,7 +566,11 @@ export function LiveMapClientPage({
       setIsBtrVisible(preferences.isBtrVisible);
       setMapRotations(preferences.mapRotations);
       const savedRotation = preferences.mapRotations[normalizedName];
-      setMapRotation(savedRotation === 90 || savedRotation === 180 || savedRotation === 270 ? savedRotation : 0);
+      setMapRotation(
+        savedRotation === 90 || savedRotation === 180 || savedRotation === 270
+          ? savedRotation
+          : 0,
+      );
     }
 
     setOpenMarkerDetailsOnMarkerClick(
@@ -525,7 +597,17 @@ export function LiveMapClientPage({
       mapRotations,
     });
     writeLiveMapMarkerDetailsPreference(openMarkerDetailsOnMarkerClick);
-  }, [areStaticLabelsVisible, hasLoadedPreferences, isAutoPanLocked, isBtrVisible, isEyeComfortMode, isMarkerSimplified, isRightPanelOpen, mapRotations, openMarkerDetailsOnMarkerClick]);
+  }, [
+    areStaticLabelsVisible,
+    hasLoadedPreferences,
+    isAutoPanLocked,
+    isBtrVisible,
+    isEyeComfortMode,
+    isMarkerSimplified,
+    isRightPanelOpen,
+    mapRotations,
+    openMarkerDetailsOnMarkerClick,
+  ]);
 
   useEffect(() => {
     if (!hasLoadedPreferences) {
@@ -548,7 +630,10 @@ export function LiveMapClientPage({
     setIsMapRotating(true);
     setMapRotation((current) => {
       const next = ((current + 90) % 360) as 0 | 90 | 180 | 270;
-      setMapRotations((rotations) => ({ ...rotations, [normalizedName]: next }));
+      setMapRotations((rotations) => ({
+        ...rotations,
+        [normalizedName]: next,
+      }));
       return next;
     });
     rotationTimeoutRef.current = setTimeout(() => {
@@ -611,27 +696,60 @@ export function LiveMapClientPage({
   const defaultFloorId = defaultFloor?.id ?? "";
   const [selectedFloorId, setSelectedFloorId] = useState(() => defaultFloorId);
   const selectedMap =
-    data.map_selector.find((entry) => entry.normalized_name === normalizedName) ??
-    data.map_selector[0];
+    data.map_selector.find(
+      (entry) => entry.normalized_name === normalizedName,
+    ) ?? data.map_selector[0];
   const selectedFloor =
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
   const currentMapId =
-    selectedFloor?.map_id ?? data.coordinate_info?.id ?? data.floors[0]?.map_id ?? null;
+    selectedFloor?.map_id ??
+    data.coordinate_info?.id ??
+    data.floors[0]?.map_id ??
+    null;
   useEffect(() => {
+    party.setViewedMapName(normalizedName);
     if (party.mapId && selectedFloor?.id) {
-      party.setViewMap({ type: "view_map", map_id: party.mapId, floor_id: selectedFloor.id });
+      party.setViewMap({
+        type: "view_map",
+        map_id: party.mapId,
+        floor_id: selectedFloor.id,
+      });
     }
-  }, [party.mapId, selectedFloor?.id, party.setViewMap]);
-  const partyMarkers = useMemo<LiveMapCanvasMarker[]>(() => (party.snapshot?.markers ?? [])
-    .filter(marker => party.snapshot?.room.map_id === party.mapId && marker.floor_id === selectedFloor?.id)
-    .map(marker => {
-      const member = party.snapshot?.members.find(entry => entry.id === marker.created_by_member_id);
-      return {
-        id: `party:${marker.id}`, kind: "party", floorId: marker.floor_id,
-        x: marker.x, y: marker.z, partyColor: member?.color, partyType: marker.marker_type,
-        label: `${marker.label || partyText(locale, "공유 마커", "Shared marker", "共有マーカー")} · ${member?.nickname ?? ""}`,
-      };
-    }), [party.snapshot, party.mapId, selectedFloor?.id, locale]);
+    return () => party.setViewedMapName(null);
+  }, [
+    normalizedName,
+    party.mapId,
+    selectedFloor?.id,
+    party.setViewMap,
+    party.setViewedMapName,
+  ]);
+  const partyMarkers = useMemo<LiveMapCanvasMarker[]>(
+    () =>
+      (party.snapshot?.markers ?? [])
+        .filter(
+          (marker) => marker.map_id === party.mapId,
+        )
+        .map((marker) => {
+          const member = party.snapshot?.members.find(
+            (entry) => entry.id === marker.created_by_member_id,
+          );
+          return {
+            id: `party:${marker.id}`,
+            kind: "party",
+            floorId: marker.floor_id,
+            x: marker.x,
+            y: marker.z,
+            partyColor: member?.color,
+            partyFloorLabel:
+              sortedFloors.find((floor) => floor.id === marker.floor_id)?.[
+                `name_${locale}`
+              ] ?? marker.floor_id,
+            partyType: marker.marker_type,
+            label: `${marker.label || partyText(locale, "공유 마커", "Shared marker", "共有マーカー")} · ${member?.nickname ?? ""}`,
+          };
+        }),
+    [party.snapshot, party.mapId, sortedFloors, locale],
+  );
   const resolvePointFloorId = useCallback(
     (point: { floor_id?: string | null }) => point.floor_id ?? null,
     [],
@@ -648,90 +766,123 @@ export function LiveMapClientPage({
   );
 
   const questEntries = useMemo(
-    () => uniqueById(data.quest_points.filter((point) => point.quest_info).map((point) => ({
-      id: getQuestId(point),
-      point,
-    }))),
+    () =>
+      uniqueById(
+        data.quest_points
+          .filter((point) => point.quest_info)
+          .map((point) => ({
+            id: getQuestId(point),
+            point,
+          })),
+      ),
     [data.quest_points],
   );
   const storyEntries = useMemo(
-    () => uniqueById([
-      ...data.story_points.filter((point) => point.story_info).map((point) => ({
-        id: getStoryId(point),
-        point,
-      })),
-      ...getLoadedStoryDetails(panel, storyDetailCacheRef.current).map((storyDetail) => ({
-        id: storyDetail.story.id,
-        point: makeStoryListPoint(storyDetail),
-      })),
-    ]),
+    () =>
+      uniqueById([
+        ...data.story_points
+          .filter((point) => point.story_info)
+          .map((point) => ({
+            id: getStoryId(point),
+            point,
+          })),
+        ...getLoadedStoryDetails(panel, storyDetailCacheRef.current).map(
+          (storyDetail) => ({
+            id: storyDetail.story.id,
+            point: makeStoryListPoint(storyDetail),
+          }),
+        ),
+      ]),
     [data.story_points, panel],
   );
   const eventEntries = useMemo(
-    () => uniqueById(data.event_points.filter((point) => point.event_info).map((point) => ({
-      id: getEventId(point),
-      point,
-    }))),
+    () =>
+      uniqueById(
+        data.event_points
+          .filter((point) => point.event_info)
+          .map((point) => ({
+            id: getEventId(point),
+            point,
+          })),
+      ),
     [data.event_points],
   );
-  const activeStaticPoints = useMemo(
-    () => {
-      const hasUsageFlags = data.static_points.some(
-        (point) => typeof point.is_use === "boolean",
-      );
+  const activeStaticPoints = useMemo(() => {
+    const hasUsageFlags = data.static_points.some(
+      (point) => typeof point.is_use === "boolean",
+    );
 
-      return hasUsageFlags
-        ? data.static_points.filter((point) => point.is_use === true)
-        : data.static_points;
-    },
-    [data.static_points],
-  );
+    return hasUsageFlags
+      ? data.static_points.filter((point) => point.is_use === true)
+      : data.static_points;
+  }, [data.static_points]);
   const staticEntries = useMemo<StaticEntry[]>(
-    () => uniqueById(activeStaticPoints.map((point) => ({ id: point.id, point }))),
+    () =>
+      uniqueById(activeStaticPoints.map((point) => ({ id: point.id, point }))),
     [activeStaticPoints],
   );
-  const staticGroups = useMemo(() => groupStaticEntries(staticEntries), [staticEntries]);
-  const [enabledQuestIds, setEnabledQuestIds] = useState<Set<string>>(new Set());
-  const [enabledStoryIds, setEnabledStoryIds] = useState<Set<string>>(new Set());
-  const [enabledEventIds, setEnabledEventIds] = useState<Set<string>>(new Set());
-  const [enabledStaticIds, setEnabledStaticIds] = useState<Set<string>>(new Set());
+  const staticGroups = useMemo(
+    () => groupStaticEntries(staticEntries),
+    [staticEntries],
+  );
+  const [enabledQuestIds, setEnabledQuestIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [enabledStoryIds, setEnabledStoryIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [enabledEventIds, setEnabledEventIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [enabledStaticIds, setEnabledStaticIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [questFilterQuery, setQuestFilterQuery] = useState("");
   const [storyFilterQuery, setStoryFilterQuery] = useState("");
   const [eventFilterQuery, setEventFilterQuery] = useState("");
   const [staticFilterQuery, setStaticFilterQuery] = useState("");
-  const [expandedRightSections, setExpandedRightSections] = useState<Set<string>>(
-    () => new Set(["quest", "story", "event"]),
-  );
+  const [expandedRightSections, setExpandedRightSections] = useState<
+    Set<string>
+  >(() => new Set(["quest", "story", "event"]));
   const areAllRightSectionsOpen = RIGHT_SECTION_IDS.every((section) =>
-    expandedRightSections.has(section)
+    expandedRightSections.has(section),
   );
-  const [hydratedFilterMap, setHydratedFilterMap] = useState<string | null>(null);
-  const [expandedStaticCategories, setExpandedStaticCategories] = useState<Set<string>>(
-    new Set(),
+  const [hydratedFilterMap, setHydratedFilterMap] = useState<string | null>(
+    null,
   );
-  const requestMarkerFocus = useCallback((
-    markerId: string | null,
-    position?: { x: number; y: number },
-    { moveView = true }: { moveView?: boolean } = {},
-  ) => {
-    setLocalFocusedMarkerId(markerId);
+  const [expandedStaticCategories, setExpandedStaticCategories] = useState<
+    Set<string>
+  >(new Set());
+  const requestMarkerFocus = useCallback(
+    (
+      markerId: string | null,
+      position?: { x: number; y: number },
+      { moveView = true }: { moveView?: boolean } = {},
+    ) => {
+      setLocalFocusedMarkerId(markerId);
 
-    if (markerId) {
-      const nextKey = focusRequestKeyRef.current + 1;
-      focusRequestKeyRef.current = nextKey;
+      if (markerId) {
+        const nextKey = focusRequestKeyRef.current + 1;
+        focusRequestKeyRef.current = nextKey;
 
-      setFocusRequestKey(nextKey);
-      setFocusTarget(position ? {
-        id: markerId,
-        key: nextKey,
-        moveView,
-        x: position.x,
-        y: position.y,
-      } : null);
-    } else {
-      setFocusTarget(null);
-    }
-  }, []);
+        setFocusRequestKey(nextKey);
+        setFocusTarget(
+          position
+            ? {
+                id: markerId,
+                key: nextKey,
+                moveView,
+                x: position.x,
+                y: position.y,
+              }
+            : null,
+        );
+      } else {
+        setFocusTarget(null);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     popupHtmlCacheRef.current.clear();
@@ -751,19 +902,21 @@ export function LiveMapClientPage({
     const eventIds = eventEntries.map((entry) => entry.id);
     const staticIds = staticEntries.map((entry) => entry.id);
 
-    setEnabledQuestIds(getEnabledIdsFromDisabled(questIds, savedFilters?.disabledQuestIds));
-    setEnabledStoryIds(getEnabledIdsFromDisabled(storyIds, savedFilters?.disabledStoryIds));
-    setEnabledEventIds(getEnabledIdsFromDisabled(eventIds, savedFilters?.disabledEventIds));
-    setEnabledStaticIds(getEnabledIdsFromDisabled(staticIds, savedFilters?.disabledStaticIds));
+    setEnabledQuestIds(
+      getEnabledIdsFromDisabled(questIds, savedFilters?.disabledQuestIds),
+    );
+    setEnabledStoryIds(
+      getEnabledIdsFromDisabled(storyIds, savedFilters?.disabledStoryIds),
+    );
+    setEnabledEventIds(
+      getEnabledIdsFromDisabled(eventIds, savedFilters?.disabledEventIds),
+    );
+    setEnabledStaticIds(
+      getEnabledIdsFromDisabled(staticIds, savedFilters?.disabledStaticIds),
+    );
     setExpandedStaticCategories(new Set());
     setHydratedFilterMap(normalizedName);
-  }, [
-    eventEntries,
-    normalizedName,
-    questEntries,
-    staticEntries,
-    storyEntries,
-  ]);
+  }, [eventEntries, normalizedName, questEntries, staticEntries, storyEntries]);
 
   useEffect(() => {
     if (hydratedFilterMap !== normalizedName) {
@@ -809,7 +962,10 @@ export function LiveMapClientPage({
 
   useEffect(() => {
     getPanelObjectiveMapNames(panel).forEach((mapName) => {
-      if (mapName === normalizedName || prefetchedMapNamesRef.current.has(mapName)) {
+      if (
+        mapName === normalizedName ||
+        prefetchedMapNamesRef.current.has(mapName)
+      ) {
         return;
       }
 
@@ -839,7 +995,11 @@ export function LiveMapClientPage({
     getUserRoadmap(accessToken)
       .then((questList) => {
         if (!cancelled) {
-          setCompletedQuestIds(questList.filter((value): value is string => typeof value === "string"));
+          setCompletedQuestIds(
+            questList.filter(
+              (value): value is string => typeof value === "string",
+            ),
+          );
         }
       })
       .catch(() => {
@@ -859,12 +1019,17 @@ export function LiveMapClientPage({
       .filter((point) => {
         const questId = getQuestId(point);
         const isFocused = focusedMarkerId === `quest:${point.id}`;
-        const matchesQuery = matchesFilterText(getQuestMarkerSearchText(point, locale), questFilterQuery);
+        const matchesQuery = matchesFilterText(
+          getQuestMarkerSearchText(point, locale),
+          questFilterQuery,
+        );
 
         return (
           point.quest_info &&
           matchesQuery &&
-          (isFocused || (enabledQuestIds.has(questId) && !completedQuestIds.includes(questId)))
+          (isFocused ||
+            (enabledQuestIds.has(questId) &&
+              !completedQuestIds.includes(questId)))
         );
       })
       .map<LiveMapCanvasMarker>((point) => {
@@ -872,10 +1037,12 @@ export function LiveMapClientPage({
         const questDetail =
           panel?.type === "quest" && panel.id === questId
             ? panel.info
-            : questDetailCacheRef.current.get(questId) ??
+            : (questDetailCacheRef.current.get(questId) ??
               (point.quest_info?.quest?.normalized_name
-                ? questDetailCacheRef.current.get(point.quest_info.quest.normalized_name)
-                : undefined);
+                ? questDetailCacheRef.current.get(
+                    point.quest_info.quest.normalized_name,
+                  )
+                : undefined));
 
         return {
           floorId: resolvePointFloorId(point),
@@ -886,9 +1053,10 @@ export function LiveMapClientPage({
           popupHtml: getCachedPopupHtml(
             popupHtmlCache,
             `${locale}:quest:${point.id}:${questDetail ? `detail:${questDetail.quest.id}` : "summary"}`,
-            () => questDetail
-              ? getQuestDetailPointPopupHtml(point, questDetail, locale)
-              : getQuestPointPopupHtml(point, locale),
+            () =>
+              questDetail
+                ? getQuestDetailPointPopupHtml(point, questDetail, locale)
+                : getQuestPointPopupHtml(point, locale),
           ),
           x: point.x,
           y: point.z,
@@ -901,8 +1069,13 @@ export function LiveMapClientPage({
 
         return (
           point.story_info &&
-          matchesFilterText(getStoryMarkerSearchText(point, locale), storyFilterQuery) &&
-          (focusedMarkerId === markerId || focusedMarkerId === `story:${point.id}` || enabledStoryIds.has(storyId))
+          matchesFilterText(
+            getStoryMarkerSearchText(point, locale),
+            storyFilterQuery,
+          ) &&
+          (focusedMarkerId === markerId ||
+            focusedMarkerId === `story:${point.id}` ||
+            enabledStoryIds.has(storyId))
         );
       })
       .map<LiveMapCanvasMarker>((point) => {
@@ -912,7 +1085,11 @@ export function LiveMapClientPage({
             ? panel.info
             : storyDetailCacheRef.current.get(storyId);
         const storyObjective = storyDetail
-          ? findNestedObjectiveByPoint(storyDetail.objectives, point.id, point.objective_id)
+          ? findNestedObjectiveByPoint(
+              storyDetail.objectives,
+              point.id,
+              point.objective_id,
+            )
           : null;
         const storyLabel =
           getNestedObjectiveText(storyObjective, point.id, locale) ||
@@ -927,41 +1104,62 @@ export function LiveMapClientPage({
           popupHtml: getCachedPopupHtml(
             popupHtmlCache,
             `${locale}:story:${storyId}:${point.id}:${storyDetail ? `detail:${storyDetail.story.id}` : "summary"}`,
-            () => storyDetail
-              ? getStoryDetailPointPopupHtml(point, storyDetail, locale)
-              : getStoryPointPopupHtml(point, locale),
+            () =>
+              storyDetail
+                ? getStoryDetailPointPopupHtml(point, storyDetail, locale)
+                : getStoryPointPopupHtml(point, locale),
           ),
           x: point.x,
           y: point.z,
         };
       });
-    const existingStoryMarkerIds = new Set(storyMarkers.map((marker) => marker.id));
-    const storyRequirementMarkers = getLoadedStoryDetails(panel, storyDetailCacheRef.current)
+    const existingStoryMarkerIds = new Set(
+      storyMarkers.map((marker) => marker.id),
+    );
+    const storyRequirementMarkers = getLoadedStoryDetails(
+      panel,
+      storyDetailCacheRef.current,
+    )
       .flatMap((storyDetail) =>
         storyDetail.requirements.flatMap((requirement) =>
           (requirement.live_map_points ?? [])
-            .filter((point) => isStoryRequirementPointOnMap(requirement, point, normalizedName))
+            .filter((point) =>
+              isStoryRequirementPointOnMap(requirement, point, normalizedName),
+            )
             .map((point) => ({
-              point: makeStoryPointFromRequirement(storyDetail.story, requirement, point),
+              point: makeStoryPointFromRequirement(
+                storyDetail.story,
+                requirement,
+                point,
+              ),
               requirement,
               storyDetail,
             })),
         ),
       )
-      .filter(({ point, requirement, storyDetail }) => (
-        !existingStoryMarkerIds.has(getStoryMarkerId(storyDetail.story.id, point.id)) &&
-        matchesFilterText(
-          [
-            localizedTitle(storyDetail.story as unknown as Record<string, unknown>, locale),
-            getStoryPointLabel(point, locale),
-          ].join(" "),
-          storyFilterQuery,
-        ) &&
-        (focusedMarkerId === getStoryMarkerId(storyDetail.story.id, point.id) ||
-          focusedMarkerId === `story:${point.id}` ||
-          enabledStoryIds.has(storyDetail.story.id)) &&
-        (requirement.live_map_points ?? []).some((entry) => entry.id === point.id)
-      ))
+      .filter(
+        ({ point, requirement, storyDetail }) =>
+          !existingStoryMarkerIds.has(
+            getStoryMarkerId(storyDetail.story.id, point.id),
+          ) &&
+          matchesFilterText(
+            [
+              localizedTitle(
+                storyDetail.story as unknown as Record<string, unknown>,
+                locale,
+              ),
+              getStoryPointLabel(point, locale),
+            ].join(" "),
+            storyFilterQuery,
+          ) &&
+          (focusedMarkerId ===
+            getStoryMarkerId(storyDetail.story.id, point.id) ||
+            focusedMarkerId === `story:${point.id}` ||
+            enabledStoryIds.has(storyDetail.story.id)) &&
+          (requirement.live_map_points ?? []).some(
+            (entry) => entry.id === point.id,
+          ),
+      )
       .map<LiveMapCanvasMarker>(({ point, storyDetail }) => ({
         floorId: resolvePointFloorId(point),
         groupId: storyDetail.story.id,
@@ -977,12 +1175,17 @@ export function LiveMapClientPage({
         y: point.z,
       }));
     const eventMarkers = data.event_points
-      .filter((point) => (
-        point.event_info &&
-        point.map_id === currentMapId &&
-        matchesFilterText(getEventMarkerSearchText(point, locale), eventFilterQuery) &&
-        (focusedMarkerId === `event:${point.id}` || enabledEventIds.has(getEventId(point)))
-      ))
+      .filter(
+        (point) =>
+          point.event_info &&
+          point.map_id === currentMapId &&
+          matchesFilterText(
+            getEventMarkerSearchText(point, locale),
+            eventFilterQuery,
+          ) &&
+          (focusedMarkerId === `event:${point.id}` ||
+            enabledEventIds.has(getEventId(point))),
+      )
       .map<LiveMapCanvasMarker>((point) => {
         const eventId = getEventId(point);
         const eventDetail =
@@ -990,7 +1193,11 @@ export function LiveMapClientPage({
             ? panel.info
             : eventDetailCacheRef.current.get(eventId);
         const eventObjective = eventDetail
-          ? findNestedObjectiveByPoint(eventDetail.objectives, point.id, point.objective_id)
+          ? findNestedObjectiveByPoint(
+              eventDetail.objectives,
+              point.id,
+              point.objective_id,
+            )
           : null;
         const eventLabel =
           getNestedObjectiveText(eventObjective, point.id, locale) ||
@@ -1005,29 +1212,41 @@ export function LiveMapClientPage({
           popupHtml: getCachedPopupHtml(
             popupHtmlCache,
             `${locale}:event:${point.id}:${eventDetail ? `detail:${eventDetail.event.id}` : "summary"}`,
-            () => eventDetail
-              ? getEventDetailPointPopupHtml(point, eventDetail, locale)
-              : getEventPointPopupHtml(point, locale),
+            () =>
+              eventDetail
+                ? getEventDetailPointPopupHtml(point, eventDetail, locale)
+                : getEventPointPopupHtml(point, locale),
           ),
           x: point.x,
           y: point.z,
         };
       });
     const staticMarkers = activeStaticPoints
-      .filter((point) => (
-        matchesFilterText(getStaticMarkerSearchText(point, locale, copy), staticFilterQuery) &&
-        (focusedMarkerId === `static:${point.id}` || enabledStaticIds.has(point.id))
-      ))
+      .filter(
+        (point) =>
+          matchesFilterText(
+            getStaticMarkerSearchText(point, locale, copy),
+            staticFilterQuery,
+          ) &&
+          (focusedMarkerId === `static:${point.id}` ||
+            enabledStaticIds.has(point.id)),
+      )
       .map<LiveMapCanvasMarker>((point) => ({
         floorId: resolvePointFloorId(point),
         id: `static:${point.id}`,
         kind: "static",
-        label: localizedName(point as unknown as Record<string, unknown>, locale),
-        popupHtml: point.category === "landmark" ? undefined : getCachedPopupHtml(
-          popupHtmlCache,
-          `${locale}:static:${point.id}`,
-          () => getStaticPointPopupHtml(point, locale, copy),
+        label: localizedName(
+          point as unknown as Record<string, unknown>,
+          locale,
         ),
+        popupHtml:
+          point.category === "landmark"
+            ? undefined
+            : getCachedPopupHtml(
+                popupHtmlCache,
+                `${locale}:static:${point.id}`,
+                () => getStaticPointPopupHtml(point, locale, copy),
+              ),
         staticCategory: point.category,
         staticFaction: getStaticFaction(point),
         staticItemId: getDocumentSpawnItemId(point) ?? undefined,
@@ -1035,7 +1254,13 @@ export function LiveMapClientPage({
         y: point.z,
       }));
 
-    return [...questMarkers, ...storyMarkers, ...storyRequirementMarkers, ...eventMarkers, ...staticMarkers];
+    return [
+      ...questMarkers,
+      ...storyMarkers,
+      ...storyRequirementMarkers,
+      ...eventMarkers,
+      ...staticMarkers,
+    ];
   }, [
     data.event_points,
     data.quest_points,
@@ -1060,17 +1285,42 @@ export function LiveMapClientPage({
     resolvePointFloorId,
   ]);
 
-  const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(() => party.positions
-    .filter(event => (event.data.map_id ?? party.snapshot?.room.map_id) === party.mapId && event.data.floor_id === selectedFloor?.id)
-    .map(event => ({
-      id: `party-${event.type}:${event.data.member_id}`,
-      kind: "party", floorId: event.data.floor_id, x: event.data.x, y: event.data.z,
-      partyColor: event.data.color, partyTemporary: event.type,
-      partyYaw: event.data.yaw,
-      partyType: "normal",
-      label: `${event.data.nickname} · ${partyText(locale, "위치", "Position", "位置")}`,
-    })), [party.positions, party.mapId, party.snapshot?.room.map_id, selectedFloor?.id, locale]);
-  const allVisibleMarkers = useMemo(() => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers], [visibleMarkers, partyMarkers, temporaryPartyMarkers]);
+  const temporaryPartyMarkers = useMemo<LiveMapCanvasMarker[]>(
+    () =>
+      party.positions
+        .filter(
+          (event) =>
+            (event.data.map_id ?? party.snapshot?.room.map_id) ===
+            party.mapId,
+        )
+        .map((event) => ({
+          id: `party-${event.type}:${event.data.member_id}`,
+          kind: "party",
+          floorId: event.data.floor_id,
+          x: event.data.x,
+          y: event.data.z,
+          partyColor: event.data.color,
+          partyFloorLabel:
+            sortedFloors.find(
+              (floor) => floor.id === event.data.floor_id,
+            )?.[`name_${locale}`] ?? event.data.floor_id,
+          partyTemporary: event.type,
+          partyYaw: event.data.yaw,
+          partyType: "normal",
+          label: `${event.data.nickname} · ${partyText(locale, "위치", "Position", "位置")}`,
+        })),
+    [
+      party.positions,
+      party.mapId,
+      party.snapshot?.room.map_id,
+      sortedFloors,
+      locale,
+    ],
+  );
+  const allVisibleMarkers = useMemo(
+    () => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers],
+    [visibleMarkers, partyMarkers, temporaryPartyMarkers],
+  );
 
   const highlightedMarkerGroup = useMemo(() => {
     if (
@@ -1105,7 +1355,10 @@ export function LiveMapClientPage({
     window.setTimeout(() => setNotice(""), 2200);
   }
 
-  function applyWhereText(text: string, { save = true }: { save?: boolean } = {}) {
+  function applyWhereText(
+    text: string,
+    { save = true }: { save?: boolean } = {},
+  ) {
     const parsed = parseWhereText(text);
     if (party.roomId && parsed) {
       party.shareLocation(text);
@@ -1128,7 +1381,6 @@ export function LiveMapClientPage({
 
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
-
     }
   }
 
@@ -1174,20 +1426,23 @@ export function LiveMapClientPage({
     });
   }, []);
 
-  const loadQuestDetail = useCallback(async (questIdOrNormalizedName: string) => {
-    const cached = questDetailCacheRef.current.get(questIdOrNormalizedName);
+  const loadQuestDetail = useCallback(
+    async (questIdOrNormalizedName: string) => {
+      const cached = questDetailCacheRef.current.get(questIdOrNormalizedName);
 
-    if (cached) {
-      return cached;
-    }
+      if (cached) {
+        return cached;
+      }
 
-    const detail = await getLiveMapQuestDetail(questIdOrNormalizedName);
-    questDetailCacheRef.current.set(detail.quest.id, detail);
-    questDetailCacheRef.current.set(detail.quest.normalized_name, detail);
-    questDetailCacheRef.current.set(questIdOrNormalizedName, detail);
-    setQuestDetailRevision((current) => current + 1);
-    return detail;
-  }, []);
+      const detail = await getLiveMapQuestDetail(questIdOrNormalizedName);
+      questDetailCacheRef.current.set(detail.quest.id, detail);
+      questDetailCacheRef.current.set(detail.quest.normalized_name, detail);
+      questDetailCacheRef.current.set(questIdOrNormalizedName, detail);
+      setQuestDetailRevision((current) => current + 1);
+      return detail;
+    },
+    [],
+  );
 
   const loadStoryDetail = useCallback(async (storyId: string) => {
     const cached = storyDetailCacheRef.current.get(storyId);
@@ -1230,7 +1485,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        objective.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        objective.maps?.find((map) => map.id === point.map_id)
+          ?.normalized_name ??
         objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = `quest:${point.id}`;
@@ -1262,7 +1518,14 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
+    [
+      focusedMarkerId,
+      normalizedName,
+      replaceFocusParam,
+      requestMarkerFocus,
+      router,
+      selectPointFloor,
+    ],
   );
 
   const focusStoryObjective = useCallback(
@@ -1277,7 +1540,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        objective.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        objective.maps?.find((map) => map.id === point.map_id)
+          ?.normalized_name ??
         objective.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = getStoryMarkerId(storyId, point.id);
@@ -1310,7 +1574,14 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
+    [
+      focusedMarkerId,
+      normalizedName,
+      replaceFocusParam,
+      requestMarkerFocus,
+      router,
+      selectPointFloor,
+    ],
   );
 
   const focusStoryRequirement = useCallback(
@@ -1326,7 +1597,8 @@ export function LiveMapClientPage({
 
       const targetMap =
         point.map?.normalized_name ??
-        requirement.maps?.find((map) => map.id === point.map_id)?.normalized_name ??
+        requirement.maps?.find((map) => map.id === point.map_id)
+          ?.normalized_name ??
         requirement.maps?.[0]?.normalized_name ??
         normalizedName;
       const focus = getStoryMarkerId(storyId, point.id);
@@ -1360,7 +1632,14 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
+    [
+      focusedMarkerId,
+      normalizedName,
+      replaceFocusParam,
+      requestMarkerFocus,
+      router,
+      selectPointFloor,
+    ],
   );
 
   const focusEventObjective = useCallback(
@@ -1404,7 +1683,14 @@ export function LiveMapClientPage({
         scroll: false,
       });
     },
-    [focusedMarkerId, normalizedName, replaceFocusParam, requestMarkerFocus, router, selectPointFloor],
+    [
+      focusedMarkerId,
+      normalizedName,
+      replaceFocusParam,
+      requestMarkerFocus,
+      router,
+      selectPointFloor,
+    ],
   );
 
   const focusStaticPoint = useCallback(
@@ -1414,7 +1700,9 @@ export function LiveMapClientPage({
 
       setSelectedStaticId(entry.id);
       setPanel((current) => (current?.type === "static" ? null : current));
-      setExpandedStaticCategories((current) => new Set([...current, entry.point.category || "other"]));
+      setExpandedStaticCategories(
+        (current) => new Set([...current, entry.point.category || "other"]),
+      );
 
       selectPointFloor(entry.point);
 
@@ -1425,7 +1713,10 @@ export function LiveMapClientPage({
     [focusedMarkerId, replaceFocusParam, requestMarkerFocus, selectPointFloor],
   );
 
-  function toggleSet(setter: React.Dispatch<React.SetStateAction<Set<string>>>, id: string) {
+  function toggleSet(
+    setter: React.Dispatch<React.SetStateAction<Set<string>>>,
+    id: string,
+  ) {
     setter((current) => {
       const next = new Set(current);
 
@@ -1447,7 +1738,9 @@ export function LiveMapClientPage({
     setter: React.Dispatch<React.SetStateAction<Set<string>>>,
     ids: string[],
   ) {
-    setter((current) => (current.size === ids.length ? new Set() : new Set(ids)));
+    setter((current) =>
+      current.size === ids.length ? new Set() : new Set(ids),
+    );
   }
 
   const openPanelForMarkerId = useCallback(
@@ -1465,7 +1758,9 @@ export function LiveMapClientPage({
         if (point?.quest_info) {
           selectPointFloor(point);
           try {
-            const info = await loadQuestDetail(point.quest_info.quest?.normalized_name ?? getQuestId(point));
+            const info = await loadQuestDetail(
+              point.quest_info.quest?.normalized_name ?? getQuestId(point),
+            );
             if (openDetailsPanel) {
               setPanel({
                 id: info.quest.id,
@@ -1484,9 +1779,10 @@ export function LiveMapClientPage({
 
       if (kind === "story") {
         const storyMarker = parseStoryMarkerPayload(id);
-        const point = data.story_points.find((entry) =>
-          entry.id === storyMarker.pointId &&
-          (!storyMarker.storyId || getStoryId(entry) === storyMarker.storyId)
+        const point = data.story_points.find(
+          (entry) =>
+            entry.id === storyMarker.pointId &&
+            (!storyMarker.storyId || getStoryId(entry) === storyMarker.storyId),
         );
         if (point?.story_info) {
           selectPointFloor(point);
@@ -1521,12 +1817,21 @@ export function LiveMapClientPage({
           }
         }
 
-        for (const storyDetail of getLoadedStoryDetails(panel, storyDetailCacheRef.current)) {
-          if (storyMarker.storyId && storyDetail.story.id !== storyMarker.storyId) {
+        for (const storyDetail of getLoadedStoryDetails(
+          panel,
+          storyDetailCacheRef.current,
+        )) {
+          if (
+            storyMarker.storyId &&
+            storyDetail.story.id !== storyMarker.storyId
+          ) {
             continue;
           }
 
-          const requirementMatch = findStoryRequirementByPointId(storyDetail, storyMarker.pointId);
+          const requirementMatch = findStoryRequirementByPointId(
+            storyDetail,
+            storyMarker.pointId,
+          );
 
           if (!requirementMatch) {
             continue;
@@ -1576,7 +1881,9 @@ export function LiveMapClientPage({
         if (point) {
           setSelectedStaticId(point.id);
           selectPointFloor(point);
-          setExpandedStaticCategories((current) => new Set([...current, point.category || "other"]));
+          setExpandedStaticCategories(
+            (current) => new Set([...current, point.category || "other"]),
+          );
           setPanel((current) =>
             openStaticPanel
               ? { id: point.id, point, type: "static" }
@@ -1605,7 +1912,8 @@ export function LiveMapClientPage({
   );
 
   useEffect(() => {
-    openPanelForMarkerIdRef.current = (markerId: string) => openPanelForMarkerId(markerId);
+    openPanelForMarkerIdRef.current = (markerId: string) =>
+      openPanelForMarkerId(markerId);
   }, [openPanelForMarkerId]);
 
   const openPanelForMarker = useCallback(
@@ -1647,7 +1955,13 @@ export function LiveMapClientPage({
 
       replaceFocusParam(marker.id);
     },
-    [focusedMarkerId, openMarkerDetailsOnMarkerClick, openPanelForMarkerId, replaceFocusParam, requestMarkerFocus],
+    [
+      focusedMarkerId,
+      openMarkerDetailsOnMarkerClick,
+      openPanelForMarkerId,
+      replaceFocusParam,
+      requestMarkerFocus,
+    ],
   );
 
   const clearFocusParam = useCallback(() => {
@@ -1659,7 +1973,9 @@ export function LiveMapClientPage({
 
     startFocusRouteTransition(() => {
       router.replace(
-        queryString ? `/live-map/${normalizedName}?${queryString}` : `/live-map/${normalizedName}`,
+        queryString
+          ? `/live-map/${normalizedName}?${queryString}`
+          : `/live-map/${normalizedName}`,
         { scroll: false },
       );
     });
@@ -1784,7 +2100,11 @@ export function LiveMapClientPage({
     setSavingQuestId(questId);
     try {
       const savedQuestList = await saveRoadmap(nextCompleted, accessToken);
-      setCompletedQuestIds(savedQuestList.filter((value): value is string => typeof value === "string"));
+      setCompletedQuestIds(
+        savedQuestList.filter(
+          (value): value is string => typeof value === "string",
+        ),
+      );
       showNotice(copy.saved);
     } catch {
       setCompletedQuestIds(previousCompleted);
@@ -1833,7 +2153,9 @@ export function LiveMapClientPage({
     setLoadingQuestNormalizedName(entry.point.quest_info.quest.normalized_name);
 
     try {
-      const info = await loadQuestDetail(entry.point.quest_info.quest.normalized_name);
+      const info = await loadQuestDetail(
+        entry.point.quest_info.quest.normalized_name,
+      );
       setPanel({
         id: info.quest.id,
         info,
@@ -1843,7 +2165,9 @@ export function LiveMapClientPage({
       showNotice(copy.noItems);
     } finally {
       setLoadingQuestNormalizedName((current) =>
-        current === entry.point.quest_info?.quest?.normalized_name ? null : current,
+        current === entry.point.quest_info?.quest?.normalized_name
+          ? null
+          : current,
       );
     }
   }
@@ -1907,7 +2231,8 @@ export function LiveMapClientPage({
   }, [defaultFloorId, normalizedName]);
 
   useEffect(() => {
-    previousLocationEventRef.current = latestWebsocketLocation?.receivedAt ?? null;
+    previousLocationEventRef.current =
+      latestWebsocketLocation?.receivedAt ?? null;
     setWhere("");
     setLocation(null);
   }, [normalizedName]);
@@ -1941,7 +2266,9 @@ export function LiveMapClientPage({
   useEffect(() => {
     const raidState = latestRaidState?.value;
     if (
-      (!BTR_AUTO_TRACKING_ENABLED || !raidState?.is_active || !raidState.started_at) &&
+      (!BTR_AUTO_TRACKING_ENABLED ||
+        !raidState?.is_active ||
+        !raidState.started_at) &&
       (manualBtrTimer === null || manualBtrTimer.startedAt === null)
     ) {
       return;
@@ -2001,7 +2328,13 @@ export function LiveMapClientPage({
       window.setTimeout(() => setIsTransitDetected(false), 10000);
     }
     previousTransitCountRef.current = raidState.transit_count;
-  }, [data.map_selector, latestRaidState, normalizedName, party.roomId, router]);
+  }, [
+    data.map_selector,
+    latestRaidState,
+    normalizedName,
+    party.roomId,
+    router,
+  ]);
 
   const raidRemainingText = useMemo(() => {
     const state = latestRaidState?.value;
@@ -2014,10 +2347,14 @@ export function LiveMapClientPage({
       return null;
     }
 
-    const elapsedSeconds = Math.max(0, Math.floor((raidClock - startedAt) / 1000));
-    const remainingSeconds = raidDurationMinutes === null
-      ? elapsedSeconds
-      : Math.max(0, raidDurationMinutes * 60 - elapsedSeconds);
+    const elapsedSeconds = Math.max(
+      0,
+      Math.floor((raidClock - startedAt) / 1000),
+    );
+    const remainingSeconds =
+      raidDurationMinutes === null
+        ? elapsedSeconds
+        : Math.max(0, raidDurationMinutes * 60 - elapsedSeconds);
     const minutes = Math.floor(remainingSeconds / 60);
     const seconds = String(remainingSeconds % 60).padStart(2, "0");
     return `${minutes}:${seconds}`;
@@ -2027,19 +2364,29 @@ export function LiveMapClientPage({
     if (manualBtrTimer) {
       return manualBtrTimer.startedAt === null
         ? manualBtrTimer.remainingSeconds
-        : Math.max(0, manualBtrTimer.remainingSeconds - Math.floor((raidClock - manualBtrTimer.startedAt) / 1000));
+        : Math.max(
+            0,
+            manualBtrTimer.remainingSeconds -
+              Math.floor((raidClock - manualBtrTimer.startedAt) / 1000),
+          );
     }
     if (!BTR_AUTO_TRACKING_ENABLED) return null;
     const state = latestRaidState?.value;
-    if (!state?.is_active || !state.started_at || raidDurationMinutes === null) return null;
+    if (!state?.is_active || !state.started_at || raidDurationMinutes === null)
+      return null;
     const startedAt = new Date(state.started_at).getTime();
     if (!Number.isFinite(startedAt)) return null;
-    return Math.max(0, raidDurationMinutes * 60 - Math.floor((raidClock - startedAt) / 1000));
+    return Math.max(
+      0,
+      raidDurationMinutes * 60 - Math.floor((raidClock - startedAt) / 1000),
+    );
   }, [latestRaidState, manualBtrTimer, raidClock, raidDurationMinutes]);
 
   useEffect(() => {
     if (!manualBtrTimer || raidRemainingSeconds === null) return;
-    setManualBtrMinutes(String(Math.floor(raidRemainingSeconds / 60)).padStart(2, "0"));
+    setManualBtrMinutes(
+      String(Math.floor(raidRemainingSeconds / 60)).padStart(2, "0"),
+    );
     setManualBtrSeconds(String(raidRemainingSeconds % 60).padStart(2, "0"));
   }, [manualBtrTimer, raidRemainingSeconds]);
 
@@ -2049,36 +2396,62 @@ export function LiveMapClientPage({
     [btrRoutes],
   );
   const btrStatuses = useMemo(
-    () => btrRoutes.map((route) => ({ route, status: getBtrRouteStatus(route, raidRemainingSeconds) })),
+    () =>
+      btrRoutes.map((route) => ({
+        route,
+        status: getBtrRouteStatus(route, raidRemainingSeconds),
+      })),
     [btrRoutes, raidRemainingSeconds],
   );
   const visibleBtrRoutes = useMemo<LiveMapBtrRouteLayer[]>(() => {
     if (!isBtrVisible) return [];
     return btrRoutes
-      .filter((route) => selectedBtrRouteId === null || selectedBtrRouteId === route.id)
+      .filter(
+        (route) =>
+          selectedBtrRouteId === null || selectedBtrRouteId === route.id,
+      )
       .map((route) => ({
-        color: BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length],
+        color:
+          BTR_ROUTE_COLORS[
+            btrRoutes.findIndex((entry) => entry.id === route.id) %
+              BTR_ROUTE_COLORS.length
+          ],
         emphasized: selectedBtrRouteId === route.id,
         id: route.id,
         name: route.name,
         points: [...route.points].sort((a, b) => a.sort_order - b.sort_order),
-        stops: [...route.stops].sort((a, b) => a.visit_order - b.visit_order).map((stop) => ({
-          id: stop.id,
-          label: locale === "ko" ? stop.name_ko : locale === "ja" ? stop.name_ja : stop.name_en,
-          visitOrder: stop.visit_order,
-          x: stop.x,
-          z: stop.z,
-        })),
+        stops: [...route.stops]
+          .sort((a, b) => a.visit_order - b.visit_order)
+          .map((stop) => ({
+            id: stop.id,
+            label:
+              locale === "ko"
+                ? stop.name_ko
+                : locale === "ja"
+                  ? stop.name_ja
+                  : stop.name_en,
+            visitOrder: stop.visit_order,
+            x: stop.x,
+            z: stop.z,
+          })),
       }));
   }, [btrRoutes, isBtrVisible, locale, selectedBtrRouteId]);
   const btrPredictions = useMemo<LiveMapBtrPrediction[]>(() => {
     if (!isBtrVisible) return [];
     return btrStatuses
-      .filter(({ route }) => selectedBtrRouteId === null || selectedBtrRouteId === route.id)
+      .filter(
+        ({ route }) =>
+          selectedBtrRouteId === null || selectedBtrRouteId === route.id,
+      )
       .map(({ route, status }) => ({
-        color: BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length],
+        color:
+          BTR_ROUTE_COLORS[
+            btrRoutes.findIndex((entry) => entry.id === route.id) %
+              BTR_ROUTE_COLORS.length
+          ],
         emphasized: selectedBtrRouteId === route.id,
-        label: locale === "ko" ? "예상" : locale === "ja" ? "予想" : "estimated",
+        label:
+          locale === "ko" ? "예상" : locale === "ja" ? "予想" : "estimated",
         position: status.position,
         routeId: route.id,
         routeName: route.name.split(" ")[0] ?? route.name,
@@ -2107,7 +2480,6 @@ export function LiveMapClientPage({
     const matchedFloor = findFloorForLocation(sortedFloors, activeLogLocation);
     if (matchedFloor) {
       setSelectedFloorId(matchedFloor.id);
-
     }
   }, [activeLogLocation, sortedFloors]);
 
@@ -2150,7 +2522,9 @@ export function LiveMapClientPage({
               className="inline-flex h-8 w-8 shrink-0 items-center justify-center gap-1.5 rounded-md bg-orange-500 text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#1f2124] lg:w-auto lg:px-2.5"
             >
               <Download className="h-4 w-4 shrink-0" />
-              <span className="hidden text-xs font-bold lg:inline">{copy.guideDownload}</span>
+              <span className="hidden text-xs font-bold lg:inline">
+                {copy.guideDownload}
+              </span>
             </button>
           </div>
 
@@ -2173,10 +2547,17 @@ export function LiveMapClientPage({
           {raidRemainingText ? (
             <div
               className="hidden h-9 shrink-0 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300 sm:flex"
-              title={raidDurationMinutes === null ? "레이드 경과 시간" : "레이드 예상 잔여 시간"}
+              title={
+                raidDurationMinutes === null
+                  ? "레이드 경과 시간"
+                  : "레이드 예상 잔여 시간"
+              }
             >
               <Clock3 className="h-4 w-4" />
-              <span>{raidDurationMinutes === null ? "+" : ""}{raidRemainingText}</span>
+              <span>
+                {raidDurationMinutes === null ? "+" : ""}
+                {raidRemainingText}
+              </span>
             </div>
           ) : null}
 
@@ -2238,22 +2619,35 @@ export function LiveMapClientPage({
               className="fixed inset-0 z-[790] bg-black/20 md:hidden"
             />
           ) : null}
-          {!(party.isAdmin && (party.open || party.placing)) && <button
-            type="button"
-            aria-expanded={mobileSidebar === "left"}
-            aria-label={copy.expandSpawnPanel}
-            onClick={() => setMobileSidebar((current) => current === "left" ? null : "left")}
-            className="absolute left-3 top-20 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
-          >
-            <PanelLeftOpen className="h-5 w-5" />
-          </button>}
+          {!(party.isAdmin && (party.open || party.placing)) && (
+            <button
+              type="button"
+              aria-expanded={mobileSidebar === "left"}
+              aria-label={copy.expandSpawnPanel}
+              onClick={() =>
+                setMobileSidebar((current) =>
+                  current === "left" ? null : "left",
+                )
+              }
+              className="absolute left-3 top-20 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden"
+            >
+              <PanelLeftOpen className="h-5 w-5" />
+            </button>
+          )}
           {!panel && !(party.isAdmin && (party.open || party.placing)) ? (
             <button
               type="button"
               aria-expanded={mobileSidebar === "right"}
               aria-label={copy.expandQuestPanel}
-              onClick={() => setMobileSidebar((current) => current === "right" ? null : "right")}
-              className={cn("absolute right-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden", party.isAdmin ? "top-14" : "top-3")}
+              onClick={() =>
+                setMobileSidebar((current) =>
+                  current === "right" ? null : "right",
+                )
+              }
+              className={cn(
+                "absolute right-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden",
+                party.isAdmin ? "top-14" : "top-3",
+              )}
             >
               <PanelRightOpen className="h-5 w-5" />
             </button>
@@ -2279,8 +2673,16 @@ export function LiveMapClientPage({
               <button
                 type="button"
                 aria-expanded={isLeftPanelOpen}
-                aria-label={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
-                title={isLeftPanelOpen ? copy.collapseSpawnPanel : copy.expandSpawnPanel}
+                aria-label={
+                  isLeftPanelOpen
+                    ? copy.collapseSpawnPanel
+                    : copy.expandSpawnPanel
+                }
+                title={
+                  isLeftPanelOpen
+                    ? copy.collapseSpawnPanel
+                    : copy.expandSpawnPanel
+                }
                 onClick={() => {
                   if (mobileSidebar === "left") {
                     setMobileSidebar(null);
@@ -2313,7 +2715,10 @@ export function LiveMapClientPage({
                   >
                     <span className="truncate">
                       {selectedMap
-                        ? localizedName(selectedMap as unknown as Record<string, unknown>, locale)
+                        ? localizedName(
+                            selectedMap as unknown as Record<string, unknown>,
+                            locale,
+                          )
                         : copy.map}
                     </span>
                     <ChevronDown
@@ -2326,7 +2731,8 @@ export function LiveMapClientPage({
                   {isMapSelectorOpen ? (
                     <div className="absolute left-0 right-0 top-10 z-[500] max-h-72 overflow-y-auto rounded-md border border-gray-200 bg-white p-1 shadow-xl dark:border-[#3a3d41] dark:bg-[#1f2124]">
                       {data.map_selector.map((entry) => {
-                        const isSelected = entry.normalized_name === normalizedName;
+                        const isSelected =
+                          entry.normalized_name === normalizedName;
 
                         return (
                           <button
@@ -2345,7 +2751,10 @@ export function LiveMapClientPage({
                             )}
                           >
                             <span className="truncate">
-                              {localizedName(entry as unknown as Record<string, unknown>, locale)}
+                              {localizedName(
+                                entry as unknown as Record<string, unknown>,
+                                locale,
+                              )}
                             </span>
                           </button>
                         );
@@ -2370,7 +2779,9 @@ export function LiveMapClientPage({
                         <span
                           className={cn(
                             "h-2.5 w-2.5 rounded-full",
-                            isSelected ? "bg-orange-500" : "bg-gray-300 dark:bg-gray-600",
+                            isSelected
+                              ? "bg-orange-500"
+                              : "bg-gray-300 dark:bg-gray-600",
                           )}
                         />
                         <span
@@ -2398,7 +2809,12 @@ export function LiveMapClientPage({
                 onOpen={focusStaticPoint}
                 onSearchQueryChange={setStaticFilterQuery}
                 onToggle={(id) => toggleSet(setEnabledStaticIds, id)}
-                onToggleAll={() => toggleAll(setEnabledStaticIds, staticEntries.map((entry) => entry.id))}
+                onToggleAll={() =>
+                  toggleAll(
+                    setEnabledStaticIds,
+                    staticEntries.map((entry) => entry.id),
+                  )
+                }
                 onToggleCategory={(category, ids) => {
                   setEnabledStaticIds((current) => {
                     const next = new Set(current);
@@ -2415,7 +2831,9 @@ export function LiveMapClientPage({
                     return next;
                   });
                 }}
-                onToggleCategoryOpen={(category) => toggleSet(setExpandedStaticCategories, category)}
+                onToggleCategoryOpen={(category) =>
+                  toggleSet(setExpandedStaticCategories, category)
+                }
                 onSetCategoriesOpen={(categories, open) => {
                   setExpandedStaticCategories((current) => {
                     const next = new Set(current);
@@ -2437,7 +2855,6 @@ export function LiveMapClientPage({
                 copy={copy}
               />
             </div>
-
           </aside>
 
           <section
@@ -2471,19 +2888,31 @@ export function LiveMapClientPage({
                 markers={allVisibleMarkers}
                 onMarkerClick={(marker) => {
                   if (marker.kind === "party") {
-                    if (marker.partyTemporary) { party.setOpen(true); return; }
+                    if (marker.partyTemporary) {
+                      party.setOpen(true);
+                      return;
+                    }
                     party.setPoint(null);
                     party.setPlacing(false);
                     party.setEditingId(marker.id.slice(6));
                     party.setOpen(true);
-                  } else { void openPanelForMarker(marker); }
+                  } else {
+                    void openPanelForMarker(marker);
+                  }
                 }}
                 onMapClick={(position) => {
-                  if (party.placing && !party.busy && party.connected && drawingMode === "hand") {
+                  if (
+                    party.placing &&
+                    !party.busy &&
+                    party.connected &&
+                    drawingMode === "hand"
+                  ) {
                     party.setPoint({ floor_id: selectedFloor.id, ...position });
                     party.setPlacing(false);
                     party.setOpen(true);
-                  } else { clearFocusParam(); }
+                  } else {
+                    clearFocusParam();
+                  }
                 }}
                 onFloorStep={stepFloor}
                 onMousePositionChange={setMousePosition}
@@ -2497,22 +2926,42 @@ export function LiveMapClientPage({
               </div>
             )}
 
-            {party.isAdmin && <LiveMapPartyPanel
-              key={normalizedName}
-              party={party}
-              locale={locale}
-              floors={sortedFloors}
-              activeFloorId={selectedFloor?.id ?? ""}
-              mapOptions={data.map_selector}
-              mapName={selectedMap ? localizedName(selectedMap as unknown as Record<string, unknown>, locale) : normalizedName}
-              onPlace={() => { setDrawingMode("hand"); party.setPoint(null); party.setEditingId(null); party.setPlacing(true); party.setOpen(false); }}
-              onFocus={(marker) => {
-                setSelectedFloorId(marker.floor_id);
-                setFocusTarget({ id: `party:${marker.id}`, key: Date.now(), moveView: true, x: marker.x, y: marker.z });
-                setLocalFocusedMarkerId(`party:${marker.id}`);
-                party.setOpen(false);
-              }}
-            />}
+            {party.isAdmin && (
+              <LiveMapPartyPanel
+                key={normalizedName}
+                party={party}
+                locale={locale}
+                floors={sortedFloors}
+                activeFloorId={selectedFloor?.id ?? ""}
+                mapName={
+                  selectedMap
+                    ? localizedName(
+                        selectedMap as unknown as Record<string, unknown>,
+                        locale,
+                      )
+                    : normalizedName
+                }
+                onPlace={() => {
+                  setDrawingMode("hand");
+                  party.setPoint(null);
+                  party.setEditingId(null);
+                  party.setPlacing(true);
+                  party.setOpen(false);
+                }}
+                onFocus={(marker) => {
+                  setSelectedFloorId(marker.floor_id);
+                  setFocusTarget({
+                    id: `party:${marker.id}`,
+                    key: Date.now(),
+                    moveView: true,
+                    x: marker.x,
+                    y: marker.z,
+                  });
+                  setLocalFocusedMarkerId(`party:${marker.id}`);
+                  party.setOpen(false);
+                }}
+              />
+            )}
 
             {notice ? (
               <div
@@ -2524,81 +2973,376 @@ export function LiveMapClientPage({
             ) : null}
 
             {btrRoutes.length > 0 ? (
-              <div className={cn(
-                "absolute left-3 right-3 top-14 z-[1000] w-auto rounded-xl border border-gray-200 bg-white/95 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95 sm:left-auto sm:right-3 sm:w-[min(22rem,calc(100%-1.5rem))]",
-                (isDrawingToolbarOpen || isViewSettingsOpen) && "hidden",
-              )}>
+              <div
+                className={cn(
+                  "absolute left-3 right-3 top-14 z-[1000] w-auto rounded-xl border border-gray-200 bg-white/95 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95 sm:left-auto sm:right-3 sm:w-[min(22rem,calc(100%-1.5rem))]",
+                  (isDrawingToolbarOpen || isViewSettingsOpen) && "hidden",
+                )}
+              >
                 <div className="flex items-center gap-2 border-b border-gray-200 p-3 dark:border-[#3a3d41]">
-                  <button type="button" aria-expanded={!isBtrPanelCollapsed} onClick={toggleBtrPanel} className="flex min-w-0 flex-1 items-center gap-2 rounded-md text-left focus:outline-none focus:ring-2 focus:ring-orange-400">
+                  <button
+                    type="button"
+                    aria-expanded={!isBtrPanelCollapsed}
+                    onClick={toggleBtrPanel}
+                    className="flex min-w-0 flex-1 items-center gap-2 rounded-md text-left focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  >
                     <BusFront className="h-4 w-4 shrink-0 text-orange-500" />
-                    <strong className="min-w-0 flex-1 text-sm">BTR {locale === "ko" ? "예상 경로" : locale === "ja" ? "予想ルート" : "Estimated routes"}</strong>
+                    <strong className="min-w-0 flex-1 text-sm">
+                      BTR{" "}
+                      {locale === "ko"
+                        ? "예상 경로"
+                        : locale === "ja"
+                          ? "予想ルート"
+                          : "Estimated routes"}
+                    </strong>
                   </button>
-                  <button type="button" role="switch" aria-checked={isBtrVisible} onClick={() => setIsBtrVisible((value) => !value)} className={cn("h-6 rounded-full px-2 text-[10px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", isBtrVisible ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-200 text-gray-600 dark:bg-[#34383e] dark:text-gray-200")}>{isBtrVisible ? "ON" : "OFF"}</button>
-                  <button type="button" aria-expanded={!isBtrPanelCollapsed} aria-label={isBtrPanelCollapsed ? (locale === "ko" ? "BTR 패널 펼치기" : "Expand BTR panel") : (locale === "ko" ? "BTR 패널 접기" : "Collapse BTR panel")} onClick={toggleBtrPanel} className="grid h-7 w-7 place-items-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#30343a]">
-                    <ChevronDown className={cn("h-4 w-4 transition-transform", !isBtrPanelCollapsed && "rotate-180")} />
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={isBtrVisible}
+                    onClick={() => setIsBtrVisible((value) => !value)}
+                    className={cn(
+                      "h-6 rounded-full px-2 text-[10px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                      isBtrVisible
+                        ? "bg-orange-500 text-white dark:text-[#1e2124]"
+                        : "bg-gray-200 text-gray-600 dark:bg-[#34383e] dark:text-gray-200",
+                    )}
+                  >
+                    {isBtrVisible ? "ON" : "OFF"}
+                  </button>
+                  <button
+                    type="button"
+                    aria-expanded={!isBtrPanelCollapsed}
+                    aria-label={
+                      isBtrPanelCollapsed
+                        ? locale === "ko"
+                          ? "BTR 패널 펼치기"
+                          : "Expand BTR panel"
+                        : locale === "ko"
+                          ? "BTR 패널 접기"
+                          : "Collapse BTR panel"
+                    }
+                    onClick={toggleBtrPanel}
+                    className="grid h-7 w-7 place-items-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#30343a]"
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform",
+                        !isBtrPanelCollapsed && "rotate-180",
+                      )}
+                    />
                   </button>
                 </div>
                 {isBtrVisible && !isBtrPanelCollapsed ? (
                   <div className="max-h-[min(19rem,45vh)] space-y-2 overflow-y-auto p-3 text-xs font-semibold">
                     <p className="text-xs font-bold leading-5 text-gray-600 dark:text-gray-300">
-                      {locale === "ko" ? "가능한 후보 노선입니다. 스폰 편차와 플레이어 상호작용에 따라 실제 시간과 다를 수 있습니다." : locale === "ja" ? "候補ルートです。スポーンの変動やプレイヤーの操作により時間がずれる場合があります。" : "Possible routes only. Timing may vary due to spawn variance and player interaction."}
+                      {locale === "ko"
+                        ? "가능한 후보 노선입니다. 스폰 편차와 플레이어 상호작용에 따라 실제 시간과 다를 수 있습니다."
+                        : locale === "ja"
+                          ? "候補ルートです。スポーンの変動やプレイヤーの操作により時間がずれる場合があります。"
+                          : "Possible routes only. Timing may vary due to spawn variance and player interaction."}
                     </p>
                     <form
                       onSubmit={(event) => {
                         event.preventDefault();
                         const minutes = Number(manualBtrMinutes);
                         const seconds = Number(manualBtrSeconds);
-                        if (!Number.isFinite(minutes) || !Number.isFinite(seconds)) return;
-                        const remainingSeconds = Math.max(0, Math.min(maximumBtrRaidSeconds, Math.floor(minutes) * 60 + Math.min(59, Math.floor(seconds))));
-                        setManualBtrTimer({ remainingSeconds, startedAt: Date.now() });
+                        if (
+                          !Number.isFinite(minutes) ||
+                          !Number.isFinite(seconds)
+                        )
+                          return;
+                        const remainingSeconds = Math.max(
+                          0,
+                          Math.min(
+                            maximumBtrRaidSeconds,
+                            Math.floor(minutes) * 60 +
+                              Math.min(59, Math.floor(seconds)),
+                          ),
+                        );
+                        setManualBtrTimer({
+                          remainingSeconds,
+                          startedAt: Date.now(),
+                        });
                         setRaidClock(Date.now());
                       }}
                       className="rounded-lg border border-gray-200 bg-gray-50 p-2.5 dark:border-[#3a3d41] dark:bg-[#24272c]"
                     >
                       <div className="mb-2 flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">{locale === "ko" ? "현재 레이드 잔여 시간" : locale === "ja" ? "現在のレイド残り時間" : "Current raid time remaining"}</span>
-                        <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">{manualBtrTimer ? (locale === "ko" ? "수동 실행 중" : "MANUAL") : (locale === "ko" ? "수동 대기" : "MANUAL READY")}</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                          {locale === "ko"
+                            ? "현재 레이드 잔여 시간"
+                            : locale === "ja"
+                              ? "現在のレイド残り時間"
+                              : "Current raid time remaining"}
+                        </span>
+                        <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
+                          {manualBtrTimer
+                            ? locale === "ko"
+                              ? "수동 실행 중"
+                              : "MANUAL"
+                            : locale === "ko"
+                              ? "수동 대기"
+                              : "MANUAL READY"}
+                        </span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <input aria-label={locale === "ko" ? "분" : "Minutes"} inputMode="numeric" value={manualBtrMinutes} onChange={(event) => setManualBtrMinutes(event.currentTarget.value.replace(/\D/g, "").slice(0, 2))} className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]" placeholder="00" />
+                        <input
+                          aria-label={locale === "ko" ? "분" : "Minutes"}
+                          inputMode="numeric"
+                          value={manualBtrMinutes}
+                          onChange={(event) =>
+                            setManualBtrMinutes(
+                              event.currentTarget.value
+                                .replace(/\D/g, "")
+                                .slice(0, 2),
+                            )
+                          }
+                          className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]"
+                          placeholder="00"
+                        />
                         <span className="font-black text-gray-400">:</span>
-                        <input aria-label={locale === "ko" ? "초" : "Seconds"} inputMode="numeric" value={manualBtrSeconds} onChange={(event) => setManualBtrSeconds(event.currentTarget.value.replace(/\D/g, "").slice(0, 2))} className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]" placeholder="00" />
-                        <button type="submit" className="h-9 flex-1 rounded-md bg-orange-500 px-3 text-xs font-black text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-[#1e2124]">{locale === "ko" ? "수동 시작" : locale === "ja" ? "手動開始" : "Start manual"}</button>
+                        <input
+                          aria-label={locale === "ko" ? "초" : "Seconds"}
+                          inputMode="numeric"
+                          value={manualBtrSeconds}
+                          onChange={(event) =>
+                            setManualBtrSeconds(
+                              event.currentTarget.value
+                                .replace(/\D/g, "")
+                                .slice(0, 2),
+                            )
+                          }
+                          className="h-9 w-12 rounded-md border border-gray-200 bg-white text-center font-mono text-sm font-black outline-none focus:border-orange-400 dark:border-[#3a3d41] dark:bg-[#17191c]"
+                          placeholder="00"
+                        />
+                        <button
+                          type="submit"
+                          className="h-9 flex-1 rounded-md bg-orange-500 px-3 text-xs font-black text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-[#1e2124]"
+                        >
+                          {locale === "ko"
+                            ? "수동 시작"
+                            : locale === "ja"
+                              ? "手動開始"
+                              : "Start manual"}
+                        </button>
                       </div>
                       <div className="mt-2 grid grid-cols-4 gap-1">
-                        {[40, 35, 30, 25, 20, 15, 10, 5].filter((minute) => minute * 60 <= maximumBtrRaidSeconds).map((minute) => <button key={minute} type="button" onClick={() => { setManualBtrMinutes(String(minute).padStart(2, "0")); setManualBtrSeconds("00"); setManualBtrTimer({ remainingSeconds: minute * 60, startedAt: Date.now() }); setRaidClock(Date.now()); }} className="min-w-[3.25rem] flex-1 rounded bg-gray-200 py-1 text-[10px] font-black text-gray-600 hover:bg-orange-100 hover:text-orange-600 dark:bg-[#34383e] dark:text-gray-200 dark:hover:bg-orange-500/15 dark:hover:text-orange-300">{minute}:00</button>)}
+                        {[40, 35, 30, 25, 20, 15, 10, 5]
+                          .filter(
+                            (minute) => minute * 60 <= maximumBtrRaidSeconds,
+                          )
+                          .map((minute) => (
+                            <button
+                              key={minute}
+                              type="button"
+                              onClick={() => {
+                                setManualBtrMinutes(
+                                  String(minute).padStart(2, "0"),
+                                );
+                                setManualBtrSeconds("00");
+                                setManualBtrTimer({
+                                  remainingSeconds: minute * 60,
+                                  startedAt: Date.now(),
+                                });
+                                setRaidClock(Date.now());
+                              }}
+                              className="min-w-[3.25rem] flex-1 rounded bg-gray-200 py-1 text-[10px] font-black text-gray-600 hover:bg-orange-100 hover:text-orange-600 dark:bg-[#34383e] dark:text-gray-200 dark:hover:bg-orange-500/15 dark:hover:text-orange-300"
+                            >
+                              {minute}:00
+                            </button>
+                          ))}
                       </div>
                       {manualBtrTimer ? (
                         <div className="mt-2 grid grid-cols-5 gap-1">
-                          <button type="button" onClick={() => { const remainingSeconds = raidRemainingSeconds ?? manualBtrTimer.remainingSeconds; setManualBtrTimer({ remainingSeconds, startedAt: manualBtrTimer.startedAt === null ? Date.now() : null }); setRaidClock(Date.now()); }} className="rounded border border-orange-300 bg-orange-50 py-1 text-[10px] font-black text-orange-700 hover:bg-orange-100 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-300">{manualBtrTimer.startedAt === null ? (locale === "ko" ? "재개" : "RESUME") : (locale === "ko" ? "정지" : "PAUSE")}</button>
-                          {[60, 10, -10, -60].map((delta) => <button key={delta} type="button" onClick={() => { const current = raidRemainingSeconds ?? manualBtrTimer.remainingSeconds; const remainingSeconds = Math.max(0, Math.min(maximumBtrRaidSeconds, current + delta)); setManualBtrTimer({ remainingSeconds, startedAt: manualBtrTimer.startedAt === null ? null : Date.now() }); setRaidClock(Date.now()); }} className="rounded border border-gray-200 bg-white py-1 font-mono text-[10px] font-black text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#17191c] dark:text-gray-200">{delta > 0 ? "+" : "−"}{Math.abs(delta) === 60 ? "1m" : "10s"}</button>)}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const remainingSeconds =
+                                raidRemainingSeconds ??
+                                manualBtrTimer.remainingSeconds;
+                              setManualBtrTimer({
+                                remainingSeconds,
+                                startedAt:
+                                  manualBtrTimer.startedAt === null
+                                    ? Date.now()
+                                    : null,
+                              });
+                              setRaidClock(Date.now());
+                            }}
+                            className="rounded border border-orange-300 bg-orange-50 py-1 text-[10px] font-black text-orange-700 hover:bg-orange-100 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-300"
+                          >
+                            {manualBtrTimer.startedAt === null
+                              ? locale === "ko"
+                                ? "재개"
+                                : "RESUME"
+                              : locale === "ko"
+                                ? "정지"
+                                : "PAUSE"}
+                          </button>
+                          {[60, 10, -10, -60].map((delta) => (
+                            <button
+                              key={delta}
+                              type="button"
+                              onClick={() => {
+                                const current =
+                                  raidRemainingSeconds ??
+                                  manualBtrTimer.remainingSeconds;
+                                const remainingSeconds = Math.max(
+                                  0,
+                                  Math.min(
+                                    maximumBtrRaidSeconds,
+                                    current + delta,
+                                  ),
+                                );
+                                setManualBtrTimer({
+                                  remainingSeconds,
+                                  startedAt:
+                                    manualBtrTimer.startedAt === null
+                                      ? null
+                                      : Date.now(),
+                                });
+                                setRaidClock(Date.now());
+                              }}
+                              className="rounded border border-gray-200 bg-white py-1 font-mono text-[10px] font-black text-gray-600 hover:border-orange-300 hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#17191c] dark:text-gray-200"
+                            >
+                              {delta > 0 ? "+" : "−"}
+                              {Math.abs(delta) === 60 ? "1m" : "10s"}
+                            </button>
+                          ))}
                         </div>
                       ) : null}
                     </form>
-                    <div className="flex flex-wrap gap-1" role="group" aria-label="BTR route filter">
-                      <button type="button" aria-pressed={selectedBtrRouteId === null} onClick={() => setSelectedBtrRouteId(null)} className={cn("rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", selectedBtrRouteId === null ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200")}>{locale === "ko" ? "전체" : locale === "ja" ? "すべて" : "All"}</button>
-                      {btrRoutes.map((route) => <button key={route.id} type="button" aria-pressed={selectedBtrRouteId === route.id} onClick={() => setSelectedBtrRouteId(route.id)} className={cn("rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400", selectedBtrRouteId === route.id ? "bg-orange-500 text-white dark:text-[#1e2124]" : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200")}>{route.name.split(" ")[0]}</button>)}
+                    <div
+                      className="flex flex-wrap gap-1"
+                      role="group"
+                      aria-label="BTR route filter"
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={selectedBtrRouteId === null}
+                        onClick={() => setSelectedBtrRouteId(null)}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                          selectedBtrRouteId === null
+                            ? "bg-orange-500 text-white dark:text-[#1e2124]"
+                            : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200",
+                        )}
+                      >
+                        {locale === "ko"
+                          ? "전체"
+                          : locale === "ja"
+                            ? "すべて"
+                            : "All"}
+                      </button>
+                      {btrRoutes.map((route) => (
+                        <button
+                          key={route.id}
+                          type="button"
+                          aria-pressed={selectedBtrRouteId === route.id}
+                          onClick={() => setSelectedBtrRouteId(route.id)}
+                          className={cn(
+                            "rounded-md px-2.5 py-1 text-[11px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                            selectedBtrRouteId === route.id
+                              ? "bg-orange-500 text-white dark:text-[#1e2124]"
+                              : "bg-gray-100 text-gray-600 hover:text-orange-500 dark:bg-[#30343a] dark:text-gray-200",
+                          )}
+                        >
+                          {route.name.split(" ")[0]}
+                        </button>
+                      ))}
                     </div>
                     {btrStatuses.map(({ route, status }) => {
-                      const color = BTR_ROUTE_COLORS[btrRoutes.findIndex((entry) => entry.id === route.id) % BTR_ROUTE_COLORS.length];
-                      const enabled = selectedBtrRouteId === null || selectedBtrRouteId === route.id;
-                      const stopName = status.nextStop ? (locale === "ko" ? status.nextStop.name_ko : locale === "ja" ? status.nextStop.name_ja : status.nextStop.name_en) : null;
-                      const currentStopName = status.currentStop ? (locale === "ko" ? status.currentStop.name_ko : locale === "ja" ? status.currentStop.name_ja : status.currentStop.name_en) : null;
-                      const previousStopName = status.previousStop ? (locale === "ko" ? status.previousStop.name_ko : locale === "ja" ? status.previousStop.name_ja : status.previousStop.name_en) : null;
-                      const variance = status.etaSeconds === null ? null : route.timing_variance_seconds;
+                      const color =
+                        BTR_ROUTE_COLORS[
+                          btrRoutes.findIndex(
+                            (entry) => entry.id === route.id,
+                          ) % BTR_ROUTE_COLORS.length
+                        ];
+                      const enabled =
+                        selectedBtrRouteId === null ||
+                        selectedBtrRouteId === route.id;
+                      const stopName = status.nextStop
+                        ? locale === "ko"
+                          ? status.nextStop.name_ko
+                          : locale === "ja"
+                            ? status.nextStop.name_ja
+                            : status.nextStop.name_en
+                        : null;
+                      const currentStopName = status.currentStop
+                        ? locale === "ko"
+                          ? status.currentStop.name_ko
+                          : locale === "ja"
+                            ? status.currentStop.name_ja
+                            : status.currentStop.name_en
+                        : null;
+                      const previousStopName = status.previousStop
+                        ? locale === "ko"
+                          ? status.previousStop.name_ko
+                          : locale === "ja"
+                            ? status.previousStop.name_ja
+                            : status.previousStop.name_en
+                        : null;
+                      const variance =
+                        status.etaSeconds === null
+                          ? null
+                          : route.timing_variance_seconds;
                       return (
-                        <button key={route.id} type="button" aria-pressed={selectedBtrRouteId === route.id} onClick={() => setSelectedBtrRouteId(route.id)} className={cn("w-full rounded-lg border p-2.5 text-left transition focus:outline-none focus:ring-2 focus:ring-orange-400", enabled ? "border-gray-200 bg-gray-50 dark:border-[#3a3d41] dark:bg-[#292c31]" : "border-transparent bg-gray-100 opacity-45 dark:bg-[#17191c]")}>
-                          <span className="flex items-center gap-2 text-xs font-black"><span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />{route.name}</span>
+                        <button
+                          key={route.id}
+                          type="button"
+                          aria-pressed={selectedBtrRouteId === route.id}
+                          onClick={() => setSelectedBtrRouteId(route.id)}
+                          className={cn(
+                            "w-full rounded-lg border p-2.5 text-left transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                            enabled
+                              ? "border-gray-200 bg-gray-50 dark:border-[#3a3d41] dark:bg-[#292c31]"
+                              : "border-transparent bg-gray-100 opacity-45 dark:bg-[#17191c]",
+                          )}
+                        >
+                          <span className="flex items-center gap-2 text-xs font-black">
+                            <span
+                              className="h-2.5 w-2.5 rounded-full"
+                              style={{ backgroundColor: color }}
+                            />
+                            {route.name}
+                          </span>
                           <span className="mt-1 block pl-[18px] text-xs font-semibold leading-5 text-gray-700 dark:text-gray-200">
-                            {status.kind === "unknown" ? (locale === "ko" ? "레이드 시작 후 예상 위치를 확인할 수 있습니다" : "Estimated position is available after the raid starts") : status.kind === "not-spawned" ? `${locale === "ko" ? "BTR 생성 전 · 예상 생성까지" : "Not spawned · Spawn ETA"} ${formatBtrTime(status.etaSeconds ?? 0)}` : status.kind === "stopped" ? `${locale === "ko" ? "정차 중" : "Stopped"} · ${currentStopName ?? "-"}${status.departureSeconds !== null ? ` · ${locale === "ko" ? "출발까지" : "Departs in"} ${formatBtrTime(status.departureSeconds)}` : ""}` : status.kind === "moving" ? (
+                            {status.kind === "unknown" ? (
+                              locale === "ko" ? (
+                                "레이드 시작 후 예상 위치를 확인할 수 있습니다"
+                              ) : (
+                                "Estimated position is available after the raid starts"
+                              )
+                            ) : status.kind === "not-spawned" ? (
+                              `${locale === "ko" ? "BTR 생성 전 · 예상 생성까지" : "Not spawned · Spawn ETA"} ${formatBtrTime(status.etaSeconds ?? 0)}`
+                            ) : status.kind === "stopped" ? (
+                              `${locale === "ko" ? "정차 중" : "Stopped"} · ${currentStopName ?? "-"}${status.departureSeconds !== null ? ` · ${locale === "ko" ? "출발까지" : "Departs in"} ${formatBtrTime(status.departureSeconds)}` : ""}`
+                            ) : status.kind === "moving" ? (
                               <>
-                                <span>{locale === "ko" ? "이동 중" : "Moving"} · </span>
-                                <span className="font-black text-sky-700 dark:text-sky-300">{previousStopName ?? "START"}</span>
-                                <span className="px-1 font-black text-gray-400">→</span>
-                                <span className="font-black text-orange-600 dark:text-orange-300">{stopName ?? "-"}</span>
-                                {status.etaSeconds !== null && variance !== null ? <span>{` · ETA ${formatBtrTime(Math.max(0, status.etaSeconds - variance))}–${formatBtrTime(status.etaSeconds + variance)} · ±${formatBtrTime(variance)}`}</span> : null}
+                                <span>
+                                  {locale === "ko" ? "이동 중" : "Moving"}{" "}
+                                  ·{" "}
+                                </span>
+                                <span className="font-black text-sky-700 dark:text-sky-300">
+                                  {previousStopName ?? "START"}
+                                </span>
+                                <span className="px-1 font-black text-gray-400">
+                                  →
+                                </span>
+                                <span className="font-black text-orange-600 dark:text-orange-300">
+                                  {stopName ?? "-"}
+                                </span>
+                                {status.etaSeconds !== null &&
+                                variance !== null ? (
+                                  <span>{` · ETA ${formatBtrTime(Math.max(0, status.etaSeconds - variance))}–${formatBtrTime(status.etaSeconds + variance)} · ±${formatBtrTime(variance)}`}</span>
+                                ) : null}
                               </>
-                            ) : (locale === "ko" ? "운행 종료" : "Route finished")}
+                            ) : locale === "ko" ? (
+                              "운행 종료"
+                            ) : (
+                              "Route finished"
+                            )}
                           </span>
                         </button>
                       );
@@ -2608,7 +3352,13 @@ export function LiveMapClientPage({
               </div>
             ) : null}
 
-            <div ref={mapToolbarRef} className={cn("absolute top-3 z-[1000] flex items-center gap-2", party.isAdmin ? "right-[11.5rem]" : "right-3")}>
+            <div
+              ref={mapToolbarRef}
+              className={cn(
+                "absolute top-3 z-[1000] flex items-center gap-2",
+                party.isAdmin ? "right-[11.5rem]" : "right-3",
+              )}
+            >
               <button
                 type="button"
                 aria-label={`${copy.rotateMap} (${mapRotation}°)`}
@@ -2623,7 +3373,9 @@ export function LiveMapClientPage({
                     isMapRotating && "rotate-90",
                   )}
                 />
-                <span className="hidden 2xl:inline">{copy.rotation} {mapRotation}°</span>
+                <span className="hidden 2xl:inline">
+                  {copy.rotation} {mapRotation}°
+                </span>
               </button>
 
               <button
@@ -2677,36 +3429,60 @@ export function LiveMapClientPage({
               </button>
 
               {isViewSettingsOpen ? (
-                <div role="menu" aria-label={copy.viewSettings} className="absolute right-0 top-11 w-80 max-w-[calc(100vw-1.5rem)] rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95">
+                <div
+                  role="menu"
+                  aria-label={copy.viewSettings}
+                  className="absolute right-0 top-11 w-80 max-w-[calc(100vw-1.5rem)] rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xl backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/95"
+                >
                   <ViewSettingButton
                     checked={isEyeComfortMode}
                     icon={Leaf}
-                    label={isEyeComfortMode ? copy.eyeComfortOn : copy.eyeComfortOff}
+                    label={
+                      isEyeComfortMode ? copy.eyeComfortOn : copy.eyeComfortOff
+                    }
                     onClick={() => setIsEyeComfortMode((value) => !value)}
                   />
                   <ViewSettingButton
                     checked={isMarkerSimplified}
                     icon={CircleDot}
-                    label={isMarkerSimplified ? copy.markersSimplified : copy.markersDetailed}
+                    label={
+                      isMarkerSimplified
+                        ? copy.markersSimplified
+                        : copy.markersDetailed
+                    }
                     onClick={() => setIsMarkerSimplified((value) => !value)}
                   />
                   <ViewSettingButton
                     checked={areStaticLabelsVisible}
                     icon={areStaticLabelsVisible ? Eye : EyeOff}
-                    label={areStaticLabelsVisible ? copy.mapLabelsShown : copy.mapLabelsHidden}
+                    label={
+                      areStaticLabelsVisible
+                        ? copy.mapLabelsShown
+                        : copy.mapLabelsHidden
+                    }
                     onClick={() => setAreStaticLabelsVisible((value) => !value)}
                   />
                   <ViewSettingButton
                     checked={isAutoPanLocked}
                     icon={isAutoPanLocked ? Lock : Unlock}
-                    label={isAutoPanLocked ? copy.autoMoveLocked : copy.autoMoveUnlocked}
+                    label={
+                      isAutoPanLocked
+                        ? copy.autoMoveLocked
+                        : copy.autoMoveUnlocked
+                    }
                     onClick={() => setIsAutoPanLocked((value) => !value)}
                   />
                   <ViewSettingButton
                     checked={openMarkerDetailsOnMarkerClick}
                     icon={PanelRightOpen}
-                    label={openMarkerDetailsOnMarkerClick ? copy.questDetailsOn : copy.questDetailsOff}
-                    onClick={() => setOpenMarkerDetailsOnMarkerClick((value) => !value)}
+                    label={
+                      openMarkerDetailsOnMarkerClick
+                        ? copy.questDetailsOn
+                        : copy.questDetailsOff
+                    }
+                    onClick={() =>
+                      setOpenMarkerDetailsOnMarkerClick((value) => !value)
+                    }
                   />
                 </div>
               ) : null}
@@ -2731,7 +3507,9 @@ export function LiveMapClientPage({
                     <button
                       key={colorMode}
                       type="button"
-                      aria-label={colorMode === "red" ? copy.redPen : copy.bluePen}
+                      aria-label={
+                        colorMode === "red" ? copy.redPen : copy.bluePen
+                      }
                       title={colorMode === "red" ? copy.redPen : copy.bluePen}
                       onClick={() => setDrawingMode(colorMode)}
                       className={cn(
@@ -2807,10 +3585,16 @@ export function LiveMapClientPage({
                       <Trash2 className="h-5 w-5" />
                     </div>
                     <div className="min-w-0">
-                      <h2 id="clear-drawing-dialog-title" className="font-black text-gray-900 dark:text-white">
+                      <h2
+                        id="clear-drawing-dialog-title"
+                        className="font-black text-gray-900 dark:text-white"
+                      >
                         {copy.clearDrawing}
                       </h2>
-                      <p id="clear-drawing-dialog-description" className="mt-1.5 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                      <p
+                        id="clear-drawing-dialog-description"
+                        className="mt-1.5 text-sm leading-6 text-gray-600 dark:text-gray-300"
+                      >
                         {copy.clearDrawingConfirm}
                       </p>
                     </div>
@@ -2842,7 +3626,12 @@ export function LiveMapClientPage({
             <div className="absolute bottom-3 left-3 right-3 grid gap-2 rounded-md border border-gray-200 bg-white/90 p-3 text-xs shadow-lg backdrop-blur dark:border-[#3a3d41] dark:bg-[#1f2124]/90 sm:left-auto sm:right-3 sm:w-80">
               <div className="flex items-center justify-between gap-3">
                 <span className="font-black text-gray-800 dark:text-white">
-                  {selectedFloor ? localizedName(selectedFloor as unknown as Record<string, unknown>, locale) : copy.floor}
+                  {selectedFloor
+                    ? localizedName(
+                        selectedFloor as unknown as Record<string, unknown>,
+                        locale,
+                      )
+                    : copy.floor}
                 </span>
                 <span className="font-mono text-orange-500">
                   X {mousePosition?.lng.toFixed(2) ?? "0.00"} / Z{" "}
@@ -2897,117 +3686,142 @@ export function LiveMapClientPage({
                 isRightPanelOpen ? "xl:w-72" : "xl:w-11",
               )}
             >
-            <div
-              className={cn(
-                "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
-                isRightPanelOpen ? "justify-between" : "justify-center",
-              )}
-            >
-              <button
-                type="button"
-                aria-expanded={isRightPanelOpen}
-                aria-label={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
-                title={isRightPanelOpen ? copy.collapseQuestPanel : copy.expandQuestPanel}
-                onClick={() => {
-                  if (mobileSidebar === "right") {
-                    setMobileSidebar(null);
-                    return;
-                  }
-                  setIsRightPanelOpen((value) => !value);
-                }}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
-              >
-                {isRightPanelOpen ? (
-                  <PanelRightClose className="h-4 w-4" />
-                ) : (
-                  <PanelRightOpen className="h-4 w-4" />
+              <div
+                className={cn(
+                  "flex h-11 shrink-0 items-center border-b border-gray-200 px-1.5 dark:border-[#3a3d41]",
+                  isRightPanelOpen ? "justify-between" : "justify-center",
                 )}
-              </button>
-              {isRightPanelOpen || mobileSidebar === "right" ? (
+              >
                 <button
                   type="button"
+                  aria-expanded={isRightPanelOpen}
+                  aria-label={
+                    isRightPanelOpen
+                      ? copy.collapseQuestPanel
+                      : copy.expandQuestPanel
+                  }
+                  title={
+                    isRightPanelOpen
+                      ? copy.collapseQuestPanel
+                      : copy.expandQuestPanel
+                  }
                   onClick={() => {
-                    setExpandedRightSections(
-                      areAllRightSectionsOpen ? new Set() : new Set(RIGHT_SECTION_IDS),
-                    );
+                    if (mobileSidebar === "right") {
+                      setMobileSidebar(null);
+                      return;
+                    }
+                    setIsRightPanelOpen((value) => !value);
                   }}
-                  className="mr-1 inline-flex h-7 items-center rounded px-2 text-xs font-bold text-orange-500 transition hover:bg-gray-100 hover:text-orange-600 dark:text-orange-400 dark:hover:bg-[#2a2d31] dark:hover:text-orange-300"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 dark:text-gray-300 dark:hover:bg-[#2a2d31] dark:hover:text-orange-400"
                 >
-                  {areAllRightSectionsOpen
-                    ? copy.collapseAllCategories
-                    : copy.expandAllCategories}
+                  {isRightPanelOpen ? (
+                    <PanelRightClose className="h-4 w-4" />
+                  ) : (
+                    <PanelRightOpen className="h-4 w-4" />
+                  )}
                 </button>
-              ) : null}
-            </div>
+                {isRightPanelOpen || mobileSidebar === "right" ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setExpandedRightSections(
+                        areAllRightSectionsOpen
+                          ? new Set()
+                          : new Set(RIGHT_SECTION_IDS),
+                      );
+                    }}
+                    className="mr-1 inline-flex h-7 items-center rounded px-2 text-xs font-bold text-orange-500 transition hover:bg-gray-100 hover:text-orange-600 dark:text-orange-400 dark:hover:bg-[#2a2d31] dark:hover:text-orange-300"
+                  >
+                    {areAllRightSectionsOpen
+                      ? copy.collapseAllCategories
+                      : copy.expandAllCategories}
+                  </button>
+                ) : null}
+              </div>
 
-            <div
-              className={cn(
-                "min-h-0 flex-1 overflow-y-auto",
-                !isRightPanelOpen && mobileSidebar !== "right" && "hidden",
-              )}
-            >
-              <RightSection
-                allLabel={copy.allOnOff}
-                completedQuestIds={completedQuestIds}
-                enabledIds={enabledQuestIds}
-                emptyLabel={copy.noItems}
-                items={questEntries}
-                isOpen={expandedRightSections.has("quest")}
-                kind="quest"
-                onOpen={(entry) => {
-                  void openQuestSummaryPanel(entry);
-                }}
-                onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
-                onToggleAll={() => toggleAll(setEnabledQuestIds, questEntries.map((entry) => entry.id))}
-                onToggleComplete={toggleQuestCompletionState}
-                onToggleOpen={() => toggleRightSection("quest")}
-                onSearchQueryChange={setQuestFilterQuery}
-                searchQuery={questFilterQuery}
-                selectedId={panel?.type === "quest" ? panel.id : null}
-                title={copy.quests}
-                locale={locale}
-              />
-              <RightSection
-                allLabel={copy.allOnOff}
-                completedQuestIds={completedQuestIds}
-                enabledIds={enabledStoryIds}
-                emptyLabel={copy.noItems}
-                items={storyEntries}
-                isOpen={expandedRightSections.has("story")}
-                kind="story"
-                onOpen={(entry) => {
-                  void openStorySummaryPanel(entry);
-                }}
-                onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
-                onToggleAll={() => toggleAll(setEnabledStoryIds, storyEntries.map((entry) => entry.id))}
-                onToggleOpen={() => toggleRightSection("story")}
-                onSearchQueryChange={setStoryFilterQuery}
-                searchQuery={storyFilterQuery}
-                selectedId={panel?.type === "story" ? panel.id : null}
-                title={copy.stories}
-                locale={locale}
-              />
-              <RightSection
-                allLabel={copy.allOnOff}
-                completedQuestIds={completedQuestIds}
-                enabledIds={enabledEventIds}
-                emptyLabel={copy.noItems}
-                items={eventEntries}
-                isOpen={expandedRightSections.has("event")}
-                kind="event"
-                onOpen={(entry) => {
-                  void openEventSummaryPanel(entry);
-                }}
-                onToggle={(id) => toggleSet(setEnabledEventIds, id)}
-                onToggleAll={() => toggleAll(setEnabledEventIds, eventEntries.map((entry) => entry.id))}
-                onToggleOpen={() => toggleRightSection("event")}
-                onSearchQueryChange={setEventFilterQuery}
-                searchQuery={eventFilterQuery}
-                selectedId={panel?.type === "event" ? panel.id : null}
-                title={copy.events}
-                locale={locale}
-              />
-            </div>
+              <div
+                className={cn(
+                  "min-h-0 flex-1 overflow-y-auto",
+                  !isRightPanelOpen && mobileSidebar !== "right" && "hidden",
+                )}
+              >
+                <RightSection
+                  allLabel={copy.allOnOff}
+                  completedQuestIds={completedQuestIds}
+                  enabledIds={enabledQuestIds}
+                  emptyLabel={copy.noItems}
+                  items={questEntries}
+                  isOpen={expandedRightSections.has("quest")}
+                  kind="quest"
+                  onOpen={(entry) => {
+                    void openQuestSummaryPanel(entry);
+                  }}
+                  onToggle={(id) => toggleSet(setEnabledQuestIds, id)}
+                  onToggleAll={() =>
+                    toggleAll(
+                      setEnabledQuestIds,
+                      questEntries.map((entry) => entry.id),
+                    )
+                  }
+                  onToggleComplete={toggleQuestCompletionState}
+                  onToggleOpen={() => toggleRightSection("quest")}
+                  onSearchQueryChange={setQuestFilterQuery}
+                  searchQuery={questFilterQuery}
+                  selectedId={panel?.type === "quest" ? panel.id : null}
+                  title={copy.quests}
+                  locale={locale}
+                />
+                <RightSection
+                  allLabel={copy.allOnOff}
+                  completedQuestIds={completedQuestIds}
+                  enabledIds={enabledStoryIds}
+                  emptyLabel={copy.noItems}
+                  items={storyEntries}
+                  isOpen={expandedRightSections.has("story")}
+                  kind="story"
+                  onOpen={(entry) => {
+                    void openStorySummaryPanel(entry);
+                  }}
+                  onToggle={(id) => toggleSet(setEnabledStoryIds, id)}
+                  onToggleAll={() =>
+                    toggleAll(
+                      setEnabledStoryIds,
+                      storyEntries.map((entry) => entry.id),
+                    )
+                  }
+                  onToggleOpen={() => toggleRightSection("story")}
+                  onSearchQueryChange={setStoryFilterQuery}
+                  searchQuery={storyFilterQuery}
+                  selectedId={panel?.type === "story" ? panel.id : null}
+                  title={copy.stories}
+                  locale={locale}
+                />
+                <RightSection
+                  allLabel={copy.allOnOff}
+                  completedQuestIds={completedQuestIds}
+                  enabledIds={enabledEventIds}
+                  emptyLabel={copy.noItems}
+                  items={eventEntries}
+                  isOpen={expandedRightSections.has("event")}
+                  kind="event"
+                  onOpen={(entry) => {
+                    void openEventSummaryPanel(entry);
+                  }}
+                  onToggle={(id) => toggleSet(setEnabledEventIds, id)}
+                  onToggleAll={() =>
+                    toggleAll(
+                      setEnabledEventIds,
+                      eventEntries.map((entry) => entry.id),
+                    )
+                  }
+                  onToggleOpen={() => toggleRightSection("event")}
+                  onSearchQueryChange={setEventFilterQuery}
+                  searchQuery={eventFilterQuery}
+                  selectedId={panel?.type === "event" ? panel.id : null}
+                  title={copy.events}
+                  locale={locale}
+                />
+              </div>
             </aside>
           </div>
         </div>

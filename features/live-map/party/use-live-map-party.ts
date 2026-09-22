@@ -57,7 +57,9 @@ function usePartySession() {
   const [retryAt, setRetryAt] = useState(0);
   const queryClient = useQueryClient();
   const clientRef = useRef<PartyRealtimeClient | null>(null);
+  const clearMarkersRef = useRef<(mapId: string) => Promise<void>>(async () => {});
   const viewMapRef = useRef<PartyViewMapCommandV3 | undefined>(undefined);
+  const lastViewedMapIdRef = useRef<string | undefined>(undefined);
   const [realtime, setRealtime] = useState<{
     key: string;
     view: PartyRealtimeView;
@@ -289,6 +291,23 @@ function usePartySession() {
 
   const snapshot = view?.snapshot;
   const connected = view?.connection === "connected";
+  clearMarkersRef.current = async (mapId: string) => {
+    if (!snapshot || !roomId) return;
+    const canDeleteEveryMarker = snapshot.me.role === "owner";
+    const markers = snapshot.markers.filter(
+      (marker) =>
+        marker.map_id === mapId &&
+        (canDeleteEveryMarker ||
+          marker.created_by_member_id === snapshot.me.id),
+    );
+    for (const marker of markers) {
+      const deleted = await run(
+        `/${roomId}/markers/${marker.id}?version=${marker.version}`,
+        "DELETE",
+      );
+      if (!deleted) break;
+    }
+  };
   const sendPoint = (command: PartyPointCommandV3) => {
     if (clientRef.current?.sendPoint(command)) {
       setError(null);
@@ -299,13 +318,17 @@ function usePartySession() {
   };
   const setViewMap = useCallback(
     (command: PartyViewMapCommandV3 | undefined) => {
+      const previousMapId = lastViewedMapIdRef.current;
+      if (command && previousMapId && previousMapId !== command.map_id) {
+        void clearMarkersRef.current(previousMapId);
+      }
+      if (command) lastViewedMapIdRef.current = command.map_id;
       viewMapRef.current = command;
       clientRef.current?.setViewMap(command);
     },
     [],
   );
   const locationSharing = usePartyLocationSharing({
-    account,
     roomScope,
     roomId,
     connected,

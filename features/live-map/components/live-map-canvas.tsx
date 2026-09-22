@@ -47,6 +47,7 @@ export interface LiveMapCanvasMarker {
   partyYaw?: number;
   partyHeading?: number;
   partyColor?: string;
+  partyFloorLabel?: string;
   partyType?: "normal" | "danger" | "rally" | "target";
   groupId?: string;
   id: string;
@@ -707,18 +708,21 @@ function PointIcon(
 
   if (kind === "party") {
     const partyColor = /^#[0-9a-f]{6}$/i.test(point.partyColor ?? "") ? point.partyColor! : "#fb923c";
+    const floorLabel = point.partyFloorLabel
+      ? `<span aria-hidden="true" class="live-map-party-floor-label">${escapeMarkerLabel(point.partyFloorLabel)}</span>`
+      : "";
     if (point.partyTemporary === "position" && Number.isFinite(point.partyHeading)) {
       const icon = PlayerIcon(point.partyHeading!);
       return L.divIcon({
         ...icon.options,
         className: "live-map-marker-icon live-map-party-marker live-map-party-position",
-        html: `<div style="--party-color:${partyColor};opacity:${markerOpacity}">${icon.options.html}</div>`,
+        html: `<div class="live-map-party-icon-frame" style="--party-color:${partyColor};opacity:${markerOpacity}">${floorLabel}${icon.options.html}</div>`,
       });
     }
     if (point.partyTemporary === "position") {
       return L.divIcon({
         className: "live-map-marker-icon live-map-party-marker live-map-party-position",
-        html: `<span style="display:grid;place-items:center;width:28px;height:28px;border:3px solid ${partyColor};border-radius:50%;background:#111827;color:#ffffff;font-size:18px;box-shadow:0 0 0 2px #ffffff;opacity:${markerOpacity}">⌖</span>`,
+        html: `<div class="live-map-party-icon-frame" style="opacity:${markerOpacity}">${floorLabel}<span style="display:grid;place-items:center;width:28px;height:28px;border:3px solid ${partyColor};border-radius:50%;background:#111827;color:#ffffff;font-size:18px;box-shadow:0 0 0 2px #ffffff">⌖</span></div>`,
         iconSize: [28, 28], iconAnchor: [14, 14],
       });
     }
@@ -732,7 +736,7 @@ function PointIcon(
     };
     return L.divIcon({
       className: "live-map-marker-icon live-map-party-marker live-map-party-pin",
-      html: `<svg aria-hidden="true" width="40" height="44" viewBox="0 0 40 44" style="overflow:visible;opacity:${markerOpacity};filter:drop-shadow(0 2px 3px rgba(0,0,0,.65));transform-origin:20px 40px;transform:scale(${isFocused || isHovered ? 1.12 : 1});transition:transform 120ms ease"><g fill="#15171a" stroke="#fff" stroke-width="5">${symbols[markerType]}</g><g fill="#15171a" stroke="${accent}" stroke-width="2.5">${symbols[markerType]}</g></svg>`,
+      html: `<div class="live-map-party-icon-frame">${floorLabel}<svg aria-hidden="true" width="40" height="44" viewBox="0 0 40 44" style="overflow:visible;opacity:${markerOpacity};filter:drop-shadow(0 2px 3px rgba(0,0,0,.65));transform-origin:20px 40px;transform:scale(${isFocused || isHovered ? 1.12 : 1});transition:transform 120ms ease"><g fill="#15171a" stroke="#fff" stroke-width="5">${symbols[markerType]}</g><g fill="#15171a" stroke="${accent}" stroke-width="2.5">${symbols[markerType]}</g></svg></div>`,
       iconSize: [40, 44], iconAnchor: [20, 40], tooltipAnchor: [0, -34],
     });
   }
@@ -901,6 +905,7 @@ function getPointMarkerPresentationKey(
     point.partyTemporary ?? "",
     point.partyHeading ?? "",
     point.partyColor ?? "",
+    point.partyFloorLabel ?? "",
     point.partyType ?? "",
     point.staticCategory ?? "",
     point.staticFaction ?? "",
@@ -1023,7 +1028,10 @@ function syncPointMarkerPresentation({
   marker: LeafletMarker;
   point: LiveMapCanvasMarker;
 }) {
-  const isDimmed = point.floorId !== null && point.floorId !== activeFloorId;
+  const isDimmed =
+    point.kind !== "party" &&
+    point.floorId !== null &&
+    point.floorId !== activeFloorId;
   const isFocused = point.id === focusedMarkerId;
   const isHovered = point.id === hoveredMarkerId;
 
@@ -2136,7 +2144,9 @@ export function LiveMapCanvas({
       ), {
         icon: PointIcon(
           point,
-          point.floorId !== null && point.floorId !== activeFloorId,
+          point.kind !== "party" &&
+            point.floorId !== null &&
+            point.floorId !== activeFloorId,
           point.id === focusedMarkerId,
           isMarkerSimplified,
           false,

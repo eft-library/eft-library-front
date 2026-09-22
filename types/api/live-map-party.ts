@@ -23,6 +23,7 @@ export interface PartyMarkerResponseV3 {
   id: string;
   room_id: string;
   created_by_member_id: string;
+  map_id: string;
   floor_id: string;
   x: number;
   z: number;
@@ -73,6 +74,7 @@ export interface PartyMemberPatchV3 {
 }
 
 export interface PartyMarkerCreateV3 {
+  map_id?: string | null;
   floor_id: string;
   x: number;
   z: number;
@@ -81,6 +83,7 @@ export interface PartyMarkerCreateV3 {
 }
 
 export interface PartyMarkerUpdateV3 {
+  map_id?: string | null;
   floor_id: string;
   x: number;
   z: number;
