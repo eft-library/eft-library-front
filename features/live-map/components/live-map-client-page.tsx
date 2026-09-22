@@ -2634,7 +2634,7 @@ export function LiveMapClientPage({
               className="fixed inset-0 z-[790] bg-black/20 md:hidden"
             />
           ) : null}
-          {!(party.isAdmin && (party.open || party.placing)) && (
+          {!(party.open || party.placing) && (
             <button
               type="button"
               aria-expanded={mobileSidebar === "left"}
@@ -2649,7 +2649,7 @@ export function LiveMapClientPage({
               <PanelLeftOpen className="h-5 w-5" />
             </button>
           )}
-          {!panel && !(party.isAdmin && (party.open || party.placing)) ? (
+          {!panel && !(party.open || party.placing) ? (
             <button
               type="button"
               aria-expanded={mobileSidebar === "right"}
@@ -2661,7 +2661,7 @@ export function LiveMapClientPage({
               }
               className={cn(
                 "absolute right-3 z-[780] inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white/95 text-gray-700 shadow-lg backdrop-blur hover:text-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124]/95 dark:text-gray-200 md:hidden",
-                party.isAdmin ? "top-14" : "top-3",
+                "top-14",
               )}
             >
               <PanelRightOpen className="h-5 w-5" />
@@ -2941,21 +2941,12 @@ export function LiveMapClientPage({
               </div>
             )}
 
-            {party.isAdmin && (
-              <LiveMapPartyPanel
+            <LiveMapPartyPanel
                 key={normalizedName}
                 party={party}
                 locale={locale}
                 floors={sortedFloors}
                 activeFloorId={selectedFloor?.id ?? ""}
-                mapName={
-                  selectedMap
-                    ? localizedName(
-                        selectedMap as unknown as Record<string, unknown>,
-                        locale,
-                      )
-                    : normalizedName
-                }
                 onPlace={() => {
                   setDrawingMode("hand");
                   party.setPoint(null);
@@ -2976,7 +2967,6 @@ export function LiveMapClientPage({
                   party.setOpen(false);
                 }}
               />
-            )}
 
             {notice ? (
               <div
@@ -3371,7 +3361,7 @@ export function LiveMapClientPage({
               ref={mapToolbarRef}
               className={cn(
                 "absolute top-3 z-[1000] flex items-center gap-2",
-                party.isAdmin ? "right-[11.5rem]" : "right-3",
+                "right-[11.5rem]",
               )}
             >
               <button

@@ -30,10 +30,9 @@ const EMPTY_POSITIONS: PartyRealtimeView["positions"] = [];
 
 function usePartySession() {
   const { data: session, status } = useSession();
-  const isAdmin = session?.userInfo?.is_admin === true;
-  const token = isAdmin ? session?.accessToken : undefined;
+  const token = session?.accessToken;
   const account = session?.userInfo?.email ?? session?.user?.email;
-  const storageKey = isAdmin && account ? `live-map-party:v3:${account}` : null;
+  const storageKey = account ? `live-map-party:v3:${account}` : null;
   const [savedRoom, setSavedRoom] = useState<{
     key: string;
     id: string;
@@ -164,9 +163,7 @@ function usePartySession() {
       getToken: async () => {
         const latest = await getSession();
         const email = latest?.userInfo?.email ?? latest?.user?.email;
-        return email === account && latest?.userInfo?.is_admin === true
-          ? latest.accessToken
-          : undefined;
+        return email === account ? latest?.accessToken : undefined;
       },
       onChange: (next) => {
         if (roomScopeRef.current === roomScope)
@@ -338,7 +335,6 @@ function usePartySession() {
     ...locationSharing,
     setViewMap,
     viewMaps: view?.viewMaps ?? EMPTY_VIEW_MAPS,
-    isAdmin,
     enteredPassword:
       roomPassword?.scope === roomScope ? roomPassword.value : null,
     token,
@@ -410,7 +406,7 @@ export function useLiveMapParty(normalizedName: string) {
       apiGet<MapDetailResponse>(
         `/api/map/v3/detail/${encodeURIComponent(normalizedName)}`,
       ),
-    enabled: party.isAdmin && (party.open || !!party.roomId),
+    enabled: party.open || !!party.roomId,
     staleTime: 60 * 60 * 1000,
   });
   return {

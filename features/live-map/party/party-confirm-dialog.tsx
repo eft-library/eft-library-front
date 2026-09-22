@@ -17,8 +17,7 @@ export type PartyConfirmKind =
   | "leave"
   | "close"
   | "kick"
-  | "transfer"
-  | "delete";
+  | "transfer";
 
 export function PartyConfirmDialog({
   kind,
@@ -49,23 +48,20 @@ export function PartyConfirmDialog({
     close: t("파티 종료", "Close room", "パーティー終了"),
     kick: t("참여자 강퇴", "Remove member", "参加者を退出させる"),
     transfer: t("방장 양도", "Transfer ownership", "リーダーを譲渡"),
-    delete: t("공유 마커 삭제", "Delete shared marker", "共有マーカーを削除"),
   }[kind];
   const confirmLabel = {
     leave: t("퇴장하기", "Leave party", "退出する"),
     close: t("종료하기", "Close room", "終了する"),
     kick: t("강퇴하기", "Remove member", "退出させる"),
     transfer: t("양도하기", "Transfer", "譲渡する"),
-    delete: t("삭제하기", "Delete marker", "削除する"),
   }[kind];
   const Icon = {
     leave: LogOut,
     close: Trash2,
     kick: UserMinus,
     transfer: Crown,
-    delete: Trash2,
   }[kind];
-  const destructive = kind === "close" || kind === "kick" || kind === "delete";
+  const destructive = kind === "close" || kind === "kick";
 
   useEffect(() => {
     const dialog = dialogRef.current;

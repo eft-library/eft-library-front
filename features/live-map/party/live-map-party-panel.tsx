@@ -31,7 +31,6 @@ export function LiveMapPartyPanel({
   locale,
   floors,
   activeFloorId,
-  mapName,
   onFocus,
   onPlace,
 }: {
@@ -39,7 +38,6 @@ export function LiveMapPartyPanel({
   locale: PartyLocale;
   floors: LiveMapFloor[];
   activeFloorId: string;
-  mapName: string;
   onFocus: (marker: PartyMarkerResponseV3) => void;
   onPlace: () => void;
 }) {
@@ -56,6 +54,7 @@ export function LiveMapPartyPanel({
   const [search, setSearch] = useState("");
   const [submittedSearch, setSubmittedSearch] = useState("");
   const [offset, setOffset] = useState(0);
+  const [loginRequired, setLoginRequired] = useState(false);
   const [form, setForm] = useState<"create" | "settings" | string | null>(null);
   const panelRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -89,6 +88,9 @@ export function LiveMapPartyPanel({
     setForm(null);
     setConfirmation(null);
   }, [party.roomId]);
+  useEffect(() => {
+    if (party.token) setLoginRequired(false);
+  }, [party.token]);
   useEffect(() => {
     if (!open) return;
     panelRef.current?.focus();
@@ -210,7 +212,7 @@ export function LiveMapPartyPanel({
           <header className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-[#3a3d41]">
             <Users className="h-4 w-4 text-orange-500" />
             <h2 className="min-w-0 flex-1 truncate font-bold">
-              {t("파티", "Party", "パーティー")} · {mapName}
+              {t("파티", "Party", "パーティー")}
             </h2>
             {party.roomId && (
               <span
@@ -312,26 +314,33 @@ export function LiveMapPartyPanel({
             )}
             {!party.roomId && (
               <>
-                <p className="text-xs leading-5 text-gray-600 dark:text-gray-300">
-                  {t(
-                    "어느 지도에서 만든 파티든 참여할 수 있습니다. 모든 방은 비밀번호가 필요합니다.",
-                    "Join a party created on any map. All rooms require a password.",
-                    "どのマップで作成されたパーティーにも参加できます。入室にはパスワードが必要です。",
-                  )}
-                </p>
                 {!party.token && (
-                  <button
-                    type="button"
-                    className={`${partyButton} w-full`}
-                    disabled={party.status === "loading"}
-                    onClick={() => void signIn("google")}
-                  >
-                    {t(
-                      "로그인하고 참여하기",
-                      "Sign in to join",
-                      "ログインして参加",
+                  <>
+                    <button
+                      type="button"
+                      className={`${partyButton} w-full`}
+                      disabled={party.status === "loading"}
+                      onClick={() => void signIn("google")}
+                    >
+                      {t(
+                        "로그인하고 참여하기",
+                        "Sign in to join",
+                        "ログインして参加",
+                      )}
+                    </button>
+                    {loginRequired && (
+                      <p
+                        role="alert"
+                        className="rounded-md border border-orange-300 bg-orange-50 p-2 text-xs font-semibold text-orange-800 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-200"
+                      >
+                        {t(
+                          "로그인 후 방을 만들거나 입장할 수 있습니다.",
+                          "Sign in to create or join a room.",
+                          "ログインすると部屋の作成・入室ができます。",
+                        )}
+                      </p>
                     )}
-                  </button>
+                  </>
                 )}
                 {!form ? (
                   <>
@@ -366,8 +375,11 @@ export function LiveMapPartyPanel({
                     <div className="flex justify-between gap-2">
                       <button
                         className={partyButton}
-                        disabled={!party.token || !party.mapId || party.busy}
-                        onClick={() => setForm("create")}
+                        disabled={!party.mapId || party.busy}
+                        onClick={() => {
+                          if (party.token) setForm("create");
+                          else setLoginRequired(true);
+                        }}
                       >
                         {t("방 만들기", "Create room", "部屋を作成")}
                       </button>
@@ -419,8 +431,11 @@ export function LiveMapPartyPanel({
                             </div>
                             <button
                               className={partyButton}
-                              disabled={!party.token || party.busy}
-                              onClick={() => setForm(room.id)}
+                              disabled={party.busy}
+                              onClick={() => {
+                                if (party.token) setForm(room.id);
+                                else setLoginRequired(true);
+                              }}
                             >
                               {room.is_locked && (
                                 <LockKeyhole className="h-3 w-3" />
@@ -903,17 +918,9 @@ export function LiveMapPartyPanel({
                                   className={partyButton}
                                   disabled={party.busy}
                                   onClick={() =>
-                                    confirmAction(
-                                      "delete",
-                                      t(
-                                        "공유 마커를 삭제할까요?",
-                                        "Delete this shared marker?",
-                                        "共有マーカーを削除しますか？",
-                                      ),
+                                    void party.run(
                                       `/${party.roomId}/markers/${marker.id}?version=${marker.version}`,
                                       "DELETE",
-                                      undefined,
-                                      "refresh",
                                     )
                                   }
                                 >

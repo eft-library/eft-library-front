@@ -170,7 +170,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         json: {
           user: { name: "테스터", email: "party-test@example.invalid" },
           userInfo: {
-            is_admin: true,
+            is_admin: false,
             email: "party-test@example.invalid",
             nickname: "테스터",
           },
@@ -516,60 +516,16 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await page.getByRole("button", { name: /^파티 2\/5$/ }).click();
     const deleteCount = () =>
       requests.filter((r) => r.method === "DELETE").length;
-    const beforeCancel = deleteCount();
-    await page.getByRole("button", { name: "삭제", exact: true }).click();
-    const dialog = page.getByRole("alertdialog");
-    await dialog.waitFor();
-    assert.equal(
-      await dialog
-        .getByRole("button", { name: "취소", exact: true })
-        .evaluate((el) => el === document.activeElement),
-      true,
-    );
-    await page.keyboard.press("Tab");
-    assert.equal(
-      await dialog.evaluate((el) => el.contains(document.activeElement)),
-      true,
-    );
-    for (const theme of ["light", "dark"]) {
-      await page.evaluate(
-        (theme) =>
-          document.documentElement.classList.toggle("dark", theme === "dark"),
-        theme,
-      );
-      // Let button color transitions finish after switching the theme.
-      await page.waitForTimeout(250);
-      await page.screenshot({
-        path: `${outputDir}/eft-party-confirm-${theme}.png`,
-      });
-    }
-    await dialog.getByRole("button", { name: "취소", exact: true }).click();
-    assert.equal(deleteCount(), beforeCancel);
-    assert.equal(
-      await page
-        .getByRole("button", { name: "삭제", exact: true })
-        .evaluate((el) => el === document.activeElement),
-      true,
-    );
-    await page.getByRole("button", { name: "삭제", exact: true }).click();
-    await page.keyboard.press("Escape");
-    await dialog.waitFor({ state: "detached" });
-    assert.equal(await panel().isVisible(), true);
-    assert.equal(deleteCount(), beforeCancel);
-    await page.getByRole("button", { name: "삭제", exact: true }).click();
+    const beforeDelete = deleteCount();
     failDelete = true;
-    await dialog.getByRole("button", { name: "삭제하기", exact: true }).click();
-    await dialog.getByRole("alert").waitFor();
+    await page.getByRole("button", { name: "삭제", exact: true }).click();
+    await panel().getByRole("alert").waitFor();
     assert.equal(snapshot.markers.length, 1);
-    console.log(
-      "PASS custom dialog cancellation, Escape, focus restore, inline failure and retry",
-    );
-
-    await page
-      .getByRole("alertdialog")
-      .getByRole("button", { name: "삭제하기", exact: true })
-      .click();
+    assert.equal(deleteCount(), beforeDelete + 1);
+    await page.getByRole("button", { name: "삭제", exact: true }).click();
     await page.getByRole("heading", { name: "공유 마커 (0/200)" }).waitFor();
+    assert.equal(deleteCount(), beforeDelete + 2);
+    console.log("PASS immediate marker delete, inline failure and retry");
     await page.getByRole("button", { name: "방 설정", exact: true }).click();
     await page.getByLabel("방 이름", { exact: true }).fill("새 이름");
     await page.getByLabel("신규 입장 잠금").check();
@@ -582,7 +538,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await panel().getByLabel("내 닉네임", { exact: true }).fill("새 닉네임");
     await panel().getByLabel("내 색상", { exact: true }).fill("#aabbcc");
     await panel().getByRole("button", { name: "내 정보 저장" }).click();
-    await panel().getByText(/새 닉네임.*온라인.*\(나\)/).waitFor();
+    await panel().getByLabel("새 닉네임 (나)").waitFor();
     assert.equal(snapshot.me.nickname, "새 닉네임");
     assert.equal(snapshot.me.color, "#aabbcc");
     snapshot.members.push({
