@@ -3005,15 +3005,37 @@ export function LiveMapClientPage({
                     type="button"
                     role="switch"
                     aria-checked={isBtrVisible}
+                    aria-label={
+                      locale === "ko"
+                        ? "BTR 예상 경로 표시"
+                        : locale === "ja"
+                          ? "BTR予想ルートを表示"
+                          : "Show BTR estimated routes"
+                    }
                     onClick={() => setIsBtrVisible((value) => !value)}
                     className={cn(
-                      "h-6 rounded-full px-2 text-[10px] font-black transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                      "relative h-7 w-14 shrink-0 rounded-full border p-0.5 text-[9px] font-black transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f2124]",
                       isBtrVisible
-                        ? "bg-orange-500 text-white dark:text-[#1e2124]"
-                        : "bg-gray-200 text-gray-600 dark:bg-[#34383e] dark:text-gray-200",
+                        ? "border-emerald-600 bg-emerald-500 text-white"
+                        : "border-gray-300 bg-gray-200 text-gray-600 dark:border-[#4a4e54] dark:bg-[#34383e] dark:text-gray-200",
                     )}
                   >
-                    {isBtrVisible ? "ON" : "OFF"}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute top-1/2 -translate-y-1/2",
+                        isBtrVisible ? "left-1.5" : "right-1",
+                      )}
+                    >
+                      {isBtrVisible ? "ON" : "OFF"}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm ring-1 ring-black/10 transition-transform",
+                        isBtrVisible ? "translate-x-7" : "translate-x-0",
+                      )}
+                    />
                   </button>
                   <button
                     type="button"
