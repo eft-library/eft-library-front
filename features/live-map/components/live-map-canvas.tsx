@@ -60,6 +60,7 @@ export interface LiveMapCanvasMarker {
   x: number;
   y: number;
   floorId: string | null;
+  otherFloorOpacity?: number;
 }
 
 export interface LiveMapPopupImage {
@@ -704,7 +705,10 @@ function PointIcon(
 ) {
   const { kind } = point;
   const color = kind === "static" ? getStaticMarkerColor(point) : markerColorByKind[kind];
-  const markerOpacity = isDimmed && !isFocused ? "0.18" : "1";
+  const markerOpacity =
+    isDimmed && !isFocused
+      ? String(point.otherFloorOpacity ?? 0.2)
+      : "1";
 
   if (kind === "party") {
     const partyColor = /^#[0-9a-f]{6}$/i.test(point.partyColor ?? "") ? point.partyColor! : "#fb923c";
@@ -912,6 +916,7 @@ function getPointMarkerPresentationKey(
     point.staticItemId ?? "",
     point.label,
     point.floorId ?? "",
+    point.otherFloorOpacity ?? "",
     activeFloorId,
     isMarkerSimplified ? "simplified" : "detailed",
     isGroupHighlighted ? "group-highlighted" : "",

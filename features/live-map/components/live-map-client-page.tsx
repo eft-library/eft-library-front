@@ -516,6 +516,9 @@ export function LiveMapClientPage({
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
+  const [floorSeparationIntensity, setFloorSeparationIntensity] = useState<
+    "low" | "medium" | "high"
+  >("medium");
   const [openMarkerDetailsOnMarkerClick, setOpenMarkerDetailsOnMarkerClick] =
     useState(true);
   const [mapRotation, setMapRotation] = useState<0 | 90 | 180 | 270>(0);
@@ -562,6 +565,7 @@ export function LiveMapClientPage({
       setIsAutoPanLocked(preferences.isAutoPanLocked);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
+      setFloorSeparationIntensity(preferences.floorSeparationIntensity);
       setIsRightPanelOpen(preferences.isRightPanelOpen);
       setIsBtrVisible(preferences.isBtrVisible);
       setMapRotations(preferences.mapRotations);
@@ -594,6 +598,7 @@ export function LiveMapClientPage({
       openQuestDetailsOnMarkerClick: openMarkerDetailsOnMarkerClick,
       isRightPanelOpen,
       isBtrVisible,
+      floorSeparationIntensity,
       mapRotations,
     });
     writeLiveMapMarkerDetailsPreference(openMarkerDetailsOnMarkerClick);
@@ -607,6 +612,7 @@ export function LiveMapClientPage({
     isRightPanelOpen,
     mapRotations,
     openMarkerDetailsOnMarkerClick,
+    floorSeparationIntensity,
   ]);
 
   useEffect(() => {
@@ -1336,6 +1342,41 @@ export function LiveMapClientPage({
     () => [...visibleMarkers, ...partyMarkers, ...temporaryPartyMarkers],
     [visibleMarkers, partyMarkers, temporaryPartyMarkers],
   );
+  const canvasMarkers = useMemo(() => {
+    const opacitySteps = {
+      low: [0.8, 0.6, 0.4],
+      medium: [0.7, 0.4, 0.2],
+      high: [0.5, 0.25, 0.1],
+    }[floorSeparationIntensity];
+    const activeFloorNo = selectedFloor?.floor_no;
+    const floorNumbers = new Map(
+      sortedFloors.map((floor) => [floor.id, floor.floor_no]),
+    );
+
+    return allVisibleMarkers.map((marker) => {
+      if (
+        marker.kind === "party" ||
+        marker.floorId === null ||
+        marker.floorId === selectedFloor?.id ||
+        activeFloorNo === undefined
+      ) {
+        return marker;
+      }
+      const markerFloorNo = floorNumbers.get(marker.floorId);
+      if (markerFloorNo === undefined) return marker;
+      const distance = Math.abs(markerFloorNo - activeFloorNo);
+      return {
+        ...marker,
+        otherFloorOpacity: opacitySteps[Math.min(Math.max(distance, 1), 3) - 1],
+      };
+    });
+  }, [
+    allVisibleMarkers,
+    floorSeparationIntensity,
+    selectedFloor?.floor_no,
+    selectedFloor?.id,
+    sortedFloors,
+  ]);
 
   const highlightedMarkerGroup = useMemo(() => {
     if (
@@ -2900,7 +2941,7 @@ export function LiveMapClientPage({
                 mapKey={normalizedName}
                 preserveFocusOnPopupEscape={panel !== null}
                 rotation={mapRotation}
-                markers={allVisibleMarkers}
+                markers={canvasMarkers}
                 onMarkerClick={(marker) => {
                   if (marker.kind === "party") {
                     if (marker.partyTemporary) {
@@ -3511,6 +3552,54 @@ export function LiveMapClientPage({
                       setOpenMarkerDetailsOnMarkerClick((value) => !value)
                     }
                   />
+                  <div className="rounded-md px-3 py-2.5 text-gray-700 dark:text-gray-200">
+                    <p className="mb-2 text-sm font-bold">
+                      {locale === "ko"
+                        ? "층 구분 강도"
+                        : locale === "ja"
+                          ? "階の区別の強さ"
+                          : "Floor separation"}
+                    </p>
+                    <div
+                      role="group"
+                      aria-label={
+                        locale === "ko"
+                          ? "층 구분 강도"
+                          : locale === "ja"
+                            ? "階の区別の強さ"
+                            : "Floor separation"
+                      }
+                      className="grid grid-cols-3 gap-1"
+                    >
+                      {(
+                        [
+                          ["low", "약하게", "弱", "Low", "80·60·40%"],
+                          ["medium", "보통", "中", "Medium", "70·40·20%"],
+                          ["high", "강하게", "強", "High", "50·25·10%"],
+                        ] as const
+                      ).map(([value, ko, ja, en, levels]) => (
+                        <button
+                          key={value}
+                          type="button"
+                          aria-pressed={floorSeparationIntensity === value}
+                          onClick={() => setFloorSeparationIntensity(value)}
+                          className={cn(
+                            "rounded-md border px-1.5 py-2 text-center transition focus:outline-none focus:ring-2 focus:ring-orange-400",
+                            floorSeparationIntensity === value
+                              ? "border-orange-400 bg-orange-50 text-orange-700 dark:border-orange-500 dark:bg-orange-950 dark:text-orange-300"
+                              : "border-gray-200 bg-white text-gray-600 hover:border-orange-300 dark:border-[#3a3d41] dark:bg-[#26292d] dark:text-gray-300",
+                          )}
+                        >
+                          <span className="block text-xs font-bold">
+                            {locale === "ko" ? ko : locale === "ja" ? ja : en}
+                          </span>
+                          <span className="mt-0.5 block text-[9px] opacity-70">
+                            {levels}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ) : null}
 

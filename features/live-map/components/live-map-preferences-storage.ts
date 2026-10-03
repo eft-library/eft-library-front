@@ -11,6 +11,7 @@ export interface LiveMapPreferences {
   isRightPanelOpen: boolean;
   mapRotations: Record<string, number>;
   isBtrVisible: boolean;
+  floorSeparationIntensity: "low" | "medium" | "high";
 }
 
 export function readLiveMapPreferences(): LiveMapPreferences | null {
@@ -71,6 +72,12 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
         typeof preferences.isBtrVisible === "boolean"
           ? preferences.isBtrVisible
           : true,
+      floorSeparationIntensity:
+        preferences.floorSeparationIntensity === "low" ||
+        preferences.floorSeparationIntensity === "medium" ||
+        preferences.floorSeparationIntensity === "high"
+          ? preferences.floorSeparationIntensity
+          : "medium",
     };
   } catch {
     return null;
