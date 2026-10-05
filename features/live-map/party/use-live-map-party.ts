@@ -340,6 +340,11 @@ function usePartySession() {
     token,
     status,
     roomId,
+    activateRoom: (id: string) => {
+      setError(null);
+      setRoomPassword(null);
+      rememberRoom(id);
+    },
     snapshot,
     open,
     setOpen,

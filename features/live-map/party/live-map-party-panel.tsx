@@ -25,6 +25,8 @@ import {
   partyInput,
 } from "./party-forms";
 import type { LiveMapPartyController } from "./use-live-map-party";
+import { useLiveMapChat } from "../chat/use-live-map-chat";
+import { PartyChatSection } from "../chat/party-chat-section";
 
 export function LiveMapPartyPanel({
   party,
@@ -43,6 +45,7 @@ export function LiveMapPartyPanel({
 }) {
   const t = (ko: string, en: string, ja: string) =>
     partyText(locale, ko, en, ja);
+  const chat = useLiveMapChat();
   const [confirmation, setConfirmation] = useState<{
     kind: PartyConfirmKind;
     message: string;
@@ -344,6 +347,62 @@ export function LiveMapPartyPanel({
                 )}
                 {!form ? (
                   <>
+                    {chat.receivedInvitations.length > 0 && (
+                      <div className="space-y-2">
+                        <h3 className="text-xs font-bold text-orange-600 dark:text-orange-400">
+                          {t("초대받은 파티", "Party invitations", "招待されたパーティー")}
+                        </h3>
+                        {chat.receivedInvitations.map((invitation) => (
+                          <div
+                            key={invitation.invitation_id}
+                            className="rounded-lg border border-orange-300 bg-orange-50 p-3 dark:border-orange-700 dark:bg-orange-950/40"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="min-w-0">
+                                <p className="truncate text-sm font-bold">{invitation.party.name}</p>
+                                <p className="mt-1 text-xs text-gray-600 dark:text-gray-300">
+                                  {invitation.inviter.nickname} · {invitation.party.member_count}/{invitation.party.max_members}
+                                </p>
+                              </div>
+                              <div className="flex gap-1">
+                                <button
+                                  type="button"
+                                  className={`${partyButton} !border-orange-400 !bg-orange-500 !text-white hover:!bg-orange-600 dark:!text-[#1e2124]`}
+                                  disabled={chat.busy || !invitation.party.can_join}
+                                  onClick={async () => {
+                                    try {
+                                      const accepted = await chat.acceptInvitation(invitation.invitation_id);
+                                      party.activateRoom(accepted.room.id);
+                                    } catch {
+                                      // The chat error is shown in its panel and the invitation refreshes over WS.
+                                    }
+                                  }}
+                                >
+                                  {t("참가", "Join", "参加")}
+                                </button>
+                                <button
+                                  type="button"
+                                  className={partyButton}
+                                  disabled={chat.busy}
+                                  onClick={() => void chat.rejectInvitation(invitation.invitation_id).catch(() => undefined)}
+                                >
+                                  {t("거절", "Decline", "拒否")}
+                                </button>
+                              </div>
+                            </div>
+                            {!invitation.party.can_join && (
+                              <p className="mt-2 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                                {invitation.party.closed
+                                  ? t("종료된 파티입니다.", "This party has closed.", "終了したパーティーです。")
+                                  : invitation.party.is_locked
+                                    ? t("현재 입장이 잠겨 있습니다.", "Joining is currently locked.", "現在参加がロックされています。")
+                                    : t("현재 정원이 찼습니다.", "The party is currently full.", "現在満員です。")}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     <form
                       className="flex gap-2"
                       onSubmit={(e) => {
@@ -716,6 +775,7 @@ export function LiveMapPartyPanel({
                       </li>
                     ))}
                 </ul>
+                <PartyChatSection roomId={snapshot.room.id} locale={locale} />
                 <details>
                   <summary className="cursor-pointer rounded py-1 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                     {t(
@@ -938,12 +998,12 @@ export function LiveMapPartyPanel({
           </div>
         </section>
       )}
-      <button
+      {!chat.open && <button
         ref={buttonRef}
         type="button"
         aria-expanded={party.open}
         onClick={() => party.setOpen(!party.open)}
-        className="pointer-events-auto order-first mb-2 inline-flex h-9 w-40 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold leading-none text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
+        className="pointer-events-auto order-first mb-2 inline-flex h-9 w-[7.5rem] shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold leading-none text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
       >
         <Users className="h-4 w-4 shrink-0 text-orange-600 dark:text-orange-400" />
         <span className="shrink-0">{t("파티", "Party", "パーティー")}</span>
@@ -952,7 +1012,7 @@ export function LiveMapPartyPanel({
             {snapshot.room.member_count}/{snapshot.room.max_members}
           </span>
         )}
-      </button>
+      </button>}
     </div>
   );
 }

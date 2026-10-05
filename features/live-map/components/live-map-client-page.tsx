@@ -76,6 +76,7 @@ import type {
 } from "./live-map-canvas";
 import { useLiveMapParty } from "../party/use-live-map-party";
 import { LiveMapPartyPanel } from "../party/live-map-party-panel";
+import { LiveMapChatPanel } from "../chat/live-map-chat-panel";
 import { partyText } from "../party/copy";
 import { copyByLocale } from "./live-map-copy";
 import {
@@ -3008,6 +3009,7 @@ export function LiveMapClientPage({
                   party.setOpen(false);
                 }}
               />
+            <LiveMapChatPanel party={party} locale={locale} />
 
             {notice ? (
               <div
@@ -3424,7 +3426,7 @@ export function LiveMapClientPage({
               ref={mapToolbarRef}
               className={cn(
                 "absolute top-3 z-[1000] flex items-center gap-2",
-                "right-[11.5rem]",
+                "right-[13.75rem]",
               )}
             >
               <button
