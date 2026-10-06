@@ -1,5 +1,7 @@
 "use client";
 
+import { SeasonSelect } from "./season-select";
+import { usePriceSeason } from "../hooks/use-price-season";
 import Image from "next/image";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Search, Store } from "lucide-react";
@@ -58,6 +60,8 @@ const copyByLocale = {
     updatedLabel: "업데이트",
     previousLabel: "이전",
     nextLabel: "다음",
+    seasonPvp: "시즌 PVP",
+    noSeasonPrices: "선택한 시즌의 가격 데이터가 없습니다.",
     pvp: "PVP",
     pve: "PVE",
   },
@@ -79,6 +83,8 @@ const copyByLocale = {
     updatedLabel: "Updated",
     previousLabel: "Previous",
     nextLabel: "Next",
+    seasonPvp: "Season PVP",
+    noSeasonPrices: "No price data for this season.",
     pvp: "PVP",
     pve: "PVE",
   },
@@ -100,14 +106,16 @@ const copyByLocale = {
     updatedLabel: "更新日時",
     previousLabel: "前へ",
     nextLabel: "次へ",
+    seasonPvp: "シーズン PVP",
+    noSeasonPrices: "選択したシーズンの価格データがありません。",
     pvp: "PVP",
     pve: "PVE",
   },
 } as const;
 
-type PriceMode = "pvp" | "pve";
+type PriceMode = "pvp" | "pve" | "pvp-season";
 
-const priceModeTheme = {
+const basePriceModeTheme = {
   pvp: {
     activeButton: "bg-orange-500 text-white",
     inactiveButton: "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300",
@@ -147,6 +155,11 @@ const priceModeTheme = {
     chartActive: "#10b981",
   },
 } as const;
+
+const priceModeTheme = {
+  ...basePriceModeTheme,
+  "pvp-season": basePriceModeTheme.pvp,
+};
 
 function formatPrice(value: number | null, locale: Locale) {
   if (value === null) {
@@ -204,23 +217,15 @@ function paginatePriceItems(
   };
 }
 
-function fetchPriceSearchIndex() {
-  return staticJsonGetWithFallback<PriceSearchIndexItem[]>("price", "/static/price/v3/search-index.json", {
-    fallback: async () => {
-      const response = await apiGet<PriceSearchResponse>(getPriceSearchEndpoint(1, 100000, ""), {
-        revalidate: 60 * 60,
-      });
-
-      return response.data.map((item) => ({
-        ...item,
-        trend_by_type: {
-          pvp: item.history_by_type.pvp.slice(-8).map((entry) => entry.price),
-          pve: item.history_by_type.pve.slice(-8).map((entry) => entry.price),
-        },
-      }));
+function fetchPriceSearchIndex(page: number, word: string) {
+  return staticJsonGetWithFallback<PriceSearchIndexItem[] | PriceSearchResponse>(
+    "price",
+    "/static/price/v3/search-index.json",
+    {
+      fallback: () => apiGet<PriceSearchResponse>(getPriceSearchEndpoint(page, 20, word)),
+      revalidate: 60 * 60,
     },
-    revalidate: 60 * 60,
-  });
+  );
 }
 
 function fetchPriceDetail(normalizedName: string) {
@@ -235,10 +240,11 @@ function fetchPriceDetail(normalizedName: string) {
         throw new Error(`Price detail fallback returned empty data for ${normalizedName}`);
       }
 
-      return item;
+        return item;
+      },
+      revalidate: 60 * 60,
     },
-    revalidate: 60 * 60,
-  });
+  );
 }
 
 export function PricePage({ locale }: { locale: Locale }) {
@@ -247,7 +253,10 @@ export function PricePage({ locale }: { locale: Locale }) {
   const [searchWord, setSearchWord] = useState("");
   const [priceType, setPriceType] = useState<PriceMode>("pvp");
   const [page, setPage] = useState(1);
-  const [selectedItem, setSelectedItem] = useState<PriceSearchIndexItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<PriceSearchIndexItem | null>(
+    null,
+  );
+  const season = usePriceSeason();
   const theme = priceModeTheme[priceType];
 
   const {
@@ -255,24 +264,57 @@ export function PricePage({ locale }: { locale: Locale }) {
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ["price-search-index"],
-    queryFn: fetchPriceSearchIndex,
-    staleTime: 60 * 60 * 1000,
+    queryKey: [
+      "price-search-index",
+      ...(priceType === "pvp-season"
+        ? ["season", season.seasonId ?? "current", page, searchWord]
+        : ["standard", page, searchWord]),
+    ],
+    queryFn: async () => {
+      if (priceType !== "pvp-season") return fetchPriceSearchIndex(page, searchWord);
+      const response = await apiGet<PriceSearchResponse>(
+        getPriceSearchEndpoint(page, 20, searchWord, season.seasonId),
+      );
+      return response;
+    },
+    staleTime: priceType === "pvp-season" ? 0 : 60 * 60 * 1000,
   });
 
-  const data = useMemo(
-    () => searchIndex ? paginatePriceItems(searchIndex, page, searchWord, locale) : null,
-    [locale, page, searchIndex, searchWord],
-  );
+  const data = useMemo(() => {
+    if (!searchIndex) return null;
+    if (Array.isArray(searchIndex)) {
+      return paginatePriceItems(searchIndex, page, searchWord, locale);
+    }
+    return {
+      ...searchIndex,
+      data: searchIndex.data.map((item) => ({
+        ...item,
+        trend_by_type: {
+          pvp: item.history_by_type.pvp.slice(-8).map((entry) => entry.price),
+          pve: item.history_by_type.pve.slice(-8).map((entry) => entry.price),
+          "pvp-season": item.history_by_type["pvp-season"]
+            .slice(-8)
+            .map((entry) => entry.price),
+        },
+      })),
+    };
+  }, [locale, page, searchIndex, searchWord]);
 
   const { data: selectedDetail } = useQuery({
-    enabled: Boolean(selectedItem?.normalized_name),
+    enabled:
+      Array.isArray(searchIndex) && Boolean(selectedItem?.normalized_name),
     queryKey: ["price-detail", selectedItem?.normalized_name],
     queryFn: () => fetchPriceDetail(selectedItem?.normalized_name ?? ""),
     staleTime: 60 * 60 * 1000,
   });
 
-  const detailItem = selectedDetail ?? selectedItem;
+  const apiDetail = !Array.isArray(searchIndex)
+    ? searchIndex?.data.find((item) => item.id === selectedItem?.id)
+    : undefined;
+  const activeDetail =
+    Array.isArray(searchIndex) ? selectedDetail : apiDetail;
+  const detailItem =
+    activeDetail ?? (Array.isArray(searchIndex) ? selectedItem : undefined);
 
   useEffect(() => {
     if (!data) {
@@ -287,14 +329,14 @@ export function PricePage({ locale }: { locale: Locale }) {
 
     setSelectedItem((current) =>
       current && data.data.some((item) => item.id === current.id)
-        ? current
+        ? (data.data.find((item) => item.id === current.id) ?? nextSelectedItem)
         : nextSelectedItem,
     );
   }, [data, priceType]);
 
   const selectedPrice = detailItem?.prices[priceType] ?? null;
-  const selectedHistory = selectedDetail?.history_by_type[priceType] ?? [];
-  const selectedTraderPrices = selectedDetail?.trader_prices[priceType] ?? [];
+  const selectedHistory = activeDetail?.history_by_type[priceType] ?? [];
+  const selectedTraderPrices = activeDetail?.trader_prices[priceType] ?? [];
 
   const localizedSelectedName = useMemo(() => {
     if (!detailItem) {
@@ -322,8 +364,12 @@ export function PricePage({ locale }: { locale: Locale }) {
             <div className="inline-flex self-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
               <button
                 type="button"
-                onClick={() => setPriceType("pvp")}
-                className={`px-5 py-2.5 text-sm font-bold transition ${
+                aria-pressed={priceType === "pvp"}
+                onClick={() => {
+                  setPage(1);
+                  setPriceType("pvp");
+                }}
+                className={`px-5 py-2.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-orange-500 ${
                   priceType === "pvp"
                     ? priceModeTheme.pvp.activeButton
                     : priceModeTheme.pvp.inactiveButton
@@ -333,14 +379,29 @@ export function PricePage({ locale }: { locale: Locale }) {
               </button>
               <button
                 type="button"
-                onClick={() => setPriceType("pve")}
-                className={`px-5 py-2.5 text-sm font-bold transition ${
+                aria-pressed={priceType === "pve"}
+                onClick={() => {
+                  setPage(1);
+                  setPriceType("pve");
+                }}
+                className={`px-5 py-2.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-orange-500 ${
                   priceType === "pve"
                     ? priceModeTheme.pve.activeButton
                     : priceModeTheme.pve.inactiveButton
                 }`}
               >
                 {copy.pve}
+              </button>
+              <button
+                type="button"
+                aria-pressed={priceType === "pvp-season"}
+                onClick={() => {
+                  setPage(1);
+                  setPriceType("pvp-season");
+                }}
+                className={`px-4 py-2.5 text-sm font-bold focus-visible:outline-2 focus-visible:outline-orange-500 ${priceType === "pvp-season" ? theme.activeButton : priceModeTheme.pvp.inactiveButton}`}
+              >
+                {copy.seasonPvp}
               </button>
             </div>
             <form
@@ -368,6 +429,20 @@ export function PricePage({ locale }: { locale: Locale }) {
               </button>
             </form>
           </div>
+          {priceType === "pvp-season" ? (
+            <SeasonSelect
+              locale={locale}
+              seasons={season.data ?? []}
+              value={season.seasonId}
+              onChange={(id) => {
+                setPage(1);
+                season.setSeasonId(id);
+              }}
+              isLoading={season.isLoading}
+              isError={season.isError}
+              onRetry={() => void season.refetch()}
+            />
+          ) : null}
         </section>
         {isError ? (
           <section className="rounded-lg border border-amber-300 bg-amber-50 px-6 py-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100">
@@ -434,7 +509,8 @@ export function PricePage({ locale }: { locale: Locale }) {
                             <p className={`flex min-w-0 items-center gap-1.5 truncate text-xs ${theme.priceText}`}>
                               <Store className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                               <span className="min-w-0 truncate">
-                                {copy.fleaLabel}: {formatPrice(summary.flea_market_price, locale)}
+                                {copy.fleaLabel}:{" "}
+                                {formatPrice(summary.flea_market_price, locale)}
                               </span>
                             </p>
                           ) : (
@@ -519,6 +595,14 @@ export function PricePage({ locale }: { locale: Locale }) {
                     </div>
                   </div>
 
+                  {priceType === "pvp-season" && !selectedPrice ? (
+                    <p
+                      role="status"
+                      className="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-600 dark:border-gray-600 dark:text-gray-300"
+                    >
+                      {copy.noSeasonPrices}
+                    </p>
+                  ) : null}
                   <div className="grid gap-4 xl:grid-cols-[1fr_1.1fr]">
                     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                       {hasFleaPrice(selectedPrice) ? (
@@ -568,13 +652,16 @@ export function PricePage({ locale }: { locale: Locale }) {
                         <PriceLineChart history={selectedHistory} locale={locale} mode={priceType} />
                       </div>
                     </div>
+                  ) : priceType === "pvp-season" ? (
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      {copy.noSeasonPrices}
+                    </p>
                   ) : null}
                 </div>
               ) : (
                 <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">{copy.noResults}</p>
               )}
             </section>
-
           </div>
         </section>
       </div>
@@ -710,8 +797,7 @@ function PriceLineChart({
           content={({ active, payload }) => {
             const first = payload?.[0];
             const row = first?.payload as
-              | { formattedTime?: string; price?: number }
-              | undefined;
+              { formattedTime?: string; price?: number } | undefined;
 
             if (!active || !row) {
               return null;

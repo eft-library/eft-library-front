@@ -347,7 +347,7 @@ export function LiveMapPartyPanel({
                 )}
                 {!form ? (
                   <>
-                    {chat.receivedInvitations.length > 0 && (
+                    {chat.enabled && chat.receivedInvitations.length > 0 && (
                       <div className="space-y-2">
                         <h3 className="text-xs font-bold text-orange-600 dark:text-orange-400">
                           {t("초대받은 파티", "Party invitations", "招待されたパーティー")}
@@ -775,7 +775,7 @@ export function LiveMapPartyPanel({
                       </li>
                     ))}
                 </ul>
-                <PartyChatSection roomId={snapshot.room.id} locale={locale} />
+                {chat.enabled && <PartyChatSection roomId={snapshot.room.id} locale={locale} />}
                 <details>
                   <summary className="cursor-pointer rounded py-1 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                     {t(

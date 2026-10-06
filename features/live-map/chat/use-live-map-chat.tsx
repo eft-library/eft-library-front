@@ -38,7 +38,9 @@ function mergeMessages(
 
 function useLiveMapChatState() {
   const { data: session, status } = useSession();
-  const token = session?.accessToken;
+  // Keep recruitment and party chat private during the admin test rollout.
+  const enabled = status === "authenticated" && session?.userInfo?.is_admin === true;
+  const token = enabled ? session?.accessToken : undefined;
   const account = session?.userInfo?.email ?? session?.user?.email;
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<LiveMapChatRealtimeView>({
@@ -59,6 +61,9 @@ function useLiveMapChatState() {
     setOlder({});
     setNextBefore({});
     setError(null);
+    setOpen(false);
+    setView({ connection: "auth-required", outgoing: [] });
+    if (!enabled) return;
     const url = new URL(`${getApiBaseUrl()}/api/live-map/v3/chat/ws`);
     url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
     const client = new LiveMapChatRealtimeClient({
@@ -67,7 +72,7 @@ function useLiveMapChatState() {
         const latest = await getSession();
         const latestAccount =
           latest?.userInfo?.email ?? latest?.user?.email;
-        if (!account) return undefined;
+        if (!account || latest?.userInfo?.is_admin !== true) return undefined;
         return latestAccount === account ? latest?.accessToken : undefined;
       },
       onChange: setView,
@@ -85,15 +90,15 @@ function useLiveMapChatState() {
       window.removeEventListener("online", wake);
       document.removeEventListener("visibilitychange", wake);
     };
-  }, [account, token]);
+  }, [account, token, enabled]);
 
-  const snapshot = view.snapshot;
+  const snapshot = enabled ? view.snapshot : undefined;
   const messages = useMemo(
     () => ({
-      lobby: mergeMessages(snapshot?.lobby ?? [], older.lobby ?? []),
-      party: mergeMessages(snapshot?.party ?? [], older.party ?? []),
+      lobby: enabled ? mergeMessages(snapshot?.lobby ?? [], older.lobby ?? []) : [],
+      party: enabled ? mergeMessages(snapshot?.party ?? [], older.party ?? []) : [],
     }),
-    [older, snapshot],
+    [enabled, older, snapshot],
   );
   const invitations = useMemo(
     () => snapshot?.party_invitations ?? [],
@@ -111,6 +116,7 @@ function useLiveMapChatState() {
 
   const request = useCallback(
     async <T,>(path: string, method = "GET", body?: unknown) => {
+      if (!enabled) throw new LiveMapChatApiError(403, "CHAT_ADMIN_REQUIRED");
       setBusy(true);
       setError(null);
       try {
@@ -123,7 +129,7 @@ function useLiveMapChatState() {
         setBusy(false);
       }
     },
-    [token],
+    [token, enabled],
   );
 
   const storeInvitation = useCallback((invitation: PartyInvitationV3) => {
@@ -145,18 +151,19 @@ function useLiveMapChatState() {
   }, []);
 
   return {
-    open,
+    enabled,
+    open: enabled && open,
     setOpen,
     token,
     authStatus: status,
     connection: view.connection,
-    connected: view.connection === "connected",
+    connected: enabled && view.connection === "connected",
     error: error ?? (view.error ? new LiveMapChatApiError(view.error.status, view.error.msg, view.error.retry_after ?? 0) : null),
     clearError: () => setError(null),
     busy,
     me: snapshot?.user,
     messages,
-    outgoing: view.outgoing,
+    outgoing: enabled ? view.outgoing : [],
     invitations,
     receivedInvitations,
     partyRoomId: snapshot?.party_room_id ?? null,
@@ -166,13 +173,14 @@ function useLiveMapChatState() {
     },
     sendMessage: (channel: LiveMapChatChannel, message: string, roomId?: string) => {
       setError(null);
+      if (!enabled) return false;
       const sent = clientRef.current?.sendMessage(channel, message, roomId) ?? null;
       if (!sent) setError(new LiveMapChatApiError(503, "CHAT_UNAVAILABLE"));
       return Boolean(sent);
     },
     retryMessage: (requestId: string) =>
-      clientRef.current?.retryMessage(requestId) ?? false,
-    reconnect: () => clientRef.current?.reconnect(),
+      enabled && (clientRef.current?.retryMessage(requestId) ?? false),
+    reconnect: () => { if (enabled) clientRef.current?.reconnect(); },
     loadLatest: async (channel: LiveMapChatChannel, roomId?: string) => {
       const params = new URLSearchParams({ channel, limit: "50" });
       if (channel === "party" && roomId) params.set("room_id", roomId);

@@ -1,5 +1,7 @@
 "use client";
 
+import { SeasonSelect } from "@/features/price/components/season-select";
+import { usePriceSeason } from "@/features/price/hooks/use-price-season";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -254,22 +256,33 @@ function formatPrice(value: number | null, locale: Locale) {
   return `${formattedValue} ₽`;
 }
 
-function fetchPriceTop() {
-  return staticJsonGetWithFallback<PriceTopResponse>("price", "/static/price/v3/rank/all.json", {
-    fallback: () =>
-      apiPost<PriceTopRequest, PriceTopResponse>(
-        priceTopEndpoint,
-        {
-          categoryList: Array.from(
-            new Set(rankCategoryGroups.flatMap((group) => group.categories)),
-          ),
-        },
-        {
-          revalidate: 60 * 60,
-        },
+function fetchPriceTop(seasonId?: string, seasonal = false) {
+  if (seasonal)
+    return apiPost<PriceTopRequest, PriceTopResponse>(priceTopEndpoint, {
+      categoryList: Array.from(
+        new Set(rankCategoryGroups.flatMap((group) => group.categories)),
       ),
-    revalidate: 60 * 60,
-  });
+      ...(seasonId ? { seasonId } : {}),
+    });
+  return staticJsonGetWithFallback<PriceTopResponse>(
+    "price",
+    "/static/price/v3/rank/all.json",
+    {
+      fallback: () =>
+        apiPost<PriceTopRequest, PriceTopResponse>(
+          priceTopEndpoint,
+          {
+            categoryList: Array.from(
+              new Set(rankCategoryGroups.flatMap((group) => group.categories)),
+            ),
+          },
+          {
+            revalidate: 60 * 60,
+          },
+        ),
+      revalidate: 60 * 60,
+    },
+  );
 }
 
 function getLocalizedItemName(item: PriceTopItem, locale: Locale) {
@@ -297,7 +310,16 @@ function matchesSearch(item: PriceTopItem, searchWord: string) {
 
 export function RankPage({ locale }: { locale: Locale }) {
   const copy = copyByLocale[locale];
-  const [priceType, setPriceType] = useState<"pvp" | "pve">("pvp");
+  const season = usePriceSeason();
+  const seasonLabel =
+    locale === "ko"
+      ? "시즌 PVP"
+      : locale === "ja"
+        ? "シーズン PVP"
+        : "Season PVP";
+  const [priceType, setPriceType] = useState<"pvp" | "pve" | "pvp-season">(
+    "pvp",
+  );
   const [searchWord, setSearchWord] = useState("");
   const [selectedCategoryGroups, setSelectedCategoryGroups] = useState<string[]>([
     ...defaultRankCategories,
@@ -315,15 +337,21 @@ export function RankPage({ locale }: { locale: Locale }) {
   );
 
   const { data, isError, isFetching, isLoading } = useQuery({
-    queryKey: ["price-top"],
-    queryFn: fetchPriceTop,
-    staleTime: 60 * 60 * 1000,
+    queryKey: [
+      "price-top",
+      priceType === "pvp-season" ? (season.seasonId ?? "current") : "standard",
+    ],
+    queryFn: () => fetchPriceTop(season.seasonId, priceType === "pvp-season"),
+    staleTime: priceType === "pvp-season" ? 0 : 60 * 60 * 1000,
   });
 
   const tiers = useMemo(() => {
-    const selectedTiers = priceType === "pvp"
-      ? data?.pvp_top_list
-      : data?.pve_top_list;
+    const selectedTiers =
+      priceType === "pvp-season"
+        ? data?.["pvp-season_top_list"]
+        : priceType === "pvp"
+          ? data?.pvp_top_list
+          : data?.pve_top_list;
 
     return (selectedTiers ?? [])
       .map((tier) => ({
@@ -350,8 +378,9 @@ export function RankPage({ locale }: { locale: Locale }) {
             <div className="inline-flex self-start overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-[#2a3038] dark:bg-[#20242b] lg:self-end">
               <button
                 type="button"
+                aria-pressed={priceType === "pvp"}
                 onClick={() => setPriceType("pvp")}
-                className={`px-5 py-2.5 text-sm font-bold transition ${
+                className={`px-5 py-2.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-orange-500 ${
                   priceType === "pvp"
                     ? "bg-orange-500 text-white"
                     : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
@@ -361,8 +390,9 @@ export function RankPage({ locale }: { locale: Locale }) {
               </button>
               <button
                 type="button"
+                aria-pressed={priceType === "pve"}
                 onClick={() => setPriceType("pve")}
-                className={`px-5 py-2.5 text-sm font-bold transition ${
+                className={`px-5 py-2.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-orange-500 ${
                   priceType === "pve"
                     ? "bg-orange-500 text-white"
                     : "text-gray-600 hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-300"
@@ -370,8 +400,28 @@ export function RankPage({ locale }: { locale: Locale }) {
               >
                 {copy.pve}
               </button>
+              <button
+                type="button"
+                aria-pressed={priceType === "pvp-season"}
+                onClick={() => setPriceType("pvp-season")}
+                className={`px-4 py-2.5 text-sm font-bold focus-visible:outline-2 focus-visible:outline-orange-500 ${priceType === "pvp-season" ? "bg-orange-500 text-white" : "text-gray-600 hover:text-orange-600 dark:text-gray-300 dark:hover:text-orange-300"}`}
+              >
+                {seasonLabel}
+              </button>
             </div>
           </div>
+
+          {priceType === "pvp-season" ? (
+            <SeasonSelect
+              locale={locale}
+              seasons={season.data ?? []}
+              value={season.seasonId}
+              onChange={season.setSeasonId}
+              isLoading={season.isLoading}
+              isError={season.isError}
+              onRetry={() => void season.refetch()}
+            />
+          ) : null}
 
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
             <label className="relative min-w-0">
@@ -488,7 +538,8 @@ function TierSection({
           <div>
             <h2 className={`text-lg font-black ${style.text}`}>{tier.tier} Tier</h2>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              {formatPrice(tier.min, locale)} - {formatPrice(tier.max, locale)} / slot
+              {formatPrice(tier.min, locale)} - {formatPrice(tier.max, locale)}{" "}
+              / slot
             </p>
           </div>
         </div>

@@ -162,6 +162,11 @@ export function LiveMapChatPanel({
   locale: PartyLocale;
 }) {
   const chat = useLiveMapChat();
+  return chat.enabled ? <AdminLiveMapChatPanel party={party} locale={locale} /> : null;
+}
+
+function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyController; locale: PartyLocale }) {
+  const chat = useLiveMapChat();
   const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
   const [message, setMessage] = useState("");
   const [notice, setNotice] = useState<string | null>(null);

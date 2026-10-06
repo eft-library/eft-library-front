@@ -75,12 +75,19 @@ export function getBossDetailEndpoint(normalizedName: string) {
   return `/api/boss/v3/detail/${normalizedName}`;
 }
 
-export function getPriceSearchEndpoint(page: number, pageSize: number, word: string) {
+export function getPriceSearchEndpoint(
+  page: number,
+  pageSize: number,
+  word: string,
+  seasonId?: string,
+) {
   const params = new URLSearchParams({
     page: String(page),
     page_size: String(pageSize),
     word,
   });
+
+  if (seasonId) params.set("season_id", seasonId);
 
   return `/api/price/v3/search?${params.toString()}`;
 }
@@ -174,3 +181,5 @@ export function getCommunitySearchEndpoint(page: number, word: string, searchTyp
 
   return `/api/community/v3/search?${params.toString()}`;
 }
+
+export const priceSeasonsEndpoint = "/api/price/v3/seasons";
