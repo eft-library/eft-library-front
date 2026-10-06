@@ -17,6 +17,18 @@ export interface LiveMapChatRealtimeView {
   connection: LiveMapChatConnection;
   snapshot?: LiveMapChatSnapshotV3;
   error?: LiveMapChatErrorV3;
+  outgoing: LiveMapChatOutgoingMessage[];
+}
+
+export interface LiveMapChatOutgoingMessage {
+  requestId: string;
+  messageId?: string;
+  channel: "lobby" | "party";
+  roomId?: string;
+  message: string;
+  status: "sending" | "sent" | "failed";
+  error?: string;
+  createdAt: number;
 }
 
 function upsertMessage(
@@ -47,7 +59,11 @@ export class LiveMapChatRealtimeClient {
   private reconnectTimer?: ReturnType<typeof setTimeout>;
   private heartbeatTimer?: ReturnType<typeof setInterval>;
   private watchdogTimer?: ReturnType<typeof setTimeout>;
-  private view: LiveMapChatRealtimeView = { connection: "connecting" };
+  private ackTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  private view: LiveMapChatRealtimeView = {
+    connection: "connecting",
+    outgoing: [],
+  };
 
   constructor(
     private options: {
@@ -67,6 +83,8 @@ export class LiveMapChatRealtimeClient {
     clearTimeout(this.reconnectTimer);
     clearInterval(this.heartbeatTimer);
     clearTimeout(this.watchdogTimer);
+    this.ackTimers.forEach(clearTimeout);
+    this.ackTimers.clear();
     this.socket?.close();
     this.socket = null;
   }
@@ -82,18 +100,73 @@ export class LiveMapChatRealtimeClient {
     void this.connect();
   }
 
-  sendMessage(channel: "lobby" | "party", message: string, roomId?: string) {
-    if (this.socket?.readyState !== WebSocket.OPEN) return false;
+  sendMessage(
+    channel: "lobby" | "party",
+    message: string,
+    roomId?: string,
+    requestId = crypto.randomUUID(),
+  ) {
+    if (this.socket?.readyState !== WebSocket.OPEN) return null;
+    const existing = this.view.outgoing.find(
+      (entry) => entry.requestId === requestId,
+    );
+    const outgoing: LiveMapChatOutgoingMessage = existing
+      ? { ...existing, status: "sending", error: undefined }
+      : {
+          requestId,
+          channel,
+          roomId,
+          message,
+          status: "sending",
+          createdAt: Date.now(),
+        };
+    this.emit({
+      outgoing: [
+        outgoing,
+        ...this.view.outgoing.filter((entry) => entry.requestId !== requestId),
+      ],
+    });
     this.socket.send(
       JSON.stringify({
         type: "send_message",
         channel,
         message,
-        request_id: crypto.randomUUID(),
+        request_id: requestId,
         ...(channel === "party" ? { room_id: roomId } : {}),
       }),
     );
-    return true;
+    clearTimeout(this.ackTimers.get(requestId));
+    this.ackTimers.set(
+      requestId,
+      setTimeout(() => {
+        this.updateOutgoing(requestId, {
+          status: "failed",
+          error: "CHAT_ACK_TIMEOUT",
+        });
+      }, 10000),
+    );
+    return requestId;
+  }
+
+  retryMessage(requestId: string) {
+    const entry = this.view.outgoing.find(
+      (message) => message.requestId === requestId,
+    );
+    if (!entry || entry.status !== "failed") return false;
+    return Boolean(
+      this.sendMessage(entry.channel, entry.message, entry.roomId, requestId),
+    );
+  }
+
+  private updateOutgoing(
+    requestId: string,
+    patch: Partial<LiveMapChatOutgoingMessage>,
+  ) {
+    this.emit({
+      outgoing: this.view.outgoing.map((entry) =>
+        entry.requestId === requestId ? { ...entry, ...patch } : entry,
+      ),
+    });
   }
 
   private emit(patch: Partial<LiveMapChatRealtimeView>) {
@@ -120,21 +193,84 @@ export class LiveMapChatRealtimeClient {
 
   private apply(event: LiveMapChatServerEventV3) {
     if (event.type === "error") {
+      if (event.request_id) {
+        clearTimeout(this.ackTimers.get(event.request_id));
+        this.ackTimers.delete(event.request_id);
+        this.updateOutgoing(event.request_id, {
+          status: "failed",
+          error: event.msg,
+        });
+      }
       this.emit({ error: event });
       return;
     }
-    if (event.type === "message_ack") return;
+    if (event.type === "message_ack") {
+      clearTimeout(this.ackTimers.get(event.data.request_id));
+      this.ackTimers.delete(event.data.request_id);
+      const alreadyReceived = Boolean(
+        this.view.snapshot?.lobby.some(
+          (entry) => entry.id === event.data.message_id,
+        ) ||
+          this.view.snapshot?.party.some(
+            (entry) => entry.id === event.data.message_id,
+          ),
+      );
+      this.emit({
+        outgoing: alreadyReceived
+          ? this.view.outgoing.filter(
+              (entry) => entry.requestId !== event.data.request_id,
+            )
+          : this.view.outgoing.map((entry) =>
+              entry.requestId === event.data.request_id
+                ? {
+                    ...entry,
+                    status: "sent",
+                    messageId: event.data.message_id,
+                  }
+                : entry,
+            ),
+        error: undefined,
+      });
+      return;
+    }
     if (event.type === "snapshot") {
       this.attempts = 0;
-      this.emit({ connection: "connected", snapshot: event.data, error: undefined });
+      const messageIds = new Set([
+        ...event.data.lobby.map((entry) => entry.id),
+        ...event.data.party.map((entry) => entry.id),
+      ]);
+      this.emit({
+        connection: "connected",
+        snapshot: event.data,
+        error: undefined,
+        outgoing: this.view.outgoing.filter(
+          (entry) => !entry.messageId || !messageIds.has(entry.messageId),
+        ),
+      });
       return;
     }
     const snapshot = this.view.snapshot;
     if (!snapshot) return;
     if (event.type === "chat_message") {
       const key = event.data.channel === "lobby" ? "lobby" : "party";
+      const matchingOutgoing =
+        event.data.user.id === snapshot.user?.id
+          ? this.view.outgoing
+              .filter(
+                (entry) =>
+                  entry.channel === event.data.channel &&
+                  (entry.roomId ?? null) === event.data.room_id &&
+                  entry.message.trim() === event.data.message,
+              )
+              .sort((a, b) => a.createdAt - b.createdAt)[0]
+          : undefined;
       this.emit({
         snapshot: { ...snapshot, [key]: upsertMessage(snapshot[key], event.data) },
+        outgoing: this.view.outgoing.filter(
+          (entry) =>
+            entry.messageId !== event.data.id &&
+            entry.requestId !== matchingOutgoing?.requestId,
+        ),
       });
     } else if (
       event.type === "party_invitation_created" ||

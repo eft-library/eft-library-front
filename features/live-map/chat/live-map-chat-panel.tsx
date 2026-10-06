@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import {
   LoaderCircle,
+  Ban,
   MessageCircle,
   Send,
   ShieldAlert,
@@ -13,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils/class-name";
-import type { LiveMapChatMessageV3 } from "@/types/api/live-map-chat";
+import type { LiveMapChatMessageV3, PartyInvitationV3 } from "@/types/api/live-map-chat";
 import { partyButton } from "../party/party-forms";
 import { partyText, type PartyLocale } from "../party/copy";
 import type { LiveMapPartyController } from "../party/use-live-map-party";
@@ -50,6 +51,7 @@ function MessageRow({
   onBlock,
   onReport,
   interactive,
+  invitation,
 }: {
   message: LiveMapChatMessageV3;
   mine: boolean;
@@ -60,6 +62,7 @@ function MessageRow({
   onBlock: () => void;
   onReport: () => void;
   interactive: boolean;
+  invitation?: PartyInvitationV3;
 }) {
   const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
   const [menu, setMenu] = useState(false);
@@ -74,7 +77,8 @@ function MessageRow({
           type="button"
           disabled={mine || !interactive}
           onClick={() => setMenu((value) => !value)}
-          className={cn("text-xs font-bold text-gray-700 dark:text-gray-200", !mine && interactive && "rounded hover:text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500")}
+          title={message.user.nickname}
+          className={cn("max-w-40 truncate text-xs font-bold text-gray-700 dark:text-gray-200", !mine && interactive && "rounded hover:text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500")}
         >
           {message.user.nickname}
         </button>
@@ -82,9 +86,20 @@ function MessageRow({
       </div>
       {menu && !mine && interactive && (
         <div className="mb-1 flex flex-wrap gap-1 rounded-md border border-gray-200 bg-white p-1 shadow-md dark:border-[#3a3d41] dark:bg-[#25282c]">
+          {invitation && invitation.status !== "pending" && (
+            <span className="w-full px-2 py-1 text-[10px] font-semibold text-gray-500 dark:text-gray-400">
+              {invitation.status === "accepted"
+                ? t("파티 참가 완료", "Joined the party", "パーティー参加済み")
+                : invitation.status === "rejected"
+                  ? t("초대 거절됨", "Invitation declined", "招待が拒否されました")
+                  : invitation.status === "expired"
+                    ? t("초대 만료됨", "Invitation expired", "招待期限切れ")
+                    : t("초대 취소됨", "Invitation cancelled", "招待キャンセル")}
+            </span>
+          )}
           <button
             type="button"
-            disabled={!canInvite || inviting}
+            disabled={!canInvite || inviting || invitation?.status === "pending" || invitation?.status === "accepted"}
             onClick={() => {
               onInvite();
               setMenu(false);
@@ -93,7 +108,11 @@ function MessageRow({
             title={!canInvite ? t("파티 방장만 초대할 수 있습니다.", "Only the party owner can invite.", "リーダーのみ招待できます。") : undefined}
           >
             <UserPlus className="h-3.5 w-3.5" />
-            {t("파티 초대", "Invite to party", "パーティー招待")}
+            {invitation?.status === "pending"
+              ? t("초대 보냄", "Invited", "招待済み")
+              : invitation?.status === "accepted"
+                ? t("참가 완료", "Joined", "参加済み")
+              : t("파티 초대", "Invite to party", "パーティー招待")}
           </button>
           <button
             type="button"
@@ -123,7 +142,7 @@ function MessageRow({
       )}
       <p
         className={cn(
-          "max-w-[88%] whitespace-pre-wrap break-words rounded-xl px-3 py-2 text-sm leading-5",
+          "max-w-[88%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-xl px-3 py-2 text-sm leading-5",
           mine
             ? "rounded-br-sm bg-orange-500 text-white dark:text-[#1e2124]"
             : "rounded-bl-sm bg-gray-100 text-gray-900 dark:bg-[#2a2d31] dark:text-gray-100",
@@ -150,14 +169,40 @@ export function LiveMapChatPanel({
   const [reporting, setReporting] = useState<LiveMapChatMessageV3 | null>(null);
   const [reportReason, setReportReason] = useState<"spam" | "abuse" | "inappropriate" | "personal_info" | "other">("spam");
   const [reportDetail, setReportDetail] = useState("");
+  const [blockedOpen, setBlockedOpen] = useState(false);
+  const [blockedUsers, setBlockedUsers] = useState<Array<{ id: string; nickname: string }>>([]);
+  const [hasNewMessage, setHasNewMessage] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const atBottomRef = useRef(true);
+  const loadingOlderRef = useRef(false);
+  const previousCountRef = useRef(0);
   const messages = chat.messages.lobby;
+  const outgoing = chat.outgoing
+    .filter((entry) => entry.channel === "lobby")
+    .sort((a, b) => a.createdAt - b.createdAt);
   const canInvite = party.snapshot?.me.role === "owner" && Boolean(party.roomId);
   const chronological = useMemo(() => [...messages].reverse(), [messages]);
 
   useEffect(() => {
-    if (chat.open) requestAnimationFrame(() => listRef.current?.scrollTo({ top: listRef.current.scrollHeight }));
-  }, [chat.open, messages.length]);
+    if (!chat.open) return;
+    requestAnimationFrame(() => {
+      const list = listRef.current;
+      if (!list) return;
+      const count = messages.length + outgoing.length;
+      if (loadingOlderRef.current) {
+        loadingOlderRef.current = false;
+        previousCountRef.current = count;
+        return;
+      }
+      if (atBottomRef.current || previousCountRef.current === 0) {
+        list.scrollTop = list.scrollHeight;
+        setHasNewMessage(false);
+      } else if (count > previousCountRef.current) {
+        setHasNewMessage(true);
+      }
+      previousCountRef.current = count;
+    });
+  }, [chat.open, messages.length, outgoing.length]);
   useEffect(() => {
     if (!notice) return;
     const timer = window.setTimeout(() => setNotice(null), 3000);
@@ -206,6 +251,48 @@ export function LiveMapChatPanel({
     }
   }
 
+  async function openBlockedUsers() {
+    setBlockedOpen(true);
+    try {
+      setBlockedUsers(await chat.getBlockedUsers());
+    } catch {
+      // The shared error banner displays the API error.
+    }
+  }
+
+  async function unblock(userId: string) {
+    try {
+      await chat.unblockUser(userId);
+      setBlockedUsers((current) => current.filter((entry) => entry.id !== userId));
+      setNotice(t("차단을 해제했습니다.", "User unblocked.", "ブロックを解除しました。"));
+    } catch {
+      // Keep the list open so the user can retry.
+    }
+  }
+
+  async function loadOlder() {
+    const list = listRef.current;
+    const previousHeight = list?.scrollHeight ?? 0;
+    const previousTop = list?.scrollTop ?? 0;
+    loadingOlderRef.current = true;
+    try {
+      await chat.loadOlder("lobby");
+      requestAnimationFrame(() => {
+        if (list) list.scrollTop = previousTop + list.scrollHeight - previousHeight;
+        loadingOlderRef.current = false;
+      });
+    } catch {
+      loadingOlderRef.current = false;
+    }
+  }
+
+  function scrollToLatest() {
+    const list = listRef.current;
+    if (list) list.scrollTop = list.scrollHeight;
+    atBottomRef.current = true;
+    setHasNewMessage(false);
+  }
+
   return (
     <div className="pointer-events-none absolute right-[8.75rem] top-3 z-[1210] flex flex-col items-end">
       {chat.open && (
@@ -230,11 +317,34 @@ export function LiveMapChatPanel({
               </div>
             </form>
           )}
+          {blockedOpen && (
+            <div className="absolute inset-x-3 top-14 z-20 rounded-lg border border-gray-300 bg-white p-4 shadow-xl dark:border-[#4a4d51] dark:bg-[#25282c]">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <strong className="text-sm">{t("차단한 사용자", "Blocked users", "ブロックしたユーザー")}</strong>
+                <button type="button" className={partyButton} aria-label={t("닫기", "Close", "閉じる")} onClick={() => setBlockedOpen(false)}><X className="h-3.5 w-3.5" /></button>
+              </div>
+              {blockedUsers.length ? (
+                <ul className="max-h-64 space-y-2 overflow-y-auto">
+                  {blockedUsers.map((user) => (
+                    <li key={user.id} className="flex items-center gap-2 rounded-md bg-gray-100 p-2 dark:bg-[#2a2d31]">
+                      <span title={user.nickname} className="min-w-0 flex-1 truncate text-sm font-semibold">{user.nickname}</span>
+                      <button type="button" className={partyButton} disabled={chat.busy} onClick={() => void unblock(user.id)}>{t("차단 해제", "Unblock", "解除")}</button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="py-6 text-center text-xs text-gray-500 dark:text-gray-400">{t("차단한 사용자가 없습니다.", "No blocked users.", "ブロックしたユーザーはいません。")}</p>
+              )}
+            </div>
+          )}
           <header className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-[#3a3d41]">
             <MessageCircle className="h-4 w-4 text-orange-500" />
             <h2 className="flex-1 font-bold">{t("채팅", "Chat", "チャット")}</h2>
             {chat.token && (
-              <span title={chat.connected ? t("연결됨", "Connected", "接続済み") : t("연결 중", "Connecting", "接続中")} className={cn("h-2.5 w-2.5 rounded-full", chat.connected ? "bg-emerald-500" : "bg-amber-500")} />
+              <>
+                <button type="button" className={partyButton} aria-label={t("차단한 사용자", "Blocked users", "ブロックしたユーザー")} title={t("차단한 사용자", "Blocked users", "ブロックしたユーザー")} onClick={() => void openBlockedUsers()}><Ban className="h-3.5 w-3.5" /></button>
+                <span title={chat.connected ? t("연결됨", "Connected", "接続済み") : t("연결 중", "Connecting", "接続中")} className={cn("h-2.5 w-2.5 rounded-full", chat.connected ? "bg-emerald-500" : "bg-amber-500")} />
+              </>
             )}
             <button className={partyButton} aria-label={t("닫기", "Close", "閉じる")} onClick={() => chat.setOpen(false)}>
               <X className="h-4 w-4" />
@@ -256,22 +366,43 @@ export function LiveMapChatPanel({
                   <button className={partyButton} onClick={chat.reconnect}>{t("재연결", "Retry", "再接続")}</button>
                 </div>
               )}
-              <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
+              <div ref={listRef} onScroll={(event) => { const element = event.currentTarget; atBottomRef.current = element.scrollHeight - element.scrollTop - element.clientHeight < 48; if (atBottomRef.current) setHasNewMessage(false); }} className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
                 {chat.nextBefore.lobby && (
-                  <button className={`${partyButton} mx-auto mb-3 flex`} disabled={chat.busy} onClick={() => void chat.loadOlder("lobby")}>
+                  <button className={`${partyButton} mx-auto mb-3 flex`} disabled={chat.busy} onClick={() => void loadOlder()}>
                     {chat.busy && <LoaderCircle className="h-3.5 w-3.5 animate-spin" />}
                     {t("이전 메시지", "Older messages", "以前のメッセージ")}
                   </button>
                 )}
                 {chronological.length ? (
                   <ul className="space-y-3">
-                    {chronological.map((entry) => (
-                      <MessageRow key={entry.id} message={entry} mine={entry.user.id === chat.me?.id} interactive={Boolean(chat.token)} canInvite={canInvite} inviting={invitingId === entry.user.id || chat.busy} locale={locale} onInvite={() => void invite(entry.user.id)} onBlock={() => void block(entry.user.id)} onReport={() => { chat.clearError(); setReporting(entry); }} />
-                    ))}
+                    {chronological.map((entry, index) => {
+                      const date = new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", day: "numeric" }).format(new Date(entry.create_time));
+                      const previousDate = index > 0 ? new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", day: "numeric" }).format(new Date(chronological[index - 1].create_time)) : null;
+                      return (
+                        <Fragment key={entry.id}>
+                          {date !== previousDate && <li className="flex items-center gap-2 py-1 text-[10px] font-semibold text-gray-400 before:h-px before:flex-1 before:bg-gray-200 after:h-px after:flex-1 after:bg-gray-200 dark:text-gray-500 dark:before:bg-[#3a3d41] dark:after:bg-[#3a3d41]">{date}</li>}
+                          <MessageRow message={entry} mine={entry.user.id === chat.me?.id} interactive={Boolean(chat.token)} canInvite={canInvite} inviting={invitingId === entry.user.id || chat.busy} invitation={chat.invitations.find((invitation) => invitation.room_id === party.roomId && invitation.invitee_user_id === entry.user.id)} locale={locale} onInvite={() => void invite(entry.user.id)} onBlock={() => void block(entry.user.id)} onReport={() => { chat.clearError(); setReporting(entry); }} />
+                        </Fragment>
+                      );
+                    })}
                   </ul>
                 ) : (
                   <p className="py-10 text-center text-sm text-gray-500 dark:text-gray-400">{t("첫 모집 글을 남겨보세요.", "Start the first recruitment message.", "最初の募集メッセージを送りましょう。")}</p>
                 )}
+                {outgoing.length > 0 && (
+                  <ul className="mt-3 space-y-3">
+                    {outgoing.map((entry) => (
+                      <li key={entry.requestId} className="flex flex-col items-end opacity-75">
+                        <p className={cn("max-w-[88%] whitespace-pre-wrap break-words rounded-xl rounded-br-sm px-3 py-2 text-sm leading-5", entry.status === "failed" ? "border border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200" : "bg-orange-500 text-white dark:text-[#1e2124]")}>{entry.message}</p>
+                        <div className="mt-1 flex items-center gap-2 text-[10px] text-gray-500 dark:text-gray-400">
+                          <span>{entry.status === "sending" ? t("전송 중…", "Sending…", "送信中…") : entry.status === "sent" ? t("전송됨", "Sent", "送信済み") : t("전송 실패", "Failed", "送信失敗")}</span>
+                          {entry.status === "failed" && <button type="button" className="font-bold text-orange-600 hover:underline dark:text-orange-400" onClick={() => chat.retryMessage(entry.requestId)}>{t("다시 보내기", "Retry", "再送")}</button>}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {hasNewMessage && <button type="button" onClick={scrollToLatest} className="sticky bottom-1 mx-auto mt-3 flex rounded-full bg-orange-500 px-3 py-1.5 text-xs font-bold text-white shadow-lg dark:text-[#1e2124]">{t("새 메시지 ↓", "New message ↓", "新着メッセージ ↓")}</button>}
               </div>
               {chat.token ? (
                 <form onSubmit={submit} className="flex gap-2 border-t border-gray-200 p-3 dark:border-[#3a3d41]">

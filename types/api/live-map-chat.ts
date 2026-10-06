@@ -30,6 +30,13 @@ export interface PartyInvitationV3 {
   inviter: LiveMapChatUserV3;
   invitee_user_id: string;
   status: PartyInvitationStatusV3;
+  status_reason:
+    | "cancelled"
+    | "room_closed"
+    | "room_full"
+    | "already_joined"
+    | "member_kicked"
+    | null;
   expires_at: string;
   party: {
     id: string;
@@ -63,6 +70,7 @@ export interface LiveMapChatErrorV3 {
   status: number;
   msg: string;
   retry_after: number | null;
+  request_id: string | null;
 }
 
 export type LiveMapChatServerEventV3 =

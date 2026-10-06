@@ -43,6 +43,7 @@ function useLiveMapChatState() {
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<LiveMapChatRealtimeView>({
     connection: "auth-required",
+    outgoing: [],
   });
   const [older, setOlder] = useState<
     Partial<Record<LiveMapChatChannel, LiveMapChatMessageV3[]>>
@@ -155,6 +156,7 @@ function useLiveMapChatState() {
     busy,
     me: snapshot?.user,
     messages,
+    outgoing: view.outgoing,
     invitations,
     receivedInvitations,
     partyRoomId: snapshot?.party_room_id ?? null,
@@ -164,10 +166,12 @@ function useLiveMapChatState() {
     },
     sendMessage: (channel: LiveMapChatChannel, message: string, roomId?: string) => {
       setError(null);
-      const sent = clientRef.current?.sendMessage(channel, message, roomId) ?? false;
+      const sent = clientRef.current?.sendMessage(channel, message, roomId) ?? null;
       if (!sent) setError(new LiveMapChatApiError(503, "CHAT_UNAVAILABLE"));
-      return sent;
+      return Boolean(sent);
     },
+    retryMessage: (requestId: string) =>
+      clientRef.current?.retryMessage(requestId) ?? false,
     reconnect: () => clientRef.current?.reconnect(),
     loadLatest: async (channel: LiveMapChatChannel, roomId?: string) => {
       const params = new URLSearchParams({ channel, limit: "50" });
@@ -248,6 +252,13 @@ function useLiveMapChatState() {
       }));
       return result;
     },
+    getBlockedUsers: () =>
+      request<Array<{ id: string; nickname: string }>>("/chat/blocks"),
+    unblockUser: (userId: string) =>
+      request<{ user_id: string; blocked: boolean }>(
+        `/chat/blocks/${encodeURIComponent(userId)}`,
+        "DELETE",
+      ),
     reportMessage: (
       messageId: string,
       reason: "spam" | "abuse" | "inappropriate" | "personal_info" | "other",
