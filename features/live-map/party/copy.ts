@@ -55,10 +55,11 @@ export function partyErrorText(error: Error, locale: PartyLocale) {
       "サイトへの登録を完了してください。",
     ),
     PARTY_MEMBER_KICKED: t(
-      "이 방에서 강퇴되어 재입장할 수 없습니다.",
-      "You were removed and cannot rejoin this room.",
-      "この部屋から退出させられたため、再入室できません。",
+      "이 방에서 강퇴되었습니다. 방장이 강퇴를 해제하면 다시 입장할 수 있습니다.",
+      "You were kicked. The owner must remove the kick before you can rejoin.",
+      "退出処分を受けています。リーダーが解除すると再参加できます。",
     ),
+    MEMBER_NOT_KICKED: t("현재 참여 중인 사용자는 강퇴 해제 대상이 아닙니다.", "This member is currently joined and has no kick to remove.", "参加中のメンバーには解除する退出処分がありません。"),
     PARTY_MEMBERSHIP_REQUIRED: t(
       "방 참여가 종료되었습니다.",
       "You are no longer a member of this room.",

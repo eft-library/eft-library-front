@@ -5,67 +5,32 @@ import { signIn } from "next-auth/react";
 import {
   LoaderCircle,
   Ban,
+  ShieldCheck,
   MessageCircle,
   Send,
-  ShieldAlert,
-  UserRoundX,
-  UserPlus,
   WifiOff,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils/class-name";
-import type { LiveMapChatMessageV3, PartyInvitationV3 } from "@/types/api/live-map-chat";
+import type { LiveMapChatMessageV3 } from "@/types/api/live-map-chat";
 import { partyButton } from "../party/party-forms";
 import { partyText, type PartyLocale } from "../party/copy";
 import type { LiveMapPartyController } from "../party/use-live-map-party";
-import { LiveMapChatApiError } from "./api";
+import { chatErrorText } from "./copy";
+import { ChatModerationNotice } from "./chat-moderation-notice";
+import { ChatRestrictionsPanel } from "./chat-restrictions-panel";
+import { ChatUserMenu } from "./chat-user-menu";
 import { useLiveMapChat } from "./use-live-map-chat";
 
-function chatErrorText(error: Error | null, locale: PartyLocale) {
-  if (!error) return null;
-  const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
-  const code = error instanceof LiveMapChatApiError ? error.code : "CHAT_UNAVAILABLE";
-  const messages: Record<string, string> = {
-    CHAT_RATE_LIMITED: t("메시지를 너무 빠르게 보내고 있습니다.", "You are sending messages too quickly.", "メッセージの送信が速すぎます。"),
-    CHAT_REPEATED_MESSAGE: t("같은 메시지는 잠시 후 다시 보낼 수 있습니다.", "Wait before sending the same message again.", "同じメッセージは少し待ってから送信してください。"),
-    CHAT_RESTRICTED: t("현재 채팅을 보낼 수 없습니다.", "You cannot send chat messages right now.", "現在チャットを送信できません。"),
-    PARTY_OWNER_REQUIRED: t("방장만 파티에 초대할 수 있습니다.", "Only the party owner can invite players.", "パーティーリーダーのみ招待できます。"),
-    PARTY_INVITATION_DUPLICATED: t("이미 이 사용자에게 초대를 보냈습니다.", "This user already has an invitation.", "このユーザーはすでに招待されています。"),
-    PARTY_ROOM_FULL: t("파티 정원이 찼습니다.", "The party is full.", "パーティーは満員です。"),
-    PARTY_ROOM_LOCKED: t("현재 파티 입장이 잠겨 있습니다.", "The party is locked.", "パーティーはロックされています。"),
-    PARTY_ALREADY_JOINED: t("이미 다른 파티에 참여 중입니다.", "This player is already in a party.", "すでに別のパーティーに参加しています。"),
-    PARTY_INVITATION_EXPIRED: t("초대가 만료되었습니다.", "The invitation has expired.", "招待の有効期限が切れました。"),
-    REGISTERED_USER_REQUIRED: t("사이트 계정 등록을 완료해 주세요.", "Complete your site registration first.", "サイト登録を完了してください。"),
-    CHAT_ALREADY_REPORTED: t("이미 신고한 메시지입니다.", "You already reported this message.", "このメッセージはすでに通報済みです。"),
-  };
-  return messages[code] ?? t("요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.", "Could not complete the request. Please try again.", "処理できませんでした。しばらくしてから再試行してください。");
-}
 
-function MessageRow({
-  message,
-  mine,
-  canInvite,
-  inviting,
-  locale,
-  onInvite,
-  onBlock,
-  onReport,
-  interactive,
-  invitation,
-}: {
+function MessageRow({ message, mine, locale, party, onReport, interactive }: {
   message: LiveMapChatMessageV3;
   mine: boolean;
-  canInvite: boolean;
-  inviting: boolean;
   locale: PartyLocale;
-  onInvite: () => void;
-  onBlock: () => void;
+  party: LiveMapPartyController;
   onReport: () => void;
   interactive: boolean;
-  invitation?: PartyInvitationV3;
 }) {
-  const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
-  const [menu, setMenu] = useState(false);
   const time = new Intl.DateTimeFormat(locale, {
     hour: "2-digit",
     minute: "2-digit",
@@ -73,73 +38,9 @@ function MessageRow({
   return (
     <li className={cn("flex flex-col", mine ? "items-end" : "items-start")}>
       <div className="mb-1 flex items-center gap-1.5 px-1 text-[11px] text-gray-500 dark:text-gray-400">
-        <button
-          type="button"
-          disabled={mine || !interactive}
-          onClick={() => setMenu((value) => !value)}
-          title={message.user.nickname}
-          className={cn("max-w-40 truncate text-xs font-bold text-gray-700 dark:text-gray-200", !mine && interactive && "rounded hover:text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500")}
-        >
-          {message.user.nickname}
-        </button>
+        <ChatUserMenu user={message.user} locale={locale} interactive={!mine && interactive} party={party} onReport={onReport} />
         <time dateTime={message.create_time}>{time}</time>
       </div>
-      {menu && !mine && interactive && (
-        <div className="mb-1 flex flex-wrap gap-1 rounded-md border border-gray-200 bg-white p-1 shadow-md dark:border-[#3a3d41] dark:bg-[#25282c]">
-          {invitation && invitation.status !== "pending" && (
-            <span className="w-full px-2 py-1 text-[10px] font-semibold text-gray-500 dark:text-gray-400">
-              {invitation.status === "accepted"
-                ? t("파티 참가 완료", "Joined the party", "パーティー参加済み")
-                : invitation.status === "rejected"
-                  ? t("초대 거절됨", "Invitation declined", "招待が拒否されました")
-                  : invitation.status === "expired"
-                    ? t("초대 만료됨", "Invitation expired", "招待期限切れ")
-                    : t("초대 취소됨", "Invitation cancelled", "招待キャンセル")}
-            </span>
-          )}
-          <button
-            type="button"
-            disabled={!canInvite || inviting || invitation?.status === "pending" || invitation?.status === "accepted"}
-            onClick={() => {
-              onInvite();
-              setMenu(false);
-            }}
-            className={`${partyButton} !min-h-8`}
-            title={!canInvite ? t("파티 방장만 초대할 수 있습니다.", "Only the party owner can invite.", "リーダーのみ招待できます。") : undefined}
-          >
-            <UserPlus className="h-3.5 w-3.5" />
-            {invitation?.status === "pending"
-              ? t("초대 보냄", "Invited", "招待済み")
-              : invitation?.status === "accepted"
-                ? t("참가 완료", "Joined", "参加済み")
-              : t("파티 초대", "Invite to party", "パーティー招待")}
-          </button>
-          <button
-            type="button"
-            disabled={inviting}
-            onClick={() => {
-              onBlock();
-              setMenu(false);
-            }}
-            className={`${partyButton} !min-h-8`}
-          >
-            <UserRoundX className="h-3.5 w-3.5" />
-            {t("차단", "Block", "ブロック")}
-          </button>
-          <button
-            type="button"
-            disabled={inviting}
-            onClick={() => {
-              onReport();
-              setMenu(false);
-            }}
-            className={`${partyButton} !min-h-8`}
-          >
-            <ShieldAlert className="h-3.5 w-3.5" />
-            {t("신고", "Report", "通報")}
-          </button>
-        </div>
-      )}
       <p
         className={cn(
           "max-w-[88%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-xl px-3 py-2 text-sm leading-5",
@@ -162,18 +63,18 @@ export function LiveMapChatPanel({
   locale: PartyLocale;
 }) {
   const chat = useLiveMapChat();
-  return chat.enabled ? <AdminLiveMapChatPanel party={party} locale={locale} /> : null;
+  return chat.enabled ? <LiveMapChatPanelContent party={party} locale={locale} /> : null;
 }
 
-function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyController; locale: PartyLocale }) {
+function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyController; locale: PartyLocale }) {
   const chat = useLiveMapChat();
   const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
   const [message, setMessage] = useState("");
   const [notice, setNotice] = useState<string | null>(null);
-  const [invitingId, setInvitingId] = useState<string | null>(null);
   const [reporting, setReporting] = useState<LiveMapChatMessageV3 | null>(null);
   const [reportReason, setReportReason] = useState<"spam" | "abuse" | "inappropriate" | "personal_info" | "other">("spam");
   const [reportDetail, setReportDetail] = useState("");
+  const [restrictionsOpen, setRestrictionsOpen] = useState(false);
   const [blockedOpen, setBlockedOpen] = useState(false);
   const [blockedUsers, setBlockedUsers] = useState<Array<{ id: string; nickname: string }>>([]);
   const [hasNewMessage, setHasNewMessage] = useState(false);
@@ -185,7 +86,6 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
   const outgoing = chat.outgoing
     .filter((entry) => entry.channel === "lobby")
     .sort((a, b) => a.createdAt - b.createdAt);
-  const canInvite = party.snapshot?.me.role === "owner" && Boolean(party.roomId);
   const chronological = useMemo(() => [...messages].reverse(), [messages]);
 
   useEffect(() => {
@@ -221,28 +121,6 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
     if (chat.sendMessage("lobby", value)) setMessage("");
   }
 
-  async function invite(userId: string) {
-    if (!party.roomId) return;
-    setInvitingId(userId);
-    try {
-      await chat.invite(party.roomId, userId);
-      setNotice(t("파티 초대를 보냈습니다.", "Party invitation sent.", "パーティー招待を送りました。"));
-    } catch {
-      // The shared error banner displays the API error.
-    } finally {
-      setInvitingId(null);
-    }
-  }
-
-  async function block(userId: string) {
-    try {
-      await chat.blockUser(userId);
-      setNotice(t("사용자를 차단했습니다.", "User blocked.", "ユーザーをブロックしました。"));
-    } catch {
-      // The shared error banner displays the API error.
-    }
-  }
-
   async function report(event: FormEvent) {
     event.preventDefault();
     if (!reporting) return;
@@ -257,6 +135,7 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
   }
 
   async function openBlockedUsers() {
+    setRestrictionsOpen(false);
     setBlockedOpen(true);
     try {
       setBlockedUsers(await chat.getBlockedUsers());
@@ -302,6 +181,7 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
     <div className="pointer-events-none absolute right-[8.75rem] top-3 z-[1210] flex flex-col items-end">
       {chat.open && (
         <section className="pointer-events-auto absolute right-[-8rem] top-11 flex h-[min(70dvh,38rem)] w-[22rem] max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-xl border border-gray-300 bg-white text-gray-900 shadow-xl dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100">
+          {restrictionsOpen && chat.canModerate && <ChatRestrictionsPanel locale={locale} onClose={() => setRestrictionsOpen(false)} />}
           {reporting && (
             <form onSubmit={report} className="absolute inset-x-3 top-14 z-20 space-y-3 rounded-lg border border-gray-300 bg-white p-4 shadow-xl dark:border-[#4a4d51] dark:bg-[#25282c]">
               <div className="flex items-center justify-between gap-2">
@@ -315,7 +195,7 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
                 <option value="personal_info">{t("개인정보 노출", "Personal information", "個人情報")}</option>
                 <option value="other">{t("기타", "Other", "その他")}</option>
               </select>
-              <textarea value={reportDetail} onChange={(event) => setReportDetail(event.target.value)} maxLength={1000} rows={3} placeholder={t("추가 설명 (선택)", "Details (optional)", "詳細（任意）")} className="w-full resize-none rounded-md border border-gray-300 bg-white p-2 text-sm dark:border-[#3a3d41] dark:bg-[#15171a]" />
+              <textarea value={reportDetail} onChange={(event) => setReportDetail(event.target.value)} maxLength={1000} rows={3} placeholder={t("추가 설명 (선택)", "Details (optional)", "詳細（任意）")} className="w-full resize-none rounded-md border border-gray-300 bg-white disabled:cursor-not-allowed disabled:opacity-60 p-2 text-sm dark:border-[#3a3d41] dark:bg-[#15171a]" />
               <div className="flex justify-end gap-2">
                 <button type="button" className={partyButton} onClick={() => setReporting(null)}>{t("취소", "Cancel", "キャンセル")}</button>
                 <button type="submit" className={`${partyButton} !border-red-400 !text-red-700 dark:!text-red-300`} disabled={chat.busy}>{t("신고하기", "Submit report", "通報する")}</button>
@@ -342,13 +222,14 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
               )}
             </div>
           )}
-          <header className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-[#3a3d41]">
+          <header className="flex items-center gap-2 border-b border-gray-200 px-8 py-3 sm:px-4 dark:border-[#3a3d41]">
+            <span role="status" aria-label={chat.connected ? t("연결됨", "Connected", "接続済み") : t("연결 중", "Connecting", "接続中")} className={cn("h-2.5 w-2.5 shrink-0 rounded-full", chat.connected ? "bg-emerald-500" : "bg-amber-500")} />
             <MessageCircle className="h-4 w-4 text-orange-500" />
             <h2 className="flex-1 font-bold">{t("채팅", "Chat", "チャット")}</h2>
+            {chat.canModerate && <button type="button" className={partyButton} aria-label={t("채팅 밴 관리", "Chat ban management", "チャット禁止管理")} title={t("채팅 밴 관리", "Chat ban management", "チャット禁止管理")} onClick={() => { setBlockedOpen(false); setReporting(null); setRestrictionsOpen(!restrictionsOpen); }}><ShieldCheck className="h-4 w-4" /></button>}
             {chat.token && (
               <>
                 <button type="button" className={partyButton} aria-label={t("차단한 사용자", "Blocked users", "ブロックしたユーザー")} title={t("차단한 사용자", "Blocked users", "ブロックしたユーザー")} onClick={() => void openBlockedUsers()}><Ban className="h-3.5 w-3.5" /></button>
-                <span title={chat.connected ? t("연결됨", "Connected", "接続済み") : t("연결 중", "Connecting", "接続中")} className={cn("h-2.5 w-2.5 rounded-full", chat.connected ? "bg-emerald-500" : "bg-amber-500")} />
               </>
             )}
             <button className={partyButton} aria-label={t("닫기", "Close", "閉じる")} onClick={() => chat.setOpen(false)}>
@@ -386,7 +267,7 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
                       return (
                         <Fragment key={entry.id}>
                           {date !== previousDate && <li className="flex items-center gap-2 py-1 text-[10px] font-semibold text-gray-400 before:h-px before:flex-1 before:bg-gray-200 after:h-px after:flex-1 after:bg-gray-200 dark:text-gray-500 dark:before:bg-[#3a3d41] dark:after:bg-[#3a3d41]">{date}</li>}
-                          <MessageRow message={entry} mine={entry.user.id === chat.me?.id} interactive={Boolean(chat.token)} canInvite={canInvite} inviting={invitingId === entry.user.id || chat.busy} invitation={chat.invitations.find((invitation) => invitation.room_id === party.roomId && invitation.invitee_user_id === entry.user.id)} locale={locale} onInvite={() => void invite(entry.user.id)} onBlock={() => void block(entry.user.id)} onReport={() => { chat.clearError(); setReporting(entry); }} />
+                          <MessageRow message={entry} mine={entry.user.id === chat.me?.id} interactive={Boolean(chat.token)} party={party} locale={locale} onReport={() => { chat.clearError(); setReporting(entry); }} />
                         </Fragment>
                       );
                     })}
@@ -401,7 +282,7 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
                         <p className={cn("max-w-[88%] whitespace-pre-wrap break-words rounded-xl rounded-br-sm px-3 py-2 text-sm leading-5", entry.status === "failed" ? "border border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200" : "bg-orange-500 text-white dark:text-[#1e2124]")}>{entry.message}</p>
                         <div className="mt-1 flex items-center gap-2 text-[10px] text-gray-500 dark:text-gray-400">
                           <span>{entry.status === "sending" ? t("전송 중…", "Sending…", "送信中…") : entry.status === "sent" ? t("전송됨", "Sent", "送信済み") : t("전송 실패", "Failed", "送信失敗")}</span>
-                          {entry.status === "failed" && <button type="button" className="font-bold text-orange-600 hover:underline dark:text-orange-400" onClick={() => chat.retryMessage(entry.requestId)}>{t("다시 보내기", "Retry", "再送")}</button>}
+                          {entry.status === "failed" && <button disabled={!chat.canSend} type="button" className="font-bold text-orange-600 hover:underline dark:text-orange-400" onClick={() => chat.retryMessage(entry.requestId)}>{t("다시 보내기", "Retry", "再送")}</button>}
                         </div>
                       </li>
                     ))}
@@ -409,10 +290,11 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
                 )}
                 {hasNewMessage && <button type="button" onClick={scrollToLatest} className="sticky bottom-1 mx-auto mt-3 flex rounded-full bg-orange-500 px-3 py-1.5 text-xs font-bold text-white shadow-lg dark:text-[#1e2124]">{t("새 메시지 ↓", "New message ↓", "新着メッセージ ↓")}</button>}
               </div>
+              <ChatModerationNotice locale={locale} />
               {chat.token ? (
                 <form onSubmit={submit} className="flex gap-2 border-t border-gray-200 p-3 dark:border-[#3a3d41]">
-                  <textarea aria-label={t("메시지", "Message", "メッセージ")} rows={1} maxLength={300} value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} placeholder={t("같이 플레이할 사람을 찾아보세요", "Find players to join you", "一緒にプレイする人を探しましょう")} className="min-h-9 flex-1 resize-none rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a]" />
-                  <button type="submit" disabled={!chat.connected || !message.trim()} className={`${partyButton} !px-3`} aria-label={t("보내기", "Send", "送信")}><Send className="h-4 w-4" /></button>
+                  <textarea disabled={!chat.canSend} aria-label={t("메시지", "Message", "メッセージ")} rows={1} maxLength={300} value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} placeholder={t("같이 플레이할 사람을 찾아보세요", "Find players to join you", "一緒にプレイする人を探しましょう")} className="min-h-9 flex-1 resize-none rounded-md border border-gray-300 bg-white disabled:cursor-not-allowed disabled:opacity-60 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#15171a]" />
+                  <button type="submit" disabled={!chat.canSend || !message.trim()} className={`${partyButton} !px-3`} aria-label={t("보내기", "Send", "送信")}><Send className="h-4 w-4" /></button>
                 </form>
               ) : (
                 <div className="flex items-center gap-2 border-t border-gray-200 p-3 dark:border-[#3a3d41]">
@@ -426,7 +308,6 @@ function AdminLiveMapChatPanel({ party, locale }: { party: LiveMapPartyControlle
       {!party.open && <button type="button" aria-label={t("모집 채팅", "Recruitment chat", "募集チャット")} title={t("모집 채팅", "Recruitment chat", "募集チャット")} aria-expanded={chat.open} onClick={() => { chat.setOpen(!chat.open); if (!chat.open) party.setOpen(false); }} className="pointer-events-auto relative inline-flex h-9 w-[4.5rem] items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]">
         <MessageCircle className="h-4 w-4 text-orange-500" />
         <span>{t("모집", "Recruit", "募集")}</span>
-        {chat.receivedInvitations.length > 0 && <span className="absolute -right-1 -top-1 min-w-4 rounded-full bg-orange-500 px-1 py-0.5 text-center text-[9px] leading-none text-white dark:text-[#1e2124]">{chat.receivedInvitations.length}</span>}
       </button>}
     </div>
   );

@@ -8,6 +8,7 @@ import {
   LogOut,
   Trash2,
   UserMinus,
+  UserPlus,
   X,
 } from "lucide-react";
 import { partyErrorText, partyText, type PartyLocale } from "./copy";
@@ -17,6 +18,7 @@ export type PartyConfirmKind =
   | "leave"
   | "close"
   | "kick"
+  | "unkick"
   | "transfer";
 
 export function PartyConfirmDialog({
@@ -47,18 +49,21 @@ export function PartyConfirmDialog({
     leave: t("파티 퇴장", "Leave party", "パーティーから退出"),
     close: t("파티 종료", "Close room", "パーティー終了"),
     kick: t("참여자 강퇴", "Remove member", "参加者を退出させる"),
+    unkick: t("강퇴 해제", "Remove party kick", "退出処分を解除"),
     transfer: t("방장 양도", "Transfer ownership", "リーダーを譲渡"),
   }[kind];
   const confirmLabel = {
     leave: t("퇴장하기", "Leave party", "退出する"),
     close: t("종료하기", "Close room", "終了する"),
     kick: t("강퇴하기", "Remove member", "退出させる"),
+    unkick: t("해제하기", "Remove kick", "解除する"),
     transfer: t("양도하기", "Transfer", "譲渡する"),
   }[kind];
   const Icon = {
     leave: LogOut,
     close: Trash2,
     kick: UserMinus,
+    unkick: UserPlus,
     transfer: Crown,
   }[kind];
   const destructive = kind === "close" || kind === "kick";

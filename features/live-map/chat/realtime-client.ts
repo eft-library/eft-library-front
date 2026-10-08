@@ -1,4 +1,6 @@
 import type {
+  ChatModerationStateV3,
+  PartyNotificationsV3,
   LiveMapChatErrorV3,
   LiveMapChatMessageV3,
   LiveMapChatServerEventV3,
@@ -100,13 +102,18 @@ export class LiveMapChatRealtimeClient {
     void this.connect();
   }
 
+  updateStatus(moderation: ChatModerationStateV3, notifications: PartyNotificationsV3) {
+    if (!this.view.snapshot) return;
+    this.emit({ snapshot: { ...this.view.snapshot, moderation, notifications } });
+  }
+
   sendMessage(
     channel: "lobby" | "party",
     message: string,
     roomId?: string,
     requestId = crypto.randomUUID(),
   ) {
-    if (this.socket?.readyState !== WebSocket.OPEN) return null;
+    if (this.socket?.readyState !== WebSocket.OPEN || this.view.snapshot?.moderation.restricted) return null;
     const existing = this.view.outgoing.find(
       (entry) => entry.requestId === requestId,
     );
@@ -251,7 +258,11 @@ export class LiveMapChatRealtimeClient {
     }
     const snapshot = this.view.snapshot;
     if (!snapshot) return;
-    if (event.type === "chat_message") {
+    if (event.type === "chat_moderation_updated") {
+      this.emit({ snapshot: { ...snapshot, moderation: event.data }, error: event.data.restricted ? this.view.error : undefined });
+    } else if (event.type === "party_notifications_updated") {
+      this.emit({ snapshot: { ...snapshot, notifications: event.data } });
+    } else if (event.type === "chat_message") {
       const key = event.data.channel === "lobby" ? "lobby" : "party";
       const matchingOutgoing =
         event.data.user.id === snapshot.user?.id

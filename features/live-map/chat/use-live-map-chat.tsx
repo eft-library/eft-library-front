@@ -13,6 +13,10 @@ import {
 import { getSession, useSession } from "next-auth/react";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
+  ChatModerationStateV3,
+  ChatUserActionsV3,
+  ChatRestrictionDetailV3,
+  PartyNotificationsV3,
   LiveMapChatChannel,
   LiveMapChatMessagesPageV3,
   LiveMapChatMessageV3,
@@ -38,9 +42,8 @@ function mergeMessages(
 
 function useLiveMapChatState() {
   const { data: session, status } = useSession();
-  // Keep recruitment and party chat private during the admin test rollout.
-  const enabled = status === "authenticated" && session?.userInfo?.is_admin === true;
-  const token = enabled ? session?.accessToken : undefined;
+  const enabled = status !== "loading";
+  const token = session?.accessToken;
   const account = session?.userInfo?.email ?? session?.user?.email;
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<LiveMapChatRealtimeView>({
@@ -72,7 +75,7 @@ function useLiveMapChatState() {
         const latest = await getSession();
         const latestAccount =
           latest?.userInfo?.email ?? latest?.user?.email;
-        if (!account || latest?.userInfo?.is_admin !== true) return undefined;
+        if (!account) return undefined;
         return latestAccount === account ? latest?.accessToken : undefined;
       },
       onChange: setView,
@@ -91,6 +94,23 @@ function useLiveMapChatState() {
       document.removeEventListener("visibilitychange", wake);
     };
   }, [account, token, enabled]);
+
+  const refreshStatus = useCallback(async () => {
+    if (!enabled || !token) return;
+    const client = clientRef.current;
+    const [moderation, notifications] = await Promise.all([
+      liveMapChatRequest<ChatModerationStateV3>("/chat/me/moderation", token),
+      liveMapChatRequest<PartyNotificationsV3>("/party-invitations/notifications", token),
+    ]);
+    if (client && clientRef.current === client) client.updateStatus(moderation, notifications);
+  }, [enabled, token]);
+
+  useEffect(() => {
+    if (!enabled) return;
+    void refreshStatus().catch(() => undefined);
+    const timer = window.setInterval(() => void refreshStatus().catch(() => undefined), 30000);
+    return () => window.clearInterval(timer);
+  }, [enabled, refreshStatus, view.connection]);
 
   const snapshot = enabled ? view.snapshot : undefined;
   const messages = useMemo(
@@ -116,7 +136,8 @@ function useLiveMapChatState() {
 
   const request = useCallback(
     async <T,>(path: string, method = "GET", body?: unknown) => {
-      if (!enabled) throw new LiveMapChatApiError(403, "CHAT_ADMIN_REQUIRED");
+      const guestRead = method === "GET" && path.startsWith("/chat/messages?") && new URLSearchParams(path.split("?")[1]).get("channel") === "lobby";
+      if (!enabled || (!token && !guestRead)) throw new LiveMapChatApiError(401, "LOGIN_REQUIRED");
       setBusy(true);
       setError(null);
       try {
@@ -152,6 +173,13 @@ function useLiveMapChatState() {
 
   return {
     enabled,
+    moderation: snapshot?.moderation,
+    canModerate: enabled && snapshot?.moderation.is_admin === true,
+    canSend: enabled && Boolean(token) && view.connection === "connected" && snapshot?.moderation.restricted === false,
+    invitationCount: snapshot?.notifications.party_invitation_count ?? 0,
+    refreshStatus,
+    getUserActions: (userId: string, roomId?: string) => liveMapChatRequest<ChatUserActionsV3>(`/chat/users/${encodeURIComponent(userId)}/actions${roomId ? `?${new URLSearchParams({ room_id: roomId })}` : ""}`, token),
+    getRestrictions: (offset = 0, signal?: AbortSignal) => liveMapChatRequest<ChatRestrictionDetailV3[]>(`/chat/admin/restrictions?limit=50&offset=${offset}`, token, "GET", undefined, signal),
     open: enabled && open,
     setOpen,
     token,
@@ -173,13 +201,13 @@ function useLiveMapChatState() {
     },
     sendMessage: (channel: LiveMapChatChannel, message: string, roomId?: string) => {
       setError(null);
-      if (!enabled) return false;
+      if (!enabled || !token || snapshot?.moderation.restricted !== false) return false;
       const sent = clientRef.current?.sendMessage(channel, message, roomId) ?? null;
       if (!sent) setError(new LiveMapChatApiError(503, "CHAT_UNAVAILABLE"));
       return Boolean(sent);
     },
     retryMessage: (requestId: string) =>
-      enabled && (clientRef.current?.retryMessage(requestId) ?? false),
+      enabled && Boolean(token) && snapshot?.moderation.restricted === false && (clientRef.current?.retryMessage(requestId) ?? false),
     reconnect: () => { if (enabled) clientRef.current?.reconnect(); },
     loadLatest: async (channel: LiveMapChatChannel, roomId?: string) => {
       const params = new URLSearchParams({ channel, limit: "50" });
@@ -211,19 +239,21 @@ function useLiveMapChatState() {
         invitee_user_id: inviteeUserId,
       });
       storeInvitation(invitation);
+      void refreshStatus().catch(() => undefined);
       return invitation;
     },
-    acceptInvitation: (id: string) =>
-      request<PartyInvitationAcceptResponseV3>(
-        `/party-invitations/${encodeURIComponent(id)}/accept`,
-        "POST",
-      ),
+    acceptInvitation: async (id: string) => {
+      const result = await request<PartyInvitationAcceptResponseV3>(`/party-invitations/${encodeURIComponent(id)}/accept`, "POST");
+      await refreshStatus().catch(() => undefined);
+      return result;
+    },
     rejectInvitation: async (id: string) => {
       const invitation = await request<PartyInvitationV3>(
         `/party-invitations/${encodeURIComponent(id)}/reject`,
         "POST",
       );
       storeInvitation(invitation);
+      void refreshStatus().catch(() => undefined);
       return invitation;
     },
     revokeInvitation: async (id: string) => {
@@ -232,6 +262,7 @@ function useLiveMapChatState() {
         "DELETE",
       );
       storeInvitation(invitation);
+      void refreshStatus().catch(() => undefined);
       return invitation;
     },
     blockUser: async (userId: string) => {
@@ -267,6 +298,10 @@ function useLiveMapChatState() {
         `/chat/blocks/${encodeURIComponent(userId)}`,
         "DELETE",
       ),
+    restrictUser: (userId: string, reason: string, expiresAt: string | null) =>
+      request<{ user_id: string; restricted: boolean }>(`/chat/admin/restrictions/${encodeURIComponent(userId)}`, "PUT", { reason, expires_at: expiresAt }),
+    unrestrictUser: (userId: string) =>
+      request<{ user_id: string; restricted: boolean }>(`/chat/admin/restrictions/${encodeURIComponent(userId)}`, "DELETE"),
     reportMessage: (
       messageId: string,
       reason: "spam" | "abuse" | "inappropriate" | "personal_info" | "other",

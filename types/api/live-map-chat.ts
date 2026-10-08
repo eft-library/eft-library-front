@@ -17,15 +17,42 @@ export interface LiveMapChatMessageV3 {
 }
 
 export type PartyInvitationStatusV3 =
-  | "pending"
-  | "accepted"
-  | "rejected"
-  | "revoked"
-  | "expired";
+  "pending" | "accepted" | "rejected" | "revoked" | "expired";
+
+export interface ChatModerationStateV3 {
+  is_admin: boolean;
+  restricted: boolean;
+  reason: string | null;
+  expires_at: string | null;
+}
+
+export interface PartyNotificationsV3 {
+  party_invitation_count: number;
+  notification_tab: "party";
+}
+
+export interface ChatUserActionsV3 {
+  user: LiveMapChatUserV3;
+  blocked: boolean;
+  can_block: boolean;
+  can_restrict: boolean;
+  can_invite: boolean;
+  invite_disabled_reason: string | null;
+  member_id: string | null;
+  can_unkick: boolean;
+}
+
+export interface ChatRestrictionDetailV3 {
+  user: LiveMapChatUserV3;
+  reason: string;
+  expires_at: string | null;
+  create_time: string;
+}
 
 export interface PartyInvitationV3 {
   id: string;
   invitation_id: string;
+  notification_tab: "party";
   room_id: string;
   inviter: LiveMapChatUserV3;
   invitee_user_id: string;
@@ -58,6 +85,8 @@ export interface LiveMapChatSnapshotV3 {
   party_next_before: string | null;
   party_invitations: PartyInvitationV3[];
   heartbeat_interval_seconds: number;
+  moderation: ChatModerationStateV3;
+  notifications: PartyNotificationsV3;
 }
 
 export interface LiveMapChatMessagesPageV3 {
@@ -96,7 +125,11 @@ export type LiveMapChatServerEventV3 =
       type: "message_deleted";
       event_id: string;
       server_time: string;
-      data: { message_id: string; channel: LiveMapChatChannel; room_id: string | null };
+      data: {
+        message_id: string;
+        channel: LiveMapChatChannel;
+        room_id: string | null;
+      };
     }
   | {
       type: "message_ack";
@@ -108,6 +141,18 @@ export type LiveMapChatServerEventV3 =
         duplicate: boolean;
         realtime_available: boolean;
       };
+    }
+  | {
+      type: "chat_moderation_updated";
+      event_id: string;
+      server_time: string;
+      data: ChatModerationStateV3;
+    }
+  | {
+      type: "party_notifications_updated";
+      event_id: string;
+      server_time: string;
+      data: PartyNotificationsV3;
     }
   | LiveMapChatErrorV3;
 

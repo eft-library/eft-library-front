@@ -26,6 +26,7 @@ import {
 } from "./party-forms";
 import type { LiveMapPartyController } from "./use-live-map-party";
 import { useLiveMapChat } from "../chat/use-live-map-chat";
+import { chatErrorText } from "../chat/copy";
 import { PartyChatSection } from "../chat/party-chat-section";
 
 export function LiveMapPartyPanel({
@@ -212,11 +213,7 @@ export function LiveMapPartyPanel({
           )}
           className="pointer-events-auto mb-2 flex max-h-[min(70dvh,42rem)] w-[22rem] max-w-full flex-col overflow-hidden rounded-xl border border-gray-300 bg-white text-gray-900 shadow-xl outline-none dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100"
         >
-          <header className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-[#3a3d41]">
-            <Users className="h-4 w-4 text-orange-500" />
-            <h2 className="min-w-0 flex-1 truncate font-bold">
-              {t("파티", "Party", "パーティー")}
-            </h2>
+          <header className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-8 py-3 sm:px-4 dark:border-[#3a3d41]">
             {party.roomId && (
               <span
                 role="status"
@@ -229,6 +226,10 @@ export function LiveMapPartyPanel({
                 />
               </span>
             )}
+            <Users className="h-4 w-4 text-orange-500" />
+            <h2 className="min-w-0 flex-1 truncate font-bold">
+              {t("파티", "Party", "パーティー")}
+            </h2>
             <button
               type="button"
               className={partyButton}
@@ -246,6 +247,7 @@ export function LiveMapPartyPanel({
             ref={contentRef}
             className="space-y-4 overflow-y-auto overscroll-contain p-4"
           >
+            {chat.enabled && chat.error && <p role="alert" className="mx-3 mt-3 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-xs font-semibold text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">{chatErrorText(chat.error, locale)}</p>}
             {error && (!markerFormVisible || error !== party.error) && (
               <p
                 role="alert"
@@ -775,6 +777,13 @@ export function LiveMapPartyPanel({
                       </li>
                     ))}
                 </ul>
+                {owner && snapshot.members.some((member) => member.status === "kicked") && <details className="rounded-lg border border-gray-200 p-3 dark:border-[#3a3d41]">
+                  <summary className="cursor-pointer text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">{t("강퇴된 참여자", "Kicked members", "退出処分のメンバー")}</summary>
+                  <ul className="mt-3 space-y-2">{snapshot.members.filter((member) => member.status === "kicked").map((member) => <li key={member.id} className="flex items-center justify-between gap-2">
+                    <span className="min-w-0 truncate text-sm font-semibold">{member.nickname}</span>
+                    <button type="button" disabled={party.busy} className={partyButton} aria-label={`${member.nickname} ${t("강퇴 해제", "remove kick", "退出処分を解除")}`} onClick={() => confirmAction("unkick", t(`${member.nickname}님의 강퇴를 해제할까요? 해제 후 새 초대나 비밀번호로 다시 입장할 수 있습니다. 자동으로 참가하지는 않습니다.`, `Remove the kick for ${member.nickname}? They can accept a new invitation or rejoin with the password. They will not automatically rejoin.`, `${member.nickname}さんの退出処分を解除しますか？新しい招待やパスワードで再参加できます。自動では再参加しません。`), `/${party.roomId}/members/${member.id}/kick`, "DELETE")}>{t("강퇴 해제", "Remove kick", "解除")}</button>
+                  </li>)}</ul>
+                </details>}
                 {chat.enabled && <PartyChatSection roomId={snapshot.room.id} locale={locale} />}
                 <details>
                   <summary className="cursor-pointer rounded py-1 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
@@ -998,21 +1007,22 @@ export function LiveMapPartyPanel({
           </div>
         </section>
       )}
-      {!chat.open && <button
+      <button
         ref={buttonRef}
         type="button"
         aria-expanded={party.open}
-        onClick={() => party.setOpen(!party.open)}
-        className="pointer-events-auto order-first mb-2 inline-flex h-9 w-[7.5rem] shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold leading-none text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
+        onClick={() => { chat.setOpen(false); party.setOpen(!party.open); }}
+        className="pointer-events-auto relative order-first mb-2 inline-flex h-9 w-[7.5rem] shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold leading-none text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]"
       >
         <Users className="h-4 w-4 shrink-0 text-orange-600 dark:text-orange-400" />
         <span className="shrink-0">{t("파티", "Party", "パーティー")}</span>
+        {chat.enabled && chat.invitationCount > 0 && <span aria-label={t(`받은 파티 초대 ${chat.invitationCount}개`, `${chat.invitationCount} party invitations`, `パーティー招待 ${chat.invitationCount}件`)} className="absolute -right-1 -top-1 min-w-5 rounded-full bg-orange-600 px-1 py-0.5 text-center text-xs leading-none text-white dark:bg-orange-400 dark:text-gray-950">{chat.invitationCount}</span>}
         {snapshot && (
           <span className="shrink-0 rounded bg-orange-100 px-1.5 py-1 text-xs leading-none tabular-nums text-orange-800 dark:bg-orange-950 dark:text-orange-200">
             {snapshot.room.member_count}/{snapshot.room.max_members}
           </span>
         )}
-      </button>}
+      </button>
     </div>
   );
 }

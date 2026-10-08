@@ -88,22 +88,5 @@ export function PartyPassword({
     );
   }
 
-  return (
-    <div className="space-y-1 rounded-lg border border-gray-200 px-2.5 py-2 dark:border-[#3a3d41]">
-      <p className="text-xs font-semibold">
-        {t(
-          "방 비밀번호",
-          "Room password",
-          "部屋のパスワード",
-        )}
-      </p>
-      <p className="text-xs text-gray-600 dark:text-gray-300">
-        {t(
-          "이 탭에 저장된 비밀번호가 없습니다. 방장에게 확인하거나 방 설정에서 새 비밀번호를 지정해 주세요.",
-          "No password is saved in this tab. Ask the owner or set a new password in room settings.",
-          "このタブにパスワードがありません。リーダーに確認するか部屋設定で変更してください。",
-        )}
-      </p>
-    </div>
-  );
+  return null;
 }
