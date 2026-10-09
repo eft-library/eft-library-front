@@ -30,6 +30,13 @@ export const metadata: Metadata = {
   description:
     "Escape from Tarkov 퀘스트, 지도, 아이템, 은신처, 보스, 시세 정보를 한곳에서 확인할 수 있는 타르코프 도서관입니다.",
   metadataBase: new URL(getSiteUrl()),
+  verification: process.env.NAVER_SITE_VERIFICATION
+    ? {
+        other: {
+          "naver-site-verification": process.env.NAVER_SITE_VERIFICATION,
+        },
+      }
+    : undefined,
   openGraph: {
     title: "타르코프 도서관 - EFT Library",
     description:
