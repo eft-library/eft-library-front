@@ -81,6 +81,8 @@ const invitation = {
         party_invitation_count: 1,
         notification_tab: "party",
       };
+      let preferences = { allow_party_invites: true };
+      let preferenceFailure = false, incomingCancelled = false, cooldownUntil = 0, inviteFailure = false;
       let banned = false,
         block = false,
         unkick = false,
@@ -98,13 +100,15 @@ const invitation = {
         });
       const chatSnapshot = () => ({
         user: admin === null ? null : me,
+        online_users: admin === null ? [other] : [me, other],
+        party_invite_preferences: admin === null ? null : preferences,
         lobby: [message],
         party: admin === null ? [] : [{ ...message, channel: "party", room_id: roomId }],
         party_room_id: admin === null ? null : roomId,
         lobby_next_before: null,
         party_next_before: null,
         party_invitations: [
-          invitation,
+          incomingCancelled ? { ...invitation, status: "revoked", status_reason: "receiver_unavailable" } : invitation,
           {
             ...invitation,
             id: "outgoing",
@@ -181,6 +185,24 @@ const invitation = {
         requests.push({ path, method, body, query: url.search });
         const ok = (data) =>
           r.fulfill({ json: { status: 200, msg: "OK", data } });
+        if (path === "/chat/me/party-invite-preferences") {
+          if (method === "PUT") {
+            if (preferenceFailure) return r.fulfill({ status: 503, json: { status: 503, msg: "CHAT_UNAVAILABLE", data: null } });
+            assert.equal(typeof body.allow_party_invites, "boolean");
+            assert.deepEqual(Object.keys(body), ["allow_party_invites"]);
+            preferences = body;
+            if (!preferences.allow_party_invites) {
+              incomingCancelled = true;
+              notifications = { ...notifications, party_invitation_count: 0 };
+              for (const socket of chatSockets) {
+                socket.send(frame("party_notifications_updated", notifications));
+                socket.send(frame("party_invitation_updated", { ...invitation, status: "revoked", status_reason: "receiver_unavailable" }));
+              }
+            }
+            for (const socket of chatSockets) socket.send(frame("party_invite_preferences_updated", preferences));
+          }
+          return ok(preferences);
+        }
         if (path === "/chat/me/moderation") return ok(moderation);
         if (path === "/party-invitations/notifications")
           return ok(notifications);
@@ -195,8 +217,9 @@ const invitation = {
             blocked: block,
             can_block: true,
             can_restrict: admin === true,
-            can_invite: !!url.searchParams.get("room_id") && unkick,
-            invite_disabled_reason: unkick ? null : "PARTY_MEMBER_KICKED",
+            can_invite: !!url.searchParams.get("room_id") && unkick && Date.now() >= cooldownUntil,
+            invite_disabled_reason: Date.now() < cooldownUntil ? "PARTY_INVITATION_REJECT_COOLDOWN" : unkick ? null : "PARTY_MEMBER_KICKED",
+            retry_after: Date.now() < cooldownUntil ? Math.ceil((cooldownUntil - Date.now()) / 1000) : null,
             member_id: kickedId,
             can_unkick: !!url.searchParams.get("room_id") && !unkick,
           });
@@ -223,6 +246,7 @@ const invitation = {
           return ok({ user_id: other.id, blocked: block });
         }
         if (path === "/party-invitations" && method === "POST") {
+          if (inviteFailure) return r.fulfill({ status: 429, json: { status: 429, msg: "PARTY_INVITATION_RATE_LIMITED", data: { retry_after: 1 } } });
           assert.equal(body.invitee_user_id, other.id);
           assert(unkick);
           return ok({ ...invitation, invitee_user_id: other.id, inviter: me });
@@ -258,12 +282,88 @@ const invitation = {
         await page.getByRole("button", { name: "모집 채팅", exact: true }).click();
         await page.getByText(message.message, { exact: true }).waitFor();
         assert.equal(chatConnections, 1);
+        const presence = page.getByRole("region", { name: "현재 채팅 접속자", exact: true });
+        await presence.getByText(`현재 접속자 ${admin === null ? 1 : 2}명`, { exact: true }).waitFor();
+        await presence.getByText(other.nickname, { exact: true }).waitFor();
+        if (admin !== null) await presence.getByText("(나)", { exact: true }).waitFor();
+        for (const socket of chatSockets) socket.send(frame("online_users_updated", []));
+        await presence.getByText("현재 접속자 0명", { exact: true }).waitFor();
+        await presence.getByText("현재 접속 중인 로그인 사용자가 없습니다.", { exact: true }).waitFor();
+        for (const socket of chatSockets) socket.send(frame("online_users_updated", [other, { id: "same-name", nickname: other.nickname }]));
+        await presence.getByText("현재 접속자 2명", { exact: true }).waitFor();
+        assert.equal(await presence.getByText(other.nickname, { exact: true }).count(), 2);
+        for (const socket of chatSockets) { const legacy = chatSnapshot(); delete legacy.online_users; socket.send(frame("snapshot", legacy)); }
+        await presence.getByText("접속자 확인 중", { exact: true }).waitFor();
+        assert.equal(await presence.getByText("현재 접속자 0명", { exact: true }).count(), 0);
+        for (const socket of chatSockets) socket.send(frame("snapshot", chatSnapshot()));
+        await presence.getByText(`현재 접속자 ${admin === null ? 1 : 2}명`, { exact: true }).waitFor();
+        const nicknameSearch = presence.getByRole("searchbox", { name: "접속자 닉네임 검색", exact: true });
+        await nicknameSearch.fill("없는닉네임");
+        await presence.getByText("검색 결과가 없습니다.", { exact: true }).waitFor();
+        await presence.getByText(`현재 접속자 ${admin === null ? 1 : 2}명`, { exact: true }).waitFor();
+        await nicknameSearch.fill(other.nickname);
+        await presence.getByText(other.nickname, { exact: true }).waitFor();
+        if (admin !== null) {
+          const onlineUserButton = presence.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true });
+          assert(await onlineUserButton.evaluate((button) => Math.abs(button.getBoundingClientRect().width - button.closest("li").getBoundingClientRect().width) < 1), "Online user button must cover the entire row");
+          const rowBounds = await onlineUserButton.boundingBox();
+          await onlineUserButton.click({ position: { x: rowBounds.width - 8, y: rowBounds.height / 2 } });
+          await page.getByRole("button", { name: "파티 초대", exact: true }).waitFor();
+          await page.keyboard.press("Escape");
+        } else {
+          assert.equal(await presence.getByRole("button").count(), 0);
+        }
+        await nicknameSearch.fill("");
+        if (admin === null) {
+          assert.equal(await presence.getByRole("switch").count(), 0);
+          assert(!requests.some(entry => entry.path === "/chat/me/party-invite-preferences"));
+        } else {
+          const toggle = presence.getByRole("switch", { name: "파티 초대 받기", exact: true });
+          await toggle.waitFor();
+          assert.equal(await toggle.getAttribute("aria-checked"), "true");
+          await toggle.click();
+          await page.waitForFunction(() => document.querySelector('[role="switch"]')?.getAttribute("aria-checked") === "false");
+          assert.equal(await page.getByLabel("받은 파티 초대 1개", { exact: true }).count(), 0);
+          assert.equal(await presence.getByText(other.nickname, { exact: true }).count(), 1);
+          for (const socket of chatSockets) socket.send(frame("snapshot", chatSnapshot()));
+          assert.equal(await toggle.getAttribute("aria-checked"), "false");
+          preferenceFailure = true;
+          await toggle.click();
+          await presence.getByRole("alert").waitFor();
+          assert.equal(await toggle.getAttribute("aria-checked"), "false");
+          preferenceFailure = false;
+          await toggle.click();
+          await page.waitForFunction(() => document.querySelector('[role="switch"]')?.getAttribute("aria-checked") === "true");
+          assert.equal(notifications.party_invitation_count, 0);
+          preferences = { allow_party_invites: false };
+          for (const socket of chatSockets) socket.send(frame("party_invite_preferences_updated", preferences));
+          await page.waitForFunction(() => document.querySelector('[role="switch"]')?.getAttribute("aria-checked") === "false");
+          console.log("PASS invite preferences, cancellation, failed save, snapshot and other-tab events");
+          unkick = true;
+          cooldownUntil = Date.now() + 1100;
+          await presence.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).click();
+          const inviteButton = page.getByRole("button", { name: "파티 초대", exact: true });
+          await inviteButton.waitFor();
+          assert.equal(await inviteButton.isDisabled(), true);
+          await page.getByText(/초대가 거절되어 잠시 후 다시 초대할 수 있습니다/).waitFor();
+          await page.waitForFunction(() => [...document.querySelectorAll("button")].some(button => button.textContent.includes("파티 초대") && !button.disabled));
+          inviteFailure = true;
+          await inviteButton.click();
+          await page.getByRole("dialog").getByText(/초대를 너무 자주 보냈습니다.*1초 후/).waitFor();
+          inviteFailure = false;
+          unkick = false;
+          await page.keyboard.press("Escape");
+          console.log("PASS cooldown retry and POST limit errors with data.retry_after");
+        }
+        console.log("PASS nickname search and online user menu", admin === null ? "anonymous" : "regular");
+        console.log("PASS online users snapshot, replacement, duplicate nicknames, legacy snapshot", admin === null ? "anonymous" : "regular");
+
         assert.equal(await page.getByRole("button", { name: "채팅 밴 관리", exact: true }).count(), 0);
         if (admin === null) {
           await page.getByText("메시지를 보내려면 로그인해 주세요.", { exact: true }).waitFor();
           assert.equal(await page.getByRole("textbox", { name: "메시지", exact: true }).count(), 0);
         } else {
-          await page.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).click();
+          await page.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).last().click();
           await page.getByRole("button", { name: "차단", exact: true }).waitFor();
           assert.equal(await page.getByRole("button", { name: "채팅 밴", exact: true }).count(), 0);
           assert.equal(await page.getByRole("button", { name: "밴 해제", exact: true }).count(), 0);
@@ -296,7 +396,7 @@ const invitation = {
         .getByRole("button", {
           name: other.nickname + " 사용자 메뉴",
           exact: true,
-        })
+        }).last()
         .click();
       const messageAfter = await page
         .getByText(message.message, { exact: true })
@@ -348,6 +448,17 @@ const invitation = {
             .evaluate((e) => e.getBoundingClientRect().right <= innerWidth + 1),
         );
       }
+      await page.keyboard.press("Escape");
+      await page.getByRole("button", { name: "접속자", exact: true }).click();
+      const mobileUsers = page.getByRole("region", { name: "현재 채팅 접속자", exact: true });
+      await mobileUsers.getByText("현재 접속자 2명", { exact: true }).waitFor();
+      assert.equal(await page.getByRole("textbox", { name: "메시지", exact: true }).isVisible(), false);
+      await page.screenshot({ path: join(tmpdir(), "chat-controls-online-users-mobile.png") });
+      await page.getByRole("button", { name: "채팅", exact: true }).click();
+      assert.equal(await mobileUsers.isVisible(), false);
+      await page.getByRole("textbox", { name: "메시지", exact: true }).waitFor();
+      await page.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).last().click();
+      console.log("PASS mobile online users and chat navigation");
       await page
         .getByRole("button", { name: "강퇴 해제", exact: true })
         .click();
@@ -360,18 +471,18 @@ const invitation = {
           exact: true,
         })
         .waitFor();
-      await page
-        .getByRole("button", {
-          name: other.nickname + " 사용자 메뉴",
-          exact: true,
-        })
-        .click();
+      await page.getByRole("button", { name: "접속자", exact: true }).click();
+      await mobileUsers.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).click();
       await page
         .getByRole("button", { name: "파티 초대", exact: true })
         .click();
       await page
         .getByText("파티 초대를 보냈습니다.", { exact: true })
         .waitFor();
+      await page.keyboard.press("Escape");
+      await page.getByRole("button", { name: "채팅", exact: true }).click();
+      await page.getByRole("button", { name: other.nickname + " 사용자 메뉴", exact: true }).last().click();
+      console.log("PASS party invitation from online user list");
       await page.getByRole("button", { name: "채팅 밴", exact: true }).waitFor();
       assert.equal(await page.getByRole("button", { name: "밴 해제", exact: true }).count(), 0);
       await page.getByRole("button", { name: "채팅 밴", exact: true }).click();
@@ -406,7 +517,7 @@ const invitation = {
         .getByRole("button", {
           name: other.nickname + " 사용자 메뉴",
           exact: true,
-        })
+        }).last()
         .click();
       await page.getByRole("button", { name: "밴 해제", exact: true }).waitFor();
       assert.equal(await page.getByRole("button", { name: "채팅 밴", exact: true }).count(), 0);

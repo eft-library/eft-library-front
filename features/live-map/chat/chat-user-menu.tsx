@@ -26,6 +26,7 @@ export function ChatUserMenu({
   party,
   onReport,
   onChanged,
+  variant = "nickname",
 }: {
   user: LiveMapChatUserV3;
   locale: PartyLocale;
@@ -33,6 +34,7 @@ export function ChatUserMenu({
   party?: LiveMapPartyController;
   onReport?: () => void;
   onChanged?: () => void;
+  variant?: "nickname" | "row";
 }) {
   const chat = useLiveMapChat();
   const t = (ko: string, en: string, ja: string) =>
@@ -80,6 +82,26 @@ export function ChatUserMenu({
   });
   const [pending, setPending] = useState(false);
   const [menuError, setMenuError] = useState<Error | null>(null);
+  const refetchActions = actionsQuery.refetch;
+  const invitationState = chat.invitations
+    .filter((entry) => entry.invitee_user_id === user.id)
+    .map((entry) => `${entry.invitation_id}:${entry.status}:${entry.status_reason}`)
+    .join("|");
+
+  useEffect(() => {
+    if (open && interactive) void refetchActions();
+  }, [open, interactive, invitationState, refetchActions]);
+
+  useEffect(() => {
+    if (!open) return;
+    const seconds = Math.max(actions?.retry_after ?? 0, menuError instanceof LiveMapChatApiError ? menuError.retryAfter : 0);
+    if (seconds <= 0) return;
+    const timer = window.setTimeout(() => {
+      setMenuError(null);
+      void refetchActions();
+    }, seconds * 1000);
+    return () => window.clearTimeout(timer);
+  }, [open, actions?.retry_after, actionsQuery.dataUpdatedAt, menuError, refetchActions]);
 
   async function runMenu(operation: () => Promise<unknown>, success: string) {
     setPending(true);
@@ -93,6 +115,7 @@ export function ChatUserMenu({
       setMenuError(
         error instanceof Error ? error : new Error("CHAT_UNAVAILABLE"),
       );
+      void actionsQuery.refetch();
     } finally {
       setPending(false);
     }
@@ -249,9 +272,11 @@ export function ChatUserMenu({
           setNotice(null);
           setMenuError(null);
         }}
-        className="inline-flex max-w-full items-center gap-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs font-bold text-gray-700 transition enabled:border-orange-200 enabled:bg-orange-50 enabled:text-orange-800 enabled:hover:border-orange-400 enabled:hover:bg-orange-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-gray-200 dark:enabled:border-orange-800 dark:enabled:bg-orange-950/50 dark:enabled:text-orange-200 dark:enabled:hover:bg-orange-900/50"
+        className={variant === "row"
+          ? "flex w-full items-center justify-between gap-2 rounded-md border border-gray-200 bg-gray-100 px-2.5 py-2 text-left text-xs font-semibold text-gray-700 transition enabled:hover:border-orange-400 enabled:hover:bg-orange-50 enabled:hover:text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 aria-expanded:border-orange-400 aria-expanded:bg-orange-50 aria-expanded:text-orange-800 dark:border-[#3a3d41] dark:bg-[#2a2d31] dark:text-gray-200 dark:enabled:hover:border-orange-700 dark:enabled:hover:bg-orange-950/50 dark:enabled:hover:text-orange-200 dark:aria-expanded:border-orange-700 dark:aria-expanded:bg-orange-950/50 dark:aria-expanded:text-orange-200"
+          : "inline-flex max-w-full items-center gap-1 rounded-md border border-transparent px-1.5 py-0.5 text-xs font-bold text-gray-700 transition enabled:border-orange-200 enabled:bg-orange-50 enabled:text-orange-800 enabled:hover:border-orange-400 enabled:hover:bg-orange-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-gray-200 dark:enabled:border-orange-800 dark:enabled:bg-orange-950/50 dark:enabled:text-orange-200 dark:enabled:hover:bg-orange-900/50"}
       >
-        <span className="max-w-40 truncate" title={user.nickname}>
+        <span className={variant === "row" ? "min-w-0 flex-1 truncate" : "max-w-40 truncate"} title={user.nickname}>
           {user.nickname}
         </span>
         {interactive && (
@@ -321,6 +346,7 @@ export function ChatUserMenu({
                           new LiveMapChatApiError(
                             403,
                             actions.invite_disabled_reason,
+                            actions.retry_after ?? 0,
                           ),
                           locale,
                         )}
@@ -380,17 +406,19 @@ export function ChatUserMenu({
               </>
             )}
             {actions?.can_restrict && chat.canModerate && (
-              restrictionQuery.isPending || restrictionQuery.isFetching ? (
-                <p role="status" className="w-full text-xs text-gray-600 dark:text-gray-300">{t("밴 상태 확인 중…", "Checking ban status…", "禁止状態を確認中…")}</p>
+              <div className="contents" aria-busy={restrictionQuery.isFetching}>
+              {restrictionQuery.isPending ? (
+                <span aria-hidden="true" className="h-9 w-24" />
               ) : restrictionQuery.isError ? (
                 <p role="alert" className="w-full text-xs text-red-700 dark:text-red-300">{t("밴 상태를 확인하지 못했습니다.", "Could not check ban status.", "禁止状態を確認できませんでした。")}
                   <button type="button" onClick={() => void restrictionQuery.refetch()} className="ml-2 underline">{t("다시 시도", "Retry", "再試行")}</button>
                 </p>
               ) : restrictionQuery.data ? (
-                <button type="button" disabled={chat.busy || pending} onClick={() => begin("unban")} className={partyButton}><ShieldCheck className="h-3.5 w-3.5" />{t("밴 해제", "Remove ban", "禁止解除")}</button>
+                <button type="button" disabled={chat.busy || pending || restrictionQuery.isFetching} onClick={() => begin("unban")} className={partyButton}><ShieldCheck className="h-3.5 w-3.5" />{t("밴 해제", "Remove ban", "禁止解除")}</button>
               ) : (
-                <button type="button" disabled={chat.busy || pending} onClick={() => begin("ban")} className={`${partyButton} !text-red-700 dark:!text-red-300`}><Ban className="h-3.5 w-3.5" />{t("채팅 밴", "Ban from chat", "チャット禁止")}</button>
-              )
+                <button type="button" disabled={chat.busy || pending || restrictionQuery.isFetching} onClick={() => begin("ban")} className={`${partyButton} !text-red-700 dark:!text-red-300`}><Ban className="h-3.5 w-3.5" />{t("채팅 밴", "Ban from chat", "チャット禁止")}</button>
+              )}
+              </div>
             )}
           </div>,
           document.body,

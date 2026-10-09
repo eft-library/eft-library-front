@@ -29,19 +29,20 @@ export async function liveMapChatRequest<T>(
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  let payload: { msg?: string; data?: T | null } = {};
+  let payload: { msg?: string; data?: T | { retry_after?: number } | null } = {};
   try {
     payload = (await response.json()) as typeof payload;
   } catch {
     // Preserve the HTTP status when an upstream error has no JSON body.
   }
   if (!response.ok || payload.data == null) {
-    const retryAfter = Number(response.headers.get("Retry-After"));
+    const dataRetryAfter = payload.data && typeof payload.data === "object" && "retry_after" in payload.data ? payload.data.retry_after : undefined;
+    const retryAfter = Number(dataRetryAfter ?? response.headers.get("Retry-After"));
     throw new LiveMapChatApiError(
       response.status,
       payload.msg ?? "CHAT_UNAVAILABLE",
       Number.isFinite(retryAfter) ? retryAfter : 0,
     );
   }
-  return payload.data;
+  return payload.data as T;
 }

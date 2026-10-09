@@ -1,4 +1,5 @@
 import type {
+  PartyInvitePreferencesV3,
   ChatModerationStateV3,
   PartyNotificationsV3,
   LiveMapChatErrorV3,
@@ -54,6 +55,7 @@ function upsertInvitation(
 }
 
 export class LiveMapChatRealtimeClient {
+  private preferencesRevision = 0;
   private socket: WebSocket | null = null;
   private disposed = false;
   private generation = 0;
@@ -105,6 +107,16 @@ export class LiveMapChatRealtimeClient {
   updateStatus(moderation: ChatModerationStateV3, notifications: PartyNotificationsV3) {
     if (!this.view.snapshot) return;
     this.emit({ snapshot: { ...this.view.snapshot, moderation, notifications } });
+  }
+
+  get invitePreferencesRevision() {
+    return this.preferencesRevision;
+  }
+
+  updateInvitePreferences(preferences: PartyInvitePreferencesV3, expectedRevision = this.preferencesRevision) {
+    if (!this.view.snapshot || expectedRevision !== this.preferencesRevision) return;
+    this.preferencesRevision++;
+    this.emit({ snapshot: { ...this.view.snapshot, party_invite_preferences: preferences } });
   }
 
   sendMessage(
@@ -241,6 +253,7 @@ export class LiveMapChatRealtimeClient {
       return;
     }
     if (event.type === "snapshot") {
+      this.preferencesRevision++;
       this.attempts = 0;
       const messageIds = new Set([
         ...event.data.lobby.map((entry) => entry.id),
@@ -258,7 +271,11 @@ export class LiveMapChatRealtimeClient {
     }
     const snapshot = this.view.snapshot;
     if (!snapshot) return;
-    if (event.type === "chat_moderation_updated") {
+    if (event.type === "party_invite_preferences_updated") {
+      this.updateInvitePreferences(event.data);
+    } else if (event.type === "online_users_updated") {
+      this.emit({ snapshot: { ...snapshot, online_users: event.data } });
+    } else if (event.type === "chat_moderation_updated") {
       this.emit({ snapshot: { ...snapshot, moderation: event.data }, error: event.data.restricted ? this.view.error : undefined });
     } else if (event.type === "party_notifications_updated") {
       this.emit({ snapshot: { ...snapshot, notifications: event.data } });

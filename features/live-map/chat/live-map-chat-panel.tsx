@@ -20,6 +20,7 @@ import { chatErrorText } from "./copy";
 import { ChatModerationNotice } from "./chat-moderation-notice";
 import { ChatRestrictionsPanel } from "./chat-restrictions-panel";
 import { ChatUserMenu } from "./chat-user-menu";
+import { ChatOnlineUsers } from "./chat-online-users";
 import { useLiveMapChat } from "./use-live-map-chat";
 
 
@@ -70,6 +71,7 @@ function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyControl
   const chat = useLiveMapChat();
   const t = (ko: string, en: string, ja: string) => partyText(locale, ko, en, ja);
   const [message, setMessage] = useState("");
+  const [showOnlineUsers, setShowOnlineUsers] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [reporting, setReporting] = useState<LiveMapChatMessageV3 | null>(null);
   const [reportReason, setReportReason] = useState<"spam" | "abuse" | "inappropriate" | "personal_info" | "other">("spam");
@@ -180,7 +182,15 @@ function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyControl
   return (
     <div className="pointer-events-none absolute right-[8.75rem] top-3 z-[1210] flex flex-col items-end">
       {chat.open && (
-        <section className="pointer-events-auto absolute right-[-8rem] top-11 flex h-[min(70dvh,38rem)] w-[22rem] max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-xl border border-gray-300 bg-white text-gray-900 shadow-xl dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100">
+        <div className="pointer-events-auto absolute right-[-8rem] top-11 flex h-[min(70dvh,38rem)] w-[22rem] max-w-[calc(100vw-1.5rem)] flex-col gap-2 md:w-[35rem]">
+          <div className="flex gap-2 md:hidden">
+            <button type="button" aria-pressed={showOnlineUsers} onClick={() => setShowOnlineUsers(true)} className={cn(partyButton, "flex-1 bg-white dark:bg-[#1f2124]", showOnlineUsers && "!border-orange-400 !bg-orange-50 !text-orange-700 dark:!bg-orange-950 dark:!text-orange-300")}>{t("접속자", "Online users", "接続者")}</button>
+            <button type="button" aria-pressed={!showOnlineUsers} onClick={() => setShowOnlineUsers(false)} className={cn(partyButton, "flex-1 bg-white dark:bg-[#1f2124]", !showOnlineUsers && "!border-orange-400 !bg-orange-50 !text-orange-700 dark:!bg-orange-950 dark:!text-orange-300")}>{t("채팅", "Chat", "チャット")}</button>
+            <button type="button" className={partyButton} aria-label={t("접속자·채팅 닫기", "Close users and chat", "接続者・チャットを閉じる")} onClick={() => chat.setOpen(false)}><X className="h-4 w-4" /></button>
+          </div>
+          <div className="flex min-h-0 flex-1 gap-2">
+            <ChatOnlineUsers locale={locale} party={party} className={cn("w-full md:w-48", showOnlineUsers ? "flex" : "hidden md:flex")} />
+        <section className={cn("relative min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-gray-300 bg-white text-gray-900 shadow-xl dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100", showOnlineUsers ? "hidden md:flex" : "flex")}>
           {restrictionsOpen && chat.canModerate && <ChatRestrictionsPanel locale={locale} onClose={() => setRestrictionsOpen(false)} />}
           {reporting && (
             <form onSubmit={report} className="absolute inset-x-3 top-14 z-20 space-y-3 rounded-lg border border-gray-300 bg-white p-4 shadow-xl dark:border-[#4a4d51] dark:bg-[#25282c]">
@@ -304,6 +314,8 @@ function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyControl
               )}
             </>
         </section>
+          </div>
+        </div>
       )}
       {!party.open && <button type="button" aria-label={t("모집 채팅", "Recruitment chat", "募集チャット")} title={t("모집 채팅", "Recruitment chat", "募集チャット")} aria-expanded={chat.open} onClick={() => { chat.setOpen(!chat.open); if (!chat.open) party.setOpen(false); }} className="pointer-events-auto relative inline-flex h-9 w-[4.5rem] items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]">
         <MessageCircle className="h-4 w-4 text-orange-500" />

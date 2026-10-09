@@ -8,6 +8,10 @@ export function chatErrorText(error: Error | null, locale: PartyLocale) {
   const code =
     error instanceof LiveMapChatApiError ? error.code : "CHAT_UNAVAILABLE";
   const messages: Record<string, string> = {
+    PARTY_INVITATIONS_UNAVAILABLE: t("상대방이 현재 파티 초대를 받을 수 없습니다.", "This player cannot receive party invitations right now.", "相手は現在パーティー招待を受け取れません。"),
+    PARTY_INVITATION_REJECT_COOLDOWN: t("초대가 거절되어 잠시 후 다시 초대할 수 있습니다.", "Your invitation was declined. Wait before inviting again.", "招待が辞退されました。しばらくしてから再招待してください。"),
+    PARTY_INVITATION_RATE_LIMITED: t("초대를 너무 자주 보냈습니다. 잠시 후 다시 시도해 주세요.", "You sent too many invitations. Please try again later.", "招待を送りすぎています。しばらくしてから再試行してください。"),
+    PARTY_INVITATION_LIMIT: t("상대방에게 대기 중인 초대가 많습니다. 잠시 후 다시 시도해 주세요.", "This player has too many pending invitations. Try again later.", "相手に保留中の招待が多くあります。しばらくしてから再試行してください。"),
     CHAT_RATE_LIMITED: t(
       "메시지를 너무 빠르게 보내고 있습니다.",
       "You are sending messages too quickly.",
@@ -84,7 +88,7 @@ export function chatErrorText(error: Error | null, locale: PartyLocale) {
       "このメッセージはすでに通報済みです。",
     ),
   };
-  return (
+  const message = (
     messages[code] ??
     t(
       "요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
@@ -92,4 +96,9 @@ export function chatErrorText(error: Error | null, locale: PartyLocale) {
       "処理できませんでした。しばらくしてから再試行してください。",
     )
   );
+  if (error instanceof LiveMapChatApiError && error.retryAfter > 0) {
+    const seconds = Math.ceil(error.retryAfter);
+    return `${message} ${t(`${seconds}초 후 다시 시도할 수 있습니다.`, `Try again in ${seconds} seconds.`, `${seconds}秒後に再試行できます。`)}`;
+  }
+  return message;
 }

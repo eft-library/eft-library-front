@@ -31,6 +31,10 @@ export interface PartyNotificationsV3 {
   notification_tab: "party";
 }
 
+export interface PartyInvitePreferencesV3 {
+  allow_party_invites: boolean;
+}
+
 export interface ChatUserActionsV3 {
   user: LiveMapChatUserV3;
   blocked: boolean;
@@ -38,6 +42,7 @@ export interface ChatUserActionsV3 {
   can_restrict: boolean;
   can_invite: boolean;
   invite_disabled_reason: string | null;
+  retry_after: number | null;
   member_id: string | null;
   can_unkick: boolean;
 }
@@ -63,6 +68,7 @@ export interface PartyInvitationV3 {
     | "room_full"
     | "already_joined"
     | "member_kicked"
+    | "receiver_unavailable"
     | null;
   expires_at: string;
   party: {
@@ -78,6 +84,8 @@ export interface PartyInvitationV3 {
 
 export interface LiveMapChatSnapshotV3 {
   user: LiveMapChatUserV3 | null;
+  online_users?: LiveMapChatUserV3[];
+  party_invite_preferences?: PartyInvitePreferencesV3 | null;
   lobby: LiveMapChatMessageV3[];
   party: LiveMapChatMessageV3[];
   party_room_id: string | null;
@@ -103,6 +111,18 @@ export interface LiveMapChatErrorV3 {
 }
 
 export type LiveMapChatServerEventV3 =
+  | {
+      type: "party_invite_preferences_updated";
+      event_id: string;
+      server_time: string;
+      data: PartyInvitePreferencesV3;
+    }
+  | {
+      type: "online_users_updated";
+      event_id: string;
+      server_time: string;
+      data: LiveMapChatUserV3[];
+    }
   | {
       type: "snapshot";
       event_id: string;

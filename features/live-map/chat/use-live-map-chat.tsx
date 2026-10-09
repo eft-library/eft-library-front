@@ -13,6 +13,7 @@ import {
 import { getSession, useSession } from "next-auth/react";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
+  PartyInvitePreferencesV3,
   ChatModerationStateV3,
   ChatUserActionsV3,
   ChatRestrictionDetailV3,
@@ -98,11 +99,14 @@ function useLiveMapChatState() {
   const refreshStatus = useCallback(async () => {
     if (!enabled || !token) return;
     const client = clientRef.current;
+    const preferencesRevision = client?.invitePreferencesRevision;
     const [moderation, notifications] = await Promise.all([
       liveMapChatRequest<ChatModerationStateV3>("/chat/me/moderation", token),
       liveMapChatRequest<PartyNotificationsV3>("/party-invitations/notifications", token),
     ]);
     if (client && clientRef.current === client) client.updateStatus(moderation, notifications);
+    const preferences = await liveMapChatRequest<PartyInvitePreferencesV3>("/chat/me/party-invite-preferences", token);
+    if (client && clientRef.current === client) client.updateInvitePreferences(preferences, preferencesRevision);
   }, [enabled, token]);
 
   useEffect(() => {
@@ -190,6 +194,18 @@ function useLiveMapChatState() {
     clearError: () => setError(null),
     busy,
     me: snapshot?.user,
+    onlineUsers: snapshot?.online_users,
+    invitePreferences: snapshot?.party_invite_preferences,
+    setInvitePreferences: async (allow: boolean) => {
+      const client = clientRef.current;
+      const preferencesRevision = client?.invitePreferencesRevision;
+      const preferences = await request<PartyInvitePreferencesV3>("/chat/me/party-invite-preferences", "PUT", { allow_party_invites: allow });
+      if (client && clientRef.current === client) {
+        client.updateInvitePreferences(preferences, preferencesRevision);
+        void refreshStatus().catch(() => undefined);
+      }
+      return preferences;
+    },
     messages,
     outgoing: enabled ? view.outgoing : [],
     invitations,
