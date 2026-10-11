@@ -263,7 +263,7 @@ html.live-map-document-dragging * {
   font-weight: 600;
   line-height: 1.35;
   white-space: nowrap;
-  -webkit-text-stroke: 2px #202124;
+  -webkit-text-stroke: 1px #202124;
   paint-order: stroke fill;
   text-shadow: 0 1px 2px #202124;
   pointer-events: none;
@@ -271,6 +271,7 @@ html.live-map-document-dragging * {
 }
 
 .live-map-landmark-label-focused {
+  -webkit-text-stroke: 2px #202124;
   text-decoration: underline;
   text-underline-offset: 4px;
 }

@@ -748,7 +748,7 @@ function PointIcon(
   if (kind === "static" && point.staticCategory === "landmark") {
     return L.divIcon({
       className: "live-map-landmark-icon",
-      html: `<span class="live-map-landmark-label${isFocused ? " live-map-landmark-label-focused" : ""}" style="opacity: ${markerOpacity}">${escapeMarkerLabel(point.label)}</span>`,
+      html: `<span class="live-map-landmark-label${isFocused ? " live-map-landmark-label-focused" : ""}" style="opacity: ${isDimmed && !isFocused ? "0.25" : "1"};-webkit-text-stroke-width:${isDimmed && !isFocused ? "1px" : "2px"}">${escapeMarkerLabel(point.label)}</span>`,
       iconSize: [0, 0],
       iconAnchor: [0, 0],
     });
