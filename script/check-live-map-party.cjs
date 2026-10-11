@@ -88,6 +88,16 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         );
       }
     };
+    const programSockets = new Set();
+    await context.routeWebSocket("**/ws?token=*", (socket) => {
+      programSockets.add(socket);
+      socket.onClose(() => programSockets.delete(socket));
+    });
+    await context.routeWebSocket("**/api/live-map/v3/chat/ws", (socket) => {
+      socket.onMessage((raw) => {
+        if (["auth", "heartbeat"].includes(JSON.parse(raw).type)) socket.send(JSON.stringify({ type: "snapshot", event_id: crypto.randomUUID(), server_time: new Date().toISOString(), data: { user: { id: owner.id, nickname: owner.nickname }, lobby: [], party: [], party_room_id: id, lobby_next_before: null, party_next_before: null, party_invitations: [], online_users: [], moderation: { is_admin: false, restricted: false, reason: null, expires_at: null }, notifications: { party_invitation_count: 0, notification_tab: "party" }, party_invite_preferences: { allow_party_invites: true }, heartbeat_interval_seconds: 30 } }));
+      });
+    });
     await context.routeWebSocket(
       "**/api/live-map/v3/party/rooms/*/ws",
       (socket) => {
@@ -404,6 +414,33 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     assert.equal(positions[0].data.z, -45);
     assert.equal(positions[0].data.yaw, 0);
     assert.equal(positions[0].data.expires_at, null);
+    const beforeWake = socketConnections;
+    await page.evaluate(() => {
+      for (let index = 0; index < 5; index++) {
+        window.dispatchEvent(new Event("focus"));
+        window.dispatchEvent(new Event("online"));
+        document.dispatchEvent(new Event("visibilitychange"));
+      }
+    });
+    await page.waitForTimeout(150);
+    assert.equal(socketConnections, beforeWake, "Healthy party connection must survive focus/online events");
+    assert(programSockets.size > 0, "Program location WebSocket must be available for this test");
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "wpf_location", payload: "124 0 -46 0 0 0 1" }));
+    await page.waitForFunction(() => document.body.textContent.includes("X 124.0 / Z -46.0"));
+    assert.equal(positions[0].data.x, 124);
+    assert.equal(positions[0].data.z, -46);
+    await page.locator(".live-map-party-position .player-icon-heading").waitFor();
+    for (const socket of [...sockets]) socket.close({ code: 1012 });
+    await page.getByRole("status", { name: "실시간 연결됨" }).waitFor();
+    for (let attempt = 0; attempt < 50 && socketConnections === beforeWake; attempt++) await page.waitForTimeout(100);
+    assert(socketConnections > beforeWake, "Party must reconnect after transport closure");
+    await page.getByRole("status", { name: "실시간 연결됨" }).waitFor();
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "wpf_location", payload: "125 0 -47 0 0 0 1" }));
+    await page.waitForFunction(() => document.body.textContent.includes("X 125.0 / Z -47.0"));
+    assert.equal(positions[0].data.x, 125);
+    assert.equal(positions[0].data.z, -47);
+    await page.locator(".live-map-party-position .player-icon-heading").waitFor();
+    console.log("PASS program send location after tab wake and party reconnection");
     await page
       .locator(".live-map-party-position .player-icon-heading")
       .waitFor();

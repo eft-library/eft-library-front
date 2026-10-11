@@ -60,6 +60,9 @@ function useLiveMapChatState() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const clientRef = useRef<LiveMapChatRealtimeClient | null>(null);
+  const statusRequestRef = useRef<{ token: string; client: LiveMapChatRealtimeClient; promise: Promise<void> } | null>(null);
+  const blockedStatusTokenRef = useRef<string | null>(null);
+  const automaticFallbackClientRef = useRef<LiveMapChatRealtimeClient | null>(null);
 
   useEffect(() => {
     setOlder({});
@@ -79,12 +82,15 @@ function useLiveMapChatState() {
         if (!account) return undefined;
         return latestAccount === account ? latest?.accessToken : undefined;
       },
-      onChange: setView,
+      onChange: (next) => {
+        if (next.connection === "auth-required" && token) blockedStatusTokenRef.current = token;
+        setView(next);
+      },
     });
     clientRef.current = client;
     client.start();
     const wake = () => {
-      if (document.visibilityState === "visible") client.reconnect();
+      if (document.visibilityState === "visible") client.wake();
     };
     window.addEventListener("online", wake);
     document.addEventListener("visibilitychange", wake);
@@ -98,23 +104,40 @@ function useLiveMapChatState() {
 
   const refreshStatus = useCallback(async () => {
     if (!enabled || !token) return;
+    if (blockedStatusTokenRef.current === token) throw new LiveMapChatApiError(401, "LOGIN_REQUIRED");
     const client = clientRef.current;
-    const preferencesRevision = client?.invitePreferencesRevision;
-    const [moderation, notifications] = await Promise.all([
-      liveMapChatRequest<ChatModerationStateV3>("/chat/me/moderation", token),
-      liveMapChatRequest<PartyNotificationsV3>("/party-invitations/notifications", token),
-    ]);
-    if (client && clientRef.current === client) client.updateStatus(moderation, notifications);
-    const preferences = await liveMapChatRequest<PartyInvitePreferencesV3>("/chat/me/party-invite-preferences", token);
-    if (client && clientRef.current === client) client.updateInvitePreferences(preferences, preferencesRevision);
+    if (!client || client.hasStatusSnapshot) return;
+    if (statusRequestRef.current?.token === token && statusRequestRef.current.client === client) return statusRequestRef.current.promise;
+    const promise = (async () => {
+      const preferencesRevision = client.invitePreferencesRevision;
+      // Sequential fallback stops at the first authentication failure.
+      const moderation = await liveMapChatRequest<ChatModerationStateV3>("/chat/me/moderation", token);
+      if (clientRef.current !== client || client.hasStatusSnapshot) return;
+      const notifications = await liveMapChatRequest<PartyNotificationsV3>("/party-invitations/notifications", token);
+      if (clientRef.current !== client || client.hasStatusSnapshot) return;
+      client.updateStatus(moderation, notifications);
+      const preferences = await liveMapChatRequest<PartyInvitePreferencesV3>("/chat/me/party-invite-preferences", token);
+      if (clientRef.current === client) client.updateInvitePreferences(preferences, preferencesRevision);
+    })();
+    statusRequestRef.current = { token, client, promise };
+    try {
+      await promise;
+    } catch (failure) {
+      if (failure instanceof LiveMapChatApiError && failure.status === 401) blockedStatusTokenRef.current = token;
+      throw failure;
+    } finally {
+      if (statusRequestRef.current?.promise === promise) statusRequestRef.current = null;
+    }
   }, [enabled, token]);
 
   useEffect(() => {
-    if (!enabled) return;
-    void refreshStatus().catch(() => undefined);
-    const timer = window.setInterval(() => void refreshStatus().catch(() => undefined), 30000);
-    return () => window.clearInterval(timer);
-  }, [enabled, refreshStatus, view.connection]);
+    // Current V3 snapshots carry all three states. REST only restores missing fields.
+    if (enabled && token && view.connection === "connected" && (!view.snapshot?.moderation || !view.snapshot?.notifications || !view.snapshot?.party_invite_preferences)) {
+      if (!clientRef.current || automaticFallbackClientRef.current === clientRef.current) return;
+      automaticFallbackClientRef.current = clientRef.current;
+      void refreshStatus().catch(() => undefined);
+    }
+  }, [enabled, token, refreshStatus, view.connection, view.snapshot?.moderation, view.snapshot?.notifications, view.snapshot?.party_invite_preferences]);
 
   const snapshot = enabled ? view.snapshot : undefined;
   const messages = useMemo(
@@ -190,6 +213,7 @@ function useLiveMapChatState() {
     authStatus: status,
     connection: view.connection,
     connected: enabled && view.connection === "connected",
+    actionError: error,
     error: error ?? (view.error ? new LiveMapChatApiError(view.error.status, view.error.msg, view.error.retry_after ?? 0) : null),
     clearError: () => setError(null),
     busy,

@@ -166,6 +166,7 @@ export class PartyRealtimeClient {
     if (this.disposed || this.suspended) return;
     if (["auth-required", "stopped", "limited"].includes(this.view.connection))
       return;
+    if (this.reconnectTimer || ["connecting", "reconnecting"].includes(this.view.connection)) return;
     if (
       this.view.connection === "connected" &&
       Date.now() - this.lastReceived < 40000

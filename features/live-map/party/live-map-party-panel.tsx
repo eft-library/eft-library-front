@@ -247,7 +247,7 @@ export function LiveMapPartyPanel({
             ref={contentRef}
             className="space-y-4 overflow-y-auto overscroll-contain p-4"
           >
-            {chat.enabled && chat.error && <p role="alert" className="mx-3 mt-3 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-xs font-semibold text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">{chatErrorText(chat.error, locale)}</p>}
+            {chat.enabled && chat.actionError && <p role="alert" className="mx-3 mt-3 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-xs font-semibold text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">{chatErrorText(chat.actionError, locale)}</p>}
             {error && (!markerFormVisible || error !== party.error) && (
               <p
                 role="alert"

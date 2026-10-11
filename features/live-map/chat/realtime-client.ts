@@ -8,6 +8,8 @@ import type {
   LiveMapChatSnapshotV3,
   PartyInvitationV3,
 } from "@/types/api/live-map-chat";
+import { ensureChatGuestSession } from "./guest-session";
+import { LiveMapChatApiError } from "./api";
 
 export type LiveMapChatConnection =
   | "connecting"
@@ -60,6 +62,9 @@ export class LiveMapChatRealtimeClient {
   private disposed = false;
   private generation = 0;
   private attempts = 0;
+  private lastReceived = 0;
+  private retryAt = 0;
+  private guestSessionFailures = 0;
   private reconnectTimer?: ReturnType<typeof setTimeout>;
   private heartbeatTimer?: ReturnType<typeof setInterval>;
   private watchdogTimer?: ReturnType<typeof setTimeout>;
@@ -95,13 +100,28 @@ export class LiveMapChatRealtimeClient {
 
   reconnect() {
     if (this.disposed) return;
+    if (Date.now() < this.retryAt) return;
+    this.guestSessionFailures = 0;
     this.generation++;
     clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = undefined;
     clearInterval(this.heartbeatTimer);
     clearTimeout(this.watchdogTimer);
     this.socket?.close();
     this.socket = null;
     void this.connect();
+  }
+
+  /** Focus/online events must not tear down a healthy or pending connection. */
+  wake() {
+    if (this.disposed || this.view.connection === "auth-required" || this.view.connection === "stopped") return;
+    if (this.view.connection === "connected" && this.socket?.readyState === WebSocket.OPEN && Date.now() - this.lastReceived < 60000) return;
+    if (this.reconnectTimer || this.view.connection === "connecting" || this.view.connection === "reconnecting") return;
+    this.reconnect();
+  }
+
+  get hasStatusSnapshot() {
+    return this.view.connection === "connected" && Boolean(this.view.snapshot?.moderation && this.view.snapshot?.notifications && this.view.snapshot?.party_invite_preferences);
   }
 
   updateStatus(moderation: ChatModerationStateV3, notifications: PartyNotificationsV3) {
@@ -198,8 +218,8 @@ export class LiveMapChatRealtimeClient {
     this.emit({ connection: "reconnecting" });
     const delay = Math.min(30000, 1000 * 2 ** Math.min(this.attempts++, 5));
     this.reconnectTimer = setTimeout(
-      () => void this.connect(),
-      delay * (0.8 + Math.random() * 0.4),
+      () => { this.reconnectTimer = undefined; void this.connect(); },
+      Math.max(this.retryAt - Date.now(), delay * (0.8 + Math.random() * 0.4)),
     );
   }
 
@@ -212,6 +232,9 @@ export class LiveMapChatRealtimeClient {
 
   private apply(event: LiveMapChatServerEventV3) {
     if (event.type === "error") {
+      if (["CHAT_CONNECT_RATE_LIMITED", "CHAT_CONNECTION_LIMIT"].includes(event.msg)) {
+        this.retryAt = Date.now() + Math.max(0, event.retry_after ?? 0) * 1000;
+      }
       if (event.request_id) {
         clearTimeout(this.ackTimers.get(event.request_id));
         this.ackTimers.delete(event.request_id);
@@ -253,6 +276,8 @@ export class LiveMapChatRealtimeClient {
       return;
     }
     if (event.type === "snapshot") {
+      this.guestSessionFailures = 0;
+      this.retryAt = 0;
       this.preferencesRevision++;
       this.attempts = 0;
       const messageIds = new Set([
@@ -333,17 +358,34 @@ export class LiveMapChatRealtimeClient {
       connection: this.attempts ? "reconnecting" : "connecting",
       error: undefined,
     });
-    const token = await this.options.getToken();
+    let token: string | undefined;
+    try {
+      token = await this.options.getToken();
+      if (this.disposed || generation !== this.generation) return;
+      if (!token) await ensureChatGuestSession(this.options.url);
+    } catch (failure) {
+      if (this.disposed || generation !== this.generation) return;
+      const error = failure instanceof LiveMapChatApiError ? failure : new LiveMapChatApiError(503, "CHAT_GUEST_SESSION_UNAVAILABLE");
+      this.retryAt = Date.now() + Math.max(0, error.retryAfter) * 1000;
+      this.emit({ error: { type: "error", status: error.status, msg: error.code, retry_after: error.retryAfter, request_id: null } });
+      if ([401, 403, 404, 405, 422].includes(error.status)) {
+        this.emit({ connection: "stopped" });
+      } else {
+        this.scheduleReconnect(generation);
+      }
+      return;
+    }
     if (this.disposed || generation !== this.generation) return;
     const socket = new WebSocket(this.options.url);
     this.socket = socket;
     socket.onopen = () => {
       if (generation !== this.generation) return;
-      socket.send(JSON.stringify(token ? { type: "auth", token } : { type: "guest" }));
+      socket.send(JSON.stringify(token ? { type: "auth", token } : { type: "guest", session: "cookie" }));
       this.resetWatchdog(generation);
     };
     socket.onmessage = (message) => {
       if (generation !== this.generation) return;
+      this.lastReceived = Date.now();
       this.resetWatchdog(generation);
       try {
         const event = JSON.parse(String(message.data)) as LiveMapChatServerEventV3;
@@ -366,7 +408,10 @@ export class LiveMapChatRealtimeClient {
       clearInterval(this.heartbeatTimer);
       clearTimeout(this.watchdogTimer);
       this.socket = null;
-      if ([4401, 4403].includes(event.code)) {
+      if (!token && this.view.error?.msg === "CHAT_GUEST_SESSION_INVALID") {
+        if (++this.guestSessionFailures >= 2) this.emit({ connection: "stopped" });
+        else this.scheduleReconnect(generation);
+      } else if ([4401, 4403].includes(event.code)) {
         this.emit({ connection: "auth-required" });
       } else {
         this.scheduleReconnect(generation);

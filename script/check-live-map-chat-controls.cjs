@@ -82,6 +82,7 @@ const invitation = {
         notification_tab: "party",
       };
       let preferences = { allow_party_invites: true };
+      let statusUnauthorized = false;
       let preferenceFailure = false, incomingCancelled = false, cooldownUntil = 0, inviteFailure = false;
       let banned = false,
         block = false,
@@ -159,7 +160,12 @@ const invitation = {
         chatSockets.add(s);
         s.onClose(() => chatSockets.delete(s));
         s.onMessage((raw) => {
-          if (["auth", "guest", "heartbeat"].includes(JSON.parse(raw).type))
+          const packet = JSON.parse(raw);
+          if (packet.type === "guest") {
+            assert.deepEqual(packet, { type: "guest", session: "cookie" });
+            assert(requests.some(entry => entry.path === "/chat/guest-session"));
+          }
+          if (["auth", "guest", "heartbeat"].includes(packet.type))
             s.send(frame("snapshot", chatSnapshot()));
         });
       });
@@ -185,6 +191,12 @@ const invitation = {
         requests.push({ path, method, body, query: url.search });
         const ok = (data) =>
           r.fulfill({ json: { status: 200, msg: "OK", data } });
+        if (path === "/chat/guest-session") {
+          assert.equal(admin, null);
+          assert.equal(method, "POST");
+          assert.deepEqual(body, {});
+          return r.fulfill({ headers: { "Cache-Control": "no-store" }, json: { status: 200, msg: "OK", data: { guest_token: "unused-test-token" } } });
+        }
         if (path === "/chat/me/party-invite-preferences") {
           if (method === "PUT") {
             if (preferenceFailure) return r.fulfill({ status: 503, json: { status: 503, msg: "CHAT_UNAVAILABLE", data: null } });
@@ -203,7 +215,10 @@ const invitation = {
           }
           return ok(preferences);
         }
-        if (path === "/chat/me/moderation") return ok(moderation);
+        if (path === "/chat/me/moderation") {
+          if (statusUnauthorized) return r.fulfill({ status: 401, json: { status: 401, msg: "LOGIN_REQUIRED", data: null } });
+          return ok(moderation);
+        }
         if (path === "/party-invitations/notifications")
           return ok(notifications);
         if (path === "/chat/messages")
@@ -273,6 +288,7 @@ const invitation = {
       page.on("pageerror", (e) => {
         if (e.message !== "W") errors.push(e.message);
       });
+      await page.clock.install();
       await page.goto(base + "/live-map/customs");
       await page
         .getByRole("button", { name: "파티", exact: false })
@@ -282,6 +298,19 @@ const invitation = {
         await page.getByRole("button", { name: "모집 채팅", exact: true }).click();
         await page.getByText(message.message, { exact: true }).waitFor();
         assert.equal(chatConnections, 1);
+        const statusPaths = ["/chat/me/moderation", "/party-invitations/notifications", "/chat/me/party-invite-preferences"];
+        await page.clock.fastForward(31000);
+        await page.evaluate(() => {
+          for (let index = 0; index < 5; index++) {
+            window.dispatchEvent(new Event("online"));
+            window.dispatchEvent(new Event("focus"));
+            document.dispatchEvent(new Event("visibilitychange"));
+          }
+        });
+        await page.waitForTimeout(150);
+        assert.equal(chatConnections, 1, "Healthy chat must survive focus/online events without reconnecting");
+        assert.equal(requests.filter(entry => entry.method === "GET" && statusPaths.includes(entry.path)).length, 0, "Healthy WS must not poll status APIs");
+        console.log("PASS no status polling and no healthy-chat reconnect");
         const presence = page.getByRole("region", { name: "현재 채팅 접속자", exact: true });
         await presence.getByText(`현재 접속자 ${admin === null ? 1 : 2}명`, { exact: true }).waitFor();
         await presence.getByText(other.nickname, { exact: true }).waitFor();
@@ -354,12 +383,37 @@ const invitation = {
           unkick = false;
           await page.keyboard.press("Escape");
           console.log("PASS cooldown retry and POST limit errors with data.retry_after");
+          statusUnauthorized = true;
+          const failedSnapshot = chatSnapshot();
+          delete failedSnapshot.party_invite_preferences;
+          for (const socket of chatSockets) socket.send(frame("snapshot", failedSnapshot));
+          await page.waitForTimeout(250);
+          const statusCalls = () => requests.filter(entry => entry.method === "GET" && statusPaths.includes(entry.path));
+          assert.equal(statusCalls().length, 1, "Fallback must stop at the first 401");
+          await page.clock.fastForward(61000);
+          for (const socket of chatSockets) socket.send(frame("snapshot", failedSnapshot));
+          await page.waitForTimeout(150);
+          await presence.getByRole("button", { name: "다시 확인", exact: true }).click();
+          await page.waitForTimeout(150);
+          assert.equal(statusCalls().length, 1, "401 must block automatic and manual status retries with the rejected token");
+          for (const socket of chatSockets) socket.send(frame("snapshot", chatSnapshot()));
+          console.log("PASS missing-field fallback stops after 401");
+
         }
         console.log("PASS nickname search and online user menu", admin === null ? "anonymous" : "regular");
         console.log("PASS online users snapshot, replacement, duplicate nicknames, legacy snapshot", admin === null ? "anonymous" : "regular");
 
         assert.equal(await page.getByRole("button", { name: "채팅 밴 관리", exact: true }).count(), 0);
         if (admin === null) {
+          for (const socket of chatSockets) socket.send(JSON.stringify({ type: "error", status: 429, msg: "CHAT_CONNECT_RATE_LIMITED", retry_after: 10, request_id: null }));
+          await page.getByText(/채팅 연결을 너무 자주 시도했습니다.*10초 후/).waitFor();
+          assert.equal(await page.getByText(/메시지를 너무 빠르게/).count(), 0);
+          await page.getByRole("button", { name: "파티", exact: false }).first().click();
+          assert.equal(await page.getByText(/채팅 연결을 너무 자주 시도했습니다/).count(), 0, "Recruitment connection errors must not appear in the party panel");
+          await page.getByRole("button", { name: "파티", exact: false }).first().click();
+          await page.getByRole("button", { name: "모집 채팅", exact: true }).click();
+          for (const socket of chatSockets) socket.send(frame("snapshot", chatSnapshot()));
+          console.log("PASS guest connection limit copy and no duplicate party warning");
           await page.getByText("메시지를 보내려면 로그인해 주세요.", { exact: true }).waitFor();
           assert.equal(await page.getByRole("textbox", { name: "메시지", exact: true }).count(), 0);
         } else {

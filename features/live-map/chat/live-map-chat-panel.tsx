@@ -258,7 +258,7 @@ function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyControl
               {!chat.connected && (
                 <div className="mx-3 mt-3 flex items-center gap-2 rounded-md bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-200">
                   <WifiOff className="h-3.5 w-3.5" />
-                  <span className="flex-1">{t("채팅 서버에 연결 중입니다.", "Connecting to chat…", "チャットに接続中です。")}</span>
+                  <span className="flex-1">{chat.connection === "stopped" ? t("채팅 연결을 중단했습니다.", "Chat connection stopped.", "チャット接続を停止しました。") : t("채팅 서버에 연결 중입니다.", "Connecting to chat…", "チャットに接続中です。")}</span>
                   <button className={partyButton} onClick={chat.reconnect}>{t("재연결", "Retry", "再接続")}</button>
                 </div>
               )}

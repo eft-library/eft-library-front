@@ -8,6 +8,10 @@ export function chatErrorText(error: Error | null, locale: PartyLocale) {
   const code =
     error instanceof LiveMapChatApiError ? error.code : "CHAT_UNAVAILABLE";
   const messages: Record<string, string> = {
+    CHAT_GUEST_SESSION_INVALID: t("게스트 채팅 쿠키를 확인할 수 없습니다. 브라우저 쿠키 설정을 확인한 뒤 다시 연결해 주세요.", "Guest chat cookies could not be verified. Check browser cookie settings and reconnect.", "ゲストチャットのCookieを確認できません。ブラウザーのCookie設定を確認して再接続してください。"),
+    CHAT_GUEST_SESSION_UNAVAILABLE: t("게스트 채팅 세션에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.", "Guest chat sessions are unavailable. Please try again later.", "ゲストチャットセッションに接続できません。しばらくしてから再試行してください。"),
+    CHAT_CONNECT_RATE_LIMITED: t("채팅 연결을 너무 자주 시도했습니다. 잠시 후 다시 연결합니다.", "Too many chat connection attempts. Reconnecting after a delay.", "チャットへの接続試行が多すぎます。しばらくしてから再接続します。"),
+    CHAT_CONNECTION_LIMIT: t("동시에 연결된 채팅 탭이 많습니다. 다른 탭을 닫거나 잠시 기다려 주세요.", "Too many chat tabs are connected. Close another tab or wait.", "接続中のチャットタブが多すぎます。他のタブを閉じるか、しばらくお待ちください。"),
     PARTY_INVITATIONS_UNAVAILABLE: t("상대방이 현재 파티 초대를 받을 수 없습니다.", "This player cannot receive party invitations right now.", "相手は現在パーティー招待を受け取れません。"),
     PARTY_INVITATION_REJECT_COOLDOWN: t("초대가 거절되어 잠시 후 다시 초대할 수 있습니다.", "Your invitation was declined. Wait before inviting again.", "招待が辞退されました。しばらくしてから再招待してください。"),
     PARTY_INVITATION_RATE_LIMITED: t("초대를 너무 자주 보냈습니다. 잠시 후 다시 시도해 주세요.", "You sent too many invitations. Please try again later.", "招待を送りすぎています。しばらくしてから再試行してください。"),
