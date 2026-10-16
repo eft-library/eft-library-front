@@ -56,6 +56,7 @@ import {
   toggleQuestCompletion,
 } from "@/lib/quest/quest-completion";
 import { cn } from "@/lib/utils/class-name";
+import { LocationConnectionNotice } from "./location-connection-notice";
 import { useWsStore } from "@/store/ws-store";
 import type {
   EventObjective,
@@ -472,7 +473,8 @@ export function LiveMapClientPage({
   const latestRaidState = useWsStore((state) => state.latestRaidState);
   const latestLogLocation = useWsStore((state) => state.latestLogLocation);
   const setLocationForMap = useWsStore((state) => state.setLocationForMap);
-  const previousLocationEventRef = useRef<number | null>(null);
+  const locationSession = useWsStore((state) => state.locationSession);
+  const previousLocationEventRef = useRef<typeof latestWebsocketLocation>(null);
   const previousTransitCountRef = useRef<number | null>(null);
   const [raidClock, setRaidClock] = useState(() => Date.now());
   const [raidDurationMinutes, setRaidDurationMinutes] = useState<number | null>(
@@ -2288,21 +2290,23 @@ export function LiveMapClientPage({
   }, [defaultFloorId, normalizedName]);
 
   useEffect(() => {
-    previousLocationEventRef.current =
-      latestWebsocketLocation?.receivedAt ?? null;
+    previousLocationEventRef.current = latestWebsocketLocation?.metadata?.replayed ? null : latestWebsocketLocation;
     setWhere("");
     setLocation(null);
-  }, [normalizedName]);
+  }, [normalizedName, locationSession]);
 
   useEffect(() => {
-    if (
-      !latestWebsocketLocation ||
-      latestWebsocketLocation.receivedAt === previousLocationEventRef.current
-    ) {
+    if (!latestWebsocketLocation) {
+      previousLocationEventRef.current = null;
+      setLocation(null);
+      return;
+    }
+    if (latestWebsocketLocation === previousLocationEventRef.current) {
       return;
     }
 
-    previousLocationEventRef.current = latestWebsocketLocation.receivedAt;
+    previousLocationEventRef.current = latestWebsocketLocation;
+    if (latestWebsocketLocation.metadata?.replayed && latestRaidState?.value.map && latestRaidState.value.map !== normalizedName) return;
     if (!party.roomId) {
       setWhere(latestWebsocketLocation.value);
       applyWhereText(latestWebsocketLocation.value);
@@ -2666,6 +2670,7 @@ export function LiveMapClientPage({
               : copy.expandBothPanels}
           </button>
         </header>
+        <LocationConnectionNotice locale={locale} />
 
         <div className="relative flex min-h-0 flex-1">
           {mobileSidebar ? (

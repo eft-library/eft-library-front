@@ -89,9 +89,15 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       }
     };
     const programSockets = new Set();
+    let programConnections = 0;
+    let cachedProgramEvent = null;
     await context.routeWebSocket("**/ws?token=*", (socket) => {
       programSockets.add(socket);
+      programConnections++;
       socket.onClose(() => programSockets.delete(socket));
+      socket.send(JSON.stringify({ type: "init", notifications: [] }));
+      if (cachedProgramEvent) socket.send(JSON.stringify({ ...cachedProgramEvent, replayed: true }));
+      socket.send(JSON.stringify({ type: "location_connection_status", status: "ready", connection_id: `location-${programConnections}` }));
     });
     await context.routeWebSocket("**/api/live-map/v3/chat/ws", (socket) => {
       socket.onMessage((raw) => {
@@ -175,13 +181,14 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
         });
       },
     );
+    let sessionEmail = "party-test@example.invalid";
     await context.route("**/api/auth/session", (r) =>
       r.fulfill({
         json: {
-          user: { name: "테스터", email: "party-test@example.invalid" },
+          user: { name: "테스터", email: sessionEmail },
           userInfo: {
             is_admin: false,
-            email: "party-test@example.invalid",
+            email: sessionEmail,
             nickname: "테스터",
           },
           accessToken: "test-token",
@@ -441,6 +448,44 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     assert.equal(positions[0].data.z, -47);
     await page.locator(".live-map-party-position .player-icon-heading").waitFor();
     console.log("PASS program send location after tab wake and party reconnection");
+    await page.getByText("위치 수신 준비 완료", { exact: true }).waitFor();
+    const programBefore = programConnections;
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "location_connection_status", status: "reconnecting", connection_id: "redis-recovery" }));
+    await page.getByText("위치 연결 복구 중", { exact: true }).waitFor();
+    await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+    assert.equal(programConnections, programBefore, "Redis reconnect must reuse the location socket");
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "location_connection_status", status: "ready", connection_id: "redis-recovery" }));
+    await page.getByText("위치 수신 준비 완료", { exact: true }).waitFor();
+    const stamp = Date.now() * 1000;
+    const liveEvent = { type: "wpf_location", payload: "126 0 -48 0 0 0 1", event_id: "live-location", received_at_unix_us: stamp, request_id: 12345, replayed: false };
+    for (const socket of programSockets) socket.send(JSON.stringify(liveEvent));
+    await page.waitForFunction(() => document.body.textContent.includes("X 126.0 / Z -48.0"));
+    const sentBeforeDuplicates = commands.filter(command => command.type === "position").length;
+    for (const socket of programSockets) {
+      socket.send(JSON.stringify({ ...liveEvent, replayed: true }));
+      socket.send(JSON.stringify({ type: "wpf_raid_state", payload: { map: "customs", started_at: null, is_active: false, transit_count: 0 }, event_id: "older-raid", received_at_unix_us: stamp - 1 }));
+      socket.send(JSON.stringify({ type: "wpf_log_location", payload: { map: "customs", x: 1, y: 0, z: 1, observed_at: new Date().toISOString() }, event_id: "older-log", received_at_unix_us: stamp - 2 }));
+    }
+    await page.waitForTimeout(100);
+    assert.equal(commands.filter(command => command.type === "position").length, sentBeforeDuplicates);
+    assert.equal(await page.getByText(/이전 위치 복원/).count(), 0, "Duplicate replay must not replace a live observation");
+    cachedProgramEvent = { ...liveEvent, payload: "127 0 -49 0 0 0 1", event_id: "restored-location", received_at_unix_us: stamp + 1, replayed: true };
+    for (const socket of programSockets) socket.send(JSON.stringify(cachedProgramEvent));
+    await page.getByText(/이전 위치 복원/).waitFor();
+    await page.locator(".live-map-player-marker").waitFor();
+    assert.equal(commands.filter(command => command.type === "position").length, sentBeforeDuplicates, "Restored location must not be rebroadcast as a live party position");
+    for (const socket of [...programSockets]) socket.close({ code: 1013 });
+    await page.getByText("위치 연결 복구 중", { exact: true }).waitFor();
+    for (let attempt = 0; attempt < 50 && programConnections === programBefore; attempt++) await page.waitForTimeout(100);
+    assert(programConnections > programBefore);
+    await page.getByText("위치 수신 준비 완료", { exact: true }).waitFor();
+    const fresh = { ...liveEvent, event_id: "new-location", payload: "128 0 -50 0 0 0 1", received_at_unix_us: stamp + 2 };
+    for (const socket of programSockets) socket.send(JSON.stringify(fresh));
+    await page.waitForFunction(() => document.body.textContent.includes("X 128.0 / Z -50.0"));
+    assert.equal(await page.getByText(/이전 위치 복원/).count(), 0);
+    cachedProgramEvent = fresh;
+    console.log("PASS location ready, Redis recovery, cross-type ordering, replay display without party rebroadcast, transport reconnect");
+
     await page
       .locator(".live-map-party-position .player-icon-heading")
       .waitFor();
@@ -520,7 +565,17 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
     await second
       .locator(".live-map-party-position .player-icon-heading")
       .waitFor();
+    await second.getByText(/이전 위치 복원/).waitFor();
     await second.close();
+    const afterCloseTime = Date.now() * 1000;
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "wpf_location", payload: "129 0 -51 0 0 0 1", event_id: "surviving-tab", received_at_unix_us: afterCloseTime, replayed: false }));
+    await page.waitForFunction(() => document.body.textContent.includes("X 129.0 / Z -51.0"));
+    for (const socket of programSockets) socket.send(JSON.stringify({ type: "wpf_raid_state", payload: { map: "customs", started_at: null, is_active: false, transit_count: 0 }, event_id: "raid-ended", received_at_unix_us: afterCloseTime + 1 }));
+    await page.locator(".live-map-player-marker").waitFor({ state: "detached" });
+    for (const socket of programSockets) socket.send(JSON.stringify({ ...cachedProgramEvent, replayed: true }));
+    await page.waitForTimeout(100);
+    assert.equal(await page.getByText(/이전 위치 복원/).count(), 0, "Raid end must prevent old cache restoration");
+    console.log("PASS replay on new tab, remaining-tab delivery and raid-end stale replay rejection");
     assert.equal(
       requests.filter((r) => r.method === "GET" && r.suffix === `/${id}`)
         .length,
@@ -658,6 +713,20 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       .getByRole("button", { name: "방 만들기", exact: true })
       .waitFor();
     console.log("PASS remote room closure");
+    cachedProgramEvent = null;
+    const accountEvent = { type: "wpf_location", payload: "140 0 -60 0 0 0 1", event_id: "account-event", received_at_unix_us: Date.now() * 1000, replayed: false };
+    for (const socket of programSockets) socket.send(JSON.stringify(accountEvent));
+    await page.locator(".live-map-player-marker").waitFor();
+    const accountConnections = programConnections;
+    sessionEmail = "other-account@example.invalid";
+    await page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+    for (let attempt = 0; attempt < 50 && programConnections === accountConnections; attempt++) await page.waitForTimeout(100);
+    assert(programConnections > accountConnections, "Account transition must replace the location socket");
+    await page.locator(".live-map-player-marker").waitFor({ state: "detached" });
+    for (const socket of programSockets) socket.send(JSON.stringify(accountEvent));
+    await page.locator(".live-map-player-marker").waitFor();
+    console.log("PASS account switch clears old location and resets event cursor");
+
     assert.deepEqual(pageErrors, []);
     console.log(
       "ALL PASSED",

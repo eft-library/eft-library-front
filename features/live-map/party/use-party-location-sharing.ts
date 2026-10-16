@@ -27,6 +27,7 @@ export function usePartyLocationSharing({
   const queryClient = useQueryClient();
   const latest = useWsStore((state) => state.latestLocation);
   const log = useWsStore((state) => state.latestLogLocation);
+  const raid = useWsStore((state) => state.latestRaidState);
   const [viewedMapName, setViewedMapName] = useState<string | null>(null);
   const actualMapName = viewedMapName;
   const [locationIssue, setLocationIssue] = useState<
@@ -58,6 +59,8 @@ export function usePartyLocationSharing({
     location: LiveMapLocation,
     persistent: boolean,
     requireSelectedMap: boolean,
+    replayed = false,
+    observedAt = Date.now(),
   ) {
     if (!roomId) return;
     if (!mapName) {
@@ -66,8 +69,9 @@ export function usePartyLocationSharing({
     }
     const scope = roomScope;
     const request = ++sequence.current;
-    setLocalPosition({ scope, mapName, location, receivedAt: Date.now() });
-    if (!connected) return;
+    setLocalPosition({ scope, mapName, location, receivedAt: observedAt });
+    // Restored observations may be shown locally, but are not new party positions.
+    if (!connected || replayed) return;
     try {
       const [detail, map] = await Promise.all([
         queryClient.fetchQuery({
@@ -121,22 +125,27 @@ export function usePartyLocationSharing({
   };
   const shareRef = useRef(shareLocation);
   shareRef.current = shareLocation;
-  const previous = useRef(latest);
-  useEffect(() => {
-    if (!latest || previous.current === latest) return;
-    previous.current = latest;
-    shareRef.current(latest.value);
-  }, [latest]);
-  const previousLog = useRef(log);
   const logRef = useRef(sharePosition);
   logRef.current = sharePosition;
+  const previous = useRef(latest?.metadata?.replayed ? null : latest);
+  useEffect(() => {
+    if (!latest) { setLocalPosition(null); return; }
+    if (previous.current === latest) return;
+    previous.current = latest;
+    if (latest.metadata?.replayed) {
+      if (raid?.value.map && raid.value.map !== actualMapName) return;
+      const parsed = parseWhereText(latest.value);
+      if (parsed) void logRef.current(actualMapName, parsed, true, true, true, latest.metadata.publishedAt ?? latest.receivedAt);
+    } else shareRef.current(latest.value);
+  }, [latest, actualMapName, raid?.value.map]);
+  const previousLog = useRef(log?.metadata?.replayed ? null : log);
   useEffect(() => {
     if (!log || previousLog.current === log) return;
     previousLog.current = log;
     const time = Date.parse(log.value.observed_at);
     if (!log.value.map || !Number.isFinite(time) || Date.now() - time > 30000)
       return;
-    void logRef.current(log.value.map, { ...log.value, yaw: 0 }, false, false);
+    void logRef.current(log.value.map, { ...log.value, yaw: 0 }, false, false, log.metadata?.replayed, time);
   }, [log]);
 
   return {

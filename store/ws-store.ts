@@ -4,16 +4,24 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import type { MyPageNotificationEntry } from "@/types/api/mypage";
+import type { LocationConnectionStatus, LocationEventMetadata } from "@/lib/websocket/location-client";
+
+interface LocationValue<T> { value: T; receivedAt: number; metadata?: LocationEventMetadata }
 
 interface WsState {
-  latestLocation: { value: string; receivedAt: number } | null;
-  latestRaidState: { value: RaidState; receivedAt: number } | null;
-  latestLogLocation: { value: LogLocation; receivedAt: number } | null;
+  latestLocation: LocationValue<string> | null;
+  latestRaidState: LocationValue<RaidState> | null;
+  latestLogLocation: LocationValue<LogLocation> | null;
+  locationConnection: LocationConnectionStatus;
+  locationConnectionId: string | null;
+  locationSession: number;
+  setLocationConnection: (status: LocationConnectionStatus, id?: string) => void;
+  resetLocationSession: () => void;
   locationByMap: Record<string, string>;
   notifications: MyPageNotificationEntry[];
-  setLocation: (location: string) => void;
-  setRaidState: (raidState: RaidState) => void;
-  setLogLocation: (location: LogLocation) => void;
+  setLocation: (location: string, metadata?: LocationEventMetadata) => void;
+  setRaidState: (raidState: RaidState, metadata?: LocationEventMetadata) => void;
+  setLogLocation: (location: LogLocation, metadata?: LocationEventMetadata) => void;
   setLocationForMap: (mapKey: string, location: string) => void;
   setNotifications: (
     updater:
@@ -46,12 +54,17 @@ export const useWsStore = create<WsState>()(
       latestLogLocation: null,
       locationByMap: {},
       notifications: [],
-      setLocation: (location) =>
-        set({ latestLocation: { value: location, receivedAt: Date.now() } }),
-      setRaidState: (raidState) =>
-        set({ latestRaidState: { value: raidState, receivedAt: Date.now() } }),
-      setLogLocation: (location) =>
-        set({ latestLogLocation: { value: location, receivedAt: Date.now() } }),
+      locationConnection: "disabled",
+      locationConnectionId: null,
+      locationSession: 0,
+      setLocationConnection: (status, id) => set((state) => ({ locationConnection: status, locationConnectionId: id ?? (status === "ready" || status === "reconnecting" ? state.locationConnectionId : null) })),
+      resetLocationSession: () => set((state) => ({ latestLocation: null, latestRaidState: null, latestLogLocation: null, locationByMap: {}, locationSession: state.locationSession + 1, locationConnectionId: null, locationConnection: "disabled", notifications: [] })),
+      setLocation: (location, metadata) =>
+        set({ latestLocation: { value: location, receivedAt: Date.now(), metadata }, latestLogLocation: null }),
+      setRaidState: (raidState, metadata) =>
+        set({ latestRaidState: { value: raidState, receivedAt: Date.now(), metadata }, ...(!raidState.is_active ? { latestLocation: null, latestLogLocation: null, locationByMap: {} } : {}) }),
+      setLogLocation: (location, metadata) =>
+        set({ latestLogLocation: { value: location, receivedAt: Date.now(), metadata }, latestLocation: null }),
       setLocationForMap: (mapKey, location) =>
         set((state) => ({
           locationByMap: {
