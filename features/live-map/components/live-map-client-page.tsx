@@ -2550,18 +2550,7 @@ export function LiveMapClientPage({
             />
           </div>
 
-          {raidRemainingText ? (
-            <div
-              className="flex h-9 shrink-0 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300"
-              title={locale === "ko" ? "프로그램에서 확인한 레이드 잔여 시간" : locale === "ja" ? "プログラムから取得したレイド残り時間" : "Raid time remaining from the desktop app"}
-              aria-label={locale === "ko" ? "자동 레이드 잔여 시간" : locale === "ja" ? "自動レイド残り時間" : "Automatic raid time remaining"}
-            >
-              <Clock3 className="h-4 w-4" />
-              <span>
-                {raidRemainingText}
-              </span>
-            </div>
-          ) : null}
+
 
           {activeLogLocation ? (
             <div
@@ -2610,6 +2599,20 @@ export function LiveMapClientPage({
               ? copy.collapseBothPanels
               : copy.expandBothPanels}
           </button>
+          <div className="ml-auto flex h-9 w-[5.5rem] shrink-0 justify-end">
+            {raidRemainingText ? (
+              <div
+                className="flex h-9 w-full items-center justify-center gap-1.5 tabular-nums rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300"
+                title={locale === "ko" ? "프로그램에서 확인한 레이드 잔여 시간" : locale === "ja" ? "プログラムから取得したレイド残り時間" : "Raid time remaining from the desktop app"}
+                aria-label={locale === "ko" ? "자동 레이드 잔여 시간" : locale === "ja" ? "自動レイド残り時間" : "Automatic raid time remaining"}
+              >
+                <Clock3 className="h-4 w-4" />
+                <span>
+                  {raidRemainingText}
+                </span>
+              </div>
+            ) : null}
+          </div>
         </header>
         <LocationConnectionNotice locale={locale} />
 

@@ -31,7 +31,16 @@ const base = process.env.PARTY_TEST_BASE_URL ?? "http://localhost:4000";
     const state = { map: "woods", started_at: new Date(now - 60000).toISOString(), is_active: true, transit_count: 0, session_id: "a".repeat(64), timer_observed_at: new Date(now).toISOString(), raid_ends_at: new Date(now + 2100000).toISOString() };
     const send = (value, id = crypto.randomUUID()) => { cachedState = value; for (const socket of sockets) socket.send(JSON.stringify({ type: "wpf_raid_state", payload: value, event_id: id })); };
     const source = async value => { await page.waitForFunction(value => document.querySelector('[data-btr-timer-source]')?.getAttribute('data-btr-timer-source') === value, value); };
+    const locateBefore = await page.getByRole("button", { name: "Locate", exact: true }).boundingBox();
+    const inputBefore = await page.locator("main header input").boundingBox();
     send(state, "timer-first"); await source("auto");
+    const locateAfter = await page.getByRole("button", { name: "Locate", exact: true }).boundingBox();
+    const inputAfter = await page.locator("main header input").boundingBox();
+    assert.deepEqual(locateAfter, locateBefore, "Timer appearance must not move Locate");
+    assert.deepEqual(inputAfter, inputBefore, "Timer appearance must not resize the location input");
+    const timerBounds = await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).boundingBox();
+    assert(timerBounds.x > locateAfter.x + locateAfter.width, "Timer must be to the right of toolbar buttons");
+
     await page.clock.fastForward(65000);
     let remaining = Number(await form.getAttribute("data-btr-remaining-seconds")); assert(remaining <= 2035 && remaining >= 2033);
     send(state, "timer-repeat"); await page.waitForTimeout(100);
