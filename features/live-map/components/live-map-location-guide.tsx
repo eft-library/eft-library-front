@@ -83,7 +83,7 @@ export function LiveMapLocationGuide({
           </a>
         </div>
         <a
-          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/live-map-v2"
+          href="https://github.com/eft-library/eft-library-where-am-i/releases/tag/live-map-v4"
           target="_blank"
           rel="noreferrer"
           className="mt-4 inline-flex items-center gap-2 rounded-md bg-orange-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white dark:text-[#1e2124] dark:focus:ring-offset-[#252830]"
