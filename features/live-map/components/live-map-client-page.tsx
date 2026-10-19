@@ -482,6 +482,7 @@ export function LiveMapClientPage({
     String(Math.floor((data.btr_routes?.[0]?.raid_duration_seconds ?? 0) / 60)),
   );
   const [manualBtrSeconds, setManualBtrSeconds] = useState("00");
+  const [isBtrCorrectionOpen, setIsBtrCorrectionOpen] = useState(false);
   const [manualBtrTimer, setManualBtrTimer] = useState<{
     remainingSeconds: number;
     startedAt: number | null;
@@ -2340,6 +2341,7 @@ export function LiveMapClientPage({
 
   useEffect(() => {
     setManualBtrTimer(null);
+    setIsBtrCorrectionOpen(false);
   }, [normalizedName, locationSession]);
 
   useEffect(() => {
@@ -3098,22 +3100,24 @@ export function LiveMapClientPage({
                               ? "現在のレイド残り時間"
                               : "Current raid time remaining"}
                         </span>
-                        <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[9px] font-black text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
+                        <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
                           {manualBtrTimer
-                            ? locale === "ko"
-                              ? "수동 실행 중"
-                              : "MANUAL"
-                            : automaticBtrTimer
-                              ? `${locale === "ko" ? "자동" : locale === "ja" ? "自動" : "AUTO"} · ${formatRaidRemaining(automaticBtrTimer.remainingSeconds)}`
-                              : locale === "ko" ? "수동 대기" : locale === "ja" ? "手動待機" : "MANUAL READY"}
+                            ? locale === "ko" ? (manualBtrTimer.startedAt === null ? "수동 · 일시정지" : "수동") : locale === "ja" ? "手動" : "MANUAL"
+                            : automaticBtrTimer ? locale === "ko" ? "자동" : locale === "ja" ? "自動" : "AUTO"
+                            : locale === "ko" ? "수동 대기" : locale === "ja" ? "手動待機" : "MANUAL READY"}
                         </span>
                       </div>
-                      <p className="mb-2 text-[11px] font-medium leading-4 text-gray-500 dark:text-gray-400">
-                        {automaticBtrTimer
-                          ? locale === "ko" ? "프로그램의 레이드 종료 시각을 사용합니다. 수동 시작 시 입력한 시간이 우선합니다." : locale === "ja" ? "プログラムのレイド終了時刻を使用します。手動開始すると入力時間を優先します。" : "Using the desktop raid deadline. Starting manually overrides it."
-                          : locale === "ko" ? "프로그램 타이머가 없으면 잔여 시간을 직접 입력해 주세요." : locale === "ja" ? "プログラムのタイマーがない場合は残り時間を入力してください。" : "Enter the time remaining when no desktop timer is available."}
-                      </p>
-                      {manualBtrTimer && automaticBtrTimer && <button type="button" onClick={() => { setManualBtrTimer(null); setRaidClock(Date.now()); }} className="mb-2 rounded px-1 py-1 text-xs font-bold text-sky-700 underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-sky-300">{locale === "ko" ? "프로그램 타이머로 전환" : locale === "ja" ? "プログラムのタイマーに切り替え" : "Use desktop timer"}</button>}
+                      {raidRemainingSeconds !== null && <p className="mb-2 font-mono text-3xl font-bold tabular-nums tracking-tight text-gray-900 dark:text-gray-100">{formatRaidRemaining(raidRemainingSeconds)}</p>}
+                      {automaticBtrTimer && !manualBtrTimer && <button type="button" aria-expanded={isBtrCorrectionOpen} onClick={() => {
+                        if (!isBtrCorrectionOpen) {
+                          setManualBtrMinutes(String(Math.floor(automaticBtrTimer.remainingSeconds / 60)).padStart(2, "0"));
+                          setManualBtrSeconds(String(automaticBtrTimer.remainingSeconds % 60).padStart(2, "0"));
+                        }
+                        setIsBtrCorrectionOpen((value) => !value);
+                      }} className="rounded px-1 py-1 text-xs font-semibold text-gray-600 underline underline-offset-2 hover:text-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-gray-300 dark:hover:text-orange-400">{isBtrCorrectionOpen ? locale === "ko" ? "보정 닫기" : locale === "ja" ? "調整を閉じる" : "Close correction" : locale === "ko" ? "시간 보정" : locale === "ja" ? "時間を調整" : "Adjust time"}</button>}
+                      {manualBtrTimer && automaticBtrTimer && <button type="button" onClick={() => { setManualBtrTimer(null); setIsBtrCorrectionOpen(false); setRaidClock(Date.now()); }} className="mb-2 rounded px-1 py-1 text-xs font-bold text-sky-700 underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-sky-300">{locale === "ko" ? "자동으로 돌아가기" : locale === "ja" ? "自動に戻る" : "Return to automatic"}</button>}
+                      {(!automaticBtrTimer || manualBtrTimer || isBtrCorrectionOpen) && <>
+                      <p className="mb-2 text-[11px] font-medium leading-4 text-gray-500 dark:text-gray-400">{automaticBtrTimer ? locale === "ko" ? "게임의 남은 시간과 차이가 있으면 보정해 주세요. 수동 시작 후에는 입력한 시간이 우선합니다." : locale === "ja" ? "ゲームの残り時間に合わせて調整してください。手動開始後は入力時間を優先します。" : "Adjust to match the game. Starting manually overrides automatic timing." : locale === "ko" ? "자동 타이머를 기다리거나 잔여 시간을 직접 입력해 주세요." : locale === "ja" ? "自動タイマーを待つか、残り時間を入力してください。" : "Wait for automatic timing or enter the time remaining."}</p>
                       <div className="flex items-center gap-1.5">
                         <input
                           aria-label={locale === "ko" ? "분" : "Minutes"}
@@ -3181,6 +3185,7 @@ export function LiveMapClientPage({
                             </button>
                           ))}
                       </div>
+                      </>}
                       {manualBtrTimer ? (
                         <div className="mt-2 grid grid-cols-5 gap-1">
                           <button
