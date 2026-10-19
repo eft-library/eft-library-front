@@ -2601,7 +2601,7 @@ export function LiveMapClientPage({
               ? copy.collapseBothPanels
               : copy.expandBothPanels}
           </button>
-          <div className="ml-auto flex h-9 w-[5.5rem] shrink-0 justify-end">
+          <div className="flex h-9 w-[5.5rem] shrink-0 justify-end">
             {raidRemainingText ? (
               <div
                 className="flex h-9 w-full items-center justify-center gap-1.5 tabular-nums rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300"
