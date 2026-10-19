@@ -1,13 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { AlertTriangle, X } from "lucide-react";
 
 import { getDeploymentNoticeStatus } from "@/features/deployment-notice/api";
 import type { Locale } from "@/i18n/config";
 import type { DeploymentNoticeStatus } from "@/types/api/deployment-notice";
 
 const POLL_INTERVAL_MS = 5_000;
+const DISMISSED_NOTICE_KEY = "eft-dismissed-deployment-notice";
+
+function getNoticeKey(notice: DeploymentNoticeStatus) {
+  return JSON.stringify([
+    notice.updateTime,
+    notice.startTime,
+    notice.endTime,
+    notice.messageKo,
+    notice.messageEn,
+    notice.messageJa,
+  ]);
+}
+
+const closeLabels: Record<Locale, string> = {
+  ko: "배포 안내 닫기",
+  en: "Dismiss deployment notice",
+  ja: "デプロイのお知らせを閉じる",
+};
 
 const fallbackMessages: Record<Locale, string> = {
   ko: "곧 웹사이트 배포로 접속이 일시적으로 끊길 수 있습니다.",
@@ -33,6 +51,7 @@ function getLocalizedMessage(notice: DeploymentNoticeStatus, locale: Locale) {
 
 export function DeploymentNotice({ locale }: { locale: Locale }) {
   const [notice, setNotice] = useState<DeploymentNoticeStatus | null>(null);
+  const dismissedNotice = useRef<string | null>(null);
 
   useEffect(() => {
     let activeController: AbortController | null = null;
@@ -40,11 +59,22 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
 
     const checkStatus = async () => {
       activeController?.abort();
-      activeController = new AbortController();
+      const controller = new AbortController();
+      activeController = controller;
 
       try {
-        const nextNotice = await getDeploymentNoticeStatus(activeController.signal);
-        setNotice(nextNotice.isActive ? nextNotice : null);
+        const nextNotice = await getDeploymentNoticeStatus(controller.signal);
+        if (controller.signal.aborted) return;
+        try {
+          dismissedNotice.current = localStorage.getItem(DISMISSED_NOTICE_KEY);
+        } catch {
+          // Keep the in-memory dismissal when browser storage is unavailable.
+        }
+        setNotice(
+          nextNotice.isActive && getNoticeKey(nextNotice) !== dismissedNotice.current
+            ? nextNotice
+            : null,
+        );
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
@@ -85,19 +115,40 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
       }
     };
 
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== DISMISSED_NOTICE_KEY || event.storageArea !== localStorage) return;
+      dismissedNotice.current = event.newValue;
+      setNotice((current) =>
+        current && getNoticeKey(current) === event.newValue ? null : current,
+      );
+    };
+
     startPolling();
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("storage", handleStorage);
 
     return () => {
       stopPolling();
       activeController?.abort();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("storage", handleStorage);
     };
   }, []);
 
   if (!notice) {
     return null;
   }
+
+  const dismissNotice = () => {
+    const key = getNoticeKey(notice);
+    dismissedNotice.current = key;
+    try {
+      localStorage.setItem(DISMISSED_NOTICE_KEY, key);
+    } catch {
+      // Dismiss for this mounted page even if browser storage is blocked.
+    }
+    setNotice(null);
+  };
 
   return (
     <aside
@@ -114,7 +165,7 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-sm shadow-orange-700/30 dark:bg-orange-400 dark:text-orange-950">
           <AlertTriangle aria-hidden="true" className="h-5 w-5" />
         </span>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="text-sm font-extrabold leading-5">
             {noticeTitles[locale]}
           </p>
@@ -122,6 +173,14 @@ export function DeploymentNotice({ locale }: { locale: Locale }) {
             {getLocalizedMessage(notice, locale)}
           </p>
         </div>
+        <button
+          type="button"
+          aria-label={closeLabels[locale]}
+          onClick={dismissNotice}
+          className="pointer-events-auto -mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-orange-900 transition-colors hover:bg-orange-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 dark:text-orange-100 dark:hover:bg-orange-900 dark:focus-visible:ring-orange-400"
+        >
+          <X aria-hidden="true" className="h-4 w-4" />
+        </button>
       </div>
     </aside>
   );
