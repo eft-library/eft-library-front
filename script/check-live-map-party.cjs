@@ -182,6 +182,7 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
       },
     );
     let sessionEmail = "party-test@example.invalid";
+    await context.route("**/api/live-map/v3/chat/messages?*", route => route.fulfill({ json: { status: 200, msg: "OK", data: { messages: [], next_before: null } } }));
     await context.route("**/api/auth/session", (r) =>
       r.fulfill({
         json: {

@@ -47,7 +47,6 @@ import { useAppStore } from "@/components/providers/app-store-provider";
 import {
   getLiveMapEventDetail,
   getLiveMapQuestDetail,
-  getLiveMapRaidDuration,
   getLiveMapStoryDetail,
 } from "@/features/live-map/api";
 import { getUserRoadmap, saveRoadmap } from "@/features/roadmap/api";
@@ -57,6 +56,7 @@ import {
 } from "@/lib/quest/quest-completion";
 import { cn } from "@/lib/utils/class-name";
 import { LocationConnectionNotice } from "./location-connection-notice";
+import { formatRaidRemaining, getAutomaticRaidTimer } from "@/lib/websocket/raid-state";
 import { useWsStore } from "@/store/ws-store";
 import type {
   EventObjective,
@@ -163,7 +163,6 @@ const LiveMapImagePopup = dynamic(
 );
 
 const RIGHT_SECTION_IDS = ["quest", "story", "event"] as const;
-const BTR_AUTO_TRACKING_ENABLED = false;
 
 function addPointMapNames(
   names: Set<string>,
@@ -477,9 +476,6 @@ export function LiveMapClientPage({
   const previousLocationEventRef = useRef<typeof latestWebsocketLocation>(null);
   const previousTransitCountRef = useRef<number | null>(null);
   const [raidClock, setRaidClock] = useState(() => Date.now());
-  const [raidDurationMinutes, setRaidDurationMinutes] = useState<number | null>(
-    null,
-  );
   const [isBtrVisible, setIsBtrVisible] = useState(true);
   const [isBtrPanelCollapsed, setIsBtrPanelCollapsed] = useState(false);
   const [manualBtrMinutes, setManualBtrMinutes] = useState(() =>
@@ -2324,45 +2320,20 @@ export function LiveMapClientPage({
     }
   }, [party.localPosition, party.roomId, normalizedName, sortedFloors]);
 
-  useEffect(() => {
-    const raidState = latestRaidState?.value;
-    if (
-      (!BTR_AUTO_TRACKING_ENABLED ||
-        !raidState?.is_active ||
-        !raidState.started_at) &&
-      (manualBtrTimer === null || manualBtrTimer.startedAt === null)
-    ) {
-      return;
-    }
+  const automaticRaidTimer = getAutomaticRaidTimer(latestRaidState?.value, normalizedName, Math.max(raidClock, Date.now()));
+  const automaticBtrTimer = normalizedName === "woods" ? automaticRaidTimer : null;
+  const automaticRaidEndsAt = automaticRaidTimer?.endsAt;
 
+  useEffect(() => {
+    if (automaticRaidEndsAt === undefined && manualBtrTimer?.startedAt == null) return;
     setRaidClock(Date.now());
     const interval = window.setInterval(() => setRaidClock(Date.now()), 1000);
     return () => window.clearInterval(interval);
-  }, [latestRaidState, manualBtrTimer]);
+  }, [automaticRaidEndsAt, manualBtrTimer?.startedAt]);
 
   useEffect(() => {
-    const raidState = latestRaidState?.value;
-    if (!raidState?.is_active || !raidState.map) {
-      setRaidDurationMinutes(null);
-      return;
-    }
-
-    let isCurrent = true;
-    void getLiveMapRaidDuration(raidState.map)
-      .then((result) => {
-        if (isCurrent) {
-          setRaidDurationMinutes(result.minutes);
-        }
-      })
-      .catch(() => {
-        if (isCurrent) {
-          setRaidDurationMinutes(null);
-        }
-      });
-    return () => {
-      isCurrent = false;
-    };
-  }, [latestRaidState]);
+    setManualBtrTimer(null);
+  }, [normalizedName, locationSession]);
 
   useEffect(() => {
     const raidState = latestRaidState?.value;
@@ -2397,51 +2368,12 @@ export function LiveMapClientPage({
     router,
   ]);
 
-  const raidRemainingText = useMemo(() => {
-    const state = latestRaidState?.value;
-    if (!state?.is_active || !state.started_at) {
-      return null;
-    }
-
-    const startedAt = new Date(state.started_at).getTime();
-    if (!Number.isFinite(startedAt)) {
-      return null;
-    }
-
-    const elapsedSeconds = Math.max(
-      0,
-      Math.floor((raidClock - startedAt) / 1000),
-    );
-    const remainingSeconds =
-      raidDurationMinutes === null
-        ? elapsedSeconds
-        : Math.max(0, raidDurationMinutes * 60 - elapsedSeconds);
-    const minutes = Math.floor(remainingSeconds / 60);
-    const seconds = String(remainingSeconds % 60).padStart(2, "0");
-    return `${minutes}:${seconds}`;
-  }, [latestRaidState, raidClock, raidDurationMinutes]);
-
-  const raidRemainingSeconds = useMemo(() => {
-    if (manualBtrTimer) {
-      return manualBtrTimer.startedAt === null
-        ? manualBtrTimer.remainingSeconds
-        : Math.max(
-            0,
-            manualBtrTimer.remainingSeconds -
-              Math.floor((raidClock - manualBtrTimer.startedAt) / 1000),
-          );
-    }
-    if (!BTR_AUTO_TRACKING_ENABLED) return null;
-    const state = latestRaidState?.value;
-    if (!state?.is_active || !state.started_at || raidDurationMinutes === null)
-      return null;
-    const startedAt = new Date(state.started_at).getTime();
-    if (!Number.isFinite(startedAt)) return null;
-    return Math.max(
-      0,
-      raidDurationMinutes * 60 - Math.floor((raidClock - startedAt) / 1000),
-    );
-  }, [latestRaidState, manualBtrTimer, raidClock, raidDurationMinutes]);
+  const raidRemainingText = automaticRaidTimer ? formatRaidRemaining(automaticRaidTimer.remainingSeconds) : null;
+  const raidRemainingSeconds = manualBtrTimer
+    ? manualBtrTimer.startedAt === null
+      ? manualBtrTimer.remainingSeconds
+      : Math.max(0, manualBtrTimer.remainingSeconds - Math.floor((raidClock - manualBtrTimer.startedAt) / 1000))
+    : automaticBtrTimer?.remainingSeconds ?? null;
 
   useEffect(() => {
     if (!manualBtrTimer || raidRemainingSeconds === null) return;
@@ -2607,16 +2539,12 @@ export function LiveMapClientPage({
 
           {raidRemainingText ? (
             <div
-              className="hidden h-9 shrink-0 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300 sm:flex"
-              title={
-                raidDurationMinutes === null
-                  ? "레이드 경과 시간"
-                  : "레이드 예상 잔여 시간"
-              }
+              className="flex h-9 shrink-0 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 text-xs font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300"
+              title={locale === "ko" ? "프로그램에서 확인한 레이드 잔여 시간" : locale === "ja" ? "プログラムから取得したレイド残り時間" : "Raid time remaining from the desktop app"}
+              aria-label={locale === "ko" ? "자동 레이드 잔여 시간" : locale === "ja" ? "自動レイド残り時間" : "Automatic raid time remaining"}
             >
               <Clock3 className="h-4 w-4" />
               <span>
-                {raidDurationMinutes === null ? "+" : ""}
                 {raidRemainingText}
               </span>
             </div>
@@ -3118,6 +3046,9 @@ export function LiveMapClientPage({
                           : "Possible routes only. Timing may vary due to spawn variance and player interaction."}
                     </p>
                     <form
+                      aria-label={locale === "ko" ? "BTR 타이머" : locale === "ja" ? "BTRタイマー" : "BTR timer"}
+                      data-btr-timer-source={manualBtrTimer ? "manual" : automaticBtrTimer ? "auto" : "waiting"}
+                      data-btr-remaining-seconds={raidRemainingSeconds ?? undefined}
                       onSubmit={(event) => {
                         event.preventDefault();
                         const minutes = Number(manualBtrMinutes);
@@ -3156,11 +3087,17 @@ export function LiveMapClientPage({
                             ? locale === "ko"
                               ? "수동 실행 중"
                               : "MANUAL"
-                            : locale === "ko"
-                              ? "수동 대기"
-                              : "MANUAL READY"}
+                            : automaticBtrTimer
+                              ? `${locale === "ko" ? "자동" : locale === "ja" ? "自動" : "AUTO"} · ${formatRaidRemaining(automaticBtrTimer.remainingSeconds)}`
+                              : locale === "ko" ? "수동 대기" : locale === "ja" ? "手動待機" : "MANUAL READY"}
                         </span>
                       </div>
+                      <p className="mb-2 text-[11px] font-medium leading-4 text-gray-500 dark:text-gray-400">
+                        {automaticBtrTimer
+                          ? locale === "ko" ? "프로그램의 레이드 종료 시각을 사용합니다. 수동 시작 시 입력한 시간이 우선합니다." : locale === "ja" ? "プログラムのレイド終了時刻を使用します。手動開始すると入力時間を優先します。" : "Using the desktop raid deadline. Starting manually overrides it."
+                          : locale === "ko" ? "프로그램 타이머가 없으면 잔여 시간을 직접 입력해 주세요." : locale === "ja" ? "プログラムのタイマーがない場合は残り時間を入力してください。" : "Enter the time remaining when no desktop timer is available."}
+                      </p>
+                      {manualBtrTimer && automaticBtrTimer && <button type="button" onClick={() => { setManualBtrTimer(null); setRaidClock(Date.now()); }} className="mb-2 rounded px-1 py-1 text-xs font-bold text-sky-700 underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:text-sky-300">{locale === "ko" ? "프로그램 타이머로 전환" : locale === "ja" ? "プログラムのタイマーに切り替え" : "Use desktop timer"}</button>}
                       <div className="flex items-center gap-1.5">
                         <input
                           aria-label={locale === "ko" ? "분" : "Minutes"}

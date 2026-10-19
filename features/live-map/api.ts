@@ -48,9 +48,18 @@ export async function getLiveMapDetail(normalizedName: string): Promise<LiveMapP
     normalizedName === "woods" ||
     normalizedName === "streets-of-tarkov" ||
     normalizedName === "lighthouse";
-  const btrRoutes = supportsBtr && Array.isArray(liveMap.btr_routes)
+  let btrRoutes = supportsBtr && Array.isArray(liveMap.btr_routes)
     ? liveMap.btr_routes
     : [];
+  // Older static exports predate BTR routes; supplement only that missing field.
+  if (supportsBtr && !Array.isArray(liveMap.btr_routes)) {
+    try {
+      const current = await apiGet<LiveMapDetailResponse>(getLiveMapDetailEndpoint(normalizedName), { revalidate: 60 * 15 });
+      btrRoutes = current.btr_routes ?? [];
+    } catch {
+      // Map resources remain usable when route metadata is unavailable.
+    }
+  }
 
   return withCoordinateInfo({ ...liveMap, btr_routes: btrRoutes });
 }

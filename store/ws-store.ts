@@ -36,6 +36,9 @@ export interface RaidState {
   started_at: string | null;
   is_active: boolean;
   transit_count: number;
+  session_id?: string | null;
+  timer_observed_at?: string | null;
+  raid_ends_at?: string | null;
 }
 
 export interface LogLocation {
@@ -62,7 +65,11 @@ export const useWsStore = create<WsState>()(
       setLocation: (location, metadata) =>
         set({ latestLocation: { value: location, receivedAt: Date.now(), metadata }, latestLogLocation: null }),
       setRaidState: (raidState, metadata) =>
-        set({ latestRaidState: { value: raidState, receivedAt: Date.now(), metadata }, ...(!raidState.is_active ? { latestLocation: null, latestLogLocation: null, locationByMap: {} } : {}) }),
+        set((state) => {
+          const previous = state.latestRaidState?.value;
+          const contextChanged = previous && (previous.map !== raidState.map || previous.started_at !== raidState.started_at || (previous.session_id ?? null) !== (raidState.session_id ?? null));
+          return { latestRaidState: { value: raidState, receivedAt: Date.now(), metadata }, ...(!raidState.is_active || contextChanged ? { latestLocation: null, latestLogLocation: null, locationByMap: {} } : {}) };
+        }),
       setLogLocation: (location, metadata) =>
         set({ latestLogLocation: { value: location, receivedAt: Date.now(), metadata }, latestLocation: null }),
       setLocationForMap: (mapKey, location) =>

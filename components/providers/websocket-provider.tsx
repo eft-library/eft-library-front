@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import { getSession, useSession } from "next-auth/react";
 
 import { LocationEventCursor, LocationRealtimeClient } from "@/lib/websocket/location-client";
+import { isRaidState } from "@/lib/websocket/raid-state";
 import { normalizeNotificationMessage } from "@/lib/utils/notification";
-import { useWsStore, type LogLocation, type RaidState } from "@/store/ws-store";
+import { useWsStore, type LogLocation } from "@/store/ws-store";
 import type { MyPageNotificationEntry } from "@/types/api/mypage";
 
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
@@ -87,19 +88,5 @@ function isLogLocation(value: unknown): value is LogLocation {
     typeof location.y === "number" &&
     typeof location.z === "number" &&
     typeof location.observed_at === "string"
-  );
-}
-
-function isRaidState(value: unknown): value is RaidState {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const state = value as Record<string, unknown>;
-  return (
-    (typeof state.map === "string" || state.map === null) &&
-    (typeof state.started_at === "string" || state.started_at === null) &&
-    typeof state.is_active === "boolean" &&
-    typeof state.transit_count === "number"
   );
 }
