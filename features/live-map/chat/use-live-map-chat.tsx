@@ -43,8 +43,9 @@ function mergeMessages(
 
 function useLiveMapChatState() {
   const { data: session, status } = useSession();
-  const enabled = status !== "loading";
   const token = session?.accessToken;
+  const enabled = (status !== "loading" || Boolean(token)) && session?.error !== "ReauthenticationRequired" &&
+    !(session?.error === "AccessTokenRefreshUnavailable" && !token);
   const account = session?.userInfo?.email ?? session?.user?.email;
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<LiveMapChatRealtimeView>({

@@ -41,7 +41,7 @@ export class LocationRealtimeClient {
 
   constructor(private options: {
     host: string;
-    getToken: () => Promise<string | undefined>;
+    getToken: (forceRefresh?: boolean) => Promise<string | undefined>;
     onStatus: (status: LocationConnectionStatus, connectionId?: string) => void;
     onMessage: (message: Record<string, unknown>) => void;
   }) {}
@@ -89,7 +89,7 @@ export class LocationRealtimeClient {
     this.options.onStatus(this.attempts ? "reconnecting" : "connecting");
     let token: string | undefined;
     try {
-      token = await this.options.getToken();
+      token = await this.options.getToken(this.authAttempts > 0);
     } catch {
       if (!this.disposed && generation === this.generation) { this.authenticating = false; this.retry(); }
       return;

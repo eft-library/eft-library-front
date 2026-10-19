@@ -10,9 +10,12 @@ import { useWsStore, type LogLocation } from "@/store/ws-store";
 import type { MyPageNotificationEntry } from "@/types/api/mypage";
 
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
+  const updateRef = useRef(update);
+  useEffect(() => { updateRef.current = update; }, [update]);
   const account = session?.userInfo?.email ?? session?.user?.email ?? null;
   const token = session?.accessToken;
+  const reauthenticationRequired = session?.error === "ReauthenticationRequired";
   const previousAccount = useRef<string | null | undefined>(undefined);
   const cursorRef = useRef(new LocationEventCursor());
 
@@ -25,14 +28,20 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const host = process.env.NEXT_PUBLIC_REDIS_HOST;
+    if (reauthenticationRequired) {
+      useWsStore.getState().setLocationConnection("auth-required");
+      return;
+    }
     if (!account || !token || !host) {
-      useWsStore.getState().setLocationConnection("disabled");
+      useWsStore.getState().setLocationConnection(account ? "reconnecting" : "disabled");
       return;
     }
     const client = new LocationRealtimeClient({
       host,
-      getToken: async () => {
-        const latest = await getSession();
+      getToken: async (forceRefresh) => {
+        const latest = forceRefresh ? await updateRef.current({ refreshAccessToken: true }) : await getSession();
+        if (latest?.error === "ReauthenticationRequired") return undefined;
+        if (latest?.error === "AccessTokenRefreshUnavailable" && !latest.accessToken) throw new Error("Session refresh temporarily unavailable");
         const latestAccount = latest?.userInfo?.email ?? latest?.user?.email;
         return latestAccount === account ? latest?.accessToken : undefined;
       },
@@ -62,16 +71,17 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     });
     client.start();
     const wake = () => { if (document.visibilityState === "visible") client.wake(); };
-    window.addEventListener("online", wake);
+    const online = () => client.reconnect();
+    window.addEventListener("online", online);
     window.addEventListener("focus", wake);
     document.addEventListener("visibilitychange", wake);
     return () => {
       client.dispose();
-      window.removeEventListener("online", wake);
+      window.removeEventListener("online", online);
       window.removeEventListener("focus", wake);
       document.removeEventListener("visibilitychange", wake);
     };
-  }, [account, token]);
+  }, [account, token, reauthenticationRequired]);
 
   return <>{children}</>;
 }

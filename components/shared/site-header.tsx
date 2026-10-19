@@ -20,6 +20,7 @@ import {
   X,
 } from "lucide-react";
 
+import { useWsStore } from "@/store/ws-store";
 import Logo from "@/assets/navi/logo";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
 import { NotificationMenu } from "@/components/shared/notification-menu";
@@ -288,7 +289,9 @@ export function SiteHeader({
   themeToggleLabel,
   locale,
 }: SiteHeaderProps) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const locationConnection = useWsStore((state) => state.locationConnection);
+  const authenticated = status === "authenticated" && session?.error !== "ReauthenticationRequired" && locationConnection !== "auth-required";
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -371,7 +374,7 @@ export function SiteHeader({
           </nav>
 
           <div className="flex shrink-0 items-center gap-3">
-            {status === "authenticated" ? (
+            {authenticated ? (
               <>
                 <NotificationMenu />
                 <div
@@ -458,7 +461,7 @@ export function SiteHeader({
               onNavigate={() => setIsMobileOpen(false)}
             />
 
-            {status === "authenticated" ? (
+            {authenticated ? (
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-[#1f2329]">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">

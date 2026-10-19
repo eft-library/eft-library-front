@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 import { AdSideRails } from "@/components/shared/ad-side-rails";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteFooterGuard } from "@/components/shared/site-footer-guard";
+import { SessionHealthNotice } from "@/components/shared/session-health-notice";
 import { SiteHeader } from "@/components/shared/site-header";
 import { AppStoreProvider } from "@/components/providers/app-store-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -123,6 +124,7 @@ async function ResolvedLayout({ children }: { children: React.ReactNode }) {
           themeToggleLabel={copy.navigation.themeToggle}
           locale={locale}
         />
+        <SessionHealthNotice locale={locale} />
         <DeploymentNotice locale={locale} />
         <AdSideRails />
         {/* <ChatData /> */}
