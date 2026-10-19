@@ -514,6 +514,7 @@ export function LiveMapClientPage({
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
   const [autoDetectMap, setAutoDetectMap] = useState(true);
   const autoMapNavigationEvent = useWsStore((state) => state.autoMapNavigationEvent);
+  const autoMapNavigationTime = useWsStore((state) => state.autoMapNavigationTime);
   const setAutoMapNavigationEvent = useWsStore((state) => state.setAutoMapNavigationEvent);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
@@ -2366,18 +2367,19 @@ export function LiveMapClientPage({
     if (log?.value.map && Number.isFinite(Date.parse(log.value.observed_at)) && now - Date.parse(log.value.observed_at) <= 30000) {
       candidates.push({ map: log.value.map, key: `log:${log.metadata?.eventId ?? log.receivedAt}:${log.value.map}`, time: log.metadata?.publishedAt ?? log.receivedAt });
     }
-    if (raid?.value.is_active && raid.value.map) {
+    // Loading snapshots identify the map before the raid/timer becomes active.
+    if (raid?.value.map) {
       const fresh = raid.value.raid_ends_at ? Date.parse(raid.value.raid_ends_at) > now : now - (raid.metadata?.publishedAt ?? raid.receivedAt) <= 60000;
       if (fresh) candidates.push({ map: raid.value.map, key: `raid:${raid.metadata?.eventId ?? raid.receivedAt}:${raid.value.map}`, time: raid.metadata?.publishedAt ?? raid.receivedAt });
     }
     const target = candidates.sort((a, b) => b.time - a.time)[0];
-    if (!target || target.key === autoMapNavigationEvent || !data.map_selector.some((entry) => entry.normalized_name === target.map)) return;
-    setAutoMapNavigationEvent(target.key);
+    if (!target || target.time < autoMapNavigationTime || target.key === autoMapNavigationEvent || !data.map_selector.some((entry) => entry.normalized_name === target.map)) return;
+    setAutoMapNavigationEvent(target.key, target.time);
     if (target.map !== normalizedName) {
       clearLiveMapSelection();
       router.replace(`/live-map/${target.map}`, { scroll: false });
     }
-  }, [autoDetectMap, hasLoadedPreferences, latestLogLocation, latestRaidState, autoMapNavigationEvent, data.map_selector, normalizedName, router, setAutoMapNavigationEvent]);
+  }, [autoDetectMap, hasLoadedPreferences, latestLogLocation, latestRaidState, autoMapNavigationEvent, autoMapNavigationTime, data.map_selector, normalizedName, router, setAutoMapNavigationEvent]);
 
   const raidRemainingText = automaticRaidTimer ? formatRaidRemaining(automaticRaidTimer.remainingSeconds) : null;
   const raidRemainingSeconds = manualBtrTimer

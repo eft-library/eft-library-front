@@ -94,6 +94,23 @@ const base = process.env.PARTY_TEST_BASE_URL ?? "http://localhost:4000";
     await logMap("woods", 61000); assert(page.url().endsWith("/live-map/customs"));
     await logMap("woods"); await page.waitForURL("**/live-map/woods");
     console.log("PASS log map auto-navigation, toggle persistence, enable current map, stale and unknown map guards");
+    const loading = { map: "factory", started_at: null, is_active: false, transit_count: 0, session_id: "d".repeat(64), timer_observed_at: null, raid_ends_at: null };
+    send(loading); await page.waitForURL("**/live-map/factory");
+    assert.equal(await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).count(), 0, "Loading must switch only the map, not start a timer");
+    if (!await mapToggle.isVisible()) await page.getByRole("button", { name: "보기 설정", exact: true }).click();
+    await mapToggle.click();
+    send({ ...loading, map: "woods" }); await page.waitForTimeout(150);
+    assert(page.url().endsWith("/live-map/factory"), "Disabled automatic navigation must ignore loading states");
+    await mapToggle.click(); await page.waitForURL("**/live-map/woods");
+    assert.equal(await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).count(), 0);
+    send({ ...loading, map: "unknown-map" }); await page.waitForTimeout(150);
+    assert(page.url().endsWith("/live-map/woods"));
+    const oldPublished = await page.evaluate(() => (Date.now() - 61000) * 1000);
+    for (const socket of sockets) socket.send(JSON.stringify({ type: "wpf_raid_state", event_id: "stale-loading", received_at_unix_us: oldPublished, payload: loading }));
+    await page.waitForTimeout(150); assert(page.url().endsWith("/live-map/woods"), "Stale loading states must not navigate");
+    send(state); await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).waitFor();
+    console.log("PASS inactive loading map switch, timer gating, disabled option, unknown and stale loading states");
+
     assert.deepEqual(errors, []);
     console.log("PASS Woods timer, delayed updates, manual override/return, null/new-session/legacy/end reset, themes and mobile");
   } finally { await browser.close(); }
