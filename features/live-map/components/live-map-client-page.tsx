@@ -2328,7 +2328,7 @@ export function LiveMapClientPage({
   }, [party.localPosition, party.roomId, normalizedName, sortedFloors]);
 
   const automaticRaidTimer = getAutomaticRaidTimer(latestRaidState?.value, normalizedName, Math.max(raidClock, Date.now()));
-  const automaticBtrTimer = normalizedName === "woods" ? automaticRaidTimer : null;
+  const automaticBtrTimer = data.btr_routes?.length ? automaticRaidTimer : null;
   const automaticRaidEndsAt = automaticRaidTimer?.endsAt;
 
   useEffect(() => {

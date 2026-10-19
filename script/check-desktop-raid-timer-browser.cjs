@@ -111,6 +111,30 @@ const base = process.env.PARTY_TEST_BASE_URL ?? "http://localhost:4000";
     send(state); await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).waitFor();
     console.log("PASS inactive loading map switch, timer gating, disabled option, unknown and stale loading states");
 
+    for (const map of ["streets-of-tarkov", "lighthouse"]) {
+      const observed = await page.evaluate(() => Date.now());
+      const mapState = { ...state, map, session_id: (map === "lighthouse" ? "e" : "f").repeat(64), timer_observed_at: new Date(observed).toISOString(), raid_ends_at: new Date(observed + 1200000).toISOString() };
+      cachedState = mapState;
+      await page.goto(base + "/live-map/" + map);
+      await page.getByText("위치 수신 준비 완료", { exact: true }).waitFor();
+      await source("auto");
+      const before = Number(await form.getAttribute("data-btr-remaining-seconds"));
+      assert(before > 1180 && before <= 1200, "Supported BTR map must use the desktop deadline");
+      await page.clock.fastForward(5000);
+      assert(Number(await form.getAttribute("data-btr-remaining-seconds")) <= before - 4);
+      await form.getByRole("textbox", { name: "분", exact: true }).fill("10");
+      await form.getByRole("textbox", { name: "초", exact: true }).fill("00");
+      await form.getByRole("button", { name: "수동 시작", exact: true }).click(); await source("manual");
+      await form.getByRole("button", { name: "프로그램 타이머로 전환", exact: true }).click(); await source("auto");
+      send({ ...mapState, timer_observed_at: null, raid_ends_at: null }); await source("waiting");
+      send(mapState); await source("auto");
+      await page.setViewportSize({ width: 390, height: 844 });
+      assert(await page.getByLabel("자동 레이드 잔여 시간", { exact: true }).isVisible());
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      await page.screenshot({ path: `${tmpdir()}/desktop-btr-${map}-mobile.png` });
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      console.log("PASS BTR automatic countdown, manual override/return, null reset and mobile", map);
+    }
     assert.deepEqual(errors, []);
     console.log("PASS Woods timer, delayed updates, manual override/return, null/new-session/legacy/end reset, themes and mobile");
   } finally { await browser.close(); }
