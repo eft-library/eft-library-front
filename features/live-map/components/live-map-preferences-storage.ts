@@ -5,6 +5,7 @@ const LIVE_MAP_MARKER_DETAILS_STORAGE_KEY =
 export interface LiveMapPreferences {
   areStaticLabelsVisible: boolean;
   isAutoPanLocked: boolean;
+  autoDetectMap: boolean;
   isEyeComfortMode: boolean;
   isMarkerSimplified: boolean;
   openQuestDetailsOnMarkerClick: boolean;
@@ -44,6 +45,7 @@ export function readLiveMapPreferences(): LiveMapPreferences | null {
     return {
       areStaticLabelsVisible: preferences.areStaticLabelsVisible,
       isAutoPanLocked: preferences.isAutoPanLocked,
+      autoDetectMap: typeof preferences.autoDetectMap === "boolean" ? preferences.autoDetectMap : true,
       isEyeComfortMode:
         typeof preferences.isEyeComfortMode === "boolean"
           ? preferences.isEyeComfortMode

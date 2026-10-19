@@ -74,6 +74,26 @@ const base = process.env.PARTY_TEST_BASE_URL ?? "http://localhost:4000";
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
     await page.screenshot({ path: `${tmpdir()}/desktop-raid-timer-mobile.png` });
     send({ ...state, is_active: false, timer_observed_at: null, raid_ends_at: null }); await source("waiting");
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.getByRole("button", { name: "보기 설정", exact: true }).click();
+    const mapToggle = page.getByRole("menuitemcheckbox", { name: "지도 자동 전환", exact: true });
+    assert.equal(await mapToggle.getAttribute("aria-checked"), "true");
+    await mapToggle.click();
+    const logMap = async (map, age = 0) => {
+      const observed = await page.evaluate(() => Date.now());
+      for (const socket of sockets) socket.send(JSON.stringify({ type: "wpf_log_location", event_id: crypto.randomUUID(), payload: { map, x: 123, y: 0, z: -45, observed_at: new Date(observed - age).toISOString() } }));
+      await page.waitForTimeout(150);
+    };
+    await logMap("customs"); assert(page.url().endsWith("/live-map/woods"));
+    await page.reload();
+    await page.getByRole("button", { name: "보기 설정", exact: true }).click();
+    assert.equal(await mapToggle.getAttribute("aria-checked"), "false", "Disabled automatic navigation must persist across reloads");
+    await logMap("customs"); assert(page.url().endsWith("/live-map/woods"));
+    await mapToggle.click(); await page.waitForURL("**/live-map/customs");
+    await logMap("unknown-map"); assert(page.url().endsWith("/live-map/customs"));
+    await logMap("woods", 61000); assert(page.url().endsWith("/live-map/customs"));
+    await logMap("woods"); await page.waitForURL("**/live-map/woods");
+    console.log("PASS log map auto-navigation, toggle persistence, enable current map, stale and unknown map guards");
     assert.deepEqual(errors, []);
     console.log("PASS Woods timer, delayed updates, manual override/return, null/new-session/legacy/end reset, themes and mobile");
   } finally { await browser.close(); }

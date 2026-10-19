@@ -15,6 +15,8 @@ interface WsState {
   locationConnection: LocationConnectionStatus;
   locationConnectionId: string | null;
   locationSession: number;
+  autoMapNavigationEvent: string | null;
+  setAutoMapNavigationEvent: (event: string | null) => void;
   setLocationConnection: (status: LocationConnectionStatus, id?: string) => void;
   resetLocationSession: () => void;
   locationByMap: Record<string, string>;
@@ -60,8 +62,10 @@ export const useWsStore = create<WsState>()(
       locationConnection: "disabled",
       locationConnectionId: null,
       locationSession: 0,
+      autoMapNavigationEvent: null,
+      setAutoMapNavigationEvent: (event) => set({ autoMapNavigationEvent: event }),
       setLocationConnection: (status, id) => set((state) => ({ locationConnection: status, locationConnectionId: id ?? (status === "ready" || status === "reconnecting" ? state.locationConnectionId : null) })),
-      resetLocationSession: () => set((state) => ({ latestLocation: null, latestRaidState: null, latestLogLocation: null, locationByMap: {}, locationSession: state.locationSession + 1, locationConnectionId: null, locationConnection: "disabled", notifications: [] })),
+      resetLocationSession: () => set((state) => ({ latestLocation: null, latestRaidState: null, latestLogLocation: null, locationByMap: {}, locationSession: state.locationSession + 1, autoMapNavigationEvent: null, locationConnectionId: null, locationConnection: "disabled", notifications: [] })),
       setLocation: (location, metadata) =>
         set({ latestLocation: { value: location, receivedAt: Date.now(), metadata }, latestLogLocation: null }),
       setRaidState: (raidState, metadata) =>

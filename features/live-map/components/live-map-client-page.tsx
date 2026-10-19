@@ -512,6 +512,9 @@ export function LiveMapClientPage({
     null,
   );
   const [isAutoPanLocked, setIsAutoPanLocked] = useState(false);
+  const [autoDetectMap, setAutoDetectMap] = useState(true);
+  const autoMapNavigationEvent = useWsStore((state) => state.autoMapNavigationEvent);
+  const setAutoMapNavigationEvent = useWsStore((state) => state.setAutoMapNavigationEvent);
   const [areStaticLabelsVisible, setAreStaticLabelsVisible] = useState(true);
   const [isEyeComfortMode, setIsEyeComfortMode] = useState(false);
   const [isMarkerSimplified, setIsMarkerSimplified] = useState(false);
@@ -562,6 +565,7 @@ export function LiveMapClientPage({
     if (preferences) {
       setAreStaticLabelsVisible(preferences.areStaticLabelsVisible);
       setIsAutoPanLocked(preferences.isAutoPanLocked);
+      setAutoDetectMap(preferences.autoDetectMap);
       setIsEyeComfortMode(preferences.isEyeComfortMode);
       setIsMarkerSimplified(preferences.isMarkerSimplified);
       setFloorSeparationIntensity(preferences.floorSeparationIntensity);
@@ -590,6 +594,7 @@ export function LiveMapClientPage({
     }
 
     writeLiveMapPreferences({
+      autoDetectMap,
       areStaticLabelsVisible,
       isAutoPanLocked,
       isEyeComfortMode,
@@ -602,6 +607,7 @@ export function LiveMapClientPage({
     });
     writeLiveMapMarkerDetailsPreference(openMarkerDetailsOnMarkerClick);
   }, [
+    autoDetectMap,
     areStaticLabelsVisible,
     hasLoadedPreferences,
     isAutoPanLocked,
@@ -2342,17 +2348,6 @@ export function LiveMapClientPage({
     }
 
     if (
-      !party.roomId &&
-      raidState.is_active &&
-      raidState.map &&
-      raidState.map !== normalizedName &&
-      data.map_selector.some((entry) => entry.normalized_name === raidState.map)
-    ) {
-      clearLiveMapSelection();
-      router.replace(`/live-map/${raidState.map}`, { scroll: false });
-    }
-
-    if (
       previousTransitCountRef.current !== null &&
       raidState.transit_count > previousTransitCountRef.current
     ) {
@@ -2360,13 +2355,29 @@ export function LiveMapClientPage({
       window.setTimeout(() => setIsTransitDetected(false), 10000);
     }
     previousTransitCountRef.current = raidState.transit_count;
-  }, [
-    data.map_selector,
-    latestRaidState,
-    normalizedName,
-    party.roomId,
-    router,
-  ]);
+  }, [latestRaidState]);
+
+  useEffect(() => {
+    if (!hasLoadedPreferences || !autoDetectMap) return;
+    const now = Date.now();
+    const log = latestLogLocation;
+    const raid = latestRaidState;
+    const candidates: { map: string; key: string; time: number }[] = [];
+    if (log?.value.map && Number.isFinite(Date.parse(log.value.observed_at)) && now - Date.parse(log.value.observed_at) <= 30000) {
+      candidates.push({ map: log.value.map, key: `log:${log.metadata?.eventId ?? log.receivedAt}:${log.value.map}`, time: log.metadata?.publishedAt ?? log.receivedAt });
+    }
+    if (raid?.value.is_active && raid.value.map) {
+      const fresh = raid.value.raid_ends_at ? Date.parse(raid.value.raid_ends_at) > now : now - (raid.metadata?.publishedAt ?? raid.receivedAt) <= 60000;
+      if (fresh) candidates.push({ map: raid.value.map, key: `raid:${raid.metadata?.eventId ?? raid.receivedAt}:${raid.value.map}`, time: raid.metadata?.publishedAt ?? raid.receivedAt });
+    }
+    const target = candidates.sort((a, b) => b.time - a.time)[0];
+    if (!target || target.key === autoMapNavigationEvent || !data.map_selector.some((entry) => entry.normalized_name === target.map)) return;
+    setAutoMapNavigationEvent(target.key);
+    if (target.map !== normalizedName) {
+      clearLiveMapSelection();
+      router.replace(`/live-map/${target.map}`, { scroll: false });
+    }
+  }, [autoDetectMap, hasLoadedPreferences, latestLogLocation, latestRaidState, autoMapNavigationEvent, data.map_selector, normalizedName, router, setAutoMapNavigationEvent]);
 
   const raidRemainingText = automaticRaidTimer ? formatRaidRemaining(automaticRaidTimer.remainingSeconds) : null;
   const raidRemainingSeconds = manualBtrTimer
@@ -3473,6 +3484,15 @@ export function LiveMapClientPage({
                         : copy.mapLabelsHidden
                     }
                     onClick={() => setAreStaticLabelsVisible((value) => !value)}
+                  />
+                  <ViewSettingButton
+                    checked={autoDetectMap}
+                    icon={MapPinned}
+                    label={locale === "ko" ? "지도 자동 전환" : locale === "ja" ? "マップの自動切替" : "Switch to detected map"}
+                    onClick={() => {
+                      if (!autoDetectMap) setAutoMapNavigationEvent(null);
+                      setAutoDetectMap((value) => !value);
+                    }}
                   />
                   <ViewSettingButton
                     checked={isAutoPanLocked}
