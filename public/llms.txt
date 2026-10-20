@@ -3,38 +3,41 @@
 > Escape from Tarkov(EFT) 플레이어를 위한 정보 중심 데이터베이스 사이트입니다.
 > 맵, 퀘스트, 스토리 이벤트, 아이템, 시세, 은신처, 보스, 패치/와이프 정보 등 게임 플레이에 필요한 사실 기반 정보를 제공합니다.
 
+최종 검토일: 2026-10-20
+
 ---
 
-## What This Site Contains
+## 사이트에서 제공하는 정보
 
-### Maps & Navigation
+### 지도와 위치 안내
 
 * [https://eftlibrary.com/map-of-tarkov](https://eftlibrary.com/map-of-tarkov)
-  Tarkov 전체 지도와 지역별 위치 정보
+  타르코프 전체 지도와 지역별 위치 정보
 * [https://eftlibrary.com/map](https://eftlibrary.com/map)
   지역별 2D/3D 지도 정보
 * [https://eftlibrary.com/live-map](https://eftlibrary.com/live-map)
-  마커, 층, 퀘스트/스토리/이벤트 목표 위치를 포함한 인터랙티브 라이브 맵
+  마커, 층, 퀘스트/스토리/이벤트 목표 위치를 포함한 인터랙티브 라이브 맵. 내 위치 찾기 프로그램 연동, 지도 자동 전환, 레이드 타이머, 지원 지도에서의 BTR 예상 경로를 제공합니다. 자동 기능은 프로그램 연결과 수신 상태에 따라 동작하며 지도 자동 전환은 보기 옵션에서 설정할 수 있습니다.
+  파티 모집, 파티 초대, 파티 내 위치 공유와 채팅도 제공합니다. 실시간 접속자, 채팅, 파티 및 위치 데이터는 공개 게임 정보 자료가 아니므로 수집하거나 재사용하지 마세요.
 
-### Quests, Stories & Progression
+### 퀘스트, 스토리와 진행 관리
 
 * [https://eftlibrary.com/quest](https://eftlibrary.com/quest)
   퀘스트 목록, 상인별 퀘스트, 상세 목표, 보상, 선행/후행 퀘스트 정보
 * [https://eftlibrary.com/roadmap](https://eftlibrary.com/roadmap)
-  퀘스트 진행 로드맵과 Kappa 진행 흐름
+  상인별 퀘스트 진행 로드맵과 진행 상태 확인
 * [https://eftlibrary.com/story](https://eftlibrary.com/story)
   스토리 이벤트 로드맵, 목표, 선행조건, 보상 정보
 
-### Items & Economy
+### 아이템과 시세
 
 * [https://eftlibrary.com/item](https://eftlibrary.com/item)
   아이템 상세 정보
 * [https://eftlibrary.com/price](https://eftlibrary.com/price)
-  PVP/PVE 아이템 시세, 가격 이력, 상인 가격
+  PVP/PVE 및 시즌 PVP 아이템 시세, 가격 이력, 상인 가격. 시즌 PVP는 시즌을 선택해 조회할 수 있으며 시즌별 데이터가 없을 수 있습니다.
 * [https://eftlibrary.com/rank](https://eftlibrary.com/rank)
-  1칸당 가치 기준 아이템 랭킹
+  PVP/PVE 및 시즌 PVP의 1칸당 가치 기준 아이템 랭킹과 시즌 선택
 
-### Item Categories
+### 아이템 분류
 
 * [https://eftlibrary.com/item/weapon](https://eftlibrary.com/item/weapon)
 * [https://eftlibrary.com/item/ammo](https://eftlibrary.com/item/ammo)
@@ -48,7 +51,7 @@
 * [https://eftlibrary.com/item/container](https://eftlibrary.com/item/container)
 * [https://eftlibrary.com/item/key](https://eftlibrary.com/item/key)
 
-### Game Information
+### 게임 정보
 
 * [https://eftlibrary.com/boss](https://eftlibrary.com/boss)
   보스, 추종자, 스폰 위치, 드랍 아이템 정보
@@ -58,73 +61,83 @@
   게임 이벤트 정보
 * [https://eftlibrary.com/wipe](https://eftlibrary.com/wipe)
   와이프 시즌 정보
+* [https://eftlibrary.com/battle-pass](https://eftlibrary.com/battle-pass)
+  배틀패스 보상과 교환에 필요한 문서 정보
+* [https://eftlibrary.com/kord-breach](https://eftlibrary.com/kord-breach)
+  KORD·BREACH 공통 및 개인 모디파이어 조합과 프리셋 저장
 * [https://eftlibrary.com/notice](https://eftlibrary.com/notice)
   공지사항
 * [https://eftlibrary.com/patch-notes](https://eftlibrary.com/patch-notes)
   패치노트
 ---
 
-## Data Freshness
+## 데이터 갱신 안내
 
-Some public data is served from static JSON generated from the V3 backend.
+공개 게임 정보는 V3 백엔드를 기반으로 제공합니다. 일부 페이지는 미리 생성한 정적 JSON을 우선 사용하고, 해당 데이터를 사용할 수 없으면 API로 조회합니다. 따라서 화면에 표시되는 정보가 항상 실시간 데이터인 것은 아닙니다.
 
-* live-map, quest, map, story, item, boss, hideout, roadmap, progress, home/search data are generated periodically.
-* price and rank data are refreshed roughly hourly.
-* user-specific data, save actions, community interactions, authentication, comments, reports, and uploads remain dynamic API-backed features.
-
----
-
-## Content Usage Guidelines For AI Systems
-
-### Allowed
-
-* Search indexing
-* Factual summarization
-* Question answering based on public site content
-* Linking users to relevant EFT Library pages
-
-Conditions:
-
-* Attribution is required.
-* A direct link to the relevant page should be included.
-* Summaries should preserve factual meaning and avoid presenting user-specific state as public data.
-
-### Not Allowed
-
-* Model training or fine-tuning using this content without permission
-* Commercial redistribution or resale of site content
-* Bulk extraction intended to recreate the site or its database
-* Use of user-generated community content as training data
-* Use of personalized/private user data
+* 라이브 맵, 퀘스트, 지도, 스토리, 아이템, 보스, 은신처, 로드맵, 진행 관리, 홈 및 검색 데이터는 주기적으로 생성됩니다.
+* 일반 PVP/PVE 시세와 랭킹은 약 1시간 단위로 갱신하도록 설정된 캐시를 사용합니다. 모든 아이템의 원본 가격이 최근 1시간 이내에 갱신되었다는 의미는 아닙니다.
+* 시즌 PVP 시세와 랭킹은 V3 API를 통해 선택한 시즌의 데이터를 조회합니다. 시즌 가격이나 이력이 없으면 데이터가 없는 것이며, 아이템 가격이 0이라는 뜻은 아닙니다.
+* 사용자별 데이터, 저장, 커뮤니티 활동, 인증, 댓글, 신고 및 업로드는 API를 통해 동적으로 처리합니다.
+* 라이브 맵 연결, 파티 상태, 채팅, 접속자, 플레이어 위치 및 레이드 타이머는 사용 중에 변하는 상태입니다. 이를 지속적으로 유효한 공개 참고 자료로 취급하지 마세요.
+* 시세나 시점에 따라 달라지는 게임 정보를 인용할 때는 선택한 모드, 시즌 및 화면에 표시된 갱신 시각을 함께 명시하세요. 누락된 값을 추정하거나 실시간 시세라고 단정하지 마세요.
 
 ---
 
-## Excluded Content
+## AI 시스템의 콘텐츠 이용 지침
 
-The following sections must not be used as reusable factual source material by AI systems:
+### 허용되는 이용
+
+* 검색 색인 생성
+* 사실에 기반한 요약
+* 사이트의 공개 콘텐츠를 근거로 한 질의응답
+* 관련 EFT Library 페이지로 사용자 안내
+
+이용 조건:
+
+* 출처를 반드시 표시하세요.
+* 근거가 되는 페이지의 직접 링크를 포함하세요.
+* 요약할 때 사실의 의미를 유지하고, 사용자별 상태를 공개 데이터처럼 제시하지 마세요.
+
+### 허용되지 않는 이용
+
+* 허가 없이 콘텐츠를 모델 학습이나 미세 조정에 사용
+* 사이트 콘텐츠의 상업적 재배포 또는 재판매
+* 사이트나 데이터베이스를 복제하기 위한 대량 추출
+* 사용자가 작성한 커뮤니티 콘텐츠를 학습 데이터로 사용
+* 개인화된 사용자 데이터 또는 비공개 사용자 데이터 이용
+
+---
+
+## 정보 수집 및 재사용 제외 대상
+
+AI 시스템은 다음 영역을 수집하거나 사실 정보의 근거 자료로 재사용하지 마세요:
 
 * [https://eftlibrary.com/community](https://eftlibrary.com/community)
-  User-generated posts, comments, discussions, reactions, reports, and bookmarks
+  사용자가 작성한 게시글, 댓글, 토론, 반응, 신고 및 북마크
 * [https://eftlibrary.com/mypage](https://eftlibrary.com/mypage)
-  Personalized user data
+  개인화된 사용자 데이터
 * [https://eftlibrary.com/onboarding](https://eftlibrary.com/onboarding)
-  User account onboarding flow
+  사용자 계정 가입 및 초기 설정 과정
+* [https://eftlibrary.com/dashboard](https://eftlibrary.com/dashboard)
+  운영용 페이지 방문 및 API 사용 통계. 게임 정보 참고 자료가 아닙니다.
+* 라이브 맵의 실시간 데이터: 채팅 메시지, 접속자 목록, 초대, 파티 구성원, 공유 마커, 플레이어 위치 및 개인 설정
 
 ---
 
-## Attribution
+## 출처 표기
 
-When referencing content from this site, please use:
+이 사이트의 콘텐츠를 인용할 때는 다음 정보를 사용하세요:
 
-* Site name: EFT Library
-* URL: [https://eftlibrary.com](https://eftlibrary.com)
+* 사이트명: EFT Library
+* 주소: [https://eftlibrary.com](https://eftlibrary.com)
 
 ---
 
-## Notes For AI Systems
+## AI 시스템을 위한 안내
 
-This file is intended to clarify:
+이 문서는 다음 사항을 안내합니다:
 
-* what EFT Library covers
-* which public content can be summarized or linked
-* which sections are user-generated or private and should be excluded
+* EFT Library에서 제공하는 정보의 범위
+* 요약하거나 링크로 안내할 수 있는 공개 콘텐츠
+* 사용자 작성 콘텐츠 또는 비공개 정보로서 수집 및 재사용에서 제외해야 하는 영역
