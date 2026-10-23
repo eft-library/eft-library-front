@@ -1,6 +1,6 @@
 # 타르코프 도서관 · Frontend
 
-**갱신일: 2026.10.20**
+**갱신일: 2026.10.23**
 
 [타르코프 도서관](https://eftlibrary.com)의 웹 Frontend입니다. **Next.js App Router와 React, TypeScript**를 사용해 게임 정보와 사용자 화면을 제공하며, FastAPI API 및 WebSocket과 연동합니다.
 
@@ -55,7 +55,7 @@ Cloudflare는 DNS Only로 사용하며, HTTPS·WSS 요청은 원본 서버의 Ng
 
 Airflow의 JSON 출력 경로는 `/opt/airflow/next-public`입니다. 운영에서는 생성한 파일이 이 프로젝트의 `public/static`에서 제공되도록 경로를 연결하거나 동기화해야 합니다. JSON 생성 성공, 파일 배치, 프런트엔드 캐시 갱신은 서로 다른 단계입니다.
 
-현재 [next.config.ts](next.config.ts)는 `cacheComponents`를 활성화하고 있습니다. 런타임 경로나 검색 조건 등을 읽는 컴포넌트는 필요한 위치에 `Suspense` 경계를 두어 사전 렌더링을 유지합니다.
+현재 [next.config.ts](next.config.ts)는 `cacheComponents`를 활성화하고 있습니다. Next.js 16.4 업데이트에서는 기존 링크 동작을 유지하기 위해 `partialPrefetching: false`를 명시했습니다. 런타임 경로나 검색 조건 등을 읽는 컴포넌트는 필요한 위치에 `Suspense` 경계를 두어 사전 렌더링을 유지합니다.
 
 ## 로그인과 실시간 연결
 
@@ -79,14 +79,14 @@ Google OAuth와 NextAuth의 JWT 세션을 사용합니다. 로그인과 토큰 �
 
 | 기술                              | 선언 버전              | 용도                                |
 | --------------------------------- | ---------------------- | ----------------------------------- |
-| Next.js / React                   | `16.3.1` / `19.2.8`    | App Router, 서버 렌더링과 화면 구성 |
+| Next.js / React                   | `16.4.2` / `19.3.1`    | App Router, 서버 렌더링과 화면 구성 |
 | TypeScript                        | `^6.0.3`               | API·컴포넌트 타입 검사              |
 | Tailwind CSS / next-themes        | `^4.3.3` / `^0.4.6`    | 반응형 UI와 테마                    |
-| next-auth / next-intl             | `^4.24.15` / `^4.13.4` | Google 로그인과 다국어              |
-| TanStack Query / Zustand          | `^5.101.4` / `^5.0.14` | 서버 상태 캐시와 클라이언트 상태    |
-| React Leaflet / React Three Fiber | `^5.0.0` / `^9.7.0`    | 2D 지도와 3D 지도                   |
-| React Flow / Recharts             | `^12.11.2` / `^3.10.1` | 퀘스트 흐름과 차트                  |
-| Tiptap                            | `^3.29.2`              | 게시글 편집기                       |
+| next-auth / next-intl             | `^4.24.15` / `^4.14.9` | Google 로그인과 다국어              |
+| TanStack Query / Zustand          | `^5.104.5` / `^5.0.16` | 서버 상태 캐시와 클라이언트 상태    |
+| React Leaflet / React Three Fiber | `^5.0.0` / `^9.8.2`    | 2D 지도와 3D 지도                   |
+| React Flow / Recharts             | `^12.12.0` / `^3.10.1` | 퀘스트 흐름과 차트                  |
+| Tiptap                            | `^3.32.0`              | 게시글 편집기                       |
 
 ## 디렉토리 구조
 

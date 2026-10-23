@@ -26,6 +26,8 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname, ".."),
   },
   cacheComponents: true,
+  // Preserve existing link prefetch behavior during the Next.js 16.4 upgrade.
+  partialPrefetching: false,
   productionBrowserSourceMaps: false,
   experimental: {
     serverSourceMaps: true,

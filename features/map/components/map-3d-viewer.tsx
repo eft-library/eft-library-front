@@ -1,20 +1,22 @@
 "use client";
 
-import { Html, MapControls, useGLTF, useProgress } from "@react-three/drei";
+import { MapControls, useGLTF, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 
 import type { MapDetailModel } from "@/types/api/map";
 
 function Loader() {
-  const { progress } = useProgress();
+  const { active, progress } = useProgress();
+
+  if (!active) return null;
 
   return (
-    <Html center>
+    <div role="status" className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
       <div className="rounded-md border border-white/10 bg-[#15171d]/90 px-4 py-3 text-sm font-medium text-white shadow-lg">
         {Math.round(progress)}% Loading
       </div>
-    </Html>
+    </div>
   );
 }
 
@@ -53,7 +55,7 @@ export function Map3DViewer({ map }: { map: MapDetailModel }) {
   }
 
   return (
-    <div className="h-[calc(100vh-220px)] min-h-[520px] w-full overflow-hidden bg-[#15171d] sm:h-[calc(100vh-180px)]">
+    <div className="relative h-[calc(100vh-220px)] min-h-[520px] w-full overflow-hidden bg-[#15171d] sm:h-[calc(100vh-180px)]">
       <Canvas
         key={`3d-map-${map.id}`}
         camera={{ position: [0, 60, 0], near: 0.001, far: 1000000 }}
@@ -63,7 +65,7 @@ export function Map3DViewer({ map }: { map: MapDetailModel }) {
           gl.setClearColor("#15171d");
         }}
       >
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={null}>
           <MapControls
             makeDefault
             enableDamping
@@ -78,6 +80,7 @@ export function Map3DViewer({ map }: { map: MapDetailModel }) {
           <Scene map={map} modelUrl={map.three_image} />
         </Suspense>
       </Canvas>
+      <Loader />
     </div>
   );
 }
