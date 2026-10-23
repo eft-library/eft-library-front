@@ -6,6 +6,7 @@ import path from "node:path";
 const baseUrl = process.env.PERF_BASE_URL ?? "https://eftlibrary.com";
 const label = process.env.PERF_LABEL ?? "before-static-json";
 const runs = Number(process.env.PERF_RUNS ?? "1");
+const lighthouseVersion = process.env.PERF_LIGHTHOUSE_VERSION ?? "13.4.0";
 const selectedPages = new Set(
   (process.env.PERF_PAGES ?? "")
     .split(",")
@@ -104,7 +105,10 @@ function findChromePath() {
 }
 
 function today() {
-  return new Date().toISOString().slice(0, 10);
+  return process.env.PERF_DATE ?? new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
 }
 
 function metric(audits, key) {
@@ -145,7 +149,7 @@ function runLighthouse(url, outputPath) {
     "pnpm",
     [
       "dlx",
-      "lighthouse",
+      `lighthouse@${lighthouseVersion}`,
       url,
       "--quiet",
       "--output=json",
@@ -193,8 +197,8 @@ async function readSummary(jsonPath) {
 }
 
 async function main() {
-  if (!Number.isFinite(runs) || runs < 1) {
-    throw new Error("PERF_RUNS must be a positive number.");
+  if (!Number.isInteger(runs) || runs < 1) {
+    throw new Error("PERF_RUNS must be a positive integer.");
   }
 
   const targetPages = selectedPages.size > 0
@@ -205,7 +209,11 @@ async function main() {
     throw new Error(`No pages matched PERF_PAGES=${Array.from(selectedPages).join(",")}`);
   }
 
-  const rootDir = path.join("docs", "performance", "results", label, today());
+  const rootDir = path.join(
+    process.env.PERF_OUTPUT_ROOT ?? path.join("docs", "performance", "results"),
+    label,
+    today(),
+  );
   await fs.mkdir(rootDir, { recursive: true });
 
   const rows = [];
@@ -235,6 +243,7 @@ async function main() {
     "",
     `- 기준 URL: \`${baseUrl}\``,
     `- 실행 횟수: ${runs}`,
+    `- Lighthouse: ${lighthouseVersion}`,
     `- 결과 원본: \`${rootDir}\``,
     "",
     "| page | run | score | FCP | LCP | TBT | CLS | TTFB | transfer | requests |",
