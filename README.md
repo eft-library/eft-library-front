@@ -8,7 +8,7 @@
 
 ## 전체 서비스에서 맡은 역할
 
-<img width="1141" height="955" alt="타르코프 도서관 전체 서비스 구성도" src="https://github.com/user-attachments/assets/e7ed7864-3732-4825-b836-5b6cf2f5ed55" />
+<img width="1170" height="960" alt="261027_arch" src="https://github.com/user-attachments/assets/49d7ab62-f53b-4898-b4fc-8c180b9b3689" />
 
 게임 데이터 수집과 정기 갱신은 Airflow가, 데이터 조회·저장과 실시간 이벤트 처리는 FastAPI가 담당합니다.  
 이 저장소는 화면 렌더링, Google 로그인, 사용자 상호작용, 지도 및 실시간 상태 표시를 맡습니다. PostgreSQL이나 Redis에 직접 접속하지 않습니다.
