@@ -42,4 +42,5 @@ next-env.d.ts
 /public/static
 
 log.out
+/log_history/
 /logs

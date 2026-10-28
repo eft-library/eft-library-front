@@ -39,6 +39,8 @@ start_server() {
     exit 1
   fi
 
+  mkdir -p "$APP_DIR/log_history" || { echo "로그 디렉토리 생성 실패"; exit 1; }
+
   echo ".next 디렉토리 제거 중..."
   rm -rf .next/
 
@@ -49,14 +51,16 @@ start_server() {
   echo "$(date +%s)" > "$APP_DIR/public/version.txt"
 
   echo "Next.js 서버를 포트 $PORT에서 시작합니다."
-  # 표준 출력과 오류의 각 줄에 시각을 추가합니다. LOG_TZ로 시간대 변경 가능.
+  # 각 줄을 해당 날짜의 파일에 추가하므로 자정 이후에도 자동으로 분리됩니다.
+  # LOG_TZ로 시간대 변경 가능 (기본: Asia/Seoul).
   $NOHUP bash -c '
     export TZ="$4"
     PORT="$1" "$2" --dir "$3" start 2>&1 |
       while IFS= read -r line || [ -n "$line" ]; do
-        printf "[%s] %s\n" "$(date "+%Y-%m-%d %H:%M:%S %z")" "$line"
+        timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
+        printf "[%s] %s\n" "$timestamp" "$line" >> "$3/log_history/${timestamp%% *}.log"
       done
-  ' _ "$PORT" "$PNPM" "$APP_DIR" "$LOG_TZ" > "$APP_DIR/log.out" 2>&1 &
+  ' _ "$PORT" "$PNPM" "$APP_DIR" "$LOG_TZ" >> "$APP_DIR/log_history/$(TZ="$LOG_TZ" date +%Y-%m-%d).log" 2>&1 < /dev/null &
 }
 
 # 실행 분기
