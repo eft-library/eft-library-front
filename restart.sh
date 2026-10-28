@@ -11,6 +11,7 @@ CUT="/usr/bin/cut"
 SLEEP="/bin/sleep"
 NOHUP="/usr/bin/nohup"
 DEFAULT_PORT=4002
+LOG_TZ="${LOG_TZ:-Asia/Seoul}"
 
 # 인자 처리
 ACTION=$1
@@ -48,7 +49,14 @@ start_server() {
   echo "$(date +%s)" > "$APP_DIR/public/version.txt"
 
   echo "Next.js 서버를 포트 $PORT에서 시작합니다."
-  $NOHUP bash -c "PORT=$PORT \"$PNPM\" --dir \"$APP_DIR\" start" > "$APP_DIR/log.out" 2>&1 &
+  # 표준 출력과 오류의 각 줄에 시각을 추가합니다. LOG_TZ로 시간대 변경 가능.
+  $NOHUP bash -c '
+    export TZ="$4"
+    PORT="$1" "$2" --dir "$3" start 2>&1 |
+      while IFS= read -r line || [ -n "$line" ]; do
+        printf "[%s] %s\n" "$(date "+%Y-%m-%d %H:%M:%S %z")" "$line"
+      done
+  ' _ "$PORT" "$PNPM" "$APP_DIR" "$LOG_TZ" > "$APP_DIR/log.out" 2>&1 &
 }
 
 # 실행 분기
