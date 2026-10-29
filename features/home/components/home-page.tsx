@@ -74,6 +74,32 @@ function getNewsTitle(item: HomeMainResponse["news"]["patch"][number], locale: L
   }
 }
 
+function NewsTitle({
+  item,
+  locale,
+}: {
+  item: HomeMainResponse["news"]["patch"][number];
+  locale: Locale;
+}) {
+  const newLabel = { ko: "새 소식", en: "New update", ja: "新着情報" }[locale];
+
+  return (
+    <>
+      {item.is_new && (
+        <span title={newLabel} className="me-1.5 inline-flex align-middle">
+          <span aria-hidden="true" className="inline-flex shrink-0 -rotate-12 items-center justify-center rounded-sm bg-orange-700 px-1 py-0.5 text-[8px] leading-none font-extrabold tracking-wide text-white dark:bg-orange-400 dark:text-gray-950">
+            NEW
+          </span>
+          <span className="sr-only">{newLabel}: </span>
+        </span>
+      )}
+      <span className={item.is_new ? "font-semibold text-gray-900 dark:text-gray-100" : undefined}>
+        {getNewsTitle(item, locale)}
+      </span>
+    </>
+  );
+}
+
 export function HomePage({ home, labels, locale }: HomePageProps) {
   const newsSections = buildNewsSections(home, labels);
 
@@ -101,11 +127,11 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                         className="text-xs text-gray-600 transition-colors hover:text-orange-500 dark:text-gray-300 dark:hover:text-orange-400"
                       >
                         {item.link ? (
-                          <Link href={item.link} className="block">
-                            - {getNewsTitle(item, locale)}
+                          <Link href={item.link} className="block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 dark:focus-visible:outline-orange-400">
+                            {!item.is_new && "- "}<NewsTitle item={item} locale={locale} />
                           </Link>
                         ) : (
-                          `- ${getNewsTitle(item, locale)}`
+                          <>{!item.is_new && "- "}<NewsTitle item={item} locale={locale} /></>
                         )}
                       </div>
                     ))}
@@ -164,7 +190,7 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
                         {index + 1}
                       </span>
                       <span className="line-clamp-2 text-gray-600 group-hover:text-orange-500 dark:text-gray-300 dark:group-hover:text-orange-300">
-                        {getNewsTitle(item, locale)}
+                        <NewsTitle item={item} locale={locale} />
                       </span>
                     </Link>
                   ))
