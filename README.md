@@ -8,7 +8,7 @@
 
 ## 전체 서비스에서 맡은 역할
 
-<img width="1351" height="1167" alt="261029_detail_arch" src="https://github.com/user-attachments/assets/14993361-38d8-4a79-9d8b-15eba8ed009e" />
+<img width="1344" height="1178" alt="261029_detail_arch" src="https://github.com/user-attachments/assets/b995e80f-8827-49a1-9d35-13d3db581014" />
 
 게임 데이터 수집과 정기 갱신은 Airflow가, 데이터 조회·저장과 실시간 이벤트 처리는 FastAPI가 담당합니다.  
 이 저장소는 화면 렌더링, Google 로그인, 사용자 상호작용, 지도 및 실시간 상태 표시를 맡습니다. PostgreSQL이나 Redis에 직접 접속하지 않습니다.
