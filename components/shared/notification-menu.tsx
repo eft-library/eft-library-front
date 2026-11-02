@@ -200,42 +200,44 @@ export function NotificationMenu({
       </button>
 
       {isOpen ? (
-        <div className="absolute left-1/2 top-full z-30 mt-2 w-80 -translate-x-1/2 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg before:absolute before:-top-2 before:left-0 before:h-2 before:w-full before:content-[''] dark:border-gray-600 dark:bg-[#25282e]">
-          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-            <h3 className="text-sm font-black text-gray-950 dark:text-white">
-              알림
-            </h3>
-            {unreadCount > 0 ? (
-              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-black text-orange-600 dark:bg-orange-400/15 dark:text-orange-300">
-                {unreadCount}개
-              </span>
-            ) : null}
-          </div>
+        <div className="absolute left-1/2 top-full z-30 w-80 -translate-x-1/2 pt-2">
+          <div className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-[#25282e]">
+            <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+              <h3 className="text-sm font-black text-gray-950 dark:text-white">
+                알림
+              </h3>
+              {unreadCount > 0 ? (
+                <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-black text-orange-600 dark:bg-orange-400/15 dark:text-orange-300">
+                  {unreadCount}개
+                </span>
+              ) : null}
+            </div>
 
-          <div className="max-h-96 overflow-y-auto">
-            {visibleNotifications.length > 0 ? (
-              visibleNotifications.map((entry) => (
-                <NotificationPreview
-                  key={entry.id}
-                  entry={entry}
-                  onNavigate={closeAndNavigate}
-                />
-              ))
-            ) : (
-              <div className="px-4 py-8 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                {isLoading ? "알림을 불러오는 중입니다." : "새 알림이 없습니다."}
-              </div>
-            )}
-          </div>
+            <div className="max-h-96 overflow-y-auto">
+              {visibleNotifications.length > 0 ? (
+                visibleNotifications.map((entry) => (
+                  <NotificationPreview
+                    key={entry.id}
+                    entry={entry}
+                    onNavigate={closeAndNavigate}
+                  />
+                ))
+              ) : (
+                <div className="px-4 py-8 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {isLoading ? "알림을 불러오는 중입니다." : "새 알림이 없습니다."}
+                </div>
+              )}
+            </div>
 
-          <div className="border-t border-gray-200 p-2 dark:border-gray-700">
-            <Link
-              href="/mypage/notifications"
-              onClick={closeAndNavigate}
-              className="block rounded-md px-3 py-2 text-center text-sm font-bold text-gray-700 transition hover:bg-gray-50 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
-            >
-              모든 알림 보기
-            </Link>
+            <div className="border-t border-gray-200 p-2 dark:border-gray-700">
+              <Link
+                href="/mypage/notifications"
+                onClick={closeAndNavigate}
+                className="block rounded-md px-3 py-2 text-center text-sm font-bold text-gray-700 transition hover:bg-gray-50 hover:text-orange-500 dark:text-gray-200 dark:hover:bg-white/5 dark:hover:text-orange-300"
+              >
+                모든 알림 보기
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}
