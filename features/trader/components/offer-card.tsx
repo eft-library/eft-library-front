@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/config";
 import type { TraderOffer } from "@/types/api/trader";
 import type { TraderCopy } from "../copy";
 import { OfferDetails, offerName } from "./offer-detail";
+import { traderLevelColors } from "../config";
 
 export function OfferCard({
   offer,
@@ -92,18 +93,21 @@ export function OfferCard({
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
-          <span className="line-clamp-3 break-words px-1 pb-6 text-xs leading-snug">
+          <span className="line-clamp-3 break-words px-1 text-xs leading-snug">
             {name}
           </span>
         )}
-        <span className="absolute inset-x-0 bottom-0 border-t border-gray-300/70 bg-white/95 px-1 py-0.5 text-left text-[13px] font-semibold leading-[16px] text-gray-950 dark:border-gray-600/70 dark:bg-gray-950/95 dark:text-gray-50">
-          <span className="line-clamp-2 break-words">{name}</span>
-        </span>
-        <span className="absolute left-0 top-0 rounded-br bg-surface/95 px-1 text-[10px] font-semibold text-gray-700 dark:text-gray-200">
-          LL{offer.trader_level}
+        <span className="absolute left-1 top-1 rounded border border-white/40 bg-gray-950/95 px-1.5 py-0.5 font-mono text-xs font-bold leading-4 text-white shadow-md">
+          <span
+            className={
+              traderLevelColors[offer.trader_level]?.badge ?? "text-white"
+            }
+          >
+            LL{offer.trader_level}
+          </span>
         </span>
         {(reward.quantity > 1 || offer.rewards.length > 1) && (
-          <span className="absolute right-0 top-0 rounded-bl bg-surface/95 px-1 text-[10px] font-bold">
+          <span className="absolute bottom-1 right-1 rounded border border-white/40 bg-gray-950/95 px-1.5 py-0.5 font-mono text-xs font-bold leading-4 text-white shadow-md">
             {offer.rewards.length > 1
               ? `+${offer.rewards.length - 1}`
               : `×${reward.quantity}`}

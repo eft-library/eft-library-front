@@ -42,7 +42,8 @@ const copy = {
     noCheckedTime: "확인 시각 없음",
     noOffers: "현재 제공되는 판매·교환 상품 정보가 없습니다.",
     refresh: "데이터는 5분마다 갱신됩니다.",
-    cumulative: "선택한 우호도 이하의 상품을 표시합니다.",
+    levelHint:
+      "선택한 우호도 레벨의 상품만 표시합니다. 전체를 선택하면 모든 레벨을 표시합니다.",
     mode: "게임 모드",
     season: "시즌",
     unavailable: "이 모드의 데이터가 아직 없습니다.",
@@ -76,7 +77,8 @@ const copy = {
     noCheckedTime: "Check time unavailable",
     noOffers: "No purchase or barter offers are currently available.",
     refresh: "Data refreshes every 5 minutes.",
-    cumulative: "Shows offers at or below the selected loyalty level.",
+    levelHint:
+      "Shows only the selected loyalty level. Select All to show every level.",
     mode: "Game mode",
     season: "Season",
     unavailable: "Data is not yet available for this mode.",
@@ -110,7 +112,8 @@ const copy = {
     noCheckedTime: "確認時刻なし",
     noOffers: "現在、購入・交換商品の情報はありません。",
     refresh: "データは5分ごとに更新されます。",
-    cumulative: "選択した親密度以下の商品を表示します。",
+    levelHint:
+      "選択した親密度レベルの商品のみ表示します。すべてを選択すると全レベルを表示します。",
     mode: "ゲームモード",
     season: "シーズン",
     unavailable: "このモードのデータはまだありません。",

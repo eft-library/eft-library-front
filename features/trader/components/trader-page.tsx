@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Search, RefreshCw } from "lucide-react";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import type { TraderMode } from "@/types/api/trader";
 import {
@@ -13,7 +14,7 @@ import {
   getTraderOffers,
   TRADER_REFRESH_MS,
 } from "../api";
-import { traderOrder } from "../config";
+import { traderOrder, traderLevelColors } from "../config";
 import { getTraderCopy, getTraderName } from "../copy";
 import { OfferCard } from "./offer-card";
 import { OfferDialog } from "./offer-detail";
@@ -166,7 +167,7 @@ export function TraderPage({
     return (offers.data?.data.offers ?? [])
       .filter(
         (offer) =>
-          (level === "all" || offer.trader_level <= level) &&
+          (level === "all" || offer.trader_level === level) &&
           (offerType === "all" || offer.offer_type === offerType) &&
           (!search ||
             offer.rewards.some(({ item }) =>
@@ -203,10 +204,10 @@ export function TraderPage({
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <header className="mb-7 text-center">
           <h1 className="text-3xl font-bold sm:text-4xl">{labels.title}</h1>
-          <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">
-            {labels.subtitle}
-          </p>
         </header>
+        <div className="mb-7 min-w-0 overflow-hidden">
+          <HorizontalAdBanner />
+        </div>
         <div
           role="group"
           aria-label={labels.mode}
@@ -295,9 +296,21 @@ export function TraderPage({
                   type="button"
                   aria-pressed={level === value}
                   onClick={() => setLevel(value)}
-                  className={`${control} ${level === value ? active : inactive}`}
+                  className={`${control} ${level === value ? (value === "all" ? active : "border-orange-500 bg-gray-950 ring-1 ring-orange-500") : inactive}`}
                 >
-                  {value === "all" ? labels.all : value}
+                  {value === "all" ? (
+                    labels.all
+                  ) : (
+                    <span
+                      className={
+                        level === value
+                          ? traderLevelColors[value].badge
+                          : traderLevelColors[value].filter
+                      }
+                    >
+                      {value}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -336,8 +349,7 @@ export function TraderPage({
               />
             </label>
           </div>
-          <div className="mb-4 flex flex-wrap justify-between gap-2 text-xs text-gray-600 dark:text-gray-300">
-            <p>{labels.cumulative}</p>
+          <div className="mb-4 flex flex-wrap justify-end gap-2 text-xs text-gray-600 dark:text-gray-300">
             <p role="status">
               {loading
                 ? labels.loading
