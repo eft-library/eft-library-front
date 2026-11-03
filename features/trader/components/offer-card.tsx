@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/i18n/config";
@@ -19,6 +20,7 @@ export function OfferCard({
   onSelect: (id: string) => void;
 }) {
   const id = useId();
+  const [failedImage, setFailedImage] = useState<string | null>(null);
   const [position, setPosition] = useState<{
     left: number;
     top: number;
@@ -76,17 +78,32 @@ export function OfferCard({
           setPosition(null);
           onSelect(offer.id);
         }}
-        className="group relative flex min-h-0 min-w-0 cursor-pointer items-center justify-center overflow-hidden rounded border border-gray-300 bg-surface-elevated p-1 hover:border-orange-500 hover:bg-orange-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-orange-500 dark:border-gray-600 dark:hover:bg-orange-500/10"
+        className="group relative flex min-h-0 min-w-0 cursor-pointer items-center justify-center overflow-hidden rounded border border-gray-300 bg-surface-elevated p-0 hover:border-orange-500 hover:bg-orange-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-orange-500 dark:border-gray-600 dark:hover:bg-orange-500/10"
       >
-        {/* Image metadata remains available for the future image grid. */}
-        <span className="line-clamp-3 break-words px-1 text-xs leading-snug sm:text-sm">
-          {name}
+        {reward.item.image && failedImage !== reward.item.image ? (
+          <Image
+            src={reward.item.image}
+            alt=""
+            width={reward.item.width * 64}
+            height={reward.item.height * 64}
+            unoptimized
+            loading="lazy"
+            onError={() => setFailedImage(reward.item.image)}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
+          <span className="line-clamp-3 break-words px-1 pb-6 text-xs leading-snug">
+            {name}
+          </span>
+        )}
+        <span className="absolute inset-x-0 bottom-0 border-t border-gray-300/70 bg-white/95 px-1 py-0.5 text-left text-[13px] font-semibold leading-[16px] text-gray-950 dark:border-gray-600/70 dark:bg-gray-950/95 dark:text-gray-50">
+          <span className="line-clamp-2 break-words">{name}</span>
         </span>
         <span className="absolute left-0 top-0 rounded-br bg-surface/95 px-1 text-[10px] font-semibold text-gray-700 dark:text-gray-200">
           LL{offer.trader_level}
         </span>
         {(reward.quantity > 1 || offer.rewards.length > 1) && (
-          <span className="absolute bottom-0 right-0 rounded-tl bg-surface/95 px-1 text-xs font-bold">
+          <span className="absolute right-0 top-0 rounded-bl bg-surface/95 px-1 text-[10px] font-bold">
             {offer.rewards.length > 1
               ? `+${offer.rewards.length - 1}`
               : `×${reward.quantity}`}

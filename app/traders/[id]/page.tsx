@@ -49,6 +49,11 @@ async function ResolvedTraderPage({ params, searchParams }: PageProps) {
       initialMode={mode}
       initialLevel={level}
       initialWord={typeof query.word === "string" ? query.word : ""}
+      initialOfferType={
+        query.offer_type === "purchase" || query.offer_type === "barter"
+          ? query.offer_type
+          : "all"
+      }
     />
   );
 }

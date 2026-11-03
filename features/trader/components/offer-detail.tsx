@@ -66,6 +66,9 @@ export function OfferDetails({
               />
               <Link
                 href={`/item/info/${item.normalized_name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                prefetch={false}
                 className="min-w-0 flex-1 hover:text-orange-600 hover:underline dark:hover:text-orange-300"
               >
                 {pickLocalizedText(item, locale)}
@@ -92,9 +95,21 @@ export function OfferDetails({
                 className="h-10 w-10 rounded bg-surface-elevated object-contain"
               />
             )}
-            <span className="min-w-0 flex-1">
-              {pickLocalizedText(item, locale)}
-            </span>
+            {compact ? (
+              <span className="min-w-0 flex-1">
+                {pickLocalizedText(item, locale)}
+              </span>
+            ) : (
+              <Link
+                href={`/item/info/${item.normalized_name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                prefetch={false}
+                className="min-w-0 flex-1 hover:text-orange-600 hover:underline dark:hover:text-orange-300"
+              >
+                {pickLocalizedText(item, locale)}
+              </Link>
+            )}
             <strong className="shrink-0 font-mono text-orange-700 dark:text-orange-300">
               × {format.format(quantity)}
             </strong>

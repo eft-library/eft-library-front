@@ -95,17 +95,20 @@ export function TraderPage({
   initialMode,
   initialLevel,
   initialWord,
+  initialOfferType,
 }: {
   locale: Locale;
   traderName: string;
   initialMode: TraderMode;
   initialLevel: number | "all";
   initialWord: string;
+  initialOfferType: "all" | "purchase" | "barter";
 }) {
   const labels = getTraderCopy(locale);
   const [mode, setMode] = useState<TraderMode>(initialMode);
   const [level, setLevel] = useState<number | "all">(initialLevel);
   const [word, setWord] = useState(initialWord);
+  const [offerType, setOfferType] = useState(initialOfferType);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const index = useQuery({
     queryKey: ["trader", "manifest"],
@@ -164,6 +167,7 @@ export function TraderPage({
       .filter(
         (offer) =>
           (level === "all" || offer.trader_level <= level) &&
+          (offerType === "all" || offer.offer_type === offerType) &&
           (!search ||
             offer.rewards.some(({ item }) =>
               [item.name_ko, item.name_en, item.name_ja].some((name) =>
@@ -172,7 +176,7 @@ export function TraderPage({
             )),
       )
       .sort((a, b) => a.sort_order - b.sort_order || a.id.localeCompare(b.id));
-  }, [offers.data, level, word]);
+  }, [offers.data, level, word, offerType]);
   const selected =
     offers.data?.data.offers.find((offer) => offer.id === selectedId) ?? null;
   const failed = index.isError || list.isError || offers.isError;
@@ -190,6 +194,7 @@ export function TraderPage({
     if (mode !== "pvp") query.set("mode", mode);
     if (level !== 4) query.set("level", String(level));
     if (word) query.set("word", word);
+    if (offerType !== "all") query.set("offer_type", offerType);
     return `/traders/${name}${query.size ? `?${query}` : ""}`;
   }
 
@@ -295,6 +300,26 @@ export function TraderPage({
                   {value === "all" ? labels.all : value}
                 </button>
               ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-semibold">{labels.offerType}</span>
+              <div
+                role="group"
+                aria-label={labels.offerType}
+                className="flex gap-1"
+              >
+                {(["all", "purchase", "barter"] as const).map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-pressed={offerType === value}
+                    onClick={() => setOfferType(value)}
+                    className={`${control} ${offerType === value ? active : inactive}`}
+                  >
+                    {value === "all" ? labels.all : labels[value]}
+                  </button>
+                ))}
+              </div>
             </div>
             <label className="relative ml-auto w-full sm:w-72">
               <Search
