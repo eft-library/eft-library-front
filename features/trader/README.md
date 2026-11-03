@@ -1,0 +1,14 @@
+# Trader offers
+
+- Route: `/traders`; navigation: Item → Traders.
+- Contract checked against `https://back.eftlibrary.com/openapi.json`, the V3 offers response, and the exported JSON on 2026-11-03. OpenAPI does not describe the response fields; types follow the actual data.
+- Read `/static/trader/v3/index.json` on mount and every five minutes while visible. The manifest bypasses HTTP caches. Follow its snapshot paths rather than hardcoding a generation.
+- Fetch only the selected mode's trader list and selected trader's full offers. Immutable snapshot paths are React Query cache keys. Changed paths load a new generation; abort signals cancel unused requests.
+- Search reward names in Korean, English and Japanese locally. Loyalty levels are cumulative (`trader_level <= selected level`). Every trader has an All button, which includes every level and stays selected when switching traders.
+- Keep the nine traders from the approved prototype in its specified order. All traders share the same no-offers notice when their dataset is empty; searches or filters with no matches retain the separate no-results message. Lightkeeper and BTR Driver are present in the export but outside this page's initial scope.
+- Restock timers use absolute `next_restock_at` timestamps. Expired timestamps show an awaiting-update state until the next five-minute refresh; no additional expiry polling or invented restock interval. Display each trader’s `restock_collected_at` in the browser’s local timezone as a 24-hour HH:mm last-checked time, or the unavailable label when absent. No Airflow changes are required.
+- The first reward determines inventory dimensions. Grid cards display item names per the current plan; image metadata remains available for a future image presentation. Details render every cost, reward, unlock quest and the offer's game mode. The native dialog provides modal focus handling and Escape support.
+- Korean trader labels use the planned spellings 레그맨 and 레프 in this page's presentation layer; source JSON is unchanged. The seasonal mode is labelled 시즌.
+- The global layout provides the advertising rails; this page does not duplicate them.
+
+Verification: Node 24, TypeScript, scoped ESLint, production build, and Chromium checks for filters, search/empty state, mode changes, tooltip/focus, dialog dismissal/focus restoration, square grid cells without overlaps, mobile scrolling, light/dark appearance, and five-minute refresh.

@@ -1,0 +1,121 @@
+import type { Locale } from "@/i18n/config";
+import { pickLocalizedText } from "@/lib/utils/localized-text";
+import type { LocalizedName } from "@/types/api/home";
+
+export function getTraderName(
+  trader: LocalizedName & { normalized_name: string },
+  locale: Locale,
+) {
+  if (locale === "ko") {
+    if (trader.normalized_name === "ragman") return "레그맨";
+    if (trader.normalized_name === "ref") return "레프";
+  }
+  return pickLocalizedText(trader, locale);
+}
+
+const copy = {
+  ko: {
+    title: "상인",
+    subtitle: "상인별 구매·교환 상품과 해금 조건을 확인하세요.",
+    level: "우호도",
+    all: "전체",
+    search: "아이템 이름 검색…",
+    count: "개 상품",
+    purchase: "화폐 구매",
+    barter: "아이템 교환",
+    costs: "필요 비용",
+    rewards: "획득 아이템",
+    limit: "초기화당 구매 제한",
+    unlimited: "제한 없음",
+    unknown: "정보 없음",
+    quests: "해금 퀘스트",
+    close: "닫기",
+    empty: "조건에 맞는 상품이 없습니다.",
+    loading: "상인 정보를 불러오는 중…",
+    error: "상인 정보를 불러오지 못했습니다.",
+    stale: "최신 데이터를 받지 못했습니다. 이전 정보를 표시합니다.",
+    retry: "다시 시도",
+    waiting: "갱신 대기",
+    restock: "초기화까지",
+    lastChecked: "마지막 확인",
+    noCheckedTime: "확인 시각 없음",
+    noOffers: "현재 제공되는 판매·교환 상품 정보가 없습니다.",
+    refresh: "데이터는 5분마다 갱신됩니다.",
+    cumulative: "선택한 우호도 이하의 상품을 표시합니다.",
+    mode: "게임 모드",
+    season: "시즌",
+    unavailable: "이 모드의 데이터가 아직 없습니다.",
+    detail: "상품 상세",
+  },
+  en: {
+    title: "Traders",
+    subtitle: "Browse trader purchases, barters and unlock requirements.",
+    level: "Loyalty",
+    all: "All",
+    search: "Search item names…",
+    count: " offers",
+    purchase: "Purchase",
+    barter: "Barter",
+    costs: "Required costs",
+    rewards: "Reward items",
+    limit: "Purchase limit per restock",
+    unlimited: "Unlimited",
+    unknown: "Unavailable",
+    quests: "Unlock quests",
+    close: "Close",
+    empty: "No offers match your filters.",
+    loading: "Loading traders…",
+    error: "Unable to load trader data.",
+    stale: "Unable to refresh. Showing previous data.",
+    retry: "Retry",
+    waiting: "Awaiting update",
+    restock: "Restock in",
+    lastChecked: "Last checked",
+    noCheckedTime: "Check time unavailable",
+    noOffers: "No purchase or barter offers are currently available.",
+    refresh: "Data refreshes every 5 minutes.",
+    cumulative: "Shows offers at or below the selected loyalty level.",
+    mode: "Game mode",
+    season: "Season",
+    unavailable: "Data is not yet available for this mode.",
+    detail: "Offer details",
+  },
+  ja: {
+    title: "トレーダー",
+    subtitle: "購入・交換アイテムと解放条件を確認できます。",
+    level: "親密度",
+    all: "すべて",
+    search: "アイテム名で検索…",
+    count: "件の商品",
+    purchase: "購入",
+    barter: "物々交換",
+    costs: "必要な費用",
+    rewards: "獲得アイテム",
+    limit: "補充ごとの購入制限",
+    unlimited: "制限なし",
+    unknown: "情報なし",
+    quests: "解放タスク",
+    close: "閉じる",
+    empty: "条件に一致する商品はありません。",
+    loading: "読み込み中…",
+    error: "データを読み込めませんでした。",
+    stale: "更新できませんでした。以前のデータを表示しています。",
+    retry: "再試行",
+    waiting: "更新待ち",
+    restock: "補充まで",
+    lastChecked: "最終確認",
+    noCheckedTime: "確認時刻なし",
+    noOffers: "現在、購入・交換商品の情報はありません。",
+    refresh: "データは5分ごとに更新されます。",
+    cumulative: "選択した親密度以下の商品を表示します。",
+    mode: "ゲームモード",
+    season: "シーズン",
+    unavailable: "このモードのデータはまだありません。",
+    detail: "商品詳細",
+  },
+};
+
+export function getTraderCopy(locale: Locale) {
+  return copy[locale];
+}
+export type TraderCopy = ReturnType<typeof getTraderCopy>;
