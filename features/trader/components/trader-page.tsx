@@ -193,7 +193,7 @@ export function TraderPage({
   function traderHref(name: string) {
     const query = new URLSearchParams();
     if (mode !== "pvp") query.set("mode", mode);
-    if (level !== 4) query.set("level", String(level));
+    if (level !== "all") query.set("level", String(level));
     if (word) query.set("word", word);
     if (offerType !== "all") query.set("offer_type", offerType);
     return `/traders/${name}${query.size ? `?${query}` : ""}`;

@@ -16,7 +16,10 @@ export function SessionHealthWatcher() {
   useEffect(() => {
     if (status !== "authenticated" || session?.error === "ReauthenticationRequired") return;
     const check = async () => {
-      if (running.current || document.visibilityState === "hidden" || !navigator.onLine || Date.now() - lastCheck.current < 10_000) return;
+      const now = Date.now();
+      const nearExpiry = Boolean(session?.accessTokenExpires && session.accessTokenExpires - now <= 120_000);
+      const minimumGap = session?.error ? 30_000 : nearExpiry ? 10_000 : 60_000;
+      if (running.current || document.visibilityState === "hidden" || !navigator.onLine || now - lastCheck.current < minimumGap) return;
       running.current = true;
       lastCheck.current = Date.now();
       try { await updateRef.current(); } catch { /* The next focus/online/timer retries. */ }

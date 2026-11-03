@@ -31,6 +31,8 @@ declare module "next-auth/jwt" {
     accessToken?: string;
     error?: "ReauthenticationRequired" | "AccessTokenRefreshUnavailable" | "UserInfoUnavailable";
     refreshRetryAt?: number;
+    userInfoCheckedAt?: number;
+    userInfoRetryAt?: number;
     refreshToken?: string;
     accessTokenExpires?: number;
     nickname?: string | null;

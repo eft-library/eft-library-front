@@ -1,40 +1,12 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { verifyUserSession, type UserInfoResult } from "@/lib/auth/session-recovery";
+import { verifyUserSession } from "@/lib/auth/session-recovery";
+import { loadUserInfo } from "@/lib/auth/user-info";
 import { refreshGoogleAccessToken } from "@/lib/auth/token-refresh";
 
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import { getApiBaseUrl } from "@/lib/config/app-env";
-
-async function fetchUserInfo(accessToken?: string): Promise<UserInfoResult> {
-  if (!accessToken) {
-    return { status: "unauthorized" };
-  }
-
-  try {
-    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      cache: "no-store",
-      signal: AbortSignal.timeout(8000),
-    });
-
-    if (response.status === 401) return { status: "unauthorized" };
-    if (!response.ok) return { status: "unavailable" };
-
-    const payload: unknown = await response.json();
-    if (payload && typeof payload === "object" && "data" in payload && payload.data && typeof payload.data === "object" && !Array.isArray(payload.data)) {
-      return { status: "ok", data: payload.data };
-    }
-    return { status: "unavailable" };
-  } catch {
-    return { status: "unavailable" };
-  }
-}
 
 const handler = NextAuth({
   providers: [
@@ -98,14 +70,16 @@ const handler = NextAuth({
           error: undefined,
           refreshRetryAt: undefined,
           userInfo: undefined,
+          userInfoCheckedAt: undefined,
+          userInfoRetryAt: undefined,
           nickname: null,
-        }, fetchUserInfo, refreshGoogleAccessToken);
+        }, loadUserInfo, refreshGoogleAccessToken);
       }
 
       if (token.error === "ReauthenticationRequired") return token;
       if (trigger === "update" && session?.refreshAccessToken === true &&
           (!token.refreshRetryAt || Date.now() >= token.refreshRetryAt)) {
-        return verifyUserSession(await refreshGoogleAccessToken(token), fetchUserInfo, refreshGoogleAccessToken, Date.now(), true);
+        return verifyUserSession(await refreshGoogleAccessToken(token), loadUserInfo, refreshGoogleAccessToken, Date.now(), true);
       }
 
       // Profile updates are reloaded from the backend, not trusted from the client.
@@ -114,11 +88,12 @@ const handler = NextAuth({
         token.accessTokenExpires &&
         Date.now() + 60_000 < token.accessTokenExpires
       ) {
-        return verifyUserSession(token, fetchUserInfo, refreshGoogleAccessToken);
+        const force = trigger === "update" && Boolean(session && (session.userInfo || session.refreshUserInfo === true));
+        return verifyUserSession(token, (accessToken) => loadUserInfo(accessToken, force), refreshGoogleAccessToken, Date.now(), false, force);
       }
 
       if (token.refreshRetryAt && Date.now() < token.refreshRetryAt) return token;
-      return verifyUserSession(await refreshGoogleAccessToken(token), fetchUserInfo, refreshGoogleAccessToken, Date.now(), true);
+      return verifyUserSession(await refreshGoogleAccessToken(token), loadUserInfo, refreshGoogleAccessToken, Date.now(), true);
     },
 
     async session({ token, session }) {

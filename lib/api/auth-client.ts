@@ -6,6 +6,17 @@ interface AuthenticatedRequestOptions extends RequestInit {
   accessToken: string;
 }
 
+export class AuthenticatedApiError extends Error {
+  readonly retryAfterMs: number;
+  constructor(readonly status: number, retryAfter: string | null) {
+    super(`Authenticated API request failed: ${status}`);
+    this.name = "AuthenticatedApiError";
+    const seconds = retryAfter === null ? NaN : Number(retryAfter);
+    const delay = Number.isFinite(seconds) ? seconds * 1000 : retryAfter ? Date.parse(retryAfter) - Date.now() : NaN;
+    this.retryAfterMs = status === 429 ? Math.max(1000, Number.isFinite(delay) ? delay : 30_000) : 0;
+  }
+}
+
 export async function authenticatedApiRequest<T>(
   path: string,
   { accessToken, headers, ...init }: AuthenticatedRequestOptions,
@@ -20,7 +31,7 @@ export async function authenticatedApiRequest<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`Authenticated API request failed: ${response.status}`);
+    throw new AuthenticatedApiError(response.status, response.headers.get("Retry-After"));
   }
 
   const payload = (await response.json()) as ApiEnvelope<T>;

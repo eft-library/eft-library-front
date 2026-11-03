@@ -5,6 +5,8 @@ const assert = require('node:assert/strict');
   const browser = await chromium.launch();
   try {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    await context.route('https://pagead2.googlesyndication.com/**', route => route.abort());
+    await context.route('**/api/user/v3/my-page/notification?*', route => route.fulfill({ json: { status: 200, msg: 'OK', data: { notifications: [] } } }));
     let sessionError, accessToken = 'test-token';
     const expires = Date.now() + 3600000;
     let calls = 0, connections = 0;
@@ -29,7 +31,7 @@ const assert = require('node:assert/strict');
     await page.waitForTimeout(300);
     const initialConnections = connections;
     const check = async () => {
-      await page.clock.fastForward(11000);
+      await page.clock.fastForward(61000);
       await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
     };
     sessionError = 'UserInfoUnavailable'; await check();

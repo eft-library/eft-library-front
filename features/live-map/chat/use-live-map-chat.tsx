@@ -10,7 +10,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { getSessionQuietly } from "@/lib/auth/client-session";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
   PartyInvitePreferencesV3,
@@ -77,7 +78,7 @@ function useLiveMapChatState() {
     const client = new LiveMapChatRealtimeClient({
       url: url.toString(),
       getToken: async () => {
-        const latest = await getSession();
+        const latest = await getSessionQuietly();
         const latestAccount =
           latest?.userInfo?.email ?? latest?.user?.email;
         if (!account) return undefined;

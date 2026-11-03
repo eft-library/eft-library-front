@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
+import { privateRead } from "@/lib/api/private-read-cache";
 import { getMyPageNotificationsEndpoint } from "@/lib/config/api-endpoints";
 import { cn } from "@/lib/utils/class-name";
 import { formatIsoDateTime } from "@/lib/utils/date-time";
@@ -110,17 +111,21 @@ export function NotificationMenu({
     }
 
     let isActive = true;
+    if (useWsStore.getState().locationConnection === "ready") {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
 
-    authenticatedApiRequest<MyPageNotificationsResponse>(
+    privateRead(getMyPageNotificationsEndpoint(1), accessToken, () => authenticatedApiRequest<MyPageNotificationsResponse>(
       getMyPageNotificationsEndpoint(1),
       {
         accessToken,
         cache: "no-store",
       },
-    )
+    ), 0)
       .then((data) => {
-        if (isActive) {
+        if (isActive && useWsStore.getState().locationConnection !== "ready") {
           setNotifications(data.notifications);
         }
       })

@@ -1,5 +1,6 @@
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
+import { privateRead, invalidatePrivateRead } from "@/lib/api/private-read-cache";
 import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import type {
   ProgressItemResponse,
@@ -8,10 +9,10 @@ import type {
 
 export function getProgressItems(accessToken?: string) {
   if (accessToken) {
-    return authenticatedApiRequest<ProgressItemResponse>(apiEndpoints.progressItem, {
+    return privateRead(apiEndpoints.progressItem, accessToken, () => authenticatedApiRequest<ProgressItemResponse>(apiEndpoints.progressItem, {
       accessToken,
       method: "GET",
-    });
+    }));
   }
 
   return staticJsonGetWithFallback<ProgressItemResponse>("progress", "/static/progress/v3/progress-item.json", {
@@ -20,13 +21,15 @@ export function getProgressItems(accessToken?: string) {
   });
 }
 
-export function saveProgressItems(
+export async function saveProgressItems(
   payload: ProgressItemSaveRequest,
   accessToken: string,
 ) {
-  return authenticatedApiRequest<ProgressItemResponse>(apiEndpoints.progressSave, {
+  const data = await authenticatedApiRequest<ProgressItemResponse>(apiEndpoints.progressSave, {
     accessToken,
     method: "POST",
     body: JSON.stringify(payload),
   });
+  invalidatePrivateRead(apiEndpoints.progressItem, accessToken);
+  return data;
 }

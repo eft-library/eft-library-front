@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { LocationEventCursor, LocationRealtimeClient } from "@/lib/websocket/location-client";
 import { isRaidState } from "@/lib/websocket/raid-state";
@@ -12,6 +12,8 @@ import type { MyPageNotificationEntry } from "@/types/api/mypage";
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status, update } = useSession();
   const updateRef = useRef(update);
+  const sessionRef = useRef(session);
+  useEffect(() => { sessionRef.current = session; }, [session]);
   useEffect(() => { updateRef.current = update; }, [update]);
   const account = session?.userInfo?.email ?? session?.user?.email ?? null;
   const token = session?.accessToken;
@@ -39,7 +41,9 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     const client = new LocationRealtimeClient({
       host,
       getToken: async (forceRefresh) => {
-        const latest = forceRefresh ? await updateRef.current({ refreshAccessToken: true }) : await getSession();
+        const current = sessionRef.current;
+        const needsRefresh = forceRefresh || !current?.accessToken || !current.accessTokenExpires || current.accessTokenExpires <= Date.now() + 60_000;
+        const latest = needsRefresh ? await updateRef.current({ refreshAccessToken: true }) : current;
         if (latest?.error === "ReauthenticationRequired") return undefined;
         if (latest?.error === "AccessTokenRefreshUnavailable" && !latest.accessToken) throw new Error("Session refresh temporarily unavailable");
         const latestAccount = latest?.userInfo?.email ?? latest?.user?.email;

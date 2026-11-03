@@ -1,8 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { apiEndpoints } from "@/lib/config/api-endpoints";
-import { getApiBaseUrl } from "@/lib/config/app-env";
 
 const protectedPathPrefixes = [
   "/community/create",
@@ -44,35 +42,6 @@ function getNicknameFromToken(token: Awaited<ReturnType<typeof getToken>>) {
   return getNicknameFromValue(userInfo?.nickname);
 }
 
-async function fetchNicknameFromUserInfo(accessToken: unknown) {
-  if (typeof accessToken !== "string" || accessToken.length === 0) {
-    return null;
-  }
-
-  try {
-    const response = await fetch(`${getApiBaseUrl()}${apiEndpoints.userInfo}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const payload = (await response.json()) as {
-      data?: { nickname?: unknown } | null;
-    };
-
-    return getNicknameFromValue(payload.data?.nickname);
-  } catch {
-    return null;
-  }
-}
-
 export async function proxy(request: NextRequest) {
   const token = await getToken({
     req: request,
@@ -91,13 +60,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const nickname =
-    getNicknameFromToken(token) ??
-    (token && typeof token !== "string"
-      ? await fetchNicknameFromUserInfo(token.accessToken)
-      : null);
+  // The signed token is populated by the session callback. Never fetch a
+  // profile for page/prefetch requests, and do not treat an unverified legacy
+  // token as a confirmed account without a nickname.
+  const nickname = getNicknameFromToken(token);
+  const profileKnown = token && typeof token !== "string" && Boolean(token.userInfo);
 
-  if (token && !nickname && pathname !== "/onboarding") {
+  if (token && profileKnown && !nickname && pathname !== "/onboarding") {
     return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 

@@ -40,7 +40,7 @@ async function ResolvedTraderPage({ params, searchParams }: PageProps) {
       ? "all"
       : typeof query.level === "string" && /^[1-4]$/.test(query.level)
         ? Number(query.level)
-        : 4;
+        : "all";
   return (
     <TraderPage
       key={id}

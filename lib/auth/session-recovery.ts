@@ -11,8 +11,13 @@ export async function verifyUserSession(
   refresh: (token: JWT) => Promise<JWT>,
   now = Date.now(),
   alreadyRefreshed = false,
+  force = false,
 ): Promise<JWT> {
   if (token.error === "ReauthenticationRequired" || !token.accessToken || !token.accessTokenExpires || token.accessTokenExpires <= now) return token;
+  if (!force && !alreadyRefreshed) {
+    if (!token.error && token.userInfo && token.userInfoCheckedAt && now >= token.userInfoCheckedAt && now - token.userInfoCheckedAt < 60_000) return token;
+    if (token.error === "UserInfoUnavailable" && token.userInfoRetryAt && now < token.userInfoRetryAt) return token;
+  }
   let current = token;
   let info = await load(current.accessToken!);
   if (info.status === "unauthorized") {
@@ -25,8 +30,8 @@ export async function verifyUserSession(
     info = await load(current.accessToken);
     if (info.status === "unauthorized") return { ...current, accessToken: "", accessTokenExpires: 0, error: "ReauthenticationRequired" };
   }
-  if (info.status === "unavailable") return { ...current, error: current.error ?? "UserInfoUnavailable" };
+  if (info.status === "unavailable") return { ...current, error: current.error ?? "UserInfoUnavailable", userInfoRetryAt: now + 30_000 };
   if (info.status !== "ok") return current;
-  return { ...current, userInfo: info.data, nickname: info.data.nickname ?? null,
+  return { ...current, userInfo: info.data, nickname: info.data.nickname ?? null, userInfoCheckedAt: now, userInfoRetryAt: undefined,
     error: current.error === "AccessTokenRefreshUnavailable" ? current.error : undefined };
 }

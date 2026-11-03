@@ -11,7 +11,8 @@ import {
   type ReactNode,
 } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { getSessionQuietly } from "@/lib/auth/client-session";
 import { apiGet } from "@/lib/api/api-client";
 import type { MapDetailResponse } from "@/types/api/map";
 import type { PartySnapshotV3 } from "@/types/api/live-map-party";
@@ -161,7 +162,7 @@ function usePartySession() {
       url: url.toString(),
       roomId,
       getToken: async () => {
-        const latest = await getSession();
+        const latest = await getSessionQuietly();
         const email = latest?.userInfo?.email ?? latest?.user?.email;
         return email === account ? latest?.accessToken : undefined;
       },

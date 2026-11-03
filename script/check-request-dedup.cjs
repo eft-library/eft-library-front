@@ -1,0 +1,97 @@
+// Local mocks only: no real credentials, network requests or backend writes.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const Module = require('node:module');
+const ts = require('typescript');
+const root = path.resolve(__dirname, '..');
+const resolve = Module._resolveFilename;
+Module._resolveFilename = function (request, parent, ...rest) {
+  return resolve.call(this, request.startsWith('@/') ? path.join(root, request.slice(2)) : request, parent, ...rest);
+};
+require.extensions['.ts'] = (mod, filename) => mod._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true },
+}).outputText, filename);
+const { verifyUserSession } = require('../lib/auth/session-recovery.ts');
+const { createUserInfoLoader } = require('../lib/auth/user-info.ts');
+const { AuthenticatedApiError } = require('../lib/api/auth-client.ts');
+const { privateRead, invalidatePrivateRead } = require('../lib/api/private-read-cache.ts');
+(async () => {
+  let now = 1_000_000, calls = 0;
+  const load = createUserInfoLoader(async (_url, init) => {
+    calls++;
+    await new Promise(r => setTimeout(r, 2));
+    return Response.json({ data: { nickname: init.headers.Authorization } });
+  }, () => now);
+  const base = { accessToken: 'mock-a', accessTokenExpires: now + 3600000 };
+  let token = base;
+  for (let i = 0; i < 100; i++) token = await verifyUserSession(token, load, async t => t, now);
+  assert.equal(calls, 1, 'Repeated valid session reads reuse signed verification timestamp');
+  await Promise.all(Array.from({ length: 100 }, () => verifyUserSession(base, load, async t => t, now)));
+  assert.equal(calls, 1, 'Stale copies and concurrent tabs reuse per-credential lookup');
+  const other = await load('mock-b');
+  assert.equal(calls, 2); assert.notEqual(other.data.nickname, token.userInfo.nickname);
+  now += 60001;
+  token = await verifyUserSession(token, load, async t => t, now);
+  assert.equal(calls, 3, 'TTL expiry rechecks backend');
+  await verifyUserSession(token, t => load(t, true), async t => t, now, false, true);
+  assert.equal(calls, 4, 'Explicit profile update bypasses both caches');
+  let concurrentCalls = 0;
+  const concurrent = createUserInfoLoader(async () => { concurrentCalls++; await new Promise(r => setTimeout(r, 5)); return Response.json({ data: { nickname: 'ok' } }); }, () => now);
+  await Promise.all(Array.from({ length: 100 }, () => concurrent('concurrent')));
+  assert.equal(concurrentCalls, 1, 'Concurrent misses singleflight');
+  let outageCalls = 0;
+  const unavailable = createUserInfoLoader(async () => { outageCalls++; return new Response('', { status: 429 }); }, () => now);
+  let outage = await verifyUserSession(base, unavailable, async () => assert.fail('429 must not refresh Google token'), now);
+  for (let i = 0; i < 100; i++) outage = await verifyUserSession(outage, unavailable, async t => t, now);
+  assert.equal(outageCalls, 1); assert.equal(outage.accessToken, base.accessToken); assert.equal(outage.error, 'UserInfoUnavailable');
+  now += 30001;
+  await verifyUserSession(outage, unavailable, async t => t, now);
+  assert.equal(outageCalls, 2, 'Transient failure retries after cooldown');
+  let refreshes = 0;
+  const renewed = await verifyUserSession(base, async t => t === 'mock-a' ? { status: 'unauthorized' } : { status: 'ok', data: { nickname: 'renewed' } }, async t => { refreshes++; return { ...t, accessToken: 'mock-renewed' }; }, now);
+  assert.equal(refreshes, 1); assert.equal(renewed.userInfo.nickname, 'renewed');
+  const denied = await verifyUserSession(base, async () => ({ status: 'unauthorized' }), async t => t, now, true);
+  assert.equal(denied.error, 'ReauthenticationRequired');assert.equal(denied.accessToken, '');
+  await verifyUserSession(denied, async () => assert.fail('Permanent auth failure must stop lookup'), async () => assert.fail('Permanent auth failure must stop refresh'), now);
+  await verifyUserSession({ ...token, accessTokenExpires: now - 1 }, async () => assert.fail('Expired access token must not use profile cache'), async t => t, now);
+
+  global.window = {};
+  let privateCalls = 0;
+  const read = () => { privateCalls++; return Promise.resolve({ user: 'one' }); };
+  await Promise.all(Array.from({ length: 50 }, () => privateRead('/roadmap', 'one', read)));
+  await privateRead('/roadmap', 'one', read); assert.equal(privateCalls, 1);
+  await privateRead('/roadmap', 'two', read); assert.equal(privateCalls, 2, 'Private reads isolate credentials');
+  invalidatePrivateRead('/roadmap', 'one'); await privateRead('/roadmap', 'one', read); assert.equal(privateCalls, 3, 'Successful write invalidation forces new read');
+  let failures = 0;
+  await assert.rejects(privateRead('/failure', 'one', async () => { failures++; throw new Error('mock'); }));
+  await privateRead('/failure', 'one', async () => { failures++; return 1; }); assert.equal(failures, 2, 'Failures do not poison cache');
+  let limitedCalls = 0;
+  const limited = () => { limitedCalls++; return Promise.reject(new AuthenticatedApiError(429, '60')); };
+  for (let i = 0; i < 10; i++) await assert.rejects(privateRead('/limited', 'one', limited));
+  assert.equal(limitedCalls, 1, '429 Retry-After prevents remount retry storms');
+  delete global.window;
+  let serverReads = 0;
+  await privateRead('/server', 'one', async () => ++serverReads);await privateRead('/server', 'one', async () => ++serverReads);assert.equal(serverReads, 2, 'Browser read cache never caches server private data');
+  let proxyToken = null;
+  const originalLoad = Module._load;
+  Module._load = function(request, parent, ...rest) {
+    if (request === 'next-auth/jwt') return { getToken: async () => proxyToken };
+    return originalLoad.call(this, request, parent, ...rest);
+  };
+  const { proxy } = require('../proxy.ts');
+  const { NextRequest } = require('next/server');
+  const originalFetch = global.fetch;
+  global.fetch = async () => assert.fail('Proxy must not fetch user-info for page or prefetch requests');
+  proxyToken = { accessToken: 'mock', userInfo: { nickname: 'known' } };
+  assert.equal((await proxy(new NextRequest('http://test.invalid/roadmap'))).status, 200);
+  proxyToken = { accessToken: 'mock' };
+  assert.equal((await proxy(new NextRequest('http://test.invalid/roadmap'))).status, 200, 'Unknown legacy profile must not create onboarding loop');
+  proxyToken = { accessToken: 'mock', userInfo: { nickname: null } };
+  assert.equal(new URL((await proxy(new NextRequest('http://test.invalid/roadmap'))).headers.get('location')).pathname, '/onboarding');
+  proxyToken = null;
+  assert.equal(new URL((await proxy(new NextRequest('http://test.invalid/mypage'))).headers.get('location')).pathname, '/');
+  global.fetch = originalFetch;
+  Module._load = originalLoad;
+  console.log('PASS: session TTL/singleflight/account isolation, explicit profile refresh, 429 cooldown, 401 refresh, permanent/expired auth, private read dedup/invalidation/error recovery/server isolation');
+})().catch(e => { console.error(e); process.exitCode = 1; });
