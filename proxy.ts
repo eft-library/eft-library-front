@@ -56,7 +56,7 @@ export async function proxy(request: NextRequest) {
     pathname === path || pathname.startsWith(`${path}/`),
   );
 
-  if (isProtectedPath && !token) {
+  if (isProtectedPath && (!token || token.error === "ReauthenticationRequired" || token.error === "UserNotRegistered")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

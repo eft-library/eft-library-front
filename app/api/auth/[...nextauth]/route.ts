@@ -76,10 +76,14 @@ const handler = NextAuth({
         }, loadUserInfo, refreshGoogleAccessToken);
       }
 
-      if (token.error === "ReauthenticationRequired") return token;
+      if (trigger === "update" && session?.rejectAccessToken && session.rejectAccessToken === token.accessToken) {
+        return { ...token, accessToken: "", accessTokenExpires: 0, error: "ReauthenticationRequired" };
+      }
+      if (token.error === "ReauthenticationRequired" || token.error === "UserNotRegistered") return token;
       if (trigger === "update" && session?.refreshAccessToken === true &&
+          (!session.failedAccessToken || session.failedAccessToken === token.accessToken) &&
           (!token.refreshRetryAt || Date.now() >= token.refreshRetryAt)) {
-        return verifyUserSession(await refreshGoogleAccessToken(token), loadUserInfo, refreshGoogleAccessToken, Date.now(), true);
+        return verifyUserSession(await refreshGoogleAccessToken(token), accessToken => loadUserInfo(accessToken, true), refreshGoogleAccessToken, Date.now(), true);
       }
 
       // Profile updates are reloaded from the backend, not trusted from the client.
@@ -98,7 +102,7 @@ const handler = NextAuth({
 
     async session({ token, session }) {
       const nextSession = session;
-      const usable = token.error !== "ReauthenticationRequired" &&
+      const usable = token.error !== "ReauthenticationRequired" && token.error !== "UserNotRegistered" &&
         Boolean(token.accessToken && token.accessTokenExpires && token.accessTokenExpires > Date.now());
       const accessToken = usable ? token.accessToken ?? "" : "";
 

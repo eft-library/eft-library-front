@@ -12,6 +12,8 @@ import {
 } from "react";
 import { useSession } from "next-auth/react";
 import { getSessionQuietly } from "@/lib/auth/client-session";
+import { recoverAuthentication, rejectAuthentication } from "@/lib/auth/auth-recovery";
+import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
   PartyInvitePreferencesV3,
@@ -45,7 +47,8 @@ function mergeMessages(
 function useLiveMapChatState() {
   const { data: session, status } = useSession();
   const token = session?.accessToken;
-  const enabled = (status !== "loading" || Boolean(token)) && session?.error !== "ReauthenticationRequired" &&
+  const recovery = useAuthRecovery();
+  const enabled = recovery !== "reauthentication-required" && (status !== "loading" || Boolean(token)) && session?.error !== "ReauthenticationRequired" && session?.error !== "UserNotRegistered" &&
     !(session?.error === "AccessTokenRefreshUnavailable" && !token);
   const account = session?.userInfo?.email ?? session?.user?.email;
   const [open, setOpen] = useState(false);
@@ -85,7 +88,7 @@ function useLiveMapChatState() {
         return latestAccount === account ? latest?.accessToken : undefined;
       },
       onChange: (next) => {
-        if (next.connection === "auth-required" && token) blockedStatusTokenRef.current = token;
+        if (next.connection === "auth-required" && token) { blockedStatusTokenRef.current = token; void recoverAuthentication(token).then(result => { if (result.status === "refreshed" && result.accessToken === token) void rejectAuthentication(token); }); }
         setView(next);
       },
     });

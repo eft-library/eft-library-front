@@ -36,6 +36,20 @@ const { privateRead, invalidatePrivateRead } = require('../lib/api/private-read-
   assert.equal(calls, 3, 'TTL expiry rechecks backend');
   await verifyUserSession(token, t => load(t, true), async t => t, now, false, true);
   assert.equal(calls, 4, 'Explicit profile update bypasses both caches');
+  for (const [status, detail, expected] of [
+    [401, 'INVALID_TOKEN', 'unauthorized'],
+    [503, 'AUTH_SERVICE_UNAVAILABLE', 'unavailable'],
+    [404, 'USER_NOT_FOUND', 'not-found'],
+    [404, 'Not Found', 'unavailable'],
+  ]) {
+    const classify = createUserInfoLoader(async () => Response.json({detail}, {status}), () => now);
+    assert.equal((await classify('contract')).status, expected);
+  }
+  const missingUser = await verifyUserSession(token, async () => ({status:'not-found'}), async () => assert.fail('Missing registration is not token expiry'), now, false, true);
+  assert.equal(missingUser.error, 'UserNotRegistered');assert.equal(missingUser.userInfo, null);assert.equal(missingUser.accessToken, '');
+  await verifyUserSession(missingUser, async () => assert.fail('Unregistered user must not cause a retry loop'), async t => t, now);
+  const legacyFail = createUserInfoLoader(async () => Response.json({status:200,msg:'FAIL',data:null}), () => now);
+  assert.equal((await legacyFail('old-backend')).status, 'unavailable', 'Unreleased backend remains compatible without guessing that business FAIL means invalid authentication');
   let concurrentCalls = 0;
   const concurrent = createUserInfoLoader(async () => { concurrentCalls++; await new Promise(r => setTimeout(r, 5)); return Response.json({ data: { nickname: 'ok' } }); }, () => now);
   await Promise.all(Array.from({ length: 100 }, () => concurrent('concurrent')));

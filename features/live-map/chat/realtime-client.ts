@@ -411,8 +411,10 @@ export class LiveMapChatRealtimeClient {
       if (!token && this.view.error?.msg === "CHAT_GUEST_SESSION_INVALID") {
         if (++this.guestSessionFailures >= 2) this.emit({ connection: "stopped" });
         else this.scheduleReconnect(generation);
-      } else if ([4401, 4403].includes(event.code)) {
+      } else if (event.code === 4401) {
         this.emit({ connection: "auth-required" });
+      } else if (event.code === 4403) {
+        this.emit({ connection: "stopped" });
       } else {
         this.scheduleReconnect(generation);
       }

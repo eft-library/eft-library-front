@@ -1,3 +1,4 @@
+import { fetchWithAuthRecovery } from "@/lib/auth/auth-recovery";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 
 import type { ApiEnvelope } from "@/lib/api/api-client";
@@ -21,7 +22,7 @@ export async function authenticatedApiRequest<T>(
   path: string,
   { accessToken, headers, ...init }: AuthenticatedRequestOptions,
 ) {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetchWithAuthRecovery(`${getApiBaseUrl()}${path}`, accessToken, {
     ...init,
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -35,6 +36,10 @@ export async function authenticatedApiRequest<T>(
   }
 
   const payload = (await response.json()) as ApiEnvelope<T>;
+
+  if (typeof payload.status === "number" && payload.status >= 400) {
+    throw new AuthenticatedApiError(payload.status, response.headers.get("Retry-After"));
+  }
 
   if (payload.msg !== "OK" || payload.data === null) {
     throw new Error(`Authenticated API returned invalid payload for ${path}`);

@@ -20,6 +20,7 @@ import {
   X,
 } from "lucide-react";
 
+import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 import { useWsStore } from "@/store/ws-store";
 import Logo from "@/assets/navi/logo";
 import { LocaleSwitcher } from "@/components/shared/locale-switcher";
@@ -291,7 +292,8 @@ export function SiteHeader({
 }: SiteHeaderProps) {
   const { data: session, status } = useSession();
   const locationConnection = useWsStore((state) => state.locationConnection);
-  const authenticated = status === "authenticated" && session?.error !== "ReauthenticationRequired" && locationConnection !== "auth-required";
+  const recovery = useAuthRecovery();
+  const authenticated = recovery !== "reauthentication-required" && Boolean(session?.accessToken) && status === "authenticated" && session?.error !== "ReauthenticationRequired" && session?.error !== "UserNotRegistered" && locationConnection !== "auth-required";
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);

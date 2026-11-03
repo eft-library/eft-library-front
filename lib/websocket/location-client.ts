@@ -125,6 +125,8 @@ export class LocationRealtimeClient {
           this.attempts = 0;
           this.authAttempts = 0;
           this.options.onStatus("ready", id);
+        } else if (packet.status === "auth-required") {
+          socket.close(4401, "AUTH_REQUIRED");
         } else if (packet.status === "reconnecting") this.options.onStatus("reconnecting", id);
         return;
       }

@@ -5,7 +5,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     accessToken: string;
     accessTokenExpires?: number;
-    error?: "ReauthenticationRequired" | "AccessTokenRefreshUnavailable" | "UserInfoUnavailable";
+    error?: "ReauthenticationRequired" | "AccessTokenRefreshUnavailable" | "UserInfoUnavailable" | "UserNotRegistered";
     refreshToken: string;
     userInfo: {
       email?: string;
@@ -29,7 +29,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     accessToken?: string;
-    error?: "ReauthenticationRequired" | "AccessTokenRefreshUnavailable" | "UserInfoUnavailable";
+    error?: "ReauthenticationRequired" | "AccessTokenRefreshUnavailable" | "UserInfoUnavailable" | "UserNotRegistered";
     refreshRetryAt?: number;
     userInfoCheckedAt?: number;
     userInfoRetryAt?: number;

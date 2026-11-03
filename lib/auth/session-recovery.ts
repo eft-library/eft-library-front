@@ -2,7 +2,7 @@ import type { JWT } from "next-auth/jwt";
 
 export type UserInfoResult =
   | { status: "ok"; data: NonNullable<JWT["userInfo"]> }
-  | { status: "unauthorized" | "unavailable" };
+  | { status: "unauthorized" | "unavailable" | "not-found" };
 
 /** A user-info 401 is authentication failure, not an upstream outage. */
 export async function verifyUserSession(
@@ -13,7 +13,7 @@ export async function verifyUserSession(
   alreadyRefreshed = false,
   force = false,
 ): Promise<JWT> {
-  if (token.error === "ReauthenticationRequired" || !token.accessToken || !token.accessTokenExpires || token.accessTokenExpires <= now) return token;
+  if (token.error === "ReauthenticationRequired" || token.error === "UserNotRegistered" || !token.accessToken || !token.accessTokenExpires || token.accessTokenExpires <= now) return token;
   if (!force && !alreadyRefreshed) {
     if (!token.error && token.userInfo && token.userInfoCheckedAt && now >= token.userInfoCheckedAt && now - token.userInfoCheckedAt < 60_000) return token;
     if (token.error === "UserInfoUnavailable" && token.userInfoRetryAt && now < token.userInfoRetryAt) return token;
@@ -30,6 +30,7 @@ export async function verifyUserSession(
     info = await load(current.accessToken);
     if (info.status === "unauthorized") return { ...current, accessToken: "", accessTokenExpires: 0, error: "ReauthenticationRequired" };
   }
+  if (info.status === "not-found") return { ...current, userInfo: null, nickname: null, accessToken: "", accessTokenExpires: 0, error: "UserNotRegistered", userInfoCheckedAt: undefined, userInfoRetryAt: undefined };
   if (info.status === "unavailable") return { ...current, error: current.error ?? "UserInfoUnavailable", userInfoRetryAt: now + 30_000 };
   if (info.status !== "ok") return current;
   return { ...current, userInfo: info.data, nickname: info.data.nickname ?? null, userInfoCheckedAt: now, userInfoRetryAt: undefined,

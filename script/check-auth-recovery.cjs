@@ -1,0 +1,33 @@
+// Isolated mocks: no network, real credentials, or backend mutations.
+const assert=require('node:assert/strict'), fs=require('node:fs'), path=require('node:path'), Module=require('node:module'), ts=require('typescript');
+const root=path.resolve(__dirname,'..'), resolve=Module._resolveFilename;
+Module._resolveFilename=function(request,parent,...rest){return resolve.call(this,request.startsWith('@/')?path.join(root,request.slice(2)):request,parent,...rest)};
+require.extensions['.ts']=(mod,name)=>mod._compile(ts.transpileModule(fs.readFileSync(name,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText,name);
+const {registerAuthRecovery,fetchWithAuthRecovery,getAuthRecoveryState,recoverAuthentication}=require('../lib/auth/auth-recovery.ts');
+const {isAuthenticationFailure}=require('../lib/auth/auth-errors.ts');
+(async()=>{
+ global.window={};let refreshes=0,requests=0;
+ let unregister=registerAuthRecovery(async()=>{refreshes++;await new Promise(r=>setTimeout(r,5));return {status:'refreshed',accessToken:'new'}});
+ global.fetch=async(_url,init)=>{requests++;return new Headers(init.headers).get('Authorization')==='Bearer new'?Response.json({status:200,msg:'OK',data:'ok'}):Response.json({detail:'INVALID_TOKEN'},{status:401})};
+ const result=await Promise.all(Array.from({length:20},()=>fetchWithAuthRecovery('/test','old',{method:'GET'})));
+ assert(result.every(r=>r.status===200));assert.equal(refreshes,1);assert.equal(requests,40);assert.equal(getAuthRecoveryState(),'idle');unregister();
+ refreshes=0;requests=0;unregister=registerAuthRecovery(async()=>{refreshes++;return {status:'refreshed',accessToken:'new'}});
+ global.fetch=async()=>{requests++;return new Response('',{status:401})};
+ await fetchWithAuthRecovery('/save','old',{method:'POST',body:'{}'});assert.equal(requests,1);assert.equal(refreshes,1,'Mutation recovers credentials but must not replay');unregister();
+ requests=0;unregister=registerAuthRecovery(async()=>({status:'refreshed',accessToken:'new'}));
+ await fetchWithAuthRecovery('/denied','old',{method:'GET'});assert.equal(requests,2);assert.equal(getAuthRecoveryState(),'reauthentication-required');await fetchWithAuthRecovery('/again','new',{method:'GET'});assert.equal(requests,2,'Terminal denial prevents request loops');unregister();
+ assert(isAuthenticationFailure(409,{msg:'SESSION_EXPIRED'}));assert(isAuthenticationFailure(200,{status:401}));assert(!isAuthenticationFailure(409,{detail:'RAID_TIMER_EXPIRED'}));assert(!isAuthenticationFailure(409,{msg:'MARKER_VERSION_CONFLICT'}));assert(!isAuthenticationFailure(403,{detail:'PERMISSION_DENIED'}));assert(!isAuthenticationFailure(200,{msg:'FAIL',data:null}));
+ refreshes=0;requests=0;unregister=registerAuthRecovery(async()=>{refreshes++;return {status:'refreshed',accessToken:'new'}});global.fetch=async()=>{requests++;return Response.json({detail:'RAID_TIMER_EXPIRED'},{status:409})};await fetchWithAuthRecovery('/raid','old',{});assert.equal(refreshes,0);assert.equal(requests,1);unregister();
+ let finish;unregister=registerAuthRecovery(()=>new Promise(r=>{finish=r}));const pending=recoverAuthentication('user-a');await Promise.resolve();unregister();const stop=registerAuthRecovery(async()=>({status:'refreshed',accessToken:'user-b'}));finish({status:'refreshed',accessToken:'user-a-new'});assert.equal((await pending).status,'unavailable','Account change must discard stale recovery');stop();
+ let attempts=0;unregister=registerAuthRecovery(async()=>{attempts++;return {status:'unavailable'}});await recoverAuthentication('old');await recoverAuthentication('old');assert.equal(attempts,1);assert.equal(getAuthRecoveryState(),'unavailable');unregister();
+ const controller=new AbortController();unregister=registerAuthRecovery(async()=>{controller.abort();return {status:'refreshed',accessToken:'new'}});global.fetch=async()=>new Response('',{status:401});await assert.rejects(fetchWithAuthRecovery('/cancel','old',{signal:controller.signal}));unregister();
+ let callbacks;const originalLoad=Module._load;
+ Module._load=function(request,parent,...rest){if(request==='next-auth')return {__esModule:true,default:options=>{callbacks=options.callbacks;return ()=>{}}};if(request==='next-auth/providers/google')return {__esModule:true,default:()=>({})};return originalLoad.call(this,request,parent,...rest)};
+ require('../app/api/auth/[...nextauth]/route.ts');Module._load=originalLoad;
+ const valid={accessToken:'current',accessTokenExpires:Date.now()+3600000,userInfo:{nickname:'mock'},userInfoCheckedAt:Date.now()};
+ const invalidated=await callbacks.jwt({token:valid,trigger:'update',session:{rejectAccessToken:'current'}});assert.equal(invalidated.error,'ReauthenticationRequired');assert.equal(invalidated.accessToken,'');
+ const changed=await callbacks.jwt({token:valid,trigger:'update',session:{rejectAccessToken:'older-account-token'}});assert.equal(changed.accessToken,'current','Stale rejection cannot sign out a renewed credential');
+ const session=await callbacks.session({token:invalidated,session:{user:{}}});assert.equal(session.accessToken,'');assert.equal(session.error,'ReauthenticationRequired');
+ const unregistered=await callbacks.session({token:{...valid,error:'UserNotRegistered'},session:{user:{}}});assert.equal(unregistered.accessToken,'');assert.equal(unregistered.error,'UserNotRegistered');
+ console.log('PASS HTTP 401/explicit 409 recovery, concurrent singleflight, safe GET retry, no mutation replay, repeated denial/loop protection, domain 409/403 isolation, account-switch/cancellation safety, outage cooldown');
+})().catch(e=>{console.error(e);process.exitCode=1});

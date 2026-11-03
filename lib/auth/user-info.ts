@@ -1,3 +1,4 @@
+import { isAuthenticationFailure } from "./auth-errors";
 import { createHash } from "node:crypto";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import { getApiBaseUrl } from "@/lib/config/app-env";
@@ -45,9 +46,10 @@ export function createUserInfoLoader(
             signal: AbortSignal.timeout(8000),
           },
         );
-        if (response.status === 401) result = { status: "unauthorized" };
+        const payload: unknown = await response.json().catch(() => null);
+        if (isAuthenticationFailure(response.status, payload)) result = { status: "unauthorized" };
+        else if (response.status === 404 && payload && typeof payload === "object" && "detail" in payload && payload.detail === "USER_NOT_FOUND") result = { status: "not-found" };
         else if (response.ok) {
-          const payload: unknown = await response.json();
           if (
             payload &&
             typeof payload === "object" &&
@@ -64,7 +66,7 @@ export function createUserInfoLoader(
       }
       entry.expiresAt =
         now() +
-        (result.status === "ok"
+        (result.status === "ok" || result.status === "not-found"
           ? USER_INFO_TTL_MS
           : result.status === "unavailable"
             ? USER_INFO_RETRY_MS

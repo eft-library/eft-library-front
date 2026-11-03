@@ -1,4 +1,5 @@
 import { authenticatedApiRequest } from "@/lib/api/auth-client";
+import { fetchWithAuthRecovery } from "@/lib/auth/auth-recovery";
 import { apiEndpoints, getCommunityListEndpoint, getCommunitySearchEndpoint } from "@/lib/config/api-endpoints";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
@@ -19,7 +20,7 @@ async function requestCommunity<T>(
   init: RequestInit & { accessToken?: string; revalidate?: number } = {},
 ): Promise<T> {
   const { accessToken, revalidate = 0, headers, ...requestInit } = init;
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetchWithAuthRecovery(`${getApiBaseUrl()}${path}`, accessToken ?? "", {
     ...requestInit,
     headers: {
       ...(requestInit.body ? { "Content-Type": "application/json" } : {}),

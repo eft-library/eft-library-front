@@ -13,6 +13,8 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { getSessionQuietly } from "@/lib/auth/client-session";
+import { recoverAuthentication, rejectAuthentication } from "@/lib/auth/auth-recovery";
+import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 import { apiGet } from "@/lib/api/api-client";
 import type { MapDetailResponse } from "@/types/api/map";
 import type { PartySnapshotV3 } from "@/types/api/live-map-party";
@@ -32,6 +34,7 @@ const EMPTY_POSITIONS: PartyRealtimeView["positions"] = [];
 function usePartySession() {
   const { data: session, status } = useSession();
   const token = session?.accessToken;
+  const reauthenticationRequired = useAuthRecovery() === "reauthentication-required";
   const account = session?.userInfo?.email ?? session?.user?.email;
   const storageKey = account ? `live-map-party:v3:${account}` : null;
   const [savedRoom, setSavedRoom] = useState<{
@@ -153,7 +156,7 @@ function usePartySession() {
   );
 
   useEffect(() => {
-    if (!roomId || !account || !token) return;
+    if (!roomId || !account || !token || reauthenticationRequired) return;
     const url = new URL(
       `${getApiBaseUrl()}/api/live-map/v3/party/rooms/${encodeURIComponent(roomId)}/ws`,
     );
@@ -167,6 +170,7 @@ function usePartySession() {
         return email === account ? latest?.accessToken : undefined;
       },
       onChange: (next) => {
+        if (next.connection === "auth-required") void recoverAuthentication(token).then(result => { if (result.status === "refreshed" && result.accessToken === token) void rejectAuthentication(token); });
         if (roomScopeRef.current === roomScope)
           setRealtime({ key: roomScope, view: next });
       },
@@ -193,7 +197,7 @@ function usePartySession() {
       window.removeEventListener("focus", wake);
       document.removeEventListener("visibilitychange", wake);
     };
-  }, [roomId, account, token, roomScope, rememberRoom]);
+  }, [reauthenticationRequired, roomId, account, token, roomScope, rememberRoom]);
 
   useEffect(() => {
     if (!retryAt) return;

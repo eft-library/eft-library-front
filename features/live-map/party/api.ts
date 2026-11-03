@@ -1,3 +1,4 @@
+import { fetchWithAuthRecovery } from "@/lib/auth/auth-recovery";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 
 export class PartyApiError extends Error {
@@ -17,8 +18,9 @@ export async function partyRequest<T>(
   body?: unknown,
   signal?: AbortSignal,
 ): Promise<T> {
-  const response = await fetch(
+  const response = await fetchWithAuthRecovery(
     `${getApiBaseUrl()}/api/live-map/v3/party/rooms${path}`,
+    token ?? "",
     {
       method,
       signal: signal
@@ -33,10 +35,10 @@ export async function partyRequest<T>(
     },
   );
   const payload = await response.json();
-  if (!response.ok || payload.msg !== "OK" || payload.data == null) {
+  if (!response.ok || payload.status >= 400 || payload.msg !== "OK" || payload.data == null) {
     const retryAfter = Number(response.headers.get("Retry-After"));
     throw new PartyApiError(
-      response.status,
+      payload.status >= 400 ? payload.status : response.status,
       payload.msg ?? "INVALID_REQUEST",
       Number.isFinite(retryAfter) ? retryAfter : 0,
     );

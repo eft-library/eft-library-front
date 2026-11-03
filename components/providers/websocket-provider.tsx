@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { recoverAuthentication, rejectAuthentication } from "@/lib/auth/auth-recovery";
+import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 
 import { LocationEventCursor, LocationRealtimeClient } from "@/lib/websocket/location-client";
 import { isRaidState } from "@/lib/websocket/raid-state";
@@ -17,7 +19,8 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { updateRef.current = update; }, [update]);
   const account = session?.userInfo?.email ?? session?.user?.email ?? null;
   const token = session?.accessToken;
-  const reauthenticationRequired = session?.error === "ReauthenticationRequired";
+  const recovery = useAuthRecovery();
+  const reauthenticationRequired = recovery === "reauthentication-required" || session?.error === "ReauthenticationRequired" || session?.error === "UserNotRegistered";
   const previousAccount = useRef<string | null | undefined>(undefined);
   const cursorRef = useRef(new LocationEventCursor());
 
@@ -42,9 +45,16 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       host,
       getToken: async (forceRefresh) => {
         const current = sessionRef.current;
-        const needsRefresh = forceRefresh || !current?.accessToken || !current.accessTokenExpires || current.accessTokenExpires <= Date.now() + 60_000;
+        if (forceRefresh && current?.accessToken) {
+          const recovered = await recoverAuthentication(current.accessToken);
+          if (recovered.status === "reauthentication-required") return undefined;
+          if (recovered.status !== "refreshed") throw new Error("Session recovery temporarily unavailable");
+          if (recovered.accessToken === current.accessToken) { await rejectAuthentication(current.accessToken); return undefined; }
+          return recovered.accessToken;
+        }
+        const needsRefresh = !current?.accessToken || !current.accessTokenExpires || current.accessTokenExpires <= Date.now() + 60_000;
         const latest = needsRefresh ? await updateRef.current({ refreshAccessToken: true }) : current;
-        if (latest?.error === "ReauthenticationRequired") return undefined;
+        if (latest?.error === "ReauthenticationRequired" || latest?.error === "UserNotRegistered") return undefined;
         if (latest?.error === "AccessTokenRefreshUnavailable" && !latest.accessToken) throw new Error("Session refresh temporarily unavailable");
         const latestAccount = latest?.userInfo?.email ?? latest?.user?.email;
         return latestAccount === account ? latest?.accessToken : undefined;
