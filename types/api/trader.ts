@@ -74,3 +74,12 @@ export interface TraderOffers {
   total: number;
   offers: TraderOffer[];
 }
+
+export interface TraderOffersPage {
+  game_mode: TraderMode;
+  season_id: string | null;
+  total: number;
+  page: number;
+  page_size: number;
+  offers: TraderOffer[];
+}

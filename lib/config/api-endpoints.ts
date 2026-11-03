@@ -1,5 +1,7 @@
 export const apiEndpoints = {
   homeMain: "/api/home/v3/main",
+  traderList: "/api/trader/v3/list",
+  traderOffers: "/api/trader/v3/offers",
   homeMenu: "/api/home/v3/menu-with-autocomplete",
   dashboardAnalysis: "/api/dashboard/v3/analysis",
   newsWipe: "/api/news/v3/wipe",
