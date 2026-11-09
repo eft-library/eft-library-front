@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 
-import { getHideoutDetail } from "@/features/hideout/api";
+import { getHideoutDetail } from "@/features/hideout/server-api";
 import { HideoutRoute } from "@/features/hideout/route";
 import { createPageMetadata, fallbackMetadata } from "@/lib/seo/metadata";
 

@@ -1,10 +1,14 @@
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { cacheLife } from "next/cache";
+
+import { apiGet } from "@/lib/api/api-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import type { WipeSeasonResponse } from "@/types/api/news";
 
-export function getWipeSeasons() {
-  return staticJsonGetWithFallback<WipeSeasonResponse[]>("news", "/static/news/v3/wipe.json", {
-    apiPath: apiEndpoints.newsWipe,
+export async function getWipeSeasons() {
+  "use cache";
+  cacheLife("days");
+
+  return apiGet<WipeSeasonResponse[]>(apiEndpoints.newsWipe, {
     revalidate: 60 * 60 * 24,
   });
 }

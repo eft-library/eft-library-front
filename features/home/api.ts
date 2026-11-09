@@ -1,5 +1,6 @@
+import { cacheLife } from "next/cache";
+
 import { apiGet } from "@/lib/api/api-client";
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
 import type {
   HomeMainResponse,
@@ -42,14 +43,12 @@ function isAvailableHomeRoute(url: string) {
 }
 
 export async function getHomeMain() {
-  const response = await staticJsonGetWithFallback<HomeMainResponse>(
-    "home",
-    "/static/home/v3/main.json",
-    {
-      apiPath: apiEndpoints.homeMain,
-      revalidate: 60 * 60 * 24,
-    },
-  );
+  "use cache";
+  cacheLife("hours");
+
+  const response = await apiGet<HomeMainResponse>(apiEndpoints.homeMain, {
+    revalidate: 60 * 60,
+  });
 
   return {
     ...response,
@@ -64,14 +63,12 @@ export async function getHomeMain() {
 }
 
 export async function getHomeMenu() {
-  const response = await staticJsonGetWithFallback<HomeMenuResponse>(
-    "home",
-    "/static/home/v3/menu-with-autocomplete.json",
-    {
-      apiPath: apiEndpoints.homeMenu,
-      revalidate: 60 * 60 * 24,
-    },
-  );
+  "use cache";
+  cacheLife("hours");
+
+  const response = await apiGet<HomeMenuResponse>(apiEndpoints.homeMenu, {
+    revalidate: 60 * 60,
+  });
 
   return {
     nav_list: withTraderMenu(response.nav_list).map((group) => ({

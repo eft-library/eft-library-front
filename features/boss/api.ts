@@ -1,10 +1,14 @@
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { cacheLife } from "next/cache";
+
+import { apiGet } from "@/lib/api/api-client";
 import { getBossDetailEndpoint } from "@/lib/config/api-endpoints";
 import type { BossDetailResponse } from "@/types/api/boss";
 
-export function getBossDetail(normalizedName: string) {
-  return staticJsonGetWithFallback<BossDetailResponse>("boss", `/static/boss/v3/details/${normalizedName}.json`, {
-    apiPath: getBossDetailEndpoint(normalizedName),
+export async function getBossDetail(normalizedName: string) {
+  "use cache";
+  cacheLife("days");
+
+  return apiGet<BossDetailResponse>(getBossDetailEndpoint(normalizedName), {
     revalidate: 60 * 60 * 24,
   });
 }

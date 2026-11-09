@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getHideoutStations } from "@/features/hideout/api";
+import { getHideoutStations } from "@/features/hideout/server-api";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({

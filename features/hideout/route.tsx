@@ -3,7 +3,7 @@ import {
   getHideoutAllItemRequirements,
   getHideoutDetail,
   getHideoutStations,
-} from "@/features/hideout/api";
+} from "@/features/hideout/server-api";
 import { HideoutPage } from "@/features/hideout/components/hideout-page";
 
 export async function HideoutRoute({
