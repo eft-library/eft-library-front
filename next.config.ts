@@ -2,14 +2,34 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return {
+      // Airflow creates new snapshot paths after `next start`. Read these at
+      // request time rather than using Next's startup list of public files.
+      beforeFiles: [
+        {
+          source: "/static/trader/v3/:path*",
+          destination: "/api/static/trader/v3/:path*",
+        },
+      ],
+    };
+  },
   async redirects() {
     return [
       { source: "/ammo", destination: "/item/ammo", permanent: true },
       { source: "/arm-band", destination: "/item/arm-band", permanent: true },
-      { source: "/armor-vest", destination: "/item/armor-vest", permanent: true },
+      {
+        source: "/armor-vest",
+        destination: "/item/armor-vest",
+        permanent: true,
+      },
       { source: "/backpack", destination: "/item/backpack", permanent: true },
       { source: "/container", destination: "/item/container", permanent: true },
-      { source: "/face-cover", destination: "/item/face-cover", permanent: true },
+      {
+        source: "/face-cover",
+        destination: "/item/face-cover",
+        permanent: true,
+      },
       { source: "/glasses", destination: "/item/glasses", permanent: true },
       { source: "/head-wear", destination: "/item/headwear", permanent: true },
       { source: "/headwear", destination: "/item/headwear", permanent: true },
@@ -17,7 +37,11 @@ const nextConfig: NextConfig = {
       { source: "/key", destination: "/item/key", permanent: true },
       { source: "/loot", destination: "/item/loot", permanent: true },
       { source: "/medical", destination: "/item/medical", permanent: true },
-      { source: "/provisions", destination: "/item/provisions", permanent: true },
+      {
+        source: "/provisions",
+        destination: "/item/provisions",
+        permanent: true,
+      },
       { source: "/rig", destination: "/item/rig", permanent: true },
       { source: "/weapon", destination: "/item/weapon", permanent: true },
     ];
