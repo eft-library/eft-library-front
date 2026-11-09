@@ -173,7 +173,8 @@ PORT=4000 pnpm start
 
 `pnpm start`는 `PORT`를 명시해서 실행합니다. 지도·채팅·데스크톱 연동 검증 도구는 `script/check-*.cjs`에 있으며, 브라우저 도구는 실행 중인 웹과 Playwright 등 개별 스크립트의 준비 조건을 확인해야 합니다. Playwright는 현재 프로젝트 의존성에 포함되어 있지 않습니다.
 
-[restart.sh](restart.sh)는 기존 운영 경로 `/home/frontend_a/eft-library-front`와 기본 포트 `4002`를 사용하고, `.next` 삭제·빌드·`public/version.txt` 생성·백그라운드 실행을 수행합니다. 실행 계정의 Node.js·pnpm 경로와 JSON 배치 경로를 먼저 확인합니다. 이 스크립트는 빌드 실패 시 자동 중단하도록 구성되어 있지 않으므로 빌드 성공 여부를 별도로 확인해야 합니다.
+[restart.sh](restart.sh)는 기존 운영 경로 `/home/frontend_a/eft-library-front`와 기본 포트 `4002`를 사용합니다(`APP_DIR`로 경로 변경 가능). 기존 `.next`를 임시 보관하고 이전 `cache`를 재사용합니다. 빌드가 성공하며 `BUILD_ID`가 생성된 경우에만 `public/version.txt` 갱신·백그라운드 실행을 수행합니다. 빌드 실패 시 이전 `.next`를 복원하고 같은 실패 코드로 종료하며 서버를 자동 시작하지 않습니다. `restart`는 빌드 전에 실행 중인 서버를 중지하므로 실패 시 서비스가 자동 복구되는 무중단 배포 방식은 아닙니다. 실행 계정의 Node.js·pnpm 경로와 JSON 배치 경로를 먼저 확인합니다.
+
 
 운영 HTTPS에서는 API와 소켓도 HTTPS·WSS로 연결하고, 프록시의 WebSocket Upgrade 전달을 확인합니다. 배포 후에는 공개 페이지와 `/llms.txt`, Google 로그인, 위치·파티·채팅 재접속을 확인합니다. 개인정보와 인증 토큰은 로그나 검증 결과에 남기지 않습니다.
 
