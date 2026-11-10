@@ -1,3 +1,4 @@
+import { validDefaultPreset } from "./default-preset";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import type {
   CandidatePage,
@@ -110,6 +111,13 @@ export async function getApiWeapons(signal: AbortSignal) {
     (page) => readApi<WeaponPage>(`weapons?page=${page}&page_size=100`, signal),
     (page) => page.weapons,
     (row) => row.item.id,
+    (page) => {
+      if (
+        !Array.isArray(page.weapons) ||
+        page.weapons.some((row) => !validDefaultPreset(row.default_preset))
+      )
+        throw new Error("Invalid default preset summary");
+    },
   );
   return { total: result.first.total, weapons: result.rows };
 }

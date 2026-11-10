@@ -1,4 +1,8 @@
 import type { ModdingManifest, WeaponList, WeaponSnapshot } from "./types";
+import {
+  defaultPresetFromReferences,
+  validDefaultPreset,
+} from "./default-preset";
 import { getApiItem, getApiPresets, getApiWeapons } from "./source-api";
 
 export interface WeaponData {
@@ -68,7 +72,11 @@ function validateList(list: WeaponList, manifest: ModdingManifest) {
     !Array.isArray(list.weapons) ||
     list.total !== list.weapons.length ||
     list.total !== manifest.total ||
-    list.weapons.some((row) => !manifest.weapons[row.item.id]) ||
+    list.weapons.some(
+      (row) =>
+        !manifest.weapons[row.item.id] ||
+        !validDefaultPreset(row.default_preset),
+    ) ||
     new Set(list.weapons.map((row) => row.item.id)).size !== list.total
   )
     throw new Error("Invalid static weapon list");
@@ -77,6 +85,7 @@ function validateList(list: WeaponList, manifest: ModdingManifest) {
 function validateSnapshot(snapshot: WeaponSnapshot, id: string) {
   if (
     snapshot.weapon.item.id !== id ||
+    !validDefaultPreset(snapshot.weapon.default_preset) ||
     snapshot.items[id]?.item.id !== id ||
     snapshot.validation_scope !== "slot_filters_only" ||
     snapshot.composition_type !== "flat_source_list" ||
@@ -193,6 +202,7 @@ export async function getWeapon(
         item: item.item,
         weapon_properties: item.weapon_properties,
         preset_count: presets.total,
+        default_preset: defaultPresetFromReferences(presets),
       },
       items: { [id]: item },
       slot_candidates: {},

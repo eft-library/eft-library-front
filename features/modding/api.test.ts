@@ -47,7 +47,12 @@ const properties = {
   is_semi_auto: null,
 };
 function weapon(id = rootId): WeaponSummary {
-  return { item: item(id), weapon_properties: properties, preset_count: 0 };
+  return {
+    item: item(id),
+    weapon_properties: properties,
+    preset_count: 0,
+    default_preset: null,
+  };
 }
 function detail(id = rootId): ItemDetail {
   return {
@@ -144,6 +149,38 @@ test("modding static-first and lazy V3 fallback", async (t) => {
           "static",
         );
         assert.ok(urls.every((url) => url.startsWith("/static/")));
+      },
+    );
+    await t.test(
+      "older static lists without default metadata fall back to the updated API",
+      async () => {
+        const { default_preset: _old, ...legacy } = weapon();
+        const updated = {
+          ...weapon(),
+          default_preset: {
+            id: "default",
+            name_en: "Complete",
+            name_ko: null,
+            name_ja: null,
+            image: "complete.webp",
+          },
+        };
+        let apiCalls = 0;
+        globalThis.fetch = async (input) => {
+          const url = String(input);
+          if (url.includes("index.json")) return ok(manifest());
+          if (url.startsWith("/static/"))
+            return ok({ total: 1, weapons: [legacy] });
+          apiCalls++;
+          return ok({ total: 1, page: 1, page_size: 100, weapons: [updated] });
+        };
+        const result = await getWeapons(signal());
+        assert.equal(result.source, "api");
+        assert.equal(
+          result.list.weapons[0].default_preset?.image,
+          "complete.webp",
+        );
+        assert.equal(apiCalls, 1);
       },
     );
     await t.test(

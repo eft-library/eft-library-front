@@ -7,7 +7,7 @@
 - The manifest request bypasses browser/CDN caches with `no-store` and a timestamp query, matching trader. Use manifest URLs rather than constructing snapshot paths.
 - Load the full weapon list and only the selected weapon snapshot. Keep that generation for the active workbench; do not silently replace a user's build during a background refresh. If a snapshot was cleaned up and returns 404, read a fresh manifest and retry once. If static data is missing, unreadable, malformed or incomplete after recovery, fall back to the documented V3 modding API. Valid empty results remain successful and do not cause extra fallback requests.
 - Candidate lists are server-generated slot-filter results, not whole-build validation. Mount state uses parent paths; replacing a parent clears descendants. Recursive expansion guards against cycles and excessive depth.
-- Presets display flat components and source completed stats separately. No automatic slot placement or final stat calculation is implemented. User build storage/sharing is a separate live API integration described below.
+- Presets retain flat source components and completed stats. Complete backend-provided inferred reconstruction candidates can be imported after explicit selection/confirmation; the frontend does not infer attachment positions or calculate final build stats. User build storage/sharing is a separate live API integration described below.
 - Theme tokens and responsive Tailwind styles cover the unified layout. Copy supports Korean, English and Japanese.
 
 ## User builds (contract implementation; live verification pending)
@@ -89,3 +89,26 @@ Publication regression tests: `pnpm dlx tsx@4.20.6 --test features/modding/build
 - Title fields use their native text undo. Modifiers are ignored during composition, key repeats, input/select/contenteditable focus, modal dialogs, API writes and non-editor views. A new attachment change clears the redo branch. No-op mounts and text changes do not add attachment history entries.
 - Save/publication metadata sync retains attachment history; undo after a save only changes local edits and does not undo a server publication. Loading a different workspace, reloading saved content, starting another weapon, copying, deleting or changing accounts clears history. Internal list/detail browser navigation retains it through the shared provider.
 - Regression tests in `builds/history.test.ts` cover subtree restoration, title/redo independence, reset/save sync, load boundaries, bounded history and shortcut guards. Native Edge checks verified mounting, Cmd+Z, Cmd+Shift+Z, the Undo button and native title undo in a separate unsaved test tab. No production data was written.
+
+
+## Game preset reconstruction import — 2026-11-11
+
+- Contract: `preset_reconstruction.md` and updated `weapon_modding_openapi.json`. `composition_type: flat_source_list` still describes the original component list; optional `reconstruction` is the separate inferred attachment tree. Legacy payloads without this field remain readable and have no import control. Unknown algorithm versions are not imported.
+- The game-preset panel supports a unique candidate, explicit radio selection between ambiguous candidates, and incomplete-search candidates without presenting them as unique. At the user’s request, inferred imports immediately replace current attachments without a confirmation dialog; Undo restores the previous configuration.
+- Only `can_import=true` complete candidates in supported states can be imported. Partial previews, unplaced components and localized issue explanations remain visible for incomplete/unavailable results; no ammunition is discarded or assigned a synthetic slot.
+- Before import, validate exact source-component/unit coverage, quantities, attributes, unique instance IDs, a single matching weapon root, valid connected parents, no cycles and one part per parent slot. Metadata comes from each source component. Backend tracking fields are not sent to user-build APIs.
+- Import is one local attachment-history step; Undo restores the previous configuration. Keep a non-empty current title and existing description; an empty title is initialized from the preset name. Import does not write to the server or publish automatically. Save and share remains the explicit persistence action.
+- Static uses the bundled reconstruction. API fallback loads preset detail and bounded/cached component-owner details for slot-label previews. No reconstruction is generated on the frontend.
+- Verification: all 34 offline tests passed. The local static checker validated all 401 presets: 308 unique, 71 ambiguous, 22 incomplete, 379 importable presets with 492 complete candidates and no legacy records. Counts are verification results, never UI constants. Native Edge confirmed M4A1 import produces 13 nodes and 12 mounted parts, then Cmd+Z restores the previous one-node state. No production writes were made.
+
+```sh
+pnpm dlx tsx@4.20.6 --test features/modding/api.test.ts features/modding/builds/*.test.ts
+pnpm dlx tsx@4.20.6 script/check-preset-reconstruction.ts
+```
+
+## Default preset preview and initialization — 2026-11-11
+
+- Weapon cards and My builds prefer the completed `default_preset.image`, with the original item image as fallback. The editor shows the bare item after removing all parts. These images identify the weapon; they are not composited previews of local edits.
+- A fresh weapon starts in its explicit default-reference preset. A supported unique inferred tree is applied immediately; ambiguous candidates require a choice, and incomplete trees remain previews. Saved workspaces, browser navigation and Remove all parts do not restart initialization. Import and removing all parts each remain undoable.
+- Static summaries require the new nullable default-preset metadata. Missing/older static falls back to V3 API, and API weapon details derive the default from `link.is_default_reference`. No first-preset heuristic is used for initialization.
+- Verification: 38 offline tests, TypeScript and production build passed. Static validation checked 172 weapons, 164 default references and all 401 reconstructions. The read-only live checker forced static 404s and loaded weapons, M4A1 default preset (13 nodes), slots and public builds from production API with no writes. New visual behavior was not browser-verified in this session because browser access was unavailable.

@@ -4,9 +4,9 @@ import type { Locale } from "@/i18n/config";
 import { BuildApiError } from "./api";
 
 export const buildButton =
-  "inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-medium hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-70";
+  "inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-base font-semibold hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-70";
 export const buildField =
-  "w-full rounded-lg border border-line bg-background px-3 py-2 text-sm outline-none placeholder:text-foreground dark:text-white focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:opacity-70";
+  "w-full rounded-lg border border-line bg-background px-3 py-2 text-base outline-none placeholder:text-foreground dark:text-white focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:opacity-70";
 export const buildPanel =
   "rounded-2xl border border-line bg-surface p-4 sm:p-5";
 export const buildText = (locale: Locale, ko: string, en: string, ja: string) =>

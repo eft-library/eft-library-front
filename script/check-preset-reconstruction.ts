@@ -3,11 +3,16 @@ import { readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 import path from "node:path";
 import {
+  defaultPresetFromReferences,
+  validDefaultPreset,
+} from "../features/modding/default-preset";
+import {
   reconstructedNodes,
   supportedReconstruction,
 } from "../features/modding/builds/preset-import";
 import type {
   ModdingManifest,
+  WeaponList,
   WeaponSnapshot,
 } from "../features/modding/types";
 async function main() {
@@ -18,6 +23,12 @@ async function main() {
     return JSON.parse(await readFile(target, "utf8")).data;
   }
   const manifest = await data<ModdingManifest>("/static/modding/v3/index.json");
+  const list = await data<WeaponList>(manifest.weapons_list);
+  const weapons = new Map(
+    list.weapons.map((weapon) => [weapon.item.id, weapon]),
+  );
+  assert.equal(list.weapons.length, manifest.total);
+  let defaults = 0;
   const seen = new Set<string>();
   const counts: Record<string, number> = {};
   let imported = 0,
@@ -25,6 +36,16 @@ async function main() {
     legacy = 0;
   for (const file of Object.values(manifest.weapons)) {
     const bundle = await data<WeaponSnapshot>(file);
+    assert.ok(validDefaultPreset(bundle.weapon.default_preset));
+    assert.deepEqual(
+      bundle.weapon.default_preset,
+      weapons.get(bundle.weapon.item.id)?.default_preset,
+    );
+    assert.deepEqual(
+      bundle.weapon.default_preset,
+      defaultPresetFromReferences(bundle.preset_references),
+    );
+    if (bundle.weapon.default_preset) defaults++;
     for (const [id, detail] of Object.entries(bundle.presets)) {
       if (seen.has(id)) continue;
       seen.add(id);
@@ -49,6 +70,8 @@ async function main() {
   console.log(
     JSON.stringify(
       {
+        weapons: weapons.size,
+        defaults,
         presets: seen.size,
         importable: imported,
         candidates,

@@ -1,5 +1,8 @@
 /** Read-only live V3 contract smoke check; never creates or changes server data. */
 import assert from "node:assert/strict";
+import { importPresetContent } from "../features/modding/builds/preset-import";
+import { initialPresetAction } from "../features/modding/default-preset";
+import { newContent } from "../features/modding/builds/tree";
 import { getWeapon, getWeapons } from "../features/modding/api";
 import {
   getApiCandidates,
@@ -50,6 +53,12 @@ async function main() {
         controller.signal,
       );
       assert.equal(loaded.source, "api");
+      assert.equal(
+        loaded.snapshot.weapon.default_preset?.id,
+        weapon.default_preset?.id,
+      );
+      if (weapon.item.id === "5447a9cd4bdc2dbd208b4567")
+        assert.ok(weapon.default_preset?.image);
       const root = loaded.snapshot.items[weapon.item.id];
       let testedSlots = 0;
       if (root.slots[0]) {
@@ -89,6 +98,19 @@ async function main() {
         const detail = await getApiPreset(preset.item.id, controller.signal);
         assert.equal(detail.composition_type, "flat_source_list");
         componentCount = detail.components.length;
+        if (weapon.item.id === "5447a9cd4bdc2dbd208b4567") {
+          assert.equal(initialPresetAction(detail), "confirm");
+          const imported = importPresetContent(
+            detail,
+            0,
+            newContent(weapon),
+            "en",
+          );
+          assert.equal(
+            imported.nodes.length,
+            detail.reconstruction!.candidate_trees[0].nodes.length,
+          );
+        }
       }
       const publicLatest = await buildsApi.list(
         new URLSearchParams({ sort: "latest", page_size: "20" }),
@@ -146,6 +168,7 @@ async function main() {
             weaponId: weapon.item.id,
             testedSlots,
             presets: refs.total,
+            defaultPreset: weapon.default_preset?.id ?? null,
             componentCount,
             publicBuilds: publicLatest.total,
             publicDetailTested: !!published,

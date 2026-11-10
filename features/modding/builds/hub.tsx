@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Box } from "lucide-react";
+import { weaponPreviewImage } from "../default-preset";
 import { getWeapons } from "../api";
 import type { ItemSummary } from "../types";
 import type { OwnBuildSummary } from "./types";
@@ -188,18 +189,20 @@ export function BuildsHub() {
       )}
       {mine ? (
         <div className="space-y-2">
-          {own.data?.builds.map((build) => (
-            <OwnBuildCard
-              key={build.id}
-              build={build}
-              weapon={
-                weapons.data?.list.weapons.find(
-                  (row) => row.item.id === build.weapon_item_id,
-                )?.item
-              }
-              sourceReady={weapons.isFetched}
-            />
-          ))}
+          {own.data?.builds.map((build) => {
+            const weapon = weapons.data?.list.weapons.find(
+              (row) => row.item.id === build.weapon_item_id,
+            );
+            return (
+              <OwnBuildCard
+                key={build.id}
+                build={build}
+                weapon={weapon?.item}
+                previewImage={weapon ? weaponPreviewImage(weapon) : undefined}
+                sourceReady={weapons.isFetched}
+              />
+            );
+          })}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -275,10 +278,12 @@ function OwnBuildCard({
   build,
   weapon,
   sourceReady,
+  previewImage,
 }: {
   build: OwnBuildSummary;
   weapon?: ItemSummary;
   sourceReady: boolean;
+  previewImage?: string | null;
 }) {
   const b = useBuilds();
   const current =
@@ -312,10 +317,10 @@ function OwnBuildCard({
       className="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left hover:border-accent/50 hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-70 sm:gap-4 sm:p-4"
     >
       <div className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg bg-surface-elevated/60 p-2 sm:w-36">
-        {root?.image ? (
+        {previewImage || root?.image ? (
           <Image
             unoptimized
-            src={root.image}
+            src={(previewImage ?? root?.image)!}
             alt=""
             width={160}
             height={80}

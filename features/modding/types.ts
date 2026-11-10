@@ -239,7 +239,16 @@ export type WeaponProperties = {
   is_semi_auto: boolean | null;
 };
 
+export type DefaultPresetSummary = {
+  id: string;
+  name_en: string | null;
+  name_ko: string | null;
+  name_ja: string | null;
+  image: string | null;
+};
+
 export type WeaponSummary = {
+  default_preset: DefaultPresetSummary | null;
   item: ItemSummary;
   weapon_properties: WeaponProperties;
   preset_count: number;

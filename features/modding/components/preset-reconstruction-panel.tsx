@@ -89,7 +89,7 @@ export function PresetReconstructionPanel({
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h4 className="text-sm font-semibold text-foreground dark:text-white">
+        <h4 className="text-base font-semibold text-foreground dark:text-white">
           {supported
             ? statuses[r.status]
             : b.t(
@@ -119,59 +119,79 @@ export function PresetReconstructionPanel({
       {supported && (
         <>
           {!!r.candidate_trees.length && (
-            <fieldset
-              disabled={b.pending || loading}
-              className="mt-4 space-y-3"
-            >
-              <legend className="sr-only">
-                {b.t("배치 후보 선택", "Choose a layout", "配置候補を選択")}
-              </legend>
-              {r.candidate_trees.map((tree, index) => (
-                <div
-                  key={index}
-                  className={`rounded-lg border p-3 ${selected === index ? "border-accent/60 bg-surface" : "border-line bg-surface/60"}`}
-                >
-                  <label className="flex cursor-pointer items-center gap-2 text-sm font-medium">
-                    <input
-                      type="radio"
-                      name={`reconstruction-${detail.preset.item.id}`}
-                      value={index}
-                      checked={selected === index}
-                      disabled={!valid[index] || b.pending || loading}
-                      onChange={() => setSelected(index)}
-                    />
-                    {b.t("배치 후보", "Layout", "配置候補")} {index + 1}
-                    <span className="text-xs font-normal">
-                      · {tree.nodes.length} {b.t("개 파츠", "parts", "パーツ")}
-                    </span>
-                  </label>
-                  {!valid[index] ? (
-                    <p className="mt-2 text-xs text-red-700 dark:text-red-300">
-                      {b.t(
-                        "완전한 구성으로 확인할 수 없어 불러올 수 없습니다.",
-                        "This candidate could not be verified as complete.",
-                        "完全な構成として確認できないため読み込めません。",
-                      )}
-                    </p>
-                  ) : (
-                    <details className="mt-2" open={selected === index}>
-                      <summary className="cursor-pointer text-xs text-foreground dark:text-white">
+            <div className="mt-4 grid items-start gap-4 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,1.2fr)]">
+              <fieldset
+                disabled={b.pending || loading}
+                className="max-h-96 space-y-3 overflow-y-auto p-1"
+              >
+                <legend className="sr-only">
+                  {b.t("배치 후보 선택", "Choose a layout", "配置候補を選択")}
+                </legend>
+                {r.candidate_trees.map((tree, index) => (
+                  <div
+                    key={index}
+                    className={`rounded-lg border p-3 ${selected === index ? "border-accent/60 bg-surface" : "border-line bg-surface/60"}`}
+                  >
+                    <label className="flex cursor-pointer items-center gap-2 text-base font-medium">
+                      <input
+                        type="radio"
+                        name={`reconstruction-${detail.preset.item.id}`}
+                        value={index}
+                        checked={selected === index}
+                        disabled={!valid[index] || b.pending || loading}
+                        onChange={() => setSelected(index)}
+                      />
+                      {b.t("배치 후보", "Layout", "配置候補")} {index + 1}
+                      <span className="text-sm font-normal">
+                        · {tree.nodes.length}{" "}
+                        {b.t("개 파츠", "parts", "パーツ")}
+                      </span>
+                    </label>
+                    {!valid[index] ? (
+                      <p className="mt-2 text-sm text-red-700 dark:text-red-300">
                         {b.t(
-                          "장착 위치 미리보기",
-                          "Preview attachments",
-                          "装着位置のプレビュー",
+                          "완전한 구성으로 확인할 수 없어 불러올 수 없습니다.",
+                          "This candidate could not be verified as complete.",
+                          "完全な構成として確認できないため読み込めません。",
                         )}
-                      </summary>
-                      <TreePreview detail={detail} tree={tree} items={items} />
-                    </details>
-                  )}
-                </div>
-              ))}
-            </fieldset>
+                      </p>
+                    ) : null}
+                  </div>
+                ))}
+              </fieldset>
+              <div className="min-w-0 rounded-lg border border-line bg-surface p-4">
+                {selected !== null && valid[selected] ? (
+                  <>
+                    <h5 className="mb-3 text-base font-semibold">
+                      {b.t(
+                        "장착 위치 미리보기",
+                        "Preview attachments",
+                        "装着位置のプレビュー",
+                      )}
+                    </h5>
+                    <div className="max-h-96 overflow-auto" tabIndex={0}>
+                      <TreePreview
+                        detail={detail}
+                        tree={r.candidate_trees[selected]}
+                        items={items}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <p className="py-8 text-sm text-foreground dark:text-white">
+                    {b.t(
+                      "배치 후보를 선택하면 미리보기가 표시됩니다.",
+                      "Choose a layout to preview its attachments.",
+                      "配置候補を選択するとプレビューが表示されます。",
+                    )}
+                  </p>
+                )}
+              </div>
+            </div>
           )}
           {r.partial_tree && !r.can_import && (
             <details className="mt-4">
-              <summary className="cursor-pointer text-sm font-medium">
+              <summary className="cursor-pointer text-base font-medium">
                 {b.t(
                   "부분 구성 미리보기",
                   "Partial layout preview",
@@ -187,14 +207,14 @@ export function PresetReconstructionPanel({
           )}
           {!!r.unplaced_components.length && (
             <div className="mt-4">
-              <h5 className="text-xs font-semibold">
+              <h5 className="text-sm font-semibold">
                 {b.t(
                   "배치되지 않은 구성품",
                   "Unplaced components",
                   "未配置の構成品",
                 )}
               </h5>
-              <ul className="mt-2 space-y-1 text-xs">
+              <ul className="mt-2 space-y-1 text-sm">
                 {r.unplaced_components.map((part, index) => {
                   const original = detail.components.find(
                     (component) =>
@@ -218,14 +238,14 @@ export function PresetReconstructionPanel({
           )}
           {!!r.issues.length && (
             <details className="mt-3">
-              <summary className="cursor-pointer text-xs font-medium">
+              <summary className="cursor-pointer text-sm font-medium">
                 {b.t(
                   "재조립 결과 안내",
                   "Reconstruction notes",
                   "再構成について",
                 )}
               </summary>
-              <ul className="mt-2 space-y-1 text-xs text-foreground dark:text-white">
+              <ul className="mt-2 space-y-1 text-sm text-foreground dark:text-white">
                 {[...new Set(r.issues.map((issue) => issue.code))].map(
                   (code) => (
                     <li key={code}>{issueText(code, b.t)}</li>
@@ -286,7 +306,7 @@ function TreePreview({
           <li
             key={node.node_id}
             style={{ marginInlineStart: Math.min(depth, 6) * 12 }}
-            className="border-l-2 border-line pl-3 text-xs leading-5"
+            className="border-l-2 border-line pl-3 text-sm leading-5"
           >
             <p className="font-medium">
               {component

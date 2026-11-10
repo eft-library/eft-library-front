@@ -74,6 +74,7 @@ function useBuildState(
   const alive = useRef(true);
   const [message, setMessage] = useState("");
   const [publicationFailed, setPublicationFailed] = useState(false);
+  const [initialPresetPending, setInitialPresetPending] = useState(false);
   const confirmation = useRef<((value: boolean) => void) | null>(null);
   const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
   const intents = useRef(new Map<string, string>());
@@ -150,6 +151,7 @@ function useBuildState(
     }
   }
   function accept(next: Workspace, preserveHistory = false) {
+    setInitialPresetPending(false);
     setPublicationFailed(false);
     setWorkspace(next);
     dispatchHistory({
@@ -178,6 +180,7 @@ function useBuildState(
   async function start(weapon: WeaponSummary) {
     if (busy.current || !(await mayReplace())) return false;
     const next = newContent(weapon);
+    setInitialPresetPending(!!weapon.default_preset);
     setWorkspace(null);
     setPublicationFailed(false);
     setContent(next);
@@ -324,6 +327,7 @@ function useBuildState(
   }
   function edit(next: StoredContent) {
     if (!busy.current) {
+      if (next.nodes !== content?.nodes) setInitialPresetPending(false);
       dispatchHistory({ type: "edit", content: next });
       setMessage("");
     }
@@ -361,16 +365,6 @@ function useBuildState(
       setError(error);
       return false;
     }
-    if (
-      !(await confirm(
-        t(
-          "실제 원본 배치가 아닌 추정 구성입니다. 현재 장착 구성을 이 후보로 교체할까요? 되돌리기로 복구할 수 있습니다.",
-          "This is an inferred layout, not the original source tree. Replace your current attachments with this candidate? Undo can restore them.",
-          "元の配置ではなく推定構成です。この候補で現在の装着構成を置き換えますか？元に戻す操作で復元できます。",
-        ),
-      ))
-    )
-      return false;
     if (!alive.current || busy.current) return false;
     edit(next);
     setError(null);
@@ -431,6 +425,8 @@ function useBuildState(
     pending,
     message,
     publicationFailed,
+    initialPresetPending,
+    finishInitialPreset: () => setInitialPresetPending(false),
     start,
     open,
     save,

@@ -22,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import { initialPresetAction, weaponPreviewImage } from "../default-preset";
 import { getWeapon, getWeapons } from "../api";
 import { PresetReconstructionPanel } from "./preset-reconstruction-panel";
 import { useWorkbenchData } from "../use-workbench-data";
@@ -40,7 +41,7 @@ import type {
 
 const panel = "rounded-2xl border border-line bg-surface";
 const action =
-  "inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-medium hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-70";
+  "inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-base font-medium hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-70";
 const number = (value: number | null | undefined) =>
   value == null
     ? "—"
@@ -50,14 +51,25 @@ function ItemImage({
   item,
   large = false,
   card = false,
+  image,
 }: {
   item: ItemSummary;
   large?: boolean;
   card?: boolean;
+  image?: string | null;
 }) {
-  return item.image ? (
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+  const src = [image, item.image].find(
+    (url) => !!url && !failedImages.includes(url),
+  );
+  return src ? (
     <Image
-      src={item.image}
+      src={src}
+      onError={() =>
+        setFailedImages((previous) =>
+          previous.includes(src) ? previous : [...previous, src],
+        )
+      }
       alt=""
       width={large || card ? 520 : 100}
       height={large || card ? 240 : 70}
@@ -106,7 +118,7 @@ function SearchField({
           if (event.key === "Escape") onChange("");
         }}
         placeholder={placeholder}
-        className="h-10 w-full rounded-lg border border-line bg-background pl-9 pr-10 text-sm outline-none placeholder:text-foreground dark:text-white focus:border-accent focus:ring-2 focus:ring-accent/20"
+        className="h-11 w-full rounded-lg border border-line bg-background pl-9 pr-10 text-base outline-none placeholder:text-foreground dark:text-white focus:border-accent focus:ring-2 focus:ring-accent/20"
       />
       {value && (
         <button
@@ -132,7 +144,7 @@ function Notice({
   return (
     <div
       role={error ? "alert" : "status"}
-      className={`${panel} flex min-h-48 flex-col items-center justify-center gap-4 p-8 text-center text-sm text-foreground dark:text-white`}
+      className={`${panel} flex min-h-48 flex-col items-center justify-center gap-4 p-8 text-center text-base text-foreground dark:text-white`}
     >
       {!error && <LoaderCircle className="h-6 w-6 animate-spin text-accent" />}
       {error ? copy.error : copy.loading}
@@ -155,13 +167,13 @@ function Stat({
 }) {
   return (
     <div className="min-w-0 p-3">
-      <dt className="truncate text-xs text-foreground dark:text-white">
+      <dt className="truncate text-sm text-foreground dark:text-white">
         {label}
       </dt>
-      <dd className="mt-1 font-mono text-lg font-semibold tabular-nums">
+      <dd className="mt-1 font-mono text-xl font-semibold tabular-nums">
         {number(value)}
         {value != null && unit && (
-          <span className="ml-1 text-xs font-normal text-foreground dark:text-white">
+          <span className="ml-1 text-sm font-normal text-foreground dark:text-white">
             {unit}
           </span>
         )}
@@ -219,7 +231,7 @@ export function ModdingPage({
     <main className="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 lg:py-12">
       <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 flex items-center gap-2 text-xs font-bold tracking-[0.18em] text-accent">
+          <p className="mb-2 flex items-center gap-2 text-sm font-bold tracking-[0.18em] text-accent">
             <Crosshair className="h-4 w-4" /> ARMORY / WEAPON MODDING
           </p>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -261,7 +273,7 @@ export function ModdingPage({
                 />
               )
             ) : (
-              <p className="rounded-xl border border-line bg-surface p-5 text-sm text-foreground dark:text-white">
+              <p className="rounded-xl border border-line bg-surface p-5 text-base text-foreground dark:text-white">
                 {builds.t(
                   "현재 정적 데이터에 총기가 없습니다. 저장본의 구성은 위 목록에 보존되어 있습니다.",
                   "This weapon is absent from current static data. Your saved contents are preserved above.",
@@ -274,10 +286,10 @@ export function ModdingPage({
               <div
                 className={`${panel} mb-6 flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between`}
               >
-                <div className="flex items-center gap-2 text-sm font-semibold">
+                <div className="flex items-center gap-2 text-base font-semibold">
                   <Layers className="h-4 w-4 text-accent" />
                   {copy.weapons}
-                  <span className="rounded-md bg-surface-elevated px-2 py-1 font-mono text-xs">
+                  <span className="rounded-md bg-surface-elevated px-2 py-1 font-mono text-sm">
                     {filtered.length}
                   </span>
                 </div>
@@ -301,8 +313,12 @@ export function ModdingPage({
                     className={`${panel} group overflow-hidden text-left transition hover:-translate-y-1 hover:border-accent/60 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
                   >
                     <div className="relative flex h-52 items-center justify-center bg-surface-elevated/60 px-5 pb-5 pt-9 sm:h-56">
-                      <ItemImage item={weapon.item} card />
-                      <span className="absolute left-3 top-3 font-mono text-[10px] tracking-widest text-foreground dark:text-white">
+                      <ItemImage
+                        item={weapon.item}
+                        image={weaponPreviewImage(weapon)}
+                        card
+                      />
+                      <span className="absolute left-3 top-3 font-mono text-sm font-bold tracking-widest text-foreground dark:text-white">
                         {weapon.weapon_properties.caliber?.replace(
                           /^Caliber/,
                           "",
@@ -311,10 +327,10 @@ export function ModdingPage({
                       <ArrowRight className="absolute bottom-3 right-3 h-4 w-4 text-foreground dark:text-white group-hover:text-accent" />
                     </div>
                     <div className="p-4">
-                      <h2 className="min-h-10 text-sm font-semibold leading-5">
+                      <h2 className="min-h-10 text-base font-semibold leading-5">
                         {itemName(weapon.item, locale)}
                       </h2>
-                      <div className="mt-4 flex justify-between border-t border-line pt-3 text-xs text-foreground dark:text-white">
+                      <div className="mt-4 flex justify-between border-t border-line pt-3 text-sm text-foreground dark:text-white">
                         <span>
                           {copy.presets}{" "}
                           <b className="text-foreground">
@@ -330,7 +346,7 @@ export function ModdingPage({
                 ))}
               </div>
               {!filtered.length && (
-                <p className="py-16 text-center text-sm text-foreground dark:text-white">
+                <p className="py-16 text-center text-base text-foreground dark:text-white">
                   {copy.noResults}
                 </p>
               )}
@@ -422,7 +438,10 @@ function Workbench({
   );
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [word, setWord] = useState("");
-  const [tab, setTab] = useState<"build" | "presets">("build");
+  const [tab, setTab] = useState<"build" | "presets">(() =>
+    builds.initialPresetPending ? "presets" : "build",
+  );
+  const initialPresetHandled = useRef(false);
   const [presetId, setPresetId] = useState(
     () =>
       baseSnapshot.preset_references.presets.find(
@@ -483,6 +502,26 @@ function Workbench({
   const weapon = snapshot.weapon;
   const stats = weapon.weapon_properties;
   const preset = snapshot.presets[presetId];
+  useEffect(() => {
+    if (!builds.initialPresetPending || initialPresetHandled.current || !preset)
+      return;
+    initialPresetHandled.current = true;
+    builds.finishInitialPreset();
+    const action = initialPresetAction(preset);
+    if (action === "confirm") {
+      void builds.importPreset(preset, 0).then(() => {
+        setTab("build");
+        setActiveKey(null);
+      });
+    }
+    // Ambiguous or incomplete defaults stay in the preset panel for explicit
+    // selection/inspection. No first-candidate or partial import is automatic.
+  }, [
+    preset,
+    builds.initialPresetPending,
+    builds.finishInitialPreset,
+    builds.importPreset,
+  ]);
   function selectSlot(key: string) {
     setActiveKey(key);
     setWord("");
@@ -504,7 +543,7 @@ function Workbench({
       {data.itemsLoading && (
         <p
           role="status"
-          className="mb-3 text-sm text-foreground dark:text-white"
+          className="mb-3 text-base text-foreground dark:text-white"
         >
           {copy.loading}
         </p>
@@ -515,10 +554,10 @@ function Workbench({
             <Settings2 className="h-5 w-5" />
           </span>
           <div>
-            <h2 className="text-lg font-bold">
+            <h2 className="text-xl font-bold">
               {itemName(weapon.item, locale)}
             </h2>
-            <p className="mt-1 font-mono text-xs text-foreground dark:text-white">
+            <p className="mt-1 font-mono text-sm text-foreground dark:text-white">
               {stats.caliber?.replace(/^Caliber/, "")} ·{" "}
               {number(stats.fire_rate)} RPM
             </p>
@@ -557,31 +596,49 @@ function Workbench({
             <Redo2 className="h-4 w-4" />
             {builds.t("다시 실행", "Redo", "やり直す")}
           </button>
-          {(
-            [
-              ["build", copy.workbench],
-              ["presets", copy.presets],
-            ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              aria-pressed={tab === id}
-              onClick={() => setTab(id)}
-              className={`${action} ${tab === id ? "border-accent/50 bg-accent/10 text-orange-700 dark:text-orange-300" : ""}`}
-            >
-              {label}
-            </button>
-          ))}
+          <div className="inline-flex gap-1 rounded-xl border border-line bg-surface-elevated p-1">
+            {(
+              [
+                ["build", copy.workbench],
+                ["presets", copy.presets],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                aria-pressed={tab === id}
+                onClick={() => {
+                  if (id === "build") builds.finishInitialPreset();
+                  setTab(id);
+                }}
+                className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-base font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${tab === id ? "bg-orange-600 text-white shadow-sm hover:bg-orange-700 dark:bg-orange-500 dark:text-black dark:hover:bg-orange-400" : "text-foreground hover:bg-surface dark:text-white"}`}
+              >
+                {id === "presets" ? (
+                  <Layers aria-hidden className="h-4 w-4" />
+                ) : (
+                  <Settings2 aria-hidden className="h-4 w-4" />
+                )}
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       <div className="grid items-start gap-5 xl:grid-cols-[300px_minmax(0,1fr)]">
         <aside className="space-y-4">
           <section className={`${panel} overflow-hidden`}>
             <div className="bg-surface-elevated/50 px-5 py-7">
-              <ItemImage item={weapon.item} large />
+              <ItemImage
+                item={weapon.item}
+                image={
+                  Object.keys(selections).length
+                    ? weaponPreviewImage(weapon)
+                    : undefined
+                }
+                large
+              />
             </div>
             <div className="px-4 pt-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground dark:text-white">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground dark:text-white">
                 {copy.base}
               </h3>
             </div>
@@ -595,8 +652,8 @@ function Workbench({
           {tab === "build" && (
             <section className={`${panel} p-4`}>
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">{copy.assembly}</h3>
-                <span className="font-mono text-xs text-accent">
+                <h3 className="text-base font-semibold">{copy.assembly}</h3>
+                <span className="font-mono text-sm text-accent">
                   {Object.keys(selections).length}
                 </span>
               </div>
@@ -605,7 +662,7 @@ function Workbench({
                 .map((slot) => (
                   <div
                     key={slot.key}
-                    className="flex items-center gap-2 border-t border-line py-2 text-xs"
+                    className="flex items-center gap-2 border-t border-line py-3 text-sm"
                   >
                     <Check className="h-3 w-3 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     <span className="min-w-0 flex-1">
@@ -641,21 +698,21 @@ function Workbench({
           <div className="min-w-0 space-y-5">
             <section className={`${panel} p-4 sm:p-5`}>
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="flex items-center gap-2 text-sm font-semibold">
+                <h3 className="flex items-center gap-2 text-base font-semibold">
                   <Layers className="h-4 w-4 text-accent" />
                   {copy.slots}
                 </h3>
-                <span className="font-mono text-xs text-foreground dark:text-white">
+                <span className="font-mono text-sm text-foreground dark:text-white">
                   {slots.length} {copy.count}
                 </span>
               </div>
-              <div className="grid gap-2 sm:grid-cols-2 2xl:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-2 min-[1800px]:grid-cols-3">
                 {slots.map((entry) => (
                   <div key={entry.key} className="min-w-0">
                     <button
                       onClick={() => selectSlot(entry.key)}
                       aria-pressed={activeKey === entry.key}
-                      className={`flex min-h-24 w-full items-center gap-3 rounded-xl border p-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${activeKey === entry.key ? "border-accent bg-accent/10 ring-1 ring-accent/20" : "border-line bg-background/60 hover:border-accent/50 hover:bg-surface-elevated"}`}
+                      className={`flex min-h-28 w-full items-center gap-3 rounded-xl border p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${activeKey === entry.key ? "border-accent bg-accent/10 ring-1 ring-accent/20" : "border-line bg-background/60 hover:border-accent/50 hover:bg-surface-elevated"}`}
                     >
                       {entry.selected ? (
                         <ItemImage item={entry.selected} />
@@ -665,7 +722,7 @@ function Workbench({
                         </span>
                       )}
                       <span className="min-w-0 flex-1">
-                        <span className="mb-1 flex flex-wrap items-center gap-1 text-[10px] text-foreground dark:text-white">
+                        <span className="mb-1 flex flex-wrap items-center gap-1 text-xs text-foreground dark:text-white">
                           {entry.depth > 0 && (
                             <span className="font-mono text-accent">
                               ↳{entry.depth}
@@ -679,13 +736,13 @@ function Workbench({
                           )}
                         </span>
                         <span
-                          className={`line-clamp-2 text-xs font-medium ${entry.selected ? "text-foreground" : "text-foreground dark:text-white"}`}
+                          className={`line-clamp-2 text-base font-semibold ${entry.selected ? "text-foreground" : "text-foreground dark:text-white"}`}
                         >
                           {entry.selected
                             ? itemName(entry.selected, locale)
                             : copy.emptySlot}
                         </span>
-                        <span className="mt-1 block font-mono text-[10px] text-foreground dark:text-white">
+                        <span className="mt-1 block font-mono text-xs text-foreground dark:text-white">
                           {snapshot.slot_candidates[entry.slot.item_id]?.[
                             entry.slot.slot_id
                           ]?.total ?? (source === "api" ? "—" : 0)}{" "}
@@ -695,7 +752,7 @@ function Workbench({
                       <ChevronRight className="h-3.5 w-3.5 shrink-0 text-foreground dark:text-white" />
                     </button>
                     {entry.blocked && (
-                      <p className="p-2 text-[11px] text-amber-800 dark:text-amber-300">
+                      <p className="p-2 text-sm text-amber-800 dark:text-amber-300">
                         {copy.depth}
                       </p>
                     )}
@@ -703,7 +760,7 @@ function Workbench({
                 ))}
               </div>
               {!slots.length && (
-                <p className="py-8 text-center text-sm text-foreground dark:text-white">
+                <p className="py-8 text-center text-base text-foreground dark:text-white">
                   {copy.noSlots}
                 </p>
               )}
@@ -714,15 +771,15 @@ function Workbench({
             >
               <div className="border-b border-line p-4 sm:p-5">
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-sm font-semibold">
+                  <h3 className="text-base font-semibold">
                     {active ? itemName(active.slot, locale) : copy.parts}
-                    <span className="ml-2 font-mono text-xs font-normal text-accent">
+                    <span className="ml-2 font-mono text-sm font-normal text-accent">
                       {active ? filtered.length : ""}
                     </span>
                   </h3>
                   {active?.selected && (
                     <button
-                      className={`${action} text-xs`}
+                      className={`${action} text-sm`}
                       disabled={builds.pending}
                       onClick={() => equip()}
                     >
@@ -754,7 +811,7 @@ function Workbench({
                       setSort(event.target.value);
                       setLimit(40);
                     }}
-                    className="rounded-lg border border-line bg-background px-3 py-2 text-xs outline-none focus:border-accent"
+                    className="rounded-lg border border-line bg-background px-3 py-3 text-sm outline-none focus:border-accent"
                   >
                     <option value="name">
                       {builds.t("이름순", "Name", "名前順")}
@@ -777,7 +834,7 @@ function Workbench({
                 </div>
               </div>
               {!active ? (
-                <div className="flex min-h-56 flex-col items-center justify-center gap-3 p-6 text-center text-sm text-foreground dark:text-white">
+                <div className="flex min-h-56 flex-col items-center justify-center gap-3 p-6 text-center text-base text-foreground dark:text-white">
                   <Crosshair className="h-8 w-8 text-accent/50" />
                   {copy.pickSlot}
                 </div>
@@ -786,13 +843,13 @@ function Workbench({
               ) : data.candidatesLoading ? (
                 <Notice copy={copy} />
               ) : !filtered.length ? (
-                <p className="py-16 text-center text-sm text-foreground dark:text-white">
+                <p className="py-16 text-center text-base text-foreground dark:text-white">
                   {copy.noResults}
                 </p>
               ) : (
                 <>
                   <div className="overflow-x-auto">
-                    <table className="w-full min-w-[570px] text-left text-xs">
+                    <table className="w-full min-w-[570px] text-left text-sm">
                       <thead className="bg-surface-elevated/60 text-foreground dark:text-white">
                         <tr>
                           <th className="px-4 py-3 font-medium">{copy.name}</th>
@@ -827,7 +884,7 @@ function Workbench({
                                     <p className="font-medium leading-5">
                                       {itemName(item, locale)}
                                     </p>
-                                    <p className="mt-1 text-[10px] text-foreground dark:text-white">
+                                    <p className="mt-1 text-xs text-foreground dark:text-white">
                                       {item.slot_count} {copy.slots} ·{" "}
                                       {item.width ?? "—"}×{item.height ?? "—"}
                                     </p>
@@ -885,7 +942,7 @@ function Workbench({
         ) : (
           <section className={`${panel} min-w-0 p-4 sm:p-6`}>
             <div className="mb-5">
-              <h3 className="mb-3 text-sm font-semibold">
+              <h3 className="mb-3 text-base font-semibold">
                 {copy.presets}{" "}
                 <span className="ml-2 text-accent">
                   {snapshot.preset_references.total}
@@ -896,9 +953,13 @@ function Workbench({
               </label>
               <select
                 id="modding-preset"
-                className="w-full rounded-lg border border-line bg-background px-3 py-3 text-sm outline-none focus:border-accent"
+                className="w-full rounded-lg border border-line bg-background px-3 py-3 text-base outline-none focus:border-accent"
                 value={presetId}
-                onChange={(event) => setPresetId(event.target.value)}
+                onChange={(event) => {
+                  builds.finishInitialPreset();
+                  initialPresetHandled.current = true;
+                  setPresetId(event.target.value);
+                }}
               >
                 {snapshot.preset_references.presets.map((p) => (
                   <option key={p.item.id} value={p.item.id}>
@@ -918,7 +979,7 @@ function Workbench({
               <>
                 <div className="rounded-xl border border-line bg-surface-elevated/40 p-5">
                   <ItemImage item={preset.preset.item} large />
-                  <h4 className="mt-4 text-center text-lg font-semibold">
+                  <h4 className="mt-4 text-center text-xl font-semibold">
                     {itemName(preset.preset.item, locale)}
                   </h4>
                   <dl className="mt-4 grid grid-cols-2 divide-x divide-line sm:grid-cols-4">
@@ -945,7 +1006,7 @@ function Workbench({
                     setWord("");
                   }}
                 />
-                <h4 className="mb-3 text-sm font-semibold">
+                <h4 className="mb-3 text-base font-semibold">
                   {copy.components}{" "}
                   <span className="ml-2 text-accent">
                     {preset.components.length}
@@ -958,12 +1019,12 @@ function Workbench({
                       className="flex items-center gap-3 rounded-xl border border-line p-3"
                     >
                       <ItemImage item={component.item} />
-                      <p className="min-w-0 flex-1 text-xs leading-5">
+                      <p className="min-w-0 flex-1 text-sm leading-5">
                         {itemName(component.item, locale)}
                       </p>
                       <span
                         aria-label={`${copy.quantity} ${component.quantity}`}
-                        className="font-mono text-xs text-accent"
+                        className="font-mono text-sm text-accent"
                       >
                         ×{component.quantity}
                       </span>
@@ -972,7 +1033,7 @@ function Workbench({
                 </div>
               </>
             ) : (
-              <p className="py-12 text-center text-sm text-foreground dark:text-white">
+              <p className="py-12 text-center text-base text-foreground dark:text-white">
                 {copy.noPresets}
               </p>
             )}
