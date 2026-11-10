@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
       // request time rather than using Next's startup list of public files.
       beforeFiles: [
         {
+          source: "/static/modding/v3/:path*",
+          destination: "/api/static/modding/v3/:path*",
+        },
+        {
           source: "/static/trader/v3/:path*",
           destination: "/api/static/trader/v3/:path*",
         },
@@ -56,8 +60,9 @@ const nextConfig: NextConfig = {
   experimental: {
     serverSourceMaps: true,
   },
-  cacheHandler:
-    require.resolve("next/dist/server/lib/incremental-cache/file-system-cache.js"),
+  cacheHandler: require.resolve(
+    "next/dist/server/lib/incremental-cache/file-system-cache.js",
+  ),
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "image.eftlibrary.com" },

@@ -11,6 +11,33 @@ import type {
 
 const REMOVED_HOME_ROUTES = new Set(["/minigame"]);
 
+function withModdingMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
+  if (
+    groups.some((group) =>
+      group.sub_menus.some((item) => item.url === "/modding"),
+    )
+  )
+    return groups;
+  return groups.map((group) =>
+    group.id !== "ITEM"
+      ? group
+      : {
+          ...group,
+          sub_menus: [
+            ...group.sub_menus,
+            {
+              id: "modding",
+              parent_group_id: group.id,
+              url: "/modding",
+              name_ko: "무기 모딩",
+              name_en: "Weapon modding",
+              name_ja: "武器カスタマイズ",
+            },
+          ],
+        },
+  );
+}
+
 function withTraderMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
   if (
     groups.some((group) =>
@@ -53,7 +80,7 @@ export async function getHomeMain() {
   return {
     ...response,
     main: response.main.filter((item) => isAvailableHomeRoute(item.url)),
-    menu: withTraderMenu(response.menu).map((group) => ({
+    menu: withModdingMenu(withTraderMenu(response.menu)).map((group) => ({
       ...group,
       sub_menus: group.sub_menus.filter((item) =>
         isAvailableHomeRoute(item.url),
@@ -71,14 +98,26 @@ export async function getHomeMenu() {
   });
 
   return {
-    nav_list: withTraderMenu(response.nav_list).map((group) => ({
-      ...group,
-      sub_menus: group.sub_menus.filter((item) =>
-        isAvailableHomeRoute(item.url),
-      ),
-    })),
+    nav_list: withModdingMenu(withTraderMenu(response.nav_list)).map(
+      (group) => ({
+        ...group,
+        sub_menus: group.sub_menus.filter((item) =>
+          isAvailableHomeRoute(item.url),
+        ),
+      }),
+    ),
     autocomplete_items: [
       ...response.autocomplete_items,
+      ...(response.autocomplete_items.some((item) => item.url === "/modding")
+        ? []
+        : [
+            {
+              url: "/modding",
+              autocomplete_text_ko: "무기 모딩",
+              autocomplete_text_en: "Weapon modding",
+              autocomplete_text_ja: "武器カスタマイズ",
+            },
+          ]),
       ...(response.autocomplete_items.some((item) => item.url === "/traders")
         ? []
         : [
