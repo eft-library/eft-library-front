@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { cacheLife } from "next/cache";
 
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import { apiGet } from "@/lib/api/api-client";
 
 interface SitemapApiItem {
   id: number;
@@ -33,8 +34,10 @@ function toChangeFrequency(
 }
 
 async function getSitemapItems() {
-  return staticJsonGetWithFallback<SitemapApiItem[]>("search", "/static/search/v3/sitemap.json", {
-    apiPath: "/api/search/v3/sitemap",
+  "use cache";
+  cacheLife("max");
+
+  return apiGet<SitemapApiItem[]>("/api/search/v3/sitemap", {
     revalidate: revalidateSeconds,
   });
 }

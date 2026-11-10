@@ -47,13 +47,15 @@ Cloudflare는 DNS Only로 사용하며, HTTPS·WSS 요청은 원본 서버의 Ng
 
 공개 게임 정보와 사용자별 데이터를 구분해서 처리합니다.
 
-- **공개 게임 정보:** Airflow가 생성한 `public/static/{domain}/v3/`의 JSON과 FastAPI V3 API를 사용합니다. 공통 조회기는 [static-json-client.ts](lib/api/static-json-client.ts)에 있습니다.
+- **API와 서버 캐시:** 홈, 시즌 초기화, 스토리, 한글 지도, 3D 지도, 보스, 은신처, 퀘스트, 로드맵, 아이템 목록·상세, 비로그인 진행 아이템 목록은 FastAPI V3 API로 조회하고 `use cache`와 `cacheLife`로 공통 데이터를 캐시합니다. 홈은 1시간, 홈 최신 글은 별도 API로 60초, 퀘스트 목록·상세는 30분, 나머지 공통 데이터는 24시간 갱신 주기입니다.
+- **사이트맵:** `/api/search/v3/sitemap`에서 조회하며, 공통 원본 데이터를 30일 주기로 서버 캐시합니다.
+- **정적 JSON 유지 대상:** `public/static`에는 `live-map`, `trader`, `price` 도메인을 유지합니다. 공통 조회기는 [static-json-client.ts](lib/api/static-json-client.ts)에 있습니다.
 - **정적 JSON 조회:** 서버에서는 `public` 아래 파일을 직접 읽고, 브라우저에서는 같은 사이트의 `/static/…` 주소로 요청합니다. 도메인별 `index.json`의 `generated_at`을 버전으로 사용합니다.
 - **조회 실패 시 대체 경로:** 정적 JSON을 사용할 수 없으면 설정된 API 또는 대체 함수를 호출합니다. 개발 모드에서는 기본적으로 API를 먼저 시도합니다. 각 기능의 개별 조회 설정도 확인해야 합니다.
 - **사용자별 데이터와 쓰기 요청:** 인증·진행도·저장·커뮤니티 활동은 API로 처리합니다. 실시간 상태는 WebSocket으로 갱신합니다.
 - **시세:** 일반 PVP·PVE 시세와 랭킹은 약 1시간 단위의 캐시 설정을 사용합니다. 시즌 PVP 조회는 선택한 시즌의 API를 호출하며, 데이터가 없을 수 있습니다.
 
-Airflow의 JSON 출력 경로는 `/opt/airflow/next-public`입니다. 운영에서는 생성한 파일이 이 프로젝트의 `public/static`에서 제공되도록 경로를 연결하거나 동기화해야 합니다. JSON 생성 성공, 파일 배치, 프런트엔드 캐시 갱신은 서로 다른 단계입니다.
+Airflow의 JSON 출력 경로는 `/opt/airflow/next-public`입니다. 운영에서는 정적 JSON 유지 대상의 파일이 이 프로젝트의 `public/static`에서 제공되도록 경로를 연결하거나 동기화해야 합니다. API로 전환한 도메인은 JSON 생성·동기화 대상에서도 제외해야 불필요한 파일이 다시 생성되지 않습니다. JSON 생성 성공, 파일 배치, 프런트엔드 캐시 갱신은 서로 다른 단계입니다.
 
 현재 [next.config.ts](next.config.ts)는 `cacheComponents`를 활성화하고 있습니다. Next.js 16.4 업데이트에서는 기존 링크 동작을 유지하기 위해 `partialPrefetching: false`를 명시했습니다. 런타임 경로나 검색 조건 등을 읽는 컴포넌트는 필요한 위치에 `Suspense` 경계를 두어 사전 렌더링을 유지합니다.
 

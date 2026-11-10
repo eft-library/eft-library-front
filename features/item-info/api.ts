@@ -1,10 +1,16 @@
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import "server-only";
+
+import { cacheLife } from "next/cache";
+
+import { apiGet } from "@/lib/api/api-client";
 import { getItemInfoEndpoint } from "@/lib/config/api-endpoints";
 import type { ItemInfoResponse } from "@/types/api/item-info";
 
-export function getItemInfo(normalizedName: string) {
-  return staticJsonGetWithFallback<ItemInfoResponse>("item", `/static/item/v3/details/${normalizedName}.json`, {
-    apiPath: getItemInfoEndpoint(normalizedName),
+export async function getItemInfo(normalizedName: string) {
+  "use cache";
+  cacheLife("days");
+
+  return apiGet<ItemInfoResponse>(getItemInfoEndpoint(normalizedName), {
     revalidate: 60 * 60 * 24,
   });
 }

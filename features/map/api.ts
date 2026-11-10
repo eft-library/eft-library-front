@@ -1,10 +1,16 @@
-import { staticJsonGetWithFallback } from "@/lib/api/static-json-client";
+import "server-only";
+
+import { cacheLife } from "next/cache";
+
+import { apiGet } from "@/lib/api/api-client";
 import { getMapDetailEndpoint } from "@/lib/config/api-endpoints";
 import type { MapDetailResponse } from "@/types/api/map";
 
-export function getMapDetail(normalizedName: string) {
-  return staticJsonGetWithFallback<MapDetailResponse>("map", `/static/map/v3/details/${normalizedName}.json`, {
-    apiPath: getMapDetailEndpoint(normalizedName),
+export async function getMapDetail(normalizedName: string) {
+  "use cache";
+  cacheLife("days");
+
+  return apiGet<MapDetailResponse>(getMapDetailEndpoint(normalizedName), {
     revalidate: 60 * 60 * 24,
   });
 }

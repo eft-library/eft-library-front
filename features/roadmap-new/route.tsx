@@ -1,5 +1,5 @@
 import { getUserLocale } from "@/i18n/locale";
-import { getRoadmap } from "@/features/roadmap-new/api";
+import { getRoadmap } from "@/features/roadmap/server-api";
 import { RoadmapNewPage } from "@/features/roadmap-new/components/roadmap-new-page";
 
 export async function RoadmapNewRoute() {
