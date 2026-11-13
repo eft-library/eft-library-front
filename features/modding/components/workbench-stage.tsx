@@ -12,7 +12,7 @@ import { weaponPreviewImage } from "../default-preset";
 import { useBuilds } from "../builds/provider";
 import { mountPart } from "../builds/tree";
 import type { ItemSummary, WeaponSnapshot } from "../types";
-import { useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
+import { PopupStatisticsSummary, useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const fmt = (value: number) => `${value > 0 ? "+" : ""}${new Intl.NumberFormat("en", { maximumFractionDigits: 3 }).format(value)}`;
@@ -36,7 +36,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("base");
   const [hover, setHover] = useState<ItemSummary | "none" | null>(null);
-  const [position, setPosition] = useState<{ left: number; top: number; width: number; cols: number } | null>(null);
+  const [position, setPosition] = useState<{ left: number; top: number; width: number; cols: number; maxHeight: number } | null>(null);
   const active = slots.find((slot) => slot.key === activeKey);
   const raw = active ? snapshot.slot_candidates[active.slot.item_id]?.[active.slot.slot_id]?.candidates ?? [] : [];
   const many = raw.length >= 9;
@@ -103,13 +103,15 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
       const minLeft = Math.max(4, stageBounds.left);
       const maxLeft = Math.min(window.innerWidth - width - 4, stageBounds.right - width);
       const left = Math.max(4, Math.min(Math.max(minLeft, bounds.left - 4), maxLeft));
-      setPosition({ left: left + window.scrollX, top: bounds.bottom + window.scrollY + 4, width, cols });
+      const maxHeight = Math.min(many ? 640 : 500, window.innerHeight - 16);
+      const top = Math.max(8, Math.min(bounds.bottom + 4, window.innerHeight - maxHeight - 8));
+      setPosition({ left: left + window.scrollX, top: top + window.scrollY, width, cols, maxHeight });
     }
     update();
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
     return () => { window.removeEventListener("resize", update); window.removeEventListener("scroll", update, true); };
-  }, [activeKey, active, raw.length]);
+  }, [activeKey, active, raw.length, many]);
   useEffect(() => {
     if (!activeKey) return;
     const key = (event: KeyboardEvent) => {
@@ -145,8 +147,8 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
         </div>
       </div>
     </div>
-    {active && position && createPortal(<div ref={popup} id="modding-parts-popup" role="dialog" tabIndex={-1} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setHover(null); }} aria-label={itemName(active.slot, locale)} className="absolute z-50 rounded-lg border border-accent bg-surface shadow-2xl" style={{ left: position.left, top: position.top, width: position.width }}>
-      <div className="border-b border-line p-2.5">
+    {active && position && createPortal(<div ref={popup} id="modding-parts-popup" role="dialog" tabIndex={-1} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setHover(null); }} aria-label={itemName(active.slot, locale)} className="absolute z-50 flex flex-col rounded-lg border border-accent bg-surface shadow-2xl" style={{ left: position.left, top: position.top, width: position.width, maxHeight: position.maxHeight }}>
+      <div className="shrink-0 border-b border-line p-2.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="min-w-0 flex-1 truncate text-sm font-bold">{itemName(active.slot, locale)} <span className="font-mono text-xs">{filtered.length}/{raw.length}</span></h3>
           {active.selected && <button type="button" disabled={builds.pending} onClick={() => equip()} title={t("하위 부품도 함께 해제합니다.", "Also removes child parts.", "子パーツも一緒に解除します。")}
@@ -159,15 +161,16 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
           ["base", t("기본순", "Default", "標準")], ["ergo", t("인체공학 높은순", "Ergonomics ↓", "エルゴ高い順")], ["recoil", t("반동 낮은순", "Recoil ↑", "反動低い順")], ["weight", t("무게 가벼운순", "Weight ↑", "重量軽い順")],
         ].map(([value, label]) => <button key={value} type="button" aria-pressed={sort === value} onClick={() => { setSort(value); setHover(null); }} className={`rounded border px-1.5 py-1 text-[10px] ${focus} ${sort === value ? "border-accent bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-200" : "border-line bg-surface-elevated"}`}>{label}</button>)}</div></>}
       </div>
-      {candidatesLoading ? <p role="status" className="p-4 text-sm">{t("파츠 불러오는 중…", "Loading parts…", "パーツ読込中…")}</p> : candidatesError ? <div role="alert" className="p-4 text-sm"><p>{t("파츠를 불러오지 못했습니다.", "Could not load parts.", "パーツを取得できませんでした。")}</p><button type="button" onClick={onRetry} className={`mt-2 rounded border border-line p-2 ${focus}`}>{t("다시 시도", "Retry", "再試行")}</button></div> : <div onMouseLeave={() => { if (!popup.current?.contains(document.activeElement)) setHover(null); }} className="grid gap-1 overflow-y-auto p-2.5" style={{ gridTemplateColumns: `repeat(${position.cols},92px)`, maxHeight: many ? 400 : undefined }}>
+      {candidatesLoading ? <p role="status" className="p-4 text-sm">{t("파츠 불러오는 중…", "Loading parts…", "パーツ読込中…")}</p> : candidatesError ? <div role="alert" className="p-4 text-sm"><p>{t("파츠를 불러오지 못했습니다.", "Could not load parts.", "パーツを取得できませんでした。")}</p><button type="button" onClick={onRetry} className={`mt-2 rounded border border-line p-2 ${focus}`}>{t("다시 시도", "Retry", "再試行")}</button></div> : <div onMouseLeave={() => { if (!popup.current?.contains(document.activeElement)) setHover(null); }} className="grid min-h-0 shrink gap-1 overflow-y-auto overscroll-contain p-2.5" style={{ gridTemplateColumns: `repeat(${position.cols},92px)`, maxHeight: many ? 400 : undefined }}>
         {!query.trim() && <button type="button" disabled={builds.pending} onClick={() => equip()} onMouseEnter={() => setHover("none")} onFocus={() => setHover("none")} className={`flex h-[92px] items-center justify-center rounded border border-dashed border-line text-xs hover:border-accent ${focus}`} >{t("없음 (해제)", "None (remove)", "なし（解除）")}</button>}
         {filtered.map(({ item }) => <button key={item.id} type="button" disabled={builds.pending} aria-pressed={item.id === active.selected?.id} title={item.id === active.selected?.id ? `${itemName(item, locale)} · ${t("다시 누르면 해제", "Click again to remove", "再クリックで解除")}` : itemName(item, locale)} onClick={() => equip(item)} onMouseEnter={() => setHover(item)} onFocus={() => setHover(item)} className={`relative flex h-[92px] flex-col items-center gap-0.5 overflow-hidden rounded border p-1 ${focus} hover:border-accent disabled:opacity-60 ${item.id === active.selected?.id ? "border-accent bg-orange-50 dark:bg-orange-950/30" : "border-line bg-background"}`}>
           <span className="line-clamp-2 text-[11px] font-semibold leading-tight">{itemName(item, locale)}</span><PartImage item={item} /><span className="absolute bottom-0 right-0"><Chips item={item} /></span>{item.id === active.selected?.id && <span className="absolute bottom-0 left-0 bg-surface px-0.5 text-[9px] font-bold text-orange-700 dark:text-orange-300">{t("장착됨", "Equipped", "装着中")}</span>}
         </button>)}
         {query.trim() && !filtered.length && <p className="col-span-full py-4 text-xs">{t("검색 결과가 없습니다.", "No results.", "検索結果がありません。")}</p>}
       </div>}
-      <div className="border-t border-line p-3 text-xs"><p className="line-clamp-2 h-8 font-semibold">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하면 변화가 보입니다.", "Hover or focus a part to preview changes.", "パーツにマウスを乗せるかフォーカスして変化を確認できます。")}</p>
+      <div className="shrink-0 border-t border-line bg-surface p-3 text-xs"><p className="line-clamp-2 h-8 font-semibold">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하면 변화가 보입니다.", "Hover or focus a part to preview changes.", "パーツにマウスを乗せるかフォーカスして変化を確認できます。")}</p>
         <div className={`mt-2 flex h-4 gap-3 ${currentHover ? "" : "invisible"}`}><span>E {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.ergonomics, active.selected?.mod_properties?.ergonomics ?? (active.selected ? null : 0), true)}</span><span>R% {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.recoil_modifier == null ? null : displayedHover.mod_properties.recoil_modifier * 100, active.selected ? active.selected.mod_properties?.recoil_modifier == null ? null : active.selected.mod_properties.recoil_modifier * 100 : 0, false)}</span><span>kg {delta(previewRemoval ? 0 : displayedHover?.weight, active.selected?.weight ?? (active.selected ? null : 0), false)}</span></div>
+        <PopupStatisticsSummary current={current} preview={preview} previewing={!!hover} locale={locale} />
       </div>
     </div>, document.body)}
     <WeaponStatisticsPanel current={current} preview={preview} previewing={!!(active && hover)} locale={locale} snapshot={snapshot} />
