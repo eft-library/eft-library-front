@@ -8,12 +8,9 @@ import {
   ArrowLeft,
   ArrowRight,
   Box,
-  Check,
-  ChevronRight,
   Crosshair,
   Layers,
   LoaderCircle,
-  Plus,
   RotateCcw,
   Undo2,
   Redo2,
@@ -24,6 +21,7 @@ import {
 import type { Locale } from "@/i18n/config";
 import { initialPresetAction, weaponPreviewImage } from "../default-preset";
 import { getWeapon, getWeapons } from "../api";
+import { WorkbenchStage } from "./workbench-stage";
 import { PresetReconstructionPanel } from "./preset-reconstruction-panel";
 import { useWorkbenchData } from "../use-workbench-data";
 import { buildSlots, itemName } from "../build";
@@ -210,6 +208,7 @@ export function ModdingPage({
   const chosen = weapons.data?.list.weapons.find(
     ({ item }) => item.id === weaponId,
   );
+  const { content: routeContent, start: startWeapon } = builds;
   useEffect(() => {
     if (!routeWeaponId) {
       attemptedRoute.current = null;
@@ -217,16 +216,16 @@ export function ModdingPage({
     }
     if (!chosen || attemptedRoute.current === routeWeaponId) return;
     attemptedRoute.current = routeWeaponId;
-    if (builds.content?.weapon_item_id === routeWeaponId) return;
-    void builds.start(chosen).then((opened) => {
+    if (routeContent?.weapon_item_id === routeWeaponId) return;
+    void startWeapon(chosen).then((opened) => {
       if (!opened)
         router.replace(
-          builds.content
-            ? `/modding/${builds.content.weapon_item_id}`
+          routeContent
+            ? `/modding/${routeContent.weapon_item_id}`
             : "/modding",
         );
     });
-  }, [routeWeaponId, chosen, builds.content, builds.start, router]);
+  }, [routeWeaponId, chosen, routeContent, startWeapon, router]);
   return (
     <main className="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 lg:py-12">
       <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
@@ -416,6 +415,7 @@ function WeaponLoader({
       key={query.data.generation}
       snapshot={query.data.snapshot}
       source={query.data.source}
+      generation={query.data.generation}
       locale={locale}
     />
   );
@@ -424,10 +424,12 @@ function WeaponLoader({
 function Workbench({
   snapshot: baseSnapshot,
   source,
+  generation,
   locale,
 }: {
   snapshot: WeaponSnapshot;
   source: "static" | "api";
+  generation: string;
   locale: Locale;
 }) {
   const copy = moddingCopy[locale];
@@ -437,7 +439,6 @@ function Workbench({
     [builds.content],
   );
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const [word, setWord] = useState("");
   const [tab, setTab] = useState<"build" | "presets">(() =>
     builds.initialPresetPending ? "presets" : "build",
   );
@@ -450,8 +451,6 @@ function Workbench({
       baseSnapshot.preset_references.presets[0]?.item.id ??
       "",
   );
-  const [limit, setLimit] = useState(40);
-  const [sort, setSort] = useState("name");
   const parentPath = activeKey?.slice(0, activeKey.lastIndexOf("/"));
   const ownerId =
     parentPath && builds.content
@@ -479,37 +478,18 @@ function Workbench({
       ),
     [snapshot, selections, builds.content],
   );
-  const active = slots.find((slot) => slot.key === activeKey);
-  const candidates = active
-    ? (snapshot.slot_candidates[active.slot.item_id]?.[active.slot.slot_id]
-        ?.candidates ?? [])
-    : [];
-  const filtered = candidates
-    .filter(({ item }) => matches(item, word))
-    .sort((a, b) => {
-      if (sort === "weight")
-        return (a.item.weight ?? Infinity) - (b.item.weight ?? Infinity);
-      if (sort === "ergo")
-        return (
-          (b.item.mod_properties?.ergonomics ?? -Infinity) -
-          (a.item.mod_properties?.ergonomics ?? -Infinity)
-        );
-      return itemName(a.item, locale).localeCompare(
-        itemName(b.item, locale),
-        locale,
-      );
-    });
   const weapon = snapshot.weapon;
   const stats = weapon.weapon_properties;
   const preset = snapshot.presets[presetId];
+  const { initialPresetPending, finishInitialPreset, importPreset } = builds;
   useEffect(() => {
-    if (!builds.initialPresetPending || initialPresetHandled.current || !preset)
+    if (!initialPresetPending || initialPresetHandled.current || !preset)
       return;
     initialPresetHandled.current = true;
-    builds.finishInitialPreset();
+    finishInitialPreset();
     const action = initialPresetAction(preset);
     if (action === "confirm") {
-      void builds.importPreset(preset, 0).then(() => {
+      void importPreset(preset, 0).then(() => {
         setTab("build");
         setActiveKey(null);
       });
@@ -518,25 +498,10 @@ function Workbench({
     // selection/inspection. No first-candidate or partial import is automatic.
   }, [
     preset,
-    builds.initialPresetPending,
-    builds.finishInitialPreset,
-    builds.importPreset,
+    initialPresetPending,
+    finishInitialPreset,
+    importPreset,
   ]);
-  function selectSlot(key: string) {
-    setActiveKey(key);
-    setWord("");
-    setLimit(40);
-  }
-  function equip(id?: string) {
-    if (active)
-      builds.mount(
-        active.key,
-        id
-          ? (candidates.find((candidate) => candidate.item.id === id)?.item ??
-              snapshot.items[id]?.item)
-          : undefined,
-      );
-  }
   return (
     <>
       {data.itemError && <Notice copy={copy} error retry={data.retryItems} />}
@@ -557,10 +522,7 @@ function Workbench({
             <h2 className="text-xl font-bold">
               {itemName(weapon.item, locale)}
             </h2>
-            <p className="mt-1 font-mono text-sm text-foreground dark:text-white">
-              {stats.caliber?.replace(/^Caliber/, "")} ·{" "}
-              {number(stats.fire_rate)} RPM
-            </p>
+
           </div>
         </div>
         <div
@@ -596,6 +558,7 @@ function Workbench({
             <Redo2 className="h-4 w-4" />
             {builds.t("다시 실행", "Redo", "やり直す")}
           </button>
+          <button type="button" className={action} disabled={builds.pending || !Object.keys(selections).length} onClick={() => void builds.reset()}><RotateCcw className="h-4 w-4" />{builds.t("구성 초기화", "Reset configuration", "構成リセット")}</button>
           <div className="inline-flex gap-1 rounded-xl border border-line bg-surface-elevated p-1">
             {(
               [
@@ -623,8 +586,8 @@ function Workbench({
           </div>
         </div>
       </div>
-      <div className="grid items-start gap-5 xl:grid-cols-[300px_minmax(0,1fr)]">
-        <aside className="space-y-4">
+      <div className={tab === "presets" ? "grid items-start gap-5 xl:grid-cols-[300px_minmax(0,1fr)]" : "min-w-0"}>
+        {tab === "presets" && <aside className="space-y-4">
           <section className={`${panel} overflow-hidden`}>
             <div className="bg-surface-elevated/50 px-5 py-7">
               <ItemImage
@@ -649,296 +612,9 @@ function Workbench({
               <Stat label={copy.horizontal} value={stats.recoil_horizontal} />
             </dl>
           </section>
-          {tab === "build" && (
-            <section className={`${panel} p-4`}>
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-base font-semibold">{copy.assembly}</h3>
-                <span className="font-mono text-sm text-accent">
-                  {Object.keys(selections).length}
-                </span>
-              </div>
-              {slots
-                .filter((slot) => slot.selected)
-                .map((slot) => (
-                  <div
-                    key={slot.key}
-                    className="flex items-center gap-2 border-t border-line py-3 text-sm"
-                  >
-                    <Check className="h-3 w-3 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                    <span className="min-w-0 flex-1">
-                      {slot.selected && itemName(slot.selected, locale)}
-                    </span>
-                    <button
-                      disabled={builds.pending}
-                      aria-label={`${copy.remove} ${slot.selected && itemName(slot.selected, locale)}`}
-                      className="rounded p-1 hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-accent"
-                      onClick={() => {
-                        builds.mount(slot.key);
-                        setActiveKey(slot.key);
-                      }}
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                ))}
-              <button
-                disabled={builds.pending || !Object.keys(selections).length}
-                onClick={() => {
-                  void builds.reset();
-                }}
-                className={`${action} mt-3 w-full`}
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-                {copy.reset}
-              </button>
-            </section>
-          )}
-        </aside>
+        </aside>}
         {tab === "build" ? (
-          <div className="min-w-0 space-y-5">
-            <section className={`${panel} p-4 sm:p-5`}>
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="flex items-center gap-2 text-base font-semibold">
-                  <Layers className="h-4 w-4 text-accent" />
-                  {copy.slots}
-                </h3>
-                <span className="font-mono text-sm text-foreground dark:text-white">
-                  {slots.length} {copy.count}
-                </span>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 min-[1800px]:grid-cols-3">
-                {slots.map((entry) => (
-                  <div key={entry.key} className="min-w-0">
-                    <button
-                      onClick={() => selectSlot(entry.key)}
-                      aria-pressed={activeKey === entry.key}
-                      className={`flex min-h-28 w-full items-center gap-3 rounded-xl border p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${activeKey === entry.key ? "border-accent bg-accent/10 ring-1 ring-accent/20" : "border-line bg-background/60 hover:border-accent/50 hover:bg-surface-elevated"}`}
-                    >
-                      {entry.selected ? (
-                        <ItemImage item={entry.selected} />
-                      ) : (
-                        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-dashed border-foreground/20 text-foreground dark:text-white">
-                          <Plus className="h-5 w-5" />
-                        </span>
-                      )}
-                      <span className="min-w-0 flex-1">
-                        <span className="mb-1 flex flex-wrap items-center gap-1 text-xs text-foreground dark:text-white">
-                          {entry.depth > 0 && (
-                            <span className="font-mono text-accent">
-                              ↳{entry.depth}
-                            </span>
-                          )}
-                          {itemName(entry.slot, locale)}
-                          {entry.slot.required && (
-                            <span className="rounded bg-amber-500/10 px-1 text-amber-800 dark:text-amber-300">
-                              {copy.required}
-                            </span>
-                          )}
-                        </span>
-                        <span
-                          className={`line-clamp-2 text-base font-semibold ${entry.selected ? "text-foreground" : "text-foreground dark:text-white"}`}
-                        >
-                          {entry.selected
-                            ? itemName(entry.selected, locale)
-                            : copy.emptySlot}
-                        </span>
-                        <span className="mt-1 block font-mono text-xs text-foreground dark:text-white">
-                          {snapshot.slot_candidates[entry.slot.item_id]?.[
-                            entry.slot.slot_id
-                          ]?.total ?? (source === "api" ? "—" : 0)}{" "}
-                          {copy.parts}
-                        </span>
-                      </span>
-                      <ChevronRight className="h-3.5 w-3.5 shrink-0 text-foreground dark:text-white" />
-                    </button>
-                    {entry.blocked && (
-                      <p className="p-2 text-sm text-amber-800 dark:text-amber-300">
-                        {copy.depth}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-              {!slots.length && (
-                <p className="py-8 text-center text-base text-foreground dark:text-white">
-                  {copy.noSlots}
-                </p>
-              )}
-            </section>
-            <section
-              className={`${panel} overflow-hidden`}
-              aria-label={copy.parts}
-            >
-              <div className="border-b border-line p-4 sm:p-5">
-                <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-base font-semibold">
-                    {active ? itemName(active.slot, locale) : copy.parts}
-                    <span className="ml-2 font-mono text-sm font-normal text-accent">
-                      {active ? filtered.length : ""}
-                    </span>
-                  </h3>
-                  {active?.selected && (
-                    <button
-                      className={`${action} text-sm`}
-                      disabled={builds.pending}
-                      onClick={() => equip()}
-                    >
-                      <X className="h-3 w-3" />
-                      {copy.remove}
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <div className="flex-1">
-                    <SearchField
-                      value={word}
-                      onChange={(value) => {
-                        setWord(value);
-                        setLimit(40);
-                      }}
-                      placeholder={copy.searchParts}
-                      clear={copy.clear}
-                    />
-                  </div>
-                  <select
-                    aria-label={builds.t(
-                      "파츠 정렬",
-                      "Sort parts",
-                      "パーツの並び順",
-                    )}
-                    value={sort}
-                    onChange={(event) => {
-                      setSort(event.target.value);
-                      setLimit(40);
-                    }}
-                    className="rounded-lg border border-line bg-background px-3 py-3 text-sm outline-none focus:border-accent"
-                  >
-                    <option value="name">
-                      {builds.t("이름순", "Name", "名前順")}
-                    </option>
-                    <option value="weight">
-                      {builds.t(
-                        "무게 낮은순",
-                        "Weight: low to high",
-                        "重量の軽い順",
-                      )}
-                    </option>
-                    <option value="ergo">
-                      {builds.t(
-                        "인체공학 높은순",
-                        "Ergonomics: high to low",
-                        "エルゴノミクスの高い順",
-                      )}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              {!active ? (
-                <div className="flex min-h-56 flex-col items-center justify-center gap-3 p-6 text-center text-base text-foreground dark:text-white">
-                  <Crosshair className="h-8 w-8 text-accent/50" />
-                  {copy.pickSlot}
-                </div>
-              ) : data.candidatesError ? (
-                <Notice copy={copy} error retry={data.retryCandidates} />
-              ) : data.candidatesLoading ? (
-                <Notice copy={copy} />
-              ) : !filtered.length ? (
-                <p className="py-16 text-center text-base text-foreground dark:text-white">
-                  {copy.noResults}
-                </p>
-              ) : (
-                <>
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[570px] text-left text-sm">
-                      <thead className="bg-surface-elevated/60 text-foreground dark:text-white">
-                        <tr>
-                          <th className="px-4 py-3 font-medium">{copy.name}</th>
-                          <th className="px-3 py-3 font-medium">{copy.ergo}</th>
-                          <th className="px-3 py-3 font-medium">
-                            {copy.recoil}
-                          </th>
-                          <th className="px-3 py-3 font-medium">
-                            {copy.weight}
-                          </th>
-                          <th className="px-4 py-3">
-                            <span className="sr-only">{copy.equip}</span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filtered.slice(0, limit).map(({ item }) => {
-                          const equipped = active.selected?.id === item.id;
-                          return (
-                            <tr
-                              key={item.id}
-                              onClick={() => {
-                                if (!builds.pending)
-                                  equip(equipped ? undefined : item.id);
-                              }}
-                              className={`border-t border-line ${builds.pending ? "cursor-wait" : "cursor-pointer"} ${equipped ? "bg-accent/10 hover:bg-accent/15" : "hover:bg-surface-elevated/60"}`}
-                            >
-                              <td className="px-4 py-2">
-                                <div className="flex items-center gap-3">
-                                  <ItemImage item={item} />
-                                  <div className="max-w-72">
-                                    <p className="font-medium leading-5">
-                                      {itemName(item, locale)}
-                                    </p>
-                                    <p className="mt-1 text-xs text-foreground dark:text-white">
-                                      {item.slot_count} {copy.slots} ·{" "}
-                                      {item.width ?? "—"}×{item.height ?? "—"}
-                                    </p>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-3 py-3 font-mono">
-                                {number(item.mod_properties?.ergonomics)}
-                              </td>
-                              <td className="px-3 py-3 font-mono">
-                                {number(item.mod_properties?.recoil_modifier)}
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-3 font-mono">
-                                {number(item.weight)} kg
-                              </td>
-                              <td className="px-4 py-3">
-                                <button
-                                  disabled={builds.pending}
-                                  aria-label={`${equipped ? copy.remove : copy.equip} ${itemName(item, locale)}`}
-                                  className={`${action} whitespace-nowrap ${equipped ? "border-accent/40 text-orange-700 dark:text-orange-300" : ""}`}
-                                  onClick={(event) => {
-                                    event.stopPropagation();
-                                    equip(equipped ? undefined : item.id);
-                                  }}
-                                >
-                                  {equipped ? (
-                                    <Check className="h-3 w-3" />
-                                  ) : (
-                                    <Plus className="h-3 w-3" />
-                                  )}
-                                  {equipped ? copy.selected : copy.equip}
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                  {filtered.length > limit && (
-                    <div className="border-t border-line p-3 text-center">
-                      <button
-                        className={action}
-                        onClick={() => setLimit((value) => value + 40)}
-                      >
-                        {copy.more} ({Math.min(limit, filtered.length)}/
-                        {filtered.length})
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-            </section>
-          </div>
+          <WorkbenchStage snapshot={snapshot} slots={slots} activeKey={activeKey} onActive={setActiveKey} candidatesLoading={data.candidatesLoading} candidatesError={data.candidatesError} onRetry={data.retryCandidates} generation={generation} locale={locale} />
         ) : (
           <section className={`${panel} min-w-0 p-4 sm:p-6`}>
             <div className="mb-5">
@@ -1003,7 +679,6 @@ function Workbench({
                   onImported={() => {
                     setTab("build");
                     setActiveKey(null);
-                    setWord("");
                   }}
                 />
                 <h4 className="mb-3 text-base font-semibold">

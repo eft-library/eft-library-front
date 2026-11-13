@@ -1,3 +1,5 @@
+import type { BallisticsProperties } from "./statistics-types";
+
 // Generated from gun_preset/weapon_modding_openapi.json (2026-11-10).
 export type Candidate = {
   item: ItemSummary;
@@ -39,6 +41,8 @@ export type HTTPValidationError = {
 };
 
 export type ItemDetail = {
+  // Older V3 static generations can omit this additive source field.
+  ballistics?: BallisticsProperties | null;
   item: ItemSummary;
   categories: CategoryEntry[];
   weapon_properties: WeaponProperties | null;

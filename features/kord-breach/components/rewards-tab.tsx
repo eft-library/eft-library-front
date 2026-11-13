@@ -84,10 +84,15 @@ export function RewardsTab({ locale, children }: { locale: Locale; children: Rea
     <div id="kord-panel-traits" role="tabpanel" aria-labelledby="kord-tab-traits" hidden={tab !== "traits"} className="space-y-5">{children}</div>
     <div id="kord-panel-rewards" role="tabpanel" aria-labelledby="kord-tab-rewards" hidden={tab !== "rewards"}>
       <section className="rounded-xl border border-line bg-surface p-4 shadow-sm sm:p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div><h2 className="font-bold text-orange-700 dark:text-orange-400">{t.rewards} <span className="ml-2 text-[10px] tracking-wider text-gray-600 dark:text-gray-400">REWARDS</span></h2><p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{t.description}</p></div>
-          <SeasonSelect locale={locale} seasons={seasons.data ?? []} value={seasonId} onChange={setSelection} isLoading={seasons.isPending} isError={seasons.isError} onRetry={() => { void seasons.refetch(); }} />
-          <div className="flex flex-wrap items-center gap-2">{stages.map(([key]) => <span key={key} className="rounded-md border border-line bg-surface-elevated px-2.5 py-1 text-xs">{label(key)}</span>)}</div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <h2 className="font-bold text-orange-700 dark:text-orange-400">{t.rewards} <span className="ml-2 text-[10px] tracking-wider text-gray-600 dark:text-gray-400">REWARDS</span></h2>
+            <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{t.description}</p>
+            {stages.length > 0 && <div className="mt-2 flex flex-wrap items-center gap-2">{stages.map(([key]) => <span key={key} className="rounded-md border border-line bg-surface-elevated px-2.5 py-1 text-xs">{label(key)}</span>)}</div>}
+          </div>
+          <div className="shrink-0 self-end sm:self-start">
+            <SeasonSelect locale={locale} seasons={seasons.data ?? []} value={seasonId} onChange={setSelection} isLoading={seasons.isPending} isError={seasons.isError} onRetry={() => { void seasons.refetch(); }} />
+          </div>
         </div>
         {seasons.isError && <p role="alert" className="mt-5 text-sm">{seasonText.error}</p>}
         {seasons.isSuccess && !seasonId && <p role="status" className="mt-5 text-sm text-gray-600 dark:text-gray-400">{seasons.data.length ? seasonText.select : seasonText.empty}</p>}
