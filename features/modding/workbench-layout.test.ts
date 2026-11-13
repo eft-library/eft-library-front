@@ -30,3 +30,35 @@ test("repeated slot kinds on different instances remain distinct", () => {
   assert.equal(result.slots.length, 2);
   assert.notEqual(result.slots[0].col, result.slots[1].col);
 });
+
+test("left-heavy builds wrap on the left while the weapon center stays fixed", () => {
+  const entries = Array.from({ length: 12 }, (_, index) => slot("mod_handguard", `root/left-${index}`));
+  entries.push(slot("mod_stock", "root/right"));
+  const result = layoutSlots(entries);
+  assert.equal(result.weaponCol, 5);
+  assert.ok(result.slots.filter((position) => position.entry.key.includes("left-")).every((position) => position.col <= 4));
+  assert.ok(result.slots.some((position) => position.row >= 3));
+});
+test("new children do not move existing slots, and removing children does not compact holes", () => {
+  const first = [slot("mod_reciever", "root/r"), slot("mod_barrel", "root/b"), slot("mod_stock", "root/s")];
+  const before = layoutSlots(first);
+  const child = slot("mod_mount", "root/r/m");
+  const added = layoutSlots([first[0], child, ...first.slice(1)], before);
+  const position = (layout: ReturnType<typeof layoutSlots>, key: string) => {
+    const cell = layout.slots.find((entry) => entry.entry.key === key)!;
+    return [cell.col, cell.row];
+  };
+  for (const entry of first) assert.deepEqual(position(added, entry.key), position(before, entry.key));
+  assert.deepEqual(position(added, child.key), [2, 1]);
+  const removed = layoutSlots([first[0], child, first[2]], added);
+  assert.deepEqual(position(removed, child.key), position(added, child.key));
+  assert.deepEqual(position(removed, first[2].key), position(added, first[2].key));
+});
+test("stage height does not shrink when removing overflow slots", () => {
+  const entries = Array.from({ length: 40 }, (_, index) => slot("mod_handguard", `root/${index}`));
+  const before = layoutSlots(entries);
+  assert.ok(before.height > 600);
+  const after = layoutSlots([entries[0]], before);
+  assert.equal(after.height, before.height);
+  assert.equal(after.weaponCol, 5);
+});

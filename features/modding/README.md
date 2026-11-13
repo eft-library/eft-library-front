@@ -157,3 +157,19 @@ Data limitation: the supplied M4 snapshot has the `ballistics` field but null so
 ### Server-side My builds search
 
 Requires deployment of the updated `/mine` backend contract (optional word and weapon_item_id). Private query keys include account, submitted search, selected weapon, page and page size; requests are authenticated/no-store and abortable. Only the visible page is loaded in My builds. Public ownership detection separately retains its unfiltered private pagination. Batch selection is scoped to search and weapon filters and continues using reviewed versions. Contract tests verify encoding of literal %, _, &, multilingual text, omitted blank filters and server totals/pages.
+
+
+## Stable statistics layout
+
+Statistics headers, unavailable-reason rows, metadata rows and compatibility summaries retain their space while calculations are pending or fail. Expanded compatibility details scroll within a fixed-height body. Candidate preview footers also reserve name/delta space. Programmatic focus restoration uses preventScroll, and the statistics panel is excluded from scroll anchoring. Calculations still hide stale results while pending; no previous-part statistics are presented as a new result.
+
+
+## Statistics simplification and stage width
+
+The workbench statistics panel displays weight/ergonomics in the first row and vertical/horizontal recoil together in the second, including narrow screens. Accuracy and muzzle velocity are omitted from this panel; the API contract and source preset data remain unchanged. The stage fills available width with 13 proportional column pitches (minimum 1340px), so the background and slot distribution no longer stop at a fixed-width strip on larger screens. Narrow screens retain horizontal scrolling; the central reference image spans the same three columns.
+
+
+## Balanced stage and URL-selected view
+
+- The weapon stays in center columns 5–7. Left/right categories wrap into multiple rows on their own side. Surviving slot paths retain their allocated cells during edits; removed children leave gaps until new slots use them. New child slots prefer a nearby free cell in their region. The mounted workbench retains its maximum height during removals to avoid scrolling jumps. A newly mounted stage starts a fresh layout.
+- Workbench and source-preset views use `?tab=build` / `?tab=presets`. Native history integrates with Next useSearchParams, preserving view choice on refresh and back/forward without a full page navigation. Explicit preset-view URLs are not overwritten by automatic default initialization. Unspecified ambiguous/incomplete defaults still open preset selection. This only preserves the view; unsaved attachments are not persisted across refresh.

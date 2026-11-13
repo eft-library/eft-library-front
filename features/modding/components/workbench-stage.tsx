@@ -42,7 +42,16 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   const many = raw.length >= 9;
   const filtered = raw.filter(({ item }) => !query.trim() || [item.name_en, item.name_ko, item.name_ja].some((name) => name?.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))).slice();
   if (sort !== "base") filtered.sort((a, b) => sort === "weight" ? (a.item.weight ?? Infinity) - (b.item.weight ?? Infinity) : sort === "ergo" ? (b.item.mod_properties?.ergonomics ?? -Infinity) - (a.item.mod_properties?.ergonomics ?? -Infinity) : (a.item.mod_properties?.recoil_modifier ?? Infinity) - (b.item.mod_properties?.recoil_modifier ?? Infinity));
-  const layout = layoutSlots(slots);
+  const [layoutState, setLayoutState] = useState(() => ({
+    input: slots, weaponId: snapshot.weapon.item.id, layout: layoutSlots(slots),
+  }));
+  if (layoutState.input !== slots || layoutState.weaponId !== snapshot.weapon.item.id) {
+    // Conditional state adjustment is applied before React commits the render,
+    // so edits cannot paint an intermediate reflowed arrangement.
+    setLayoutState({ input: slots, weaponId: snapshot.weapon.item.id,
+      layout: layoutSlots(slots, layoutState.weaponId === snapshot.weapon.item.id ? layoutState.layout : undefined) });
+  }
+  const layout = layoutState.layout;
   const current = useStatistics(builds.content, generation);
   const previewRemoval = hover === "none" || (!!hover && hover.id === active?.selected?.id);
   const hoveredItem = hover === "none" || (hover && hover.id === active?.selected?.id) ? undefined : hover ?? undefined;
@@ -55,7 +64,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   const preview = useStatistics(previewContent, generation);
   const popupReady = Boolean(active && position);
   useEffect(() => {
-    if (popupReady) popup.current?.focus();
+    if (popupReady) popup.current?.focus({ preventScroll: true });
   }, [popupReady, activeKey]);
   const currentHover = hover;
   const displayedHover = currentHover === "none" ? undefined : currentHover ?? undefined;
@@ -63,7 +72,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   function close() {
     const key = activeKey;
     onActive(null); setHover(null); setPosition(null);
-    if (key) document.getElementById(triggerId(key))?.focus();
+    if (key) document.getElementById(triggerId(key))?.focus({ preventScroll: true });
   }
   function toggle(key: string) {
     if (key === activeKey) { close(); return; }
@@ -76,7 +85,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
     setHover(null);
     if (removing) {
       // Keep this slot, search and sorting available for the next attachment.
-      popup.current?.focus();
+      popup.current?.focus({ preventScroll: true });
     } else {
       close();
     }
@@ -106,7 +115,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
     const key = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       event.preventDefault(); onActive(null); setHover(null); setPosition(null);
-      document.getElementById(triggerId(activeKey))?.focus();
+      document.getElementById(triggerId(activeKey))?.focus({ preventScroll: true });
     };
     const pointer = (event: PointerEvent) => {
       if (event.target instanceof Node && !popup.current?.contains(event.target) && !stage.current?.contains(event.target)) { onActive(null); setHover(null); setPosition(null); }
@@ -123,9 +132,9 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
     <p className="text-xs text-gray-600 dark:text-gray-400">{t("이미지는 기본 프리셋 참고 이미지입니다. 장착 구성에 따라 합성되지 않습니다. 좁은 화면에서는 작업대를 좌우로 스크롤하세요.", "The image is the default preset reference, not a composite of your build. Scroll horizontally on narrow screens.", "画像は基本プリセットの参考画像です。構成に応じた合成ではありません。狭い画面では横にスクロールできます。")}</p>
     <div className="relative z-10 rounded-xl border border-line">
       <div tabIndex={0} aria-label={t("모딩 작업대 · 가로 스크롤", "Workbench · horizontal scroll", "作業台 · 横スクロール")} className={`overflow-x-auto rounded-xl ${focus}`}>
-        <div ref={stage} className="relative w-[1340px] bg-[#e6e8ec] dark:bg-[#16181b]" style={{ height: layout.height }}>
-          <div className="absolute flex items-center justify-center rounded-lg border border-line bg-white/70 dark:bg-[#23262b]" style={{ left: 520, top: 166, width: 292, height: 238 }}><PartImage item={snapshot.weapon.item} image={weaponPreviewImage(snapshot.weapon)} large /></div>
-          {layout.slots.map(({ entry, x, y }) => <div key={entry.key} className="absolute w-[92px]" style={{ left: x, top: y }}>
+        <div ref={stage} className="relative min-w-[1340px] w-full bg-[#e6e8ec] dark:bg-[#16181b]" style={{ height: layout.height }}>
+          <div className="absolute flex items-center justify-center rounded-lg border border-line bg-white/70 dark:bg-[#23262b]" style={{ left: `calc(20px + ${layout.weaponCol} * (100% - 40px) / 13)`, top: 166, width: "calc(3 * (100% - 40px) / 13 - 8px)", height: 238 }}><PartImage item={snapshot.weapon.item} image={weaponPreviewImage(snapshot.weapon)} large /></div>
+          {layout.slots.map(({ entry, col, y }) => <div key={entry.key} className="absolute w-[92px]" style={{ left: `calc(20px + ${col} * (100% - 40px) / 13)`, top: y }}>
             <Chips item={entry.selected} />
             <button type="button" id={triggerId(entry.key)} disabled={builds.pending} aria-expanded={activeKey === entry.key} aria-controls={activeKey === entry.key ? "modding-parts-popup" : undefined} aria-haspopup="dialog" aria-label={`${itemName(entry.slot, locale)}: ${entry.selected ? itemName(entry.selected, locale) : t("비어 있음", "Empty", "空き")}`} title={`${itemName(entry.slot, locale)}${entry.selected ? `: ${itemName(entry.selected, locale)}` : ""}${entry.blocked ? ` · ${t("탐색 깊이 제한", "Exploration depth limit", "探索深度制限")}` : ""}`} onClick={() => toggle(entry.key)} className={`group relative flex size-[92px] flex-col items-center justify-center gap-1 rounded border p-1 text-center ${focus} disabled:cursor-wait disabled:opacity-60 ${activeKey === entry.key ? "border-accent bg-orange-50 ring-1 ring-accent dark:bg-orange-950/30" : "border-gray-400/60 bg-white hover:border-accent dark:border-gray-600 dark:bg-[#23262b] dark:hover:border-accent"} ${entry.selected ? "" : "border-dashed"}`}>
               {entry.selected ? <><span className="line-clamp-2 w-full text-[11px] font-semibold leading-tight">{itemName(entry.selected, locale)}</span><PartImage item={entry.selected} /></> : <span className="text-xs text-gray-600 dark:text-gray-300">{itemName(entry.slot, locale)}</span>}
@@ -157,8 +166,8 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
         </button>)}
         {query.trim() && !filtered.length && <p className="col-span-full py-4 text-xs">{t("검색 결과가 없습니다.", "No results.", "検索結果がありません。")}</p>}
       </div>}
-      <div className="border-t border-line p-3 text-xs"><p className="min-h-8 font-semibold">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하면 변화가 보입니다.", "Hover or focus a part to preview changes.", "パーツにマウスを乗せるかフォーカスして変化を確認できます。")}</p>
-        {currentHover && <div className="mt-2 flex flex-wrap gap-3"><span>E {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.ergonomics, active.selected?.mod_properties?.ergonomics ?? (active.selected ? null : 0), true)}</span><span>R% {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.recoil_modifier == null ? null : displayedHover.mod_properties.recoil_modifier * 100, active.selected ? active.selected.mod_properties?.recoil_modifier == null ? null : active.selected.mod_properties.recoil_modifier * 100 : 0, false)}</span><span>kg {delta(previewRemoval ? 0 : displayedHover?.weight, active.selected?.weight ?? (active.selected ? null : 0), false)}</span></div>}
+      <div className="border-t border-line p-3 text-xs"><p className="line-clamp-2 h-8 font-semibold">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하면 변화가 보입니다.", "Hover or focus a part to preview changes.", "パーツにマウスを乗せるかフォーカスして変化を確認できます。")}</p>
+        <div className={`mt-2 flex h-4 gap-3 ${currentHover ? "" : "invisible"}`}><span>E {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.ergonomics, active.selected?.mod_properties?.ergonomics ?? (active.selected ? null : 0), true)}</span><span>R% {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.recoil_modifier == null ? null : displayedHover.mod_properties.recoil_modifier * 100, active.selected ? active.selected.mod_properties?.recoil_modifier == null ? null : active.selected.mod_properties.recoil_modifier * 100 : 0, false)}</span><span>kg {delta(previewRemoval ? 0 : displayedHover?.weight, active.selected?.weight ?? (active.selected ? null : 0), false)}</span></div>
       </div>
     </div>, document.body)}
     <WeaponStatisticsPanel current={current} preview={preview} previewing={!!(active && hover)} locale={locale} snapshot={snapshot} />

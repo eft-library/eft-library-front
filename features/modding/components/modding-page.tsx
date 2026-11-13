@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
@@ -439,9 +439,17 @@ function Workbench({
     [builds.content],
   );
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const [tab, setTab] = useState<"build" | "presets">(() =>
-    builds.initialPresetPending ? "presets" : "build",
-  );
+  const searchParams = useSearchParams();
+  const requestedTab = searchParams.get("tab");
+  const tab: "build" | "presets" = requestedTab === "presets" ||
+    (requestedTab !== "build" && builds.initialPresetPending) ? "presets" : "build";
+  const setTab = useCallback((value: "build" | "presets", replace = false) => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("tab") === value) return;
+    url.searchParams.set("tab", value);
+    if (replace) window.history.replaceState(null, "", url);
+    else window.history.pushState(null, "", url);
+  }, []);
   const initialPresetHandled = useRef(false);
   const [presetId, setPresetId] = useState(
     () =>
@@ -466,7 +474,7 @@ function Workbench({
     ownerId,
     slotId,
     presetId,
-    tab,
+    builds.initialPresetPending ? "presets" : tab,
   );
   const snapshot = data.snapshot;
   const slots = useMemo(
@@ -490,9 +498,11 @@ function Workbench({
     const action = initialPresetAction(preset);
     if (action === "confirm") {
       void importPreset(preset, 0).then(() => {
-        setTab("build");
+        if (requestedTab !== "presets") setTab("build", true);
         setActiveKey(null);
       });
+    } else if (requestedTab !== "build") {
+      setTab("presets", true);
     }
     // Ambiguous or incomplete defaults stay in the preset panel for explicit
     // selection/inspection. No first-candidate or partial import is automatic.
@@ -501,6 +511,8 @@ function Workbench({
     initialPresetPending,
     finishInitialPreset,
     importPreset,
+    requestedTab,
+    setTab,
   ]);
   return (
     <>
