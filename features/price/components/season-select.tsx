@@ -6,6 +6,7 @@ import type { PriceSeason } from "@/types/api/price";
 const copy = {
   ko: {
     label: "시즌",
+    select: "시즌 선택",
     current: "현재",
     empty: "등록된 시즌 없음",
     loading: "시즌 불러오는 중",
@@ -14,6 +15,7 @@ const copy = {
   },
   en: {
     label: "Season",
+    select: "Select a season",
     current: "Current",
     empty: "No seasons available",
     loading: "Loading seasons",
@@ -22,6 +24,7 @@ const copy = {
   },
   ja: {
     label: "シーズン",
+    select: "シーズンを選択",
     current: "現在",
     empty: "シーズンがありません",
     loading: "シーズンを読み込み中",
@@ -60,7 +63,7 @@ export function SeasonSelect({
         >
           {!value ? (
             <option value="">
-              {isLoading ? text.loading : isError ? text.error : text.empty}
+              {isLoading ? text.loading : isError ? text.error : seasons.length ? text.select : text.empty}
             </option>
           ) : null}
           {seasons.map((season) => (

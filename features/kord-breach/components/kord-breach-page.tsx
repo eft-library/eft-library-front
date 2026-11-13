@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { RewardsTab } from "./rewards-tab";
 import { signIn, useSession } from "next-auth/react";
 import { BookMarked, LoaderCircle, RotateCcw, Save, Shuffle, Trash2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -72,11 +73,13 @@ export function KordBreachPage({ modifiers, locale }: { modifiers: KordBreachMod
     <main className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-5">
         <div><p className="text-xs font-bold tracking-[0.28em] text-orange-600 dark:text-orange-400">KORD · BREACH</p><h1 className="mt-1 text-xl font-black tracking-tight">{t.title}</h1></div>
+        <RewardsTab locale={locale}>
         {message && <div role="status" className="rounded-lg border border-orange-300 bg-orange-50 px-4 py-3 text-sm text-orange-800 dark:border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-200">{message}</div>}
         <StatusPanel t={t} positives={positives} negatives={negatives} total={total} busy={busy} onRemove={toggle} onRandom={randomize} onPresets={() => setPresetOpen(true)} onReset={() => setSelected(new Set())} />
         <ModifierSection title={t.global} subtitle="GLOBAL MODIFIERS" tone="global" description="모든 플레이어에게 기본 적용되며 점수 계산과 프리셋 저장에는 포함되지 않습니다." items={modifiers.globalModifiers} locale={locale} selected={selected} blocked={blocked} />
         <ModifierSection title={t.positive} subtitle="PERSONAL POSITIVE" tone="positive" description="선택하면 점수가 감소합니다. 총점이 0 이상이어야 PASS입니다." items={modifiers.positiveModifiers} locale={locale} selected={selected} blocked={blocked} onToggle={toggle} />
         <ModifierSection title={t.negative} subtitle="PERSONAL NEGATIVE" tone="negative" description="선택하면 긍정효과에 사용할 점수를 얻습니다." items={modifiers.negativeModifiers} locale={locale} selected={selected} blocked={blocked} onToggle={toggle} />
+        </RewardsTab>
       </div>
       {presetOpen && <PresetDialog presets={presets} selected={[...selected]} accessToken={session?.accessToken} authLoading={status === "loading"} busy={busy} setBusy={setBusy} onClose={() => setPresetOpen(false)} onLoad={loadPreset} onChange={setPresets} />}
     </main>
