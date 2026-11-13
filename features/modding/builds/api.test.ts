@@ -107,3 +107,30 @@ test("build API contract: auth, revision/version, no-store, stable request IDs a
     globalThis.fetch = original;
   }
 });
+
+test("my builds sends server-side title/weapon filters and preserves filtered totals/pages", async () => {
+  const original = globalThis.fetch;
+  const signal = new AbortController().signal;
+  const requests: URL[] = [];
+  globalThis.fetch = async (input, init) => {
+    const url = new URL(String(input));
+    requests.push(url);
+    assert.ok(url.pathname.endsWith("/builds/mine"));
+    assert.equal(new Headers(init?.headers).get("Authorization"), "Bearer owner-token");
+    assert.equal(init?.cache, "no-store");
+    assert.equal(init?.signal, signal);
+    return Response.json({ status: 200, msg: "OK", data: { total: 31, page: 2, page_size: 20, builds: [] } });
+  };
+  try {
+    const page = await buildsApi.mine(2, "owner-token", signal, { word: "  M4 & 100%_테스트  ", weapon_item_id: "weapon/id" });
+    assert.equal(requests[0].searchParams.get("word"), "M4 & 100%_테스트");
+    assert.equal(requests[0].searchParams.get("weapon_item_id"), "weapon/id");
+    assert.equal(requests[0].searchParams.get("page"), "2");
+    assert.equal(requests[0].searchParams.get("page_size"), "20");
+    assert.equal(page.total, 31);
+    assert.equal(page.page, 2);
+    await buildsApi.mine(1, "owner-token", signal, { word: "   " });
+    assert.equal(requests[1].searchParams.has("word"), false);
+    assert.equal(requests[1].searchParams.has("weapon_item_id"), false);
+  } finally { globalThis.fetch = original; }
+});

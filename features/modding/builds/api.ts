@@ -72,10 +72,12 @@ const idPath = (id: string) => `/${encodeURIComponent(id)}`;
 export const buildsApi = {
   list: (params: URLSearchParams, signal: AbortSignal) =>
     buildRequest<PublicBuildPage>(`?${params}`, undefined, { signal }),
-  mine: (page: number, token: string, signal: AbortSignal) =>
-    buildRequest<OwnBuildPage>(`/mine?page=${page}&page_size=20`, token, {
-      signal,
-    }),
+  mine: (page: number, token: string, signal: AbortSignal, filters: { word?: string; weapon_item_id?: string } = {}) => {
+    const params = new URLSearchParams({ page: String(page), page_size: "20" });
+    if (filters.word?.trim()) params.set("word", filters.word.trim());
+    if (filters.weapon_item_id) params.set("weapon_item_id", filters.weapon_item_id);
+    return buildRequest<OwnBuildPage>(`/mine?${params}`, token, { signal });
+  },
   detail: (
     id: string,
     view: "draft" | "published",

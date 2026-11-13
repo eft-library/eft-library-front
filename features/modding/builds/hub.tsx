@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Box } from "lucide-react";
+import { Box, Trash2 } from "lucide-react";
 import { weaponPreviewImage } from "../default-preset";
 import { getWeapons } from "../api";
 import type { ItemSummary } from "../types";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { itemName } from "../build";
 import { buildsApi, buildsKey } from "./api";
+import { getOwnedBuildSummaries } from "./ownership";
 import { useBuilds } from "./provider";
 import { BuildLoginNotice } from "./editor-panel";
 import {
@@ -22,14 +23,23 @@ import { BuildDetail } from "./public-detail";
 
 export function BuildsHub() {
   const b = useBuilds();
-  const [page, setPage] = useState(1);
+  const mine = b.screen === "mine";
+  const [minePage, setMinePage] = useState(1);
+  const [publicPage, setPublicPage] = useState(1);
+  const page = mine ? minePage : publicPage;
+  const setPage = mine ? setMinePage : setPublicPage;
+  const [mineWord, setMineWord] = useState("");
+  const [mineSearch, setMineSearch] = useState("");
   const [word, setWord] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
   const [period, setPeriod] = useState("month");
   const [filterWeapon, setFilterWeapon] = useState(false);
+  const [mineFilterWeapon, setMineFilterWeapon] = useState(false);
+  const mineWeaponId = mineFilterWeapon ? b.content?.weapon_item_id : undefined;
   const [detailId, setDetailId] = useState<string | null>(null);
-  const mine = b.screen === "mine";
+  const selectionScope = `${b.account}:${mine}:${page}:${mineSearch}:${mineWeaponId ?? ""}`;
+  const [selection, setSelection] = useState<{ scope: string; ids: Set<string> }>({ scope: "", ids: new Set() });
   const weaponId = filterWeapon ? b.content?.weapon_item_id : undefined;
   const params = new URLSearchParams({
     page: String(page),
@@ -46,14 +56,44 @@ export function BuildsHub() {
     staleTime: 0,
     retry: false,
   });
+  const ownership = useQuery({
+    queryKey: [...buildsKey, b.account, "ownership"],
+    queryFn: ({ signal }) => getOwnedBuildSummaries(b.token, signal),
+    enabled: !mine && b.canWrite,
+    staleTime: 30_000,
+    gcTime: 0,
+    retry: false,
+  });
   const own = useQuery({
-    queryKey: [...buildsKey, b.account, "mine", page],
-    queryFn: ({ signal }) => buildsApi.mine(page, b.token, signal),
+    queryKey: [...buildsKey, b.account, "mine", mineSearch, mineWeaponId, minePage, 20],
+    queryFn: ({ signal }) => buildsApi.mine(minePage, b.token, signal, { word: mineSearch, weapon_item_id: mineWeaponId }),
     enabled: mine && b.canWrite,
     staleTime: 0,
     gcTime: 0,
     retry: false,
   });
+  const visibleBuilds = own.data?.builds ?? [];
+  const selectedBuilds = visibleBuilds.filter((build) => selection.scope === selectionScope && selection.ids.has(build.id));
+  function selectBuild(id: string, checked: boolean) {
+    setSelection((current) => {
+      const ids = new Set(current.scope === selectionScope ? current.ids : []);
+      if (checked) ids.add(id); else ids.delete(id);
+      return { scope: selectionScope, ids };
+    });
+  }
+  async function deleteSelected() {
+    const result = await b.discardBuilds(selectedBuilds);
+    if (!result) return;
+    setSelection({ scope: selectionScope, ids: new Set(result.failed.map((item) => item.id)) });
+    if (result.deleted.length === visibleBuilds.length && page > 1) setPage((value) => value - 1);
+  }
+  const ownedById = new Map(ownership.data?.map((build) => [build.id, build]));
+  async function deleteFromList(build: OwnBuildSummary) {
+    if (await b.discardBuild(build)) {
+      if ((mine ? own.data?.builds.length : list.data?.builds.length) === 1 && page > 1)
+        setPage((value) => value - 1);
+    }
+  }
   const weapons = useQuery({
     queryKey: ["modding", "weapons"],
     queryFn: ({ signal }) => getWeapons(signal),
@@ -86,16 +126,15 @@ export function BuildsHub() {
           {b.t("새로고침", "Refresh", "更新")}
         </button>
       </div>
-      {mine ? (
-        <BuildLoginNotice />
-      ) : (
+      {mine && <BuildLoginNotice />}
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            setSearch(word.trim());
+            if (mine) setMineSearch(mineWord.trim()); else setSearch(word.trim());
             setPage(1);
+            setSelection({ scope: "", ids: new Set() });
           }}
-          className="mb-5 flex flex-wrap items-center gap-2"
+          className="mb-5 flex flex-wrap items-center gap-2 lg:flex-nowrap"
         >
           <input
             aria-label={b.t(
@@ -103,22 +142,27 @@ export function BuildsHub() {
               "Search build titles",
               "ビルド名で検索",
             )}
-            className={`${buildField} sm:max-w-72`}
+            className={`${buildField.replace("w-full", "")} h-10 min-w-0 flex-1 basis-48 text-sm`}
             maxLength={200}
-            value={word}
-            onChange={(e) => setWord(e.target.value)}
+            value={mine ? mineWord : word}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (mine) { setMineWord(value); if (!value) { setMineSearch(""); setMinePage(1); } }
+              else { setWord(value); if (!value) { setSearch(""); setPublicPage(1); } }
+            }}
             placeholder={b.t(
               "빌드 제목 검색",
               "Search build titles",
               "ビルド名で検索",
             )}
           />
-          <button className={buildButton} type="submit">
+          <button className={`${buildButton} h-10 shrink-0 whitespace-nowrap text-sm`} type="submit">
             {b.t("검색", "Search", "検索")}
           </button>
+          {!mine && <>
           <select
             aria-label={b.t("정렬", "Sort", "並び順")}
-            className={`${buildField} w-auto`}
+            className={`${buildField.replace("w-full", "")} h-10 w-auto shrink-0 text-sm`}
             value={sort}
             onChange={(e) => {
               setSort(e.target.value);
@@ -134,7 +178,7 @@ export function BuildsHub() {
               "Vote scoring period",
               "投票集計期間",
             )}
-            className={`${buildField} w-auto`}
+            className={`${buildField.replace("w-full", "")} h-10 w-auto shrink-0 text-sm`}
             value={period}
             onChange={(e) => {
               setPeriod(e.target.value);
@@ -151,29 +195,25 @@ export function BuildsHub() {
               {b.t("전체 기간", "All time", "全期間")}
             </option>
           </select>
+          </>}
           {b.content && (
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm">
               <input
                 type="checkbox"
-                checked={filterWeapon}
+                checked={mine ? mineFilterWeapon : filterWeapon}
                 onChange={(e) => {
-                  setFilterWeapon(e.target.checked);
+                  if (mine) setMineFilterWeapon(e.target.checked); else setFilterWeapon(e.target.checked);
+                  setSelection({ scope: "", ids: new Set() });
                   setPage(1);
                 }}
               />
               {b.t("선택 총기만", "Selected weapon only", "選択武器のみ")}
             </label>
           )}
-          <p className="w-full text-xs text-foreground dark:text-white">
-            {b.t(
-              "기간은 추천 집계 범위입니다. 해당 기간에 작성된 빌드만 표시하는 필터가 아닙니다.",
-              "The period controls vote scoring, not build creation dates.",
-              "期間は投票の集計範囲で、作成日の絞り込みではありません。",
-            )}
-          </p>
         </form>
-      )}
+      {b.message && <p role="status" className="mb-3 text-sm">{b.message}</p>}
       <BuildError error={b.error} locale={b.locale} />
+      {!mine && b.canWrite && <BuildError error={ownership.error} locale={b.locale} retry={() => void ownership.refetch()} />}
       <BuildError
         error={query.error}
         locale={b.locale}
@@ -189,6 +229,19 @@ export function BuildsHub() {
       )}
       {mine ? (
         <div className="space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line bg-surface-elevated p-3">
+            <label className="flex min-h-10 items-center gap-2 text-sm">
+              <input type="checkbox" checked={visibleBuilds.length > 0 && selectedBuilds.length === visibleBuilds.length} ref={(node) => { if (node) node.indeterminate = selectedBuilds.length > 0 && selectedBuilds.length < visibleBuilds.length; }}
+                disabled={!b.canWrite || b.pending || own.isFetching || !visibleBuilds.length}
+                onChange={(event) => setSelection({ scope: selectionScope, ids: new Set(event.target.checked ? visibleBuilds.map((build) => build.id) : []) })}
+                className="size-4 accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />
+              {b.t("현재 페이지 전체 선택", "Select this page", "このページを全選択")}
+            </label>
+            <button type="button" onClick={() => void deleteSelected()} disabled={!b.canWrite || b.pending || own.isFetching || !selectedBuilds.length}
+              className={`${buildButton} text-red-700 hover:border-red-400 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/40`}>
+              <Trash2 className="size-4" />{b.t("선택 삭제", "Delete selected", "選択項目を削除")} ({selectedBuilds.length})
+            </button>
+          </div>
           {own.data?.builds.map((build) => {
             const weapon = weapons.data?.list.weapons.find(
               (row) => row.item.id === build.weapon_item_id,
@@ -200,6 +253,9 @@ export function BuildsHub() {
                 weapon={weapon?.item}
                 previewImage={weapon ? weaponPreviewImage(weapon) : undefined}
                 sourceReady={weapons.isFetched}
+                checked={selectedBuilds.some((selected) => selected.id === build.id)}
+                onSelect={(checked) => selectBuild(build.id, checked)}
+                selectionDisabled={own.isFetching}
               />
             );
           })}
@@ -207,10 +263,11 @@ export function BuildsHub() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {list.data?.builds.map((build) => (
+            <article key={build.id} className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-line">
             <button
-              key={build.id}
+              type="button"
               onClick={() => setDetailId(build.id)}
-              className="overflow-hidden rounded-xl border border-line text-left hover:border-accent/50 hover:shadow-md focus-visible:outline-2 focus-visible:outline-accent"
+              className="min-w-0 flex-1 text-left hover:bg-surface-elevated/50 focus-visible:outline-2 focus-visible:outline-accent"
             >
               <div className="flex h-36 items-center justify-center bg-surface-elevated/60 p-5">
                 {build.weapon.image ? (
@@ -249,15 +306,17 @@ export function BuildsHub() {
                 </div>
               </div>
             </button>
+            {b.canWrite && ownedById.has(build.id) && <div className="flex justify-end border-t border-line p-3"><DeleteBuildButton title={build.title} disabled={b.pending || ownership.isFetching} onClick={() => { const owned = ownedById.get(build.id); if (owned) void deleteFromList(owned); }} /></div>}
+            </article>
           ))}
         </div>
       )}
       {query.data?.total === 0 && (
         <p className="py-12 text-center text-sm text-foreground dark:text-white">
           {b.t(
-            "표시할 빌드가 없습니다.",
-            "No builds to display.",
-            "表示するビルドがありません。",
+            mineSearch && mine ? "검색 결과가 없습니다." : "표시할 빌드가 없습니다.",
+            mineSearch && mine ? "No matching builds." : "No builds to display.",
+            mineSearch && mine ? "検索結果がありません。" : "表示するビルドがありません。",
           )}
         </p>
       )}
@@ -279,11 +338,17 @@ function OwnBuildCard({
   weapon,
   sourceReady,
   previewImage,
+  checked,
+  onSelect,
+  selectionDisabled,
 }: {
   build: OwnBuildSummary;
   weapon?: ItemSummary;
   sourceReady: boolean;
   previewImage?: string | null;
+  checked: boolean;
+  onSelect: (checked: boolean) => void;
+  selectionDisabled: boolean;
 }) {
   const b = useBuilds();
   const current =
@@ -311,12 +376,15 @@ function OwnBuildCard({
       (node) => !node.parent_node_id && node.item_id === build.weapon_item_id,
     )?.item;
   return (
+    <article className={`flex items-center gap-1 overflow-hidden rounded-xl border pl-3 ${checked ? "border-accent bg-orange-50/60 dark:bg-orange-950/20" : "border-line"}`}>
+    <input type="checkbox" aria-label={`${build.title} · ${b.t("선택", "Select", "選択")}`} checked={checked} onChange={(event) => onSelect(event.target.checked)} disabled={!b.canWrite || b.pending || selectionDisabled} className="size-4 shrink-0 accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />
     <button
+      type="button"
       disabled={b.pending}
       onClick={() => void b.open(build.id)}
-      className="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left hover:border-accent/50 hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-70 sm:gap-4 sm:p-4"
+      className="flex min-w-0 flex-1 items-center gap-3 p-3 text-left hover:border-accent/50 hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-70 sm:gap-4 sm:p-4"
     >
-      <div className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg bg-surface-elevated/60 p-2 sm:w-36">
+      <div className="flex h-14 w-20 shrink-0 items-center justify-center rounded-lg bg-surface-elevated/60 p-2 sm:w-24">
         {previewImage || root?.image ? (
           <Image
             unoptimized
@@ -365,5 +433,11 @@ function OwnBuildCard({
         {b.t("편집", "Edit", "編集")}
       </span>
     </button>
+    </article>
   );
+}
+
+function DeleteBuildButton({ title, disabled, onClick }: { title: string; disabled: boolean; onClick: () => void }) {
+  const b = useBuilds();
+  return <button type="button" disabled={disabled} onClick={onClick} aria-label={`${title} · ${b.t("빌드 삭제", "Delete build", "ビルド削除")}`} className={`${buildButton} text-sm text-red-700 hover:border-red-400 hover:bg-red-50 dark:text-red-300 dark:hover:border-red-500 dark:hover:bg-red-950/40`}><Trash2 className="size-4" />{b.t("삭제", "Delete", "削除")}</button>;
 }

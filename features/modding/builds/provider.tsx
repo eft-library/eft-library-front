@@ -23,6 +23,7 @@ import {
 } from "./history";
 import { importPresetContent } from "./preset-import";
 import { savePublicBuild } from "./publication";
+import { deleteBuildBatch, type DeleteTarget } from "./batch-delete";
 import { buildInput, mountPart, newContent, removeNode } from "./tree";
 import { buildText, ConfirmBuildAction } from "./ui";
 
@@ -272,29 +273,53 @@ function useBuildState(
       );
     }
   }
-  async function discardBuild() {
-    if (
-      !workspace ||
-      !canWrite ||
-      !(await confirm(
-        t(
-          "이 빌드와 공개본·추천·댓글을 삭제할까요? 복구할 수 없습니다.",
-          "Delete this build, its publications, votes and comments? This cannot be undone.",
-          "ビルド・公開版・投票・コメントを削除しますか？元に戻せません。",
-        ),
-      ))
-    )
-      return;
-    const result = await perform(() =>
-      buildsApi.delete(workspace.id, workspace.version, token),
-    );
-    if (result) {
+  async function discardBuild(target?: { id: string; title: string; version: number }) {
+    const selected = target ?? (workspace ? { id: workspace.id, title: workspace.content.title, version: workspace.version } : null);
+    if (!selected || !canWrite || busy.current) return false;
+    if (!(await confirm(
+      `${selected.title}\n` + t(
+        "이 빌드와 공개본·추천·댓글을 삭제할까요? 복구할 수 없습니다.",
+        "Delete this build, its publications, votes and comments? This cannot be undone.",
+        "ビルド・公開版・投票・コメントを削除しますか？元に戻せません。",
+      ) + (workspace?.id === selected.id && dirty ? "\n" + t(
+        "이 빌드의 저장하지 않은 편집도 사라집니다.",
+        "Unsaved edits for this build will also be discarded.",
+        "このビルドの未保存の編集も破棄されます。",
+      ) : ""),
+    ))) return false;
+    const result = await perform(() => buildsApi.delete(selected.id, selected.version, token));
+    if (!result) return false;
+    if (workspace?.id === selected.id) {
       setWorkspace(null);
       setContent(null);
       setBaseline("");
-      setScreen("mine");
+      if (!target) setScreen("mine");
       if (pathname !== "/modding") router.push("/modding");
     }
+    return true;
+  }
+  async function discardBuilds(targets: DeleteTarget[]) {
+    if (!targets.length || !canWrite || busy.current) return;
+    const unique = [...new Map(targets.map((target) => [target.id, target])).values()];
+    const includesCurrent = unique.some((target) => target.id === workspace?.id);
+    if (!(await confirm(
+      t(`선택한 빌드 ${unique.length}개와 공개본·추천·댓글을 삭제할까요? 복구할 수 없습니다.`,
+        `Delete ${unique.length} selected builds, their publications, votes and comments? This cannot be undone.`,
+        `選択した${unique.length}件のビルド・公開版・投票・コメントを削除しますか？元に戻せません。`) +
+      "\n" + unique.map((target) => `• ${target.title}`).join("\n") +
+      (includesCurrent && dirty ? "\n" + t("현재 빌드의 저장하지 않은 편집도 사라집니다.", "Unsaved edits for the current build will also be discarded.", "現在のビルドの未保存の編集も破棄されます。") : ""),
+    ))) return;
+    const result = await perform(() => deleteBuildBatch(unique, (target) => buildsApi.delete(target.id, target.version, token)));
+    if (!result) return;
+    if (workspace && result.deleted.includes(workspace.id)) {
+      setWorkspace(null); setContent(null); setBaseline("");
+      if (pathname !== "/modding") router.push("/modding");
+    }
+    setError(result.failed[0]?.error ?? null);
+    setMessage(t(`삭제 완료 ${result.deleted.length}개 · 삭제하지 못한 항목 ${result.failed.length}개`,
+      `Deleted ${result.deleted.length} · Not deleted ${result.failed.length}`,
+      `削除済み ${result.deleted.length}件 · 未削除 ${result.failed.length}件`));
+    return result;
   }
   async function copy(id: string, revision: number) {
     if (!canWrite || !(await mayReplace())) return;
@@ -431,6 +456,7 @@ function useBuildState(
     open,
     save,
     discardBuild,
+    discardBuilds,
     copy,
     edit,
     mount,

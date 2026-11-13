@@ -129,3 +129,31 @@ pnpm dlx tsx@4.20.6 script/check-preset-reconstruction.ts
 Verification: TypeScript, targeted ESLint and 45 offline regression tests passed. Live calculation returned HTTP 200. Native Edge rendered the M4 default 13-node build with 2.849kg, ergonomics 55 and recoil 78/224; a later 25-node configuration also displayed updated calculated values. No production build was saved or published. The observed theme was dark; mobile and light-theme interaction QA remain to be completed. A full production build was not run in this change.
 
 Data limitation: the supplied M4 snapshot has the `ballistics` field but null source values. The live calculation correspondingly returns null accuracy with `MISSING_SOURCE_VALUE`, and null muzzle velocity with the documented unverified-formula/missing-source reasons. The frontend preserves these nulls. Airflow/source ingestion must populate missing values to make supported metrics available; a verified velocity formula is a separate backend requirement.
+
+
+## Delete from build lists — 2026-11-13
+
+- My builds uses compact selectable rows and a Delete selected action, with Select this page and a selected count. Public build cards retain individual delete buttons only for IDs present in the authenticated owner's list. Public list responses remain anonymous; paginated private ownership lookup is account-scoped and ephemeral, and does not infer ownership from a nickname or published revision.
+- The existing confirmation now accepts an explicit target ID/title/workspace version. It explains that the workspace, publication, votes and comments are removed together, and warns about unsaved edits when the target is the open workspace. Card navigation and deletion are separate sibling buttons.
+- DELETE uses the reviewed workspace version, without automatic replay or refreshing a version to silently retry. Existing 409 handling refreshes the lists and preserves edits. Successful deletion invalidates build queries; deleting the last entry on a later page moves back one page. An unrelated open workspace is preserved.
+- Ownership pagination/error handling and existing build API/undo/storage behavior are covered by offline tests. No live build was deleted during implementation.
+
+
+### Selected deletion in My builds
+
+- Selection is scoped to account/view/page and submitted only for visible rows. A single confirmation lists all selected titles and explains removal of workspace/publication/votes/comments plus any open unsaved edits. Public-list per-card deletion remains available.
+- Uses the existing versioned DELETE sequentially, with one final query invalidation. Per-record 404/409 failures do not prevent deleting other selections; authentication, service, permission and network failures stop remaining requests. Requests are never automatically retried or replayed with a newer version.
+- Successes are removed; failures/unattempted rows remain selected if still present. The result reports deleted/not-deleted counts, and a fully emptied later page moves back one page. Only a successfully deleted open workspace is cleared; unrelated edits and a failed current target are preserved.
+- Batch sequencing, expected-version preservation, partial conflicts and stopping after authentication/service/network failures are covered by mocked regression tests. No production records were deleted during verification.
+
+
+## Build-list search and compact public filters — 2026-11-13
+
+- My builds sends submitted title searches and optional selected-weapon filters to `/api/modding/v3/builds/mine?word=...&weapon_item_id=...&page=...&page_size=20`. The backend supplies filtered totals and pages. Search/Enter or weapon changes reset to page one; clearing restores the list. Public and private search/page/filter states stay separate. The former local filtering helper was removed.
+- Selection/deletion is limited to visible search results; changing the submitted search clears selection. Existing batch version checks and partial-failure handling remain in place.
+- Public title search, sort, vote period and selected-weapon filter form one desktop row. Narrow layouts wrap naturally. The formerly full-width period explanation is an accessible inline help icon/description. Inputs and selects retain theme-aware focus and foreground styles.
+
+
+### Server-side My builds search
+
+Requires deployment of the updated `/mine` backend contract (optional word and weapon_item_id). Private query keys include account, submitted search, selected weapon, page and page size; requests are authenticated/no-store and abortable. Only the visible page is loaded in My builds. Public ownership detection separately retains its unfiltered private pagination. Batch selection is scoped to search and weapon filters and continues using reviewed versions. Contract tests verify encoding of literal %, _, &, multilingual text, omitted blank filters and server totals/pages.
