@@ -1,70 +1,120 @@
 import type { BuildSlot } from "./build";
+import type { WeaponSnapshot } from "./types";
 
-type Zone = "front" | "frontLow" | "top" | "rearTop" | "rearHigh" | "rear" | "bottom";
-const kinds: Record<string, [Zone, number]> = {
-  mod_reciever: ["front", 1], mod_receiver: ["front", 1], mod_handguard: ["front", 2],
-  mod_barrel: ["front", 3], mod_sight_front: ["front", 4], mod_muzzle: ["front", 5],
-  mod_gas_block: ["frontLow", 1], mod_foregrip: ["frontLow", 2], mod_tactical: ["frontLow", 3],
-  mod_flashlight: ["frontLow", 3], mod_scope: ["top", 1], mod_sight_rear: ["rearTop", 1],
-  mod_charge: ["rearHigh", 1], mod_stock: ["rear", 2], mod_magazine: ["bottom", 1],
-  mod_pistol_grip: ["bottom", 2], mod_pistolgrip: ["bottom", 2],
-};
-const zoneOrder: Zone[] = ["front", "frontLow", "top", "rearTop", "rearHigh", "rear", "bottom"];
-export interface PositionedSlot { entry: BuildSlot; col: number; row: number; x: number; y: number }
+export const TILE_WIDTH = 96;
+export const TILE_HEIGHT = 104;
+export const COLUMN_PITCH = 110;
+export const ROW_PITCH = 118;
+export const WEAPON_WIDTH = 296;
+export const slotKind = (name: string) => name.replace(/^mod_/, "").replace(/_?\d+$/, "").replace("receiver", "reciever");
+export type SlotArea = "axis" | "rearAxis" | "top" | "rail" | "bottom" | "rear";
+export interface PositionedSlot {
+  entry: BuildSlot; col: number; row: number; x: number; y: number;
+  parentKey: string | null; area: SlotArea;
+}
 export interface WorkbenchLayout { slots: PositionedSlot[]; height: number; weaponCol: number }
-type Cell = { col: number; row: number };
-function zoneCells(zone: Zone, rows: number): Cell[] {
-  const cells: Cell[] = [];
-  const add = (row: number, cols: number[]) => cols.forEach((col) => cells.push({ col, row }));
-  const left = [4, 3, 2, 1, 0], right = [8, 9, 10, 11, 12], center = [6, 7, 5];
-  if (zone === "front") add(1, left);
-  else if (zone === "frontLow") add(2, left);
-  else if (zone === "top") add(0, [6, 5, 4, 3, 2, 1, 0]);
-  else if (zone === "rearTop") add(0, [7, ...right]);
-  else if (zone === "rearHigh") add(0, right);
-  else if (zone === "rear") { add(1, right); add(2, right); }
-  for (let row = 3; row < rows; row++) add(row,
-    zone === "front" || zone === "frontLow" ? left : zone === "top" || zone === "bottom" ? center : right);
-  return cells;
+const topKinds = new Set(["scope", "sight_rear", "sight_front", "charge"]);
+const railKinds = new Set(["tactical", "flashlight", "foregrip", "bipod"]);
+
+export function layoutSlots(slots: BuildSlot[], previous?: WorkbenchLayout, snapshot?: Pick<WeaponSnapshot, "items" | "slot_candidates">): WorkbenchLayout {
+  const byKey = new Map(slots.map((entry) => [entry.key, entry]));
+  const parentKey = (entry: BuildSlot) => {
+    const key = entry.key.slice(0, entry.key.lastIndexOf("/"));
+    return byKey.has(key) ? key : null;
+  };
+  const children = (entry: BuildSlot) => slots.filter((slot) => parentKey(slot) === entry.key);
+  const kind = (entry: BuildSlot) => slotKind(entry.slot.name_id);
+  const filledFirst = (entries: BuildSlot[]) => entries.find((entry) => entry.selected) ?? entries[0];
+  const front: BuildSlot[] = [];
+  for (const name of ["reciever", "barrel", "handguard", "gas_block", "muzzle"]) {
+    const entry = filledFirst(slots.filter((entry) => kind(entry) === name && !front.includes(entry)));
+    if (!entry) continue;
+    front.push(entry);
+    if (name === "muzzle") {
+      let child = filledFirst(children(entry).filter((slot) => kind(slot) === "muzzle"));
+      while (child && !front.includes(child)) {
+        front.push(child); child = filledFirst(children(child).filter((slot) => kind(slot) === "muzzle"));
+      }
+    }
+  }
+  const rear: BuildSlot[] = [];
+  let stock = filledFirst(slots.filter((entry) => !parentKey(entry) && kind(entry) === "stock"));
+  while (stock && !rear.includes(stock)) {
+    rear.push(stock); stock = filledFirst(children(stock).filter((entry) => kind(entry) === "stock"));
+  }
+  const axisAreas = new Map<string, SlotArea>([...front.map((entry) => [entry.key, "axis"] as const), ...rear.map((entry) => [entry.key, "rearAxis"] as const)]);
+  const occupied = new Set(["0,0", "1,0", "2,0"]);
+  const placed = new Map<string, PositionedSlot>();
+  const take = (entry: BuildSlot, col: number, row: number, area: SlotArea) => {
+    occupied.add(`${col},${row}`);
+    placed.set(entry.key, { entry, col, row, x: col * COLUMN_PITCH, y: row * ROW_PITCH, parentKey: parentKey(entry), area });
+  };
+  // Preserve surviving positions before placing new branches, including axis
+  // positions when the slot still belongs to the same axis.
+  for (const old of previous?.slots ?? []) {
+    const entry = byKey.get(old.entry.key);
+    const axis = axisAreas.get(old.entry.key);
+    if (entry && (axis ? old.row === 0 && old.area === axis : old.row !== 0) && !occupied.has(`${old.col},${old.row}`))
+      take(entry, old.col, old.row, axis ?? old.area);
+  }
+  for (const [entries, start, direction, area] of [[front, -1, -1, "axis"], [rear, 3, 1, "rearAxis"]] as const) {
+    let col = start;
+    for (const entry of entries) {
+      if (placed.has(entry.key)) continue;
+      while (occupied.has(`${col},0`)) col += direction;
+      take(entry, col, 0, area); col += direction;
+    }
+  }
+  function mountIsTop(entry: BuildSlot) {
+    const itemKinds = (id: string) => snapshot?.items[id]?.slots.map((slot) => slotKind(slot.name_id)) ?? [];
+    if (entry.selected) return itemKinds(entry.selected.id).includes("scope");
+    const candidates = snapshot?.slot_candidates[entry.slot.item_id]?.[entry.slot.slot_id]?.candidates ?? [];
+    const top = candidates.filter(({ item }) => itemKinds(item.id).includes("scope")).length;
+    const rail = candidates.filter(({ item }) => itemKinds(item.id).some((name) => railKinds.has(name))).length;
+    return top > rail;
+  }
+  const rootAnchors: Record<string, number> = { scope: 1, sight_rear: 2, sight_front: 0, charge: 2, magazine: 1, pistol_grip: 2, pistolgrip: 2 };
+  for (const entry of slots) {
+    if (placed.has(entry.key)) continue;
+    const name = kind(entry), parent = placed.get(parentKey(entry) ?? "");
+    let area: SlotArea;
+    if (name === "mount") area = mountIsTop(entry) ? "top" : parent?.area === "rear" || parent?.area === "rearAxis" ? "rear" : "rail";
+    // Document's recommended exception: optics-mounted tactical accessories
+    // stay above with their optic instead of appearing to belong to the body.
+    else if (railKinds.has(name)) area = parent?.area === "top" && ["tactical", "flashlight"].includes(name) ? "top" : "rail";
+    else if (topKinds.has(name)) area = "top";
+    else if (["magazine", "pistol_grip", "pistolgrip"].includes(name)) area = "bottom";
+    else if (name === "stock" || parent?.area === "rear" || parent?.area === "rearAxis") area = "rear";
+    else area = parent?.area === "top" ? "top" : "rail";
+    const up = area === "top";
+    let row = parent?.area === area ? parent.row + (up ? -1 : 1) : up ? -1 : 1;
+    const col = parent?.col ?? rootAnchors[name] ?? -1;
+    const side = area === "rear" || name === "charge" || name === "sight_rear" ? 1 : -1;
+    let found = false;
+    while (!found) {
+      for (const candidate of [col, ...[1, 2, 3, 4, 5, 6].map((step) => col + side * step), ...[1, 2, 3].map((step) => col - side * step)]) {
+        if (row !== 0 && !occupied.has(`${candidate},${row}`)) { take(entry, candidate, row, area); found = true; break; }
+      }
+      if (!found) row += up ? -1 : 1;
+    }
+  }
+  const result = slots.map((entry) => placed.get(entry.key)!);
+  const ys = [0, ...result.map((entry) => entry.y)];
+  return { slots: result, weaponCol: 0, height: Math.max(...ys) - Math.min(...ys) + TILE_HEIGHT };
 }
 
-export function layoutSlots(slots: BuildSlot[], previous?: WorkbenchLayout): WorkbenchLayout {
-  const assigned = new Map<string, [Zone, number]>();
-  const entries = slots.map((entry, index) => {
-    const parent = assigned.get(entry.key.slice(0, entry.key.lastIndexOf("/")));
-    const kind = entry.slot.name_id.replace(/_?\d+$/, "");
-    const placement: [Zone, number] = kinds[kind] ?? (parent ? [parent[0], parent[1] + 0.01] : ["bottom", 3]);
-    assigned.set(entry.key, placement);
-    return { entry, zone: placement[0], order: placement[1], index };
-  });
-  const occupied = new Set(["5,1", "6,1", "7,1", "5,2", "6,2", "7,2"]);
-  const placed = new Map<string, Cell>();
-  const active = new Set(slots.map((entry) => entry.key));
-  // Reserve surviving slots before allocating anything new. Removed children
-  // leave holes; other slots never compact into those holes during an edit.
-  for (const old of previous?.slots ?? []) {
-    const cell = `${old.col},${old.row}`;
-    if (active.has(old.entry.key) && !occupied.has(cell)) {
-      placed.set(old.entry.key, { col: old.col, row: old.row }); occupied.add(cell);
-    }
+export interface FlowBox { x: number; y: number; width: number; height: number }
+export function attachmentRoute(parent: FlowBox, child: FlowBox) {
+  const cx = child.x + child.width / 2, cy = child.y + child.height / 2;
+  const px = Math.max(parent.x + 14, Math.min(cx, parent.x + parent.width - 14));
+  if (Math.abs(parent.y + parent.height / 2 - cy) < 1) {
+    const left = child.x + child.width <= parent.x;
+    const gap = left ? parent.x - child.x - child.width : child.x - parent.x - parent.width;
+    if (gap <= 15) return { path: `M${left ? parent.x : parent.x + parent.width},${cy} H${left ? child.x + child.width : child.x}`, end: { x: left ? child.x + child.width : child.x, y: cy } };
+    return { path: `M${px},${parent.y} V${parent.y - 7} H${cx} V${child.y}`, end: { x: cx, y: child.y } };
   }
-  const rows = Math.max(slots.length + 4, ...(previous?.slots.map((slot) => slot.row + slots.length + 4) ?? []));
-  for (const zone of zoneOrder) {
-    for (const { entry } of entries.filter((entry) => entry.zone === zone).sort((a, b) => a.order - b.order || a.index - b.index)) {
-      if (placed.has(entry.key)) continue;
-      const parent = placed.get(entry.key.slice(0, entry.key.lastIndexOf("/")));
-      const cells = zoneCells(zone, rows).filter((cell) => !occupied.has(`${cell.col},${cell.row}`));
-      if (parent) cells.sort((a, b) =>
-        (Math.abs(a.col - parent.col) + Math.abs(a.row - parent.row) * 2) -
-        (Math.abs(b.col - parent.col) + Math.abs(b.row - parent.row) * 2));
-      const cell = cells[0];
-      if (!cell) throw new Error("No free workbench cell");
-      occupied.add(`${cell.col},${cell.row}`); placed.set(entry.key, cell);
-    }
-  }
-  const result = slots.map((entry) => {
-    const cell = placed.get(entry.key)!;
-    return { entry, ...cell, x: 20 + cell.col * 100, y: 40 + cell.row * 126 };
-  });
-  return { slots: result, weaponCol: 5, height: Math.max(600, previous?.height ?? 600, ...result.map(({ y }) => y + 140)) };
+  const up = cy < parent.y;
+  const y = up ? parent.y - 7 : parent.y + parent.height + 7;
+  const endY = up ? child.y + child.height : child.y;
+  return { path: `M${px},${up ? parent.y : parent.y + parent.height} V${y} H${cx} V${endY}`, end: { x: cx, y: endY } };
 }

@@ -18,8 +18,10 @@ export function useStatistics(content: StoredContent | null, generation: string)
     return () => clearTimeout(timer);
   }, [key]);
   const query = useQuery({
-    queryKey: ["modding-statistics", generation, weaponId, debounced],
-    queryFn: ({ signal }) => calculateStatistics(JSON.parse(debounced) as CalculationRequest, signal),
+    // Observe the requested configuration immediately, including cached previews.
+    // Debounce only network requests, not switching to an existing result.
+    queryKey: ["modding-statistics", generation, weaponId, key],
+    queryFn: ({ signal }) => calculateStatistics(JSON.parse(key) as CalculationRequest, signal),
     enabled: !!key && debounced === key,
     placeholderData: (previous, previousQuery) =>
       previousQuery?.queryKey[1] === generation && previousQuery.queryKey[2] === weaponId
@@ -29,7 +31,7 @@ export function useStatistics(content: StoredContent | null, generation: string)
   // Retain the last result while the next candidate is debounced/fetched.
   // Scope placeholders by weapon and generation so another weapon's stats cannot leak in.
   return { ...query, data: key ? query.data : undefined,
-    waiting: !!key && (debounced !== key || query.isPending || query.isPlaceholderData) };
+    waiting: !!key && (query.isPending || query.isPlaceholderData) };
 }
 
 const format = (value: number) => new Intl.NumberFormat("en", { maximumFractionDigits: 3 }).format(value);
@@ -98,36 +100,37 @@ export function WeaponStatisticsPanel({ current, preview, previewing, locale, sn
     };
     return labels[code] ? t(...labels[code]) : code;
   };
-  return <section className="relative z-0 [overflow-anchor:none] rounded-2xl border border-line bg-surface p-4 sm:p-5">
-    <div className="mb-4 flex h-8 items-center justify-between gap-3">
+  return <section className="relative z-0 [overflow-anchor:none] rounded-2xl border border-line bg-surface p-4">
+    <div className="mb-3 flex h-6 items-center justify-between gap-3">
       <h3 className="shrink-0 font-bold">{t("총기 성능", "Weapon statistics", "武器性能")}</h3>
       <p role={shown.isError && !shown.waiting ? "alert" : "status"} className={`min-w-0 flex-1 truncate text-right text-xs ${shown.isError && !shown.waiting ? "text-red-700 dark:text-red-300" : "text-gray-600 dark:text-gray-400"}`}>
         {shown.waiting ? (data ? t("수치 업데이트 중…", "Updating statistics…", "性能更新中…") : t("성능 계산 중…", "Calculating…", "計算中…")) : shown.isError ? t("성능 계산에 실패했습니다.", "Could not calculate statistics.", "性能計算に失敗しました。") : previewing ? t("미리보기 · 선택한 파츠를 장착했을 때", "Preview · with the selected part", "プレビュー · 選択パーツ装着時") : t("현재 구성 기준", "Current configuration", "現在の構成")}
       </p>
       {shown.isError && !shown.waiting && <button type="button" onClick={() => void shown.refetch()} className="h-8 shrink-0 rounded border border-line px-2 text-xs focus-visible:outline-2 focus-visible:outline-accent">{t("다시 시도", "Retry", "再試行")}</button>}
     </div>
-    <div className="grid gap-5 lg:grid-cols-[1fr_230px]">
-      <div className="grid grid-cols-2 gap-3">{metrics.map((metric) => {
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">{metrics.map((metric) => {
         const value = data?.statistics[metric.key];
         const before = current.data?.statistics[metric.key];
         const delta = showingPreview && value != null && before != null ? value - before : null;
         const good = delta !== null && (metric.up ? delta > 0 : delta < 0);
         const width = value == null ? 0 : Math.max(0, Math.min(100, value / metric.max * 100));
         const oldWidth = before == null ? width : Math.max(0, Math.min(100, before / metric.max * 100));
-        return <div key={metric.key}><div className="relative flex h-[34px] items-center justify-between gap-2 overflow-hidden rounded border border-line bg-background px-2 text-xs">
-          <div aria-hidden="true" className="absolute inset-y-0 left-0 bg-orange-500/15 transition-[width] duration-200 ease-out motion-reduce:transition-none" style={{ width: `${width}%` }} />
-          {delta !== null && delta !== 0 && <div aria-hidden="true" className={`absolute inset-y-0 transition-[left,width] duration-200 ease-out motion-reduce:transition-none ${good ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`} style={{ left: `${Math.min(oldWidth, width)}%`, width: `${Math.abs(width - oldWidth)}%`, backgroundImage: "repeating-linear-gradient(135deg, currentColor 0px, currentColor 1px, transparent 1px, transparent 5px)", opacity: 0.4 }} />}
+        return <div key={metric.key}><div className="relative flex h-[34px] items-center justify-between gap-2 overflow-hidden rounded border border-line bg-gray-100 px-2 text-xs dark:bg-[#1b1d21]">
+          <div aria-hidden="true" className="absolute inset-y-0 left-0 bg-gradient-to-r from-orange-100 to-orange-200 shadow-[inset_-2px_0_0_#f97316] dark:from-white/[0.04] dark:to-white/[0.14] dark:shadow-[inset_-2px_0_0_#fb923c] transition-[width] duration-200 ease-out motion-reduce:transition-none" style={{ width: `${width}%` }} />
+          {delta !== null && delta !== 0 && <div aria-hidden="true" className={`absolute inset-y-0 transition-[left,width] duration-200 ease-out motion-reduce:transition-none ${good ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`} style={{ left: `${Math.min(oldWidth, width)}%`, width: `${Math.abs(width - oldWidth)}%`, backgroundImage: "repeating-linear-gradient(135deg, currentColor 0px, currentColor 1.5px, transparent 1.5px, transparent 6px)" }} />}
           <span title={metric.label} className="relative min-w-0 truncate">{metric.label}</span><span className="relative shrink-0 font-mono text-[10px] tabular-nums sm:text-xs">{value == null ? "—" : `${format(value)} ${metric.unit}`}{delta !== null && delta !== 0 && <span className={`ml-1 ${good ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}`}>({delta > 0 ? "+" : ""}{format(delta)})</span>}</span>
-        </div><p className="mt-1 h-8 overflow-hidden text-[11px] leading-4 text-gray-600 dark:text-gray-400"><span className="line-clamp-2">{value === null ? [...new Set(data?.unavailable.filter((item) => item.metric === metric.key).map((item) => reason(item.code)))].join(" · ") || t("계산 불가", "Unavailable", "計算不可") : "\u00a0"}</span></p></div>;
+        </div>{value === null && <p className="mt-1 text-[11px] leading-4 text-gray-600 dark:text-gray-400">{[...new Set(data?.unavailable.filter((item) => item.metric === metric.key).map((item) => reason(item.code)))].join(" · ") || t("계산 불가", "Unavailable", "計算不可")}</p>}</div>;
       })}</div>
-      <dl className="space-y-3 text-xs">{[
+      <dl className="grid gap-2 text-xs sm:grid-cols-3">{[
         [t("발사 방식", "Fire modes", "射撃モード"), data?.statistics.fire_modes?.map((mode) => ({ single_fire: t("단발", "Single", "単発"), full_auto: t("연사", "Full auto", "連射"), burst_fire: t("점사", "Burst", "バースト"), double_action: t("더블 액션", "Double action", "ダブルアクション"), double_tap: t("더블 탭", "Double tap", "ダブルタップ"), semi_auto: t("반자동", "Semi-auto", "セミオート") }[mode] ?? mode)).join(" / ")],
-        [t("구경", "Caliber", "口径"), data?.statistics.caliber?.replace(/^Caliber/, "")],
         [t("발사 속도", "Fire rate", "連射速度"), data?.statistics.fire_rate_rpm == null ? null : `${data.statistics.fire_rate_rpm} RPM`],
-      ].map(([label, value]) => <div key={label} className="flex h-10 items-start justify-between gap-3 overflow-hidden border-b border-line pb-2"><dt className="text-gray-600 dark:text-gray-400">{label}</dt><dd title={value ?? undefined} className="line-clamp-2 min-w-0 text-right font-mono leading-4">{value ?? "—"}</dd></div>)}</dl>
+        [t("구경", "Caliber", "口径"), data?.statistics.caliber?.replace(/^Caliber/, "")],
+      ].map(([label, value]) => <div key={label} className="flex h-[34px] items-center justify-between gap-3 overflow-hidden rounded border border-line bg-background px-2"><dt className="text-gray-600 dark:text-gray-400">{label}</dt><dd title={value ?? undefined} className="line-clamp-2 min-w-0 text-right font-mono leading-4">{value ?? "—"}</dd></div>)}</dl>
     </div>
+    <div className="mt-3 flex flex-col items-start gap-2 sm:flex-row sm:justify-between">
     <Compatibility data={data} locale={locale} snapshot={snapshot} />
-    <p className="mt-4 text-[11px] text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p>
+    <p className="text-[10px] text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p></div>
   </section>;
 }
 function Compatibility({ data, locale, snapshot }: { data: CalculationResult | undefined; locale: Locale; snapshot: WeaponSnapshot }) {
@@ -141,7 +144,7 @@ function Compatibility({ data, locale, snapshot }: { data: CalculationResult | u
     UNRESOLVED_CONFLICT_SLOT: ["슬롯 충돌 정보가 불완전합니다", "Slot conflict information is incomplete", "スロット干渉情報が不完全です"],
     UNKNOWN_PARENT_SLOT: ["슬롯 정보를 찾을 수 없습니다", "Slot information missing", "スロット情報がありません"],
   };
-  return <details className={`mt-4 rounded-lg border border-line p-3 text-xs ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}><summary className="h-4 cursor-pointer truncate rounded leading-4 focus-visible:outline-2 focus-visible:outline-accent">{!data ? t("장착 규칙 확인 중…", "Checking attachment rules…", "装着ルール確認中…") : data.compatibility.status === "valid" ? t("저장된 장착 규칙 통과", "Stored attachment rules passed", "保存済み装着ルール適合") : data?.compatibility.status === "invalid" ? t("장착 규칙 위반 있음", "Attachment rule violations", "装着ルール違反あり") : t("장착 호환성 확인 불가", "Compatibility uncertain", "互換性未確認")}{data ? ` (${data.compatibility.issues.length})` : ""}</summary><div className="mt-2 h-40 overflow-y-auto"><p>{t("게임 클라이언트 전체 검증은 아닙니다.", "This is not full game-client validation.", "ゲームクライアント全体の検証ではありません。")}</p><ul className="mt-2 space-y-1">{data?.compatibility.issues.map((issue, index) => <li key={index} className="break-all">{issueLabels[issue.code] ? t(...issueLabels[issue.code]) : t("장착 규칙을 확인해주세요", "Check attachment rules", "装着ルールを確認してください")}{(() => {
+  return <details className={`max-w-full shrink-0 text-xs ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}><summary className="h-4 cursor-pointer truncate rounded leading-4 focus-visible:outline-2 focus-visible:outline-accent">{!data ? t("장착 규칙 확인 중…", "Checking attachment rules…", "装着ルール確認中…") : data.compatibility.status === "valid" ? t("저장된 장착 규칙 통과", "Stored attachment rules passed", "保存済み装着ルール適合") : data?.compatibility.status === "invalid" ? t("장착 규칙 위반 있음", "Attachment rule violations", "装着ルール違反あり") : t("장착 호환성 확인 불가", "Compatibility uncertain", "互換性未確認")}{data ? ` (${data.compatibility.issues.length})` : ""}</summary><div className="mt-2 h-40 overflow-y-auto"><p>{t("게임 클라이언트 전체 검증은 아닙니다.", "This is not full game-client validation.", "ゲームクライアント全体の検証ではありません。")}</p><ul className="mt-2 space-y-1">{data?.compatibility.issues.map((issue, index) => <li key={index} className="break-all">{issueLabels[issue.code] ? t(...issueLabels[issue.code]) : t("장착 규칙을 확인해주세요", "Check attachment rules", "装着ルールを確認してください")}{(() => {
     const definition = issue.slot_id ? Object.values(snapshot.items).flatMap((item) => item.slots).find((slot) => slot.slot_id === issue.slot_id) : undefined;
     const item = issue.item_id ? snapshot.items[issue.item_id]?.item : undefined;
     return definition ? ` · ${itemName(definition, locale)}` : item ? ` · ${itemName(item, locale)}` : "";

@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useId, useRef, useState } from "react";
+import { Save, X } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { itemName } from "../build";
 import { useBuilds } from "./provider";
@@ -38,6 +40,7 @@ export function BuildNavigation() {
           {id === "editor" && b.dirty ? " •" : ""}
         </button>
       ))}
+      {b.content && <BuildSaveDialog />}
     </div>
   );
 }
@@ -200,7 +203,7 @@ export function BuildEditorPanel() {
                     title: b.conflict.content.title,
                     description: b.conflict.content.description,
                     nodes: b.conflict.content.nodes.map(
-                      ({ item, ...node }) => node,
+                      ({ item: _item, ...node }) => node,
                     ),
                   },
                   null,
@@ -212,7 +215,7 @@ export function BuildEditorPanel() {
                   {
                     title: content.title,
                     description: content.description,
-                    nodes: content.nodes.map(({ item, ...node }) => node),
+                    nodes: content.nodes.map(({ item: _item, ...node }) => node),
                   },
                   null,
                   2,
@@ -311,4 +314,38 @@ export function BuildEditorPanel() {
       </details>
     </section>
   );
+}
+
+
+export function BuildSaveDialog() {
+  const b = useBuilds();
+  const [open, setOpen] = useState(false);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const hasContent = !!b.content;
+  useEffect(() => {
+    if (!open || !hasContent) return;
+    const element = dialog.current;
+    const returnFocus = trigger.current;
+    element?.showModal();
+    element?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    return () => { element?.close(); returnFocus?.focus({ preventScroll: true }); };
+  }, [open, hasContent]);
+  useEffect(() => { if (!hasContent) setOpen(false); }, [hasContent]);
+  if (!b.enabled || !b.content) return null;
+  const dismiss = () => { if (!b.pending && !b.confirmMessage) setOpen(false); };
+  return <>
+    <button ref={trigger} type="button" disabled={b.pending} onClick={() => setOpen(true)} className={`${buildButton} border-accent/50 text-orange-700 dark:text-orange-300`}><Save className="size-4" />{b.t("빌드 저장", "Save build", "ビルド保存")}{b.dirty ? " •" : ""}</button>
+    {open && <dialog ref={dialog} aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); dismiss(); }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const rect = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dismiss();
+      }}
+      className="m-auto max-h-[min(90dvh,52rem)] w-[min(94vw,48rem)] overflow-y-auto rounded-2xl border border-line bg-surface p-4 text-foreground shadow-2xl backdrop:bg-black/55 sm:p-6">
+      <div className="mb-3 flex items-center justify-between gap-3"><h2 id={titleId} className="font-bold">{b.t("빌드 저장", "Save build", "ビルド保存")}</h2><button type="button" onClick={dismiss} disabled={b.pending || !!b.confirmMessage} aria-label={b.t("닫기", "Close", "閉じる")} className={`${buildButton} p-2`}><X className="size-4" /></button></div>
+      <BuildEditorPanel />
+    </dialog>}
+  </>;
 }

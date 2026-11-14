@@ -95,14 +95,6 @@ function useBuildState(
         );
     };
   }, [account, queryClient]);
-  useEffect(() => {
-    if (!dirty) return;
-    const warn = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-    };
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [dirty]);
   function confirm(message: string): Promise<boolean> {
     return new Promise((resolve) => {
       confirmation.current?.(false);
@@ -179,7 +171,7 @@ function useBuildState(
     );
   }
   async function start(weapon: WeaponSummary) {
-    if (busy.current || !(await mayReplace())) return false;
+    if (busy.current) return false;
     const next = newContent(weapon);
     setInitialPresetPending(!!weapon.default_preset);
     setWorkspace(null);

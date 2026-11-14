@@ -8,7 +8,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Box,
-  Crosshair,
   Layers,
   LoaderCircle,
   RotateCcw,
@@ -26,7 +25,7 @@ import { PresetReconstructionPanel } from "./preset-reconstruction-panel";
 import { useWorkbenchData } from "../use-workbench-data";
 import { buildSlots, itemName } from "../build";
 import { useBuilds } from "../builds/provider";
-import { BuildNavigation, BuildEditorPanel } from "../builds/editor-panel";
+import { BuildNavigation } from "../builds/editor-panel";
 import { BuildsHub } from "../builds/hub";
 import { nodePaths, selectionsFromNodes } from "../builds/tree";
 import { moddingCopy, type ModdingCopy } from "../copy";
@@ -230,9 +229,6 @@ export function ModdingPage({
     <main className="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 lg:py-12">
       <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 flex items-center gap-2 text-sm font-bold tracking-[0.18em] text-accent">
-            <Crosshair className="h-4 w-4" /> ARMORY / WEAPON MODDING
-          </p>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             {copy.title}
           </h1>
@@ -254,7 +250,6 @@ export function ModdingPage({
         <BuildsHub key={builds.screen} />
       ) : (
         <>
-          {builds.screen === "editor" && <BuildEditorPanel />}
           {weapons.isPending ? (
             <Notice copy={copy} />
           ) : weapons.isError || !weapons.data ? (
@@ -274,9 +269,9 @@ export function ModdingPage({
             ) : (
               <p className="rounded-xl border border-line bg-surface p-5 text-base text-foreground dark:text-white">
                 {builds.t(
-                  "현재 정적 데이터에 총기가 없습니다. 저장본의 구성은 위 목록에 보존되어 있습니다.",
-                  "This weapon is absent from current static data. Your saved contents are preserved above.",
-                  "現在の静的データに武器がありません。保存済みの構成は上の一覧に保持されています。",
+                  "현재 정적 데이터에 총기가 없습니다. 저장본 구성은 빌드 저장에서 확인할 수 있습니다.",
+                  "This weapon is absent from current static data. Review your saved contents in Save build.",
+                  "現在の静的データに武器がありません。保存済みの構成はビルド保存で確認できます。",
                 )}
               </p>
             )
@@ -441,8 +436,7 @@ function Workbench({
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const requestedTab = searchParams.get("tab");
-  const tab: "build" | "presets" = requestedTab === "presets" ||
-    (requestedTab !== "build" && builds.initialPresetPending) ? "presets" : "build";
+  const tab: "build" | "presets" = requestedTab === "presets" ? "presets" : "build";
   const setTab = useCallback((value: "build" | "presets", replace = false) => {
     const url = new URL(window.location.href);
     if (url.searchParams.get("tab") === value) return;
@@ -501,11 +495,9 @@ function Workbench({
         if (requestedTab !== "presets") setTab("build", true);
         setActiveKey(null);
       });
-    } else if (requestedTab !== "build") {
-      setTab("presets", true);
     }
-    // Ambiguous or incomplete defaults stay in the preset panel for explicit
-    // selection/inspection. No first-candidate or partial import is automatic.
+    // Ambiguous or incomplete defaults do not switch away from the editor.
+    // They remain available in the presets tab for explicit inspection/import.
   }, [
     preset,
     initialPresetPending,

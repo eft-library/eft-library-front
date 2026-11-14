@@ -1,5 +1,7 @@
 # Weapon modding
 
+Current workbench: the React Flow v3 implementation below supersedes the historical 1340px grid, side-region wrapping and fixed statistics-height notes. Contract: `Desktop/dev/modding-workbench-handoff.md` and `modding-workbench-flow.html` (2026-11-14).
+
 - Routes: `/modding` (weapon list) and `/modding/[id]` (source weapon item ID); navigation: Item → Weapon modding. Selection pushes browser history; direct detail URLs initialize the matching weapon. The shared modding layout keeps draft state across list/detail navigation, including browser back/forward.
 - Contracts: `eft-library-history/velog/dev_docs/gun_preset/weapon_modding_openapi.json` and `weapon_modding_static_json.md`. Types follow the exported V3 OpenAPI and static page-merging contract.
 - Airflow publishes files to the shared `public/static/modding/v3` directory, using the same runtime-serving model as trader. No frontend-side generation or copying step is needed. The running frontend must have the generated directory mounted at this path.
@@ -173,3 +175,29 @@ The workbench statistics panel displays weight/ergonomics in the first row and v
 
 - The weapon stays in center columns 5–7. Left/right categories wrap into multiple rows on their own side. Surviving slot paths retain their allocated cells during edits; removed children leave gaps until new slots use them. New child slots prefer a nearby free cell in their region. The mounted workbench retains its maximum height during removals to avoid scrolling jumps. A newly mounted stage starts a fresh layout.
 - Workbench and source-preset views use `?tab=build` / `?tab=presets`. Native history integrates with Next useSearchParams, preserving view choice on refresh and back/forward without a full page navigation. Explicit preset-view URLs are not overwritten by automatic default initialization. Unspecified ambiguous/incomplete defaults still open preset selection. This only preserves the view; unsaved attachments are not persisted across refresh.
+
+
+## React Flow workbench v3 — 2026-11-14
+
+- Uses the installed `@xyflow/react` renderer with custom tile/weapon nodes and orthogonal route edges; no additional dependency or layout engine. The fixed-height canvas supports wheel zoom, drag pan, initial fit, explicit Fit all/100%, percentage display, standard controls and a connection toggle. Attribution remains visible. Edits preserve viewport position/zoom and surviving slot coordinates.
+- Source-driven coordinates use 96×104px tiles, a 296×104px weapon, and 110×118px pitch. The weapon occupies axis columns 0–2. Front axis: receiver → barrel → handguard → gas block → muzzle chain, filled slots first. Rear axis follows the stock chain. Other slots use DFS parent anchoring and unlimited upper/lower rows; no pixel or coordinate metadata is added to the DB.
+- Mount orientation comes from the mounted item's child-slot definitions, or a vote over loaded candidates' scope/rail slot definitions. Missing API-fallback definitions conservatively use the lower region. Optic-mounted tactical/flashlight accessories use the document's recommended upper-region exception. Existing cells are reserved before new cells are found; removed branches do not compact surviving nodes.
+- Parent-child edges have orthogonal routes, attachment endpoints and dashed lines for empty slots. Hover/focus/open-slot ancestry and immediate children are emphasized. Tiles include localized full names, signed E/R% chips, filled/total child counts, parent context for ambiguous empty slot names and a 2.4-second indication for newly added slots. Nodes remain keyboard accessible; edges are decorative.
+- Candidate popups remain body portals at unscaled screen-pixel size. Their anchor is recalculated on flow movement, page scroll and resize. Outside clicks—including the canvas background—dismiss them, while slot clicks retain toggle/switch semantics. Vertical scrollbar space and flexible grid tracks prevent horizontal overflow. Equipping closes; removal/re-clicking the mounted candidate keeps search, sort and popup open. Existing live calculation previews are retained.
+- Compact non-sticky statistics now precede the canvas: weight/ergonomics, vertical/horizontal recoil, then fire modes/RPM/caliber. Null reasons appear only for unavailable values. Light fills use orange gradients, dark fills use neutral white gradients and an orange value boundary; comparison hatching and signed deltas remain.
+- Save build beside the navigation opens a native dialog containing the existing editor panel. It focuses the title on open, restores trigger focus on close, and supports X/Escape/backdrop dismissal except during writes or confirmation. The former always-visible editor panel is removed. Storage/publication, version conflicts, complete canonical node contents, undo/redo, public/my build lists and source-preset importing remain in their existing implementations.
+- Runtime API/static contracts are unchanged. No DB migration, Airflow change or new stat formula is required. User-build writes still occur only on explicit save/delete actions.
+
+Verification: TypeScript and targeted ESLint passed; all 56 modding tests passed. `script/check-workbench-flow.ts` validated 45 actual source configurations (M4A1, SCAR-H and the supplied 25-node SCAR reference) without missing parts, overlapping rectangles, or non-axis nodes on row zero. The SCAR reference calculation returned HTTP 200, 4.93kg/35.2/102/257 and valid stored constraints. Native Edge verified light/dark rendering, candidate search/equip/undo with retained zoom, and save-dialog title focus/Escape/focus restoration. Local attachment test changes were undone; no build was saved or published. Mobile touch/pinch and a full production build have not been verified in this change.
+
+```sh
+pnpm dlx tsx@4.20.6 --test features/modding/*.test.ts features/modding/builds/*.test.ts
+pnpm dlx tsx@4.20.6 script/check-workbench-flow.ts
+# Optional third argument: {"base":"weapon-id","mounted":{"root/slot-id":"item-id"}}
+# pnpm dlx tsx@4.20.6 script/check-workbench-flow.ts /path/to/reference-selection.json
+```
+
+
+### Region colors and simplified controls
+
+At user request, manual fit/100% controls and the zoom percentage are removed. Initial automatic fit and the standard React Flow zoom-in/out and fit-view controls remain. Connections now use muted blue-gray (light #638398 / dark #8babbc), a 2px non-scaling stroke and 3px orange emphasis; empty-slot links remain dashed. The reference's Region display toggle is implemented and initially enabled: axis/rear axis orange, upper sky, rail emerald, rear violet, lower amber, all with 10% tile overlays. A textual color legend accompanies the toggle; turning it off returns neutral tiles without changing geometry.
