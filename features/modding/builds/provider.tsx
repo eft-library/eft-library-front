@@ -15,7 +15,7 @@ import type { Locale } from "@/i18n/config";
 import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 import type { ItemSummary, WeaponSummary, PresetDetail } from "../types";
 import type { StoredContent, Workspace } from "./types";
-import { BUILDS_ENABLED, BuildApiError, buildsApi, buildsKey } from "./api";
+import { BuildApiError, buildsApi, buildsKey } from "./api";
 import {
   buildHistoryReducer,
   buildHistoryShortcut,
@@ -82,7 +82,7 @@ function useBuildState(
   const dirty = !!content && JSON.stringify(content) !== baseline;
   const t = (ko: string, en: string, ja: string) =>
     buildText(locale, ko, en, ja);
-  const canWrite = BUILDS_ENABLED && !!token && registered && auth === "idle";
+  const canWrite = !!token && registered && auth === "idle";
   useEffect(() => {
     alive.current = true;
     return () => {
@@ -430,7 +430,7 @@ function useBuildState(
     account,
     token,
     canWrite,
-    enabled: BUILDS_ENABLED,
+    enabled: true,
     screen,
     setScreen: navigateScreen,
     content,

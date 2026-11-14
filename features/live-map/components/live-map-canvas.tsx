@@ -19,6 +19,7 @@ import {
 } from "@/lib/map/leaflet-utils";
 import type { LiveMapCoordinateInfo, LiveMapFloor } from "@/types/api/live-map";
 import type { LiveMapLocation } from "./live-map-utils";
+import { getTerminalMarkerSvg, terminalMarkerColors } from "./live-map-terminal-icons";
 
 export type LiveMapMarkerKind = "quest" | "story" | "event" | "static" | "party";
 export type LiveMapDrawingMode = "hand" | "red" | "blue" | "erase";
@@ -130,6 +131,7 @@ const markerColorByKind: Record<LiveMapMarkerKind, string> = {
 };
 
 const staticMarkerColorByType: Record<string, string> = {
+  ...terminalMarkerColors,
   "extract:pmc": "#38bdf8",
   "extract:scav": "#fb923c",
   "extract:shared": "#c084fc",
@@ -597,6 +599,8 @@ function GoonIconSvg(color: string, size: number) {
 
 export function getStaticIconSvgForType(type: string, size: number) {
   const color = getStaticMarkerColorByType(type);
+  const terminalIcon = getTerminalMarkerSvg(type, size);
+  if (terminalIcon) return terminalIcon;
 
   if (type.startsWith("document_spawn:")) {
     const itemId = type.slice("document_spawn:".length);

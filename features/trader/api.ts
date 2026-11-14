@@ -9,7 +9,7 @@ import type {
   TraderOffersPage,
 } from "@/types/api/trader";
 
-export const TRADER_REFRESH_MS = 5 * 60 * 1000;
+export const TRADER_REFRESH_MS = 15 * 60 * 1000;
 
 // The mutable manifest must bypass browser/CDN caches. All other paths are
 // immutable snapshots selected from this manifest, never constructed by date.

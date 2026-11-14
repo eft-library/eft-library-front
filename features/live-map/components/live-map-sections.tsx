@@ -16,6 +16,7 @@ import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { cn } from "@/lib/utils/class-name";
 
 import { copyByLocale, type LiveMapCopy } from "./live-map-copy";
+import { getTerminalMarkerSvg, terminalMarkerColors } from "./live-map-terminal-icons";
 import { getDocumentMarkerColor, getDocumentMarkerSvg } from "./live-map-document-marker";
 import {
   documentSpawnDefinitions,
@@ -779,6 +780,7 @@ function EntryIcon({ kind }: { kind: "story" | "event" | "static" }) {
 }
 
 function getStaticIconColor(category: string, faction?: string) {
+  if (terminalMarkerColors[category]) return terminalMarkerColors[category];
   if (category === "extract") {
     if (faction === "pmc") {
       return "#38bdf8";
@@ -914,6 +916,8 @@ function StaticPanelMarkerIcon({
 }
 
 function getStaticPanelIconSvg(category: string, color: string, size: number) {
+  const terminalIcon = getTerminalMarkerSvg(category, size);
+  if (terminalIcon) return terminalIcon;
   if (category === "transit") {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">

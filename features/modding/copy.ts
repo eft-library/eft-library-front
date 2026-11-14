@@ -1,6 +1,6 @@
 export const moddingCopy = {
   ko: {
-    title: "무기 모딩",
+    title: "총기 모딩",
     subtitle: "슬롯을 선택하고, 나만의 총기를 구성하세요.",
     weapons: "총기 선택",
     searchWeapons: "총기 이름 검색",
@@ -50,7 +50,7 @@ export const moddingCopy = {
     size: "크기",
   },
   en: {
-    title: "Weapon modding",
+    title: "Weapon Modding",
     subtitle: "Choose a slot. Build your own weapon.",
     weapons: "Select weapon",
     searchWeapons: "Search weapons",
@@ -100,7 +100,7 @@ export const moddingCopy = {
     size: "Size",
   },
   ja: {
-    title: "武器カスタマイズ",
+    title: "武器カスタム",
     subtitle: "スロットを選び、自分だけの武器を構成しましょう。",
     weapons: "武器を選択",
     searchWeapons: "武器名で検索",

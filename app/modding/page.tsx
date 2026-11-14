@@ -4,7 +4,7 @@ import { ModdingPage } from "@/features/modding/components/modding-page";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "타르코프 무기 모딩",
+  title: "타르코프 총기 모딩",
   description: "총기 슬롯별 파츠를 탐색하고 나만의 장착 구성을 만들어 보세요.",
   path: "/modding",
 });

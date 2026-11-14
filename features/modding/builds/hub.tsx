@@ -97,7 +97,7 @@ export function BuildsHub() {
   const weapons = useQuery({
     queryKey: ["modding", "weapons"],
     queryFn: ({ signal }) => getWeapons(signal),
-    enabled: mine,
+    enabled: true,
     staleTime: 5 * 60_000,
     retry: false,
   });
@@ -262,7 +262,14 @@ export function BuildsHub() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {list.data?.builds.map((build) => (
+          {list.data?.builds.map((build) => {
+            const weapon = weapons.data?.list.weapons.find(
+              (row) => row.item.id === build.weapon.id,
+            );
+            const previewImage = weapon
+              ? weaponPreviewImage(weapon) ?? build.weapon.image
+              : build.weapon.image;
+            return (
             <article key={build.id} className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-line">
             <button
               type="button"
@@ -270,10 +277,10 @@ export function BuildsHub() {
               className="min-w-0 flex-1 text-left hover:bg-surface-elevated/50 focus-visible:outline-2 focus-visible:outline-accent"
             >
               <div className="flex h-36 items-center justify-center bg-surface-elevated/60 p-5">
-                {build.weapon.image ? (
+                {previewImage ? (
                   <Image
                     unoptimized
-                    src={build.weapon.image}
+                    src={previewImage}
                     alt=""
                     width={280}
                     height={120}
@@ -308,7 +315,8 @@ export function BuildsHub() {
             </button>
             {b.canWrite && ownedById.has(build.id) && <div className="flex justify-end border-t border-line p-3"><DeleteBuildButton title={build.title} disabled={b.pending || ownership.isFetching} onClick={() => { const owned = ownedById.get(build.id); if (owned) void deleteFromList(owned); }} /></div>}
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
       {query.data?.total === 0 && (

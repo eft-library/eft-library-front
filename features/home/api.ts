@@ -29,9 +29,9 @@ function withModdingMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
               id: "modding",
               parent_group_id: group.id,
               url: "/modding",
-              name_ko: "무기 모딩",
-              name_en: "Weapon modding",
-              name_ja: "武器カスタマイズ",
+              name_ko: "총기 모딩",
+              name_en: "Weapon Modding",
+              name_ja: "武器カスタム",
             },
           ],
         },
@@ -113,9 +113,9 @@ export async function getHomeMenu() {
         : [
             {
               url: "/modding",
-              autocomplete_text_ko: "무기 모딩",
-              autocomplete_text_en: "Weapon modding",
-              autocomplete_text_ja: "武器カスタマイズ",
+              autocomplete_text_ko: "총기 모딩",
+              autocomplete_text_en: "Weapon Modding",
+              autocomplete_text_ja: "武器カスタム",
             },
           ]),
       ...(response.autocomplete_items.some((item) => item.url === "/traders")

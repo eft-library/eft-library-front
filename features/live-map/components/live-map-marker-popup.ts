@@ -651,6 +651,7 @@ export function getStaticPointPopupHtml(
   const usesItemImagePresentation =
     point.category === "key_spawn" ||
     point.category === "keycard_spawn" ||
+    point.category === "toolset_spawn" ||
     point.category === "locked_door" ||
     point.category === "locked_container";
   const images = metadataImages.length > 0

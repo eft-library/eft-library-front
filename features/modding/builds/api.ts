@@ -17,9 +17,6 @@ import type {
   Workspace,
 } from "./types";
 
-export const BUILDS_ENABLED =
-  process.env.NODE_ENV !== "production" ||
-  process.env.NEXT_PUBLIC_MODDING_BUILDS_ENABLED === "true";
 export const buildsKey = ["modding-builds"] as const;
 export class BuildApiError extends Error {
   constructor(

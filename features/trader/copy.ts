@@ -41,7 +41,7 @@ const copy = {
     lastChecked: "마지막 확인",
     noCheckedTime: "확인 시각 없음",
     noOffers: "현재 제공되는 판매·교환 상품 정보가 없습니다.",
-    refresh: "데이터는 5분마다 갱신됩니다.",
+    refresh: "데이터는 15분마다 갱신됩니다.",
     levelHint:
       "선택한 우호도 레벨의 상품만 표시합니다. 전체를 선택하면 모든 레벨을 표시합니다.",
     mode: "게임 모드",
@@ -76,7 +76,7 @@ const copy = {
     lastChecked: "Last checked",
     noCheckedTime: "Check time unavailable",
     noOffers: "No purchase or barter offers are currently available.",
-    refresh: "Data refreshes every 5 minutes.",
+    refresh: "Data refreshes every 15 minutes.",
     levelHint:
       "Shows only the selected loyalty level. Select All to show every level.",
     mode: "Game mode",
@@ -111,7 +111,7 @@ const copy = {
     lastChecked: "最終確認",
     noCheckedTime: "確認時刻なし",
     noOffers: "現在、購入・交換商品の情報はありません。",
-    refresh: "データは5分ごとに更新されます。",
+    refresh: "データは15分ごとに更新されます。",
     levelHint:
       "選択した親密度レベルの商品のみ表示します。すべてを選択すると全レベルを表示します。",
     mode: "ゲームモード",
