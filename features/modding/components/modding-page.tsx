@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
-  ArrowLeft,
   ArrowRight,
   Box,
   Layers,
@@ -18,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { initialPresetAction, weaponPreviewImage } from "../default-preset";
 import { getWeapon, getWeapons } from "../api";
 import { WorkbenchStage } from "./workbench-stage";
@@ -227,22 +227,13 @@ export function ModdingPage({
   }, [routeWeaponId, chosen, routeContent, startWeapon, router]);
   return (
     <main className="mx-auto w-full max-w-[1600px] px-4 py-8 sm:px-6 lg:py-12">
-      <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {copy.title}
-          </h1>
+      <div className="mb-7">
+        <h1 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">
+          {copy.title}
+        </h1>
+        <div className="mt-7 min-w-0 overflow-hidden text-center">
+          <HorizontalAdBanner />
         </div>
-        {chosen && (
-          <button
-            disabled={builds.pending}
-            onClick={() => builds.setScreen("weapons")}
-            className={action}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {copy.back}
-          </button>
-        )}
       </div>
       <BuildNavigation />
       {builds.enabled &&

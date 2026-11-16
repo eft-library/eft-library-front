@@ -12,10 +12,9 @@ import { WorkbenchFlowCanvas } from "./workbench-flow-canvas";
 import { useBuilds } from "../builds/provider";
 import { mountPart } from "../builds/tree";
 import type { ItemSummary, WeaponSnapshot } from "../types";
-import { PopupStatisticsSummary, useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
+import { useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
-const fmt = (value: number) => `${value > 0 ? "+" : ""}${new Intl.NumberFormat("en", { maximumFractionDigits: 3 }).format(value)}`;
 export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidatesLoading, candidatesError, onRetry, generation, locale }: {
   snapshot: WeaponSnapshot; slots: BuildSlot[]; activeKey: string | null; onActive: (key: string | null) => void;
   candidatesLoading: boolean; candidatesError: unknown; onRetry: () => void; generation: string; locale: Locale;
@@ -70,8 +69,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   useEffect(() => {
     if (popupReady) popup.current?.focus({ preventScroll: true });
   }, [popupReady, activeKey]);
-  const currentHover = hover;
-  const displayedHover = currentHover === "none" ? undefined : currentHover ?? undefined;
+  const displayedHover = hover === "none" ? undefined : hover ?? undefined;
   const triggerId = (key: string) => `workbench-slot-${key}`;
   function close() {
     const key = activeKey;
@@ -144,11 +142,6 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
     document.addEventListener("keydown", key); document.addEventListener("pointerdown", pointer, true);
     return () => { document.removeEventListener("keydown", key); document.removeEventListener("pointerdown", pointer, true); };
   }, [activeKey, onActive]);
-  const delta = (value: number | null | undefined, before: number | null | undefined, up: boolean) => {
-    if (value == null || before == null) return <span className="font-mono">—</span>;
-    const diff = value - before;
-    return <span className={`font-mono ${diff === 0 ? "text-gray-600 dark:text-gray-400" : (up ? diff > 0 : diff < 0) ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}`}>{fmt(diff)}</span>;
-  };
   return <div className="space-y-3">
     <WeaponStatisticsPanel current={current} preview={preview} previewing={!!(active && hover)} locale={locale} snapshot={snapshot} />
     <p className="text-xs text-gray-600 dark:text-gray-400">{t("기본 프리셋 참고 이미지 · 휠 확대/축소 · 드래그 이동", "Default preset reference image · Wheel to zoom · Drag to pan", "基本プリセット参考画像 · ホイールで拡大縮小 · ドラッグで移動")}</p>
@@ -168,6 +161,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
         {many && <><input aria-label={t("이름 검색", "Search by name", "名前検索")} placeholder={t("이름 검색", "Search by name", "名前検索")} value={query} onChange={(event) => { setQuery(event.target.value); setHover(null); }} className={`mt-2 w-full rounded border border-line bg-background px-2 py-1.5 text-xs ${focus}`} /><div className="mt-2 flex flex-wrap gap-1">{[
           ["base", t("기본순", "Default", "標準")], ["ergo", t("인체공학 높은순", "Ergonomics ↓", "エルゴ高い順")], ["recoil", t("반동 낮은순", "Recoil ↑", "反動低い順")], ["weight", t("무게 가벼운순", "Weight ↑", "重量軽い順")],
         ].map(([value, label]) => <button key={value} type="button" aria-pressed={sort === value} onClick={() => { setSort(value); setHover(null); }} className={`rounded border px-1.5 py-1 text-[10px] ${focus} ${sort === value ? "border-accent bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-200" : "border-line bg-surface-elevated"}`}>{label}</button>)}</div></>}
+        <p className="mt-2 line-clamp-2 h-8 text-xs font-semibold" aria-live="polite">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하세요.", "Hover or focus a part.", "パーツにマウスを乗せるかフォーカスしてください。")}</p>
       </div>
       {candidatesLoading ? <p role="status" className="p-4 text-sm">{t("파츠 불러오는 중…", "Loading parts…", "パーツ読込中…")}</p> : candidatesError ? <div role="alert" className="p-4 text-sm"><p>{t("파츠를 불러오지 못했습니다.", "Could not load parts.", "パーツを取得できませんでした。")}</p><button type="button" onClick={onRetry} className={`mt-2 rounded border border-line p-2 ${focus}`}>{t("다시 시도", "Retry", "再試行")}</button></div> : <div onMouseLeave={() => { if (!popup.current?.contains(document.activeElement)) setHover(null); }} className="grid min-h-0 min-w-0 shrink gap-1 overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-gutter:stable] p-2.5" style={{ gridTemplateColumns: `repeat(${position.cols}, minmax(0, 1fr))`, maxHeight: many ? 400 : undefined }}>
         {!query.trim() && <button type="button" disabled={builds.pending} onClick={() => equip()} onMouseEnter={() => setHover("none")} onFocus={() => setHover("none")} className={`flex h-[104px] min-w-0 items-center justify-center rounded border border-dashed border-line text-xs hover:border-accent ${focus}`} >{t("없음 (해제)", "None (remove)", "なし（解除）")}</button>}
@@ -176,10 +170,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
         </button>)}
         {query.trim() && !filtered.length && <p className="col-span-full py-4 text-xs">{t("검색 결과가 없습니다.", "No results.", "検索結果がありません。")}</p>}
       </div>}
-      <div className="min-w-0 shrink-0 border-t border-line bg-surface p-3 text-xs"><p className="line-clamp-2 h-8 font-semibold">{previewRemoval ? t("없음 · 하위 부품도 해제", "None · removes child parts", "なし · 子パーツも解除") : displayedHover ? itemName(displayedHover, locale) : t("파츠에 마우스를 올리거나 키보드로 선택하면 변화가 보입니다.", "Hover or focus a part to preview changes.", "パーツにマウスを乗せるかフォーカスして変化を確認できます。")}</p>
-        <div className={`mt-2 flex h-4 gap-3 ${currentHover ? "" : "invisible"}`}><span>E {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.ergonomics, active.selected?.mod_properties?.ergonomics ?? (active.selected ? null : 0), true)}</span><span>R% {delta(previewRemoval ? 0 : displayedHover?.mod_properties?.recoil_modifier == null ? null : displayedHover.mod_properties.recoil_modifier * 100, active.selected ? active.selected.mod_properties?.recoil_modifier == null ? null : active.selected.mod_properties.recoil_modifier * 100 : 0, false)}</span><span>kg {delta(previewRemoval ? 0 : displayedHover?.weight, active.selected?.weight ?? (active.selected ? null : 0), false)}</span></div>
-        <PopupStatisticsSummary current={current} preview={preview} previewing={!!hover} locale={locale} />
-      </div>
+
     </div>, document.body)}
   </div>;
 }
