@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/map", destination: "/map-of-tarkov/factory", permanent: true },
+      { source: "/map/:id", destination: "/map-of-tarkov/:id", permanent: true },
       { source: "/ammo", destination: "/item/ammo", permanent: true },
       { source: "/arm-band", destination: "/item/arm-band", permanent: true },
       {

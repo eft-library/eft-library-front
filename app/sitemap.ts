@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { cacheLife } from "next/cache";
 
 import { apiGet } from "@/lib/api/api-client";
+import { isRetiredRoute } from "@/lib/config/retired-routes";
 
 interface SitemapApiItem {
   id: number;
@@ -14,7 +15,6 @@ interface SitemapApiItem {
 }
 
 const revalidateSeconds = 60 * 60 * 24 * 30;
-const removedRoutes = new Set(["/minigame"]);
 
 function toChangeFrequency(
   value: string,
@@ -46,7 +46,7 @@ export async function generateSitemaps() {
   try {
     const items = await getSitemapItems();
     const sitemapValues = Array.from(
-      new Set(items.map((item) => item.sitemap_value).filter(Boolean)),
+      new Set(items.filter((item) => !isRetiredRoute(item.url)).map((item) => item.sitemap_value).filter(Boolean)),
     );
 
     return sitemapValues.map((value) => ({ id: value }));
@@ -71,11 +71,7 @@ export default async function sitemap({
           return false;
         }
 
-        try {
-          return !removedRoutes.has(new URL(item.url).pathname);
-        } catch {
-          return true;
-        }
+        return !isRetiredRoute(item.url);
       })
       .map((item) => ({
         url: item.url,

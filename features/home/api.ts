@@ -2,6 +2,7 @@ import { cacheLife } from "next/cache";
 
 import { apiGet } from "@/lib/api/api-client";
 import { apiEndpoints } from "@/lib/config/api-endpoints";
+import { isRetiredRoute } from "@/lib/config/retired-routes";
 import type {
   HomeMainResponse,
   HomeMenuGroup,
@@ -9,7 +10,6 @@ import type {
   HomePostItem,
 } from "@/types/api/home";
 
-const REMOVED_HOME_ROUTES = new Set(["/minigame"]);
 
 function withModdingMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
   if (
@@ -66,7 +66,7 @@ function withTraderMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
 }
 
 function isAvailableHomeRoute(url: string) {
-  return !REMOVED_HOME_ROUTES.has(url.split(/[?#]/, 1)[0]);
+  return !isRetiredRoute(url);
 }
 
 export async function getHomeMain() {
