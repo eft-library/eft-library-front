@@ -1,5 +1,30 @@
+import { queryOptions } from "@tanstack/react-query";
+import { apiGet } from "@/lib/api/api-client";
 import { fetchWithAuthRecovery } from "@/lib/auth/auth-recovery";
 import { getApiBaseUrl } from "@/lib/config/app-env";
+import { getLiveMapDetailEndpoint } from "@/lib/config/api-endpoints";
+import type { LiveMapDetailResponse } from "@/types/api/live-map";
+
+export function partyMapQueryOptions(normalizedName: string) {
+  return queryOptions({
+    queryKey: ["live-map-party-map-detail", normalizedName],
+    queryFn: async () => {
+      const detail = await apiGet<LiveMapDetailResponse>(
+        getLiveMapDetailEndpoint(encodeURIComponent(normalizedName)),
+      );
+      const mapId = detail.map_selector.find(
+        (map) => map.normalized_name === normalizedName,
+      )?.id;
+      if (!mapId) throw new Error(`Map ID missing for ${normalizedName}`);
+
+      return {
+        mapId,
+        floors: detail.floors.filter((floor) => floor.map_id === mapId),
+      };
+    },
+    staleTime: 60 * 60 * 1000,
+  });
+}
 
 export class PartyApiError extends Error {
   constructor(

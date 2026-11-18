@@ -15,10 +15,8 @@ import { useSession } from "next-auth/react";
 import { getSessionQuietly } from "@/lib/auth/client-session";
 import { recoverAuthentication, rejectAuthentication } from "@/lib/auth/auth-recovery";
 import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
-import { apiGet } from "@/lib/api/api-client";
-import type { MapDetailResponse } from "@/types/api/map";
 import type { PartySnapshotV3 } from "@/types/api/live-map-party";
-import { PartyApiError, partyRequest } from "./api";
+import { PartyApiError, partyMapQueryOptions, partyRequest } from "./api";
 import { getApiBaseUrl } from "@/lib/config/app-env";
 import { PartyRealtimeClient, type PartyRealtimeView } from "./realtime-client";
 import { usePartyLocationSharing } from "./use-party-location-sharing";
@@ -411,17 +409,12 @@ export function useLiveMapParty(normalizedName: string) {
     return () => setViewMap(undefined);
   }, [normalizedName, setPoint, setEditingId, setPlacing, setViewMap]);
   const mapQuery = useQuery({
-    queryKey: ["live-map-party-map", normalizedName],
-    queryFn: () =>
-      apiGet<MapDetailResponse>(
-        `/api/map/v3/detail/${encodeURIComponent(normalizedName)}`,
-      ),
+    ...partyMapQueryOptions(normalizedName),
     enabled: party.open || !!party.roomId,
-    staleTime: 60 * 60 * 1000,
   });
   return {
     ...party,
-    mapId: mapQuery.data?.map.id,
+    mapId: mapQuery.data?.mapId,
     mapError: mapQuery.error,
     mapLoading: mapQuery.isFetching,
     retryMap: () => mapQuery.refetch(),

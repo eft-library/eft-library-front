@@ -374,7 +374,7 @@ export interface BtrRoutesResponseV3 {
 }
 
 export interface LiveMapDetailResponse {
-  map_selector: MapSelectorEntry[];
+  map_selector: (MapSelectorEntry & { id: string })[];
   floors: LiveMapFloor[];
   quest_points: LiveMapQuestPoint[];
   story_points: LiveMapStoryPoint[];

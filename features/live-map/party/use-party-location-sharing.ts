@@ -2,16 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { apiGet } from "@/lib/api/api-client";
 import { useWsStore } from "@/store/ws-store";
-import type { LiveMapDetailResponse } from "@/types/api/live-map";
-import type { MapDetailResponse } from "@/types/api/map";
 import type { PartyPointCommandV3 } from "@/types/api/live-map-party";
 import {
   findFloorForLocation,
   parseWhereText,
   type LiveMapLocation,
 } from "../components/live-map-utils";
+import { partyMapQueryOptions } from "./api";
 
 export function usePartyLocationSharing({
   roomScope,
@@ -73,38 +71,23 @@ export function usePartyLocationSharing({
     // Restored observations may be shown locally, but are not new party positions.
     if (!connected || replayed) return;
     try {
-      const [detail, map] = await Promise.all([
-        queryClient.fetchQuery({
-          queryKey: ["party-location-floors", mapName],
-          queryFn: () =>
-            apiGet<LiveMapDetailResponse>(
-              `/api/live-map/v3/detail/${encodeURIComponent(mapName)}`,
-            ),
-          staleTime: 60 * 60 * 1000,
-        }),
-        queryClient.fetchQuery({
-          queryKey: ["live-map-party-map", mapName],
-          queryFn: () =>
-            apiGet<MapDetailResponse>(
-              `/api/map/v3/detail/${encodeURIComponent(mapName)}`,
-            ),
-          staleTime: 60 * 60 * 1000,
-        }),
-      ]);
+      const { mapId, floors } = await queryClient.fetchQuery(
+        partyMapQueryOptions(mapName),
+      );
       if (
         scope !== scopeRef.current ||
         request !== sequence.current ||
         (requireSelectedMap && sourceRef.current !== mapName)
       )
         return;
-      const floor = findFloorForLocation(detail.floors, location);
+      const floor = findFloorForLocation(floors, location);
       if (!floor) {
         setLocationIssue("map-unavailable");
         return;
       }
       sendRef.current({
         type: "position",
-        map_id: map.map.id,
+        map_id: mapId,
         floor_id: floor.id,
         x: location.x,
         z: location.z,
