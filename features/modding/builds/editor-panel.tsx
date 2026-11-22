@@ -51,9 +51,9 @@ export function BuildLoginNotice() {
     <div className="my-3 flex flex-wrap items-center gap-3 text-base text-foreground dark:text-white">
       <span>
         {b.t(
-          "저장·추천·댓글·복사는 등록된 계정으로 로그인 후 이용할 수 있습니다.",
-          "Sign in with a registered account to save, vote, comment or copy.",
-          "保存・投票・コメント・コピーには登録済みアカウントでのログインが必要です。",
+          "저장·추천·댓글은 등록된 계정으로 로그인 후 이용할 수 있습니다.",
+          "Sign in with a registered account to save, vote, or comment.",
+          "保存・投票・コメントには登録済みアカウントでのログインが必要です。",
         )}
       </span>
       {!b.token ? (

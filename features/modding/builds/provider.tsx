@@ -313,34 +313,19 @@ function useBuildState(
       `削除済み ${result.deleted.length}件 · 未削除 ${result.failed.length}件`));
     return result;
   }
-  async function copy(id: string, revision: number) {
-    if (!canWrite || !(await mayReplace())) return;
-    let persisted = false;
-    const result = await perform(async () => {
-      try {
-        return await savePublicBuild(
-          () =>
-            buildsApi.copy(
-              id,
-              { revision, request_id: intent(`copy:${id}:${revision}`) },
-              token,
-            ),
-          token,
-          (saved) => {
-            persisted = true;
-            completeIntent(`copy:${id}:${revision}`);
-            if (alive.current) accept(saved);
-          },
-        );
-      } catch (error) {
-        if (alive.current && persisted) {
-          setPublicationFailed(true);
-          await refresh();
-        }
-        throw error;
-      }
-    });
-    if (result) accept(result);
+  async function customize(next: StoredContent) {
+    if (busy.current || !(await mayReplace()) || !alive.current || busy.current)
+      return;
+    setInitialPresetPending(false);
+    setPublicationFailed(false);
+    setWorkspace(null);
+    setContent(next);
+    setBaseline("");
+    setConflict(null);
+    setError(null);
+    setMessage("");
+    setScreen("editor");
+    router.push(`/modding/${next.weapon_item_id}?tab=build`);
   }
   function edit(next: StoredContent) {
     if (!busy.current) {
@@ -449,7 +434,7 @@ function useBuildState(
     save,
     discardBuild,
     discardBuilds,
-    copy,
+    customize,
     edit,
     mount,
     remove,

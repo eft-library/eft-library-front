@@ -101,7 +101,7 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
                 {published.content.title}
               </h2>
               <p className="mt-2 text-xs text-foreground dark:text-white">
-                {published.author_nickname ?? "—"} · r{published.revision} ·{" "}
+                {published.author_nickname ?? "—"} ·{" "}
                 {new Intl.DateTimeFormat(b.locale, {
                   dateStyle: "medium",
                   timeStyle: "short",
@@ -143,14 +143,13 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
             </button>
             <button
               disabled={
-                !b.canWrite ||
                 !published.is_public ||
                 revisionChanged ||
                 !!detail.error ||
                 b.pending ||
                 detail.isFetching
               }
-              onClick={() => void b.copy(id, published.revision)}
+              onClick={() => void b.customize(published.content)}
               className={buildButton}
             >
               {b.t(

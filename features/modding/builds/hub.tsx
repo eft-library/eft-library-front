@@ -297,7 +297,7 @@ export function BuildsHub() {
                   {build.title}
                 </h3>
                 <p className="mt-1 text-xs text-foreground dark:text-white">
-                  {build.author_nickname ?? "—"} · r{build.revision}
+                  {build.author_nickname ?? "—"}
                 </p>
                 <p className="mt-3 text-xs text-foreground dark:text-white">
                   {itemName(build.weapon, b.locale)}

@@ -37,6 +37,11 @@ import type {
 
 const COLLAPSED_ITEM_COUNT = 20;
 
+// The V3 response currently has no localized names for this flooring reward.
+const customizationFallbackNames: Readonly<Partial<Record<string, string>>> = {
+  "675466ea8b3797a0e8038bd2": "Parquet",
+};
+
 const copyByLocale = {
   ko: {
     objectives: "목표",
@@ -49,6 +54,7 @@ const copyByLocale = {
     finishRewards: "완료 보상",
     failureRewards: "실패 보상",
     customizations: "커스터마이징",
+    unnamedReward: "이름 미등록",
     relatedItems: "연결 아이템",
     trader: "트레이더",
     minLevel: "LV.",
@@ -79,6 +85,7 @@ const copyByLocale = {
     finishRewards: "Completion rewards",
     failureRewards: "Failure rewards",
     customizations: "Customizations",
+    unnamedReward: "Name unavailable",
     relatedItems: "Related items",
     trader: "Trader",
     minLevel: "LV.",
@@ -109,6 +116,7 @@ const copyByLocale = {
     finishRewards: "完了報酬",
     failureRewards: "失敗報酬",
     customizations: "カスタマイズ",
+    unnamedReward: "名称未登録",
     relatedItems: "関連アイテム",
     trader: "トレーダー",
     minLevel: "LV.",
@@ -893,12 +901,11 @@ function CustomizationCard({
   locale: Locale;
   relatedItemsLabel: string;
 }) {
-  const name = getLocalizedValue(
-    customization as unknown as Record<string, unknown>,
-    locale,
-    "name",
-    customization.name_en ?? customization.id,
-  );
+  const name =
+    customization[`name_${locale}`]?.trim() ||
+    customization.name_en?.trim() ||
+    customizationFallbackNames[customization.id] ||
+    copyByLocale[locale].unnamedReward;
   const typeName = getLocalizedValue(
     customization as unknown as Record<string, unknown>,
     locale,
@@ -936,12 +943,10 @@ function CustomizationCard({
 }
 
 function CustomizationItemCard({ item, locale }: { item: QuestCustomizationItem; locale: Locale }) {
-  const name = getLocalizedValue(
-    item as unknown as Record<string, unknown>,
-    locale,
-    "name",
-    item.name_en ?? item.id,
-  );
+  const name =
+    item[`name_${locale}`]?.trim() ||
+    item.name_en?.trim() ||
+    copyByLocale[locale].unnamedReward;
   const content = (
     <>
       {item.image ? (
