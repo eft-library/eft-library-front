@@ -64,6 +64,9 @@ export default async function sitemap({
   try {
     const resolvedId = await id;
     const items = await getSitemapItems();
+    const modifiersUrl = "https://eftlibrary.com/modifiers";
+    const legacyModifiersUrl = "https://eftlibrary.com/kord-breach";
+    const hasModifiersUrl = items.some((item) => item.url === modifiersUrl);
 
     return items
       .filter((item) => {
@@ -71,10 +74,11 @@ export default async function sitemap({
           return false;
         }
 
-        return !isRetiredRoute(item.url);
+        return !isRetiredRoute(item.url) &&
+          !(hasModifiersUrl && item.url === legacyModifiersUrl);
       })
       .map((item) => ({
-        url: item.url,
+        url: item.url === legacyModifiersUrl ? modifiersUrl : item.url,
         lastModified: new Date(item.update_time),
         changeFrequency: toChangeFrequency(item.change_freq),
         priority: item.priority,

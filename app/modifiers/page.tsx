@@ -3,9 +3,9 @@ import { KordBreachRoute } from "@/features/kord-breach/route";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "KORD·BREACH 모디파이어 및 보상",
-  description: "KORD·BREACH의 모디파이어를 조합하고 시즌 보상과 해금 조건을 확인하세요.",
-  path: "/kord-breach",
+  title: "모디파이어",
+  description: "모디파이어를 조합하고 시즌 보상과 해금 조건을 확인하세요.",
+  path: "/modifiers",
 });
 
 export default function Page() {

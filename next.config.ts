@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/kord-breach", destination: "/modifiers", permanent: true },
       { source: "/map", destination: "/map-of-tarkov/factory", permanent: true },
       { source: "/map/:id", destination: "/map-of-tarkov/:id", permanent: true },
       { source: "/ammo", destination: "/item/ammo", permanent: true },

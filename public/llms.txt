@@ -63,8 +63,8 @@
   와이프 시즌 정보
 * [https://eftlibrary.com/battle-pass](https://eftlibrary.com/battle-pass)
   배틀패스 보상과 교환에 필요한 문서 정보
-* [https://eftlibrary.com/kord-breach](https://eftlibrary.com/kord-breach)
-  KORD·BREACH 공통 및 개인 모디파이어 조합과 프리셋 저장
+* [https://eftlibrary.com/modifiers](https://eftlibrary.com/modifiers)
+  공통 및 개인 모디파이어 조합, 프리셋 저장, 시즌 보상
 * [https://eftlibrary.com/notice](https://eftlibrary.com/notice)
   공지사항
 * [https://eftlibrary.com/patch-notes](https://eftlibrary.com/patch-notes)

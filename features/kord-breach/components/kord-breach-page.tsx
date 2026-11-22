@@ -16,9 +16,9 @@ import type { Locale } from "@/i18n/config";
 import type { KordBreachModifier, KordBreachModifiersResponse, KordBreachPreset } from "@/types/api/kord-breach";
 
 const copy = {
-  ko: { title: "모디파이어 특성 선택", board: "현황판", global: "공통 모디파이어", positive: "개인 긍정효과", negative: "개인 부정효과", random: "랜덤", presets: "프리셋", reset: "초기화", none: "선택 없음", total: "합산" },
-  en: { title: "Select Modifiers", board: "Status", global: "Global Modifiers", positive: "Personal Positive", negative: "Personal Negative", random: "Random", presets: "Presets", reset: "Reset", none: "None selected", total: "Total" },
-  ja: { title: "モディファイア選択", board: "ステータス", global: "共通モディファイア", positive: "個人ポジティブ", negative: "個人ネガティブ", random: "ランダム", presets: "プリセット", reset: "リセット", none: "選択なし", total: "合計" },
+  ko: { title: "모디파이어", board: "현황판", global: "공통 모디파이어", positive: "개인 긍정효과", negative: "개인 부정효과", random: "랜덤", presets: "프리셋", reset: "초기화", none: "선택 없음", total: "합산" },
+  en: { title: "Modifiers", board: "Status", global: "Global Modifiers", positive: "Personal Positive", negative: "Personal Negative", random: "Random", presets: "Presets", reset: "Reset", none: "None selected", total: "Total" },
+  ja: { title: "モディファイア", board: "ステータス", global: "共通モディファイア", positive: "個人ポジティブ", negative: "個人ネガティブ", random: "ランダム", presets: "プリセット", reset: "リセット", none: "選択なし", total: "合計" },
 } as const;
 
 export function KordBreachPage({ modifiers, locale }: { modifiers: KordBreachModifiersResponse; locale: Locale }) {
@@ -72,7 +72,7 @@ export function KordBreachPage({ modifiers, locale }: { modifiers: KordBreachMod
   return (
     <main className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-5">
-        <div><p className="text-xs font-bold tracking-[0.28em] text-orange-600 dark:text-orange-400">KORD · BREACH</p><h1 className="mt-1 text-xl font-black tracking-tight">{t.title}</h1></div>
+        <h1 className="text-xl font-black tracking-tight">{t.title}</h1>
         <RewardsTab locale={locale}>
         {message && <div role="status" className="rounded-lg border border-orange-300 bg-orange-50 px-4 py-3 text-sm text-orange-800 dark:border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-200">{message}</div>}
         <StatusPanel t={t} positives={positives} negatives={negatives} total={total} busy={busy} onRemove={toggle} onRandom={randomize} onPresets={() => setPresetOpen(true)} onReset={() => setSelected(new Set())} />

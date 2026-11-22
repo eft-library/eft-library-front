@@ -71,7 +71,7 @@ export function RewardsTab({ locale, children }: { locale: Locale; children: Rea
   const stages = [...groups].sort(([a], [b]) => rank(a) - rank(b));
   const label = (key: string) => key.startsWith("level:") ? `${t.level} ${key.slice(6)}` : t[key as "none" | "quests" | "complex" | "unknown"];
   return <>
-    <div role="tablist" aria-label="KORD · BREACH" className="flex gap-6 border-b border-line">
+    <div role="tablist" aria-label={`${t.traits} / ${t.rewards}`} className="flex gap-6 border-b border-line">
       {(["traits", "rewards"] as const).map((value, index) => <button key={value} id={`kord-tab-${value}`} type="button" role="tab" aria-selected={tab === value} aria-controls={`kord-panel-${value}`} tabIndex={tab === value ? 0 : -1} onClick={() => select(value)} onKeyDown={(event) => {
         if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
         event.preventDefault();
@@ -143,8 +143,8 @@ function RewardCard({ reward, locale }: { reward: KordReward; locale: Locale }) 
 function QuestCondition({ condition, locale }: { condition: KordRewardCondition; locale: Locale }) {
   const t = copy[locale];
   const quest = condition.quest;
-  const name = quest ? localized(quest, locale).replace(/^\[KORD[\s·-]*BREACH\]\s*/i, "") : t.questMissing;
-  const content = <><span className="min-w-0 flex-1"><span className="block text-[10px] text-gray-600 dark:text-gray-400 sm:inline">[KORD BREACH] </span><strong className="break-words text-xs">{name}</strong></span><span className="hidden shrink-0 text-[10px] text-gray-600 dark:text-gray-400 sm:inline">{t.complete}</span></>;
+  const name = quest ? localized(quest, locale) : t.questMissing;
+  const content = <><span className="min-w-0 flex-1"><strong className="break-words text-xs">{name}</strong></span><span className="hidden shrink-0 text-[10px] text-gray-600 dark:text-gray-400 sm:inline">{t.complete}</span></>;
   const className = `flex min-w-0 items-center gap-1 rounded-md border border-line bg-surface px-2 py-2 ${focus}`;
   return quest?.is_registered && quest.normalized_name ? <Link href={`/quest/detail/${encodeURIComponent(quest.normalized_name)}`} className={`${className} hover:border-orange-400`}>{content}<ChevronRight className="size-3.5 shrink-0" /></Link> : <div className={className}>{content}</div>;
 }
