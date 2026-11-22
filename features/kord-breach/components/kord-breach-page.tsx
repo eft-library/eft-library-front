@@ -72,7 +72,7 @@ export function KordBreachPage({ modifiers, locale }: { modifiers: KordBreachMod
   return (
     <main className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-5">
-        <h1 className="text-xl font-black tracking-tight">{t.title}</h1>
+        <h1 className="text-center text-xl font-black tracking-tight">{t.title}</h1>
         <RewardsTab locale={locale}>
         {message && <div role="status" className="rounded-lg border border-orange-300 bg-orange-50 px-4 py-3 text-sm text-orange-800 dark:border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-200">{message}</div>}
         <StatusPanel t={t} positives={positives} negatives={negatives} total={total} busy={busy} onRemove={toggle} onRandom={randomize} onPresets={() => setPresetOpen(true)} onReset={() => setSelected(new Set())} />
