@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type AdBannerProps = {
   dataAdSlot?: string;
@@ -27,7 +27,9 @@ export function AdBanner({
   className = "",
   style,
 }: AdBannerProps) {
-  const [isMounted, setIsMounted] = useState(false);
+  const container = useRef<HTMLDivElement>(null);
+  const requested = useRef(false);
+  const [hasWidth, setHasWidth] = useState(false);
   const clientId = process.env.NEXT_PUBLIC_ADSENSE;
 
   const mergedStyle = useMemo<CSSProperties>(
@@ -41,23 +43,37 @@ export function AdBanner({
   );
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    const element = container.current;
+    if (!element || hasWidth) return;
+    if (element.clientWidth > 0) {
+      setHasWidth(true);
+      return;
+    }
+    const observer = new ResizeObserver(() => {
+      if (element.clientWidth > 0) {
+        observer.disconnect();
+        setHasWidth(true);
+      }
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [hasWidth]);
 
   useEffect(() => {
-    if (!isMounted || !clientId || !dataAdSlot) {
+    if (!hasWidth || !clientId || !dataAdSlot || requested.current) {
       return;
     }
 
+    requested.current = true;
     try {
       window.adsbygoogle = window.adsbygoogle || [];
       window.adsbygoogle.push({});
     } catch (error) {
       console.error("Google AdSense script load error:", error);
     }
-  }, [clientId, dataAdSlot, isMounted]);
+  }, [clientId, dataAdSlot, hasWidth]);
 
-  if (!isMounted || !clientId || !dataAdSlot) {
+  if (!clientId || !dataAdSlot) {
     return null;
   }
 
@@ -70,17 +86,18 @@ export function AdBanner({
 
   return (
     <div
+      ref={container}
       className={`mx-auto my-4 w-full px-2 text-center ${className}`}
       style={{ maxWidth }}
     >
-      <ins
+      {hasWidth && <ins
         className="adsbygoogle"
         style={mergedStyle}
         data-ad-client={clientId}
         data-ad-slot={dataAdSlot}
         data-ad-format={dataAdFormat ?? undefined}
         data-full-width-responsive={fullWidthResponsive}
-      />
+      />}
     </div>
   );
 }
@@ -137,13 +154,15 @@ export function VerticalAdBanner({
 
 export function ContentWidthAdBanner({ label }: { label: string }) {
   return (
-    <div className="my-8 min-h-[100px] border-y border-line py-2 sm:min-h-[250px]">
+    <div className="my-8 min-h-[calc(var(--content-ad-height)+2rem)] w-full border-y border-line py-2 [--content-ad-height:100px] sm:[--content-ad-height:250px]">
       <p className="text-center text-[10px] text-gray-600 dark:text-gray-400">{label}</p>
       <AdBanner
         dataAdSlot={process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
           process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ?? "8601640289"}
+        dataAdFormat="horizontal"
         minHeight={0}
-        className="!my-0 !px-0"
+        className="my-0! px-0!"
+        style={{ minHeight: "var(--content-ad-height)" }}
       />
     </div>
   );
