@@ -134,3 +134,17 @@ export function VerticalAdBanner({
     />
   );
 }
+
+export function ContentWidthAdBanner({ label }: { label: string }) {
+  return (
+    <div className="my-8 min-h-[100px] border-y border-line py-2 sm:min-h-[250px]">
+      <p className="text-center text-[10px] text-gray-600 dark:text-gray-400">{label}</p>
+      <AdBanner
+        dataAdSlot={process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
+          process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ?? "8601640289"}
+        minHeight={0}
+        className="!my-0 !px-0"
+      />
+    </div>
+  );
+}

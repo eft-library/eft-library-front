@@ -19,7 +19,7 @@ export default function Page() {
 
 function BattlePassLoading() {
   return (
-    <main className="mx-auto min-h-[70vh] w-full max-w-[1440px] px-4 py-10 sm:px-7 lg:px-16 lg:py-14">
+    <main className="mx-auto min-h-[70vh] w-full max-w-[1280px] px-4 py-10 sm:px-7 lg:px-10 lg:py-14">
       <div className="h-40 animate-pulse rounded-xl border border-line bg-surface" />
       <div className="mt-7 grid animate-pulse grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }, (_, index) => (

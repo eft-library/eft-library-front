@@ -18,6 +18,24 @@ const modifiersMenu = {
   name_ja: "モディファイア",
 };
 
+const prestigeMenu = {
+  id: "prestige",
+  parent_group_id: "INFO",
+  url: "/prestige",
+  name_ko: "프레스티지",
+  name_en: "Prestige",
+  name_ja: "プレステージ",
+};
+
+function withPrestigeMenu(groups: HomeMenuGroup[]): HomeMenuGroup[] {
+  if (groups.some((group) => group.sub_menus.some((item) => item.url === prestigeMenu.url))) {
+    return groups;
+  }
+  return groups.map((group) => group.id === prestigeMenu.parent_group_id
+    ? { ...group, sub_menus: [...group.sub_menus, prestigeMenu] }
+    : group);
+}
+
 function renameModifiersLink<T extends LocalizedName & { url: string }>(item: T): T {
   return item.url === "/kord-breach" ? { ...item, ...modifiersMenu } : item;
 }
@@ -91,7 +109,7 @@ export async function getHomeMain() {
   return {
     ...response,
     main: response.main.filter((item) => isAvailableHomeRoute(item.url)).map(renameModifiersLink),
-    menu: withModdingMenu(withTraderMenu(response.menu)).map((group) => ({
+    menu: withPrestigeMenu(withModdingMenu(withTraderMenu(response.menu))).map((group) => ({
       ...group,
       sub_menus: group.sub_menus.filter((item) =>
         isAvailableHomeRoute(item.url),
@@ -109,7 +127,7 @@ export async function getHomeMenu() {
   });
 
   return {
-    nav_list: withModdingMenu(withTraderMenu(response.nav_list)).map(
+    nav_list: withPrestigeMenu(withModdingMenu(withTraderMenu(response.nav_list))).map(
       (group) => ({
         ...group,
         sub_menus: group.sub_menus.filter((item) =>
@@ -119,6 +137,14 @@ export async function getHomeMenu() {
     ),
     autocomplete_items: [
       ...response.autocomplete_items.filter((item) => item.url !== "/kord-breach"),
+      ...(response.autocomplete_items.some((item) => item.url === prestigeMenu.url)
+        ? []
+        : [{
+            url: prestigeMenu.url,
+            autocomplete_text_ko: prestigeMenu.name_ko,
+            autocomplete_text_en: prestigeMenu.name_en,
+            autocomplete_text_ja: prestigeMenu.name_ja,
+          }]),
       ...(response.autocomplete_items.some((item) => item.url === modifiersMenu.url)
         ? []
         : [{

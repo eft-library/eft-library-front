@@ -4,7 +4,8 @@ import Image from "next/image";
 import { FileQuestion, Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { ContentWidthAdBanner } from "@/components/shared/ad-banner";
+import { documentMapName, kordBreachGuide, rewardTypeName } from "../season-guide";
 import type { Locale } from "@/i18n/config";
 import type {
   BattlePassData,
@@ -15,17 +16,28 @@ import type {
 
 const copy = {
   ko: {
+    ad: "광고",
+    allRewards: "전체 보상 한눈에",
+    summary: ["총 보상", "페이지", "전체 필요 문서", "하루 최대 획득"],
+    pageLabel: (page: number) => `${page}페이지`,
+    price: (count: number) => `문서 ${count}장`,
+    pageTotal: "페이지",
+    first: "처음부터 열림",
+    unlock: (page: number, count: number, total: number) => `${page}페이지 보상 ${total}개 중 ${count}개 받으면 열림`,
+    vary: "보상에 필요한 문서 종류는 플레이어마다 다를 수 있어요. 필요한 개수는 같습니다.",
+    shared: "모든 모드를 합쳐 하루 최대 40장이에요. 작전 과제로 받은 문서는 한도에 포함되지 않아요.",
+    classified: "확장 허브에서 구매할 수 있고, 모든 문서를 대신하며 다음 배틀패스에서도 사용할 수 있어요.",
+    steps: ["문서 줍기 · 모든 맵과 모드에서 PMC와 스캐브가 각자의 문서를 주울 수 있어요.", "문서로 보상 해금 · 보상에 필요한 수만큼 문서를 내세요.", "다음 페이지 열기 · 앞 페이지의 보상을 필요한 수만큼 받으세요."],
     season: "시즌",
-    title: "배틀패스 보상",
-    description: "페이지는 순서대로 해금되며, 다음 페이지는 이전 페이지의 보상을 일정 수만큼 획득하면 열립니다.",
+    title: "배틀패스",
+    description: "레이드에서 TerraGroup 문서를 모아 보상을 해금하세요. 진행도와 보상은 모든 게임 모드가 공유합니다.",
     pageSelection: "페이지 선택",
     rewards: "보상",
     rewardCount: (count: number) => `보상 ${count}개`,
     pageRewards: (page: number) => `${page}페이지 보상`,
-    unlockNotice: (count: number) => `이전 페이지에서 보상 ${count}개 획득 시 해금됩니다.`,
     requirements: "필요 문서",
     documentIndex: "DOCUMENT INDEX",
-    documentList: "필요 문서 목록",
+    documentList: "문서 종류와 나오는 맵",
     documentDescription: "모든 보상 교환에 필요한 문서의 총 수량입니다.",
     totalDocuments: (count: number) => `총 ${count}개`,
     classifiedPurchase: "타르코인으로 구매 가능",
@@ -46,17 +58,28 @@ const copy = {
     imageUnavailable: "이미지 준비 중",
   },
   en: {
+    ad: "Advertisement",
+    allRewards: "All rewards",
+    summary: ["Total rewards", "Pages", "Total required documents", "Daily maximum"],
+    pageLabel: (page: number) => `Page ${page}`,
+    price: (count: number) => `${count} documents`,
+    pageTotal: "Pages",
+    first: "Unlocked from the start",
+    unlock: (page: number, count: number, total: number) => `Claim ${count} of ${total} rewards on page ${page} to unlock`,
+    vary: "Required document types can differ between players. The number required stays the same.",
+    shared: "Collect up to 40 across all modes per day. Documents from Operational Tasks do not count toward the limit.",
+    classified: "Available in the Expansion Hub. Replaces any document type and carries over to future battle passes.",
+    steps: ["Find documents · PMC and Scav players can pick up their own copy on every map and mode.", "Unlock rewards · Turn in the required number of documents.", "Open the next page · Claim the required number of rewards from the previous page."],
     season: "Season",
-    title: "Battle Pass Rewards",
-    description: "Pages unlock in order after earning a required number of rewards from the previous page.",
+    title: "Battle Pass",
+    description: "Collect TerraGroup documents in raids to unlock rewards. Progress and rewards are shared across game modes.",
     pageSelection: "Select Page",
     rewards: "Rewards",
     rewardCount: (count: number) => `${count} rewards`,
     pageRewards: (page: number) => `Page ${page} Rewards`,
-    unlockNotice: (count: number) => `Unlocks after earning ${count} rewards from the previous page.`,
     requirements: "Required documents",
     documentIndex: "DOCUMENT INDEX",
-    documentList: "Required Document List",
+    documentList: "Document Types and Maps",
     documentDescription: "Total documents required to exchange every reward.",
     totalDocuments: (count: number) => `${count} total`,
     classifiedPurchase: "Available with TarCoin",
@@ -77,17 +100,28 @@ const copy = {
     imageUnavailable: "Image pending",
   },
   ja: {
+    ad: "広告",
+    allRewards: "全報酬一覧",
+    summary: ["総報酬", "ページ", "必要文書の合計", "1日の上限"],
+    pageLabel: (page: number) => `${page}ページ`,
+    price: (count: number) => `文書 ${count}枚`,
+    pageTotal: "ページ",
+    first: "最初から解放",
+    unlock: (page: number, count: number, total: number) => `${page}ページの報酬${total}個中${count}個を受け取ると解放`,
+    vary: "必要な文書の種類はプレイヤーによって異なります。必要数は同じです。",
+    shared: "全モード合計で1日最大40枚です。作戦タスクの文書は上限に含まれません。",
+    classified: "拡張ハブで購入でき、すべての文書の代わりに使用できます。次のバトルパスにも持ち越せます。",
+    steps: ["文書を拾う · 全マップ・全モードでPMCもScavも自分の文書を拾えます。", "文書で報酬を解放 · 必要数の文書を納品します。", "次のページを開く · 前のページで必要数の報酬を受け取ります。"],
     season: "シーズン",
-    title: "バトルパス報酬",
-    description: "ページは順番に解放され、前のページで一定数の報酬を獲得すると次のページが開きます。",
+    title: "バトルパス",
+    description: "レイドでTerraGroupの文書を集めて報酬を解放しましょう。進行度と報酬は全モード共通です。",
     pageSelection: "ページ選択",
     rewards: "報酬",
     rewardCount: (count: number) => `報酬 ${count}個`,
     pageRewards: (page: number) => `${page}ページ報酬`,
-    unlockNotice: (count: number) => `前のページで報酬を${count}個獲得すると解放されます。`,
     requirements: "必要文書",
     documentIndex: "DOCUMENT INDEX",
-    documentList: "必要文書一覧",
+    documentList: "文書の種類と出現マップ",
     documentDescription: "すべての報酬交換に必要な文書の合計数です。",
     totalDocuments: (count: number) => `合計 ${count}枚`,
     classifiedPurchase: "TarCoinで購入可能",
@@ -163,7 +197,7 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
 
   if (!data) {
     return (
-      <main className="mx-auto flex min-h-[70vh] w-full max-w-[1440px] items-center justify-center px-4 py-12 sm:px-7 lg:px-16">
+      <main className="mx-auto flex min-h-[70vh] w-full max-w-[1280px] items-center justify-center px-4 py-12 sm:px-7 lg:px-10">
         <div className="w-full max-w-xl rounded-xl border border-line bg-surface px-6 py-12 text-center shadow-sm">
           <FileQuestion className="mx-auto size-10 text-gray-400 dark:text-gray-500" aria-hidden="true" />
           <h1 className="mt-4 text-xl font-bold">{labels.unavailable}</h1>
@@ -174,38 +208,58 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
   }
 
   const totalPages = data.season.page_count || data.pages.length;
+  const pages = [...data.pages].sort((a, b) => a.page_number - b.page_number);
+  const previous = selectedPage ? pages[pages.indexOf(selectedPage) - 1] : undefined;
+  const allRewards = pages.flatMap((page) => [...page.rewards]
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((reward) => ({ page: page.page_number, reward })));
+  const totalPrice = allRewards.reduce((total, { reward }) => total + reward.document_price, 0);
+  const guide = data.season.code === "kord-breach" ? kordBreachGuide : null;
   const currentPageNumber = selectedPage?.page_number ?? selectedPageNumber;
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-[1440px] px-4 py-8 sm:px-7 sm:py-10 lg:px-16 lg:py-14">
-      <header className="pb-6">
-        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-600 dark:text-amber-400">
-          {labels.season} 01 / {seasonTitle(data, locale)}
+    <main className="mx-auto min-h-screen w-full max-w-[1280px] px-4 py-8 sm:px-7 sm:py-10 lg:px-10 lg:py-14">
+      <header className="rounded-2xl border border-line bg-surface p-5 sm:p-8">
+        <span className="block text-xs font-bold tracking-wider text-amber-800 dark:text-amber-300">
+          {labels.season} · {seasonTitle(data, locale)}
         </span>
-        <h1 className="mt-3 text-3xl font-bold tracking-[-0.045em] sm:text-4xl">{labels.title}</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-400">{labels.description}</p>
+        <h1 className="mt-3 text-center text-3xl font-black tracking-tight sm:text-4xl">{labels.title}</h1>
+        <p className="mt-4 text-sm leading-6 text-gray-700 dark:text-gray-300">{labels.description}</p>
+        <SeasonProgress season={data.season} locale={locale} />
+        <dl className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {[allRewards.length, totalPages, totalPrice, ...(guide ? [guide.dailyLimits[0]] : [])].map((value, index) => (
+            <div key={labels.summary[index]} className="grid gap-1 rounded-lg border border-line bg-surface-elevated p-3">
+              <dt className="col-start-1 row-start-2 text-xs text-gray-600 dark:text-gray-400">{labels.summary[index]}</dt>
+              <dd className="col-start-1 row-start-1 text-xl font-black tabular-nums">{new Intl.NumberFormat(locale).format(value)}</dd>
+            </div>
+          ))}
+        </dl>
       </header>
+      {guide && <ol className="mt-4 grid list-inside list-decimal gap-3 sm:grid-cols-3">
+        {labels.steps.map((step) => <li key={step} className="rounded-xl border border-line bg-surface p-4 text-sm leading-6 marker:font-bold marker:text-amber-800 dark:marker:text-amber-300">{step}</li>)}
+      </ol>}
 
-      <nav className="mt-1 border-t border-line pt-4" aria-label={labels.pageSelection}>
+      <nav className="mt-8" aria-label={labels.pageSelection}>
         <div className="mb-3 flex items-center justify-between gap-4 px-0.5">
           <span className="text-xl font-bold tracking-[-0.03em] text-amber-600 dark:text-amber-400">{labels.pageSelection}</span>
           <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{currentPageNumber} / {totalPages}</span>
         </div>
-        <div className="overflow-x-auto pb-1">
-          <div className="grid min-w-[720px] grid-cols-6 lg:min-w-0">
-            {data.pages.map((page) => {
+        <div className="pb-1">
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+            {pages.map((page) => {
               const active = page.page_number === currentPageNumber;
               return (
                 <button
                   key={page.page_number}
                   type="button"
-                  className={`relative flex min-h-14 items-center gap-2.5 border-l border-t border-line px-3 text-left first:border-l-0 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${active ? "bg-amber-50 text-gray-950 shadow-[inset_0_-2px_0_#d97706] dark:bg-amber-400/10 dark:text-white dark:shadow-[inset_0_-2px_0_#f4bd58]" : "bg-transparent text-gray-500 hover:bg-surface-elevated hover:text-foreground dark:text-gray-400"}`}
+                  className={`relative grid min-h-20 gap-1 rounded-lg border border-line px-2 py-2 text-left sm:px-3 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${active ? "bg-amber-50 text-gray-950 shadow-[inset_0_-2px_0_#d97706] dark:bg-amber-400/10 dark:text-white dark:shadow-[inset_0_-2px_0_#f4bd58]" : "bg-surface text-foreground hover:bg-surface-elevated"}`}
                   aria-current={active ? "page" : undefined}
                   aria-label={`${page.page_number}, ${labels.rewardCount(page.rewards.length)}`}
                   onClick={() => setSelectedPageNumber(page.page_number)}
                 >
-                  <span className="font-mono text-xl font-black text-amber-600 dark:text-amber-400">{String(page.page_number).padStart(2, "0")}</span>
+                  <span className="text-sm font-black text-amber-800 dark:text-amber-300">{labels.pageLabel(page.page_number)}</span>
                   <b className="text-xs tracking-[0.04em]">{labels.rewardCount(page.rewards.length)}</b>
+                  <span className="text-xs">{labels.price(page.rewards.reduce((sum, reward) => sum + reward.document_price, 0))}</span>
                 </button>
               );
             })}
@@ -215,16 +269,17 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
 
       <div className="flex flex-col gap-2 pb-5 pt-10 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 className="text-xl font-bold tracking-[-0.03em] sm:text-2xl">{labels.pageRewards(currentPageNumber)}</h2>
-        {selectedPage && selectedPage.page_number > 1 ? (
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {labels.unlockNotice(selectedPage.required_previous_page_reward_count)}
-          </span>
-        ) : null}
+        {selectedPage && <div className="flex flex-wrap gap-2 text-xs">
+          {[labels.rewardCount(selectedPage.rewards.length), labels.price(selectedPage.rewards.reduce((sum, reward) => sum + reward.document_price, 0)), previous ? labels.unlock(previous.page_number, selectedPage.required_previous_page_reward_count, previous.rewards.length) : labels.first].map((value) => (
+            <span key={value} className="rounded-full border border-line bg-surface-elevated px-3 py-1">{value}</span>
+          ))}
+        </div>}
       </div>
+      <p className="mb-4 rounded-lg border border-dashed border-line bg-surface p-3 text-xs text-gray-700 dark:text-gray-300">{labels.vary}</p>
 
       {selectedPage?.rewards.length ? (
-        <section className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" aria-label={labels.pageRewards(currentPageNumber)}>
-          {selectedPage.rewards.map((reward, index) => (
+        <section className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5" aria-label={labels.pageRewards(currentPageNumber)}>
+          {[...selectedPage.rewards].sort((a, b) => a.sort_order - b.sort_order).map((reward, index) => (
             <RewardCard
               key={reward.id}
               reward={reward}
@@ -238,47 +293,46 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
         <div className="rounded-xl border border-dashed border-line bg-surface px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400">{labels.noRewards}</div>
       )}
 
-      <HorizontalAdBanner className="mb-0 mt-9" />
+      <ContentWidthAdBanner label={labels.ad} />
 
       <InfoSection
         kicker={labels.documentIndex}
         title={labels.documentList}
         description={labels.documentDescription}
       >
-        <div className="grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {data.documents.map((document) => (
             <DocumentCatalogItem
               key={document.id}
               document={document}
               locale={locale}
               total={documentTotals.get(document.id) ?? 0}
+              maps={guide?.maps[document.name_en]}
+              showGuide={!!guide}
               labels={labels}
             />
           ))}
         </div>
       </InfoSection>
 
-      <InfoSection
+      {guide && <><InfoSection
         kicker={labels.dailyLimit}
         title={labels.dailyLimitTitle}
         description={labels.dailyLimitDescription}
       >
         <div className="grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-3">
-          {[
-            [labels.seasonalPvp, labels.perDay(30)],
-            [labels.pvpZone, labels.perDay(20)],
-            [labels.pveZone, labels.perDay(15)],
-          ].map(([mode, amount]) => (
+          {[labels.seasonalPvp, labels.pvpZone, labels.pveZone].map((mode, index) => (
             <div key={mode} className="flex items-center justify-between gap-4 bg-surface px-5 py-4">
               <span className="text-sm font-semibold">{mode}</span>
-              <strong className="whitespace-nowrap font-mono text-xs text-amber-600 dark:text-amber-400">{amount}</strong>
+              <strong className="whitespace-nowrap font-mono text-xs text-amber-600 dark:text-amber-400">{labels.perDay(guide.dailyLimits[index])}</strong>
             </div>
           ))}
         </div>
+        <p className="mt-3 text-sm text-gray-700 dark:text-gray-300">{labels.shared}</p>
       </InfoSection>
 
       <InfoSection kicker={labels.exchange} title={labels.exchangeTitle}>
-        <ul className="grid gap-3">
+        <ul className="grid gap-3 sm:grid-cols-2">
           {[labels.exchangeDocument, labels.exchangeCrate].map((rule) => (
             <li key={rule} className="flex items-center gap-4 rounded-xl border border-line bg-surface px-5 py-4 text-sm font-medium leading-6">
               <span className="size-2 shrink-0 rounded-full bg-amber-500" aria-hidden="true" />
@@ -286,9 +340,39 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
             </li>
           ))}
         </ul>
-      </InfoSection>
+      </InfoSection></>}
+      <details className="mt-8 rounded-xl border border-line bg-surface p-4">
+        <summary className="cursor-pointer font-bold focus-visible:outline-2 focus-visible:outline-accent">{labels.allRewards}</summary>
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead><tr><th className="p-2" scope="col">{labels.pageTotal}</th><th className="p-2" scope="col">{labels.rewards}</th><th className="p-2 text-right" scope="col">{labels.requirements}</th></tr></thead>
+            <tbody>{allRewards.map(({ page, reward }) => <tr key={reward.id} className="border-t border-line">
+              <td className="whitespace-nowrap p-2">{labels.pageLabel(page)}</td>
+              <td className="p-2">{reward.name_en}</td>
+              <td className="whitespace-nowrap p-2 text-right tabular-nums">{labels.price(reward.document_price)}</td>
+            </tr>)}</tbody>
+          </table>
+        </div>
+      </details>
     </main>
   );
+}
+
+function SeasonProgress({ season, locale }: { season: BattlePassData["season"]; locale: Locale }) {
+  const [now, setNow] = useState<number>();
+  useEffect(() => { setNow(Date.now()); }, []);
+  const start = Date.parse(season.start_time ?? "");
+  const end = Date.parse(season.end_time ?? "");
+  if (now === undefined || !Number.isFinite(start) || !Number.isFinite(end) || end <= start) return null;
+  const progress = Math.round(Math.max(0, Math.min(1, (now - start) / (end - start))) * 100);
+  const days = Math.ceil((end - now) / 86_400_000);
+  const dates = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone: "Asia/Seoul" });
+  return <div className="mt-4">
+    <progress aria-label={`${copy[locale].season} · ${progress}%`} value={progress} max={100} className="h-2 w-full accent-amber-600" />
+    <p className="flex flex-wrap justify-between gap-2 text-xs text-gray-600 dark:text-gray-400">
+      <span>{dates.format(start)}</span><span>{progress}%</span><span>{dates.format(end)}{days > 0 && ` · D-${days}`}</span>
+    </p>
+  </div>;
 }
 
 function InfoSection({
@@ -320,23 +404,28 @@ function DocumentCatalogItem({
   document,
   locale,
   total,
+  maps,
+  showGuide,
   labels,
 }: {
   document: BattlePassDocument;
   locale: Locale;
   total: number;
+  maps?: readonly string[];
+  showGuide: boolean;
   labels: (typeof copy)[Locale];
 }) {
   const classified = document.document_role === "classified";
   return (
-    <article className={`flex min-w-0 items-center gap-3 bg-surface p-3 ${classified ? "bg-amber-50 dark:bg-amber-400/10" : ""}`}>
+    <article className={`flex min-w-0 items-start gap-3 rounded-lg border border-line bg-surface p-3 ${classified ? "bg-amber-50 dark:bg-amber-400/10" : ""}`}>
       <DocumentImage document={document} size="catalog" />
       <div className="grid min-w-0 gap-0.5">
-        <strong className={`truncate text-sm ${classified ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{localizedName(document, locale)}</strong>
-        <small className="truncate text-xs text-gray-500 dark:text-gray-400">{document.name_en}</small>
+        <strong className={`break-words text-sm ${classified ? "text-amber-800 dark:text-amber-300" : "text-foreground"}`}>{localizedName(document, locale)}</strong>
+        {maps?.length ? <small className="text-xs text-gray-600 dark:text-gray-400">{maps.map((map) => documentMapName(map, locale)).join(" · ")}</small> : null}
         <b className={`font-mono text-sm ${classified ? "text-gray-500 dark:text-gray-400" : "text-amber-600 dark:text-amber-400"}`}>
           {classified ? labels.classifiedPurchase : labels.totalDocuments(total)}
         </b>
+        {classified && showGuide && <p className="text-xs leading-5">{labels.classified}</p>}
       </div>
     </article>
   );
@@ -360,12 +449,11 @@ function RewardCard({
         reward={reward}
         label={labels.imageUnavailable}
         classified={classified}
-        locale={locale}
         eager={eagerImage}
       />
-      <div className="px-4 pb-5 pt-1">
-        <span className="text-xs text-gray-500 dark:text-gray-400">{reward.reward_type}</span>
-        <h3 className="mb-4 mt-2 min-h-11 text-[15px] font-semibold leading-[1.45] tracking-[-0.02em]">{localizedName(reward, locale)}</h3>
+      <div className="px-2 pb-3 pt-1 sm:px-3">
+        <div className="flex flex-wrap justify-between gap-1 text-xs"><span className="text-gray-600 dark:text-gray-400">{rewardTypeName(reward.reward_type, locale)}</span><span className="rounded bg-amber-500/10 px-1.5 text-amber-800 dark:text-amber-300">{labels.price(reward.document_price)}</span></div>
+        <h3 className="mb-4 mt-2 min-h-11 text-[15px] font-semibold leading-[1.45] tracking-[-0.02em]">{reward.name_en}</h3>
         <div>
           <span className="block pb-2 text-xs text-gray-500 dark:text-gray-400">{labels.requirements}</span>
           {reward.requirements.map((requirement) => (
@@ -381,21 +469,19 @@ function RewardVisual({
   reward,
   label,
   classified,
-  locale,
   eager,
 }: {
   reward: BattlePassReward;
   label: string;
   classified: boolean;
-  locale: Locale;
   eager: boolean;
 }) {
   return (
-    <div className={`relative m-2.5 flex h-52 items-center justify-center overflow-hidden rounded-lg border ${classified ? "border-amber-400/30 bg-amber-100/70 dark:bg-amber-400/10" : "border-line bg-surface-elevated"}`}>
+    <div className={`relative m-2.5 flex aspect-square items-center justify-center overflow-hidden rounded-lg border ${classified ? "border-amber-400/30 bg-amber-100/70 dark:bg-amber-400/10" : "border-line bg-surface-elevated"}`}>
       {reward.image ? (
         <Image
           src={reward.image}
-          alt={localizedName(reward, locale)}
+          alt={reward.name_en}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
           className="object-contain p-3"
@@ -416,16 +502,16 @@ function RewardVisual({
 function RequirementBadge({ requirement, locale }: { requirement: BattlePassRequirement; locale: Locale }) {
   const classified = requirement.document.document_role === "classified";
   return (
-    <div className="flex min-h-[78px] items-center gap-3 border-t border-line py-3">
+    <div className="flex min-w-0 items-center gap-1.5 border-t border-line py-2 sm:gap-2">
       <DocumentImage document={requirement.document} size="requirement" />
-      <span className={`min-w-0 flex-1 text-sm font-bold leading-5 ${classified ? "text-amber-700 dark:text-amber-300" : ""}`}>{localizedName(requirement.document, locale)}</span>
-      <strong className="min-w-11 shrink-0 rounded bg-amber-500/10 px-2 py-2 text-center font-mono text-sm text-amber-600 dark:text-amber-400">×{requirement.quantity}</strong>
+      <span className={`min-w-0 flex-1 break-words text-xs font-semibold leading-4 ${classified ? "text-amber-700 dark:text-amber-300" : ""}`}>{localizedName(requirement.document, locale)}</span>
+      <strong className="shrink-0 rounded bg-amber-500/10 px-1.5 py-1 text-center text-xs font-bold tabular-nums text-amber-800 dark:text-amber-300">×{requirement.quantity}</strong>
     </div>
   );
 }
 
 function DocumentImage({ document, size }: { document: Pick<BattlePassDocument, "image" | "name_en" | "name_ko" | "name_ja" | "document_role">; size: "catalog" | "requirement" }) {
-  const dimensions = size === "catalog" ? "h-[50px] w-[38px]" : "h-14 w-[42px]";
+  const dimensions = size === "catalog" ? "h-[50px] w-[38px]" : "h-8 w-6 sm:h-10 sm:w-8";
   return (
     <div className={`relative ${dimensions} shrink-0 overflow-hidden rounded border ${document.document_role === "classified" ? "border-amber-400/40 bg-amber-100 dark:bg-amber-950/30" : "border-line bg-surface-elevated"}`}>
       {document.image ? <Image src={document.image} alt="" fill sizes="42px" className="object-contain p-0.5" /> : <FileQuestion className="absolute inset-0 m-auto size-4 text-gray-400" aria-hidden="true" />}
