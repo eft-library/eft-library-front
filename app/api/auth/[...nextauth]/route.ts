@@ -30,8 +30,8 @@ const handler = NextAuth({
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async signIn({ user }) {
-      if (!user) {
+    async signIn({ user, account }) {
+      if (!user.email || !account?.access_token) {
         return false;
       }
 
@@ -40,7 +40,10 @@ const handler = NextAuth({
           `${getApiBaseUrl()}${apiEndpoints.userAdd}`,
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${account.access_token}`,
+            },
             body: JSON.stringify({
               name: user.name,
               email: user.email,
@@ -49,7 +52,12 @@ const handler = NextAuth({
           },
         );
 
-        return response.ok;
+        if (!response.ok) {
+          console.warn("User registration rejected during sign-in", response.status);
+          return false;
+        }
+        const result = await response.json();
+        return result?.msg === "OK" && result?.data === true;
       } catch (error) {
         console.error("Failed to add user on sign-in:", error);
         return false;
