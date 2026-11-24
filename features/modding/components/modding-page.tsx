@@ -26,6 +26,7 @@ import { useWorkbenchData } from "../use-workbench-data";
 import { buildSlots, itemName } from "../build";
 import { useBuilds } from "../builds/provider";
 import { BuildNavigation } from "../builds/editor-panel";
+import { BuildPagination, MODDING_PAGE_SIZE } from "../builds/ui";
 import { BuildsHub } from "../builds/hub";
 import { nodePaths, selectionsFromNodes } from "../builds/tree";
 import { moddingCopy, type ModdingCopy } from "../copy";
@@ -191,8 +192,8 @@ export function ModdingPage({
   const builds = useBuilds();
   const copy = moddingCopy[locale];
   const weaponId = builds.screen === "editor" ? routeWeaponId : null;
-  const [word, setWord] = useState("");
-  const [limit, setLimit] = useState(24);
+  const { listPage, setListPage, updateList } = builds;
+  const word = useSearchParams().get("word") ?? "";
   const weapons = useQuery({
     queryKey: ["modding", "weapons"],
     queryFn: ({ signal }) => getWeapons(signal),
@@ -204,6 +205,13 @@ export function ModdingPage({
       [],
     [weapons.data, word],
   );
+  const lastWeaponPage = Math.max(1, Math.ceil(filtered.length / MODDING_PAGE_SIZE));
+  const weaponPage = Math.min(listPage, lastWeaponPage);
+  useEffect(() => {
+    if (builds.screen === "weapons" && weapons.isSuccess && listPage > lastWeaponPage) {
+      setListPage(lastWeaponPage, true);
+    }
+  }, [builds.screen, weapons.isSuccess, listPage, lastWeaponPage, setListPage]);
   const chosen = weapons.data?.list.weapons.find(
     ({ item }) => item.id === weaponId,
   );
@@ -282,8 +290,8 @@ export function ModdingPage({
                   <SearchField
                     value={word}
                     onChange={(value) => {
-                      setWord(value);
-                      setLimit(24);
+                      const currentPage = Number(new URLSearchParams(window.location.search).get("page"));
+                      updateList({ word: value, page: null }, currentPage <= 1);
                     }}
                     placeholder={copy.searchWeapons}
                     clear={copy.clear}
@@ -291,7 +299,7 @@ export function ModdingPage({
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filtered.slice(0, limit).map((weapon) => (
+                {filtered.slice((weaponPage - 1) * MODDING_PAGE_SIZE, weaponPage * MODDING_PAGE_SIZE).map((weapon) => (
                   <button
                     key={weapon.item.id}
                     onClick={() => void builds.start(weapon)}
@@ -335,17 +343,7 @@ export function ModdingPage({
                   {copy.noResults}
                 </p>
               )}
-              {filtered.length > limit && (
-                <div className="mt-6 text-center">
-                  <button
-                    className={action}
-                    onClick={() => setLimit((value) => value + 24)}
-                  >
-                    {copy.more} ({Math.min(limit, filtered.length)}/
-                    {filtered.length})
-                  </button>
-                </div>
-              )}
+              <BuildPagination page={weaponPage} total={filtered.length} onChange={setListPage} locale={locale} />
             </>
           )}
         </>

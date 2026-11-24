@@ -36,3 +36,16 @@ export function violationParts(content: StoredContent | null, slots: BuildSlot[]
   }
   return result;
 }
+
+export function violationLabels(parts: ReadonlyMap<CalculationIssue, ViolationPart[]>, reasonFor: (code: string) => string) {
+  const labels = new Map<string, string[]>();
+  for (const [issue, targets] of parts) {
+    const reason = reasonFor(issue.code);
+    for (const { key } of targets) {
+      const others = targets.filter((part) => part.key !== key).map((part) => part.name);
+      const label = others.length ? `${reason} (${others.join(", ")})` : reason;
+      labels.set(key, [...(labels.get(key) ?? []), label]);
+    }
+  }
+  return labels;
+}

@@ -183,6 +183,8 @@ export function ConfirmBuildAction({
     </dialog>
   );
 }
+export const MODDING_PAGE_SIZE = 20;
+
 export function BuildPagination({
   page,
   total,
@@ -196,8 +198,9 @@ export function BuildPagination({
   disabled?: boolean;
   locale: Locale;
 }) {
+  const pageCount = Math.max(1, Math.ceil(total / MODDING_PAGE_SIZE));
   return (
-    <div className="mt-4 flex items-center justify-center gap-4 text-sm">
+    <nav aria-label={buildText(locale, "페이지 이동", "Pagination", "ページ移動")} className="mt-4 flex items-center justify-center gap-4 text-sm">
       <button
         className={buildButton}
         disabled={disabled || page <= 1}
@@ -206,15 +209,15 @@ export function BuildPagination({
         {buildText(locale, "이전", "Previous", "前へ")}
       </button>
       <span className="font-mono">
-        {page} / {Math.max(1, Math.ceil(total / 20))}
+        {page} / {pageCount}
       </span>
       <button
         className={buildButton}
-        disabled={disabled || page * 20 >= total}
+        disabled={disabled || page >= pageCount}
         onClick={() => onChange(page + 1)}
       >
         {buildText(locale, "다음", "Next", "次へ")}
       </button>
-    </div>
+    </nav>
   );
 }

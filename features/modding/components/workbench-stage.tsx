@@ -14,7 +14,7 @@ import { mountPart } from "../builds/tree";
 import type { ItemSummary, WeaponSnapshot } from "../types";
 import { AttachmentRulesPanel, attachmentIssueLabel, useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
 
-import { violationParts } from "../workbench-violations";
+import { violationLabels, violationParts } from "../workbench-violations";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidatesLoading, candidatesError, onRetry, generation, locale, itemsLoading }: {
@@ -50,17 +50,7 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   const current = useStatistics(builds.content, generation);
   const issues = !current.isPlaceholderData && current.data?.compatibility.status === "invalid" ? current.data.compatibility.issues : undefined;
   const parts = useMemo(() => violationParts(builds.content, slots, issues ?? [], locale), [builds.content, issues, slots, locale]);
-  const marks = useMemo(() => {
-    const labels = new Map<string, string[]>();
-    for (const [issue, targets] of parts) {
-      for (const { key } of targets) {
-        const others = targets.filter((part) => part.key !== key).map((part) => part.name);
-        const reason = attachmentIssueLabel(issue.code, locale);
-        labels.set(key, [...(labels.get(key) ?? []), others.length ? `${reason} (${others.join(", ")})` : reason]);
-      }
-    }
-    return labels;
-  }, [parts, locale]);
+  const marks = useMemo(() => violationLabels(parts, (code) => attachmentIssueLabel(code, locale)), [parts, locale]);
   const forcedKeys = JSON.stringify([...marks.keys()].sort());
   const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set());
   const [showAllEmpty, setShowAllEmpty] = useState(false);

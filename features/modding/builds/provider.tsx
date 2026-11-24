@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Locale } from "@/i18n/config";
 import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
@@ -28,6 +28,11 @@ import { buildInput, mountPart, newContent, removeNode } from "./tree";
 import { buildText, ConfirmBuildAction } from "./ui";
 
 type Screen = "weapons" | "editor" | "public" | "mine";
+function screenFromUrl(path: string, tab: string | null): Screen {
+  if (tab === "weapons" || tab === "public" || tab === "mine") return tab;
+  return path === "/modding" ? "weapons" : "editor";
+}
+
 const Context = createContext<ReturnType<typeof useBuildState> | null>(null);
 function useBuildState(
   locale: Locale,
@@ -39,21 +44,57 @@ function useBuildState(
   const router = useRouter();
   const pathname = usePathname();
   const auth = useAuthRecovery();
-  const [screen, setScreen] = useState<Screen>(() =>
-    pathname === "/modding" ? "weapons" : "editor",
-  );
-  useEffect(() => {
-    setScreen(pathname === "/modding" ? "weapons" : "editor");
-  }, [pathname]);
+  const searchParams = useSearchParams();
+  const screen = screenFromUrl(pathname, searchParams.get("tab"));
+  const publicBuildId = screen === "public" ? searchParams.get("build") : null;
+  const requestedPage = Number(searchParams.get("page"));
+  const listPage = Number.isInteger(requestedPage) && requestedPage >= 1 && requestedPage <= 1_000_000 ? requestedPage : 1;
+
+  function navigate(target: string, replace = false) {
+    const url = new URL(target, window.location.href);
+    if (url.href === window.location.href) return;
+    if (url.pathname !== window.location.pathname) {
+      if (replace) router.replace(target);
+      else router.push(target);
+    } else if (replace) {
+      window.history.replaceState(null, "", target);
+    } else {
+      window.history.pushState(null, "", target);
+    }
+  }
+
   function navigateScreen(next: Screen) {
-    setScreen(next);
-    const target =
-      next === "weapons"
-        ? "/modding"
-        : next === "editor" && content
-          ? `/modding/${content.weapon_item_id}`
-          : null;
-    if (target && pathname !== target) router.push(target);
+    if (next === "editor") {
+      if (content) enterEditor(content.weapon_item_id);
+      return;
+    }
+    navigate(`/modding?tab=${next}`);
+  }
+
+  function enterEditor(weaponId: string, openBuild = false) {
+    const path = `/modding/${encodeURIComponent(weaponId)}`;
+    if (!openBuild && pathname === path && screen === "editor") return;
+    navigate(`${path}?tab=build`);
+  }
+
+  function updateList(values: Record<string, string | null>, replace = false) {
+    if (screen === "editor") return;
+    const query = new URLSearchParams(window.location.search);
+    if (screenFromUrl(window.location.pathname, query.get("tab")) !== screen) return;
+    query.set("tab", screen);
+    for (const [key, value] of Object.entries(values)) {
+      if (value === null || value === "") query.delete(key);
+      else query.set(key, value);
+    }
+    navigate(`/modding?${query}`, replace);
+  }
+
+  function setListPage(page: number, replace = false) {
+    updateList({ page: page > 1 ? String(page) : null }, replace);
+  }
+
+  function setPublicBuild(id: string | null) {
+    updateList({ build: id }, id === null);
   }
   const [history, dispatchHistory] = useReducer(
     buildHistoryReducer,
@@ -154,9 +195,7 @@ function useBuildState(
     setBaseline(JSON.stringify(next.content));
     setConflict(null);
     setError(null);
-    setScreen("editor");
-    const target = `/modding/${next.content.weapon_item_id}`;
-    if (pathname !== target) router.push(target);
+    enterEditor(next.content.weapon_item_id);
   }
   async function mayReplace() {
     return (
@@ -180,9 +219,7 @@ function useBuildState(
     setBaseline(JSON.stringify(next));
     setConflict(null);
     setError(null);
-    setScreen("editor");
-    const target = `/modding/${weapon.item.id}`;
-    if (pathname !== target) router.push(target);
+    enterEditor(weapon.item.id);
     return true;
   }
   async function open(id: string) {
@@ -285,8 +322,7 @@ function useBuildState(
       setWorkspace(null);
       setContent(null);
       setBaseline("");
-      if (!target) setScreen("mine");
-      if (pathname !== "/modding") router.push("/modding");
+      if (!target || screen === "editor") navigateScreen("mine");
     }
     return true;
   }
@@ -305,7 +341,7 @@ function useBuildState(
     if (!result) return;
     if (workspace && result.deleted.includes(workspace.id)) {
       setWorkspace(null); setContent(null); setBaseline("");
-      if (pathname !== "/modding") router.push("/modding");
+      if (screen === "editor") navigateScreen("mine");
     }
     setError(result.failed[0]?.error ?? null);
     setMessage(t(`삭제 완료 ${result.deleted.length}개 · 삭제하지 못한 항목 ${result.failed.length}개`,
@@ -324,8 +360,7 @@ function useBuildState(
     setConflict(null);
     setError(null);
     setMessage("");
-    setScreen("editor");
-    router.push(`/modding/${next.weapon_item_id}?tab=build`);
+    enterEditor(next.weapon_item_id, true);
   }
   function edit(next: StoredContent) {
     if (!busy.current) {
@@ -370,7 +405,6 @@ function useBuildState(
     if (!alive.current || busy.current) return false;
     edit(next);
     setError(null);
-    setScreen("editor");
     return true;
   }
   function undo() {
@@ -418,6 +452,11 @@ function useBuildState(
     enabled: true,
     screen,
     setScreen: navigateScreen,
+    publicBuildId,
+    listPage,
+    setListPage,
+    updateList,
+    setPublicBuild,
     content,
     workspace,
     dirty,

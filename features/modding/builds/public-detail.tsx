@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { itemName } from "../build";
 import { BuildApiError, buildsApi, buildsKey } from "./api";
 import type { BuildComment, PublishedBuild } from "./types";
+import type { ModdingManifest } from "../types";
+import { PublishedBuildPreview } from "./public-preview";
 import { useBuilds } from "./provider";
 import { BuildLoginNotice } from "./editor-panel";
 import {
@@ -16,7 +18,7 @@ import {
   buildPanel,
 } from "./ui";
 
-export function BuildDetail({ id, back }: { id: string; back: () => void }) {
+export function BuildDetail({ id, back, manifest }: { id: string; back: () => void; manifest: ModdingManifest | null | undefined }) {
   const b = useBuilds();
   const [reviewedRevision, setReviewedRevision] = useState<number | null>(null);
   const detail = useQuery({
@@ -27,9 +29,10 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
     retry: false,
   });
   const published = detail.data?.view === "published" ? detail.data : null;
+  const { refetch } = detail;
   const refreshDetail = useCallback(() => {
-    void detail.refetch();
-  }, [detail.refetch]);
+    void refetch();
+  }, [refetch]);
   const revision = published?.revision;
   useEffect(() => {
     if (reviewedRevision === null && revision !== undefined)
@@ -177,9 +180,9 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
           <BuildLoginNotice />
           <p className="mb-4 text-xs leading-6 text-foreground dark:text-white">
             {b.t(
-              "공개 당시 저장된 구성입니다. 슬롯 호환성·충돌·최종 성능은 검증되지 않았습니다. 미리보기는 현재 작업본을 변경하지 않습니다.",
-              "This is the saved public snapshot. Compatibility, conflicts and final stats are not validated. Previewing does not change your draft.",
-              "公開時点の構成です。互換性・干渉・最終性能は未検証です。プレビューでは下書きを変更しません。",
+              "공개 당시 저장된 구성입니다. 작업대와 성능은 현재 데이터 기준 참고용입니다.",
+              "The workbench and statistics are a reference based on current data for this saved build.",
+              "公開時に保存された構成です。作業台と性能は現在のデータに基づく参考情報です。",
             )}
           </p>
           {!published.is_public && (
@@ -199,43 +202,45 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
               {published.copied_from.revision}
             </p>
           )}
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {published.content.nodes.map((node) => (
-              <div
-                key={node.node_id}
-                className="flex items-center gap-3 rounded-xl border border-line p-3"
-              >
-                {node.item.image && (
-                  <Image
-                    unoptimized
-                    src={node.item.image}
-                    alt=""
-                    width={80}
-                    height={60}
-                    className="h-14 w-20 shrink-0 object-contain"
-                  />
-                )}
-                <div className="min-w-0">
-                  <p className="text-xs font-medium leading-5">
-                    {itemName(node.item, b.locale)}
-                  </p>
-                  <p className="mt-1 font-mono text-[10px] text-foreground dark:text-white">
-                    {node.item.weight ?? "—"} kg
-                  </p>
-                  {node.attributes && (
-                    <details className="mt-1 text-xs text-foreground dark:text-white">
-                      <summary className="cursor-pointer">
-                        {b.t("속성", "Attributes", "属性")}
-                      </summary>
-                      <pre className="max-h-32 overflow-auto whitespace-pre-wrap break-all">
-                        {JSON.stringify(node.attributes, null, 2)}
-                      </pre>
-                    </details>
+          <PublishedBuildPreview key={published.revision} content={published.content} locale={b.locale} manifest={manifest}>
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+              {published.content.nodes.map((node) => (
+                <div
+                  key={node.node_id}
+                  className="flex items-center gap-3 rounded-xl border border-line p-3"
+                >
+                  {node.item.image && (
+                    <Image
+                      unoptimized
+                      src={node.item.image}
+                      alt=""
+                      width={80}
+                      height={60}
+                      className="h-14 w-20 shrink-0 object-contain"
+                    />
                   )}
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium leading-5">
+                      {itemName(node.item, b.locale)}
+                    </p>
+                    <p className="mt-1 font-mono text-[10px] text-foreground dark:text-white">
+                      {node.item.weight ?? "—"} kg
+                    </p>
+                    {node.attributes && (
+                      <details className="mt-1 text-xs text-foreground dark:text-white">
+                        <summary className="cursor-pointer">
+                          {b.t("속성", "Attributes", "属性")}
+                        </summary>
+                        <pre className="max-h-32 overflow-auto whitespace-pre-wrap break-all">
+                          {JSON.stringify(node.attributes, null, 2)}
+                        </pre>
+                      </details>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </PublishedBuildPreview>
           {!!published.warnings.length && (
             <ul className="my-3 text-xs text-amber-900 dark:text-amber-200">
               {published.warnings.map((warning, i) => (

@@ -32,7 +32,7 @@ const zoneTint: Record<SlotArea, string> = {
 };
 const handle: CSSProperties = { opacity: 0, width: 1, height: 1, minWidth: 0, minHeight: 0, border: 0, pointerEvents: "none" };
 type FoldData = { foldLabel: string; hiddenCount: number; onFold: () => void; open: boolean };
-type TileData = FoldData & { violation: string; violationLabel: string; located: boolean; area: SlotArea; showZones: boolean; item?: ItemSummary; name: string; slotName: string; parent: string; ariaParent: string; domId: string; active: boolean; pending: boolean; related: boolean; added: boolean; count: number; total: number; label: string; onToggle: () => void; onHighlight: (on: boolean) => void };
+type TileData = FoldData & { violation: string; violationLabel: string; located: boolean; area: SlotArea; showZones: boolean; item?: ItemSummary; name: string; slotName: string; parent: string; ariaParent: string; domId: string; active: boolean; pending: boolean; related: boolean; added: boolean; count: number; total: number; label: string; onToggle?: () => void; onHighlight: (on: boolean) => void };
 type WeaponData = FoldData & { item: ItemSummary; image: string | null; related: boolean };
 type TileNode = Node<TileData, "tile">;
 type WeaponNode = Node<WeaponData, "weapon">;
@@ -49,14 +49,20 @@ function FoldChip({ data }: { data: FoldData }) {
 
 function SlotTile({ data }: NodeProps<TileNode>) {
   const description = `${data.slotName}: ${data.name} · ${data.ariaParent}${data.violation ? ` · ${data.violation}` : ""}`;
+  const Tile = data.onToggle ? "button" : "div";
   return <div className="relative" style={{ width: TILE_WIDTH, height: TILE_HEIGHT }}>
     {data.item && data.total > 0 && <span title={data.label} className={`absolute -top-[13px] left-1 z-10 rounded border px-1 font-mono text-[9px] leading-4 ${data.count > 0 ? "border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-black" : "border-line bg-surface text-foreground"}`}>+{data.count}/{data.total}</span>}
-    <button type="button" data-workbench-slot="" id={data.domId} disabled={data.pending} aria-expanded={data.active} aria-controls={data.active ? "modding-parts-popup" : undefined} aria-haspopup="dialog" aria-label={description} title={description} onClick={data.onToggle} onFocus={() => data.onHighlight(true)} onBlur={() => data.onHighlight(false)}
+    <Tile
+      {...(data.onToggle ? {
+        type: "button" as const, disabled: data.pending, "aria-expanded": data.active,
+        "aria-controls": data.active ? "modding-parts-popup" : undefined, "aria-haspopup": "dialog" as const,
+      } : { tabIndex: 0 })}
+      data-workbench-slot="" id={data.domId} aria-label={description} title={description} onClick={data.onToggle} onFocus={() => data.onHighlight(true)} onBlur={() => data.onHighlight(false)}
       className={`nodrag nopan group relative isolate flex h-full w-full flex-col items-center justify-center rounded border p-1 text-center ${focus} disabled:opacity-60 ${data.active ? "border-accent bg-orange-50 ring-1 ring-accent dark:bg-orange-950/30" : "border-gray-400/60 bg-white hover:border-accent dark:border-gray-600 dark:bg-[#23262b]"} ${data.item ? "" : "border-dashed"} ${data.related ? "ring-2 ring-orange-400" : ""} ${data.added ? "motion-safe:animate-pulse ring-2 ring-sky-500" : ""} ${data.violation ? "modding-violation" : ""} ${data.located ? "outline-2 outline-offset-3 outline-orange-500" : ""}`}>
       {data.showZones && <span aria-hidden="true" className={`pointer-events-none absolute inset-0 -z-10 rounded ${zoneTint[data.area]}`} />}
       {data.item ? <><span className="line-clamp-2 h-[26px] w-full break-words px-1 text-[11px] font-bold leading-[13px]">{data.name}</span><div className="flex min-h-0 flex-1 items-center"><PartImage item={data.item} /></div><PartChips item={data.item} /></> : <><span className="text-xs">{data.slotName}</span>{data.parent && <span className="mt-1 line-clamp-2 text-[10px] text-gray-600 dark:text-gray-400">{data.parent}</span>}</>}
-      <span aria-hidden="true" className={`absolute right-0 top-0 flex size-[18px] items-center justify-center rounded-bl border-b border-l border-line bg-surface-elevated group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100 ${data.active ? "opacity-100" : "opacity-0"}`}><ChevronDown className="size-3" /></span>
-    </button>
+      {data.onToggle && <span aria-hidden="true" className={`absolute right-0 top-0 flex size-[18px] items-center justify-center rounded-bl border-b border-l border-line bg-surface-elevated group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100 ${data.active ? "opacity-100" : "opacity-0"}`}><ChevronDown className="size-3" /></span>}
+    </Tile>
     {data.violation && <span aria-hidden="true" className="pointer-events-none absolute -right-1 -top-3 z-10 rounded bg-red-700 px-1 text-[9px] font-bold text-white dark:bg-red-300 dark:text-red-950">{data.violationLabel}</span>}
     <FoldChip data={data} />
     <Handle type="target" position={Position.Top} style={handle} isConnectable={false} /><Handle type="source" position={Position.Bottom} style={handle} isConnectable={false} />
@@ -73,15 +79,15 @@ const nodeTypes = { tile: SlotTile, weapon: WeaponTile };
 const edgeTypes = { route: RouteEdge };
 function FlowOptions({ locale, links, setLinks, zones, setZones, showAllEmpty, onShowAll, onRelayout, hiddenCount }: {
   locale: Locale; links: boolean; setLinks: (value: boolean) => void; zones: boolean; setZones: (value: boolean) => void;
-  showAllEmpty: boolean; onShowAll: (value: boolean) => void; onRelayout: () => void; hiddenCount: number;
+  showAllEmpty: boolean; onShowAll?: (value: boolean) => void; onRelayout?: () => void; hiddenCount: number;
 }) {
   const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
   return <Panel position="bottom-left"><div className="max-w-[calc(100vw-5rem)] rounded-lg border border-line bg-surface/95 px-2.5 py-2 text-xs shadow-sm">
     <div className="flex flex-wrap items-center gap-3">
       <label className="flex items-center gap-1.5"><input type="checkbox" checked={links} onChange={(event) => setLinks(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("연결선", "Connections", "接続線")}</label>
-      <label className="flex items-center gap-1.5"><input type="checkbox" checked={showAllEmpty} onChange={(event) => onShowAll(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("빈 마운트·전술장비 모두 보기", "Show all empty mounts and tactical slots", "空きマウント・戦術スロットをすべて表示")}</label>
+      {onShowAll && <label className="flex items-center gap-1.5"><input type="checkbox" checked={showAllEmpty} onChange={(event) => onShowAll(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("빈 마운트·전술장비 모두 보기", "Show all empty mounts and tactical slots", "空きマウント・戦術スロットをすべて表示")}</label>}
       <label className="flex items-center gap-1.5"><input type="checkbox" checked={zones} onChange={(event) => setZones(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("영역 표시", "Regions", "領域表示")}</label>
-      <button type="button" onClick={onRelayout} className={`rounded border border-line bg-surface px-2 py-0.5 hover:border-accent ${focus}`}>{t("다시 정렬", "Rearrange", "再配置")}</button>
+      {onRelayout && <button type="button" onClick={onRelayout} className={`rounded border border-line bg-surface px-2 py-0.5 hover:border-accent ${focus}`}>{t("다시 정렬", "Rearrange", "再配置")}</button>}
     </div>
     {hiddenCount > 0 && <p className="mt-1 text-[10px] text-gray-600 dark:text-gray-400">(+{hiddenCount}) {t("접힌 빈 마운트·전술장비 · 누르면 펼침", "Hidden empty mounts and tactical slots · click to expand", "折りたたまれた空きスロット · クリックして展開")}</p>}
     {zones && <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-700 dark:text-gray-300">{[
@@ -93,21 +99,22 @@ function FlowOptions({ locale, links, setLinks, zones, setZones, showAllEmpty, o
 }
 interface CanvasProps {
   rulesPanel: ReactNode;
+  weaponImage?: string | null;
   fitKey: string;
   location: { key: string } | null;
   marks: ReadonlyMap<string, string[]>;
-  expanded: ReadonlySet<string>;
-  showAllEmpty: boolean;
-  onToggleFold: (key: string) => void;
-  onShowAll: (value: boolean) => void;
-  onRelayout: () => void;
-  layout: WorkbenchLayout; snapshot: WeaponSnapshot; activeKey: string | null; pending: boolean; locale: Locale; onToggle: (key: string) => void; onViewportChange: () => void; onDismiss: () => void;
+  expanded?: ReadonlySet<string>;
+  showAllEmpty?: boolean;
+  onToggleFold?: (key: string) => void;
+  onShowAll?: (value: boolean) => void;
+  onRelayout?: () => void;
+  layout: WorkbenchLayout; snapshot: WeaponSnapshot; activeKey?: string | null; pending?: boolean; locale: Locale; onToggle?: (key: string) => void; onViewportChange?: () => void; onDismiss?: () => void;
 }
 export function WorkbenchFlowCanvas(props: CanvasProps) {
   return <ReactFlowProvider><Canvas {...props} /></ReactFlowProvider>;
 }
-function Canvas({ layout, snapshot, activeKey, pending, locale, onToggle, onViewportChange, onDismiss,
-  fitKey, location, marks, expanded, showAllEmpty, onToggleFold, onShowAll, onRelayout, rulesPanel }: CanvasProps) {
+function Canvas({ layout, snapshot, activeKey, pending = false, locale, onToggle, onViewportChange, onDismiss,
+  fitKey, location, marks, expanded, showAllEmpty = false, onToggleFold, onShowAll, onRelayout, rulesPanel, weaponImage }: CanvasProps) {
   const { fitView, setCenter, getNode } = useReactFlow<FlowNode, FlowEdge>();
   const width = useStore((state) => state.width);
   const height = useStore((state) => state.height);
@@ -160,12 +167,12 @@ function Canvas({ layout, snapshot, activeKey, pending, locale, onToggle, onView
     const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
     const fold = (owner: string): FoldData => {
       const slots = layout.folded.get(owner) ?? [];
-      const open = expanded.has(owner);
+      const open = expanded?.has(owner) ?? false;
       const names = slots.map(({ slot }) => itemName(slot, locale)).join(", ");
       const action = open ? t("빈 슬롯 접기", "Collapse empty slots", "空きスロットを折りたたむ") : t("빈 슬롯 펼치기", "Expand empty slots", "空きスロットを展開");
-      return { open, hiddenCount: slots.length, foldLabel: slots.length && !showAllEmpty ? `${action} · ${names}` : "", onFold: () => onToggleFold(owner) };
+      return { open, hiddenCount: slots.length, foldLabel: slots.length && !showAllEmpty ? `${action} · ${names}` : "", onFold: () => onToggleFold?.(owner) };
     };
-    const nodes: FlowNode[] = [{ id: WEAPON_KEY, type: "weapon", position: { x: 0, y: 0 }, ...weaponGeometry, focusable: false, data: { item: snapshot.weapon.item, image: weaponPreviewImage(snapshot.weapon), related: related.has(WEAPON_KEY), ...fold(WEAPON_KEY) } }];
+    const nodes: FlowNode[] = [{ id: WEAPON_KEY, type: "weapon", position: { x: 0, y: 0 }, ...weaponGeometry, focusable: false, data: { item: snapshot.weapon.item, image: weaponImage === undefined ? weaponPreviewImage(snapshot.weapon) : weaponImage, related: related.has(WEAPON_KEY), ...fold(WEAPON_KEY) } }];
     const edges: FlowEdge[] = [];
     for (const slot of layout.slots) {
       const entry = slot.entry;
@@ -185,7 +192,7 @@ function Canvas({ layout, snapshot, activeKey, pending, locale, onToggle, onView
         area: slot.area, showZones: zones, item: entry.selected, name: entry.selected ? itemName(entry.selected, locale) : ownName, slotName: ownName,
         parent: repeated ? parentLabel : "", ariaParent: parentLabel, domId: `workbench-slot-${entry.key}`, active: activeKey === entry.key, pending, related: related.has(entry.key), added: added.has(entry.key), total, count,
         label: locale === "ko" ? `이 부품에 달 수 있는 슬롯 ${total}개 중 ${count}개 장착` : locale === "ja" ? `${total}個中${count}個装着` : `${count} of ${total} attachment slots filled`,
-        onToggle: () => onToggle(entry.key), onHighlight: (on) => setHighlight(on ? entry.key : null),
+        onToggle: onToggle ? () => onToggle(entry.key) : undefined, onHighlight: (on) => setHighlight(on ? entry.key : null),
       } });
       if (links) {
         const route = attachmentRoute(parent ? { x: parent.x, y: parent.y, width: TILE_WIDTH, height: TILE_HEIGHT } : { x: 0, y: 0, width: WEAPON_WIDTH, height: TILE_HEIGHT }, { x: slot.x, y: slot.y, width: TILE_WIDTH, height: TILE_HEIGHT });
@@ -194,7 +201,7 @@ function Canvas({ layout, snapshot, activeKey, pending, locale, onToggle, onView
       }
     }
     return { nodes, edges };
-  }, [layout, snapshot, activeKey, pending, locale, onToggle, highlight, located, added, links, zones, dark, expanded, marks, showAllEmpty, onToggleFold]);
+  }, [layout, snapshot, activeKey, pending, locale, onToggle, highlight, located, added, links, zones, dark, expanded, marks, showAllEmpty, onToggleFold, weaponImage]);
   return <ReactFlow<FlowNode, FlowEdge> nodes={graph.nodes} edges={graph.edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} colorMode={dark ? "dark" : "light"}
     fitView fitViewOptions={fitOptions} minZoom={fitOptions.minZoom} maxZoom={fitOptions.maxZoom} nodesDraggable={false} nodesConnectable={false} elementsSelectable={false} nodesFocusable edgesFocusable={false}
     zoomOnScroll panOnDrag preventScrolling zoomOnDoubleClick={false} onMove={onViewportChange} onMoveEnd={onViewportChange} onPaneClick={onDismiss}

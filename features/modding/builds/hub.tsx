@@ -5,7 +5,8 @@ import { weaponPreviewImage } from "../default-preset";
 import { getWeapons } from "../api";
 import type { ItemSummary } from "../types";
 import type { OwnBuildSummary } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { itemName } from "../build";
 import { buildsApi, buildsKey } from "./api";
@@ -15,6 +16,7 @@ import { BuildLoginNotice } from "./editor-panel";
 import {
   BuildError,
   BuildPagination,
+  MODDING_PAGE_SIZE,
   buildButton,
   buildField,
   buildPanel,
@@ -24,26 +26,19 @@ import { BuildDetail } from "./public-detail";
 export function BuildsHub() {
   const b = useBuilds();
   const mine = b.screen === "mine";
-  const [minePage, setMinePage] = useState(1);
-  const [publicPage, setPublicPage] = useState(1);
-  const page = mine ? minePage : publicPage;
-  const setPage = mine ? setMinePage : setPublicPage;
-  const [mineWord, setMineWord] = useState("");
-  const [mineSearch, setMineSearch] = useState("");
-  const [word, setWord] = useState("");
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("latest");
-  const [period, setPeriod] = useState("month");
-  const [filterWeapon, setFilterWeapon] = useState(false);
-  const [mineFilterWeapon, setMineFilterWeapon] = useState(false);
-  const mineWeaponId = mineFilterWeapon ? b.content?.weapon_item_id : undefined;
-  const [detailId, setDetailId] = useState<string | null>(null);
-  const selectionScope = `${b.account}:${mine}:${page}:${mineSearch}:${mineWeaponId ?? ""}`;
+  const { listPage: page, setListPage: setPage, updateList } = b;
+  const queryString = useSearchParams();
+  const search = (queryString.get("word") ?? "").slice(0, 200).trim();
+  const sort = queryString.get("sort") === "best" ? "best" : "latest";
+  const requestedPeriod = queryString.get("period");
+  const period = requestedPeriod === "week" || requestedPeriod === "all" ? requestedPeriod : "month";
+  const weaponId = queryString.get("weapon_item_id") || undefined;
+  const detailId = b.publicBuildId;
+  const selectionScope = `${b.account}:${mine}:${page}:${search}:${weaponId ?? ""}`;
   const [selection, setSelection] = useState<{ scope: string; ids: Set<string> }>({ scope: "", ids: new Set() });
-  const weaponId = filterWeapon ? b.content?.weapon_item_id : undefined;
   const params = new URLSearchParams({
     page: String(page),
-    page_size: "20",
+    page_size: String(MODDING_PAGE_SIZE),
     sort,
     period,
     word: search,
@@ -65,8 +60,8 @@ export function BuildsHub() {
     retry: false,
   });
   const own = useQuery({
-    queryKey: [...buildsKey, b.account, "mine", mineSearch, mineWeaponId, minePage, 20],
-    queryFn: ({ signal }) => buildsApi.mine(minePage, b.token, signal, { word: mineSearch, weapon_item_id: mineWeaponId }),
+    queryKey: [...buildsKey, b.account, "mine", search, weaponId, page, MODDING_PAGE_SIZE],
+    queryFn: ({ signal }) => buildsApi.mine(page, b.token, signal, { word: search, weapon_item_id: weaponId }),
     enabled: mine && b.canWrite,
     staleTime: 0,
     gcTime: 0,
@@ -85,13 +80,13 @@ export function BuildsHub() {
     const result = await b.discardBuilds(selectedBuilds);
     if (!result) return;
     setSelection({ scope: selectionScope, ids: new Set(result.failed.map((item) => item.id)) });
-    if (result.deleted.length === visibleBuilds.length && page > 1) setPage((value) => value - 1);
+    if (result.deleted.length === visibleBuilds.length && page > 1) setPage(page - 1, true);
   }
   const ownedById = new Map(ownership.data?.map((build) => [build.id, build]));
   async function deleteFromList(build: OwnBuildSummary) {
     if (await b.discardBuild(build)) {
       if ((mine ? own.data?.builds.length : list.data?.builds.length) === 1 && page > 1)
-        setPage((value) => value - 1);
+        setPage(page - 1, true);
     }
   }
   const weapons = useQuery({
@@ -102,12 +97,19 @@ export function BuildsHub() {
     retry: false,
   });
   const query = mine ? own : list;
+  const total = query.data?.total;
+  useEffect(() => {
+    if (total === undefined || detailId) return;
+    const lastPage = Math.max(1, Math.ceil(total / MODDING_PAGE_SIZE));
+    if (page > lastPage) setPage(lastPage, true);
+  }, [detailId, page, setPage, total]);
   if (detailId && !mine)
     return (
       <BuildDetail
         key={`${b.account}:${detailId}`}
         id={detailId}
-        back={() => setDetailId(null)}
+        manifest={weapons.isPending ? undefined : weapons.data?.manifest ?? null}
+        back={() => b.setPublicBuild(null)}
       />
     );
   return (
@@ -130,8 +132,8 @@ export function BuildsHub() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (mine) setMineSearch(mineWord.trim()); else setSearch(word.trim());
-            setPage(1);
+            const word = String(new FormData(e.currentTarget).get("word") ?? "").trim();
+            updateList({ word, page: null });
             setSelection({ scope: "", ids: new Set() });
           }}
           className="mb-5 flex flex-wrap items-center gap-2 lg:flex-nowrap"
@@ -144,11 +146,11 @@ export function BuildsHub() {
             )}
             className={`${buildField.replace("w-full", "")} h-10 min-w-0 flex-1 basis-48 text-sm`}
             maxLength={200}
-            value={mine ? mineWord : word}
+            key={search}
+            name="word"
+            defaultValue={search}
             onChange={(e) => {
-              const value = e.target.value;
-              if (mine) { setMineWord(value); if (!value) { setMineSearch(""); setMinePage(1); } }
-              else { setWord(value); if (!value) { setSearch(""); setPublicPage(1); } }
+              if (!e.target.value && search) updateList({ word: null, page: null });
             }}
             placeholder={b.t(
               "빌드 제목 검색",
@@ -164,10 +166,7 @@ export function BuildsHub() {
             aria-label={b.t("정렬", "Sort", "並び順")}
             className={`${buildField.replace("w-full", "")} h-10 w-auto shrink-0 text-sm`}
             value={sort}
-            onChange={(e) => {
-              setSort(e.target.value);
-              setPage(1);
-            }}
+            onChange={(e) => updateList({ sort: e.target.value, page: null })}
           >
             <option value="latest">{b.t("최신순", "Latest", "新着順")}</option>
             <option value="best">BEST</option>
@@ -180,10 +179,7 @@ export function BuildsHub() {
             )}
             className={`${buildField.replace("w-full", "")} h-10 w-auto shrink-0 text-sm`}
             value={period}
-            onChange={(e) => {
-              setPeriod(e.target.value);
-              setPage(1);
-            }}
+            onChange={(e) => updateList({ period: e.target.value, page: null })}
           >
             <option value="week">
               {b.t("최근 7일", "Last 7 days", "過去7日")}
@@ -196,15 +192,14 @@ export function BuildsHub() {
             </option>
           </select>
           </>}
-          {b.content && (
+          {(b.content || weaponId) && (
             <label className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm">
               <input
                 type="checkbox"
-                checked={mine ? mineFilterWeapon : filterWeapon}
+                checked={!!weaponId}
                 onChange={(e) => {
-                  if (mine) setMineFilterWeapon(e.target.checked); else setFilterWeapon(e.target.checked);
+                  updateList({ weapon_item_id: e.target.checked ? b.content?.weapon_item_id ?? null : null, page: null });
                   setSelection({ scope: "", ids: new Set() });
-                  setPage(1);
                 }}
               />
               {b.t("선택 총기만", "Selected weapon only", "選択武器のみ")}
@@ -273,7 +268,7 @@ export function BuildsHub() {
             <article key={build.id} className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-line">
             <button
               type="button"
-              onClick={() => setDetailId(build.id)}
+              onClick={() => b.setPublicBuild(build.id)}
               className="min-w-0 flex-1 text-left hover:bg-surface-elevated/50 focus-visible:outline-2 focus-visible:outline-accent"
             >
               <div className="flex h-36 items-center justify-center bg-surface-elevated/60 p-5">
@@ -322,9 +317,9 @@ export function BuildsHub() {
       {query.data?.total === 0 && (
         <p className="py-12 text-center text-sm text-foreground dark:text-white">
           {b.t(
-            mineSearch && mine ? "검색 결과가 없습니다." : "표시할 빌드가 없습니다.",
-            mineSearch && mine ? "No matching builds." : "No builds to display.",
-            mineSearch && mine ? "検索結果がありません。" : "表示するビルドがありません。",
+            search ? "검색 결과가 없습니다." : "표시할 빌드가 없습니다.",
+            search ? "No matching builds." : "No builds to display.",
+            search ? "検索結果がありません。" : "表示するビルドがありません。",
           )}
         </p>
       )}
