@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { ArrowLeft, CopyPlus, Heart, Pencil, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { itemName } from "../build";
@@ -40,15 +41,17 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
     reviewedRevision !== revision;
   return (
     <section className={buildPanel}>
-      <div className="mb-4 flex flex-wrap justify-between gap-2">
-        <button onClick={back} className={buildButton}>
-          ← {b.t("목록", "Back to list", "一覧")}
+      <div className="mb-5 flex flex-wrap justify-between gap-2 border-b border-line pb-4">
+        <button type="button" onClick={back} className={`${buildButton} text-sm`}>
+          <ArrowLeft aria-hidden="true" className="size-4" />
+          {b.t("목록", "Back to list", "一覧")}
         </button>
         <button
           disabled={detail.isFetching || b.pending}
           onClick={() => void detail.refetch()}
-          className={buildButton}
+          className={`${buildButton} text-sm`}
         >
+          <RefreshCw aria-hidden="true" className="size-4" />
           {b.t("최신 상세 조회", "Reload details", "最新の詳細")}
         </button>
       </div>
@@ -115,7 +118,7 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
           <p className="my-5 whitespace-pre-wrap break-words text-sm leading-7 text-foreground dark:text-white">
             {published.content.description}
           </p>
-          <div className="mb-5 flex flex-wrap gap-2">
+          <div role="group" aria-label={b.t("빌드 작업", "Build actions", "ビルド操作")} className="my-4 flex flex-wrap gap-2 rounded-xl border border-line bg-surface-elevated p-3">
             <button
               aria-pressed={published.has_voted}
               disabled={
@@ -139,7 +142,8 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
               }
               className={`${buildButton} ${published.has_voted ? "border-accent/60 text-orange-700 dark:text-orange-300" : ""}`}
             >
-              ♥ {b.t("추천", "Vote", "投票")} {published.vote_count}
+              <Heart aria-hidden="true" className={`size-4 ${published.has_voted ? "fill-current" : ""}`} />
+              {b.t("추천", "Vote", "投票")} {published.vote_count}
             </button>
             <button
               disabled={
@@ -150,8 +154,9 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
                 detail.isFetching
               }
               onClick={() => void b.customize(published.content)}
-              className={buildButton}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-orange-700 bg-orange-700 px-3 py-2 text-base font-semibold text-white enabled:hover:bg-orange-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-70 dark:border-orange-300 dark:bg-orange-300 dark:text-orange-950 dark:enabled:hover:bg-orange-200"
             >
+              <CopyPlus aria-hidden="true" className="size-4" />
               {b.t(
                 "복사해서 커스텀",
                 "Copy and customize",
@@ -164,6 +169,7 @@ export function BuildDetail({ id, back }: { id: string; back: () => void }) {
                 onClick={() => void b.open(id)}
                 className={buildButton}
               >
+                <Pencil aria-hidden="true" className="size-4" />
                 {b.t("내 작업본 편집", "Edit my draft", "自分の下書きを編集")}
               </button>
             )}

@@ -1361,3 +1361,24 @@ html.live-map-document-dragging * {
 .live-map-party-position .player-icon-pulse {
   background: radial-gradient(circle, var(--party-color) 0%, transparent 70%);
 }
+
+.modding-violation {
+  border-color: var(--color-red-500);
+  box-shadow: 0 0 0 1px var(--color-red-500);
+}
+
+.dark .modding-violation {
+  border-color: var(--color-red-400);
+  box-shadow: 0 0 0 1px var(--color-red-400);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .modding-violation {
+    animation: modding-violation-glow 1.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes modding-violation-glow {
+    from { filter: drop-shadow(0 0 1px color-mix(in srgb, var(--color-red-500) 35%, transparent)); }
+    to { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--color-red-500) 70%, transparent)); }
+  }
+}

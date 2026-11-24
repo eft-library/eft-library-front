@@ -13,7 +13,7 @@ function detail(id: string, names: string[]): ItemDetail {
 const cell = (layout: ReturnType<typeof layoutSlots>, key: string) => layout.slots.find((position) => position.entry.key === key)!;
 test("front axis is contiguous in specified order, excluding mounts and front sights", () => {
   const entries = [slot("mod_reciever", "root/r", true), slot("mod_mount", "root/r/m"), slot("mod_barrel", "root/r/b", true), slot("mod_sight_front", "root/r/b/f"), slot("mod_handguard", "root/r/h", true), slot("mod_gas_block", "root/r/g", true), slot("mod_muzzle", "root/r/b/m", true), slot("mod_muzzle_001", "root/r/b/m/s", true)];
-  const result = layoutSlots(entries);
+  const result = layoutSlots(entries, undefined, undefined, { showAllEmpty: true });
   assert.deepEqual(result.slots.filter((slot) => slot.area === "axis").sort((a,b) => b.col-a.col).map((slot) => slot.entry.key), ["root/r", "root/r/b", "root/r/h", "root/r/g", "root/r/b/m", "root/r/b/m/s"]);
   assert.deepEqual(result.slots.filter((slot) => slot.area === "axis").map((slot) => slot.col).sort((a,b) => b-a), [-1,-2,-3,-4,-5,-6]);
   assert.ok(cell(result,"root/r/b/f").row < 0);
@@ -32,12 +32,12 @@ test("rear axis follows stock chain, other stock children go below", () => {
 });
 test("mount classification uses mounted definitions or candidate slot types", () => {
   const source: Pick<WeaponSnapshot,"items"|"slot_candidates"> = { items: { optic: detail("optic",["mod_scope_000"]), rail: detail("rail",["mod_tactical001"]) }, slot_candidates: { root: { upper: { item_id:"root",slot_id:"upper",total:1,validation_scope:"slot_filters_only",candidates:[{item:item("optic")}] }, lower: { item_id:"root",slot_id:"lower",total:1,validation_scope:"slot_filters_only",candidates:[{item:item("rail")}] } } } };
-  const result = layoutSlots([slot("mod_mount","root/upper"),slot("mod_mount","root/lower")],undefined,source);
+  const result = layoutSlots([slot("mod_mount","root/upper"),slot("mod_mount","root/lower")],undefined,source,{ showAllEmpty: true });
   assert.equal(cell(result,"root/upper").area,"top");
   assert.equal(cell(result,"root/lower").area,"rail");
 });
 test("rail descendants use successive rows and optic accessories stay with their optic", () => {
-  const result = layoutSlots([slot("mod_mount","root/rail",true),slot("mod_tactical","root/rail/ring",true),slot("mod_flashlight","root/rail/ring/light",true),slot("mod_scope","root/optic",true),slot("mod_tactical","root/optic/laser")]);
+  const result = layoutSlots([slot("mod_mount","root/rail",true),slot("mod_tactical","root/rail/ring",true),slot("mod_flashlight","root/rail/ring/light",true),slot("mod_scope","root/optic",true),slot("mod_tactical","root/optic/laser")], undefined, undefined, { showAllEmpty: true });
   assert.equal(cell(result,"root/rail/ring").row,cell(result,"root/rail").row+1);
   assert.equal(cell(result,"root/rail/ring/light").row,cell(result,"root/rail/ring").row+1);
   assert.equal(cell(result,"root/optic/laser").area,"top");
@@ -52,7 +52,7 @@ test("existing nodes retain exact positions across additions/removals and reorde
   assert.deepEqual([cell(removed,entries[3].key).x,cell(removed,entries[3].key).y],[cell(first,entries[3].key).x,cell(first,entries[3].key).y]);
 });
 test("200 slots never overlap, touch weapon cells or put non-axis slots on the axis", () => {
-  const result = layoutSlots(Array.from({length:200},(_,i) => slot(i%2 ? "mod_tactical001":"mod_scope_003",`root/${i}`)));
+  const result = layoutSlots(Array.from({length:200},(_,i) => slot(i%2 ? "mod_tactical001":"mod_scope_003",`root/${i}`)), undefined, undefined, { showAllEmpty: true });
   assert.equal(new Set(result.slots.map((slot)=>`${slot.col},${slot.row}`)).size,200);
   for (const slot of result.slots) assert.notEqual(slot.row,0);
 });
@@ -62,4 +62,39 @@ test("route endpoints attach to the child and use orthogonal paths", () => {
   const above = attachmentRoute({x:0,y:0,width:TILE_WIDTH,height:TILE_HEIGHT},{x:110,y:-118,width:TILE_WIDTH,height:TILE_HEIGHT});
   assert.equal(above.end.y,-14);
   assert.ok(above.path.includes(" V"));
+});
+
+test("only optional empty accessories fold, and a parent can reopen them without moving existing parts", () => {
+  const receiver = slot("mod_reciever", "root/r", true);
+  const sight = slot("mod_scope", "root/r/s", true);
+  const mount = slot("mod_mount", "root/r/m");
+  const required = slot("mod_tactical", "root/r/t");
+  required.slot.required = true;
+  const forced = slot("mod_flashlight", "root/f");
+  const entries = [receiver, mount, sight, required, forced];
+  const options = { forced: new Set([forced.key]) };
+  const collapsed = layoutSlots(entries, undefined, undefined, options);
+  assert.deepEqual(collapsed.hidden.get(receiver.key), [mount]);
+  assert.ok(cell(collapsed, required.key));
+  assert.ok(cell(collapsed, forced.key));
+  const open = layoutSlots(entries, collapsed, undefined, { ...options, expanded: new Set([receiver.key]) });
+  assert.equal(open.hidden.size, 0);
+  assert.equal(cell(open, sight.key).x, cell(collapsed, sight.key).x);
+  assert.equal(cell(open, sight.key).y, cell(collapsed, sight.key).y);
+});
+
+test("mounted optics and their ring caps stay above, while a foregrip goes below", () => {
+  const slots = [
+    slot("mod_mount", "root/m", true),
+    slot("mod_mount", "root/m/cap", true),
+    slot("mod_foregrip", "root/m/grip", true),
+    slot("mod_sight_rear", "root/m/rear", true),
+  ];
+  const optic = detail(slots[0].selected!.id, ["mod_scope"]);
+  const layout = layoutSlots(slots, undefined, { items: { [optic.item.id]: optic }, slot_candidates: {} });
+  assert.equal(cell(layout, "root/m").area, "top");
+  assert.equal(cell(layout, "root/m/cap").area, "top");
+  assert.equal(cell(layout, "root/m/rear").area, "top");
+  assert.equal(cell(layout, "root/m/grip").area, "rail");
+  assert.equal(cell(layout, "root/m/grip").row, 1);
 });

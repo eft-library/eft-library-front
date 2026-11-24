@@ -609,7 +609,7 @@ function Workbench({
           </section>
         </aside>}
         {tab === "build" ? (
-          <WorkbenchStage snapshot={snapshot} slots={slots} activeKey={activeKey} onActive={setActiveKey} candidatesLoading={data.candidatesLoading} candidatesError={data.candidatesError} onRetry={data.retryCandidates} generation={generation} locale={locale} />
+          <WorkbenchStage itemsLoading={data.itemsLoading} snapshot={snapshot} slots={slots} activeKey={activeKey} onActive={setActiveKey} candidatesLoading={data.candidatesLoading} candidatesError={data.candidatesError} onRetry={data.retryCandidates} generation={generation} locale={locale} />
         ) : (
           <section className={`${panel} min-w-0 p-4 sm:p-6`}>
             <div className="mb-5">

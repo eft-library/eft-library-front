@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/i18n/config";
 import type { BuildSlot } from "../build";
@@ -12,12 +12,14 @@ import { WorkbenchFlowCanvas } from "./workbench-flow-canvas";
 import { useBuilds } from "../builds/provider";
 import { mountPart } from "../builds/tree";
 import type { ItemSummary, WeaponSnapshot } from "../types";
-import { useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
+import { AttachmentRulesPanel, attachmentIssueLabel, useStatistics, WeaponStatisticsPanel } from "./weapon-statistics";
+
+import { violationParts } from "../workbench-violations";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
-export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidatesLoading, candidatesError, onRetry, generation, locale }: {
+export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidatesLoading, candidatesError, onRetry, generation, locale, itemsLoading }: {
   snapshot: WeaponSnapshot; slots: BuildSlot[]; activeKey: string | null; onActive: (key: string | null) => void;
-  candidatesLoading: boolean; candidatesError: unknown; onRetry: () => void; generation: string; locale: Locale;
+  candidatesLoading: boolean; candidatesError: unknown; onRetry: () => void; generation: string; locale: Locale; itemsLoading: boolean;
 }) {
   const builds = useBuilds();
   const t = builds.t;
@@ -45,17 +47,48 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
   const many = raw.length >= 9;
   const filtered = raw.filter(({ item }) => !query.trim() || [item.name_en, item.name_ko, item.name_ja].some((name) => name?.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))).slice();
   if (sort !== "base") filtered.sort((a, b) => sort === "weight" ? (a.item.weight ?? Infinity) - (b.item.weight ?? Infinity) : sort === "ergo" ? (b.item.mod_properties?.ergonomics ?? -Infinity) - (a.item.mod_properties?.ergonomics ?? -Infinity) : (a.item.mod_properties?.recoil_modifier ?? Infinity) - (b.item.mod_properties?.recoil_modifier ?? Infinity));
+  const current = useStatistics(builds.content, generation);
+  const issues = !current.isPlaceholderData && current.data?.compatibility.status === "invalid" ? current.data.compatibility.issues : undefined;
+  const parts = useMemo(() => violationParts(builds.content, slots, issues ?? [], locale), [builds.content, issues, slots, locale]);
+  const marks = useMemo(() => {
+    const labels = new Map<string, string[]>();
+    for (const [issue, targets] of parts) {
+      for (const { key } of targets) {
+        const others = targets.filter((part) => part.key !== key).map((part) => part.name);
+        const reason = attachmentIssueLabel(issue.code, locale);
+        labels.set(key, [...(labels.get(key) ?? []), others.length ? `${reason} (${others.join(", ")})` : reason]);
+      }
+    }
+    return labels;
+  }, [parts, locale]);
+  const forcedKeys = JSON.stringify([...marks.keys()].sort());
+  const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set());
+  const [showAllEmpty, setShowAllEmpty] = useState(false);
+  const [relayout, setRelayout] = useState(0);
+  const [location, setLocation] = useState<{ key: string } | null>(null);
+  const activeSlots = useMemo(() => new Set<string>(JSON.parse(forcedKeys)), [forcedKeys]);
+  const forced = useMemo(() => activeKey ? new Set([...activeSlots, activeKey]) : activeSlots, [activeKey, activeSlots]);
+  const weaponId = snapshot.weapon.item.id;
   const [layoutState, setLayoutState] = useState(() => ({
-    input: slots, weaponId: snapshot.weapon.item.id, layout: layoutSlots(slots, undefined, snapshot),
+    slots, weaponId, expanded, showAllEmpty, forced, relayout,
+    layout: layoutSlots(slots, undefined, snapshot, { expanded, showAllEmpty, forced }),
   }));
-  if (layoutState.input !== slots || layoutState.weaponId !== snapshot.weapon.item.id) {
-    // Conditional state adjustment is applied before React commits the render,
-    // so edits cannot paint an intermediate reflowed arrangement.
-    setLayoutState({ input: slots, weaponId: snapshot.weapon.item.id,
-      layout: layoutSlots(slots, layoutState.weaponId === snapshot.weapon.item.id ? layoutState.layout : undefined, snapshot) });
+  if (layoutState.slots !== slots || layoutState.weaponId !== weaponId || layoutState.expanded !== expanded ||
+      layoutState.showAllEmpty !== showAllEmpty || layoutState.forced !== forced || layoutState.relayout !== relayout) {
+    const previous = layoutState.weaponId === weaponId && layoutState.relayout === relayout ? layoutState.layout : undefined;
+    setLayoutState({ slots, weaponId, expanded, showAllEmpty, forced, relayout,
+      layout: layoutSlots(slots, previous, snapshot, { expanded, showAllEmpty, forced }) });
   }
   const layout = layoutState.layout;
-  const current = useStatistics(builds.content, generation);
+
+  function toggleFold(key: string) {
+    setExpanded((previous) => {
+      const next = new Set(previous);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
   const previewRemoval = hover === "none" || (!!hover && hover.id === active?.selected?.id);
   const hoveredItem = hover === "none" || (hover && hover.id === active?.selected?.id) ? undefined : hover ?? undefined;
   const previewContent = active && hover && builds.content
@@ -143,10 +176,13 @@ export function WorkbenchStage({ snapshot, slots, activeKey, onActive, candidate
     return () => { document.removeEventListener("keydown", key); document.removeEventListener("pointerdown", pointer, true); };
   }, [activeKey, onActive]);
   return <div className="space-y-3">
-    <WeaponStatisticsPanel current={current} preview={preview} previewing={!!(active && hover)} locale={locale} snapshot={snapshot} />
+    <WeaponStatisticsPanel current={current} preview={preview} previewing={!!(active && hover)} locale={locale} />
     <p className="text-xs text-gray-600 dark:text-gray-400">{t("기본 프리셋 참고 이미지 · 휠 확대/축소 · 드래그 이동", "Default preset reference image · Wheel to zoom · Drag to pan", "基本プリセット参考画像 · ホイールで拡大縮小 · ドラッグで移動")}</p>
     <div ref={stage} className="relative h-[max(420px,calc(100dvh-390px))] overflow-hidden rounded-xl border border-line bg-[#e6e8ec] dark:bg-[#16181b]">
-      <WorkbenchFlowCanvas layout={layout} snapshot={snapshot} activeKey={activeKey} pending={builds.pending} locale={locale} onToggle={toggle} onViewportChange={followViewport} onDismiss={() => { onActive(null); setHover(null); setPosition(null); }} />
+      <WorkbenchFlowCanvas rulesPanel={
+        <AttachmentRulesPanel data={current.isPlaceholderData ? undefined : current.data} locale={locale}
+          issueParts={(issue) => parts.get(issue) ?? []} onPart={(key) => { onActive(null); setLocation({ key }); }} />
+      } fitKey={`${weaponId}:${relayout}:${itemsLoading}`} location={location} marks={marks} expanded={expanded} showAllEmpty={showAllEmpty} onToggleFold={toggleFold} onShowAll={setShowAllEmpty} onRelayout={() => setRelayout((count) => count + 1)} layout={layout} snapshot={snapshot} activeKey={activeKey} pending={builds.pending} locale={locale} onToggle={toggle} onViewportChange={followViewport} onDismiss={() => { onActive(null); setHover(null); setPosition(null); }} />
     </div>
     {active && position && createPortal(<div ref={popup} id="modding-parts-popup" role="dialog" tabIndex={-1} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setHover(null); }} aria-label={itemName(active.slot, locale)} className="absolute z-50 flex min-w-0 flex-col overflow-x-hidden rounded-lg border border-accent bg-surface shadow-2xl" style={{ left: position.left, top: position.top, width: position.width, maxHeight: position.maxHeight }}>
       <div className="shrink-0 border-b border-line p-2.5">

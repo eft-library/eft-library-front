@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowUpRight } from "lucide-react";
 import { calculateStatistics, calculationInput } from "../statistics-api";
 import type { StoredContent } from "../builds/types";
-import type { CalculationRequest, CalculationResult, WeaponStatistics } from "../statistics-types";
-import { itemName } from "../build";
-import type { WeaponSnapshot } from "../types";
+import type { CalculationIssue, CalculationRequest, CalculationResult, WeaponStatistics } from "../statistics-types";
+import type { ViolationPart } from "../workbench-violations";
 import type { Locale } from "@/i18n/config";
 
 export function useStatistics(content: StoredContent | null, generation: string) {
@@ -74,8 +74,8 @@ export function PopupStatisticsSummary({ current, preview, previewing, locale }:
   </section>;
 }
 
-export function WeaponStatisticsPanel({ current, preview, previewing, locale, snapshot }: {
-  current: ReturnType<typeof useStatistics>; preview: ReturnType<typeof useStatistics>; previewing: boolean; locale: Locale; snapshot: WeaponSnapshot;
+export function WeaponStatisticsPanel({ current, preview, previewing, locale }: {
+  current: ReturnType<typeof useStatistics>; preview: ReturnType<typeof useStatistics>; previewing: boolean; locale: Locale;
 }) {
   const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
   const shown = previewing ? preview : current;
@@ -128,12 +128,10 @@ export function WeaponStatisticsPanel({ current, preview, previewing, locale, sn
         [t("구경", "Caliber", "口径"), data?.statistics.caliber?.replace(/^Caliber/, "")],
       ].map(([label, value]) => <div key={label} className="flex h-[34px] items-center justify-between gap-3 overflow-hidden rounded border border-line bg-background px-2"><dt className="text-gray-600 dark:text-gray-400">{label}</dt><dd title={value ?? undefined} className="line-clamp-2 min-w-0 text-right font-mono leading-4">{value ?? "—"}</dd></div>)}</dl>
     </div>
-    <div className="mt-3 flex flex-col items-start gap-2 sm:flex-row sm:justify-between">
-    <Compatibility data={data} locale={locale} snapshot={snapshot} />
-    <p className="text-[10px] text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p></div>
+    <p className="mt-3 text-[10px] text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p>
   </section>;
 }
-function Compatibility({ data, locale, snapshot }: { data: CalculationResult | undefined; locale: Locale; snapshot: WeaponSnapshot }) {
+export function attachmentIssueLabel(code: string, locale: Locale) {
   const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
   const issueLabels: Record<string, [string, string, string]> = {
     REQUIRED_SLOT_UNFILLED: ["필수 슬롯이 비어 있습니다", "Required slot is empty", "必須スロットが空です"],
@@ -144,9 +142,47 @@ function Compatibility({ data, locale, snapshot }: { data: CalculationResult | u
     UNRESOLVED_CONFLICT_SLOT: ["슬롯 충돌 정보가 불완전합니다", "Slot conflict information is incomplete", "スロット干渉情報が不完全です"],
     UNKNOWN_PARENT_SLOT: ["슬롯 정보를 찾을 수 없습니다", "Slot information missing", "スロット情報がありません"],
   };
-  return <details className={`max-w-full shrink-0 text-xs ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}><summary className="h-4 cursor-pointer truncate rounded leading-4 focus-visible:outline-2 focus-visible:outline-accent">{!data ? t("장착 규칙 확인 중…", "Checking attachment rules…", "装着ルール確認中…") : data.compatibility.status === "valid" ? t("저장된 장착 규칙 통과", "Stored attachment rules passed", "保存済み装着ルール適合") : data?.compatibility.status === "invalid" ? t("장착 규칙 위반 있음", "Attachment rule violations", "装着ルール違反あり") : t("장착 호환성 확인 불가", "Compatibility uncertain", "互換性未確認")}{data ? ` (${data.compatibility.issues.length})` : ""}</summary><div className="mt-2 h-40 overflow-y-auto"><p>{t("게임 클라이언트 전체 검증은 아닙니다.", "This is not full game-client validation.", "ゲームクライアント全体の検証ではありません。")}</p><ul className="mt-2 space-y-1">{data?.compatibility.issues.map((issue, index) => <li key={index} className="break-all">{issueLabels[issue.code] ? t(...issueLabels[issue.code]) : t("장착 규칙을 확인해주세요", "Check attachment rules", "装着ルールを確認してください")}{(() => {
-    const definition = issue.slot_id ? Object.values(snapshot.items).flatMap((item) => item.slots).find((slot) => slot.slot_id === issue.slot_id) : undefined;
-    const item = issue.item_id ? snapshot.items[issue.item_id]?.item : undefined;
-    return definition ? ` · ${itemName(definition, locale)}` : item ? ` · ${itemName(item, locale)}` : "";
-  })()}</li>)}</ul></div></details>;
+  return issueLabels[code] ? t(...issueLabels[code]) : t("장착 규칙을 확인해 주세요", "Check attachment rules", "装着ルールを確認してください");
+}
+
+export function AttachmentRulesPanel({ data, locale, issueParts, onPart }: {
+  data?: CalculationResult; locale: Locale;
+  issueParts: (issue: CalculationIssue) => ViolationPart[];
+  onPart: (key: string) => void;
+}) {
+  const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
+  const issues = data?.compatibility.status === "invalid" ? data.compatibility.issues : null;
+  const title = t("장착 규칙 위반", "Attachment rule violations", "装着ルール違反");
+  const shortLabels: Record<string, string> = {
+    REQUIRED_SLOT_UNFILLED: t("필수 슬롯 비어 있음", "Empty required slot", "必須スロットが空"),
+    ITEM_CONFLICT: t("부품 충돌", "Part conflict", "パーツ干渉"),
+    CATEGORY_CONFLICT: t("부품 분류 충돌", "Category conflict", "カテゴリ干渉"),
+    SLOT_CONFLICT: t("슬롯 충돌", "Slot conflict", "スロット干渉"),
+    SLOT_FILTER_REJECTED: t("장착 불가", "Part not allowed", "装着不可"),
+    UNRESOLVED_CONFLICT_SLOT: t("충돌 정보 부족", "Incomplete conflict data", "干渉情報不足"),
+    UNKNOWN_PARENT_SLOT: t("슬롯 정보 없음", "Missing slot data", "スロット情報なし"),
+  };
+  if (issues) {
+    return <div className="w-[min(16rem,calc(100vw-4rem))] rounded-lg border border-red-400/50 bg-surface px-2.5 py-2 text-xs text-foreground shadow-sm sm:w-72">
+      <p role="status" className="font-bold">{t("규칙 위반", "Rule violations", "ルール違反")} {issues.length}</p>
+      <div role="region" aria-label={title} tabIndex={0}
+        className="mt-1 max-h-26 overflow-y-auto overscroll-contain rounded-sm p-0.5 focus-visible:outline-2 focus-visible:outline-accent">
+        <ul className="divide-y divide-red-400/30">
+          {issues.map((issue, index) => <li key={index} className="flex flex-col items-start gap-0.5 py-1 first:pt-0 last:pb-0">
+            <span className="rounded border border-red-400/40 bg-red-100 px-1.5 text-[10px] font-semibold leading-4 dark:bg-red-950/60" title={attachmentIssueLabel(issue.code, locale)}>{shortLabels[issue.code] ?? attachmentIssueLabel(issue.code, locale)}</span>
+            {issueParts(issue).map(({ key, name }) => <button key={key} type="button" onClick={() => onPart(key)}
+              className="flex w-full items-start justify-between gap-1.5 rounded px-1 py-0.5 text-left hover:bg-red-500/10 focus-visible:outline-2 focus-visible:outline-accent">
+              <span className="min-w-0 break-words">{name}</span>
+              <ArrowUpRight aria-hidden="true" className="mt-0.5 size-3 shrink-0" />
+            </button>)}
+          </li>)}
+        </ul>
+      </div>
+    </div>;
+  }
+  return <p role="status" className={`rounded-lg border border-line bg-surface px-2.5 py-2 text-xs shadow-sm ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}>
+    {!data ? t("장착 규칙 확인 중…", "Checking attachment rules…", "装着ルール確認中…")
+      : data.compatibility.status === "valid" ? t("저장된 장착 규칙 통과", "Stored attachment rules passed", "保存済み装着ルール適合")
+      : t("장착 호환성 확인 불가", "Compatibility uncertain", "互換性未確認")}
+  </p>;
 }
