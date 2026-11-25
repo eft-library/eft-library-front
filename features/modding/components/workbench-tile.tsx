@@ -10,5 +10,5 @@ export function PartImage({ item, large = false, image }: { item: ItemSummary; l
 }
 export function PartChips({ item }: { item?: ItemSummary }) {
   const values = [[item?.mod_properties?.ergonomics, "E", true], [item?.mod_properties?.recoil_modifier == null ? null : item.mod_properties.recoil_modifier * 100, "R%", false]] as const;
-  return <span className="flex h-4 justify-center gap-0.5 whitespace-nowrap">{values.map(([value, label, up]) => value == null || value === 0 ? null : <span key={label} className={`rounded px-0.5 font-mono text-[9px] leading-4 ${(up ? value > 0 : value < 0) ? "bg-green-100 text-green-900 dark:bg-green-900/80 dark:text-green-200" : "bg-red-100 text-red-900 dark:bg-red-900/80 dark:text-red-200"}`}>{label} {value > 0 ? "+" : ""}{new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(value)}</span>)}</span>;
+  return <span className="flex h-4 justify-center gap-0.5 whitespace-nowrap">{values.map(([value, label, up]) => value == null || value === 0 ? null : <span key={label} className={`rounded px-0.5 font-mono text-[10px] leading-4 ${(up ? value > 0 : value < 0) ? "bg-green-100 text-green-900 dark:bg-green-900/80 dark:text-green-200" : "bg-red-100 text-red-900 dark:bg-red-900/80 dark:text-red-200"}`}>{label} {value > 0 ? "+" : ""}{new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(value)}</span>)}</span>;
 }

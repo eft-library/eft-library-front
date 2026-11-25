@@ -83,7 +83,7 @@ function PreviewCanvas({ content, weapon, current, locale, children }: {
           issueParts={(issue) => parts.get(issue) ?? []} onPart={(key) => setLocation({ key })} />}
       />
     </div>
-    {incomplete && <p role="status" className="text-xs text-amber-900 dark:text-amber-200">
+    {incomplete && <p role="status" className="text-sm text-amber-900 dark:text-amber-200">
       {t("현재 슬롯 정보에서 찾을 수 없는 부품은 아래 저장된 목록에서 확인할 수 있습니다.", "Parts missing from current slot data are available in the saved list below.", "現在のスロット情報にないパーツは、下の保存済みリストで確認できます。")}
     </p>}
     <PartsList locale={locale} show={incomplete}>{children}</PartsList>

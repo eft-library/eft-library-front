@@ -106,7 +106,7 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
               <h2 className="break-words text-2xl font-bold">
                 {published.content.title}
               </h2>
-              <p className="mt-2 text-xs text-foreground dark:text-white">
+              <p className="mt-2 text-sm text-foreground dark:text-white">
                 {published.author_nickname ?? "—"} ·{" "}
                 {new Intl.DateTimeFormat(b.locale, {
                   dateStyle: "medium",
@@ -114,7 +114,7 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
                 }).format(new Date(published.published_at))}
               </p>
             </div>
-            <span className="rounded-md border border-amber-600/25 bg-amber-500/5 px-2 py-1 text-xs text-amber-900 dark:text-amber-200">
+            <span className="rounded-md border border-amber-600/25 bg-amber-500/5 px-2 py-1 text-sm text-amber-900 dark:text-amber-200">
               {b.t("미검증 구성", "Unvalidated build", "未検証の構成")}
             </span>
           </div>
@@ -178,7 +178,7 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
             )}
           </div>
           <BuildLoginNotice />
-          <p className="mb-4 text-xs leading-6 text-foreground dark:text-white">
+          <p className="mb-4 text-sm leading-6 text-foreground dark:text-white">
             {b.t(
               "공개 당시 저장된 구성입니다. 작업대와 성능은 현재 데이터 기준 참고용입니다.",
               "The workbench and statistics are a reference based on current data for this saved build.",
@@ -195,7 +195,7 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
             </p>
           )}
           {published.copied_from && (
-            <p className="mb-4 text-xs text-foreground dark:text-white">
+            <p className="mb-4 text-sm text-foreground dark:text-white">
               {b.t("복사 출처", "Copied from", "コピー元")}:{" "}
               {published.copied_from.title ?? "—"} ·{" "}
               {published.copied_from.author_nickname ?? "—"} · r
@@ -220,14 +220,14 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
                     />
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs font-medium leading-5">
+                    <p className="text-sm font-medium leading-5">
                       {itemName(node.item, b.locale)}
                     </p>
-                    <p className="mt-1 font-mono text-[10px] text-foreground dark:text-white">
+                    <p className="mt-1 font-mono text-xs text-foreground dark:text-white">
                       {node.item.weight ?? "—"} kg
                     </p>
                     {node.attributes && (
-                      <details className="mt-1 text-xs text-foreground dark:text-white">
+                      <details className="mt-1 text-sm text-foreground dark:text-white">
                         <summary className="cursor-pointer">
                           {b.t("속성", "Attributes", "属性")}
                         </summary>
@@ -242,7 +242,7 @@ export function BuildDetail({ id, back, manifest }: { id: string; back: () => vo
             </div>
           </PublishedBuildPreview>
           {!!published.warnings.length && (
-            <ul className="my-3 text-xs text-amber-900 dark:text-amber-200">
+            <ul className="my-3 text-sm text-amber-900 dark:text-amber-200">
               {published.warnings.map((warning, i) => (
                 <li key={i}>
                   {warning.node_id}:{" "}
@@ -456,7 +456,7 @@ function BuildComments({
             key={comment.id}
             className="rounded-xl border border-line p-4"
           >
-            <div className="flex flex-wrap justify-between gap-2 text-xs text-foreground dark:text-white">
+            <div className="flex flex-wrap justify-between gap-2 text-sm text-foreground dark:text-white">
               <span className="font-medium text-foreground dark:text-white">
                 {comment.author_nickname ?? "—"}
               </span>
@@ -516,7 +516,7 @@ function BuildComments({
       )}
       {editing && (
         <div className="mt-4 rounded-xl border border-accent/30 p-4">
-          <label className="text-xs">
+          <label className="text-sm">
             {b.t("댓글 수정", "Edit comment", "コメント編集")}
             <textarea
               className={`${buildField} mt-2 min-h-24`}
@@ -578,7 +578,7 @@ function BuildComments({
           void submit();
         }}
       >
-        <label className="text-xs text-foreground dark:text-white">
+        <label className="text-sm text-foreground dark:text-white">
           {b.t(
             "댓글 작성 (최대 2,000자)",
             "Write a comment (up to 2,000)",
@@ -593,7 +593,7 @@ function BuildComments({
           />
         </label>
         <div className="mt-2 flex items-center justify-between gap-3">
-          <span className="text-xs text-foreground dark:text-white">
+          <span className="text-sm text-foreground dark:text-white">
             {text.length}/2000
           </span>
           <button

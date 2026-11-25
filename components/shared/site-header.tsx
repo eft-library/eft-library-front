@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import {
   ChevronDown,
   Info,
+  LogIn,
   Map,
   Menu,
   Moon,
@@ -42,6 +43,19 @@ interface SiteHeaderProps {
   guestLabel: string;
   themeToggleLabel: string;
   locale: Locale;
+}
+
+function HeaderSignIn({ label }: { label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={() => void signIn("google", { callbackUrl: window.location.href })}
+      className="inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border border-orange-700 bg-orange-700 px-2 text-left text-white transition hover:bg-orange-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:gap-2 sm:px-3 dark:border-orange-300 dark:bg-orange-300 dark:text-orange-950 dark:hover:bg-orange-200"
+    >
+      <LogIn aria-hidden="true" className="hidden size-4 shrink-0 min-[360px]:block" />
+      <span className="whitespace-nowrap text-sm font-bold leading-4">{label}</span>
+    </button>
+  );
 }
 
 function getMenuIcon(menuId: string) {
@@ -294,6 +308,7 @@ export function SiteHeader({
   const locationConnection = useWsStore((state) => state.locationConnection);
   const recovery = useAuthRecovery();
   const authenticated = recovery !== "reauthentication-required" && Boolean(session?.accessToken) && status === "authenticated" && session?.error !== "ReauthenticationRequired" && session?.error !== "UserNotRegistered" && locationConnection !== "auth-required";
+  const showSignIn = status !== "loading" && !authenticated;
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -332,8 +347,8 @@ export function SiteHeader({
 
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-[#3a4048] dark:bg-[#292d35]/95">
-      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-5 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center">
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-2 px-4 sm:gap-5 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center [&_svg]:h-auto [&_svg]:w-28 min-[400px]:[&_svg]:w-[172px]">
           <Logo width={172} height={32} />
         </Link>
 
@@ -414,15 +429,9 @@ export function SiteHeader({
                   ) : null}
                 </div>
               </>
-            ) : (
-              <button
-                type="button"
-                onClick={() => signIn("google")}
-                className="h-9 rounded-md px-2 text-sm font-semibold text-gray-700 transition hover:text-orange-500 dark:text-gray-100 dark:hover:text-orange-300"
-              >
-                {loginLabel}
-              </button>
-            )}
+            ) : showSignIn ? (
+              <HeaderSignIn label={loginLabel} />
+            ) : null}
             <ThemeToggle label={themeToggleLabel} />
             <LocaleSwitcher label={localeLabel} locale={locale} />
             <div className="w-52 xl:w-60">
@@ -437,6 +446,7 @@ export function SiteHeader({
         </div>
 
         <div className="ml-auto flex items-center gap-2 lg:hidden">
+          {showSignIn && <HeaderSignIn label={loginLabel} />}
           <ThemeToggle label={themeToggleLabel} />
           <button
             type="button"
@@ -494,15 +504,7 @@ export function SiteHeader({
                   </button>
                 </div>
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => signIn("google")}
-                className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500 dark:border-gray-700 dark:bg-[#1f2329] dark:text-gray-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
-              >
-                {loginLabel}
-              </button>
-            )}
+            ) : null}
 
             {visibleMenuGroups.map((group) =>
               (

@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { Save, X } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { LogIn, Save, X } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
+import { useAuthRecovery } from "@/lib/auth/use-auth-recovery";
 import { itemName } from "../build";
 import { useBuilds } from "./provider";
 import { BuildError, buildButton, buildField, buildPanel } from "./ui";
@@ -44,28 +45,51 @@ export function BuildNavigation() {
     </div>
   );
 }
-export function BuildLoginNotice() {
+export function BuildLoginNotice({ action = "public" }: { action?: "public" | "mine" | "save" }) {
   const b = useBuilds();
-  if (b.canWrite) return null;
+  const { data: session, status } = useSession();
+  const recovery = useAuthRecovery();
+  if (b.canWrite || status === "loading") return null;
+
+  const reauthenticate = session?.error === "ReauthenticationRequired" ||
+    session?.error === "UserNotRegistered" || recovery === "reauthentication-required";
+  const anonymous = status === "unauthenticated";
+  const signInRequired = anonymous || reauthenticate;
+  const checking = !signInRequired && (!!session?.error || recovery !== "idle" || !b.token);
+  const title = reauthenticate
+    ? b.t("다시 로그인이 필요해요", "Sign in again", "再ログインが必要です")
+    : anonymous
+      ? b.t("로그아웃 상태예요", "You’re signed out", "ログアウト中です")
+      : checking
+        ? b.t("로그인 상태를 확인 중이에요", "Checking sign-in status", "ログイン状態を確認中です")
+        : b.t("계정 등록이 필요해요", "Account setup required", "アカウント登録が必要です");
+  const description = action === "save"
+    ? b.t("빌드를 저장하고 공유하려면 로그인해 주세요.", "Sign in to save and share this build.", "ビルドの保存と共有にはログインが必要です。")
+    : action === "mine"
+      ? b.t("로그인하면 저장한 빌드를 볼 수 있어요.", "Sign in to see your saved builds.", "ログインすると保存したビルドを確認できます。")
+      : b.t("추천하거나 댓글을 쓰려면 로그인해 주세요.", "Sign in to vote or leave a comment.", "投票やコメントにはログインが必要です。");
+  const primary = "inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-lg border border-orange-700 bg-orange-700 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-orange-300 dark:bg-orange-300 dark:text-orange-950 dark:hover:bg-orange-200";
+
   return (
-    <div className="my-3 flex flex-wrap items-center gap-3 text-base text-foreground dark:text-white">
-      <span>
-        {b.t(
-          "저장·추천·댓글은 등록된 계정으로 로그인 후 이용할 수 있습니다.",
-          "Sign in with a registered account to save, vote, or comment.",
-          "保存・投票・コメントには登録済みアカウントでのログインが必要です。",
-        )}
-      </span>
-      {!b.token ? (
-        <button className={buildButton} onClick={() => void signIn("google")}>
-          {b.t("로그인", "Sign in", "ログイン")}
+    <aside className="my-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/50 bg-amber-50 p-3 text-amber-950 dark:bg-amber-950/30 dark:text-amber-100">
+      <div role="status" className="min-w-0">
+        <p className="text-base font-bold">{title}</p>
+        {signInRequired && <p className="mt-0.5 text-sm">{description}</p>}
+        {signInRequired && action === "save" && b.dirty && <p className="mt-1 text-sm">
+          {b.t("로그인하면 현재 미저장 편집은 사라집니다.", "Signing in clears your current unsaved edits.", "ログインすると現在の未保存の編集は失われます。")}
+        </p>}
+      </div>
+      {signInRequired ? (
+        <button type="button" data-build-sign-in="" className={primary} onClick={() => void signIn("google", { callbackUrl: window.location.href })}>
+          <LogIn aria-hidden="true" className="size-4" />
+          {b.t("Google로 로그인", "Sign in with Google", "Googleでログイン")}
         </button>
-      ) : (
-        <Link href="/onboarding" className={buildButton}>
+      ) : !checking && (
+        <Link href="/onboarding" className={primary}>
           {b.t("계정 확인", "Check account", "アカウント確認")}
         </Link>
       )}
-    </div>
+    </aside>
   );
 }
 export function BuildEditorPanel() {
@@ -98,6 +122,7 @@ export function BuildEditorPanel() {
           </p>
         </div>
       </div>
+      <BuildLoginNotice action="save" />
       <fieldset
         disabled={b.pending}
         className="grid items-end gap-3 sm:grid-cols-[minmax(0,1fr)_auto]"
@@ -153,7 +178,6 @@ export function BuildEditorPanel() {
           </>
         </div>
       )}
-      <BuildLoginNotice />
       {b.publicationFailed && (
         <p
           role="alert"
@@ -319,6 +343,7 @@ export function BuildEditorPanel() {
 
 export function BuildSaveDialog() {
   const b = useBuilds();
+  const { status } = useSession();
   const [open, setOpen] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -329,14 +354,16 @@ export function BuildSaveDialog() {
     const element = dialog.current;
     const returnFocus = trigger.current;
     element?.showModal();
-    element?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    const initialFocus = element?.querySelector<HTMLElement>("[data-build-sign-in]") ??
+      element?.querySelector<HTMLInputElement>("input");
+    initialFocus?.focus({ preventScroll: true });
     return () => { element?.close(); returnFocus?.focus({ preventScroll: true }); };
   }, [open, hasContent]);
   useEffect(() => { if (!hasContent) setOpen(false); }, [hasContent]);
   if (!b.enabled || !b.content) return null;
   const dismiss = () => { if (!b.pending && !b.confirmMessage) setOpen(false); };
   return <>
-    <button ref={trigger} type="button" disabled={b.pending} onClick={() => setOpen(true)} className={`${buildButton} border-accent/50 text-orange-700 dark:text-orange-300`}><Save className="size-4" />{b.t("빌드 저장", "Save build", "ビルド保存")}{b.dirty ? " •" : ""}</button>
+    <button ref={trigger} type="button" disabled={b.pending} onClick={() => setOpen(true)} className={`${buildButton} border-accent/50 text-orange-700 dark:text-orange-300`}><Save className="size-4" />{status === "unauthenticated" ? b.t("로그인 후 저장", "Sign in to save", "ログインして保存") : b.t("빌드 저장", "Save build", "ビルド保存")}{b.dirty ? " •" : ""}</button>
     {open && <dialog ref={dialog} aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); dismiss(); }}
       onClick={(event) => {
         if (event.target !== event.currentTarget) return;

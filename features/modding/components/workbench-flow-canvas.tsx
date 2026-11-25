@@ -12,7 +12,7 @@ import { PartChips, PartImage } from "./workbench-tile";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const fitOptions = {
-  padding: { top: "152px", left: "24px", right: "56px", bottom: "88px" },
+  padding: { top: "176px", left: "24px", right: "56px", bottom: "88px" },
   minZoom: 0.05, maxZoom: 1.75,
 } as const;
 
@@ -42,7 +42,7 @@ type FlowEdge = Edge<RouteData, "route">;
 function FoldChip({ data }: { data: FoldData }) {
   if (!data.foldLabel) return null;
   return <button type="button" aria-expanded={data.open} aria-label={data.foldLabel} title={data.foldLabel}
-    onClick={data.onFold} className={`nodrag nopan absolute -right-[11px] bottom-4 z-10 flex h-5 min-w-5 items-center justify-center rounded-full border border-dashed border-line bg-surface px-1 text-[10px] font-bold text-foreground hover:border-accent ${focus}`}>
+    onClick={data.onFold} className={`nodrag nopan absolute -right-[11px] bottom-4 z-10 flex h-5 min-w-5 items-center justify-center rounded-full border border-dashed border-line bg-surface px-1 text-xs font-bold text-foreground hover:border-accent ${focus}`}>
     {data.open ? "−" : `+${data.hiddenCount}`}
   </button>;
 }
@@ -51,7 +51,7 @@ function SlotTile({ data }: NodeProps<TileNode>) {
   const description = `${data.slotName}: ${data.name} · ${data.ariaParent}${data.violation ? ` · ${data.violation}` : ""}`;
   const Tile = data.onToggle ? "button" : "div";
   return <div className="relative" style={{ width: TILE_WIDTH, height: TILE_HEIGHT }}>
-    {data.item && data.total > 0 && <span title={data.label} className={`absolute -top-[13px] left-1 z-10 rounded border px-1 font-mono text-[9px] leading-4 ${data.count > 0 ? "border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-black" : "border-line bg-surface text-foreground"}`}>+{data.count}/{data.total}</span>}
+    {data.item && data.total > 0 && <span title={data.label} className={`absolute -top-[13px] left-1 z-10 rounded border px-1 font-mono text-[10px] leading-4 ${data.count > 0 ? "border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-black" : "border-line bg-surface text-foreground"}`}>+{data.count}/{data.total}</span>}
     <Tile
       {...(data.onToggle ? {
         type: "button" as const, disabled: data.pending, "aria-expanded": data.active,
@@ -60,10 +60,10 @@ function SlotTile({ data }: NodeProps<TileNode>) {
       data-workbench-slot="" id={data.domId} aria-label={description} title={description} onClick={data.onToggle} onFocus={() => data.onHighlight(true)} onBlur={() => data.onHighlight(false)}
       className={`nodrag nopan group relative isolate flex h-full w-full flex-col items-center justify-center rounded border p-1 text-center ${focus} disabled:opacity-60 ${data.active ? "border-accent bg-orange-50 ring-1 ring-accent dark:bg-orange-950/30" : "border-gray-400/60 bg-white hover:border-accent dark:border-gray-600 dark:bg-[#23262b]"} ${data.item ? "" : "border-dashed"} ${data.related ? "ring-2 ring-orange-400" : ""} ${data.added ? "motion-safe:animate-pulse ring-2 ring-sky-500" : ""} ${data.violation ? "modding-violation" : ""} ${data.located ? "outline-2 outline-offset-3 outline-orange-500" : ""}`}>
       {data.showZones && <span aria-hidden="true" className={`pointer-events-none absolute inset-0 -z-10 rounded ${zoneTint[data.area]}`} />}
-      {data.item ? <><span className="line-clamp-2 h-[26px] w-full break-words px-1 text-[11px] font-bold leading-[13px]">{data.name}</span><div className="flex min-h-0 flex-1 items-center"><PartImage item={data.item} /></div><PartChips item={data.item} /></> : <><span className="text-xs">{data.slotName}</span>{data.parent && <span className="mt-1 line-clamp-2 text-[10px] text-gray-600 dark:text-gray-400">{data.parent}</span>}</>}
+      {data.item ? <><span className="line-clamp-2 h-8 w-full shrink-0 break-words px-0.5 text-[13px] font-bold leading-4">{data.name}</span><div className="flex min-h-0 flex-1 items-center"><PartImage item={data.item} /></div><PartChips item={data.item} /></> : <><span className="text-[13px] leading-4">{data.slotName}</span>{data.parent && <span className="mt-1 line-clamp-2 text-xs leading-4 text-gray-600 dark:text-gray-400">{data.parent}</span>}</>}
       {data.onToggle && <span aria-hidden="true" className={`absolute right-0 top-0 flex size-[18px] items-center justify-center rounded-bl border-b border-l border-line bg-surface-elevated group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100 ${data.active ? "opacity-100" : "opacity-0"}`}><ChevronDown className="size-3" /></span>}
     </Tile>
-    {data.violation && <span aria-hidden="true" className="pointer-events-none absolute -right-1 -top-3 z-10 rounded bg-red-700 px-1 text-[9px] font-bold text-white dark:bg-red-300 dark:text-red-950">{data.violationLabel}</span>}
+    {data.violation && <span aria-hidden="true" className="pointer-events-none absolute -right-1 -top-3 z-10 rounded bg-red-700 px-1 text-[10px] font-bold text-white dark:bg-red-300 dark:text-red-950">{data.violationLabel}</span>}
     <FoldChip data={data} />
     <Handle type="target" position={Position.Top} style={handle} isConnectable={false} /><Handle type="source" position={Position.Bottom} style={handle} isConnectable={false} />
   </div>;
@@ -82,15 +82,15 @@ function FlowOptions({ locale, links, setLinks, zones, setZones, showAllEmpty, o
   showAllEmpty: boolean; onShowAll?: (value: boolean) => void; onRelayout?: () => void; hiddenCount: number;
 }) {
   const t = (ko: string, en: string, ja: string) => locale === "ko" ? ko : locale === "ja" ? ja : en;
-  return <Panel position="bottom-left"><div className="max-w-[calc(100vw-5rem)] rounded-lg border border-line bg-surface/95 px-2.5 py-2 text-xs shadow-sm">
-    <div className="flex flex-wrap items-center gap-3">
+  return <Panel position="bottom-left"><div className="max-w-[calc(100vw-5rem)] rounded-lg border border-line bg-surface/95 px-2.5 py-2 text-sm shadow-sm">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
       <label className="flex items-center gap-1.5"><input type="checkbox" checked={links} onChange={(event) => setLinks(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("연결선", "Connections", "接続線")}</label>
       {onShowAll && <label className="flex items-center gap-1.5"><input type="checkbox" checked={showAllEmpty} onChange={(event) => onShowAll(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("빈 마운트·전술장비 모두 보기", "Show all empty mounts and tactical slots", "空きマウント・戦術スロットをすべて表示")}</label>}
       <label className="flex items-center gap-1.5"><input type="checkbox" checked={zones} onChange={(event) => setZones(event.target.checked)} className="accent-orange-600 focus-visible:outline-2 focus-visible:outline-accent" />{t("영역 표시", "Regions", "領域表示")}</label>
       {onRelayout && <button type="button" onClick={onRelayout} className={`rounded border border-line bg-surface px-2 py-0.5 hover:border-accent ${focus}`}>{t("다시 정렬", "Rearrange", "再配置")}</button>}
     </div>
-    {hiddenCount > 0 && <p className="mt-1 text-[10px] text-gray-600 dark:text-gray-400">(+{hiddenCount}) {t("접힌 빈 마운트·전술장비 · 누르면 펼침", "Hidden empty mounts and tactical slots · click to expand", "折りたたまれた空きスロット · クリックして展開")}</p>}
-    {zones && <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-700 dark:text-gray-300">{[
+    {hiddenCount > 0 && <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">(+{hiddenCount}) {t("접힌 빈 마운트·전술장비 · 누르면 펼침", "Hidden empty mounts and tactical slots · click to expand", "折りたたまれた空きスロット · クリックして展開")}</p>}
+    {zones && <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-700 dark:text-gray-300">{[
       ["bg-orange-500", t("축", "Axis", "軸")], ["bg-sky-500", t("위", "Upper", "上部")],
       ["bg-emerald-500", t("레일", "Rail", "レール")], ["bg-violet-500", t("후방", "Rear", "後部")],
       ["bg-amber-500", t("하단", "Lower", "下部")],

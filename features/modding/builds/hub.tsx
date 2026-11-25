@@ -128,7 +128,7 @@ export function BuildsHub() {
           {b.t("새로고침", "Refresh", "更新")}
         </button>
       </div>
-      {mine && <BuildLoginNotice />}
+      {mine && <BuildLoginNotice action="mine" />}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -282,7 +282,7 @@ export function BuildsHub() {
                     className="h-full w-full object-contain"
                   />
                 ) : (
-                  <span className="text-xs text-foreground dark:text-white">
+                  <span className="text-sm text-foreground dark:text-white">
                     {itemName(build.weapon, b.locale)}
                   </span>
                 )}
@@ -291,13 +291,13 @@ export function BuildsHub() {
                 <h3 className="break-words text-base font-semibold">
                   {build.title}
                 </h3>
-                <p className="mt-1 text-xs text-foreground dark:text-white">
+                <p className="mt-1 text-sm text-foreground dark:text-white">
                   {build.author_nickname ?? "—"}
                 </p>
-                <p className="mt-3 text-xs text-foreground dark:text-white">
+                <p className="mt-3 text-sm text-foreground dark:text-white">
                   {itemName(build.weapon, b.locale)}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-3 border-t border-line pt-3 text-xs">
+                <div className="mt-4 flex flex-wrap gap-3 border-t border-line pt-3 text-sm">
                   <span>♥ {build.vote_count}</span>
                   <span>
                     {b.t("댓글", "Comments", "コメント")} {build.comment_count}
@@ -421,7 +421,7 @@ function OwnBuildCard({
                   "武器情報を読み込み中…",
                 )}
         </p>
-        <p className="mt-2 text-xs text-foreground dark:text-white">
+        <p className="mt-2 text-sm text-foreground dark:text-white">
           {build.is_public
             ? b.t("공개", "Published", "公開")
             : b.t("공개 대기", "Awaiting publication", "公開待ち")}{" "}
@@ -432,7 +432,7 @@ function OwnBuildCard({
           }).format(new Date(build.updated_at))}
         </p>
       </div>
-      <span className="shrink-0 text-xs text-accent">
+      <span className="shrink-0 text-sm text-accent">
         {b.t("편집", "Edit", "編集")}
       </span>
     </button>

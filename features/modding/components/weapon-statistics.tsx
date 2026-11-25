@@ -50,7 +50,7 @@ export function PopupStatisticsSummary({ current, preview, previewing, locale }:
   ] as const;
   const failed = shown.isError && !shown.waiting;
   return <section aria-label={t("전체 구성 성능 비교", "Build statistics comparison", "構成全体の性能比較")} className="mt-2 border-t border-line pt-2">
-    <div className="mb-2 flex min-h-4 items-center justify-between gap-2 text-[10px]">
+    <div className="mb-2 flex min-h-4 items-center justify-between gap-2 text-xs">
       <h4 className="shrink-0 font-semibold">{t("전체 구성 성능", "Build statistics", "構成全体の性能")}</h4>
       <span role={failed ? "alert" : "status"} className={`min-w-0 truncate text-right ${failed ? "text-red-700 dark:text-red-300" : "text-gray-600 dark:text-gray-400"}`}>
         {failed ? t("계산 실패 · 현재 수치", "Failed · current values", "計算失敗 · 現在値") : shown.waiting ? t("업데이트 중 · 이전 수치", "Updating · previous values", "更新中 · 前回値") : comparing ? t("현재 → 미리보기", "Current → preview", "現在 → プレビュー") : t("현재 구성 기준", "Current configuration", "現在の構成")}
@@ -63,8 +63,8 @@ export function PopupStatisticsSummary({ current, preview, previewing, locale }:
       const difference = comparing && before != null && value != null ? value - before : null;
       const good = difference !== null && (up ? difference > 0 : difference < 0);
       return <div key={key} className="min-w-0 rounded border border-line bg-background px-2 py-1.5">
-        <dt className="truncate text-[10px] text-gray-600 dark:text-gray-400">{label}{unit && ` (${unit})`}</dt>
-        <dd className="mt-0.5 flex min-h-4 flex-wrap items-baseline gap-x-1 font-mono text-[11px] tabular-nums">
+        <dt className="truncate text-xs text-gray-600 dark:text-gray-400">{label}{unit && ` (${unit})`}</dt>
+        <dd className="mt-0.5 flex min-h-4 flex-wrap items-baseline gap-x-1 font-mono text-xs tabular-nums">
           {comparing && <><span className="text-gray-600 dark:text-gray-400">{before == null ? "—" : format(before)}</span><span aria-hidden="true">→</span></>}
           <span>{value == null ? "—" : format(value)}</span>
           {difference !== null && <span className={difference === 0 ? "text-gray-600 dark:text-gray-400" : good ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}>({difference > 0 ? "+" : ""}{format(difference)})</span>}
@@ -103,7 +103,7 @@ export function WeaponStatisticsPanel({ current, preview, previewing, locale }: 
   return <section className="relative z-0 [overflow-anchor:none] rounded-2xl border border-line bg-surface p-4">
     <div className="mb-3 flex h-6 items-center justify-between gap-3">
       <h3 className="shrink-0 font-bold">{t("총기 성능", "Weapon statistics", "武器性能")}</h3>
-      <p role={shown.isError && !shown.waiting ? "alert" : "status"} className={`min-w-0 flex-1 truncate text-right text-xs ${shown.isError && !shown.waiting ? "text-red-700 dark:text-red-300" : "text-gray-600 dark:text-gray-400"}`}>
+      <p role={shown.isError && !shown.waiting ? "alert" : "status"} className={`min-w-0 flex-1 truncate text-right text-sm ${shown.isError && !shown.waiting ? "text-red-700 dark:text-red-300" : "text-gray-600 dark:text-gray-400"}`}>
         {shown.waiting ? (data ? t("수치 업데이트 중…", "Updating statistics…", "性能更新中…") : t("성능 계산 중…", "Calculating…", "計算中…")) : shown.isError ? t("성능 계산에 실패했습니다.", "Could not calculate statistics.", "性能計算に失敗しました。") : previewing ? t("미리보기 · 선택한 파츠를 장착했을 때", "Preview · with the selected part", "プレビュー · 選択パーツ装着時") : t("현재 구성 기준", "Current configuration", "現在の構成")}
       </p>
       {shown.isError && !shown.waiting && <button type="button" onClick={() => void shown.refetch()} className="h-8 shrink-0 rounded border border-line px-2 text-xs focus-visible:outline-2 focus-visible:outline-accent">{t("다시 시도", "Retry", "再試行")}</button>}
@@ -116,19 +116,19 @@ export function WeaponStatisticsPanel({ current, preview, previewing, locale }: 
         const good = delta !== null && (metric.up ? delta > 0 : delta < 0);
         const width = value == null ? 0 : Math.max(0, Math.min(100, value / metric.max * 100));
         const oldWidth = before == null ? width : Math.max(0, Math.min(100, before / metric.max * 100));
-        return <div key={metric.key}><div className="relative flex h-[34px] items-center justify-between gap-2 overflow-hidden rounded border border-line bg-gray-100 px-2 text-xs dark:bg-[#1b1d21]">
+        return <div key={metric.key}><div className="relative flex h-[34px] items-center justify-between gap-2 overflow-hidden rounded border border-line bg-gray-100 px-2 text-sm dark:bg-[#1b1d21]">
           <div aria-hidden="true" className="absolute inset-y-0 left-0 bg-gradient-to-r from-orange-100 to-orange-200 shadow-[inset_-2px_0_0_#f97316] dark:from-white/[0.04] dark:to-white/[0.14] dark:shadow-[inset_-2px_0_0_#fb923c] transition-[width] duration-200 ease-out motion-reduce:transition-none" style={{ width: `${width}%` }} />
           {delta !== null && delta !== 0 && <div aria-hidden="true" className={`absolute inset-y-0 transition-[left,width] duration-200 ease-out motion-reduce:transition-none ${good ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`} style={{ left: `${Math.min(oldWidth, width)}%`, width: `${Math.abs(width - oldWidth)}%`, backgroundImage: "repeating-linear-gradient(135deg, currentColor 0px, currentColor 1.5px, transparent 1.5px, transparent 6px)" }} />}
-          <span title={metric.label} className="relative min-w-0 truncate">{metric.label}</span><span className="relative shrink-0 font-mono text-[10px] tabular-nums sm:text-xs">{value == null ? "—" : `${format(value)} ${metric.unit}`}{delta !== null && delta !== 0 && <span className={`ml-1 ${good ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}`}>({delta > 0 ? "+" : ""}{format(delta)})</span>}</span>
-        </div>{value === null && <p className="mt-1 text-[11px] leading-4 text-gray-600 dark:text-gray-400">{[...new Set(data?.unavailable.filter((item) => item.metric === metric.key).map((item) => reason(item.code)))].join(" · ") || t("계산 불가", "Unavailable", "計算不可")}</p>}</div>;
+          <span title={metric.label} className="relative min-w-0 truncate">{metric.label}</span><span className="relative shrink-0 font-mono text-xs tabular-nums sm:text-sm">{value == null ? "—" : `${format(value)} ${metric.unit}`}{delta !== null && delta !== 0 && <span className={`ml-1 ${good ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}`}>({delta > 0 ? "+" : ""}{format(delta)})</span>}</span>
+        </div>{value === null && <p className="mt-1 text-xs leading-4 text-gray-600 dark:text-gray-400">{[...new Set(data?.unavailable.filter((item) => item.metric === metric.key).map((item) => reason(item.code)))].join(" · ") || t("계산 불가", "Unavailable", "計算不可")}</p>}</div>;
       })}</div>
-      <dl className="grid gap-2 text-xs sm:grid-cols-3">{[
+      <dl className="grid gap-2 text-sm sm:grid-cols-3">{[
         [t("발사 방식", "Fire modes", "射撃モード"), data?.statistics.fire_modes?.map((mode) => ({ single_fire: t("단발", "Single", "単発"), full_auto: t("연사", "Full auto", "連射"), burst_fire: t("점사", "Burst", "バースト"), double_action: t("더블 액션", "Double action", "ダブルアクション"), double_tap: t("더블 탭", "Double tap", "ダブルタップ"), semi_auto: t("반자동", "Semi-auto", "セミオート") }[mode] ?? mode)).join(" / ")],
         [t("발사 속도", "Fire rate", "連射速度"), data?.statistics.fire_rate_rpm == null ? null : `${data.statistics.fire_rate_rpm} RPM`],
         [t("구경", "Caliber", "口径"), data?.statistics.caliber?.replace(/^Caliber/, "")],
       ].map(([label, value]) => <div key={label} className="flex h-[34px] items-center justify-between gap-3 overflow-hidden rounded border border-line bg-background px-2"><dt className="text-gray-600 dark:text-gray-400">{label}</dt><dd title={value ?? undefined} className="line-clamp-2 min-w-0 text-right font-mono leading-4">{value ?? "—"}</dd></div>)}</dl>
     </div>
-    <p className="mt-3 text-[10px] text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p>
+    <p className="mt-3 text-xs text-gray-600 dark:text-gray-400">{t("데이터 제공자 기준 참조 계산 · 내구도 100% · 실탄 무게·스킬·접힘 상태 제외", "Source reference calculation · 100% durability · excludes loaded ammo, skills and folded state", "提供元基準の参考計算 · 耐久100% · 装填弾薬・スキル・折り畳み状態を除外")}</p>
   </section>;
 }
 export function attachmentIssueLabel(code: string, locale: Locale) {
@@ -163,16 +163,16 @@ export function AttachmentRulesPanel({ data, locale, issueParts, onPart }: {
     UNKNOWN_PARENT_SLOT: t("슬롯 정보 없음", "Missing slot data", "スロット情報なし"),
   };
   if (issues) {
-    return <div className="w-[min(16rem,calc(100vw-4rem))] rounded-lg border border-red-400/50 bg-surface px-2.5 py-2 text-xs text-foreground shadow-sm sm:w-72">
+    return <div className="w-[min(16rem,calc(100vw-4rem))] rounded-lg border border-red-400/50 bg-surface px-2.5 py-2 text-sm text-foreground shadow-sm sm:w-72">
       <p role="status" className="font-bold">{t("규칙 위반", "Rule violations", "ルール違反")} {issues.length}</p>
       <div role="region" aria-label={title} tabIndex={0}
-        className="mt-1 max-h-26 overflow-y-auto overscroll-contain rounded-sm p-0.5 focus-visible:outline-2 focus-visible:outline-accent">
+        className="mt-1 max-h-32 overflow-y-auto overscroll-contain rounded-sm p-0.5 focus-visible:outline-2 focus-visible:outline-accent">
         <ul className="divide-y divide-red-400/30">
           {issues.map((issue, index) => <li key={index} className="flex flex-col items-start gap-0.5 py-1 first:pt-0 last:pb-0">
-            <span className="rounded border border-red-400/40 bg-red-100 px-1.5 text-[10px] font-semibold leading-4 dark:bg-red-950/60" title={attachmentIssueLabel(issue.code, locale)}>{shortLabels[issue.code] ?? attachmentIssueLabel(issue.code, locale)}</span>
+            <span className="rounded border border-red-400/40 bg-red-100 px-1.5 text-xs font-semibold leading-4 dark:bg-red-950/60" title={attachmentIssueLabel(issue.code, locale)}>{shortLabels[issue.code] ?? attachmentIssueLabel(issue.code, locale)}</span>
             {issueParts(issue).map(({ key, name }) => <button key={key} type="button" onClick={() => onPart(key)}
               className="flex w-full items-start justify-between gap-1.5 rounded px-1 py-0.5 text-left hover:bg-red-500/10 focus-visible:outline-2 focus-visible:outline-accent">
-              <span className="min-w-0 break-words">{name}</span>
+              <span className="min-w-0 break-words leading-4">{name}</span>
               <ArrowUpRight aria-hidden="true" className="mt-0.5 size-3 shrink-0" />
             </button>)}
           </li>)}
@@ -180,7 +180,7 @@ export function AttachmentRulesPanel({ data, locale, issueParts, onPart }: {
       </div>
     </div>;
   }
-  return <p role="status" className={`rounded-lg border border-line bg-surface px-2.5 py-2 text-xs shadow-sm ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}>
+  return <p role="status" className={`rounded-lg border border-line bg-surface px-2.5 py-2 text-sm shadow-sm ${data?.compatibility.status === "valid" ? "text-emerald-800 dark:text-emerald-300" : "text-amber-900 dark:text-amber-200"}`}>
     {!data ? t("장착 규칙 확인 중…", "Checking attachment rules…", "装着ルール確認中…")
       : data.compatibility.status === "valid" ? t("저장된 장착 규칙 통과", "Stored attachment rules passed", "保存済み装着ルール適合")
       : t("장착 호환성 확인 불가", "Compatibility uncertain", "互換性未確認")}
