@@ -40,5 +40,6 @@ export function formatCommunityDate(value?: string | null) {
 }
 
 export function buildPostPreview(post: CommunityPost) {
-  return stripHtml(post.contents || post.comment || "").slice(0, 140);
+  const comment = typeof post.comment === "string" ? post.comment : post.comment?.contents;
+  return stripHtml(post.contents || comment || "").slice(0, 140);
 }

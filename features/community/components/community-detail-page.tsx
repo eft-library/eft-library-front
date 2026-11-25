@@ -822,7 +822,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
           <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700/70 dark:bg-[#252932]">
             <h2 className="text-sm font-black">같은 게시판 글</h2>
             <div className="mt-3 space-y-2">
-              {detail.posts.posts.slice(0, 6).map((item) => (
+              {(detail.related_posts ?? detail.posts?.posts.slice(0, 6) ?? []).map((item) => (
                 <Link key={item.id} href={getCommunityPostUrl(item)} className="block rounded-md px-2 py-2 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-700 dark:text-gray-300 dark:hover:bg-[#303540] dark:hover:text-orange-300">
                   <span className="line-clamp-1">{item.title}</span>
                 </Link>

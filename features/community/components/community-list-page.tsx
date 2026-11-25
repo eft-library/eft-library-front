@@ -57,14 +57,10 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
     setIsLoading(true);
     setError(null);
 
-    Promise.all([
-      getCommunityPosts(currentCategory, page, session?.accessToken),
-      getCommunitySidePosts(session?.accessToken),
-    ])
-      .then(([nextList, nextSide]) => {
+    getCommunityPosts(currentCategory, page, session?.accessToken)
+      .then((nextList) => {
         if (!ignore) {
           setList(nextList);
-          setSide(nextSide);
         }
       })
       .catch(() => {
@@ -82,6 +78,27 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
       ignore = true;
     };
   }, [currentCategory, page, session?.accessToken]);
+
+  useEffect(() => {
+    let ignore = false;
+    setSide(null);
+
+    getCommunitySidePosts(session?.accessToken)
+      .then((nextSide) => {
+        if (!ignore) {
+          setSide(nextSide);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setSide(null);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [session?.accessToken]);
 
   useEffect(() => {
     return () => {
@@ -188,7 +205,7 @@ export function CommunityListPage({ category }: CommunityListPageProps) {
           )}
         </section>
 
-        <CommunitySidebar side={side} locale={locale} />
+        {side ? <CommunitySidebar side={side} locale={locale} /> : null}
       </div>
       {loginNotice ? (
         <div

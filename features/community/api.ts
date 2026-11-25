@@ -45,20 +45,20 @@ async function requestCommunity<T>(
 
 export function getCommunityPosts(category: string, page: number, accessToken?: string) {
   return requestCommunity<CommunityListResponse>(
-    getCommunityListEndpoint(category, page),
+    `${getCommunityListEndpoint(category, page)}&preview=true`,
     { accessToken },
   );
 }
 
 export function getCommunitySearch(page: number, word: string, searchType: string, accessToken?: string) {
   return requestCommunity<CommunitySearchResponse>(
-    getCommunitySearchEndpoint(page, word, searchType),
+    `${getCommunitySearchEndpoint(page, word, searchType)}&preview=true`,
     { accessToken },
   );
 }
 
 export function getCommunitySidePosts(accessToken?: string) {
-  return requestCommunity<CommunitySideResponse>(apiEndpoints.communitySidePost, {
+  return requestCommunity<CommunitySideResponse>(`${apiEndpoints.communitySidePost}?preview=true`, {
     accessToken,
     revalidate: 60,
   });
@@ -67,7 +67,7 @@ export function getCommunitySidePosts(accessToken?: string) {
 export function getCommunityDetail(id: string, pageCategory: string, userEmail = "") {
   return requestCommunity<CommunityDetailResponse>(apiEndpoints.communityDetail, {
     method: "POST",
-    body: JSON.stringify({ url: id, user_email: userEmail, page_category: pageCategory }),
+    body: JSON.stringify({ url: id, user_email: userEmail, page_category: pageCategory, compact: true }),
   });
 }
 

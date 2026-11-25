@@ -16,7 +16,7 @@ export interface CommunityPost {
   reaction_score: number | null;
   is_like?: number | null;
   is_bookmarked?: boolean | null;
-  comment?: string | null;
+  comment?: string | { contents: string | null } | null;
 }
 
 export interface CommunityListResponse {
@@ -37,7 +37,8 @@ export interface CommunityAuthorDetail {
 export interface CommunityDetailResponse {
   post_detail: CommunityPost;
   author_detail: CommunityAuthorDetail | null;
-  posts: CommunityRelatedPosts;
+  posts?: CommunityRelatedPosts;
+  related_posts?: Pick<CommunityPost, "id" | "slug" | "title">[];
 }
 
 export interface CommunityRelatedPosts {
