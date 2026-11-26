@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { getTraderList } from "@/features/trader/api";
+import { getTraderName } from "@/features/trader/copy";
 import { TraderPage } from "@/features/trader/components/trader-page";
 import { traderOrder } from "@/features/trader/config";
 import { getUserLocale } from "@/i18n/locale";
@@ -18,8 +20,11 @@ function validTrader(id: string) {
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   if (!validTrader(id)) notFound();
+  const list = await getTraderList("pvp", undefined, null).catch(() => null);
+  const trader = list?.data.traders.find((entry) => entry.normalized_name === id);
+  const name = trader ? getTraderName(trader, "ko") : id;
   return createPageMetadata({
-    title: `타르코프 상인 ${id}`,
+    title: `타르코프 상인 ${name}`,
     description:
       "상인의 구매·교환 상품, 우호도, 구매 제한과 퀘스트 해금 조건을 확인하세요.",
     path: `/traders/${id}`,

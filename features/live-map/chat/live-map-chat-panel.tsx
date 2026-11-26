@@ -317,10 +317,10 @@ function LiveMapChatPanelContent({ party, locale }: { party: LiveMapPartyControl
           </div>
         </div>
       )}
-      {!party.open && <button type="button" aria-label={t("모집 채팅", "Recruitment chat", "募集チャット")} title={t("모집 채팅", "Recruitment chat", "募集チャット")} aria-expanded={chat.open} onClick={() => { chat.setOpen(!chat.open); if (!chat.open) party.setOpen(false); }} className="pointer-events-auto relative inline-flex h-9 w-[4.5rem] items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]">
+      <button type="button" aria-label={t("모집 채팅", "Recruitment chat", "募集チャット")} title={t("모집 채팅", "Recruitment chat", "募集チャット")} aria-expanded={chat.open} onClick={() => { chat.setOpen(!chat.open); if (!chat.open) party.setOpen(false); }} className="pointer-events-auto relative inline-flex h-9 w-[4.5rem] items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold text-gray-800 shadow-lg transition hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:border-[#3a3d41] dark:bg-[#1f2124] dark:text-gray-100 dark:hover:bg-[#2a2d31]">
         <MessageCircle className="h-4 w-4 text-orange-500" />
         <span>{t("모집", "Recruit", "募集")}</span>
-      </button>}
+      </button>
     </div>
   );
 }

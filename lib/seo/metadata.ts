@@ -24,7 +24,7 @@ export function createPageMetadata({
   const images = image ? [{ url: image }] : undefined;
 
   return {
-    title: normalizedTitle,
+    title: { absolute: normalizedTitle },
     description,
     alternates: {
       canonical: url,
@@ -54,13 +54,7 @@ export function fallbackMetadata(title = siteName): Metadata {
   });
 }
 
-export function stripHtml(value: string | null | undefined) {
-  return (value ?? "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+export { stripHtml } from "@/lib/utils/strip-html";
 
 export function truncateDescription(value: string, maxLength = 155) {
   if (value.length <= maxLength) {

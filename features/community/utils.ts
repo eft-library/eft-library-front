@@ -1,3 +1,4 @@
+import { stripHtml } from "@/lib/utils/strip-html";
 import { communityCategories } from "@/lib/constants/community-categories";
 import type { Locale } from "@/i18n/config";
 import type { CommunityPost, CommunitySideNotice } from "@/types/api/community";
@@ -18,20 +19,15 @@ export function getNoticeTitle(notice: CommunitySideNotice, locale: Locale) {
   return notice[`title_${locale}`] ?? notice.title_ko ?? notice.title_en ?? notice.title_ja ?? "Notice";
 }
 
-export function stripHtml(html: string) {
-  return html
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+export { stripHtml };
 
-export function formatCommunityDate(value?: string | null) {
+export function formatCommunityDate(value?: string | null, timeZone?: string) {
   if (!value) {
     return "-";
   }
 
   return new Intl.DateTimeFormat("ko-KR", {
+    timeZone,
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",

@@ -14,7 +14,7 @@ interface SitemapApiItem {
   update_time: string;
 }
 
-const revalidateSeconds = 60 * 60 * 24 * 30;
+const revalidateSeconds = 60 * 60 * 24;
 
 function toChangeFrequency(
   value: string,
@@ -35,7 +35,7 @@ function toChangeFrequency(
 
 async function getSitemapItems() {
   "use cache";
-  cacheLife("max");
+  cacheLife("days");
 
   return apiGet<SitemapApiItem[]>("/api/search/v3/sitemap", {
     revalidate: revalidateSeconds,

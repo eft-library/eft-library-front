@@ -13,9 +13,10 @@ export async function generateMetadata({
     const { id } = await params;
     const data = await getBossDetail(id);
     const name = data.boss.name_ko || data.boss.name_en;
+    const divisionNumber = /^black-div-([1-3])$/.exec(id)?.[1];
 
     return createPageMetadata({
-      title: `타르코프 ${name}`,
+      title: `타르코프 ${divisionNumber ? `블랙 디비전 ${divisionNumber}` : name}`,
       description: `Escape from Tarkov 보스 ${name}의 스폰 위치, 스폰 확률, 체력, 추종자, 전리품 정보를 제공합니다.`,
       path: `/boss/${id}`,
       image: data.boss.image,

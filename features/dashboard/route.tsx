@@ -7,11 +7,7 @@ export async function DashboardRoute() {
   await connection();
 
   const today = Temporal.Now.plainDateISO("Asia/Seoul");
-  const startDate = Temporal.PlainDate.from({
-    year: today.year,
-    month: 1,
-    day: 1,
-  }).toString();
+  const startDate = today.subtract({ days: 6 }).toString();
   const endDate = today.toString();
   const dashboard = await getDashboardAnalysis({ startDate, endDate });
 

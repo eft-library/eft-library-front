@@ -49,6 +49,7 @@ import {
   unblockCommunityUser,
   updateCommunityComment,
 } from "@/features/community/api";
+import { sanitizeCommunityHtml } from "@/features/community/sanitize-html";
 import { CommunityPagination } from "@/features/community/components/community-pagination";
 import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
 import {
@@ -67,6 +68,7 @@ import type {
 
 interface CommunityDetailPageProps {
   id: string;
+  initialDetail: CommunityDetailResponse | null;
 }
 
 const REPORT_REASON_OPTIONS = [
@@ -118,18 +120,18 @@ function getCommunityUserDisplayName(userEmail?: string | null, nickname?: strin
   return "익명";
 }
 
-export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
+export function CommunityDetailPage({ id, initialDetail }: CommunityDetailPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status, update: updateSession } = useSession();
   const locale = useAppStore((state) => state.uiLocale);
-  const [detail, setDetail] = useState<CommunityDetailResponse | null>(null);
+  const [detail, setDetail] = useState(initialDetail);
   const [meta, setMeta] = useState<CommunityMetaData | null>(null);
   const [comments, setComments] = useState<CommunityCommentsResponse | null>(null);
   const [commentsError, setCommentsError] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");
   const [replyTarget, setReplyTarget] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialDetail);
   const [imagePopup, setImagePopup] = useState<{
     src: string;
     alt: string;
@@ -148,6 +150,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   const [blockTarget, setBlockTarget] = useState<{ email: string; nickname: string } | null>(null);
   const [penaltyTarget, setPenaltyTarget] = useState<{ email: string; nickname: string } | null>(null);
 
+  const postHtml = useMemo(() => sanitizeCommunityHtml(detail?.post_detail.contents ?? ""), [detail?.post_detail.contents]);
   const postId = useMemo(() => getPostIdFromUrlParam(id), [id]);
   const issueCommentId = searchParams.get("comment_id") ?? "";
   const commentPage = Math.max(
@@ -159,14 +162,18 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   const isCommentRestricted = restrictionStatus !== "none";
 
   useEffect(() => {
+    if (status === "loading" || (!userEmail && initialDetail)) {
+      return;
+    }
+
     let ignore = false;
-    setIsLoading(true);
     getCommunityDetail(id, "", userEmail)
       .then((nextDetail) => {
         if (!ignore) {
           setDetail(nextDetail);
         }
       })
+      .catch(() => undefined)
       .finally(() => {
         if (!ignore) {
           setIsLoading(false);
@@ -176,7 +183,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
     return () => {
       ignore = true;
     };
-  }, [id, userEmail]);
+  }, [id, initialDetail, status, userEmail]);
 
   useEffect(() => {
     let ignore = false;
@@ -496,7 +503,8 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
   const post = detail.post_detail;
   const isAuthor = status === "authenticated" && userEmail && userEmail === post.user_email;
   const isAdmin = status === "authenticated" && Boolean(session?.userInfo?.is_admin);
-  const isFollowing = detail.author_detail?.is_follow === true || detail.author_detail?.is_follow === 1;
+  const isFollowing = Boolean(userEmail) &&
+    (detail.author_detail?.is_follow === true || detail.author_detail?.is_follow === 1);
   const isPostAuthorBlocked = isBlockedUser(session?.userInfo?.user_blocks, post.user_email);
   const postAuthorName = getCommunityUserDisplayName(post.user_email, post.nickname);
   const authorPanelName = getCommunityUserDisplayName(
@@ -523,7 +531,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
                 {getCategoryLabel(post.category, locale)}
               </Link>
               <span className="text-gray-500 dark:text-gray-400">{postAuthorName}</span>
-              <span className="text-gray-400">{formatCommunityDate(post.create_time)}</span>
+              <span className="text-gray-400">{formatCommunityDate(post.create_time, "Asia/Seoul")}</span>
             </div>
             <h1 className="mt-3 text-2xl font-black leading-snug">{post.title}</h1>
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
@@ -544,7 +552,7 @@ export function CommunityDetailPage({ id }: CommunityDetailPageProps) {
             <div
               onClick={openContentImage}
               className="rich-html-content p-5 [&_img]:cursor-zoom-in"
-              dangerouslySetInnerHTML={{ __html: post.contents }}
+              dangerouslySetInnerHTML={{ __html: postHtml }}
             />
           )}
 
