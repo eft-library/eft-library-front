@@ -16,7 +16,6 @@ import type {
 
 const copy = {
   ko: {
-    ad: "광고",
     allRewards: "전체 보상 한눈에",
     summary: ["총 보상", "페이지", "전체 필요 문서", "하루 최대 획득"],
     pageLabel: (page: number) => `${page}페이지`,
@@ -58,7 +57,6 @@ const copy = {
     imageUnavailable: "이미지 준비 중",
   },
   en: {
-    ad: "Advertisement",
     allRewards: "All rewards",
     summary: ["Total rewards", "Pages", "Total required documents", "Daily maximum"],
     pageLabel: (page: number) => `Page ${page}`,
@@ -100,7 +98,6 @@ const copy = {
     imageUnavailable: "Image pending",
   },
   ja: {
-    ad: "広告",
     allRewards: "全報酬一覧",
     summary: ["総報酬", "ページ", "必要文書の合計", "1日の上限"],
     pageLabel: (page: number) => `${page}ページ`,
@@ -293,7 +290,7 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
         <div className="rounded-xl border border-dashed border-line bg-surface px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400">{labels.noRewards}</div>
       )}
 
-      <ContentWidthAdBanner label={labels.ad} />
+      <ContentWidthAdBanner />
 
       <InfoSection
         kicker={labels.documentIndex}

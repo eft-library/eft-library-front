@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
+import { ZoomableRichHtml } from "@/components/shared/zoomable-rich-html";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
 import { getStationSVG } from "@/assets/hideout/hideoutSvg";
 import type { Locale } from "@/i18n/config";
@@ -89,6 +90,7 @@ const itemInfoCopy: Record<
 > = {
   ko: {
     groups: {
+      notes: "메모",
       basic: "기본 정보",
       info: "정보",
       ammo: "사용 가능 탄약",
@@ -189,6 +191,7 @@ const itemInfoCopy: Record<
   },
   en: {
     groups: {
+      notes: "Notes",
       basic: "Basic Info",
       info: "Info",
       ammo: "Allowed Ammo",
@@ -289,6 +292,7 @@ const itemInfoCopy: Record<
   },
   ja: {
     groups: {
+      notes: "メモ",
       basic: "基本情報",
       info: "情報",
       ammo: "使用可能な弾薬",
@@ -1303,6 +1307,7 @@ export function ItemInfoPage({
   locale: Locale;
 }) {
   const itemName = getLocalizedName(item, locale);
+  const memoHtml = item[`memo_${locale}`]?.trim() || item.memo_en?.trim();
   const copy = itemInfoCopy[locale];
   const activeFireModes = item.weapon_info
     ? Object.entries(item.weapon_info.fire_modes)
@@ -1833,6 +1838,15 @@ export function ItemInfoPage({
           ) : null}
 
         </DetailCard>
+
+        {memoHtml && (
+          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg dark:border-slate-700/70 dark:bg-[#252830]">
+            <h2 className="mb-4 text-sm font-semibold text-orange-600 dark:text-orange-300 sm:text-base">
+              {copy.groups.notes}
+            </h2>
+            <ZoomableRichHtml html={memoHtml} imageAlt={itemName} />
+          </section>
+        )}
 
         <RelationSection
           title={copy.groups.questRequirements}

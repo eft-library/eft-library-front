@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import { BookMarked, LoaderCircle, RotateCcw, Save, Shuffle, Trash2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { ContentWidthAdBanner } from "@/components/shared/ad-banner";
 import {
   deleteKordBreachPreset,
   getKordBreachPresets,
@@ -78,6 +79,9 @@ export function KordBreachPage({ modifiers, locale }: { modifiers: KordBreachMod
         <StatusPanel t={t} positives={positives} negatives={negatives} total={total} busy={busy} onRemove={toggle} onRandom={randomize} onPresets={() => setPresetOpen(true)} onReset={() => setSelected(new Set())} />
         <ModifierSection title={t.global} subtitle="GLOBAL MODIFIERS" tone="global" description="모든 플레이어에게 기본 적용되며 점수 계산과 프리셋 저장에는 포함되지 않습니다." items={modifiers.globalModifiers} locale={locale} selected={selected} blocked={blocked} />
         <ModifierSection title={t.positive} subtitle="PERSONAL POSITIVE" tone="positive" description="선택하면 점수가 감소합니다. 총점이 0 이상이어야 PASS입니다." items={modifiers.positiveModifiers} locale={locale} selected={selected} blocked={blocked} onToggle={toggle} />
+        {modifiers.positiveModifiers.length > 0 && modifiers.negativeModifiers.length > 0 && (
+          <ContentWidthAdBanner compact />
+        )}
         <ModifierSection title={t.negative} subtitle="PERSONAL NEGATIVE" tone="negative" description="선택하면 긍정효과에 사용할 점수를 얻습니다." items={modifiers.negativeModifiers} locale={locale} selected={selected} blocked={blocked} onToggle={toggle} />
         </RewardsTab>
       </div>

@@ -39,7 +39,7 @@ export function AdSideRails() {
         className={`${railPositionClass} ${visibility} ${left}`}
       >
         <div className="pointer-events-auto">
-          <VerticalAdBanner className="my-0 px-0" />
+          <VerticalAdBanner side="left" className="my-0 px-0" />
         </div>
       </aside>
       <aside
@@ -47,7 +47,7 @@ export function AdSideRails() {
         className={`${railPositionClass} ${visibility} ${right}`}
       >
         <div className="pointer-events-auto">
-          <VerticalAdBanner className="my-0 px-0" />
+          <VerticalAdBanner side="right" className="my-0 px-0" />
         </div>
       </aside>
     </>

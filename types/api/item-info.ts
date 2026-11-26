@@ -271,6 +271,9 @@ export interface ItemInfoResponse {
   width: number;
   height: number;
   image: string;
+  memo_ko: string | null;
+  memo_en: string | null;
+  memo_ja: string | null;
   penalties?: ItemPenalties;
   weapon_info?: WeaponInfo;
   ammo_info?: AmmoInfo;

@@ -16,7 +16,7 @@ import {
 
 import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { QuestAffinityBadge } from "@/components/shared/quest-affinity-badge";
-import { ZoomableImagePopup } from "@/components/shared/zoomable-image-popup";
+import { ZoomableRichHtml } from "@/components/shared/zoomable-rich-html";
 import { cn } from "@/lib/utils/class-name";
 import { getOptionalObjectiveLabel } from "@/lib/quest/objective";
 import { pickLocalizedField } from "@/lib/utils/localized-text";
@@ -151,13 +151,6 @@ function formatSignedNumber(value: number) {
   return `${value > 0 ? "+" : ""}${value}`;
 }
 
-interface ImagePopupState {
-  src: string;
-  alt: string;
-  images?: Array<{ src: string; alt: string }>;
-  index?: number;
-}
-
 export function QuestDetailPage({
   data,
   locale,
@@ -166,14 +159,6 @@ export function QuestDetailPage({
   locale: Locale;
 }) {
   const copy = copyByLocale[locale];
-  const [imagePopup, setImagePopup] = useState<ImagePopupState | null>(null);
-  const navigateImagePopup = (index: number) => {
-    setImagePopup((current) => {
-      const image = current?.images?.[index];
-
-      return image ? { ...image, images: current?.images, index } : current;
-    });
-  };
   const questName = getLocalizedValue(
     data.quest as unknown as Record<string, unknown>,
     locale,
@@ -359,48 +344,12 @@ export function QuestDetailPage({
         {guideHtml ? (
           <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[#2a3038] dark:bg-[#181c21]">
             <SectionTitle>{copy.guide}</SectionTitle>
-            <div
-              className={cn(
-                "rich-html-content mt-5",
-                "[&_img]:cursor-zoom-in",
-              )}
-              onClick={(event) => {
-                const target = event.target;
-
-                if (!(target instanceof HTMLImageElement)) {
-                  return;
-                }
-
-                event.preventDefault();
-                const images = Array.from(event.currentTarget.querySelectorAll("img"))
-                  .map((image) => ({
-                    src: image.currentSrc || image.src,
-                    alt: image.alt || questName,
-                  }))
-                  .filter((image) => image.src);
-                const src = target.currentSrc || target.src;
-                const index = images.findIndex((image) => image.src === src);
-
-                setImagePopup({
-                  src,
-                  alt: target.alt || questName,
-                  images: images.length > 0 ? images : undefined,
-                  index: index >= 0 ? index : undefined,
-                });
-              }}
-              dangerouslySetInnerHTML={{ __html: guideHtml }}
-            />
+            <ZoomableRichHtml html={guideHtml} imageAlt={questName} className="mt-5" />
           </section>
         ) : null}
       </div>
 
-      <ZoomableImagePopup
-        currentIndex={imagePopup?.index}
-        image={imagePopup}
-        images={imagePopup?.images}
-        onClose={() => setImagePopup(null)}
-        onNavigate={navigateImagePopup}
-      />
+
     </main>
   );
 }

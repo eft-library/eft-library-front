@@ -13,7 +13,7 @@ const copy = {
     title: "프레스티지", intro: "조건을 달성해 캐릭터를 처음부터 다시 시작하고, 와이프 이후에도 남는 보상을 받으세요.",
     summary: [["그대로 남음", "프로필 통계, 업적, 아레나 ARP와 무기고 진행도"], ["일부 남음", "스킬과 무기 숙련도의 일부, 이전 칸에 넣은 아이템"], ["초기화", "레벨, 퀘스트, 상인 평판, 은신처, 창고"]],
     detail: "레벨별 조건과 보상", conditions: "달성 조건", rewards: "보상", other: "그 밖의 보상",
-    compare: "한눈에 비교", how: "프레스티지 하는 방법", ad: "광고", empty: "프레스티지 정보를 불러올 수 없어요.",
+    compare: "한눈에 비교", how: "프레스티지 하는 방법", empty: "프레스티지 정보를 불러올 수 없어요.",
     pve: "PvE 조건과 보상 데이터가 아직 제공되지 않아요.",
     steps: ["다음 프레스티지 레벨의 조건을 확인하세요.", "게임에서 해당 조건을 달성하세요.", "이전 칸에 유지할 아이템을 넣으세요.", "프레스티지를 완료하고 보상을 확인하세요."],
     rows: ["PMC 레벨", "루블", "퀘스트", "스토리 챕터", "스킬 조건", "은신처", "스킬·무기 숙련도 유지", "아이템 이전 칸"],
@@ -22,7 +22,7 @@ const copy = {
     title: "Prestige", intro: "Meet the requirements to restart your character and earn rewards that persist through wipes.",
     summary: [["Kept", "Profile stats, achievements, Arena ARP and armory progress"], ["Partly kept", "A share of skills and weapon mastery, and items in the transfer window"], ["Reset", "Level, quests, trader standing, hideout and stash"]],
     detail: "Requirements and rewards by level", conditions: "Requirements", rewards: "Rewards", other: "Other rewards",
-    compare: "Compare all levels", how: "How to prestige", ad: "Advertisement", empty: "Prestige information could not be loaded.",
+    compare: "Compare all levels", how: "How to prestige", empty: "Prestige information could not be loaded.",
     pve: "PvE requirements and rewards are not available yet.",
     steps: ["Check the requirements for the next prestige level.", "Meet the requirements in game.", "Put the items you want to keep in the transfer window.", "Complete prestige and check your rewards."],
     rows: ["PMC level", "Roubles", "Quests", "Story chapters", "Skills", "Hideout", "Skills and mastery kept", "Item transfer window"],
@@ -31,7 +31,7 @@ const copy = {
     title: "プレステージ", intro: "条件を満たしてキャラクターを最初からやり直し、ワイプ後も残る報酬を獲得しましょう。",
     summary: [["維持", "プロフィール統計、実績、アリーナのARPと武器庫の進行度"], ["一部維持", "スキル・武器熟練度の一部、転送枠に入れたアイテム"], ["リセット", "レベル、クエスト、商人信頼度、隠れ家、スタッシュ"]],
     detail: "レベル別の条件と報酬", conditions: "達成条件", rewards: "報酬", other: "その他の報酬",
-    compare: "一覧で比較", how: "プレステージの手順", ad: "広告", empty: "プレステージ情報を読み込めませんでした。",
+    compare: "一覧で比較", how: "プレステージの手順", empty: "プレステージ情報を読み込めませんでした。",
     pve: "PvEの条件と報酬はまだ取得できません。",
     steps: ["次のプレステージレベルの条件を確認します。", "ゲーム内で条件を達成します。", "残したいアイテムを転送枠に入れます。", "プレステージを完了して報酬を確認します。"],
     rows: ["PMCレベル", "ルーブル", "クエスト", "ストーリーチャプター", "スキル", "隠れ家", "スキル・武器熟練度維持", "アイテム転送枠"],
@@ -203,7 +203,7 @@ export function PrestigePage({ levels, locale }: { levels: PrestigeLevel[] | nul
               <PrestigeRewards level={level} locale={locale} />
             </div>}
         </section>
-        <ContentWidthAdBanner label={t.ad} />
+        <ContentWidthAdBanner />
         <section className={panel}>
           <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-xl font-black sm:text-2xl">{t.compare}</h2>{modePicker(compareButtons)}</div>
           {mode === "pve" ? <p role="status" className="text-sm text-gray-600 dark:text-gray-400">{t.pve}</p> :
