@@ -262,7 +262,6 @@ function applyImageRotation(overlay: LeafletImageOverlay, rotation: number) {
 
   const baseTransform = element.style.transform.replace(/\srotate\([^)]*\)$/, "");
   element.style.transform = rotation === 0 ? baseTransform : `${baseTransform} rotate(${rotation}deg)`;
-  element.style.transformOrigin = "center";
 }
 
 function getStaticMarkerType(point: LiveMapCanvasMarker) {
@@ -1170,10 +1169,6 @@ export function LiveMapCanvas({
   const onFocusedMarkerCloseRef = useRef<typeof onFocusedMarkerClose>(onFocusedMarkerClose);
   const [renderBounds, setRenderBounds] = useState<LatLngBounds | null>(null);
   const [mapRevision, setMapRevision] = useState(0);
-  const imageBoundsKey = useMemo(
-    () => JSON.stringify(coordinateInfo.image_bounds),
-    [coordinateInfo.image_bounds],
-  );
   const mapBoundsKey = useMemo(
     () => JSON.stringify(coordinateInfo.map_bounds),
     [coordinateInfo.map_bounds],
@@ -2036,9 +2031,12 @@ export function LiveMapCanvas({
     const activeFloor = drawableFloors.find((floor) => floor.id === activeFloorId);
     const orderedFloors = activeFloor ? [...inactiveFloors, activeFloor] : drawableFloors;
 
+    const fallbackBounds = floors.find((floor) => floor.map_bounds)?.map_bounds ?? coordinateInfo.image_bounds;
+    const rotationCenter = getMapCenter(coordinateInfo.image_bounds);
+
     imageOverlayRefs.current = orderedFloors.map((floor) => {
       const isActive = floor.id === activeFloorId;
-      const overlay = L.imageOverlay(floor.image ?? "", coordinateInfo.image_bounds, {
+      const overlay = L.imageOverlay(floor.image ?? "", floor.map_bounds ?? fallbackBounds, {
         className: isActive
           ? "live-map-floor-layer live-map-floor-layer-active"
           : "live-map-floor-layer live-map-floor-layer-inactive",
@@ -2046,6 +2044,15 @@ export function LiveMapCanvas({
       });
 
       overlay.addTo(map);
+      const element = overlay.getElement();
+      if (element) {
+        const bounds = overlay.getBounds();
+        const x = (rotationCenter.lng - bounds.getWest()) / (bounds.getEast() - bounds.getWest());
+        const y = (bounds.getNorth() - rotationCenter.lat) / (bounds.getNorth() - bounds.getSouth());
+        element.style.transformOrigin = Number.isFinite(x) && Number.isFinite(y)
+          ? `${x * 100}% ${y * 100}%`
+          : "center";
+      }
       applyImageRotation(overlay, animatedRotationRef.current);
 
       if (isActive) {
@@ -2070,7 +2077,7 @@ export function LiveMapCanvas({
       imageOverlayRefs.current.forEach((overlay) => overlay.remove());
       imageOverlayRefs.current = [];
     };
-  }, [activeFloorId, imageBoundsKey, floors]);
+  }, [activeFloorId, coordinateInfo.image_bounds, floors, mapRevision]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -2427,7 +2434,7 @@ export function LiveMapCanvas({
         markerRef.current = null;
       }
     };
-  }, [coordinateInfo.image_bounds, location, mapKey, rotation]);
+  }, [coordinateInfo.image_bounds, location, mapKey, mapRevision, rotation]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -2468,7 +2475,7 @@ export function LiveMapCanvas({
         logMarkerRef.current = null;
       }
     };
-  }, [coordinateInfo.image_bounds, logLocation, mapKey, rotation]);
+  }, [coordinateInfo.image_bounds, logLocation, mapKey, mapRevision, rotation]);
 
   return (
     <>

@@ -735,6 +735,17 @@ export function LiveMapClientPage({
   );
   const selectedFloor =
     sortedFloors.find((floor) => floor.id === selectedFloorId) ?? defaultFloor;
+  const coordinateInfo = useMemo(() => {
+    const bounds = selectedFloor?.map_bounds;
+    if (!bounds) return data.coordinate_info;
+
+    return {
+      id: selectedFloor.map_id,
+      image_bounds: bounds,
+      map_bounds: bounds,
+      default_zoom_level: selectedFloor.default_zoom_level ?? data.coordinate_info?.default_zoom_level ?? 0,
+    };
+  }, [data.coordinate_info, selectedFloor]);
   const currentMapId =
     selectedFloor?.map_id ??
     data.coordinate_info?.id ??
@@ -2872,14 +2883,14 @@ export function LiveMapClientPage({
               isEyeComfortMode && "live-map-eye-comfort",
             )}
           >
-            {selectedFloor && data.coordinate_info ? (
+            {selectedFloor && coordinateInfo ? (
               <LiveMapCanvas
                 activeFloorId={selectedFloor.id}
                 btrPredictions={btrPredictions}
                 btrRoutes={visibleBtrRoutes}
                 clearDrawingRequest={clearDrawingRequest}
                 closePopupRequest={closeMarkerPopupRequest}
-                coordinateInfo={data.coordinate_info}
+                coordinateInfo={coordinateInfo}
                 drawingMode={drawingMode}
                 focusedMarkerId={focusedMarkerId}
                 focusRequestKey={focusRequestKey}
