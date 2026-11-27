@@ -120,24 +120,31 @@ export function AdBanner({
 
 export function HorizontalAdBanner({
   className,
-  maxWidth = 970,
-  minHeight = 250,
+  placement = "top",
 }: {
   className?: string;
-  maxWidth?: number;
-  minHeight?: number;
+  placement?: "top" | "content";
 }) {
+  const inContent = placement === "content";
+  const placementSlot = inContent
+    ? process.env.NEXT_PUBLIC_ADSENSE_IN_CONTENT_SLOT
+    : process.env.NEXT_PUBLIC_ADSENSE_TOP_SLOT;
+
   return (
     <AdBanner
+      dataAdFormat={null}
+      dataFullWidthResponsive={null}
       dataAdSlot={
-        process.env.NEXT_PUBLIC_ADSENSE_TOP_SLOT ??
+        placementSlot ??
         process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
         process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ??
         "8601640289"
       }
-      maxWidth={maxWidth}
-      minHeight={minHeight}
-      className={`my-0 overflow-hidden ${className ?? ""}`}
+      maxWidth={728}
+      minHeight={0}
+      className={`relative overflow-hidden px-0! ${inContent ? "my-8" : "my-0"} ${className ?? ""}`}
+      style={{ height: 90 }}
+      lazy={inContent}
     />
   );
 }
@@ -168,26 +175,6 @@ export function VerticalAdBanner({
       minHeight={600}
       className={className}
       style={{ minWidth: 160, width: 160, height: 600 }}
-    />
-  );
-}
-
-export function ContentWidthAdBanner({ compact = false }: { compact?: boolean }) {
-  return (
-    <AdBanner
-      dataAdSlot={
-        process.env.NEXT_PUBLIC_ADSENSE_IN_CONTENT_SLOT ??
-        process.env.NEXT_PUBLIC_ADSENSE_HORIZONTAL_SLOT ??
-        process.env.NEXT_PUBLIC_ADSENSE_SIDE_SLOT ??
-        "8601640289"
-      }
-      maxWidth={compact ? 728 : undefined}
-      minHeight={0}
-      className={compact
-        ? "my-0 overflow-hidden px-0 [--content-ad-height:100px]"
-        : "my-8 overflow-hidden px-0 [--content-ad-height:100px] sm:[--content-ad-height:250px]"}
-      style={{ minHeight: "var(--content-ad-height)" }}
-      lazy
     />
   );
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FileQuestion, Package } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { ContentWidthAdBanner } from "@/components/shared/ad-banner";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import { documentMapName, kordBreachGuide, rewardTypeName } from "../season-guide";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -290,7 +290,7 @@ export function BattlePassPage({ data, locale }: { data: BattlePassData | null; 
         <div className="rounded-xl border border-dashed border-line bg-surface px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400">{labels.noRewards}</div>
       )}
 
-      <ContentWidthAdBanner />
+      <HorizontalAdBanner placement="content" />
 
       <InfoSection
         kicker={labels.documentIndex}

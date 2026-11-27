@@ -106,8 +106,8 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-[#1e2124] dark:text-white">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[1fr_320px]">
-          <div className="space-y-6">
+        <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="min-w-0 space-y-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
               {newsSections.map((section) => (
                 <article
@@ -140,7 +140,7 @@ export function HomePage({ home, labels, locale }: HomePageProps) {
               ))}
             </div>
 
-            <HorizontalAdBanner className="my-0" />
+            <HorizontalAdBanner />
 
             <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/30">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Award, Package } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ContentWidthAdBanner } from "@/components/shared/ad-banner";
+import { HorizontalAdBanner } from "@/components/shared/ad-banner";
 import type { Locale } from "@/i18n/config";
 import type { PrestigeCondition, PrestigeLevel } from "./api";
 
@@ -203,7 +203,7 @@ export function PrestigePage({ levels, locale }: { levels: PrestigeLevel[] | nul
               <PrestigeRewards level={level} locale={locale} />
             </div>}
         </section>
-        <ContentWidthAdBanner />
+        <HorizontalAdBanner placement="content" />
         <section className={panel}>
           <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-xl font-black sm:text-2xl">{t.compare}</h2>{modePicker(compareButtons)}</div>
           {mode === "pve" ? <p role="status" className="text-sm text-gray-600 dark:text-gray-400">{t.pve}</p> :
